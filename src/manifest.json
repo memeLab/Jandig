@@ -1,0 +1,16 @@
+{
+    "short_name": "ARte",
+    "name": "Jandig ARte",
+    "icons": [
+      {
+        "src": "/web_hi_res_512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "",
+    "background_color": "#FFF",
+    "display": "browser",
+    "scope": "",
+    "theme_color": "#FFF"
+}
