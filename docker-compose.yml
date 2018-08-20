@@ -1,8 +1,7 @@
 version: '2'
 
 services:
-  https:
-    image: pablodiegoss/live-server:latest
+  web:
     build: .
     ports:
       - 443:8080
