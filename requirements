@@ -1,8 +1,0 @@
-- npm
-- live-server
-- live-server-https
-
-Para rodar usar live-server 
---https=/usr/local/node_modules/live-server-https
-
-se não for esse path usar npm -g list live-server-https
