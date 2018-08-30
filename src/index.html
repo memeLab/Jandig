@@ -4,15 +4,12 @@
     <link id="manifest" rel="manifest" href="manifest.json">
     <script src="js/detect.js"></script>
     <script src="js/main.js"></script>
-    <script async src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.6/pwacompat.min.js"
-    integrity="sha384-GOaSLecPIMCJksN83HLuYf9FToOiQ2Df0+0ntv7ey8zjUHESXhthwvq9hXAZTifA"
-    crossorigin="anonymous"></script>
+    <script src="vendor/aframe.js"></script>
+    <script src="vendor/aframe-ar.js"> </script>
+    <script src="vendor/aframe-gif-shader.js"></script>
+    <script src="vendor/pwacompat.js"></script>
   </head>
-<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-<script src="vendor/js/aframe-ar.js"> </script>
-<!-- <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script> -->
-<script src="https://rawgit.com/tinchoforever/belisario.com.ar/master/scripts/aframe-gif-shader.js"></script>
-  
+
 <body style='margin : 0px; overflow: hidden;'>
   <a-scene embedded arjs>
     <a-marker type="pattern" url="patts/peixe.patt">

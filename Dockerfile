@@ -7,9 +7,14 @@ RUN npm install -g live-server live-server-https
 
 COPY /src /app/
 
-CMD echo "--------------------------------------------------------" && \
-    echo "Access ARte from external devices on the same network by accessing:" && \
-    echo "  - https://<server-device-name>" && \
-    echo "  - https://<server-device-ip>" && \
-    echo "--------------------------------------------------------" && \
-    live-server --https=/usr/local/lib/node_modules/live-server-https --no-browser
+RUN mkdir /vendor
+
+ADD https://github.com/pablodiegoss/ARte-libs/archive/master.zip /master.zip
+RUN unzip /master.zip \
+ && cd ARte-libs-master \
+ && mv * /vendor \
+ && ls /vendor/ \
+ && echo "Downloaded Libs"
+
+COPY runserver.sh /
+CMD ["/runserver.sh"]
