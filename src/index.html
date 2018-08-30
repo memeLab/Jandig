@@ -4,21 +4,23 @@
     <link id="manifest" rel="manifest" href="manifest.json">
     <script src="js/detect.js"></script>
     <script src="js/main.js"></script>
-    <script async src="js/vendor/pwacompat.min.js"></script>
-    <script src="js/vendor/aframe.min.js"></script>
-    <script src="js/vendor/aframe-ar.js"> </script>
-    <script src="js/vendor/aframe-gif-shader.min.js"></script>
+    <script src="vendor/aframe.js"></script>
+    <script src="vendor/aframe-ar.js"> </script>
+    <script src="vendor/aframe-gif-shader.js"></script>
+    <script src="vendor/pwacompat.js"></script>
   </head>
-  <body style='margin : 0px; overflow: hidden;'>
-      <a-scene embedded arjs>
-        <!-- <a-assets>
-          <img id="bob" src="images/bob.jpeg">
-        </a-assets> -->
-        <a-marker preset="hiro">
-          <!-- <a-image width="1" height="1" src="#bob"></a-image> -->
-          <a-entity geometry="primitive:box;" material="shader:gif;src:url(images/gar.gif);color:green;opacity:.8"></a-entity>
-        </a-marker>
-        <a-entity camera></a-entity>
-      </a-scene>
-    </body>
+
+<body style='margin : 0px; overflow: hidden;'>
+  <a-scene embedded arjs>
+    <a-marker type="pattern" url="patts/peixe.patt">
+      <a-plane material="shader:gif;src:url(images/alien.gif);" rotation="270 0 0" scale="2 2"></a-plane>
+    </a-marker>    
+
+    <a-marker type="pattern" preset="hiro">
+        <a-plane material="shader:gif;src:url(images/alien.gif);" rotation="270 0 0" scale="2 2"></a-plane>
+    </a-marker>    
+
+    <a-entity camera></a-entity>         
+  </a-scene>
+</body>
 </html>
