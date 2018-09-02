@@ -1,19 +1,19 @@
-FROM node:8.11-alpine
+FROM python:3.6.5
 
 WORKDIR /app
 
-RUN npm i npm@latest -g
-RUN npm install -g live-server live-server-https
+COPY requirements.txt /
 
-COPY /src /app/
+RUN pip install -r /requirements.txt
+
+COPY /ARte /app/
 
 RUN mkdir /vendor
-
+RUN apt-get update && apt-get install unzip
 ADD https://github.com/pablodiegoss/ARte-libs/archive/master.zip /master.zip
 RUN unzip /master.zip \
  && cd ARte-libs-master \
  && mv * /vendor \
- && ls /vendor/ \
  && echo "Downloaded Libs"
 
 COPY runserver.sh /

@@ -4,6 +4,6 @@ services:
   web:
     build: .
     ports:
-      - 443:8080
+      - 443:443
     volumes:
-      - ./src/:/app/
+      - ./ARte/:/app/
