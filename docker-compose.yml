@@ -7,3 +7,15 @@ services:
       - 443:443
     volumes:
       - ./ARte/:/app/
+    env_file:
+      - ./.envs/.django
+      - ./.envs/.postgres
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    env_file:
+      - ./.envs/.postgres
+    ports:
+      - "5432:5432"
