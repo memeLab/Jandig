@@ -1,0 +1,4 @@
+django >= 2.0
+django-sslserver >= 0.20
+jinja2 >= 2.10
+gunicorn >= 19.0
