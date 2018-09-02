@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
-mv /vendor/ /app/vendor/
+mkdir /app/vendor
+cp -r /vendor/* /app/vendor/
 
 echo "--------------------------------------------------------" && \
 echo "Access ARte from external devices on the same network by accessing:" && \
