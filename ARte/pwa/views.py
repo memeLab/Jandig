@@ -1,4 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+
 
 def index(request):
-    return HttpResponse("../index.html")
+    return render(request, 'pwa/index.html')
