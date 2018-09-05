@@ -1,0 +1,3 @@
+DJANGO_DEBUG=True
+DJANGO_SETTINGS_MODULE=config.settings
+DJANGO_ADMIN_URL=admin/

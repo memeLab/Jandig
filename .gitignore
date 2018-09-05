@@ -1,4 +1,7 @@
 
-src/vendor/
+ARte/vendor/
+ARte/config/__pycache__/
+ARte/collect/
+*.pyc
 
-src/js/vendor/
+\.vscode/
