@@ -1,0 +1,14 @@
+{% extends '/pwa/base.jinja2' %}
+
+{% block content %}
+
+    <a-scene embedded arjs>
+        {% for marker in markers %}
+            <a-marker type="pattern" url="static/patts/{{marker.patt}}.patt">
+                <a-plane material="shader:gif;src:url(static/images/{{marker.image}}.gif);" rotation="270 0 0"></a-plane>
+            </a-marker>    
+        {% endfor %}
+        <a-entity camera></a-entity>         
+    </a-scene>
+
+{% endblock %}
