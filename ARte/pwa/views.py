@@ -2,4 +2,9 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'pwa/index.html')
+    ctx = {"markers":[
+                {"patt":"peixe", "image":"alien"},
+                {"preset":"hiro", "image":"alien"},
+                ]
+            }
+    return render(request, 'pwa/exhibit.jinja2', ctx)
