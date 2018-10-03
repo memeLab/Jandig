@@ -1,5 +1,6 @@
 **SCHEDULE/MILESTONES**
 
+
 **August**
 
 20. Unofficial beginning of activities
@@ -10,7 +11,7 @@
 17. Prototype with current Jandig features
 
 27. Artworks ready for deploy
-  
+
 27-30. Around the World in Eighty Jandigs
 
 28. First deploy (1st prototype)
@@ -21,6 +22,8 @@
 01-15. Around the World in Eighty Jandigs
 
 03. OL Build for Understanding 
+
+04-30. Hacktoberfest
 
 09-13. GOSH Distribution
 
