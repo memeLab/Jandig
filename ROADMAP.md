@@ -1,61 +1,59 @@
+**SCHEDULE/MILESTONES**
 
-SCHEDULE/MILESTONES
+**August**
 
-
-August
-
-  20. Unofficial beginning of activities
+20. Unofficial beginning of activities
 
 
-September
+**September**
 
-  17. Prototype with current Jandig features
+17. Prototype with current Jandig features
 
-  27. Artworks ready for deploy
+27. Artworks ready for deploy
   
-  27-30. Around the World in Eighty Jandigs
+27-30. Around the World in Eighty Jandigs
 
-  28. First deploy (1st prototype)
-
-
-October
-
-  01-15. Around the World in Eighty Jandigs
-
-  03. OL Build for Understanding 
-
-  09-13. GOSH Distribution
-
-  XX. Official beginning of activities
-
-  17. OL Empower for Participation & Inclusion
+28. First deploy (1st prototype)
 
 
-November
+**October**
 
-  28. OL Demo prep
+01-15. Around the World in Eighty Jandigs
 
+03. OL Build for Understanding 
 
-December
+09-13. GOSH Distribution
 
-  12. OL Final Demos
+XX. Official beginning of activities
 
-  XX. Finish work for the formal report (second prototype) 
-
-  XX. Send report to UFABC
-
-
-January
-
-  04. Deploy final version
-
-  09. Finish work for report
-
-  17. Official end of activities
-
-  17. Send final report
+17. OL Empower for Participation & Inclusion
 
 
-March
+**November**
 
-  XX. Launch exhibition (proposal date)
+28. OL Demo prep
+
+
+**December**
+
+12. OL Final Demos
+
+XX. Finish work for the formal report (second prototype) 
+
+XX. Send report to UFABC
+
+
+**February**
+
+XX. Deploy final version
+
+XX. Finish work for report
+
+XX. Official end of activities
+
+XX. Send final report
+
+
+**March**
+
+XX. Launch exhibition (proposal date)
