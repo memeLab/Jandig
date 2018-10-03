@@ -1,32 +1,61 @@
 
 SCHEDULE/MILESTONES
 
+
 August
-20. Unofficial beginning of activities
+
+  20. Unofficial beginning of activities
+
 
 September
-XX. The official beginning of activities
-17. Prototype with current Jandig features
-27. Artworks ready for deploy
-28. First deploy (1st prototype)
+
+  17. Prototype with current Jandig features
+
+  27. Artworks ready for deploy
+  
+  27-30. Around the World in Eighty Jandigs
+
+  28. First deploy (1st prototype)
+
 
 October
-3. OL Build for Understanding 
-5-7. London Intervention
-10. GOSH Exhibition
-29. Finish work for the formal report (second prototype) 
-17. OL Empower for Participation & Inclusion
+
+  01-15. Around the World in Eighty Jandigs
+
+  03. OL Build for Understanding 
+
+  09-13. GOSH Distribution
+
+  XX. Official beginning of activities
+
+  17. OL Empower for Participation & Inclusion
+
 
 November
-3. Send report to UFABC
-28. OL Demo prep
+
+  28. OL Demo prep
+
 
 December
-12. OL Final Demos
+
+  12. OL Final Demos
+
+  XX. Finish work for the formal report (second prototype) 
+
+  XX. Send report to UFABC
+
 
 January
-4. Deploy final version
-9. Finish work for report
-17. Official end of activities
-17. Send final report
-19. Launch exhibition (proposal date)
+
+  04. Deploy final version
+
+  09. Finish work for report
+
+  17. Official end of activities
+
+  17. Send final report
+
+
+March
+
+  XX. Launch exhibition (proposal date)
