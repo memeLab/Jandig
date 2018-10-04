@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link id="manifest" rel="manifest" href="static/manifest.json">
+        <script src="static/js/detect.js"></script>
+        <script src="static/js/main.js"></script>
+        <script src="static/aframe.js"></script>
+        <script src="static/aframe-ar.js"> </script>
+        <script src="static/aframe-gif-shader.js"></script>
+        <script src="static/pwacompat.js"></script>
+    </head>
+
+    <body style='margin : 0px; overflow: hidden;'>
+        {% if content is defined %}
+            {{ content }}
+        {% else %}
+            {% block content %}
+                {% if content_html %}
+                    <div class="Container">
+                        {{ content_html|safe }}
+                    </div>
+                {% else %}
+                    <p>{{ _('Please override the "content" block of your template!') }}</p>
+                {% endif %}
+            {% endblock %}
+        {% endif %}
+    </body>
+</html>
