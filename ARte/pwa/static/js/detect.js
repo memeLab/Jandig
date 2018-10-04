@@ -7,5 +7,5 @@ const isIos = () => {
   }
 
 if (isIos()) {
-    document.getElementById("manifest").href = "ios-manifest.json";
+    document.getElementById("manifest").href = "static/ios-manifest.json";
 }
