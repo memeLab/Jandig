@@ -15,8 +15,8 @@
                 </a-marker>
             {% else %}
                 <a-marker type="pattern" url="static/patts/{{marker.patt}}.patt">
-                    <a-plane material="shader:gif;src:url(static/images/{{marker.image}}.gif);" rotation="270 0 0"></a-plane>
-                </a-marker>    
+                    <a-plane material="shader:gif;src:url(static/images/{{marker.image}}.gif);" position="0 0.5 0" scale="1 1" rotation="270 0 0"></a-plane>
+                </a-marker>
             {% endif%}
         {% endfor %}
 
