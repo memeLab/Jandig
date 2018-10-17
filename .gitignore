@@ -5,3 +5,5 @@ ARte/collect/
 *.pyc
 
 \.vscode/
+
+ARte/db\.sqlite3
