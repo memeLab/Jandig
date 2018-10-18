@@ -1,6 +1,6 @@
 from django.db import models
 
-class Marker(models.Model):
+class Artwork(models.Model):
     name = models.CharField(unique=True, max_length=50)
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)

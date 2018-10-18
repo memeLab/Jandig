@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Marker
+from .models import Artwork
 
 def service_worker(request):
     return render(request, 'pwa/sw.js',
@@ -7,15 +7,18 @@ def service_worker(request):
 
 
 def index(request):
-    ctx = {"markers":[
-                Marker(patt="gueixa", gif="gueixa"),
-                Marker(patt="temaki", gif="temaki"),
-                Marker(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
-                Marker(patt="tokusatsu", gif="tokusatsu"),
-                Marker(patt="samurai", gif="samurai", scale="1.5 1.5"),
-                Marker(patt="antipodas", gif="antipodas"), # Blinking
+    ctx = {
+        "artworks":[
+            Artwork(patt="gueixa", gif="gueixa"),
+            Artwork(patt="temaki", gif="temaki"),
+            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
+            Artwork(patt="tokusatsu", gif="tokusatsu"),
+            Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
+            Artwork(patt="antipodas", gif="antipodas"), # Blinking
+            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"), # Blinking
+            Artwork(patt="manekineko", gif="manekineko"),
 
-                # Marker(patt="hiro", gif="none"),
+                # Artwork(patt="hiro", gif="none"),
                 # {"patt":"peixe", "image":"peixe"},
                 # {"patt":"andando", "image":"andando"},
                 # {"patt":"robo-pula", "image":"robo-pula"},
