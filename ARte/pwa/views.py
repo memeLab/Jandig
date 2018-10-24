@@ -1,5 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+
+from .helpers import handle_upload_image
+from .forms import UploadFileForm
 from .models import Artwork
+
 
 def service_worker(request):
     return render(request, 'pwa/sw.js',
@@ -36,3 +42,15 @@ def index(request):
                 ]
             }
     return render(request, 'pwa/exhibit.jinja2', ctx)
+
+
+def upload_image(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        image = request.FILES.get('file')
+        if form.is_valid() and image:
+            handle_upload_image(image)
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = UploadFileForm()
+    return render(request, 'pwa/upload.jinja2', {'form': form})

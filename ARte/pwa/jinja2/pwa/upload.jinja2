@@ -1,0 +1,11 @@
+{% extends '/pwa/base.jinja2' %}
+
+{% block content %}
+
+    <form action="{{url('upload-image')}}" method="post" enctype="multipart/form-data">
+        {{ csrf_input }}
+        {{ form }}
+        <input type="submit" value="Upload" />
+    </form>
+
+{% endblock %}
