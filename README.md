@@ -32,4 +32,4 @@ docker-compose up
 Jandig ARte server will use a self signed certificate to emulate a HTTPS connection to allow us use getUserMedia API on development server and you can access from the machine running the server through https://localhost and for other devices like cellphones you will need to discover the ip or the hostname of your server machine and access through the mobile browser https://{ip-of-server} or https://{hostname-of-server} e.g. https://shelby.local for a server with hostname 'shelby'.
 
 ### People
-We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) and follow us on Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo](https://twitter.com/ShamanRoh)
+We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) and follow us on Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo Oliveira](https://twitter.com/ShamanRoh)
