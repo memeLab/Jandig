@@ -7,24 +7,21 @@
         {% for artwork in artworks %}
             {% if artwork.patt == "hiro" %}
                 <a-marker type="pattern" preset="{{artwork.patt}}">
-                     <a-plane material="shader:gif;src:url(static/images/{{artwork.gif}}.gif);" 
-                            position="{{artwork.position}}"
-                            scale="{{artwork.scale}}" 
-                            rotation="{{artwork.rotation}}">
-                    </a-plane>
-                    {# <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
-                        <a-torus-knot radius='0.26' radius-tubular='0.05'>
-                            <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-                        </a-torus-knot>
-                    </a-box> #}
+                     <a-entity id="{{artwork.patt}}-gif" gif="src: static/images/{{artwork.gif}}.gif;
+                                                            marker: #{{artwork.patt}};
+                                                            scale: {{artwork.scale}};
+                                                            rotation: {{artwork.rotation}};
+                                                            position: {{artwork.position}};">
+                    </a-entity>
                 </a-marker>
             {% else %}
-                <a-marker type="pattern" url="static/patts/{{artwork.patt}}.patt">
-                    <a-plane material="shader:gif;src:url(static/images/{{artwork.gif}}.gif);" 
-                             position="{{artwork.position}}"
-                             scale="{{artwork.scale}}" 
-                             rotation="{{artwork.rotation}}">
-                    </a-plane>
+                <a-marker id="{{artwork.patt}}" type="pattern" url="static/patts/{{artwork.patt}}.patt">
+                    <a-entity id="{{artwork.patt}}-gif" gif="src: static/images/{{artwork.gif}}.gif;
+                                                            marker: #{{artwork.patt}};
+                                                            scale: {{artwork.scale}};
+                                                            rotation: {{artwork.rotation}};
+                                                            position: {{artwork.position}};">
+                    </a-entity>
                 </a-marker>
             {% endif %}
         {% endfor %}
