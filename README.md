@@ -1,6 +1,8 @@
 # Jandig ARte
 ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple way.
 
+You can see galleries with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
+
 ## How it works
 Jandig ARte uses [AR.js](https://github.com/jeromeetienne/AR.js) to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render an image on the device screen, giving the impression that your device is like a virtual window that you looking at.
 
