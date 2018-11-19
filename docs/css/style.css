@@ -16,7 +16,7 @@ a, a:link, a:visited {
   -webkit-transition:.5s;
   /* ...and now for the proper property */
   transition:.5s;
-/
+}
 
 a:hover {
 
