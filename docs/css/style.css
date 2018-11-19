@@ -16,9 +16,9 @@ a, a:link, a:visited {
   -webkit-transition:.5s;
   /* ...and now for the proper property */
   transition:.5s;
-/*}
+/
 
-a:hover {*/
+a:hover {
 
 box-shadow: inset 0 -6px 0 #93e3e5;
 
