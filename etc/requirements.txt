@@ -7,3 +7,5 @@ django-cors-headers
 
 django-environ==0.4.4
 psycopg2-binary
+
+invoke==1.2.0

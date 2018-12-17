@@ -2,7 +2,7 @@ FROM python:3.6.5
 
 WORKDIR /app
 
-COPY requirements.txt /
+COPY /etc/requirements.txt /
 
 RUN pip install -r /requirements.txt
 
@@ -16,5 +16,5 @@ RUN unzip /master.zip \
  && mv * /vendor \
  && echo "Downloaded Libs"
 
-COPY runserver.sh /
+COPY /etc/runserver.sh /
 CMD ["/runserver.sh"]
