@@ -15,11 +15,14 @@ def manage(ctx, cmd):
 
 
 @task
-def run(ctx):
+def run(ctx, ssl=False):
     """
     Run development server
     """
-    manage(ctx, "runsslserver 0.0.0.0:443")
+    if ssl:
+        manage(ctx, "runsslserver 0.0.0.0:443")
+    else:
+        manage(ctx, "runserver")
 
 
 @task

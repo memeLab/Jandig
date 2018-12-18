@@ -15,7 +15,9 @@ if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR.path('.env')))
 
-DEBUG = env.bool('DJANGO_DEBUG', False)
+# DEBUG = env.bool('DJANGO_DEBUG', False)
+DEBUG = True
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='gw)48fp(ct67v4+0_tpxl=$vw=-x&y9(&0n6!n4mpw5m!4gaor')
