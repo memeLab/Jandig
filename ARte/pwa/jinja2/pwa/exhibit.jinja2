@@ -6,7 +6,7 @@
         
         {% for artwork in artworks %}
             {% if artwork.patt == "hiro" %}
-                <a-marker type="pattern" preset="{{artwork.patt}}">
+                <a-marker id="{{artwork.patt}}" type="pattern" preset="{{artwork.patt}}">
                      <a-entity id="{{artwork.patt}}-gif" gif="src: static/images/{{artwork.gif}}.gif;
                                                             marker: #{{artwork.patt}};
                                                             scale: {{artwork.scale}};
