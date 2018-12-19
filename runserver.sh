@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-mkdir /app/vendor
-cp -r -u /vendor/* /app/vendor/
-
 echo "--------------------------------------------------------" && \
 echo "Access ARte from external devices on the same network by accessing:" && \
 echo "  - https://<server-device-name>" && \
