@@ -4,8 +4,7 @@ services:
   web:
     build: .
     ports:
-      - 80:80
-      - 443:443
+      - 8000:8000
     volumes:
       - ./ARte/:/app/
     env_file:
@@ -13,6 +12,7 @@ services:
       - ./.envs/.postgres
     depends_on:
       - postgres
+    command: db collect run
 
   postgres:
     image: postgres

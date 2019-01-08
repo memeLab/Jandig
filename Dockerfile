@@ -1,12 +1,8 @@
-FROM python:3.6.5
+FROM pablodiegoss/requirements:latest
 
 WORKDIR /app
 
-COPY requirements.txt /
-
-RUN pip install -r /requirements.txt
-
 COPY /ARte /app/
+COPY ./tasks.py /tasks.py
 
-COPY runserver.sh /
-CMD ["/runserver.sh"]
+ENTRYPOINT ["inv"]
