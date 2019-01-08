@@ -14,33 +14,33 @@ def service_worker(request):
 
 def index(request):
     ctx = {
-        "artworks":[
-            Artwork(patt="hiro", gif="silly_walk"),
+        "artworks": [
+            Artwork(patt="hiro"),
             Artwork(patt="gueixa", gif="gueixa"),
             Artwork(patt="temaki", gif="temaki"),
             Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
             Artwork(patt="tokusatsu", gif="tokusatsu"),
             Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
-            Artwork(patt="antipodas", gif="antipodas"), # Blinking
-            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"), # Blinking
+            Artwork(patt="antipodas", gif="antipodas"),
+            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
             Artwork(patt="manekineko", gif="manekineko"),
 
-                # {"patt":"peixe", "image":"peixe"},
-                # {"patt":"andando", "image":"andando"},
-                # {"patt":"robo-pula", "image":"robo-pula"},
-                # {"patt":"robo3dandando", "image":"robo3dandando"},
-                # {"patt":"robo3dvoando", "image":"robo3dvoando"},
-                # {"patt":"saucer", "image":"saucer"},
-                # {"patt":"flyingsaucer", "image":"andando"},
-                # {"patt":"manekineko", "image":"robo-rodas"},
+            # Artwork(patt="peixe", gif="peixe"),
+            # Artwork(patt="andando", gif="andando"),
+            # Artwork(patt="robo-pula", gif="robo-pula"),
+            # Artwork(patt="robo3dandando", gif="robo3dandando"),
+            # Artwork(patt="robo3dvoando", gif="robo3dvoando"),
+            # Artwork(patt="saucer", gif="saucer"),
+            # Artwork(patt="flyingsaucer", gif="flyingsaucer"),
+            # Artwork(patt="robo-rodas", gif="robo-rodas"),
+            # Artwork(patt="janela", gif="janela"),
+            # Artwork(patt="binoculos", gif="janela"),
+            # Artwork(patt="gueixa2", gif="gueixa2"),
+            # Artwork(patt="iemanja", gif="iemanja"),
+            # Artwork(patt="pedrinhazinha", gif="pedinhazinha"),
+        ]
+    }
 
-                # {"patt":"janela", "image":"janela"}, # Gif bugging
-                    # {"patt":"binoculos", "image":"janela"}, Not Working
-                    # {"patt":"gueixa2", "image":"gueixa2"}, Not Working
-                    # {"patt":"iemanja", "image":"iemanja"}, Not Working
-                    # {"patt":"pedrinhazinha", "image":"pedrinhazinha"}, Not Working
-                ]
-            }
     return render(request, 'pwa/exhibit.jinja2', ctx)
 
 
