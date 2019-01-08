@@ -12,7 +12,7 @@ services:
       - ./.envs/.postgres
     depends_on:
       - postgres
-    command: db collect run
+    command: db -p collect run -p
 
   postgres:
     image: postgres
