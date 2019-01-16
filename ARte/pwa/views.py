@@ -15,15 +15,15 @@ def service_worker(request):
 def index(request):
     ctx = {
         "artworks": [
-            Artwork(patt="hiro"),
-            Artwork(patt="gueixa", gif="gueixa"),
+            # Artwork(patt="hiro"),
+            # Artwork(patt="gueixa", gif="gueixa"),
             Artwork(patt="temaki", gif="temaki"),
-            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
-            Artwork(patt="tokusatsu", gif="tokusatsu"),
-            Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
-            Artwork(patt="antipodas", gif="antipodas"),
-            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
-            Artwork(patt="manekineko", gif="manekineko"),
+            # Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
+            # Artwork(patt="tokusatsu", gif="tokusatsu"),
+            # Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
+            # Artwork(patt="antipodas", gif="antipodas"),
+            # Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
+            # Artwork(patt="manekineko", gif="manekineko"),
 
             # Artwork(patt="peixe", gif="peixe"),
             # Artwork(patt="andando", gif="andando"),
