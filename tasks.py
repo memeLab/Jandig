@@ -22,7 +22,7 @@ def run(ctx, ssl=False, postgres=False):
     if ssl:
         manage(ctx, "runsslserver 0.0.0.0:443", postgres)
     else:
-        manage(ctx, "runserver 0.0.0.0:80", postgres)
+        manage(ctx, "runserver 0.0.0.0:8000", postgres)
 
 
 @task
