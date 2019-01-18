@@ -1,6 +1,6 @@
 #!/bin/bash
 
-domains=(arte.memelab.com.br www.arte.memelab.com.br)
+domains=(jandig2.memelab.com.br www.jandig2.memelab.com.br)
 rsa_key_size=4096
 data_path="./data/certbot"
 email="" # Adding a valid address is strongly recommended
