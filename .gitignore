@@ -7,3 +7,5 @@ ARte/collect/
 \.vscode/
 
 ARte/db\.sqlite3
+
+data/certbot/
