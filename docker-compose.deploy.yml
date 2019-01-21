@@ -6,18 +6,42 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    network_mode: "host"
     volumes:
       - ./data/nginx:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - django
 
   certbot:
     image: certbot/certbot
-    network_mode: "host"
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  django:
+    image: pablodiegoss/jandig:django
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.envs/.deploy
+    depends_on:
+      - postgres
+    command: db -p collect run -g -p
+
+  postgres:
+    image: postgres
+    env_file:
+      - ./.envs/.deploy
+    ports:
+      - "5432:5432"
+
+  watchtower:
+    image: v2tec/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/config.json
+    command: --interval 120
   

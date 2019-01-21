@@ -12,15 +12,16 @@ def manage(ctx, cmd, postgres=False):
     cmd = f'python manage.py {cmd}'
     ctx.run(cmd, pty=True, env=default_env(postgres))
 
-
 @task
-def run(ctx, ssl=False, postgres=False):
+def run(ctx, ssl=False, gunicorn=False,postgres=False):
     """
     Run development server
     """
     show_dev_messages()
     if ssl:
         manage(ctx, "runsslserver 0.0.0.0:443", postgres)
+    elif gunicorn:
+        ctx.run('gunicorn --bind 0.0.0.0:8000 config.wsgi')
     else:
         manage(ctx, "runserver 0.0.0.0:8000", postgres)
 

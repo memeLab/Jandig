@@ -5,7 +5,7 @@ rsa_key_size=4096
 data_path="./data/certbot"
 email="" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
-composefile=docker-compose.nginx.yml
+composefile=docker-compose.deploy.yml
 
 
 if [ -d "$data_path" ]; then
@@ -24,6 +24,15 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
+echo "### Starting postgres ..."
+docker-compose -f $composefile up -d postgres
+
+echo "### Starting Watchtower ..."
+docker-compose -f $composefile up -d watchtower
+
+echo "### Starting Django ..."
+docker-compose -f $composefile up -d django
+
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
 mkdir -p "$data_path/conf/live/$domains"
@@ -33,7 +42,6 @@ docker-compose -f $composefile run --rm --entrypoint "\
     -out '$path/fullchain.pem' \
     -subj '/CN=localhost'" certbot
 echo
-
 
 echo "### Starting nginx ..."
 docker-compose -f $composefile up --force-recreate -d nginx

@@ -1,7 +1,8 @@
 version: '3.5'
 
 services:
-  web:
+  django:
+    image: pablodiegoss/jandig:django
     build: .
     ports:
       - 8000:8000
