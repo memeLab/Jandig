@@ -24,7 +24,6 @@ def run(ctx, ssl=False, postgres=False):
     else:
         manage(ctx, "runserver 0.0.0.0:8000", postgres)
 
-
 @task
 def db(ctx, make=False, postgres=False):
     """

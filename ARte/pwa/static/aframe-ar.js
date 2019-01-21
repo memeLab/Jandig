@@ -4762,7 +4762,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
 		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
-		minConfidence: 0.6,
+		minConfidence: 0.45,
 	}
 
 	// sanity check
@@ -8046,7 +8046,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		},
 		minConfidence: {
 			type: 'number',
-			default: 0.6,
+			default: 0.45,
 		},
 	},
 	init: function () {
