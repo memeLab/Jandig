@@ -1,4 +1,4 @@
-FROM pablodiegoss/requirements:latest
+FROM pablodiegoss/jandig:requirements
 
 WORKDIR /app
 
