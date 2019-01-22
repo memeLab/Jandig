@@ -82,4 +82,4 @@ docker-compose -f $composefile run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+docker-compose -f $composefile exec nginx nginx -s reload
