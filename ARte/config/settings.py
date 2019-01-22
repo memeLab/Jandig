@@ -1,5 +1,6 @@
 import os
 import environ
+from .wait_db import start_services
 
 
 ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
@@ -92,6 +93,7 @@ else:
             'PASSWORD': env('POSTGRES_PASSWORD'),
         },
     }
+    start_services()
 
 
 AUTH_PASSWORD_VALIDATORS = [
