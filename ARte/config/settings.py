@@ -47,6 +47,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
+if env.bool('DEV_STATIC'):
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    print('\n ------- SERVING STATIC FILES USING WHITENOISE! -------\n')
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [

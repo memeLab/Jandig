@@ -3,19 +3,20 @@ import os
 import subprocess
 
 
-def default_env(postgres):
+def default_env(postgres, whitenoise):
     os.environ['DEV_DB'] = 'True' if not postgres else 'False'
+    os.environ['DEV_STATIC'] = 'True' if whitenoise else 'Falsse'
     e = os.environ
     return e
 
 
-def manage(ctx, cmd, postgres=False):
+def manage(ctx, cmd, postgres=False, whitenoise=False):
     cmd = f'python manage.py {cmd}'
-    ctx.run(cmd, pty=True, env=default_env(postgres))
+    ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
 
 
 @task
-def run(ctx, ssl=False, gunicorn=False, postgres=False):
+def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
     """
     Run development server
     """
@@ -23,7 +24,7 @@ def run(ctx, ssl=False, gunicorn=False, postgres=False):
     if gunicorn:
         ctx.run('gunicorn --bind 0.0.0.0:8000 config.wsgi')
     else:
-        manage(ctx, "runserver 0.0.0.0:8000", postgres)
+        manage(ctx, "runserver 0.0.0.0:8000", postgres, whitenoise)
     
 
 
