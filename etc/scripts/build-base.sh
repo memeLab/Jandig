@@ -5,7 +5,7 @@ set -o pipefail
 set -o nounset
 
 # Build base image
-sudo docker build . -f Dockerfile.base -t pablodiegoss/jandig:requirements
+sudo docker build . -f docker/Dockerfile.base -t pablodiegoss/jandig:requirements
 
 # Check if user wants to publish
 if [ $# -eq 1 ]; then

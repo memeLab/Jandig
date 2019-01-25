@@ -1,5 +1,6 @@
 from invoke import task
 import os
+import subprocess
 
 
 def default_env(postgres):
@@ -12,18 +13,19 @@ def manage(ctx, cmd, postgres=False):
     cmd = f'python manage.py {cmd}'
     ctx.run(cmd, pty=True, env=default_env(postgres))
 
+
 @task
-def run(ctx, ssl=False, gunicorn=False,postgres=False):
+def run(ctx, ssl=False, gunicorn=False, postgres=False):
     """
     Run development server
     """
     show_dev_messages()
-    if ssl:
-        manage(ctx, "runsslserver 0.0.0.0:443", postgres)
-    elif gunicorn:
+    if gunicorn:
         ctx.run('gunicorn --bind 0.0.0.0:8000 config.wsgi')
     else:
         manage(ctx, "runserver 0.0.0.0:8000", postgres)
+    
+
 
 @task
 def db(ctx, make=False, postgres=False):
@@ -42,7 +44,7 @@ def collect(ctx):
     """
     Collect static files
     """
-    manage(ctx, "collectstatic --no-input")
+    manage(ctx, "collectstatic --no-input ")
 
 
 @task
@@ -51,6 +53,38 @@ def install_deps(ctx):
     Install all dependencies
     """
     ctx.run('pip install -r etc/requirements.txt')
+
+
+@task
+def docker(ctx, build=False):
+    command = 'sudo docker-compose -f docker/docker-compose.yml up'
+
+    if build:
+        command += ' --build'
+
+    ctx.run(command)
+
+
+@task
+def build_base(ctx, publish=False):
+    """
+    Build base docker images
+    """
+    command = './etc/scripts/build-base.sh'
+    
+    if publish:
+        command += ' publish'   
+    
+    ctx.run(command)
+
+
+@task
+def init_production(ctx):
+    """
+    Init production environment
+    """
+    command = './etc/scripts/init-production.sh'
+    ctx.run(command)
 
 
 def show_dev_messages():

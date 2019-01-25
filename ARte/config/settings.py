@@ -93,6 +93,8 @@ else:
             'PASSWORD': env('POSTGRES_PASSWORD'),
         },
     }
+
+    # STARTS SERVICES THAT DJANGO DEPENDS E.G. postgres
     start_services()
 
 
