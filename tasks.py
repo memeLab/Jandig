@@ -44,7 +44,7 @@ def collect(ctx):
     """
     Collect static files
     """
-    manage(ctx, "collectstatic --no-input ")
+    manage(ctx, "collectstatic --no-input --clear")
 
 
 @task
