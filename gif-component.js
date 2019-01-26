@@ -12,7 +12,11 @@ AFRAME.registerComponent('gif', {
     init: function() {
         this.gifLoaded = false;
         this.gifPlaying = false;
-
+        // this.gif = fetch(this.data.src)
+        // .then(resp => resp.arrayBuffer())
+        // .then(buff => new GIF(buff));
+         
+        // this.frames = this.gif.then(gif => gif.decompressFrames(true))
         this.canvas = document.createElement('canvas');
         this.canvas.setAttribute('id', this.data.src)
 
@@ -28,6 +32,13 @@ AFRAME.registerComponent('gif', {
         var self = this
         
         this.marker.addEventListener('markerFound', function(e) {
+            if(!self.gifLoaded) {
+                self.gif = fetch(self.data.src)
+                .then(resp => resp.arrayBuffer())
+                .then(buff => new GIF(buff));
+
+                self.frames = self.gif.then(gif => gif.decompressFrames(true))
+            }
             self.playGIF()
         })
 
@@ -37,14 +48,6 @@ AFRAME.registerComponent('gif', {
     },
 
     playGIF : function() {
-        if(!this.gifLoaded) {
-            this.gif = fetch(this.data.src)
-            .then(resp => resp.arrayBuffer())
-            .then(buff => new GIF(buff))
-            .then(this.gifLoaded = true);
-
-            this.frames = this.gif.then(gif => gif.decompressFrames(true))
-        }
         this.gifPlaying = true;
         this.frames.then(frames => this.renderGIF(frames, 0));
     },

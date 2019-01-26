@@ -11,7 +11,7 @@ def default_env(postgres, whitenoise):
 
 
 def manage(ctx, cmd, postgres=False, whitenoise=False):
-    cmd = f'python manage.py {cmd}'
+    cmd = f'python ARte/manage.py {cmd}'
     ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
 
 
@@ -20,7 +20,6 @@ def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
     """
     Run development server
     """
-    show_dev_messages()
     if gunicorn:
         ctx.run('gunicorn --bind 0.0.0.0:8000 config.wsgi')
     else:
@@ -86,11 +85,3 @@ def init_production(ctx):
     """
     command = './etc/scripts/init-production.sh'
     ctx.run(command)
-
-
-def show_dev_messages():
-    print("--------------------------------------------------------")
-    print("Access ARte from external devices on the same network by accessing:")
-    print("  - https://<server-device-name>")
-    print("  - https://<server-device-ip>")
-    print("--------------------------------------------------------")
