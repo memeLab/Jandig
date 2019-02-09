@@ -1,8 +1,8 @@
 FROM pablodiegoss/jandig:requirements
 
-WORKDIR /app
+RUN mkdir /ARte
 
-COPY ./ARte /app/
+COPY ./ARte /ARte/
 COPY ./tasks.py /tasks.py
-
+RUN ls
 ENTRYPOINT ["inv"]
