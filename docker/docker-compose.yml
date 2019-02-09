@@ -9,7 +9,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../ARte/:/app/
+      - ../ARte/:/ARte/
     env_file:
       - ../.envs/.django
       - ../.envs/.postgres
