@@ -5354,7 +5354,6 @@ ARjs.Context.prototype.addMarker = function(arMarkerControls){
 
 ARjs.Context.prototype.removeMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
-	// console.log('remove marker for', arMarkerControls)
 	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
 	console.assert(index !== index )
 	this._arMarkersControls.splice(index, 1)
@@ -5484,7 +5483,6 @@ ARjs.Context.prototype._initAruco = function(onCompleted){
 
 
 ARjs.Context.prototype._updateAruco = function(srcElement){
-	// console.log('update aruco here')
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
         var detectedMarkers = this.arucoContext.detect(srcElement)
@@ -5967,7 +5965,7 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 
 	// get available devices
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
-                var userMediaConstraints = {
+		var userMediaConstraints = {
 			audio: false,
 			video: {
 				facingMode: 'environment',
@@ -5989,9 +5987,12 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 				exact: _this.parameters.deviceId
 			};
 		}
-
+		
 		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+			setTimeout(function(){
+				window.dispatchEvent(new Event('resize'));
+			}, 500);
 			// set the .src of the domElement
 			domElement.srcObject = stream;
 			// to start the video, when it is possible to start it only on userevent. like in android
@@ -6542,7 +6543,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	this.parameters = markerParameters
 	
 	// log to debug
-	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
+	//console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
@@ -8060,6 +8061,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		//////////////////////////////////////////////////////////////////////////////
 
 		_this.isReady = false
+		_this.isResized = false
 		_this._arAnchor = null
 
 		// honor object visibility
@@ -8124,23 +8126,6 @@ AFRAME.registerComponent('arjs-anchor', {
 
 			// it is now considered isReady
 			_this.isReady = true
-
-			//////////////////////////////////////////////////////////////////////////////
-			//		honor .debugUIEnabled
-			//////////////////////////////////////////////////////////////////////////////
-			if( arjsSystem.data.debugUIEnabled ){
-				// get or create containerElement
-				var containerElement = document.querySelector('#arjsDebugUIContainer')
-				if( containerElement === null ){
-					containerElement = document.createElement('div')
-					containerElement.id = 'arjsDebugUIContainer'
-					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
-					document.body.appendChild(containerElement)
-				}
-				// create anchorDebugUI
-				var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-				containerElement.appendChild(anchorDebugUI.domElement)
-			}
 		}, 1000/60)
 	},
 	remove : function(){
@@ -8552,45 +8537,13 @@ AFRAME.registerSystem('arjs', {
 
 				// ugly kludge to get resize on aframe... not even sure it works
 				if( arProfile.contextParameters.trackingBackend !== 'tango' ){
-					arSource.copyElementSizeTo(document.body)
+					const scene = document.getElementsByTagName("a-scene");
+					arSource.copyElementSizeTo(scene[0])
+					_this.isResized = true
+
 				}
-			}
-
-
-			//////////////////////////////////////////////////////////////////////////////
-			//		honor .debugUIEnabled
-			//////////////////////////////////////////////////////////////////////////////
-			if( _this.data.debugUIEnabled )	initDebugUI()
-			function initDebugUI(){
-				// get or create containerElement
-				var containerElement = document.querySelector('#arjsDebugUIContainer')
-				if( containerElement === null ){
-					containerElement = document.createElement('div')
-					containerElement.id = 'arjsDebugUIContainer'
-					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
-					document.body.appendChild(containerElement)
-				}
-
-				// create sessionDebugUI
-				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
-				containerElement.appendChild(sessionDebugUI.domElement)
 			}
 		})
-
-		//////////////////////////////////////////////////////////////////////////////
-		//		Code Separator
-		//////////////////////////////////////////////////////////////////////////////
-// TODO this is crappy - code an exponential backoff - max 1 seconds
-		// KLUDGE: kludge to write a 'resize' event
-		var startedAt = Date.now()
-		var timerId = setInterval(function(){
-			if( Date.now() - startedAt > 10000*1000 ){
-				clearInterval(timerId)
-				return
-			}
-			// onResize()
-			window.dispatchEvent(new Event('resize'));
-		}, 1000/30)
 	},
 
 	tick : function(now, delta){
@@ -8598,15 +8551,21 @@ AFRAME.registerSystem('arjs', {
 
 		// skip it if not yet isInitialised
 		if( this.isReady === false )	return
-
 		var arSession = this._arSession
-
+		
 		// update arSession
 		this._arSession.update()
-
+		
 		if( _this._tangoVideoMesh !== null )	_this._tangoVideoMesh.update()
-
+		
 		// copy projection matrix to camera
 		this._arSession.onResize()
+		
+		if(!_this.isResized){
+			setTimeout(function(){
+				window.dispatchEvent(new Event('resize'));
+			}, 1500);
+		}
+
 	},
 })
