@@ -11,7 +11,7 @@ def default_env(postgres, whitenoise):
 
 
 def manage(ctx, cmd, postgres=False, whitenoise=False):
-    cmd = f'python ARte/manage.py {cmd}'
+    cmd = f'python src/ARte/manage.py {cmd}'
     ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
 
 
@@ -52,7 +52,7 @@ def install_deps(ctx):
     """
     Install all dependencies
     """
-    ctx.run('pip install -r etc/requirements.txt')
+    ctx.run('pip install -r src/requirements.txt')
 
 
 @task
@@ -70,10 +70,10 @@ def build_base(ctx, publish=False):
     """
     Build base docker images
     """
-    command = './etc/scripts/build-base.sh'
+    command = './src/etc/scripts/build-base.sh'
     
     if publish:
-        command += ' publish'   
+        command += ' publish'
     
     ctx.run(command)
 
@@ -83,5 +83,5 @@ def init_production(ctx):
     """
     Init production environment
     """
-    command = './etc/scripts/init-production.sh'
+    command = './src/etc/scripts/init-production.sh'
     ctx.run(command)

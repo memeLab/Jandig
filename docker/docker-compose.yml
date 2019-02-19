@@ -9,10 +9,10 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../ARte/:/app/
+      - ../src/ARte/:/app/
     env_file:
-      - ../.envs/.django
-      - ../.envs/.postgres
+      - ../src/.envs/.django
+      - ../src/.envs/.postgres
     depends_on:
       - postgres
     command: db -p collect run -p
@@ -20,6 +20,6 @@ services:
   postgres:
     image: postgres
     env_file:
-      - ../.envs/.postgres
+      - ../src/.envs/.postgres
     ports:
       - "5432:5432"
