@@ -4,15 +4,15 @@ services:
   django:
     image: pablodiegoss/jandig:django
     build:
-      context: ../
+      context: .
       dockerfile: ./docker/Dockerfile
     ports:
       - 8000:8000
     volumes:
-      - ../src/ARte/:/app/
+      - ./src/ARte/:/app/
     env_file:
-      - ../src/.envs/.django
-      - ../src/.envs/.postgres
+      - ./src/.envs/.django
+      - ./src/.envs/.postgres
     depends_on:
       - postgres
     command: db -p collect run -p
@@ -20,6 +20,6 @@ services:
   postgres:
     image: postgres
     env_file:
-      - ../src/.envs/.postgres
+      - ./src/.envs/.postgres
     ports:
       - "5432:5432"
