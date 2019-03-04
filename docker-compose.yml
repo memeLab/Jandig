@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  django:
+    image: pablodiegoss/jandig:django
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src/ARte/:/app/
+    env_file:
+      - ./src/.envs/.django
+      - ./src/.envs/.postgres
+    depends_on:
+      - postgres
+    command: db -p collect run -p
+
+  postgres:
+    image: postgres
+    env_file:
+      - ./src/.envs/.postgres
+    ports:
+      - "5432:5432"

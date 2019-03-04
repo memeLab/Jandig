@@ -8,9 +8,9 @@ services:
       - "443:443"
     network_mode: "host"
     volumes:
-      - ../data/nginx:/etc/nginx/conf.d
-      - ../data/certbot/conf:/etc/letsencrypt
-      - ../data/certbot/www:/var/www/certbot
+      - ../src/data/nginx:/etc/nginx/conf.d
+      - ../src/data/certbot/conf:/etc/letsencrypt
+      - ../src/data/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - django
@@ -19,8 +19,8 @@ services:
     image: certbot/certbot
     network_mode: "host"
     volumes:
-      - ../data/certbot/conf:/etc/letsencrypt
-      - ../data/certbot/www:/var/www/certbot
+      - ../src/data/certbot/conf:/etc/letsencrypt
+      - ../src/data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   django:
@@ -28,7 +28,7 @@ services:
     ports:
       - 8000:8000
     env_file:
-      - ../.envs/.deploy
+      - ../src/.envs/.deploy
     depends_on:
       - postgres
     command: db -p collect run -g -p
@@ -36,7 +36,7 @@ services:
   postgres:
     image: postgres
     env_file:
-      - ../.envs/.deploy
+      - ../src/.envs/.deploy
     ports:
       - "5432:5432"
 
