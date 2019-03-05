@@ -2,6 +2,7 @@
 <html>
     <head>
         <link id="manifest" rel="manifest" href="static/manifest.json">
+        <link rel="stylesheet" href="static/css/main.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.7.1/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.7/pwacompat.min.js"></script>
         <script src="static/js/detect.js"></script>
@@ -25,6 +26,8 @@
                 {% endif %}
             {% endblock %}
         {% endif %}
-        <script src="static/js/multi-marker.js">
+        {% include "pwa/ui.jinja2"%}
+        <script src="static/js/multi-marker.js"></script>
+        <script src="static/js/takePhoto.js"></script>
     </body>
 </html>
