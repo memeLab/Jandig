@@ -1,84 +1,10 @@
 {% extends '/pwa/base.jinja2' %}
 
 {% block content %}
-
-    <script>
-        const file = createMarkerFile(urlOptions.trackingBackend);
-				console.table(file.subMarkersControls)
-				localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
-
-        function createMarkerFile(trackingBackend) {
-            console.assert(trackingBackend)
-
-            // create absoluteBaseURL
-            var link = document.createElement('a')
-            link.href = ARjs.Context.baseURL
-            var absoluteBaseURL = link.href
-
-            // create the base file
-            var file = {
-                meta: {
-                    createdBy: 'ARte ' + ARjs.Context.REVISION + ' - Teste Markers',
-                    createdAt: new Date().toJSON(),
-                },
-                trackingBackend: trackingBackend,
-                subMarkersControls: [
-                    // empty for now... being filled 
-                ]
-            }
-            // add a subMarkersControls
-            for (let i = 0; i < 4; i++) {
-                file.subMarkersControls[i] = {
-                    parameters: {},
-                    poseMatrix: new THREE.Matrix4().makeTranslation(0, 0, 0).toArray(),
-                }
-            }
-            if (trackingBackend === 'artoolkit') {
-                file.subMarkersControls[0].parameters.type = 'pattern'
-                file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'patts/pattern-letterC.patt'
-                file.subMarkersControls[1].parameters.type = 'pattern'
-                file.subMarkersControls[1].parameters.patternUrl = absoluteBaseURL + 'patts/pattern-kanji.patt'
-                file.subMarkersControls[2].parameters.type = 'pattern'
-                file.subMarkersControls[2].parameters.patternUrl = absoluteBaseURL + 'patts/pattern-letterF.patt'
-                file.subMarkersControls[3].parameters.type = 'pattern'
-                file.subMarkersControls[3].parameters.patternUrl = absoluteBaseURL + 'patts/pattern-hiro.patt'
-            } else console.assert(false)
-
-            // json.strinfy the value and store it in localStorage
-            return file
-        }
-    </script>
-    <a-scene embedded arjs>
-        
+    <ar-scene>
         {% for artwork in artworks %}
-            {% if artwork.patt == "hiro" %}
-                <a-marker id="{{artwork.patt}}" type="pattern" preset="{{artwork.patt}}">
-                    <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
-                        <a-torus-knot radius='0.26' radius-tubular='0.05'>
-                            <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-                        </a-torus-knot>
-                    </a-box>
-                </a-marker>
-            {% else %}
-                <a-marker id="{{artwork.patt}}" type="pattern" url="static/patts/{{artwork.patt}}.patt">
-                    <a-entity id="{{artwork.patt}}-gif" gif="src: static/images/{{artwork.gif}}.gif;
-                                                            marker: #{{artwork.patt}};
-                                                            scale: {{artwork.scale}};
-                                                            rotation: {{artwork.rotation}};
-                                                            position: {{artwork.position}};">
-                    </a-entity>
-                </a-marker>
-            {% endif %}
-        {% endfor %}
-        <a-marker id="multi" type="area">
-                <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
-                        <a-torus-knot radius='0.26' radius-tubular='0.05'>
-                            <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-                        </a-torus-knot>
-                </a-box>
-        </a-marker>
-
-        <a-entity camera></a-entity>         
-    </a-scene>
-
+            <ar-marker patt="static/patts/{{artwork.patt}}.patt" content="static/images/{{artwork.gif}}.gif">
+            </ar-marker>
+        {% endfor %}     
+    </ar-scene>
 {% endblock %}

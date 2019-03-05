@@ -1,17 +1,15 @@
-<!DOCTYPE HTML>
 <html>
     <head>
         <link id="manifest" rel="manifest" href="static/manifest.json">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/0.7.1/aframe.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.7/pwacompat.min.js"></script>
         <script src="static/js/detect.js"></script>
         <script src="static/js/main.js"></script>
-        <script src="static/aframe-ar.js"> </script>
-        <script src="static/gifuct-js.js"></script>
-        <script src="static/gif-component.js"></script>
+        <script src="static/artoolkit.min.js"></script>
+        <script src="static/three.min.js"></script>
+        <script src="static/artoolkit.three.js"></script>
+        <script src="static/ar-gif.min.js" defer></script>
     </head>
 
-    <body style='margin : 0px; overflow: hidden;'>
+    <body style="margin: 0px; overflow: hidden; position: fixed">
         {% if content is defined %}
             {{ content }}
         {% else %}

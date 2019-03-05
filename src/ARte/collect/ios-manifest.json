@@ -3,11 +3,12 @@
   "short_name": "ARte",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
+  "display": "browser",
   "Scope": "/",
   "start_url": "/",
   "icons": [
     {
-      "src": "images/icons/iTunesArtwork@2x.png",
+      "src": "images/icons/ITunesArtwork@2x.png",
       "sizes": "1024x1024",
       "type": "image/png"
     },
