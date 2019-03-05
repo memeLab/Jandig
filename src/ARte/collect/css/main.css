@@ -1,0 +1,30 @@
+.ui-container{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+    height: 100%;
+}
+.bottom-nav{
+    position: relative;
+    height: 100%;
+}
+.screenshot-container{
+    bottom: 22px;
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid white;
+    border-radius: 50%;
+    position: absolute;  
+    width: 61px;
+    height: 61px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.screenshot-button{
+    background: #00b8f3;
+    border-radius: 50%;
+    height: 51px; 
+    width: 51px;
+    margin: auto;
+}

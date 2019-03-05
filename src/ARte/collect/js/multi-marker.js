@@ -16,12 +16,12 @@ function createMarkerFile() {
             poseMatrix: new THREE.Matrix4().makeTranslation(0, 0, 0).toArray(),
         }
     }
-    file.subMarkersControls[0].parameters.type = 'pattern'
-    file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-letterC.patt'
-    file.subMarkersControls[1].parameters.type = 'pattern'
-    file.subMarkersControls[1].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-kanji.patt'
-    file.subMarkersControls[2].parameters.type = 'pattern'
-    file.subMarkersControls[2].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-letterF.patt'
+    // file.subMarkersControls[0].parameters.type = 'pattern'
+    // file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-letterC.patt'
+    // file.subMarkersControls[1].parameters.type = 'pattern'
+    // file.subMarkersControls[1].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-kanji.patt'
+    // file.subMarkersControls[2].parameters.type = 'pattern'
+    // file.subMarkersControls[2].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-letterF.patt'
     //file.subMarkersControls[3].parameters.type = 'pattern'
     //file.subMarkersControls[3].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-hiro.patt'
     
