@@ -5,7 +5,7 @@ import subprocess
 
 def default_env(postgres, whitenoise):
     os.environ['DEV_DB'] = 'True' if not postgres else 'False'
-    os.environ['DEV_STATIC'] = 'True' if whitenoise else 'Falsse'
+    os.environ['DEV_STATIC'] = 'True' if whitenoise else 'False'
     e = os.environ
     return e
 
@@ -21,7 +21,7 @@ def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
     Run development server
     """
     if gunicorn:
-        ctx.run('gunicorn --bind 0.0.0.0:8000 config.wsgi')
+        ctx.run('cd src/ARte && gunicorn --bind 0.0.0.0:8000 config.wsgi')
     else:
         manage(ctx, "runserver 0.0.0.0:8000", postgres, whitenoise)
     

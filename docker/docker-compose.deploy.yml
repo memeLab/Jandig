@@ -10,6 +10,7 @@ services:
       - ../src/data/nginx:/etc/nginx/conf.d
       - ../src/data/certbot/conf:/etc/letsencrypt
       - ../src/data/certbot/www:/var/www/certbot
+      - static_files:/usr/share/nginx/html/static
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - django
@@ -29,7 +30,9 @@ services:
       - ../src/.envs/.deploy
     depends_on:
       - postgres
-    command: db -p collect run -p
+    volumes:
+      - static_files:/src/ARte/pwa/static/
+    command: db -p collect run -g -p
 
   postgres:
     image: postgres
@@ -45,3 +48,6 @@ services:
       - /root/.docker/config.json:/config.json
     command: --interval 120
   
+
+volumes:
+  static_files:
