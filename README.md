@@ -17,7 +17,7 @@ Jandig ARte uses [AR.js](https://github.com/jeromeetienne/AR.js) to detect [augm
 We decided to go for a PWA because it really seems the future for mobile development and AR.js give us good ways to do augmented reality on web browsers.
 
 ## Get Started
-To contribute to Jandig ARte it would be awesome if you read [Developers.md](https://github.com/memeLab/ARte/blob/master/Developers.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
+To contribute to Jandig ARte it would be awesome if you read [Contributing.md](https://github.com/memeLab/ARte/blob/new-structure/.github/Contributing.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/new-structure/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
 We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/).
@@ -29,7 +29,7 @@ Docker has good documentation on their website for installing docker and docker-
 To run Jandig ARte all you need to do is:
 - Clone this repo
 - Navigate to the repository folder
-- Run docker
+- Run docker-compose
 - Voila!
 
 ```

@@ -1,0 +1,10 @@
+{% extends '/pwa/base.jinja2' %}
+
+{% block content %}
+    <ar-scene>
+        {% for artwork in artworks %}
+            <ar-marker patt="static/patts/{{artwork.patt}}.patt" content="static/images/{{artwork.gif}}.gif">
+            </ar-marker>
+        {% endfor %}     
+    </ar-scene>
+{% endblock %}
