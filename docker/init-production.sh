@@ -1,8 +1,8 @@
 #!/bin/bash
 
-domains=(jandig2.memelab.com.br)
+domains=(jandig2.memelab.com.br jandig.app)
 rsa_key_size=4096
-data_path="../../data/certbot"
+data_path="../src/data/certbot"
 email="" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 composefile=docker/docker-compose.deploy.yml
@@ -33,34 +33,34 @@ docker-compose -f $composefile up -d watchtower
 echo "### Starting Django ..."
 docker-compose -f $composefile up -d django
 
-echo "### Creating dummy certificate for $domains ..."
-path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
-docker-compose -f $composefile run --rm --entrypoint "\
-  openssl req -x509 -nodes -newkey rsa:1024 -days 1\
-    -keyout '$path/privkey.pem' \
-    -out '$path/fullchain.pem' \
-    -subj '/CN=localhost'" certbot
-echo
+for domain in ${domains[@]}
+do
+  echo "### Creating dummy certificate for $domain ..."
+  path="/etc/letsencrypt/live/$domain"
+  mkdir -p "$data_path/conf/live/$domain"
+  docker-compose -f $composefile run --rm --entrypoint "\
+    openssl req -x509 -nodes -newkey rsa:1024 -days 1\
+      -keyout '$path/privkey.pem' \
+      -out '$path/fullchain.pem' \
+      -subj '/CN=localhost'" certbot
+  echo
+done
 
 echo "### Starting nginx ..."
 docker-compose -f $composefile up --force-recreate -d nginx
 echo
 
-echo "### Deleting dummy certificate for $domains ..."
-docker-compose -f $composefile run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domains && \
-  rm -Rf /etc/letsencrypt/archive/$domains && \
-  rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
-echo
-
-
-echo "### Requesting Let's Encrypt certificate for $domains ..."
-#Join $domains to -d args
-domain_args=""
-for domain in "${domains[@]}"; do
-  domain_args="$domain_args -d $domain"
+for domain in ${domains[@]}
+do
+  echo "### Deleting dummy certificate for $domain ..."
+  docker-compose -f $composefile run --rm --entrypoint "\
+    rm -Rf /etc/letsencrypt/live/$domain && \
+    rm -Rf /etc/letsencrypt/archive/$domain && \
+    rm -Rf /etc/letsencrypt/renewal/$domain.conf" certbot
+  echo
 done
+
+
 
 # Select appropriate email arg
 case "$email" in
@@ -71,15 +71,21 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose -f $composefile run --rm --entrypoint "\
-  certbot certonly --webroot -w /var/www/certbot \
-    $staging_arg \
-    $email_arg \
-    $domain_args \
-    --rsa-key-size $rsa_key_size \
-    --agree-tos \
-    --force-renewal" certbot
-echo
+#Join $domains to -d args
+for domain in "${domains[@]}"
+do
+  domain_arg="-d $domain"
+  echo "### Requesting Let's Encrypt certificate for $domain ..."
+  docker-compose -f $composefile run --rm --entrypoint "\
+    certbot certonly --webroot -w /var/www/certbot \
+      $staging_arg \
+      $email_arg \
+      $domain_arg \
+      --rsa-key-size $rsa_key_size \
+      --agree-tos \
+      --force-renewal" certbot
+  echo
+done
 
 echo "### Reloading nginx ..."
 docker-compose -f $composefile exec nginx nginx -s reload
