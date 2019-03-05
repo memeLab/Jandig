@@ -6,7 +6,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    network_mode: "host"
     volumes:
       - ../src/data/nginx:/etc/nginx/conf.d
       - ../src/data/certbot/conf:/etc/letsencrypt
@@ -17,7 +16,6 @@ services:
 
   certbot:
     image: certbot/certbot
-    network_mode: "host"
     volumes:
       - ../src/data/certbot/conf:/etc/letsencrypt
       - ../src/data/certbot/www:/var/www/certbot
@@ -31,7 +29,7 @@ services:
       - ../src/.envs/.deploy
     depends_on:
       - postgres
-    command: db -p collect run -g -p
+    command: db -p collect run -p
 
   postgres:
     image: postgres
