@@ -1,11 +1,10 @@
 
-ARte/vendor/
-ARte/config/__pycache__/
-ARte/collect/
+src/ARte/config/__pycache__/
+src/ARte/collect/
 *.pyc
 
 \.vscode/
 
-ARte/db\.sqlite3
+src/ARte/db\.sqlite3
 
-data/certbot/
+src/data/certbot/
