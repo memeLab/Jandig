@@ -11,6 +11,10 @@ composefile=docker/docker-compose.deploy.yml
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
+    docker-compose -f $composefile up -d postgres
+    docker-compose -f $composefile up -d watchtower
+    docker-compose -f $composefile up -d django
+    docker-compose -f $composefile up -d nginx
     exit
   fi
 fi

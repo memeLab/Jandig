@@ -8,3 +8,6 @@ src/ARte/collect/
 src/ARte/db\.sqlite3
 
 src/data/certbot/
+docker/node_modules/
+node_modules/
+package-lock.json
