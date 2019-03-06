@@ -1,4 +1,11 @@
-.ui-container{
+
+/* Test Button to check screenshot function on mobile devices, as the rest of the css wont work */
+.butone{
+    height:100px;
+    width:100px;
+}
+/* EXTRA KLUDGE: The ui container is overlapping the Butone, so you can't click on it with this uncommented */
+/* .ui-container{
     position: absolute;
     top: 0px;
     width: 100%;
@@ -27,4 +34,4 @@
     height: 51px; 
     width: 51px;
     margin: auto;
-}
+} */
