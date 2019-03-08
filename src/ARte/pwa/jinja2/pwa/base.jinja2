@@ -10,10 +10,7 @@
         <script src="static/ar-gif.min.js" defer></script>
     </head>
 
-    <body style="margin: 0px; overflow: hidden; position: fixed">
-        {# Kludge button to test on mobile devices the photo feature, as the button on
-        UI.jinja2 isn't appearing on mobile #}
-        <button class="butone"> teste </button>
+    <body style="margin: 0px; overflow: hidden;">
         {% if content is defined %}
             {{ content }}
         {% else %}
