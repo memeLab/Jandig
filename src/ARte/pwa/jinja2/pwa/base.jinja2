@@ -13,7 +13,7 @@
     <body style="margin: 0px; overflow: hidden; position: fixed">
         {# Kludge button to test on mobile devices the photo feature, as the button on
         UI.jinja2 isn't appearing on mobile #}
-        <button class="butone"> teste </button>
+        {# <button class="butone"> teste </button> #}
         {% if content is defined %}
             {{ content }}
         {% else %}
@@ -27,8 +27,8 @@
                 {% endif %}
             {% endblock %}
         {% endif %}
-        {% include "pwa/ui.jinja2" %}
+        {# {% include "pwa/ui.jinja2" %} #}
         <script src="static/js/multi-marker.js"></script>
-        <script src="static/js/takePhoto.js"></script>
+        {# <script src="static/js/takePhoto.js"></script> #}
     </body>
 </html>
