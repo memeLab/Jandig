@@ -1,6 +1,4 @@
-//Kludge Alert: Class should be screenshot-button, butone is just a test for this function.
-// Screenshot-button isn't appearing on mobile devices
-document.getElementsByClassName("butone")[0].addEventListener("click", function () {
+document.getElementsByClassName("screenshot-button")[0].addEventListener("click", function () {
     const scene = document.getElementsByTagName("canvas")[0]
     const photoDataURI = scene.toDataURL("image/png")
 
