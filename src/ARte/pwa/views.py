@@ -15,31 +15,37 @@ def service_worker(request):
 def index(request):
     ctx = {
         "artworks": [
-            # priority
+            # cubes old
             Artwork(patt="antipodas", gif="antipodas"),
-            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
+            Artwork(patt="flyingsaucer", gif="flyingsaucer"),
             Artwork(patt="gueixa", gif="gueixa"),
             Artwork(patt="manekineko", gif="manekineko"),
-            Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
-            Artwork(patt="temaki", gif="temaki"),
-            # backup
+            Artwork(patt="samurai", gif="samurai", scale="3 3"),
+	    Artwork(patt="temaki", gif="moonwalker"),
+
+	    # cubes new
+            Artwork(patt="catavento", gif="janela"),
+	    Artwork(patt="hamsa", gif="janela"), 
+
+	    # test
+            Artwork(patt="tokusatsu", gif="tokusatsu"),
             Artwork(patt="robo3dandando", gif="robo3dandando"),
             Artwork(patt="robo3dvoando", gif="robo3dvoando"),
+
             # alternatives
             Artwork(patt="janela", gif="janela"),
             Artwork(patt="peixe", gif="peixe"),
-            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
-            Artwork(patt="tokusatsu", gif="tokusatsu"),
-            # Artwork(patt="hiro"),
-            # Artwork(patt="andando", gif="andando"),
+            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1"),
+            Artwork(patt="andando", gif="andando"),
+
+	    # disabled
             # Artwork(patt="robo-pula", gif="robo-pula"),
             # Artwork(patt="saucer", gif="saucer"),
-            # Artwork(patt="flyingsaucer", gif="flyingsaucer"),
-            # Artwork(patt="robo-rodas", gif="robo-rodas"),
             # Artwork(patt="binoculos", gif="janela"),
             # Artwork(patt="gueixa2", gif="gueixa2"),
             # Artwork(patt="iemanja", gif="iemanja"),
             # Artwork(patt="pedrinhazinha", gif="pedinhazinha"),
+	    # Artwork(patt="jandig-marker", gif="moonwalker"),
         ]
     }
 
