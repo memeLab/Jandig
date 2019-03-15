@@ -23,7 +23,7 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   django:
-    image: pablodiegoss/jandig:django
+    image: jandigarte/django:latest
     ports:
       - 8000:8000
     env_file:

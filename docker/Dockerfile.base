@@ -1,8 +1,6 @@
 FROM python:3.6.5
 
-COPY ./src/requirements.txt /src
+COPY ./src/requirements.txt /src/requirements.txt
 
 RUN pip install --upgrade pip
 RUN pip install -r /src/requirements.txt
-
-# RUN INSTALL INVOKE

@@ -1,4 +1,4 @@
-FROM pablodiegoss/jandig:requirements
+FROM jandigarte/requirements:latest
 
 RUN mkdir -p /src/ARte
 
