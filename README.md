@@ -1,7 +1,14 @@
 # Jandig ARte
-ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple way.
+ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
 
 You can see galleries with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
+
+## How it works
+Jandig ARte uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through tge camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
+
+![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
+
+Jandig ARte is a Progressive Web App, which means you can open in every device with a browser and a camera. Also you can add Jandig ARte to your homescreen and it will run like a native app on your device.
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, Wordpress users willing to translate our website from Portuguese to English, someone to help improve the same [website](http://memelab.com.br/jandig/) and developers to help us with the platform, please contact us through People section below!
@@ -9,15 +16,8 @@ We are looking for artists (both illustrators and animators) to create great con
 ### People
 We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) or Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo Oliveira](https://twitter.com/ShamanRoh)
 
-## How it works
-Jandig ARte uses [AR.js](https://github.com/jeromeetienne/AR.js) to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render an image on the device screen, giving the impression that your device is like a virtual window that you looking at.
-
-![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
-
-We decided to go for a PWA because it really seems the future for mobile development and AR.js give us good ways to do augmented reality on web browsers.
-
 ## Get Started
-To contribute to Jandig ARte it would be awesome if you read [Contributing.md](https://github.com/memeLab/ARte/blob/new-structure/.github/Contributing.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/new-structure/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
+To contribute to Jandig ARte it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
 We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/).
@@ -29,13 +29,23 @@ Docker has good documentation on their website for installing docker and docker-
 To run Jandig ARte all you need to do is:
 - Clone this repo
 - Navigate to the repository folder
-- Run docker-compose
+- Run docker-compose passing the docker-compose.yml
 - Voila!
 
 ```
 git clone https://github.com/memeLab/ARte
 cd ARte
-docker-compose up
+docker-compose up -f docker/docker-compose.yml
 ```
-Jandig ARte server will use a self signed certificate to emulate a HTTPS connection to allow us use getUserMedia API on development server and you can access from the machine running the server through https://localhost and for other devices like cellphones you will need to discover the ip or the hostname of your server machine and access through the mobile browser https://{ip-of-server} or https://{hostname-of-server} e.g. https://shelby.local for a server with hostname 'shelby'.
+If you get any error saying ``permission denied`` try run the command with sudo.
+```
+sudo docker-compose up -f docker/docker-compose.yml
+```
 
+Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [localhost:8000](localhost:8000). If you want to test on a mobile device, you will need a https connection, we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate a https link for you.
+
+ - `sudo npm install -g ngrok`
+ - `ngrok http 8000`
+ 
+ ngrok will prompt 3 links, select the one with `https` at beginning
+![usage](https://user-images.githubusercontent.com/12930004/54871980-ab41da00-4d9b-11e9-8b80-bb1d4bec420d.png)
