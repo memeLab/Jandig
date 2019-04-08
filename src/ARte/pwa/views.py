@@ -32,7 +32,7 @@ def index(request):
             Artwork(patt="temaki", gif="temaki"),
             Artwork(patt="tokusatsu", gif="tokusatsu"),
             # new
-            Artwork(patt="catavento", gif="moonwalker"),
+            Artwork(patt="catavento", gif="catavento", scale="1.5 1.5"),
             Artwork(patt="hamsa", gif="hamsa"), 
 
 	    # disabled
