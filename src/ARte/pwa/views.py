@@ -15,31 +15,31 @@ def service_worker(request):
 def index(request):
     ctx = {
         "artworks": [
-            # priority
-            Artwork(patt="antipodas", gif="antipodas"),
-            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
+            Artwork(patt="antipodas", gif="antipodas", scale="3 3"),
             Artwork(patt="gueixa", gif="gueixa"),
             Artwork(patt="manekineko", gif="manekineko"),
-            Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
-            Artwork(patt="temaki", gif="temaki"),
-            # backup
-            Artwork(patt="robo3dandando", gif="robo3dandando"),
-            Artwork(patt="robo3dvoando", gif="robo3dvoando"),
-            # alternatives
-            Artwork(patt="janela", gif="janela"),
+            Artwork(patt="pedrinhazinha", gif="pedrinhazinha"),
             Artwork(patt="peixe", gif="peixe"),
-            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1.5"),
+            Artwork(patt="flyingsaucer", gif="flyingsaucer"),
+            # Artwork(patt="robo3dandando", gif="robo3dandando"),
+            # Artwork(patt="robo3dvoando", gif="robo3dvoando"),
+            Artwork(patt="andando", gif="andando"),
+            Artwork(patt="robo-pula", gif="robo-pula"),
+            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1"),
+            # Artwork(patt="robos", gif="robos"), # it seems that the files are not here
+            Artwork(patt="samurai", gif="samurai", scale="3 3"),
+            Artwork(patt="janela", gif="janela"),
+            Artwork(patt="temaki", gif="temaki"),
             Artwork(patt="tokusatsu", gif="tokusatsu"),
-            # Artwork(patt="hiro"),
-            # Artwork(patt="andando", gif="andando"),
-            # Artwork(patt="robo-pula", gif="robo-pula"),
+            # new
+            Artwork(patt="catavento", gif="catavento", scale="1.5 1.5"),
+            Artwork(patt="hamsa", gif="hamsa"), 
+
+	    # disabled
             # Artwork(patt="saucer", gif="saucer"),
-            # Artwork(patt="flyingsaucer", gif="flyingsaucer"),
-            # Artwork(patt="robo-rodas", gif="robo-rodas"),
             # Artwork(patt="binoculos", gif="janela"),
             # Artwork(patt="gueixa2", gif="gueixa2"),
-            # Artwork(patt="iemanja", gif="iemanja"),
-            # Artwork(patt="pedrinhazinha", gif="pedinhazinha"),
+    	    # Artwork(patt="jandig-marker", gif="moonwalker"),
         ]
     }
 
