@@ -56,3 +56,7 @@ def upload_image(request):
     else:
         form = UploadFileForm()
     return render(request, 'pwa/upload.jinja2', {'form': form})
+
+
+def marker_generator(request):
+    return render(request,'pwa/generator.html',{})
