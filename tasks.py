@@ -11,7 +11,7 @@ def default_env(postgres, whitenoise):
 
 
 def manage(ctx, cmd, postgres=False, whitenoise=False):
-    cmd = f'python src/ARte/manage.py {cmd}'
+    cmd = f'python3 src/ARte/manage.py {cmd}'
     ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
 
 
@@ -52,7 +52,7 @@ def install_deps(ctx):
     """
     Install all dependencies
     """
-    ctx.run('pip install -r src/requirements.txt')
+    ctx.run('pip3 install -r src/requirements.txt')
 
 
 @task
