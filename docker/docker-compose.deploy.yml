@@ -38,6 +38,8 @@ services:
     image: postgres
     env_file:
       - ../src/.envs/.deploy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -48,6 +50,6 @@ services:
       - /root/.docker/config.json:/config.json
     command: --interval 120
   
-
 volumes:
+  postgres_data:
   static_files:
