@@ -1,6 +1,6 @@
 
 src/ARte/config/__pycache__/
-src/ARte/collect/
+/collect/
 *.pyc
 
 \.vscode/

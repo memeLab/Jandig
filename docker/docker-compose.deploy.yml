@@ -31,7 +31,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - static_files:/src/ARte/pwa/static/
+      - static_files:/collect/
     command: db -p collect run -g -p
 
   postgres:
