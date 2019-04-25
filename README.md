@@ -14,7 +14,10 @@ Jandig ARte is a Progressive Web App, which means you can open in every device w
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, Wordpress users willing to translate our website from Portuguese to English, someone to help improve the same [website](http://memelab.com.br/jandig/) and developers to help us with the platform, please contact us through People section below!
 
 ### People
-We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) or Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo Oliveira](https://twitter.com/ShamanRoh)
+We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) or Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo Oliveira](https://twitter.com/ShamanRoh).
+
+### Clipping
+You can find interviews and references to Jandig in the press [here](http://memelab.com.br/jandig/clipping/).
 
 ## Get Started
 To contribute to Jandig ARte it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
