@@ -33,7 +33,7 @@ def index(request):
             Artwork(patt="tokusatsu", gif="tokusatsu"),
             Artwork(patt="catavento", gif="catavento", scale="1.5 1.5"),
             Artwork(patt="hamsa", gif="hamsa", scale="1.5 1.5"), 
-            Artwork(patt="pattern-hiro", gif="tokusatsu-new"),
+            Artwork(patt="pattern-hiro", gif="tokusatsu-test"),
 
 	    # disabled
             # Artwork(patt="saucer", gif="saucer"),
