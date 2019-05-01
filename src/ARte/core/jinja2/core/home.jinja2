@@ -1,0 +1,21 @@
+{% block content %}
+    <div class="header">
+        <div class="header-logo"></div>
+        {% if request.user.is_authenticated %}
+            <div class="welcome-user"></div>
+        {% else %}
+            <div class="signup-btn"></div>
+        {% endif %}
+    </div>
+    <div class="useful-links">
+        
+    </div>
+    <div class="use-guide">
+        <h3>How to use</h3>
+        <p>Lorem ipsum</p>
+        <div class="authorize-camera">
+        </div>
+    </div>
+    <div class="footer">
+    </div>
+{% endblock %}
