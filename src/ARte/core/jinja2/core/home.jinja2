@@ -1,21 +1,46 @@
+{% extends '/core/base2.jinja2' %}
+
 {% block content %}
-    <div class="header">
-        <div class="header-logo"></div>
-        {% if request.user.is_authenticated %}
-            <div class="welcome-user"></div>
-        {% else %}
-            <div class="signup-btn"></div>
-        {% endif %}
-    </div>
-    <div class="useful-links">
-        
-    </div>
-    <div class="use-guide">
-        <h3>How to use</h3>
-        <p>Lorem ipsum</p>
-        <div class="authorize-camera">
+    <section class="header">
+        <div class="container flex">
+            <div class="logo flex-item">
+                <img src="static/images/icons/Icon-40.png">
+            </div>
+            {% if request.user.is_authenticated %}
+                <div class="welcome flex-item">
+                    <p>
+                        Welcome, {{ request.user.username }}
+                    </p>
+                </div>
+            {% else %}
+                <div class="signup-btn flex-item">
+                    <a href="#">Signup</a>
+                </div>
+            {% endif %}
         </div>
-    </div>
-    <div class="footer">
-    </div>
+    </section>
+    <section class="useful-links">
+        <div class="container flex">
+            <a class="flex-item" href="#">Repository</a>
+            <a class="flex-item" href="#">Get involved</a>
+            <a class="flex-item" href="#">Documentation</a>
+        </div>
+    </section>
+    <section class="use-guide">
+        <h3>How to use</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit. Quisque urna tortor, vehicula nec
+        sodales ut, cursus in ipsum. Ut convallis rhoncus
+        nulla, a finibus leo ullamcorper non.re tincidunt
+        magna, vel fringilla nisi tincidunt sit amet</p>
+        <div class="authorize-camera">
+            <a href="#">Authorize camera</a>
+        </div>
+    </section>
+    <section class="footer">
+        <div class="container flex">
+            <a href="#" class="flex-item">Legal text</a>
+            <a href="#" class="flex-item">Footer links</a>
+        </div>
+    </section>
 {% endblock %}

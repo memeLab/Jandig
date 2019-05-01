@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <link id="manifest" rel="manifest" href="static/manifest.json">
+        <link rel="stylesheet" href="static/css/home.css">
+        <title>Jandig ARte</title>
+        <meta name="Description" content="Augmented reality artworks!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+        {% if content is defined %}
+            {{ content }}
+        {% else %}
+            {% block content %}
+                {% if content_html %}
+                    <div class="Container">
+                        {{ content_html|safe }}
+                    </div>
+                {% else %}
+                    <p>{{ _('Please override the "content" block of your template!') }}</p>
+                {% endif %}
+            {% endblock %}
+        {% endif %}
+    </body>
+</html>

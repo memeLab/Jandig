@@ -1,0 +1,93 @@
+.flex {
+    display: flex;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+}
+
+.header .container {
+    margin-top: 5%;
+    height: 100px;
+    margin-bottom: 5%;
+}
+
+.header .signup-btn {
+    background-color: black;
+    text-align: center;
+    height: 30%;
+    width: 20%;
+}
+
+.header .signup-btn a{
+    text-decoration: none;
+    color: white;
+}
+
+.useful-links {
+    margin-bottom: 5%;
+}
+
+.useful-links .container {
+    height: 50px;
+    margin: auto;
+}
+
+.useful-links a {
+    text-decoration: none;
+    font-size: 75%;
+    padding-top: 5%;
+}
+
+.use-guide {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    margin-bottom: 5%;
+    padding-bottom: 5%;
+}
+
+.use-guide h3 {
+    padding-top: 15%;
+    margin-left: 3%;
+}
+
+.use-guide p {
+    margin: 3%;
+}
+
+.use-guide .authorize-camera {
+    background-color: black;
+    text-align: center;
+    max-width: 280px;
+    height: 35px;
+    margin: auto;
+    padding-top: 6%;
+}
+
+.use-guide a {
+    text-decoration: none;
+    color: white;
+}
+
+.footer .container {
+    height: 50px;
+    text-align: center;
+}
+
+.footer a {
+    text-decoration: none;
+    font-size: 75%;
+    margin: auto;
+}
+
+/* Desktops */
+@media(min-width: 900px) {
+
+}
