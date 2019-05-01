@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'pwa'
+    'core',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -142,5 +143,5 @@ COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'pwa', 'static')
+    os.path.join(BASE_DIR, 'core', 'static')
 ]

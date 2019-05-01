@@ -8,7 +8,7 @@ from .models import Artwork
 
 
 def service_worker(request):
-    return render(request, 'pwa/sw.js',
+    return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
 def index(request):
@@ -42,7 +42,7 @@ def index(request):
         ]
     }
 
-    return render(request, 'pwa/exhibit.jinja2', ctx)
+    return render(request, 'core/exhibit.jinja2', ctx)
 
 
 def upload_image(request):
@@ -54,4 +54,4 @@ def upload_image(request):
             return HttpResponseRedirect(reverse('index'))
     else:
         form = UploadFileForm()
-    return render(request, 'pwa/upload.jinja2', {'form': form})
+    return render(request, 'core/upload.jinja2', {'form': form})
