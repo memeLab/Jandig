@@ -4,5 +4,5 @@ from .wait_db import start_services
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('pwa.urls')),
+    path('', include('core.urls')),
 ]
