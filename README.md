@@ -47,7 +47,7 @@ sudo docker-compose up -f docker/docker-compose.yml
 
 Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [localhost:8000](localhost:8000). If you want to test on a mobile device, you will need a https connection, we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate a https link for you.
 
- - `sudo npm install -g ngrok`
+ - `sudo npm install -G ngrok`
  - `ngrok http 8000`
  
  ngrok will prompt 3 links, select the one with `https` at beginning
