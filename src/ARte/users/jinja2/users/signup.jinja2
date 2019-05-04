@@ -1,0 +1,16 @@
+{% extends '/core/arviewer.jinja2' %}
+
+{% block content %}
+    {# FIXME: maybe this can be improved #}
+    <link rel="stylesheet" href="/static/css/signup.css">
+
+    <div class="signup-modal">
+        <div class="signup-form">
+            <form action="{{url('signup')}}" method="post" enctype="multipart/form-data">
+                {{ csrf_input }}
+                {{ form }}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+{% endblock %}

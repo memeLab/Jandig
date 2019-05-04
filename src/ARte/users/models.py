@@ -5,6 +5,7 @@ from django.dispatch import receiver
 
 from .choices import COUNTRY_CHOICES
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)

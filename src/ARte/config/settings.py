@@ -143,5 +143,6 @@ COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'core', 'static')
+    os.path.join(BASE_DIR, 'core', 'static'),
+    os.path.join(BASE_DIR, 'users', 'static')
 ]
