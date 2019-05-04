@@ -3,27 +3,27 @@
 {% block content %}
     <section class="header">
         <div class="container flex">
-            <div class="logo flex-item">
+            <div class="logo">
                 <img src="static/images/icons/Icon-40.png">
             </div>
             {% if request.user.is_authenticated %}
-                <div class="welcome flex-item">
+                <div class="welcome">
                     <p>
-                        Welcome, {{ request.user.username }}
+                        Welcome, {{ request.user.username }}  
                     </p>
                 </div>
             {% else %}
-                <div class="signup-btn flex-item">
-                    <a href="#">Signup</a>
+                <div class="signup-btn">
+                    <a href="#">Sign up</a>
                 </div>
             {% endif %}
         </div>
     </section>
     <section class="useful-links">
         <div class="container flex">
-            <a class="flex-item" href="#">Repository</a>
-            <a class="flex-item" href="#">Get involved</a>
-            <a class="flex-item" href="#">Documentation</a>
+            <a href="https://github.com/memeLab/ARte">Repository</a>
+            <a href="community">Get involved</a>
+            <a href="docs">Documentation</a>
         </div>
     </section>
     <section class="use-guide">
@@ -34,13 +34,13 @@
         nulla, a finibus leo ullamcorper non.re tincidunt
         magna, vel fringilla nisi tincidunt sit amet</p>
         <div class="authorize-camera">
-            <a href="#">Authorize camera</a>
+            <a href="ar">Authorize camera</a>
         </div>
     </section>
     <section class="footer">
         <div class="container flex">
-            <a href="#" class="flex-item">Legal text</a>
-            <a href="#" class="flex-item">Footer links</a>
+            <a href="#">Legal text</a>
+            <a href="#">Footer links</a>
         </div>
     </section>
 {% endblock %}
