@@ -1,31 +1,28 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
-class SignupForm(forms.ModelForm):
+class SignupForm(UserCreationForm):
     """
     Form to register a new user
     """
-    password = forms.CharField(
-        label='Password',
+    first_name = forms.CharField(
+        max_length=30,
         required=True,
-        widget=forms.PasswordInput,
-        help_text='Your password'
+        help_text='Your first name'
     )
-    password_confirm = forms.CharField(
-        label='Password confirmation',
+    last_name = forms.CharField(
+        max_length=30,
         required=True,
-        widget=forms.PasswordInput,
-        help_text='Confirm your password'
+        help_text='Your last name'
+    )
+    email = forms.EmailField(
+        max_length=254,
+        help_text='Your e-mail address'
     )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username']
-
-    def _post_clean(self):
-        super()._post_clean()
-        data = self.cleaned_data
-        if data.get('password') != data.get('password_confirm'):
-            self.add_error('password_confirm', 'Passwords do not match')
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']

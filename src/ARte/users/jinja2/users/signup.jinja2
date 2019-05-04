@@ -5,10 +5,14 @@
     <link rel="stylesheet" href="/static/css/signup.css">
 
     <div class="signup-modal">
+        <div class="flex">
+            <a href="/users/signup">Sign up</a>
+            <a href="/users/login">Log in</a>
+        </div>
         <div class="signup-form">
             <form action="{{url('signup')}}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
-                {{ form }}
+                {{ form.as_p() }}
                 <input type="submit" value="Submit" />
             </form>
         </div>

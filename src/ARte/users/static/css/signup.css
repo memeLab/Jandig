@@ -1,4 +1,26 @@
+a{
+    color: white;
+    text-decoration: none;
+}
+
+a:visited{
+    color: black;
+    text-decoration: none;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .signup-modal {
+    border: 1px solid #4F4545; 
+    margin-top: 35%;
     position: fixed;
     z-index: 1;
+}
+
+.signup-modal .signup-form {
+    background-color: white;
 }
