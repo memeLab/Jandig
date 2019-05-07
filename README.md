@@ -38,7 +38,7 @@ To run Jandig ARte all you need to do is:
 ```
 git clone https://github.com/memeLab/ARte
 cd ARte
-docker-compose up -f docker/docker-compose.yml
+docker-compose -f docker/docker-compose.yml up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
