@@ -5,7 +5,7 @@ set -o pipefail
 set -o nounset
 
 # Build base image
-docker build ../ -f Dockerfile.base -t jandigarte/requirements:latest
+docker build ../ -f base.Dockerfile -t jandigarte/requirements:latest
 
 # Check if user wants to publish
 if [ $# -eq 1 ]; then
