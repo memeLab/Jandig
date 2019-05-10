@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../src/data/nginx/main:/etc/nginx/conf.d
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
