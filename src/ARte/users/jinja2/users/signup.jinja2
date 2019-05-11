@@ -12,8 +12,22 @@
         <div class="signup-form">
             <form action="{{url('signup')}}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
-                {{ form.as_p() }}
-                <input type="submit" value="Submit" />
+                {% for field in form.visible_fields() %}
+                    <p class="signup-field {{field.name}}">
+                        {{ field }}
+                        {{ field.errors }}
+                    </p>
+                {% endfor%}
+                <div class="form-options">
+                    <p>
+                        <input type="checkbox" name="agreement" value="Yes"> Legal agreement
+                    </p>
+                    <p>
+                        <input type="checkbox" name="remember" value="Yes"> Remember me
+                    </p>
+                </div>
+                {# {{ form.as_p() }} #}
+                <input class="submit-btn" type="submit" value="Submit" />
             </form>
         </div>
     </div>

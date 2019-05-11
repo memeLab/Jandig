@@ -3,8 +3,10 @@ src/ARte/config/__pycache__/
 /collect/
 *.pyc
 
+##vscode
 \.vscode/
 
+##sqlite
 *.sqlite3
 
 src/data/certbot/
@@ -13,3 +15,7 @@ node_modules/
 package-lock.json
 
 **/**/**/migrations/*
+
+## pycharm
+.idea
+
