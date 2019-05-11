@@ -14,6 +14,8 @@ services:
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - django
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
   certbot:
     image: certbot/certbot
@@ -21,6 +23,8 @@ services:
       - ../src/data/certbot/conf:/etc/letsencrypt
       - ../src/data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
   django:
     image: jandigarte/django:latest
@@ -33,6 +37,8 @@ services:
     volumes:
       - static_files:/collect/
     command: db -p collect run -g -p
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   postgres:
     image: postgres
@@ -42,13 +48,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      
   watchtower:
-    image: v2tec/watchtower
+    image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.docker/config.json:/config.json
-    command: --interval 120
+    command: --interval 30
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
   
 volumes:
   postgres_data:
