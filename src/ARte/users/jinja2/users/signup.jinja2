@@ -3,14 +3,13 @@
 {% block content %}
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
-
     <div class="signup-modal">
         <div class="flex">
             <a href="/users/signup">Sign up</a>
             <a href="/users/login">Log in</a>
         </div>
         <div class="signup-form">
-            <form action="{{url('signup')}}" method="post" enctype="multipart/form-data">
+            <form name="signup-form" action="{{url('signup')}}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 {% for field in form.visible_fields() %}
                     <p class="signup-field {{field.name}}">
@@ -20,15 +19,24 @@
                 {% endfor%}
                 <div class="form-options">
                     <p>
-                        <input type="checkbox" name="agreement" value="Yes"> Legal agreement
+                        <input id="agreement-chk" type="checkbox" name="agreement" value="1"> Legal agreement
                     </p>
                     <p>
-                        <input type="checkbox" name="remember" value="Yes"> Remember me
+                        <input type="checkbox" name="remember" value="1"> Remember me
                     </p>
                 </div>
                 {# {{ form.as_p() }} #}
-                <input class="submit-btn" type="submit" value="Submit" />
+                <input class="submit-btn" type="submit" value="Submit" disabled="disabled"/>
             </form>
         </div>
     </div>
+    <script>
+        $('#agreement-chk').click(function(){
+            if($(this).prop('checked') == true){
+                $('input[type="submit"]').prop('disabled', false);
+            }else{
+                $('input[type="submit"]').prop('disabled', true);
+            }
+        });
+    </script>
 {% endblock %}

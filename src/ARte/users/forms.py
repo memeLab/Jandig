@@ -9,20 +9,14 @@ class SignupForm(UserCreationForm):
     Form to register a new user
     """
 
-    # first_name = forms.CharField(
-    #     max_length=30,
-    #     required=True,
-    #     help_text='Your first name',
-
-    # )
-    # last_name = forms.CharField(
-    #     max_length=30,
-    #     required=True,
-    #     help_text='Your last name'
-    # )
     email = forms.EmailField(
         max_length=254,
         help_text='Your e-mail address',
+    )
+
+    username = forms.CharField(
+        max_length=12,
+        help_text="Your username",
     )
 
     def __init__(self, *args, **kwargs):
