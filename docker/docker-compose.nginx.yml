@@ -3,6 +3,7 @@ version: '3.5'
 services:
   nginx:
     image: nginx:1.15-alpine
+    network_mode: "host"
     ports:
       - "80:80"
       - "443:443"
