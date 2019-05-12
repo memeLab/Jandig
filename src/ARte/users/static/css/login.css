@@ -1,19 +1,14 @@
-a{
-    color: white;
-    text-decoration: none;
-}
-
-a:visited{
-    color: black;
-    text-decoration: none;
-}
-
 .flex {
     display: flex;
     align-items: center;
     justify-content: space-around;
     padding-top: 5%;
     padding-bottom: 5%;
+}
+
+.flex a{
+    color: white;
+    text-decoration: none;
 }
 
 .login-modal {
@@ -54,6 +49,20 @@ a:visited{
 .form-options input{
     width: 20px;
     height: 20px;
+}
+
+.login-form .recover-password{
+    padding: 5%;
+    text-align: left;
+}
+
+.login-form .recover-password a{
+    text-decoration: none;
+    color: #2872e7;
+}
+
+.login-form .recover-password a:visited{
+    color: none;
 }
 
 .submit-btn {
