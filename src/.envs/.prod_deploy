@@ -1,10 +1,10 @@
 # PostgreSQL
 # ----------
-POSTGRES_HOST=
+POSTGRES_HOST=prod_postgres
 POSTGRES_PORT=5432
-POSTGRES_DB=
-POSTGRES_USER=
-POSTGRES_PASSWORD=
+POSTGRES_DB=prod_postgres
+POSTGRES_USER=prod_user
+POSTGRES_PASSWORD=prod_pass
 
 # Django
 # ----------
