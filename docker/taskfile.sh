@@ -4,7 +4,7 @@ data_path="../src/data/certbot"
 
 rsa_key_size=4096
 email="" # Adding a valid address is strongly recommended
-staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 composefile=./docker-compose.deploy.yml
 
 function fake-cert {
@@ -60,57 +60,6 @@ function request-cert {
         --agree-tos \
         --force-renewal" certbot
     echo
-}
-
-function certificate {
-  if [ -d "$data_path" ]; then
-    read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
-    if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
-      docker-compose -f $composefile down
-      docker rmi jandigarte/django:latest
-      docker volume prune
-      docker-compose -f $composefile up -d postgres
-      docker-compose -f $composefile up -d watchtower
-      docker-compose -f $composefile up -d django
-      docker-compose -f $composefile up -d nginx
-      exit
-    fi
-  fi
-
-
-  download-params
-
-  echo "### Starting postgres ..."
-  docker-compose -f $composefile up -d postgres
-
-  echo "### Starting Watchtower ..."
-  docker-compose -f $composefile up -d watchtower
-
-  echo "### Starting Django ..."
-  docker-compose -f $composefile up -d django
-
-  for domain in ${domains[@]}
-  do
-    fake-cert $domain
-  done
-
-  echo "### Starting nginx ..."
-  docker-compose -f $composefile up --force-recreate -d nginx
-  echo
-
-  for domain in ${domains[@]}
-  do
-    delete-cert $domain
-  done
-
-  #Join $domains to -d args
-  for domain in "${domains[@]}"
-  do
-    request-cert $domain
-  done
-
-  echo "### Reloading nginx ..."
-  docker-compose -f $composefile exec nginx nginx -s reload
 }
 
 
