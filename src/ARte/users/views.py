@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .forms import SignupForm
+from .forms import SignupForm, UploadMarkerForm
 
 
 def signup(request):
@@ -29,11 +29,15 @@ def profile(request):
     return render(request, 'users/profile.jinja2')
 
 
-# @login_required
-# def marker_upload(request):
-#     if request.method == 'POST':
-#         pass
-#     else:
-#         form = UploadMarkerForm()
+@login_required
+def marker_upload(request):
+    if request.method == 'POST':
+        form = UploadMarkerForm(request.POST, request.FILES)
 
-#     return render(request, 'users/upload-marker.jinja2', {'form': form})
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UploadMarkerForm()
+
+    return render(request, 'users/upload-marker.jinja2', {'form': form})

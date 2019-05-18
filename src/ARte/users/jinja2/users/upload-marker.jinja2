@@ -1,0 +1,54 @@
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+    <section class="upload-marker">
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="/static/css/upload-marker.css">
+
+        <h4> {{ _('Upload marker') }}<h3>
+        <section class="upload-marker-form">
+            <form name="upload-marker-form" action="{{ url('marker-upload') }}" method="post" enctype="multipart/form-data">
+                {{ csrf_input }}
+                <p class="marker-field" id="source-field">
+                    {{ form.visible_fields()[0] }}
+                    {{ form.visible_fields()[0].errors }}
+                </p>
+                <p class="form-options">
+                    <input id="author-chk" type="checkbox" name="author" value="1">
+                    {{ _("I'm this marker author") }}
+                </p>
+                <p class="marker-field" id="author-field">
+                    {{ form.visible_fields()[1] }}
+                    {{ form.visible_fields()[1].errors }}
+                </p>
+                <div class="form-options">
+                    <p>
+                        <input id="agreement-chk" type="checkbox" name="agreement" value="1">
+                        {{ _('Legal agreement') }}
+                    </p>
+                </div>
+                <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
+            </form>
+        </section>
+        <script>
+            $('#agreement-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    $('input[type="submit"]').prop('disabled', false);
+                }else{
+                    $('input[type="submit"]').prop('disabled', true);
+                }
+            });
+
+            $('#author-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    let user = $('div.welcome > p > a')[0].innerText;
+                    $('#author-field > input').val(user);
+                    $('#author-field > input').prop('disabled', true);
+                }else{
+                    $('#author-field > input').prop('disabled', false);
+                    $('#author-field > input').val("");
+                }
+            })
+        </script>
+    </section>
+{% endblock %}

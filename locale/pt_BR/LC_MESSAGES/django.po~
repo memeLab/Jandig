@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-18 14:29-0300\n"
+"POT-Creation-Date: 2019-05-18 16:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,34 +26,42 @@ msgstr ""
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: src/ARte/users/forms.py:15
+#: src/ARte/users/forms.py:17
 msgid "Your e-mail address"
 msgstr ""
 
-#: src/ARte/users/forms.py:20
+#: src/ARte/users/forms.py:22
 msgid "Your username"
 msgstr ""
 
-#: src/ARte/users/forms.py:26
+#: src/ARte/users/forms.py:28
 msgid "email"
 msgstr ""
 
-#: src/ARte/users/forms.py:27
+#: src/ARte/users/forms.py:29
 msgid "chosen username"
 msgstr ""
 
-#: src/ARte/users/forms.py:28 src/ARte/users/forms.py:50
+#: src/ARte/users/forms.py:30 src/ARte/users/forms.py:52
 msgid "password"
 msgstr ""
 
-#: src/ARte/users/forms.py:29
+#: src/ARte/users/forms.py:31
 msgid "confirm password"
 msgstr ""
 
-#: src/ARte/users/forms.py:39
+#: src/ARte/users/forms.py:41
 msgid "Email address must be unique"
 msgstr ""
 
-#: src/ARte/users/forms.py:49
+#: src/ARte/users/forms.py:51
 msgid "username / email"
+msgstr ""
+
+#: src/ARte/users/forms.py:69
+msgid "browse file"
+msgstr ""
+
+#: src/ARte/users/forms.py:70
+msgid "declare different author name"
 msgstr ""
