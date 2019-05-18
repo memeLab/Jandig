@@ -14,25 +14,25 @@ def service_worker(request):
 def index(request):
     ctx = {
         "artworks": [
-            Artwork(patt="antipodas", gif="antipodas", scale="3 3"),
+            Artwork(patt="antipodas", gif="antipodas", scale="1.5 1.5"),
             Artwork(patt="gueixa", gif="gueixa"),
             Artwork(patt="manekineko", gif="manekineko"),
             Artwork(patt="pedrinhazinha", gif="pedrinhazinha"),
             Artwork(patt="peixe", gif="peixe"),
-            Artwork(patt="flyingsaucer", gif="flyingsaucer"),
+            Artwork(patt="flyingsaucer", gif="flyingsaucer", scale="1.5 1"),
             # Artwork(patt="robo3dandando", gif="robo3dandando"),
             # Artwork(patt="robo3dvoando", gif="robo3dvoando"),
             Artwork(patt="andando", gif="andando"),
             Artwork(patt="robo-pula", gif="robo-pula"),
-            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1"),
+            Artwork(patt="robo-rodas", gif="robo-rodas"),
             # Artwork(patt="robos", gif="robos"), # it seems that the files are not here
-            Artwork(patt="samurai", gif="samurai", scale="3 3"),
-            Artwork(patt="janela", gif="janela"),
+            Artwork(patt="samurai", gif="samurai", scale="1.5 1.5"),
+            Artwork(patt="binoculos", gif="janela"),
             Artwork(patt="temaki", gif="temaki"),
             Artwork(patt="tokusatsu", gif="tokusatsu"),
-            # new
             Artwork(patt="catavento", gif="catavento", scale="1.5 1.5"),
-            Artwork(patt="hamsa", gif="hamsa"), 
+            Artwork(patt="hamsa", gif="hamsa", scale="1.5 1.5"), 
+            Artwork(patt="pattern-hiro", gif="tokusatsu-test"),
 
 	    # disabled
             # Artwork(patt="saucer", gif="saucer"),
