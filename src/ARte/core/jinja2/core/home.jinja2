@@ -1,46 +1,67 @@
-{% extends '/core/base2.jinja2' %}
+<!doctype html>
+<html>
+    <head>
+        <link id="manifest" rel="manifest" href="/static/manifest.json">
+        <link rel="stylesheet" href="/static/css/home.css">
+        <title>Jandig ARte</title>
+        <meta name="Description" content="Augmented reality artworks!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+</html>
 
-{% block content %}
+<body>
     <section class="header">
         <div class="container flex">
             <div class="logo">
-                <img src="static/images/icons/header_icon.png">
+                <img src="/static/images/icons/header_icon.png">
             </div>
             {% if request.user.is_authenticated %}
                 <div class="welcome">
                     <p>
-                        Welcome, {{ request.user.username }}  
+                        Welcome, <a href="{{ url('profile') }}">{{ request.user.username }}</a>
                     </p>
                 </div>
             {% else %}
                 <div class="signup-btn">
-                    <a href="users/signup">Sign up</a>
+                    <a href=" {{ url('signup') }}">{{ _('Sign up') }}</a>
                 </div>
             {% endif %}
         </div>
     </section>
     <section class="useful-links">
         <div class="container flex">
-            <a href="https://github.com/memeLab/ARte">Repository</a>
-            <a href="community">Get involved</a>
-            <a href="docs">Documentation</a>
+            <a href="https://github.com/memeLab/ARte">{{ _('Repository') }}</a>
+            <a href="{{ url('community') }}">{{ _('Get involved') }}</a>
+            <a href="{{ url('docs') }}">{{ _('Documentation') }}</a>
         </div>
     </section>
-    <section class="use-guide">
-        <h3>How to use</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Quisque urna tortor, vehicula nec
-        sodales ut, cursus in ipsum. Ut convallis rhoncus
-        nulla, a finibus leo ullamcorper non.re tincidunt
-        magna, vel fringilla nisi tincidunt sit amet</p>
-        <div class="authorize-camera">
-            <a href="ar">Authorize camera</a>
-        </div>
-    </section>
+    {% if content is defined %}
+        {{ content }}
+    {% else %}
+        {% block content %}
+            {% if content_html %}
+                <div class="Container">
+                    {{ content_html|safe }}
+                </div>
+            {% else %}
+                <section class="use-guide">
+                    <h3>How to use</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit. Quisque urna tortor, vehicula nec
+                    sodales ut, cursus in ipsum. Ut convallis rhoncus
+                    nulla, a finibus leo ullamcorper non.re tincidunt
+                    magna, vel fringilla nisi tincidunt sit amet</p>
+                    <div class="authorize-camera">
+                        <a href="ar"> {{ _('Authorize camera') }}</a>
+                    </div>
+                </section>
+            {% endif %}
+        {% endblock %}
+    {% endif %}
     <section class="footer">
         <div class="container flex">
-            <a href="#">Legal text</a>
-            <a href="#">Footer links</a>
+            <a href="#"> {{ _('Legal text') }}</a>
+            <a href="#"> {{ _('Footer links') }}</a>
         </div>
     </section>
-{% endblock %}
+</body>

@@ -1,0 +1,30 @@
+.profile-options-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.profile-options-flex .option-link {
+    margin-bottom: 4%;
+    background-color: black;
+    line-height: 40px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.profile-options-flex .account-options {
+    margin-bottom: 4%;
+    color: black;
+}
+
+.profile-options-flex .account-options a{
+    text-decoration: none;
+    color: #0000EE;
+}
+
+.profile-options-flex > .account-options > a:visited{
+    text-decoration: none;
+    color: #0000EE;
+}
