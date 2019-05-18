@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="/static/css/signup.css">
     <div class="signup-modal">
         <div class="flex">
-            <a href="/users/signup">Sign up</a>
-            <a href="/users/login">Log in</a>
+            <a href="/users/signup">{{ _('Sign up') }}</a>
+            <a href="/users/login">{{ _('Log in') }}</a>
         </div>
         <div class="signup-form">
             <form name="signup-form" action="{{url('signup')}}" method="post" enctype="multipart/form-data">
@@ -19,13 +19,15 @@
                 {% endfor%}
                 <div class="form-options">
                     <p>
-                        <input id="agreement-chk" type="checkbox" name="agreement" value="1"> Legal agreement
+                        <input id="agreement-chk" type="checkbox" name="agreement" value="1">
+                        {{ _('Legal agreement') }}
                     </p>
                     <p>
-                        <input type="checkbox" name="remember" value="1"> Remember me
+                        <input type="checkbox" name="remember" value="1">
+                        {{ _('Remember me') }}
                     </p>
                 </div>
-                <input class="submit-btn" type="submit" value="Submit" disabled="disabled"/>
+                <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
             </form>
         </div>
     </div>
