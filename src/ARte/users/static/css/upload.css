@@ -1,8 +1,8 @@
-.upload-marker {
+.upload{
     text-align: center;
 }
 
-.upload-marker-form {
+.upload-form {
     border: 1px solid #4F4545;
     background-color: white;
 }
@@ -18,7 +18,7 @@
     margin-bottom: 5%;
 }
 
-.marker-field input{
+.upload-field input{
     font-size: 15px;;
     height: 35px;
     width: 90%;

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Marker
+from .models import Marker, Object
 
 User = get_user_model()
 
@@ -71,4 +71,17 @@ class UploadMarkerForm(forms.ModelForm):
     
     class Meta:
         model = Marker
+        fields = '__all__'
+
+
+class UploadObjectForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(UploadObjectForm, self).__init__(*args, **kwargs)
+
+        self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
+    
+    class Meta:
+        model = Object
         fields = '__all__'

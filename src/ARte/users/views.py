@@ -1,8 +1,10 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext_lazy as _
 
-from .forms import SignupForm, UploadMarkerForm
+
+from .forms import SignupForm, UploadMarkerForm, UploadObjectForm
 
 
 def signup(request):
@@ -31,13 +33,22 @@ def profile(request):
 
 @login_required
 def marker_upload(request):
-    if request.method == 'POST':
-        form = UploadMarkerForm(request.POST, request.FILES)
+    return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
 
+
+@login_required
+def object_upload(request):
+    return upload_view(request, UploadObjectForm, _('object'), 'object-upload')
+
+
+def upload_view(request, form_class, form_type, route):
+    if request.method == 'POST':
+        form = form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('home')
     else:
-        form = UploadMarkerForm()
+        form = form_class()
 
-    return render(request, 'users/upload-marker.jinja2', {'form': form})
+    return render(request,'users/upload.jinja2',
+        {'form_type': form_type, 'form': form, 'route': route})

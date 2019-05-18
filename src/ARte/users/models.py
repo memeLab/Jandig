@@ -33,6 +33,12 @@ class Marker(models.Model):
     author = models.CharField(max_length=60, blank=False)
 
 
+class Object(models.Model):
+    source = models.ImageField(upload_to='objects/')
+    author = models.CharField(max_length=60, blank=False)
+
+
+@receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
 def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)

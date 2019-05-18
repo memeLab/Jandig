@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, profile, marker_upload
+from .views import signup, profile, marker_upload, object_upload
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('recover/', auth_views.PasswordResetView.as_view(), name='recover'),
 
     path('markers/upload', marker_upload, name='marker-upload'),
+    path('objects/upload', object_upload, name='object-upload'),
 ]
