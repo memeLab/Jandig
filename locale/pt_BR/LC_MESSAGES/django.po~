@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-18 14:29-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/ARte/config/settings.py:136
+msgid "English"
+msgstr ""
+
+#: src/ARte/config/settings.py:137
+msgid "Brazilian Portuguese"
+msgstr ""
+
+#: src/ARte/users/forms.py:15
+msgid "Your e-mail address"
+msgstr ""
+
+#: src/ARte/users/forms.py:20
+msgid "Your username"
+msgstr ""
+
+#: src/ARte/users/forms.py:26
+msgid "email"
+msgstr ""
+
+#: src/ARte/users/forms.py:27
+msgid "chosen username"
+msgstr ""
+
+#: src/ARte/users/forms.py:28 src/ARte/users/forms.py:50
+msgid "password"
+msgstr ""
+
+#: src/ARte/users/forms.py:29
+msgid "confirm password"
+msgstr ""
+
+#: src/ARte/users/forms.py:39
+msgid "Email address must be unique"
+msgstr ""
+
+#: src/ARte/users/forms.py:49
+msgid "username / email"
+msgstr ""
