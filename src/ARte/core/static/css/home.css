@@ -86,6 +86,24 @@ a:visited{
     background-color: #D9D9D9;
 }
 
+.text-content{
+    border: 1px solid #4F4545;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 4%;
+    background-color: #ddd;
+    max-height: 40vmax;
+    overflow: scroll;
+}
+.text-content .title{
+    font-weight: bold;
+    font-size: larger;
+    margin:0;
+}
+.text-content .paragraph{
+    font-size: small;
+    margin:0 0 15px 0;
+}
 .use-guide h3 {
     padding-top: 15%;
     margin-left: 3%;

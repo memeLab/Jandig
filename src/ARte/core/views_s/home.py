@@ -16,4 +16,4 @@ def docs(request):
     raise Http404
 
 def community(request):
-    raise Http404
+    return render(request, 'core/community.jinja2')

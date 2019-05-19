@@ -1,7 +1,9 @@
 <section class="header">
             <div class="container flex">
                 <div class="logo">
-                    <img src="/static/images/icons/header_icon.png">
+                    <a href="{{ url('home') }}">
+                            <img src="/static/images/icons/header_icon.png">
+                    </a>
                 </div>
                 {% if request.user.is_authenticated %}
                     <div class="welcome">
