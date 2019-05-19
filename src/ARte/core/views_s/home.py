@@ -3,12 +3,9 @@ from django.urls import reverse
 
 
 def home(request):
-    markers = 1
-    objects = 1
-    exhibits = 1
-
-    return render(request, 'core/home.jinja2', 
-    {'markers': markers, 'objects': objects, 'exhibits': exhibits})
+    exhibits = 0
+    return render(request, 'users/profile.jinja2',
+    {'exhibits': exhibits})
 
 
 def ar_viewer(request):

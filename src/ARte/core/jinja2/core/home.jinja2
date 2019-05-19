@@ -22,6 +22,9 @@
                             Welcome, <a href="{{ url('profile') }}">{{ request.user.username }}</a>
                         </p>
                         <p>
+                            {% set markers = request.user.profile.marker_set.all()|length %}
+                            {% set objects = request.user.profile.object_set.all()|length %}
+                            
                             {% if not markers and not objects %}
                                 {{ _('No uploads yet.') }}
                             {% elif markers and objects%}

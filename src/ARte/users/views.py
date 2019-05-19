@@ -27,8 +27,10 @@ def signup(request):
 
 
 @login_required
-def profile(request):
-    return render(request, 'users/profile.jinja2')
+def profile(request): 
+    exhibits = 0
+    return render(request, 'users/profile.jinja2',
+    {'exhibits': exhibits})
 
 
 @login_required
@@ -45,7 +47,9 @@ def upload_view(request, form_class, form_type, route):
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            upload = form.save(commit=False)
+            upload.owner = request.user.profile
+            upload.save()
             return redirect('home')
     else:
         form = form_class()

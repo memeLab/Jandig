@@ -29,11 +29,13 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Marker(models.Model):
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='markers/')
     author = models.CharField(max_length=60, blank=False)
 
 
 class Object(models.Model):
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='objects/')
     author = models.CharField(max_length=60, blank=False)
 

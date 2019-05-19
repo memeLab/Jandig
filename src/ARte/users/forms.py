@@ -71,7 +71,7 @@ class UploadMarkerForm(forms.ModelForm):
     
     class Meta:
         model = Marker
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class UploadObjectForm(forms.ModelForm):
@@ -84,4 +84,4 @@ class UploadObjectForm(forms.ModelForm):
     
     class Meta:
         model = Object
-        fields = '__all__'
+        exclude = ('owner',)
