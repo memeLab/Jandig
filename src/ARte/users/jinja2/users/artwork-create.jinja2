@@ -14,7 +14,7 @@
         <button id="select-object" class="select-btn">
             {{ _('select object') }}
         </button>
-
+        <div class="ttt">
             <form name="creation-form" action="{{ url('artwork-creation') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="marker-modal" class="modal">
@@ -36,6 +36,9 @@
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
                             {{ _('Legal agreement') }}
                         </p>
+                    </div>
+                    <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
+                    <div class="marker-gallery">
                     </div>
                     <button id="next-object" class="select-btn next-btn">
                         {{ _('Next') }}
@@ -61,6 +64,9 @@
                             {{ _('Legal agreement') }}
                         </p>
                     </div>
+                    <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
+                    <div class="marker-gallery">
+                    </div>
                     <button id="next-desc" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
@@ -69,6 +75,7 @@
                     <input class="select-btn next-btn" type="submit" value="{{ _('Publish Artwork') }}" disabled="disabled"/>
                 </div>
             </form>
+            </div>
         <script>
             // modal events
             $('#select-marker').click(function(){

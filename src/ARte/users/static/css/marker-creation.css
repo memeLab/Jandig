@@ -5,6 +5,10 @@
     padding: 3%;
 }
 
+.creation-form {
+    background-color: white;
+}
+
 .select-btn.next-btn {
     width: 100%;
 }
@@ -34,4 +38,8 @@
 .form-options input{
     width: 15px;
     height: 15px;
+}
+
+.gallery-title{
+    font-size: 11px;
 }
