@@ -44,3 +44,11 @@ class Object(models.Model):
 @receiver(post_delete, sender=Marker)
 def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
+
+
+class Artwork(models.Model):
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    marker = models.ForeignKey(Marker, on_delete=models.CASCADE)
+    augmented = models.ForeignKey(Object, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, blank=False)
+    description = models.TextField(max_length=500, blank=True)

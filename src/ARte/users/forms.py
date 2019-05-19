@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Marker, Object
+from .models import Marker, Object, Artwork
 
 User = get_user_model()
 
@@ -85,3 +85,13 @@ class UploadObjectForm(forms.ModelForm):
     class Meta:
         model = Object
         exclude = ('owner',)
+
+
+class ArtworkForm(forms.Form):
+
+    marker = forms.ImageField()
+    marker_author = forms.CharField(max_length=12)
+    augmented = forms.ImageField()
+    augmented_author = forms.CharField(max_length=12)
+
+    

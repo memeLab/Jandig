@@ -1,6 +1,8 @@
 {% extends '/core/home.jinja2' %}
 
 {% block content %}
+    {% block subcontent %}
+    {% endblock %}
     <section class="profile-options-flex">
 
         {# FIXME: maybe this can be improved #}
@@ -9,7 +11,7 @@
         <a class="option-link" href="edit/">{{ _('Edit personal info') }}</a>
         <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload marker') }}</a>
         <a class="option-link" href="{{ url('object-upload') }}">{{ _('Upload object') }}</a>
-        <a class="option-link" href="artworks/create/">{{ _('Create Jandig artwork') }}</a>
+        <a class="option-link" href="{{ url('artwork-creation') }}">{{ _('Create Jandig artwork') }}</a>
         <a class="option-link" href="exhibit/create/">{{ _('Create exhibit') }}</a>
 
         <section class="account-options">

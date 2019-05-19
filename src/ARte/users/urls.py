@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, profile, marker_upload, object_upload
+from .views import signup, profile, marker_upload, object_upload, artwork_creation
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -18,4 +18,5 @@ urlpatterns = [
 
     path('markers/upload', marker_upload, name='marker-upload'),
     path('objects/upload', object_upload, name='object-upload'),
+    path('artworks/create', artwork_creation, name='artwork-creation'),
 ]

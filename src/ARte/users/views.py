@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
 
-from .forms import SignupForm, UploadMarkerForm, UploadObjectForm
+from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm
 
 
 def signup(request):
@@ -31,6 +31,21 @@ def profile(request):
     exhibits = 0
     return render(request, 'users/profile.jinja2',
     {'exhibits': exhibits})
+
+
+@login_required
+def artwork_creation(request):
+    if request.method == 'POST':
+        form = ArtworkForm(request.POST, request.FILES)
+        if form.is_valid():
+            artwork = form.save(commit=False)
+            artwork.author = request.user.profile
+            artwork.save()
+            return redirect('home')
+    else:
+        form = ArtworkForm()
+
+    return render(request, 'users/artwork-create.jinja2', {'form': form})
 
 
 @login_required
