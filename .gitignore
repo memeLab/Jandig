@@ -19,3 +19,5 @@ package-lock.json
 ## pycharm
 .idea
 
+# media files
+src/ARte/users/media/
