@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.shortcuts import redirect
 
 from .helpers import handle_upload_image
-from .forms import UploadFileForm
-from .models import Artwork2
+from .forms import UploadFileForm, ExhibitForm
+from .models import Artwork2, Exhibit
 
 
 def service_worker(request):
@@ -55,3 +56,37 @@ def upload_image(request):
     else:
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
+
+def exhibit_select(request):
+    if request.method == 'POST':
+        form = ExhibitForm(request.POST)
+        if form.is_valid():
+            exhibit = form.cleaned_data.get('exhibit')
+            return redirect("/"+exhibit.url)
+    else:
+        e1 = Exhibit()
+        e1.name = "exibi"
+        e2 = Exhibit()
+        e2.name = "exibi2"
+        e3 = Exhibit()
+        e3.name = "exibi3"
+        # e1.save()
+        # e2.save()
+        # e3.save()
+        form = ExhibitForm()
+
+    return render(request, 'core/exhibit_select.jinja2', {'form':form})
+
+
+def exhibit(request):
+    # Exhibit.objects.get()
+    ctx = { 
+        # 'exhibit' : exhibit,
+        'artworks':
+            [
+                Artwork2(patt="antipodas", gif="antipodas", scale="1.5 1.5"),
+                Artwork2(patt="gueixa", gif="gueixa"),
+            ]
+    }
+
+    return render(request, 'core/exhibit.jinja2', ctx)
