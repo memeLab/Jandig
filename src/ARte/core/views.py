@@ -65,28 +65,19 @@ def exhibit_select(request):
             return redirect("/"+exhibit.url)
     else:
         e1 = Exhibit()
-        e1.name = "exibi"
         e2 = Exhibit()
-        e2.name = "exibi2"
         e3 = Exhibit()
+        
+        e1.name = "exibi"
+        e2.name = "exibi2"
         e3.name = "exibi3"
+        
+        e1.slug = e1.url
+        e2.slug = e2.url
+        e3.slug = e3.url
         # e1.save()
         # e2.save()
         # e3.save()
         form = ExhibitForm()
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})
-
-
-def exhibit(request):
-    # Exhibit.objects.get()
-    ctx = { 
-        # 'exhibit' : exhibit,
-        'artworks':
-            [
-                Artwork2(patt="antipodas", gif="antipodas", scale="1.5 1.5"),
-                Artwork2(patt="gueixa", gif="gueixa"),
-            ]
-    }
-
-    return render(request, 'core/exhibit.jinja2', ctx)

@@ -11,4 +11,5 @@ class Artwork2(models.Model):
 
 class Exhibit(models.Model):
     name = models.CharField(unique=True, max_length=50)
+    slug = models.CharField(unique=True, max_length=50)
     url = property(lambda self: urllib.parse.quote_plus(self.name))
