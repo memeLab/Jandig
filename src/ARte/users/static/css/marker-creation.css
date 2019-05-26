@@ -61,3 +61,7 @@
     border-radius: 8px;
     border-color: #4286f4;
 }
+
+.tab {
+    display: none;
+}

@@ -36,8 +36,9 @@ def profile(request):
 @login_required
 def artwork_creation(request):
     if request.method == 'POST':
-        print('aaaaaaaa ', form)
         form = ArtworkForm(request.POST, request.FILES)
+        form.full_clean()
+        print('aaaaaaaa ', form.cleaned_data)
         if form.is_valid():
             print('aaaaaaaa ', form)
             # artwork = form.save(commit=False)
