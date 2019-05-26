@@ -89,9 +89,19 @@ class UploadObjectForm(forms.ModelForm):
 
 class ArtworkForm(forms.Form):
 
-    marker = forms.ImageField()
-    marker_author = forms.CharField(max_length=12)
-    augmented = forms.ImageField()
-    augmented_author = forms.CharField(max_length=12)
+    marker = forms.ImageField(required=False)
+    marker_author = forms.CharField(max_length=12, required=False)
+    augmented = forms.ImageField(required=False)
+    augmented_author = forms.CharField(max_length=12, required=False)
+    existent_marker = forms.IntegerField(min_value=1, required=False)
+    existent_object = forms.IntegerField(min_value=1, required=False)
+    title = forms.CharField(max_length=50)
+    description = forms.CharField(widget=forms.Textarea, max_length=500)
 
-    
+    def __init__(self, *args, **kwargs):
+        super(ArtworkForm, self).__init__(*args, **kwargs)
+
+        self.fields['marker_author'].widget.attrs['placeholder'] = _('declare different author name')
+        self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
+        self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
+        self.fields['description'].widget.attrs['placeholder'] = _('artwork description')

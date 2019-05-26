@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-
 from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm
+from .models import Marker, Object, Artwork
 
 
 def signup(request):
@@ -37,15 +37,69 @@ def profile(request):
 def artwork_creation(request):
     if request.method == 'POST':
         form = ArtworkForm(request.POST, request.FILES)
+
         if form.is_valid():
-            artwork = form.save(commit=False)
-            artwork.author = request.user.profile
-            artwork.save()
+            marker_src = form.cleaned_data['marker']
+            marker_author = form.cleaned_data['marker_author']
+            object_src = form.cleaned_data['augmented']
+            object_author = form.cleaned_data['augmented_author']
+
+            existent_marker = form.cleaned_data['existent_marker']
+            existent_object = form.cleaned_data['existent_object']
+
+            marker = None
+            augmented = None
+
+            if(marker_src and marker_author):
+                marker_instance = Marker(source=marker_src, author=marker_author)
+                marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
+                marker.owner = request.user.profile
+                marker.save()
+            elif(existent_marker):
+                qs = Marker.objects.filter(id=existent_marker)
+                if qs:
+                    marker = qs[0]
+                    marker.owner = request.user.profile
+
+            if(object_src and object_author):
+                object_instance = Object(source=object_src, author=object_author)
+                augmented = UploadObjectForm(instance=object_instance).save(commit=False)
+                augmented.owner = request.user.profile
+                augmented.save()
+            elif(existent_object):
+                qs = Object.objects.filter(id=existent_object)
+                if qs:
+                    augmented = qs[0]
+                    augmented.owner = request.user.profile
+        
+            if marker and augmented:
+
+                artwork_title = form.cleaned_data['title']
+                artwork_desc = form.cleaned_data['description']
+
+                Artwork(
+                    author=request.user.profile,
+                    marker=marker,
+                    augmented=augmented,
+                    title=artwork_title,
+                    description=artwork_desc
+                ).save()
             return redirect('home')
     else:
         form = ArtworkForm()
 
-    return render(request, 'users/artwork-create.jinja2', {'form': form})
+    marker_list = Marker.objects.all()
+    object_list = Object.objects.all()
+
+    return render(
+        request,
+        'users/artwork-create.jinja2',
+        {
+            'form': form, 
+            'marker_list': marker_list,
+            'object_list': object_list
+        }
+    )
 
 
 @login_required
