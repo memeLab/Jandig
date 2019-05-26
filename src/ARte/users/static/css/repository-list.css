@@ -1,0 +1,18 @@
+.repository-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 100%;
+    border: 1px solid black;
+    padding: 3%;
+    margin-bottom: 4%;
+    max-height: 100px;
+    overflow-y: scroll;
+}
+
+.repository-item{
+    /* increasing percentage reduce number of elements per row */
+    flex: 0 1 calc(25% - 8px);
+    margin-top: 2%;
+}

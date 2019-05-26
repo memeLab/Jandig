@@ -19,7 +19,7 @@
                 {{ csrf_input }}
                 <div id="marker-modal" class="modal">
                     <h4 class="modal-title">{{ _('Select marker (1/3') }}</h4>
-                    <p class="upload-field" id="source-field">
+                    <p class="upload-field" id="marker-source-field">
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
@@ -31,6 +31,10 @@
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
+                    <p id="existent-marker">
+                        {{ form.visible_fields()[4].as_hidden() }}
+                        {{ form.visible_fields()[4].errors }}
+                    </p>
                     <div class="form-options">
                         <p>
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
@@ -38,15 +42,18 @@
                         </p>
                     </div>
                     <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
-                    <div class="marker-gallery">
-                    </div>
+                    
+                    {% with repository_list = marker_list, element_type = 'marker' %}
+                        {% include "users/components/repository-list.jinja2" %}
+                    {% endwith%}
+                    
                     <button id="next-object" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
                 </div>
                 <div id="object-modal" class="modal">
                     <h4 class="modal-title">{{ _('Select object (2/3') }}</h4>
-                    <p class="upload-field" id="source-field">
+                    <p class="upload-field" id="object-source-field">
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
                     </p>
@@ -58,6 +65,10 @@
                         {{ form.visible_fields()[3] }}
                         {{ form.visible_fields()[3].errors }}
                     </p>
+                    <p id="existent-object">
+                        {{ form.visible_fields()[5].as_hidden() }}
+                        {{ form.visible_fields()[5].errors }}
+                    </p>
                     <div class="form-options">
                         <p>
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
@@ -65,13 +76,25 @@
                         </p>
                     </div>
                     <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
-                    <div class="marker-gallery">
-                    </div>
+                    
+                    {% with repository_list = object_list, element_type = 'object' %}
+                        {% include "users/components/repository-list.jinja2" %}
+                    {% endwith%}
+                    
                     <button id="next-desc" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
                 </div>
                 <div id="description-modal" class="modal">
+                    <h4 class="modal-title">{{ _('About your artwork (3/3') }}</h4>
+                    <p class="upload-field">
+                        {{ form.visible_fields()[6] }}
+                        {{ form.visible_fields()[6].errors }}
+                    </p>
+                    <p class="upload-field">
+                        {{ form.visible_fields()[7] }}
+                        {{ form.visible_fields()[7].errors }}
+                    </p>
                     <input class="select-btn next-btn" type="submit" value="{{ _('Publish Artwork') }}" disabled="disabled"/>
                 </div>
             </form>

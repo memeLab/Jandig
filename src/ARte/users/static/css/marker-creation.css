@@ -43,3 +43,21 @@
 .gallery-title{
     font-size: 11px;
 }
+
+.upload-field input{
+    font-size: 13px;;
+    height: 25px;
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    border-color: #4286f4;
+}
+
+.upload-field textarea{
+    font-size: 13px;;
+    height: 30%;
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    border-color: #4286f4;
+}

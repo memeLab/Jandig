@@ -1,0 +1,28 @@
+{# Receives a list of markers/objects to list #}
+
+{% block content %}
+    <section id="repo-{{element_type}}" class="repository-list">
+
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="/static/css/repository-list.css">
+
+        {% for element in repository_list %}
+            <div id="{{ element.id }}" class="repository-item">
+                <img src="{{ element.source.url }}" height="45" width="45">
+            </div>
+        {% endfor %}
+
+        <script>
+            $('.repository-item').click(function(){
+                let elementId = $(this).attr('id');
+                let sectionId = $(this).parent().attr('id');
+                
+                if(sectionId == 'repo-marker'){
+                    $('#existent-marker > input').val(elementId);
+                }else{
+                    $('#existent-object > input').val(elementId);                    
+                }
+            });
+        </script>
+    </section>
+{% endblock %}

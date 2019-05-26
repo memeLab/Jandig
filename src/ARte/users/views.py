@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-
 from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm
+from .models import Marker, Object
 
 
 def signup(request):
@@ -36,16 +36,29 @@ def profile(request):
 @login_required
 def artwork_creation(request):
     if request.method == 'POST':
+        print('aaaaaaaa ', form)
         form = ArtworkForm(request.POST, request.FILES)
         if form.is_valid():
-            artwork = form.save(commit=False)
-            artwork.author = request.user.profile
-            artwork.save()
+            print('aaaaaaaa ', form)
+            # artwork = form.save(commit=False)
+            # artwork.author = request.user.profile
+            # artwork.save()
             return redirect('home')
     else:
         form = ArtworkForm()
 
-    return render(request, 'users/artwork-create.jinja2', {'form': form})
+    marker_list = Marker.objects.all()
+    object_list = Object.objects.all()
+
+    return render(
+        request,
+        'users/artwork-create.jinja2',
+        {
+            'form': form, 
+            'marker_list': marker_list,
+            'object_list': object_list
+        }
+    )
 
 
 @login_required
