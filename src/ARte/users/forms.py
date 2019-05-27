@@ -67,11 +67,12 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
         model = Marker
-        exclude = ('owner','patt')
+        exclude = ('owner',)
 
 
 class UploadObjectForm(forms.ModelForm):
