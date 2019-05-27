@@ -64,20 +64,7 @@ def exhibit_select(request):
             exhibit = form.cleaned_data.get('exhibit')
             return redirect("/"+exhibit.url)
     else:
-        e1 = Exhibit()
-        e2 = Exhibit()
-        e3 = Exhibit()
         
-        e1.name = "exibi"
-        e2.name = "exibi2"
-        e3.name = "exibi3"
-        
-        e1.slug = e1.url
-        e2.slug = e2.url
-        e3.slug = e3.url
-        # e1.save()
-        # e2.save()
-        # e3.save()
         form = ExhibitForm()
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})

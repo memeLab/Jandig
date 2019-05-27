@@ -3,12 +3,12 @@
 {% block content %}
     <ar-scene>
         {% for artwork in artworks %}
-            <ar-marker patt="/static/patts/{{artwork.patt}}.patt">
+            <ar-marker patt="{{artwork.marker.patt.url}}">
                 <ar-content 
-                    src="/static/images/{{artwork.gif}}.gif" 
-                    scale="{{artwork.scale}}"
-                    position="{{artwork.position}}"
-                    rotation="{{artwork.rotation}}">
+                    src="{{artwork.augmented.source.url}}" 
+                    scale="{{artwork.augmented.scale}}"
+                    position="{{artwork.augmented.position}}"
+                    rotation="{{artwork.augmented.rotation}}">
                 </ar-content>
             </ar-marker>
         {% endfor %}     

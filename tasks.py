@@ -133,3 +133,7 @@ def i18n(ctx, compile=False, edit=False, lang='pt_BR', keep_pot=False):
         if not keep_pot:
             print('Cleaning up')
             ctx.run('rm locale/*.pot')
+
+@task
+def populate(ctx):
+    manage(ctx, 'populate_db')

@@ -32,13 +32,16 @@ class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='markers/')
     author = models.CharField(max_length=60, blank=False)
+    patt = models.FileField(upload_to='patts/')
 
 
 class Object(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='objects/')
     author = models.CharField(max_length=60, blank=False)
-
+    scale = models.CharField(default="1 1", max_length=50)
+    position = models.CharField(default="0 0 0", max_length=50)
+    rotation = models.CharField(default="270 0 0", max_length=50)
 
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
