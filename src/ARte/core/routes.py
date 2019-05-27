@@ -1,7 +1,7 @@
 from boogie.router import Router
 
 from .models import Exhibit
-from .models import Artwork2
+# from users.models import Artwork
 
 urlpatterns = Router(
     template="core/exhibit.jinja2",
@@ -14,10 +14,6 @@ urlpatterns = Router(
 def exhibit(request, exhibit):
     ctx = { 
         'exhibit' : exhibit,
-        'artworks':
-            [
-                Artwork2(patt="antipodas", gif="antipodas", scale="1.5 1.5"),
-                Artwork2(patt="gueixa", gif="gueixa"),
-            ]
+        'artworks': exhibit.artworks.all()
     }
     return ctx
