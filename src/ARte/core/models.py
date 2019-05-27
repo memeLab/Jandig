@@ -14,5 +14,7 @@ class Exhibit(models.Model):
     owner = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="exhibits")
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
-    # url = property(lambda self: urllib.parse.quote_plus(self.name))
     artworks = models.ManyToManyField(Artwork,related_name="exhibits")
+
+    def __str__(self):
+        return self.name

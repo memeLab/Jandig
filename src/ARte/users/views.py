@@ -98,7 +98,7 @@ def artwork_creation(request):
         {
             'form': form, 
             'marker_list': marker_list,
-            'object_list': object_list
+            'object_list': object_list,
         }
     )
 

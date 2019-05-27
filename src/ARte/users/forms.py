@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -110,11 +112,17 @@ class ArtworkForm(forms.Form):
 
 class ExhibitForm(forms.Form):
 
-    name = forms.CharField(max_length=12, required=True)
-    slug = forms.CharField(max_length=12, required=True)
+    name = forms.CharField(max_length=50, required=True)
+    slug = forms.CharField(max_length=50, required=True)
 
     # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit 
     artworks = forms.CharField(max_length=1000)
+
+    def clean_slug(self):
+        data = self.cleaned_data['slug']
+        # if not re.match("^[a-zA-Z0-9_]*$", data):
+            # raise forms.ValidationError(_("Slug can't contain spaces or special characters"))
+        return data
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
