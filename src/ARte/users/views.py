@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm
+from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm
 from .models import Marker, Object, Artwork
+from core.models import Exhibit
 
 
 def signup(request):
@@ -100,6 +101,46 @@ def artwork_creation(request):
             'object_list': object_list
         }
     )
+
+
+
+@login_required
+def exhibit_creation(request):
+    if request.method == 'POST':
+        form = ExhibitForm(request.POST)
+        form.full_clean()
+        print(form.cleaned_data['artworks'])
+
+        if form.is_valid():
+            ids = form.cleaned_data['artworks'].split(',')
+            artworks = Artwork.objects.filter(id__in=ids)
+            exhibit = Exhibit(
+                            owner=request.user.profile,
+                            name=form.cleaned_data['name'],
+                            slug=form.cleaned_data['slug'],
+                            )
+            
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+
+            return redirect('home')
+    else:
+        form = ExhibitForm()
+
+    artworks = Artwork.objects.filter(author=request.user.profile)
+
+    return render(
+        request,
+        'users/exhibit-create.jinja2',
+        {
+            'form': form, 
+            'artworks': artworks,
+        }
+    )
+
+
+
+
 
 
 @login_required

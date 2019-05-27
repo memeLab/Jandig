@@ -62,9 +62,8 @@ def exhibit_select(request):
         form = ExhibitForm(request.POST)
         if form.is_valid():
             exhibit = form.cleaned_data.get('exhibit')
-            return redirect("/"+exhibit.url)
+            return redirect("/" + exhibit.slug)
     else:
-        
         form = ExhibitForm()
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})

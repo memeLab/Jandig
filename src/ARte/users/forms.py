@@ -105,3 +105,18 @@ class ArtworkForm(forms.Form):
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
         self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+
+
+class ExhibitForm(forms.Form):
+
+    name = forms.CharField(max_length=12, required=True)
+    slug = forms.CharField(max_length=12, required=True)
+
+    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit 
+    artworks = forms.CharField(max_length=1000)
+
+    def __init__(self, *args, **kwargs):
+        super(ExhibitForm, self).__init__(*args, **kwargs)
+
+        self.fields['name'].widget.attrs['placeholder'] = _('Exhibit Title')
+        self.fields['slug'].widget.attrs['placeholder'] = _('Exhibit URL')
