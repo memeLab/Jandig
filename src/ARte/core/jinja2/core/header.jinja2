@@ -13,6 +13,7 @@
                         <p>
                             {% set markers = request.user.profile.marker_set.all()|length %}
                             {% set objects = request.user.profile.object_set.all()|length %}
+                            {% set exhibits = request.user.profile.exhibits.all()|length %}
                             
                             {% if not markers and not objects %}
                                 {{ _('No uploads yet.') }}

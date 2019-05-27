@@ -10,9 +10,17 @@
             <form name="upload-form" action="{{ url(route) }}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <p class="upload-field" id="source-field">
+                    Choose marker image
                     {{ form.visible_fields()[0] }}
                     {{ form.visible_fields()[0].errors }}
                 </p>
+                {% if form_type == 'marker' %}
+                    <p class="upload-field" id="patt-field">
+                        Choose patt
+                        {{ form.visible_fields()[2] }}
+                        {{ form.visible_fields()[2].errors }}
+                    </p>
+                {% endif %}
                 <p class="form-options">
                     <input id="author-chk" type="checkbox" name="author" value="1">
                     {{ _("I'm this ") }} {{form_type}} {{ _(" author") }}

@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -67,6 +69,7 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -84,7 +87,7 @@ class UploadObjectForm(forms.ModelForm):
     
     class Meta:
         model = Object
-        exclude = ('owner',)
+        exclude = ('owner','scale','rotation','position')
 
 
 class ArtworkForm(forms.Form):
@@ -105,3 +108,24 @@ class ArtworkForm(forms.Form):
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
         self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+
+
+class ExhibitForm(forms.Form):
+
+    name = forms.CharField(max_length=50, required=True)
+    slug = forms.CharField(max_length=50, required=True)
+
+    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit 
+    artworks = forms.CharField(max_length=1000)
+
+    def clean_slug(self):
+        data = self.cleaned_data['slug']
+        # if not re.match("^[a-zA-Z0-9_]*$", data):
+            # raise forms.ValidationError(_("Slug can't contain spaces or special characters"))
+        return data
+
+    def __init__(self, *args, **kwargs):
+        super(ExhibitForm, self).__init__(*args, **kwargs)
+
+        self.fields['name'].widget.attrs['placeholder'] = _('Exhibit Title')
+        self.fields['slug'].widget.attrs['placeholder'] = _('Exhibit URL')
