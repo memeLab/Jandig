@@ -13,9 +13,9 @@
 
 .login-modal {
     border: 1px solid #4F4545; 
-    margin-top: 35%;
+    margin-top: 20%;
     margin-left: 10%;
-    position: fixed;
+    margin-bottom:25%;
     z-index: 1;
     width: 75%;
 }
