@@ -14,5 +14,5 @@
 .repository-item{
     /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(25% - 8px);
-    margin-top: 2%;
+    padding-top: 4px;
 }
