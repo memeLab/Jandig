@@ -10,7 +10,11 @@
             <form name="upload-form" action="{{ url(route) }}" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <p class="upload-field" id="source-field">
-                    Choose marker image
+                {%if route == 'object-upload' %}
+                    Choose object
+                {% else %}
+                    Choose marker image 
+                {% endif %}
                     {{ form.visible_fields()[0] }}
                     {{ form.visible_fields()[0].errors }}
                 </p>
