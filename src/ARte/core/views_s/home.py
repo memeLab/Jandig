@@ -17,3 +17,6 @@ def docs(request):
 
 def community(request):
     return render(request, 'core/community.jinja2')
+
+def marker_generator(request):
+    return render(request,'core/generator.html',{})
