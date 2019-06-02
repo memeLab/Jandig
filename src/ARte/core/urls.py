@@ -8,7 +8,7 @@ urlpatterns = [
     path('community/', community, name='community'),
     path('docs/', docs, name='docs'),
     path('exhibit_select/', exhibit_select, name='exhibit_select'),
-    path('generator', marker_generator, name='marker-generator'),
+    path('generator/', marker_generator, name='marker-generator'),
     # path('agreement', *, *),
     # path('agreement', *, *),
     path('sw.js', service_worker, name='sw'),
