@@ -21,3 +21,4 @@ package-lock.json
 
 # media files
 src/ARte/users/media/
+docker/media/

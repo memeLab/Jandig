@@ -42,6 +42,7 @@ services:
       - dev_postgres
     volumes:
       - static_dev_files:/collect/
+      - ./media/dev/:/src/ARte/users/media/
     command: db -p collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
@@ -70,6 +71,7 @@ services:
       - staging_postgres
     volumes:
       - static_staging_files:/collect/
+      - ./media/staging/:/src/ARte/users/media/
     command: db -p collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
@@ -99,6 +101,7 @@ services:
       - prod_postgres
     volumes:
       - static_prod_files:/collect/
+      - ./media/prod/:/src/ARte/users/media/    
     command: db -p collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
