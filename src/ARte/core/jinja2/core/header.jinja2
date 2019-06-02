@@ -1,0 +1,42 @@
+<section class="header">
+            <div class="container flex">
+                <div class="logo">
+                    <a href="{{ url('home') }}">
+                            <img src="/static/images/icons/header_icon.png">
+                    </a>
+                </div>
+                {% if request.user.is_authenticated %}
+                    <div class="welcome">
+                        <p>
+                            Welcome, <a href="{{ url('profile') }}">{{ request.user.username }}</a>
+                        </p>
+                        <p>
+                            {% set markers = request.user.profile.marker_set.all()|length %}
+                            {% set objects = request.user.profile.object_set.all()|length %}
+                            {% set exhibits = request.user.profile.exhibits.all()|length %}
+                            
+                            {% if not markers and not objects %}
+                                {{ _('No uploads yet.') }}
+                            {% elif markers and objects%}
+                                {{ markers }} {{ _(' markers') }} | {{ objects }} {{ _(' objects') }}
+                            {% elif markers and not objects %}
+                                {{ markers }} {{ _(' markers') }} | {{ _('No objects yet.') }}
+                            {% else %}
+                                {{ _('No markers yet.') }} | {{ objects }} {{ _(' objects') }}
+                            {% endif %}
+                        </p>
+                        <p>
+                            {% if not exhibits %}
+                                {{ _('No exhibits yet.') }}
+                            {% else %}  
+                                {{ exhibits }} {{ _(' exhibits') }}
+                            {% endif %}
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="signup-btn">
+                        <a href=" {{ url('signup') }}">{{ _('Sign up') }}</a>
+                    </div>
+                {% endif %}
+            </div>
+</section>

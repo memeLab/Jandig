@@ -1,0 +1,32 @@
+{% extends '/core/arviewer.jinja2' %}
+
+{% block content %}
+    {# FIXME: maybe this can be improved #}
+    <link rel="stylesheet" href="/static/css/login.css">
+    <div class="login-modal">
+        <div class="flex">
+            <a href="/users/login">{{ _('Login to continue') }}</a>
+            <a href="/users/signup">{{ _('Sign up') }}</a>
+        </div>
+        <div class="login-form">
+            <form name="login-form" action="{{url('login')}}" method="post" enctype="multipart/form-data">
+                {{ csrf_input }}
+                {% for field in form.visible_fields() %}
+                    <p class="login-field {{field.name}}">
+                        {{ field }}
+                        {{ field.errors }}
+                    </p>
+                {% endfor%}
+                <div class="form-options">
+                    <p>
+                        <input type="checkbox" name="remember" value="1"> Remember me
+                    </p>
+                </div>
+                <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
+            </form>
+            <div class="recover-password">
+                <a  href="{{url('recover')}}">{{ _('Recover password') }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+.modal.modal {
+    border-radius: 0;
+    width: 100%;
+    text-align: center;
+    padding: 3%;
+}
+
+.creation-form {
+    background-color: white;
+}
+
+.select-btn.next-btn {
+    width: 100%;
+}
+
+.create-artwork {
+    text-align: center;
+}
+
+.select-btn {
+    font-size: 14px;
+    height: 35px;
+    width: 90%;
+    text-align: center;
+    background-color: #D9D9D9;
+    border-radius: 8px;
+    border-color: #4286f4;
+    margin-bottom: 5%;
+}
+
+.form-options{
+    font-size: 12px;
+    text-align: left;
+    font-weight: bold;
+    padding-left: 5%;
+}
+
+.form-options input{
+    width: 15px;
+    height: 15px;
+}
+
+.gallery-title{
+    font-size: 11px;
+}
+
+.upload-field input{
+    font-size: 13px;;
+    height: 25px;
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    border-color: #4286f4;
+}
+
+.upload-field textarea{
+    font-size: 13px;;
+    height: 30%;
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    border-color: #4286f4;
+}
+
+.tab {
+    display: none;
+}
