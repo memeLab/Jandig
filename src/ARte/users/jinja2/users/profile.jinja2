@@ -8,6 +8,38 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/profile.css">
         {% if not home %}
+            {{_("Your Exhibits")}}
+                {% if exhibits %}
+                    {% with repository_list = exhibits, element_type="exhibit"%}
+                        {% include "users/components/item-list.jinja2" %}
+                    {% endwith%}
+                {% else %}
+                    {{_("You have no exhibits :c")}}
+                {% endif %}
+            {{_("Your Artworks")}}
+                {% if artworks %}
+                    {% with repository_list = artworks, element_type="artwork" %}
+                        {% include "users/components/item-list.jinja2" %}
+                    {% endwith%}
+                {% else %}
+                    {{_("You have no artworks :c")}}
+                {% endif %}
+            {{_("Your Markers")}}
+                {% if markers %}
+                    {% with repository_list = markers, element_type="marker"%}
+                        {% include "users/components/item-list.jinja2" %}
+                    {% endwith%}
+                {% else %}
+                    {{_("You have no markers :c")}}
+                {% endif %}
+            {{_("Your Objects")}}
+                {% if objects %}
+                    {% with repository_list = objects, element_type="object" %}
+                        {% include "users/components/item-list.jinja2" %}
+                    {% endwith%}
+                {% else %}
+                    {{_("You have no objects :c")}}
+                {% endif %}
         {% endif %}
         <a class="option-link" href="edit/">{{ _('Edit personal info') }}</a>
         <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload marker') }}</a>

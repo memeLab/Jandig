@@ -13,9 +13,6 @@ class Profile(models.Model):
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
 
-    #exhibits = ?
-    #uploads = ?
-
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

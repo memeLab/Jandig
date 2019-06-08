@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
 from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm
-from .models import Marker, Object, Artwork
+from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 
 
@@ -29,9 +29,19 @@ def signup(request):
 
 @login_required
 def profile(request): 
-    exhibits = 0
-    return render(request, 'users/profile.jinja2',
-    {'exhibits': exhibits})
+    profile = Profile.objects.get(user=request.user)
+    
+    exhibits = Exhibit.objects.filter(owner=profile)
+    artworks = Artwork.objects.filter(author=profile)
+    markers = Marker.objects.filter(owner=profile)
+    objects = Object.objects.filter(owner=profile)
+    ctx = {
+        'exhibits': exhibits,
+        'artworks': artworks,
+        'markers':markers,
+        'objects':objects
+    }
+    return render(request, 'users/profile.jinja2', ctx)
 
 
 @login_required
