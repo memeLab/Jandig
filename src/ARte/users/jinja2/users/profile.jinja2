@@ -7,7 +7,8 @@
 
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/profile.css">
-        
+        {% if not home %}
+        {% endif %}
         <a class="option-link" href="edit/">{{ _('Edit personal info') }}</a>
         <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload marker') }}</a>
         <a class="option-link" href="{{ url('object-upload') }}">{{ _('Upload object') }}</a>
