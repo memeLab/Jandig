@@ -3,14 +3,9 @@
 {% block content %}
     <section id="repo-{{element_type}}" class="repository-list">
 
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/repository-list.css">
-
-        {% for element in repository_list %}
-            <div id="{{ element.id }}" class="repository-item">
-                <img src="{{ element.marker.source.url }}" height="50" width="50">
-            </div>
-        {% endfor %}
+        {% with repository_list = repository_list, element_type="artwork" %}
+            {% include "users/components/item-list.jinja2" %}
+        {% endwith%}
 
         <script>
             let artworks = {}
