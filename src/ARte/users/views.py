@@ -39,7 +39,8 @@ def profile(request):
         'exhibits': exhibits,
         'artworks': artworks,
         'markers':markers,
-        'objects':objects
+        'objects':objects,
+        'profile':True
     }
     return render(request, 'users/profile.jinja2', ctx)
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, Http404
 from django.urls import reverse
 
 def home(request):
-    return render(request, 'users/profile.jinja2',{"home":True})
+    return render(request, 'users/profile.jinja2',{})
 
 
 def ar_viewer(request):
