@@ -30,6 +30,8 @@ class Marker(models.Model):
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     patt = models.FileField(upload_to='patts/')
+    def __str__(self):
+        return self.source.name
 
     @property
     def artworks_count(self):
@@ -49,6 +51,8 @@ class Object(models.Model):
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
+    def __str__(self):
+        return self.source.name
 
     @property
     def artworks_count(self):

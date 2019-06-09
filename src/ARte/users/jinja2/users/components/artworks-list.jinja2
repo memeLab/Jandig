@@ -11,7 +11,7 @@
             let artworks = {}
             let str_artworks = ""
             $('.repository-item').click(function(){
-                let elementId = $(this).attr('id');
+                let elementId = $(this).attr('id').split('-')[1];
                 let sectionId = $(this).parent().attr('id');
                 
                 // reset background
