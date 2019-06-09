@@ -4,13 +4,7 @@
 {% for element in repository_list %}
     <div id="{{ element.id }}" class="repository-item">
         {% if element_type == "marker" or element_type == "object" %}
-            <img id="{{ element.id }}" class="trigger-modal" src="{{ element.source.url }}" height="50" width="50">
-            {% if element_type == "marker" %}
-                {% with marker = element %}
-                    {% include "users/components/marker-modal.jinja2" %}
-                {% endwith %}
-            {# {% else %} #}
-            {% endif %}
+            <img id="{{ element.id }}" class="trigger-modal trigger-marker" src="{{ element.source.url }}" height="50" width="50">
         {% elif element_type == "artwork" %}
             <img class="trigger-modal" src="{{ element.marker.source.url }}" height="50" width="50">
         {% else %}
@@ -18,3 +12,6 @@
         {% endif %}
     </div>
 {% endfor %}
+{% with%}
+    {% include "users/components/marker-modal.jinja2" %}
+{% endwith %}

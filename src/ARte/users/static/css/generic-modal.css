@@ -13,20 +13,21 @@
 }
 
 .modal-title {
-    margin-top: 20%;
+    margin-top: 5%;
     color: white;
     text-align: center;
 }
 
 .modal-content {
     position: absolute;
-    margin-top: 10%;
-    top: 50%;
+    margin-top: 15%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 2% 2.5%;
     width: 75%;
+    height: 75%;
 }
 
 .show-modal {

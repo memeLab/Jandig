@@ -7,19 +7,11 @@
 {% endblock %}
 
 {% block content %}
-    <p>
-        {{ _("by ") }} {{ marker.author }}
-    </p>
-    <p>
-        {{ _("Uploaded by") }} <a> {{ marker.owner.user.username }}</a>, {{ _("in") }} {{ marker.uploaded_at.strftime('%d %b, %Y') }}
-    </p>
-    <p>
-        {{ _(" Used in ") }} <a href="#"> {{ marker.artworks_count }} {{ _(" artworks") }}</a> {{ _("and in") }} <a href="#">{{ marker.exhibits_count }} {{ _(" exhibits") }}</a>
-        
-        <img id="marker-img" src="{{ marker.source.url }}"/>
-    </p>
+    <p id="marker-author"></p>
+    <p id="marker-upload-info"></p>
+    <p id="marker-analytics"></p>
     <p> Download file:</p>
-    <p><a href="#">.png ({{marker.source.size/1000}} kb) </a></p>
+    <p id="marker-download"></p>
     
     <button id="share-marker" class="select-btn">
         {{ _('Share this marker') }}
@@ -27,4 +19,49 @@
     <button id="create-artwork" class="select-btn">
         {{ _('Create artwork with this marker') }}
     </button>
+    <script>
+        function markerAuthor(author){
+            $('#marker-author').text({{ _("by ")|tojson }} + author);
+        }
+        function uploadedBy(owner, date){
+            $('#marker-upload-info').replaceWith(
+                    '<p id="marker-upload-info">' +
+                    {{ _("Uploaded by ")|tojson }} +
+                    '<a href="#">' + owner + '</a>' + ', ' + 
+                    {{ _("in ")|tojson }} + date + '</p>'
+                )
+        }
+        function usedIn(artworks_count, exhibits_count, marker_img){
+            $('#marker-analytics').replaceWith(
+                '<p id="marker-analytics">'+
+                {{ _(" Used in ")|tojson }} +
+                '<a href="#">' + artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
+                {{ _(" and in ")|tojson }} + '<a href="#">' + exhibits_count +
+                {{ _(" exhibits")|tojson }} + '</a>' +
+                '<img id="marker-img" src="' + marker_img + '"/></p>'
+            )
+        }
+        function downloadMarker(file_size){
+            $('#marker-download').replaceWith(
+                '<p id="marker-download">' + 
+                '<a id="png-download" href="#">.png (' + file_size + ' kb)</a></p>'
+            )
+        }
+        $('.trigger-marker').click(function(){
+            let markerUrl = {{url('marker-get')|tojson}};
+            markerUrl += ("?marker_id=" + $(this).attr('id'));
+
+            let uploadedPostfix = {{ _("in ")|tojson }};
+
+            $.ajax({
+                url: markerUrl,
+                success: function(data){
+                    markerAuthor(data['marker_author']);
+                    uploadedBy(data['marker_owner'], data['marker_uploaded_at'])
+                    usedIn(data['marker_artworks'], data['marker_exhibits'], data['marker_source'])
+                    downloadMarker(data['marker_size']/1000)
+                }
+            });
+        })
+    </script>
 {% endblock %}
