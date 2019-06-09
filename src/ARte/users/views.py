@@ -1,8 +1,11 @@
+import json
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
+from django.http import HttpResponse
+
 from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
@@ -152,6 +155,22 @@ def exhibit_creation(request):
 @login_required
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
+
+
+def marker_get(request):
+    marker = get_object_or_404(Marker, pk=request.GET['marker_id'])
+    data = {
+        'marker_author': marker.author,
+        'marker_owner': marker.owner.user.username,
+        'marker_artworks': marker.artworks_count,
+        'marker_exhibits': marker.exhibits_count,
+        'marker_source': marker.source.url,
+        'marker_size': marker.source.size,
+        'marker_uploaded_at': marker.uploaded_at.strftime('%d %b, %Y'),
+    }
+    serialized = json.dumps(data)
+
+    return HttpResponse(serialized, content_type='application/json')
 
 
 @login_required

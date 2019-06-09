@@ -6,7 +6,6 @@ from django.core.files.storage import default_storage
 
 from .choices import COUNTRY_CHOICES
 
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
@@ -28,15 +27,26 @@ def save_user_profile(sender, instance, **kwargs):
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='markers/')
+    uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     patt = models.FileField(upload_to='patts/')
     def __str__(self):
         return self.source.name
 
+    @property
+    def artworks_count(self):
+        return Artwork.objects.filter(marker=self).count()
+
+    @property
+    def exhibits_count(self):
+        from core.models import Exhibit
+        return Exhibit.objects.filter(artworks__marker=self).count()
+
 
 class Object(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     source = models.ImageField(upload_to='objects/')
+    uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)

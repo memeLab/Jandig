@@ -1,18 +1,19 @@
 {# FIXME: maybe this can be improved #}
-<link rel="stylesheet" href="/static/css/repository-list.css">
+<link rel="stylesheet" href="/static/css/marker-modal.css">
 
 {% for element in repository_list %}
     <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
         {% if element_type == "marker" or element_type == "object" %}
-            <img src="{{ element.source.url }}" height="50" width="50">
+            <img id="{{ element.id }}" class="trigger-modal trigger-marker" src="{{ element.source.url }}" height="50" width="50">
         {% elif element_type == "artwork" %}
-            <img src="{{ element.marker.source.url }}" height="50" width="50">
-            <img src="{{ element.augmented.source.url }}" height="50" width="50">
+            <img class="trigger-modal" src="{{ element.marker.source.url }}" height="50" width="50">
+            <img class="trigger-modal" src="{{ element.augmented.source.url }}" height="50" width="50">
             <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
         {% else %}
             allow
         {% endif %}
     </div>
 {% endfor %}
-
-
+{% with%}
+    {% include "users/components/marker-modal.jinja2" %}
+{% endwith %}
