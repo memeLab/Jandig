@@ -10,7 +10,7 @@
     <p id="element-author"></p>
     <p id="element-upload-info"></p>
     <p id="element-analytics"></p>
-    <p> Download file:</p>
+    <p id="download"> Download file:</p>
     <p id="element-download"></p>
     
     <button id="share-element" class="select-btn"></button>
@@ -38,6 +38,16 @@
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
+        function usedInExhibit(exhibits_count, marker_src, augmented_src){
+            $('#element-analytics').replaceWith(
+                '<p id="element-analytics">'+
+                {{ _(" Used in ")|tojson }} +
+                '<a href="#">' + exhibits_count +
+                {{ _(" exhibits")|tojson }} + '</a>' +
+                '<img id="marker-src" src="' + marker_src + '"/>' +
+                '<img id="augmented-src" src="' + augmented_src + '"/></p>'
+            )
+        }
         function downloadElement(element_type, file_size){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
@@ -51,28 +61,50 @@
                 )
             }
         }
+        function replaceButtons(title, description){
+            $('#share-element').replaceWith(
+               '<p> Title:' + title + '</p>'
+            );
+            $('#create-artwork').replaceWith(
+                '<p>' + description + '</p>'
+            );
+        }
         $('.trigger-modal').click(function(){
             let elemType = $(this).attr('data-elem-type');
             $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             
             let elemUrl = {{url('element-get')|tojson}};
             elemUrl += ("?" + elemType + "_id=" + $(this).attr('id'));
+            
+            if(elemType != "artwork"){
+                $('#share-element').text(
+                    {{ _('Share this ')|tojson }} + elemType
+                );
+                $('#create-artwork').text(
+                     {{ _('Create artwork with this ')|tojson }} + elemType
+                );
 
-            $('#share-element').text(
-                 {{ _('Share this ')|tojson }} + elemType
-            )
-            $('#create-artwork').text(
-                 {{ _('Create artwork with this ')|tojson }} + elemType
-            )
-            $.ajax({
-                url: elemUrl,
-                success: function(data){
-                    elementAuthor(data['author']);
-                    uploadedBy(data['owner'], data['uploaded_at']);
-                    usedIn(data['artworks'], data['exhibits'], data['source']);
-                    downloadElement(data['type'], data['size']/1000);
-                }
-            });
+                $.ajax({
+                    url: elemUrl,
+                    success: function(data){
+                        elementAuthor(data['author']);
+                        uploadedBy(data['owner'], data['uploaded_at']);
+                        usedIn(data['artworks'], data['exhibits'], data['source']);
+                        downloadElement(data['type'], data['size']/1000);
+                    }
+                });
+            }else{
+                $('#download').attr('hidden', true)
+                $.ajax({
+                    url: elemUrl,
+                    success: function(data){
+                        elementAuthor(data['author']);
+                        usedInExhibit(data['exhibits'], data['marker'], data['augmented']);
+                        replaceButtons(data['title'], data['description']);
+                    }
+                });
+            }
         })
+        
     </script>
 {% endblock %}

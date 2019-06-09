@@ -164,17 +164,33 @@ def element_get(request):
     elif request.GET.get('object_id', None):
         element_type = 'object'
         element = get_object_or_404(Object, pk=request.GET['object_id'])
+    elif request.GET.get('artwork_id', None):
+        element_type = 'artwork'
+        element = get_object_or_404(Artwork, pk=request.GET['artwork_id'])
+        
+    if element_type == 'artwork':
+        data = {
+            'type': element_type,
+            'author': element.author.user.username,
+            'exhibits': element.exhibits_count,
+            'created_at': element.created_at.strftime('%d %b, %Y'),
+            'marker': element.marker.source.url,
+            'augmented': element.augmented.source.url,
+            'title': element.title,
+            'description': element.description,
+        }
+    else:
+        data = {
+            'type': element_type,
+            'author': element.author,
+            'owner': element.owner.user.username,
+            'artworks': element.artworks_count,
+            'exhibits': element.exhibits_count,
+            'source': element.source.url,
+            'size': element.source.size,
+            'uploaded_at': element.uploaded_at.strftime('%d %b, %Y'),
+        }
 
-    data = {
-        'type': element_type,
-        'author': element.author,
-        'owner': element.owner.user.username,
-        'artworks': element.artworks_count,
-        'exhibits': element.exhibits_count,
-        'source': element.source.url,
-        'size': element.source.size,
-        'uploaded_at': element.uploaded_at.strftime('%d %b, %Y'),
-    }
     serialized = json.dumps(data)
 
     return HttpResponse(serialized, content_type='application/json')
