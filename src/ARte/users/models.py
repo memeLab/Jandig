@@ -50,6 +50,15 @@ class Object(models.Model):
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
 
+    @property
+    def artworks_count(self):
+        return Artwork.objects.filter(augmented=self).count()
+
+    @property
+    def exhibits_count(self):
+        from core.models import Exhibit
+        return Exhibit.objects.filter(artworks__augmented=self).count()
+
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
 def remove_source_file(sender, instance, **kwargs):

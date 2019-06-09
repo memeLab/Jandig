@@ -157,16 +157,23 @@ def marker_upload(request):
     return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
 
 
-def marker_get(request):
-    marker = get_object_or_404(Marker, pk=request.GET['marker_id'])
+def element_get(request):
+    if request.GET.get('marker_id', None):
+        element_type = 'marker'
+        element = get_object_or_404(Marker, pk=request.GET['marker_id'])
+    elif request.GET.get('object_id', None):
+        element_type = 'object'
+        element = get_object_or_404(Object, pk=request.GET['object_id'])
+
     data = {
-        'marker_author': marker.author,
-        'marker_owner': marker.owner.user.username,
-        'marker_artworks': marker.artworks_count,
-        'marker_exhibits': marker.exhibits_count,
-        'marker_source': marker.source.url,
-        'marker_size': marker.source.size,
-        'marker_uploaded_at': marker.uploaded_at.strftime('%d %b, %Y'),
+        'type': element_type,
+        'author': element.author,
+        'owner': element.owner.user.username,
+        'artworks': element.artworks_count,
+        'exhibits': element.exhibits_count,
+        'source': element.source.url,
+        'size': element.source.size,
+        'uploaded_at': element.uploaded_at.strftime('%d %b, %Y'),
     }
     serialized = json.dumps(data)
 

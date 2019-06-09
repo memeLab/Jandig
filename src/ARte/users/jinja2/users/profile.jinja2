@@ -40,6 +40,7 @@
                 {% else %}
                     {{_("You have no objects :c")}}
                 {% endif %}
+            {% include "users/components/elements-modal.jinja2" %}
         {% endif %}
         <a class="option-link" href="edit/">{{ _('Edit personal info') }}</a>
         <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload marker') }}</a>
