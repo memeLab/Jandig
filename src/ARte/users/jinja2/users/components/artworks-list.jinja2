@@ -1,8 +1,7 @@
 {# Receives a list of markers/objects to list #}
 
 {% block content %}
-    <section id="repo-{{element_type}}" class="repository-list">
-
+   
         {% with repository_list = repository_list, element_type="artwork" %}
             {% include "users/components/item-list.jinja2" %}
         {% endwith%}
@@ -33,5 +32,4 @@
                 artworks_input.val(str_artworks);
             });
         </script>
-    </section>
 {% endblock %}

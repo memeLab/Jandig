@@ -7,30 +7,40 @@
 
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/profile.css">
+        <link rel="stylesheet" href="/static/css/repository-list.css">
+
         {% if profile %}
             {{_("Your Exhibits")}}
                 {% if exhibits %}
                     {% with repository_list = exhibits, element_type="exhibit"%}
                         {% include "users/components/item-list.jinja2" %}
-                    {% endwith%}
+                    {% endwith %}
                 {% else %}
-                    {{_("You have no exhibits :c")}}
+                    <section id="repo-{{element_type}}" class="repository-list">
+                        <p>{{_("You have no exhibits :c")}}</p>
+                        <a href="{{ url('exhibit-create') }}">{{ _('Create') }}</a>
+                    </section>
                 {% endif %}
             {{_("Your Artworks")}}
                 {% if artworks %}
                     {% with repository_list = artworks, element_type="artwork" %}
                         {% include "users/components/item-list.jinja2" %}
-                    {% endwith%}
+                    {% endwith %}
                 {% else %}
-                    {{_("You have no artworks :c")}}
-                {% endif %}
+                    <section id="repo-{{element_type}}" class="repository-list">
+                        <p>{{_("You have no artworks :c")}}</p>
+                        <a href="{{ url('artwork-creation') }}">{{ _('Create') }}</a>
+                    </section>                {% endif %}
             {{_("Your Markers")}}
                 {% if markers %}
                     {% with repository_list = markers, element_type="marker"%}
                         {% include "users/components/item-list.jinja2" %}
-                    {% endwith%}
+                    {% endwith %}
                 {% else %}
-                    {{_("You have no markers :c")}}
+                    <section id="repo-{{element_type}}" class="repository-list">
+                        <p>{{_("You have no markers :c")}}</p>
+                        <a href="{{ url('marker-upload') }}">{{ _('Create') }}</a>
+                    </section>
                 {% endif %}
             {{_("Your Objects")}}
                 {% if objects %}
@@ -38,7 +48,10 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith%}
                 {% else %}
-                    {{_("You have no objects :c")}}
+                    <section id="repo-{{element_type}}" class="repository-list">
+                        <p>{{_("You have no objects :c")}}</p>
+                        <a href="{{ url('object-upload') }}">{{ _('create') }}</a>
+                    </section>
                 {% endif %}
             {% include "users/components/elements-modal.jinja2" %}
         {% endif %}
