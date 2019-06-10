@@ -75,3 +75,9 @@ class Artwork(models.Model):
     augmented = models.ForeignKey(Object, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
+    created_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def exhibits_count(self):
+        from core.models import Exhibit
+        return Exhibit.objects.filter(artworks__in=[self]).count()
