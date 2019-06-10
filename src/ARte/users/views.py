@@ -82,7 +82,7 @@ def get_augmented(request, form):
     return augmented
 
 @login_required
-def artwork_creation(request):
+def create_artwork(request):
     if request.method == 'POST':
         form = ArtworkForm(request.POST, request.FILES)
 
@@ -121,7 +121,7 @@ def artwork_creation(request):
 
 
 @login_required
-def exhibit_creation(request):
+def create_exhibit(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
         if form.is_valid():
@@ -262,4 +262,52 @@ def edit_artwork(request):
         }
     )
 
-        
+
+@login_required
+def edit_exhibit(request): 
+    id = request.GET.get("id","-1")
+    model = Exhibit.objects.filter(id=id)
+    if(not model or model.first().owner != Profile.objects.get(user=request.user)):
+        raise Http404
+
+    if(request.method == "POST"):
+        form = ExhibitForm(request.POST)
+
+        form.full_clean()
+        if form.is_valid():
+            ids = form.cleaned_data['artworks'].split(',')
+            artworks = Artwork.objects.filter(id__in=ids)
+
+            model_data={
+                "name":form.cleaned_data["name"],
+                "slug": form.cleaned_data["slug"],
+            }
+            model.update(**model_data)
+            model = model.first()
+            model.artworks.set(artworks)
+            
+            return redirect('profile')
+
+    model = model.first()
+    model_artworks = ""
+    for artwork in model.artworks.all():
+        model_artworks += str(artwork.id) + ","
+
+    model_artworks = model_artworks[:-1]
+
+    model_data = {
+        "name": model.name,
+        "slug": model.slug,
+        "artworks": model_artworks
+    }
+
+    artworks = Artwork.objects.filter(author=request.user.profile)
+    return render(
+        request,
+        'users/exhibit-create.jinja2',
+        {
+            'form': ExhibitForm(initial=model_data), 
+            'artworks': artworks,
+            'selected_artworks': model_artworks,
+        }
+    )

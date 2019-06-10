@@ -12,7 +12,7 @@
                 <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
             {% else %}
                 <img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">
-                <a href="{{ url('edit-artwork') }}?element={{element_type}}-{{element.id}}">edit</a>
+                <a href="{{ url('edit-exhibit') }}?id={{element.id}}">edit</a>
             {% endif %}
         </div>
     {% endfor %}
