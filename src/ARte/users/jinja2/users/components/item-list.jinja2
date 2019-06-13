@@ -1,7 +1,10 @@
 {# FIXME: maybe this can be improved #}
 <link rel="stylesheet" href="/static/css/elements-modal.css">
-
- <section id="repo-{{element_type}}" class="repository-list">
+{% if element_type == "exhibit"%}
+    <section id="repo-{{element_type}}" class="exhibit-list">
+{% else %}
+    <section id="repo-{{element_type}}" class="repository-list">
+{% endif %}
     {% for element in repository_list %}
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
@@ -12,7 +15,11 @@
                 <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
             {% else %}
                 <img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">
-                <a href="{{ url('edit-exhibit') }}?id={{element.id}}">edit</a>
+                <div class="exhibit-info">
+                    <p class="exhibit-name">Name: {{element.name}}</p>
+                    <p class="exhibit-slug">URL {{element.slug}}</p>
+                    <a href="{{ url('edit-exhibit') }}?id={{element.id}}">edit</a>
+                </div>
             {% endif %}
         </div>
     {% endfor %}
