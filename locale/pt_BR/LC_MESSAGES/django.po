@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-18 16:31-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/ARte/config/settings.py:136
+msgid "English"
+msgstr ""
+
+#: src/ARte/config/settings.py:137
+msgid "Brazilian Portuguese"
+msgstr ""
+
+#: src/ARte/users/forms.py:17
+msgid "Your e-mail address"
+msgstr ""
+
+#: src/ARte/users/forms.py:22
+msgid "Your username"
+msgstr ""
+
+#: src/ARte/users/forms.py:28
+msgid "email"
+msgstr ""
+
+#: src/ARte/users/forms.py:29
+msgid "chosen username"
+msgstr ""
+
+#: src/ARte/users/forms.py:30 src/ARte/users/forms.py:52
+msgid "password"
+msgstr ""
+
+#: src/ARte/users/forms.py:31
+msgid "confirm password"
+msgstr ""
+
+#: src/ARte/users/forms.py:41
+msgid "Email address must be unique"
+msgstr ""
+
+#: src/ARte/users/forms.py:51
+msgid "username / email"
+msgstr ""
+
+#: src/ARte/users/forms.py:69
+msgid "browse file"
+msgstr ""
+
+#: src/ARte/users/forms.py:70
+msgid "declare different author name"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/base.jinja2:30
+#: src/ARte/core/jinja2/core/base2.jinja2:21
+msgid "Please override the \"content\" block of your template!"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:26
+#: src/ARte/users/jinja2/users/login.jinja2:9
+#: src/ARte/users/jinja2/users/signup.jinja2:8
+msgid "Sign up"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:33
+msgid "Repository"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:34
+msgid "Get involved"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:35
+msgid "Documentation"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:55
+msgid "Authorize camera"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:63
+msgid "Legal text"
+msgstr ""
+
+#: src/ARte/core/jinja2/core/home.jinja2:64
+msgid "Footer links"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/login.jinja2:8
+msgid "Login to continue"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/login.jinja2:25
+#: src/ARte/users/jinja2/users/signup.jinja2:30
+msgid "Submit"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/login.jinja2:28
+msgid "Recover password"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:9
+msgid "Edit personal info"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:10
+#: src/ARte/users/jinja2/users/upload-marker.jinja2:4
+msgid "Upload marker"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:11
+msgid "Upload object"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:12
+msgid "Create Jandig artwork"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:13
+msgid "Create exhibit"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:16
+msgid "Log out"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/profile.jinja2:17
+msgid "Remove account"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/signup.jinja2:9
+msgid "Log in"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/signup.jinja2:23
+msgid "Legal agreement"
+msgstr ""
+
+#: src/ARte/users/jinja2/users/signup.jinja2:27
+msgid "Remember me"
+msgstr ""

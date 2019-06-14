@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.shortcuts import redirect
 
 from .helpers import handle_upload_image
-from .forms import UploadFileForm
-from .models import Artwork
+from .forms import UploadFileForm, ExhibitForm
+from .models import Artwork2, Exhibit
 
 
 def service_worker(request):
@@ -14,31 +15,6 @@ def service_worker(request):
 def index(request):
     ctx = {
         "artworks": [
-            Artwork(patt="antipodas", gif="antipodas", scale="3 3"),
-            Artwork(patt="gueixa", gif="gueixa"),
-            Artwork(patt="manekineko", gif="manekineko"),
-            Artwork(patt="pedrinhazinha", gif="pedrinhazinha"),
-            Artwork(patt="peixe", gif="peixe"),
-            Artwork(patt="flyingsaucer", gif="flyingsaucer"),
-            # Artwork(patt="robo3dandando", gif="robo3dandando"),
-            # Artwork(patt="robo3dvoando", gif="robo3dvoando"),
-            Artwork(patt="andando", gif="andando"),
-            Artwork(patt="robo-pula", gif="robo-pula"),
-            Artwork(patt="robo-rodas", gif="robo-rodas", scale="1 1"),
-            # Artwork(patt="robos", gif="robos"), # it seems that the files are not here
-            Artwork(patt="samurai", gif="samurai", scale="3 3"),
-            Artwork(patt="janela", gif="janela"),
-            Artwork(patt="temaki", gif="temaki"),
-            Artwork(patt="tokusatsu", gif="tokusatsu"),
-            # new
-            Artwork(patt="catavento", gif="catavento", scale="1.5 1.5"),
-            Artwork(patt="hamsa", gif="hamsa"), 
-
-	    # disabled
-            # Artwork(patt="saucer", gif="saucer"),
-            # Artwork(patt="binoculos", gif="janela"),
-            # Artwork(patt="gueixa2", gif="gueixa2"),
-    	    # Artwork(patt="jandig-marker", gif="moonwalker"),
         ]
     }
 
@@ -55,3 +31,14 @@ def upload_image(request):
     else:
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
+
+def exhibit_select(request):
+    if request.method == 'POST':
+        form = ExhibitForm(request.POST)
+        if form.is_valid():
+            exhibit = form.cleaned_data.get('exhibit')
+            return redirect("/" + exhibit.slug)
+    else:
+        form = ExhibitForm()
+
+    return render(request, 'core/exhibit_select.jinja2', {'form':form})

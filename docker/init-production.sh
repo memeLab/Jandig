@@ -1,10 +1,10 @@
 #!/bin/bash
 
-domains=(jandig2.memelab.com.br jandig.app)
+domains=(dev.jandig.app staging.jandig.app jandig.app)
 rsa_key_size=4096
 data_path="../src/data/certbot"
 email="" # Adding a valid address is strongly recommended
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 composefile=./docker-compose.deploy.yml
 
 
@@ -12,11 +12,6 @@ if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     docker-compose -f $composefile down
-    docker rmi jandigarte/django:latest
-    docker volume prune
-    docker-compose -f $composefile up -d postgres
-    docker-compose -f $composefile up -d watchtower
-    docker-compose -f $composefile up -d django
     docker-compose -f $composefile up -d nginx
     exit
   fi
@@ -31,14 +26,6 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
-echo "### Starting postgres ..."
-docker-compose -f $composefile up -d postgres
-
-echo "### Starting Watchtower ..."
-docker-compose -f $composefile up -d watchtower
-
-echo "### Starting Django ..."
-docker-compose -f $composefile up -d django
 
 for domain in ${domains[@]}
 do

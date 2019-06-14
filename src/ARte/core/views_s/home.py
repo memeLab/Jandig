@@ -1,10 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, Http404
 from django.urls import reverse
 
 
 def home(request):
-    return render(request, 'core/home.jinja2')
+    exhibits = 0
+    return render(request, 'users/profile.jinja2',
+    {'exhibits': exhibits})
 
 
 def ar_viewer(request):
     return render(request, 'core/exhibit.jinja2')
+
+
+def docs(request):
+    raise Http404
+
+def community(request):
+    return render(request, 'core/community.jinja2')
+
+def marker_generator(request):
+    return render(request,'core/generator.html',{})

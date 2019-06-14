@@ -3,11 +3,22 @@ src/ARte/config/__pycache__/
 /collect/
 *.pyc
 
+##vscode
 \.vscode/
 
+##sqlite
 *.sqlite3
 
 src/data/certbot/
 docker/node_modules/
 node_modules/
 package-lock.json
+
+#**/**/**/migrations/*
+
+## pycharm
+.idea
+
+# media files
+src/ARte/users/media/
+docker/media/

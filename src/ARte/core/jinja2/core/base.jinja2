@@ -1,17 +1,16 @@
 <!doctype html>
 <html>
     <head>
-        <link id="manifest" rel="manifest" href="static/manifest.json">
-        <link rel="stylesheet" href="static/css/main.css">
-        
-        <script src="static/js/bowser.js"></script>
-        <script src="static/js/detect.js"></script>
-        <script src="static/js/main.js"></script>
+        <link id="manifest" rel="manifest" href="/static/manifest.json">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script src="/static/js/bowser.js"></script>
+        <script src="/static/js/detect.js"></script>
+        <script src="/static/js/main.js"></script>
 
-        <script src="static/artoolkit.min.js" defer></script>
-        <script src="static/three.min.js" defer></script>
-        <script src="static/artoolkit.three.js" defer></script>
-        <script src="static/ar-gif.min.js" defer></script>
+        <script src="/static/artoolkit.min.js" defer></script>
+        <script src="/static/three.min.js" defer></script>
+        <script src="/static/artoolkit.three.js" defer></script>
+        <script src="/static/ar-gif.min.js" defer></script>
 
         <title>Jandig ARte</title>
         <meta name="Description" content="Augmented reality artworks!">
@@ -33,7 +32,7 @@
             {% endblock %}
         {% endif %}
         {% include "core/ui.jinja2" %}
-        <script src="static/js/multi-marker.js"></script>
-        <script src="static/js/takePhoto.js"></script>
+        {# <script src="/static/js/multi-marker.js"></script> #}
+        <script src="/static/js/takePhoto.js"></script>
     </body>
 </html>

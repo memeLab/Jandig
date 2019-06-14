@@ -8,6 +8,10 @@ body {
     background-color: #EFEFEF;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
 a:visited{
     color: black;
     text-decoration: none;
@@ -25,6 +29,16 @@ a:visited{
     margin-bottom: 5%;
 }
 
+.header .logo{
+    max-width: 50%;
+}
+
+.header .logo img{
+    max-width: 85%;
+    height: auto;
+    margin: auto;
+}
+
 .header .signup-btn {
     background-color: black;
     text-align: center;
@@ -38,6 +52,17 @@ a:visited{
     color: white;
 }
 
+.header {
+    font-size: 75%;
+}
+
+.header .welcome p a {
+    color: #0000EE;
+}
+.header .welcome p a:visited {
+    color: #0000EE;
+}
+
 .useful-links {
     margin-bottom: 5%;
 }
@@ -45,7 +70,6 @@ a:visited{
 .useful-links .container {
     height: 50px;
     margin: auto;
-    /* padding: 1%; */
 }
 
 .useful-links a {
@@ -62,6 +86,24 @@ a:visited{
     background-color: #D9D9D9;
 }
 
+.text-content{
+    border: 1px solid #4F4545;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 4%;
+    background-color: #ddd;
+    max-height: 40vmax;
+    overflow: scroll;
+}
+.text-content .title{
+    font-weight: bold;
+    font-size: larger;
+    margin:0;
+}
+.text-content .paragraph{
+    font-size: small;
+    margin:0 0 15px 0;
+}
 .use-guide h3 {
     padding-top: 15%;
     margin-left: 3%;

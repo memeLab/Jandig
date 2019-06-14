@@ -1,46 +1,38 @@
-{% extends '/core/base2.jinja2' %}
+<!doctype html>
+<html>
+    <head>
+        <link id="manifest" rel="manifest" href="/static/manifest.json">
+        <link rel="stylesheet" href="/static/css/home.css">
+        <title>Jandig ARte</title>
+        <meta name="Description" content="Augmented reality artworks!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 
-{% block content %}
-    <section class="header">
-        <div class="container flex">
-            <div class="logo">
-                <img src="static/images/icons/Icon-40.png">
-            </div>
-            {% if request.user.is_authenticated %}
-                <div class="welcome">
-                    <p>
-                        Welcome, {{ request.user.username }}  
-                    </p>
+    <body>
+        {% include "core/header.jinja2" %}
+
+        {% include "core/useful_links.jinja2" %}
+        {% if (request.user.is_authenticated and request.path == '/community/') or (request.path == '/community/')%}
+            {% block community %}
+            {% endblock %}
+        {% elif request.user.is_authenticated %}
+            {% block content %}
+            {% endblock %}
+        {% else %}
+            <section class="use-guide">
+                <h3>How to use</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Quisque urna tortor, vehicula nec
+                sodales ut, cursus in ipsum. Ut convallis rhoncus
+                nulla, a finibus leo ullamcorper non.re tincidunt
+                magna, vel fringilla nisi tincidunt sit amet</p>
+                <div class="authorize-camera">
+                    <a href="/exhibit_select"> {{ _('Authorize camera') }}</a>
                 </div>
-            {% else %}
-                <div class="signup-btn">
-                    <a href="users/signup">Sign up</a>
-                </div>
-            {% endif %}
-        </div>
-    </section>
-    <section class="useful-links">
-        <div class="container flex">
-            <a href="https://github.com/memeLab/ARte">Repository</a>
-            <a href="community">Get involved</a>
-            <a href="docs">Documentation</a>
-        </div>
-    </section>
-    <section class="use-guide">
-        <h3>How to use</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Quisque urna tortor, vehicula nec
-        sodales ut, cursus in ipsum. Ut convallis rhoncus
-        nulla, a finibus leo ullamcorper non.re tincidunt
-        magna, vel fringilla nisi tincidunt sit amet</p>
-        <div class="authorize-camera">
-            <a href="ar">Authorize camera</a>
-        </div>
-    </section>
-    <section class="footer">
-        <div class="container flex">
-            <a href="#">Legal text</a>
-            <a href="#">Footer links</a>
-        </div>
-    </section>
-{% endblock %}
+            </section>
+        {% endif %}
+        {% include "core/footer.jinja2" %}
+    </body>
+</html>

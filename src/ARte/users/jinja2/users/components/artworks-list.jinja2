@@ -1,0 +1,42 @@
+{# Receives a list of markers/objects to list #}
+
+{% block content %}
+    <section id="repo-{{element_type}}" class="repository-list">
+
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="/static/css/repository-list.css">
+
+        {% for element in repository_list %}
+            <div id="{{ element.id }}" class="repository-item">
+                <img src="{{ element.marker.source.url }}" height="50" width="50">
+            </div>
+        {% endfor %}
+
+        <script>
+            let artworks = {}
+            let str_artworks = ""
+            $('.repository-item').click(function(){
+                let elementId = $(this).attr('id');
+                let sectionId = $(this).parent().attr('id');
+                
+                // reset background
+                if($(this).css('background-color') == "rgb(255, 0, 0)"){
+                    $(this).css('background-color', "rgb(255,255,255)");
+                    delete artworks[elementId]
+                }else{
+                    $(this).css('background-color', "rgb(255,0,0)");
+                    artworks[elementId] = elementId
+                }
+                str_artworks = ""
+                for (element in artworks){
+                    str_artworks += element+","
+                }
+                // Remove last comma 
+                str_artworks = str_artworks.substr(0, str_artworks.length-1)
+
+                let artworks_input = $('#artworks-selected > input');
+                artworks_input.val(str_artworks);
+            });
+        </script>
+    </section>
+{% endblock %}

@@ -1,6 +1,7 @@
 import os
 import environ
 from .wait_db import start_services
+from django.utils.translation import ugettext_lazy as _
 
 
 ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
@@ -46,10 +47,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
-if env.bool('DEV_STATIC'):
+if env.bool('DEV_STATIC', False):
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     print('\n ------- SERVING STATIC FILES USING WHITENOISE! -------\n')
@@ -83,7 +85,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-if env.bool('DEV_DB'):
+if env.bool('DEV_DB', False):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -124,7 +126,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LOCALE_PATHS = (
+    os.path.join(str(ROOT_DIR), 'locale'),
+)
+
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = (
+    ('en_US', _('English')),
+    ('pt_BR', _('Brazilian Portuguese')),
+)
 
 TIME_ZONE = 'UTC'
 
@@ -146,3 +157,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core', 'static'),
     os.path.join(BASE_DIR, 'users', 'static')
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
+
+# LOGIN / LOGOUT
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'

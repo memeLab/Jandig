@@ -3,6 +3,7 @@ version: '3.5'
 services:
   django:
     image: jandigarte/django:latest
+    restart: always
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
@@ -10,6 +11,8 @@ services:
       - 8000:8000
     volumes:
       - ../src/ARte/:/src/ARte/
+      - ./media/:/src/ARte/users/media/
+    
     env_file:
       - ../src/.envs/.django
       - ../src/.envs/.postgres

@@ -1,0 +1,88 @@
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.flex a{
+    color: white;
+    text-decoration: none;
+}
+
+.login-modal {
+    border: 1px solid #4F4545; 
+    margin-top: 20%;
+    margin-left: 10%;
+    margin-bottom:25%;
+    z-index: 1;
+    width: 75%;
+}
+
+.login-modal .login-form {
+    background-color: white;
+    padding-top: 3%;
+    text-align: center;
+}
+
+.login-modal .login-form .login-field {
+    text-align: center;
+}
+
+.login-field input{
+    font-size: 15px;;
+    height: 35px;
+    width: 90%;
+    text-align: center;
+    border-radius: 8px;
+    border-color: #4286f4;
+}
+
+.form-options{
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 5%;
+}
+
+.form-options input{
+    width: 20px;
+    height: 20px;
+}
+
+.login-form .recover-password{
+    padding: 5%;
+    text-align: left;
+}
+
+.login-form .recover-password a{
+    text-decoration: none;
+    color: #2872e7;
+}
+
+.login-form .recover-password a:visited{
+    color: none;
+}
+
+.submit-btn {
+    font-size: 16px;;
+    height: 40px;
+    width: 90%;
+    text-align: center;
+    background-color: #D9D9D9;
+    border-radius: 8px;
+    border-color: #4286f4;
+    margin-bottom: 5%;
+}
+
+::placeholder{
+    color: black;
+    opacity: 1;
+}
+
+
+body{
+    background-image: url(https://lh3.googleusercontent.com/7RreXoEKQGWqalWJAX3R8Jf5RKBMJUcjWgkpa-m4ygjcDirMkGkc2OPHYBBR3iPbFqCPVxc_8BTtCoTw8PXOu6y0keljDC4eHDvFGdzg5GWdlt0nccgGMalXfX8nRqNveMoKBGDVGcI1Qxkw4E4bKB05o13GMkEe-vJ67L6yq2q-MGKyjimyNAhmXyvH-nuJ8DoNq9Ek3-ums0hFSlsUKtAxXLMDYNE0neHQ0ECjEyCSNw6xSsa6oHwisSX5qC6TJ44rh50ukDc9LCXpmhoqjUNfzFTlo7ixlNARdGXKUDGggn_7QTCjGDG5S1888O4d0zgEd9eHqN0igh_rnXp0AY9BDtTSq6IK5v8JPHFua4RyENH3Ecg0dy_UzZ9rOcEFUvk1PO9YPtSHibA14cbzj-WD-Td2OI39Ld4XXcTjS4xsiP5UR1SUZn48A6OwgAalAbn1wdvBQ5A0hkjYQDGZRaBXqPBwFURNOOKz8mT_c9y5XM8cFOVnB4T7HxGO-nSacfGeApwTlQ9EBERnpkrMsFpJ7S3eGrxyfPMqp-uqXy9qPAxtMICjHwvpE91MFyJS4tC6CUUqhkENPI8_R4_auPgA40bL3E8DPAf0vHt3L6FF_8euc67HoAn8sGwNDSd7semtiIvkuXB2gvSr1xBD1faVKg7K25y-AQM1r1xXrnYGbqjkXlDZS-zoZdhEX57ZvBGA1NhyjxHxcHbgyjty8vbToQ=w487-h649-no);
+    background-repeat: no-repeat;
+}
