@@ -1,4 +1,4 @@
-.flex {
+/*.flex {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -20,24 +20,17 @@ a:visited{
 .container {
     max-width: 400px;
     margin: 0 auto;
-    border: 1px solid #4F4545;
 }
 
 .header .container {
-    margin-top: 5%;
+    margin-top: 3%;
     height: 100px;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 .header .logo{
     max-width: 50%;
-}
-
-.header .logo img{
-    max-width: 85%;
-    height: auto;
-    margin: auto;
-}
+}*/
 
 .header .signup-btn {
     background-color: black;
@@ -52,7 +45,7 @@ a:visited{
     color: white;
 }
 
-.header {
+/*.header {
     font-size: 75%;
 }
 
@@ -64,18 +57,8 @@ a:visited{
 }
 
 .useful-links {
-    margin-bottom: 5%;
-}
-
-.useful-links .container {
-    height: 50px;
-    margin: auto;
-}
-
-.useful-links a {
-    text-decoration: none;
-    font-size: 75%;
-}
+    margin-bottom: 2%;
+}*/
 
 .use-guide {
     max-width: 400px;
@@ -125,6 +108,11 @@ a:visited{
 .use-guide a {
     text-decoration: none;
     color: white;
+}
+
+.footer {
+    min-height: 50px;
+    margin-top: 2%;
 }
 
 .footer .container {
