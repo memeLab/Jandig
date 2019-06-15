@@ -1,10 +1,13 @@
+import json
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
+from django.http import Http404
+from django.http import HttpResponse
 
 from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm
-from .models import Marker, Object, Artwork
+from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 
 
@@ -29,55 +32,68 @@ def signup(request):
 
 @login_required
 def profile(request): 
-    exhibits = 0
-    return render(request, 'users/profile.jinja2',
-    {'exhibits': exhibits})
+    profile = Profile.objects.get(user=request.user)
+    
+    exhibits = Exhibit.objects.filter(owner=profile)
+    artworks = Artwork.objects.filter(author=profile)
+    markers = Marker.objects.filter(owner=profile)
+    objects = Object.objects.filter(owner=profile)
+    ctx = {
+        'exhibits': exhibits,
+        'artworks': artworks,
+        'markers':markers,
+        'objects':objects,
+        'profile':True
+    }
+    return render(request, 'users/profile.jinja2', ctx)
 
+def get_marker(request, form):
+    marker_src = form.cleaned_data['marker']
+    marker_author = form.cleaned_data['marker_author']
+    existent_marker = form.cleaned_data['existent_marker']
+    if(marker_src and marker_author):
+        marker_instance = Marker(source=marker_src, author=marker_author)
+        marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
+        marker.owner = request.user.profile
+        marker.save()
+    elif(existent_marker):
+        qs = Marker.objects.filter(id=existent_marker)
+        if qs:
+            marker = qs[0]
+            marker.owner = request.user.profile
+
+    return marker
+
+def get_augmented(request, form):
+    object_src = form.cleaned_data['augmented']
+    object_author = form.cleaned_data['augmented_author']
+    existent_object = form.cleaned_data['existent_object']
+    if(object_src and object_author):
+        object_instance = Object(source=object_src, author=object_author)
+        augmented = UploadObjectForm(instance=object_instance).save(commit=False)
+        augmented.owner = request.user.profile
+        augmented.save()
+    elif(existent_object):
+        qs = Object.objects.filter(id=existent_object)
+        if qs:
+            augmented = qs[0]
+            augmented.owner = request.user.profile
+
+    return augmented
 
 @login_required
-def artwork_creation(request):
+def create_artwork(request):
     if request.method == 'POST':
         form = ArtworkForm(request.POST, request.FILES)
 
         if form.is_valid():
-            marker_src = form.cleaned_data['marker']
-            marker_author = form.cleaned_data['marker_author']
-            object_src = form.cleaned_data['augmented']
-            object_author = form.cleaned_data['augmented_author']
 
-            existent_marker = form.cleaned_data['existent_marker']
-            existent_object = form.cleaned_data['existent_object']
-
-            marker = None
-            augmented = None
-
-            if(marker_src and marker_author):
-                marker_instance = Marker(source=marker_src, author=marker_author)
-                marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
-                marker.owner = request.user.profile
-                marker.save()
-            elif(existent_marker):
-                qs = Marker.objects.filter(id=existent_marker)
-                if qs:
-                    marker = qs[0]
-                    marker.owner = request.user.profile
-
-            if(object_src and object_author):
-                object_instance = Object(source=object_src, author=object_author)
-                augmented = UploadObjectForm(instance=object_instance).save(commit=False)
-                augmented.owner = request.user.profile
-                augmented.save()
-            elif(existent_object):
-                qs = Object.objects.filter(id=existent_object)
-                if qs:
-                    augmented = qs[0]
-                    augmented.owner = request.user.profile
+            marker = get_marker(request,form)
+            augmented = get_augmented(request, form)            
         
             if marker and augmented:
-
                 artwork_title = form.cleaned_data['title']
                 artwork_desc = form.cleaned_data['description']
-
                 Artwork(
                     author=request.user.profile,
                     marker=marker,
@@ -105,12 +121,9 @@ def artwork_creation(request):
 
 
 @login_required
-def exhibit_creation(request):
+def create_exhibit(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
-        form.full_clean()
-        print(form.cleaned_data['artworks'])
-
         if form.is_valid():
             ids = form.cleaned_data['artworks'].split(',')
             artworks = Artwork.objects.filter(id__in=ids)
@@ -139,13 +152,48 @@ def exhibit_creation(request):
     )
 
 
-
-
-
-
 @login_required
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
+
+
+def element_get(request):
+    if request.GET.get('marker_id', None):
+        element_type = 'marker'
+        element = get_object_or_404(Marker, pk=request.GET['marker_id'])
+    elif request.GET.get('object_id', None):
+        element_type = 'object'
+        element = get_object_or_404(Object, pk=request.GET['object_id'])
+    elif request.GET.get('artwork_id', None):
+        element_type = 'artwork'
+        element = get_object_or_404(Artwork, pk=request.GET['artwork_id'])
+        
+    if element_type == 'artwork':
+        data = {
+            'type': element_type,
+            'author': element.author.user.username,
+            'exhibits': element.exhibits_count,
+            'created_at': element.created_at.strftime('%d %b, %Y'),
+            'marker': element.marker.source.url,
+            'augmented': element.augmented.source.url,
+            'title': element.title,
+            'description': element.description,
+        }
+    else:
+        data = {
+            'type': element_type,
+            'author': element.author,
+            'owner': element.owner.user.username,
+            'artworks': element.artworks_count,
+            'exhibits': element.exhibits_count,
+            'source': element.source.url,
+            'size': element.source.size,
+            'uploaded_at': element.uploaded_at.strftime('%d %b, %Y'),
+        }
+
+    serialized = json.dumps(data)
+
+    return HttpResponse(serialized, content_type='application/json')
 
 
 @login_required
@@ -166,3 +214,100 @@ def upload_view(request, form_class, form_type, route):
 
     return render(request,'users/upload.jinja2',
         {'form_type': form_type, 'form': form, 'route': route})
+
+
+@login_required
+def edit_artwork(request): 
+    id = request.GET.get("id","-1")
+    model = Artwork.objects.filter(id=id)
+    if(not model or model.first().author != Profile.objects.get(user=request.user)):
+        raise Http404
+
+    if(request.method == "POST"):
+        form = ArtworkForm(request.POST, request.FILES)
+
+        form.full_clean()
+        if form.is_valid():
+            model_data={
+                "marker":get_marker(request,form),
+                "augmented": get_augmented(request, form),
+                "title": form.cleaned_data["title"],
+                "description": form.cleaned_data["description"],
+            }
+            print(model_data['augmented'])
+            model.update(**model_data)
+            return redirect('profile')
+
+    model = model.first()
+    model_data = {
+        "marker": model.marker,
+        "marker_author": model.marker.author,
+        "augmented": model.augmented,
+        "augmented_author": model.augmented.author,
+        "title": model.title,
+        "description": model.description,
+        "existent_marker": model.marker.id,
+        "existent_object": model.augmented.id,
+    }
+
+    return render(
+        request,
+        'users/artwork-create.jinja2',
+        {
+            'form': ArtworkForm(initial=model_data), 
+            'marker_list': Marker.objects.all(),
+            'object_list': Object.objects.all(),
+            'selected_marker': model.marker.id,
+            'selected_object': model.augmented.id
+        }
+    )
+
+
+@login_required
+def edit_exhibit(request): 
+    id = request.GET.get("id","-1")
+    model = Exhibit.objects.filter(id=id)
+    if(not model or model.first().owner != Profile.objects.get(user=request.user)):
+        raise Http404
+
+    if(request.method == "POST"):
+        form = ExhibitForm(request.POST)
+
+        form.full_clean()
+        if form.is_valid():
+            ids = form.cleaned_data['artworks'].split(',')
+            artworks = Artwork.objects.filter(id__in=ids)
+
+            model_data={
+                "name":form.cleaned_data["name"],
+                "slug": form.cleaned_data["slug"],
+            }
+            model.update(**model_data)
+            model = model.first()
+            model.artworks.set(artworks)
+            
+            return redirect('profile')
+
+    model = model.first()
+    model_artworks = ""
+    for artwork in model.artworks.all():
+        model_artworks += str(artwork.id) + ","
+
+    model_artworks = model_artworks[:-1]
+
+    model_data = {
+        "name": model.name,
+        "slug": model.slug,
+        "artworks": model_artworks
+    }
+
+    artworks = Artwork.objects.filter(author=request.user.profile)
+    return render(
+        request,
+        'users/exhibit-create.jinja2',
+        {
+            'form': ExhibitForm(initial=model_data), 
+            'artworks': artworks,
+            'selected_artworks': model_artworks,
+        }
+    )

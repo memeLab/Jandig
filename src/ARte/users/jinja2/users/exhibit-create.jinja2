@@ -12,14 +12,14 @@
             {{ _('select artworks') }}
         </button>
         <div id="form-modal" class="modal">
-            <form name="creation-form" action="{{ url('exhibit-create') }}" method="post" enctype="multipart/form-data">
+            <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Artworks (1/2') }}</h4>
 
                     <p class="gallery-title">{{ _('Choose from your repository') }}</p>
                     
-                    {% with repository_list = artworks, element_type = 'object' %}
+                    {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
                         {% include "users/components/artworks-list.jinja2" %}
                     {% endwith%}
                     
@@ -27,7 +27,7 @@
                         {{ form.visible_fields()[2].as_hidden() }}
                         {{ form.visible_fields()[2].errors }}
                     </p>
-                    <button id="next-info" class="select-btn next-btn">
+                    <button type="button" id="next-info" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
                 </div>

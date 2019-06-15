@@ -1,10 +1,12 @@
 <section class="header">
-            <div class="container flex">
+            <div class="container">
                 <div class="logo">
                     <a href="{{ url('home') }}">
                             <img src="/static/images/icons/header_icon.png">
                     </a>
                 </div>
+
+                <div class="aside">             
                 {% if request.user.is_authenticated %}
                     <div class="welcome">
                         <p>
@@ -32,11 +34,21 @@
                                 {{ exhibits }} {{ _(' exhibits') }}
                             {% endif %}
                         </p>
-                    </div>
+                    </div>          
+
                 {% else %}
+                <div class="connect">
                     <div class="signup-btn">
                         <a href=" {{ url('signup') }}">{{ _('Sign up') }}</a>
                     </div>
+                </div>
                 {% endif %}
+
+                    <div class="icon-menu flex">
+                        <a href="#" class="btnLang">Language</a>
+                        <a href="#" class="btnSearch">Search</a>
+                        <a href="#" class="btnHelp">Help</a>
+                    </div>
+                </div> 
             </div>
 </section>

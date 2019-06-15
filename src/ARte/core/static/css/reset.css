@@ -1,0 +1,353 @@
+/*  @import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');  */
+
+body {
+    color: #000;
+    background: #FFF;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-family: "Istok Web", sans-serif;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Istok Web", serif;
+    font-weight: bolder;
+}
+
+p, ul, ol {
+    line-height: 1.75;
+    margin: 0 0 1em 0;
+}
+
+a, a:visited {
+    color: #03b595;
+    color: #777;
+    padding: 0;
+    text-decoration: none;
+}
+
+.account-options a {
+    color: #777;
+    padding: 0;
+    text-decoration: none;
+    transition: all .2s ease-in;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
+}
+
+ul {
+    list-style: square;
+}
+
+ul, ol {
+    padding: 0 0 0 2em;
+}
+
+blockquote {
+    font-size: 1.75em;
+    line-height: 2.25em;
+    margin: 2em 5em;
+    color: #888;
+    font-weight: bold;
+}
+
+input {
+    max-width: 80%;
+}
+
+input[type=submit] {
+    width: 100%;
+    margin: 20px 0 0 0;
+    color: #fff;
+    background: #000;
+    border: none;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    padding: 10px 0;
+}
+
+button {
+    background: #000;
+    width: 100%;
+    line-height: 40px;
+    margin: 10px 0;
+    text-align: center;
+    display: inline-block;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+}
+
+button.secondary {
+    background: #666;
+    width: 100%;
+    line-height: 30px;
+    color: #fff;
+}
+
+
+.flex {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.half {
+    width: 150px;
+    /* flex-flow: column; */
+}
+
+.one-third {
+    width: 30%;
+    /*display: inline-block;
+    margin-right: 1%;
+    margin-left: 1%;*/
+}
+
+.left {
+    /*float: left;*/
+    text-align: left;
+}
+
+.right {
+    /*float: right;*/
+    text-align: right;
+}
+
+/* Structure */
+.container {
+    max-width: 320px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header {
+    margin-top: 25px;
+}
+
+.aside {
+    max-width: 150px;
+    height: 70px;
+    float: right;
+}
+
+.logo {
+    text-align: left;
+    height: 60px;
+    width: calc(100% - 125px);
+    float: left;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
+}
+
+.logo a {
+    display: block;
+}
+
+.header .logo img{
+    max-height: 55px;
+    height: auto;
+    margin: auto;
+}
+
+.welcome, .icon-menu, .connect {
+    height: 30px;
+    text-align: right;
+}
+
+.welcome {
+    line-height: 30px;
+    font-size: 0.85em;
+    overflow: hidden;
+}
+
+.welcome a, .welcome a:visited {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #03b595;
+}
+
+.welcome p {
+    line-height: 30px;
+}
+
+.icon-menu a {
+    width: 30px;
+    height: 30px;
+    margin: 0 0 0 10px;
+    display: block;
+    /*text-indent: -999999px;*/
+    font-size: 0;
+}
+
+/****** temporary disable icons ******/
+.icon-menu a {
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.icon-menu a.btnLang {
+    background: url(../images/icons/icoLng.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.icon-menu a.btnSearch {
+    background: url(../images/icons/icoSrc.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.icon-menu a.btnHelp {
+    background: url(../images/icons/icoHlp.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.contCam {
+    min-width: 90px;
+}
+
+.animCam {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    background: #03b595;
+}
+
+.useful-links a.cambtn {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    /*margin-left: -25px;*/
+    padding: 0;
+    display: block;
+    text-indent: -999999px;
+    background: url(../images/icons/icoARV.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.useful-links {
+    /* margin-bottom: 2%; */
+    margin-bottom: 20px;
+    clear: both;
+}
+
+.useful-links .container {
+    height: 50px;
+    margin: auto;
+}
+
+.useful-links a {
+    /*font-size: 75%;*/
+}
+
+.userbox {
+    margin-bottom: 20px;
+}
+
+.userbox .container {
+    background-color: #EFEFEF;
+}
+
+/* Media Queries */
+@media all and (max-width: 400px) {
+    .header, .useful-links {
+        font-size: 75%;
+    }
+}
+
+@media all and (min-width: 800px) {
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .header {
+        margin-top: 25px;
+    }
+
+    .aside {
+        max-width: 150px;
+        height: 100px;
+        float: right;
+    }
+
+    .half {
+        width: 290px;
+        /* flex-flow: column; */
+    }
+
+    .logo {
+        text-align: left;
+        height: 95px;
+        width: calc(100% - 160px);
+        float: left;
+        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+        background-position: 100% 10%;
+        background-size: 100% 200%;
+    }
+
+    .welcome, .icon-menu, .connect {
+        height: 50px;
+        text-align: right;
+    }
+
+    .welcome, .welcome p {
+        line-height: 50px;
+    }
+
+    .header .logo img{
+        max-height: 75px;
+        height: auto;
+        margin: auto;
+    }
+
+    .icon-menu a {
+        width: 40px;
+        height: 40px;
+        margin: 0 0 0 10px;
+    }
+
+    .useful-links a {
+        /* font-size: 75%; */
+        padding: 5px;
+        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+        background-position: 100% 15%;
+        background-size: 100% 200%;
+    }
+
+    .contCam {
+        min-width: 250px;
+    }
+
+    .animCam {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        background: #03b595;
+    }
+
+    .useful-links a.cambtn {
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+        display: block;
+        text-indent: -999999px;
+        background: url(../images/icons/icoARV.png) no-repeat;
+        background-position: center center;
+        background-size: contain;
+    }
+}
+
+/* Hover Elements */
+.account-options a:hover {
+    color: #666;
+    background-position: 0 100%;
+}
