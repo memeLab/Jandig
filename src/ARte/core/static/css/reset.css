@@ -11,8 +11,8 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: "Istok Web", serif;
-	font-weight: bolder;
+    font-family: "Istok Web", serif;
+    font-weight: bolder;
 }
 
 p, ul, ol {
@@ -22,15 +22,15 @@ p, ul, ol {
 
 a, a:visited {
     color: #03b595;
-	color: #777;
+    color: #777;
     padding: 0;
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .account-options a {
-	color: #777;
+    color: #777;
     padding: 0;
-	text-decoration: none;
+    text-decoration: none;
     transition: all .2s ease-in;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
@@ -38,19 +38,19 @@ a, a:visited {
 }
 
 ul {
-	list-style: square;
+    list-style: square;
 }
 
 ul, ol {
-	padding: 0 0 0 2em;
+    padding: 0 0 0 2em;
 }
 
 blockquote {
-	font-size: 1.75em;
-	line-height: 2.25em;
-	margin: 2em 5em;
-	color: #888;
-	font-weight: bold;
+    font-size: 1.75em;
+    line-height: 2.25em;
+    margin: 2em 5em;
+    color: #888;
+    font-weight: bold;
 }
 
 input {
@@ -89,10 +89,10 @@ button.secondary {
 
 
 .flex {
-	display: flex;
-	flex-flow: row wrap;
+    display: flex;
+    flex-flow: row wrap;
     align-items: center;
-	justify-content: space-between;
+    justify-content: space-between;
 }
 
 .half {
@@ -108,62 +108,123 @@ button.secondary {
 }
 
 .left {
-	/*float: left;*/
-	text-align: left;
+    /*float: left;*/
+    text-align: left;
 }
 
 .right {
-	/*float: right;*/
-	text-align: right;
+    /*float: right;*/
+    text-align: right;
 }
 
 /* Structure */
 .container {
     max-width: 320px;
-    margin: 50px auto;
+    margin: 0 auto;
     text-align: center;
 }
 
 .header {
-    /* font-size: 75%; */
     margin-top: 25px;
 }
 
 .aside {
-	max-width: 140px;
-	/*flex: 0 0 140px;*/
-	height: 100px;
-	float: right;
+    max-width: 150px;
+    height: 70px;
+    float: right;
 }
 
 .logo {
-	text-align: left;
-    height: 100px;
-    width: calc(100% - 160px);
+    text-align: left;
+    height: 60px;
+    width: calc(100% - 125px);
     float: left;
-	background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
     background-size: 100% 200%;
 }
 
+.logo a {
+    display: block;
+}
+
 .header .logo img{
-    max-height: 75px;
+    max-height: 55px;
     height: auto;
     margin: auto;
 }
 
 .welcome, .icon-menu {
-	height: 50px;
-	text-align: right;
+    height: 30px;
+    text-align: right;
+}
+
+.welcome {
+    line-height: 30px;
+    font-size: 0.85em;
+}
+
+.welcome a, .welcome a:visited {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #03b595;
+}
+
+.icon-menu a {
+    width: 30px;
+    height: 30px;
+    margin: 0 0 0 10px;
+    display: block;
+    /*text-indent: -999999px;*/
+    font-size: 0;
+}
+
+/****** temporary disable icons ******/
+.icon-menu a {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.icon-menu a.btnLang {
+    background: url(../images/icons/icoLng.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.icon-menu a.btnSearch {
+    background: url(../images/icons/icoSrc.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.icon-menu a.btnHelp {
+    background: url(../images/icons/icoHlp.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.contCam {
+    min-width: 90px;
+}
+
+.animCam {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    background: #03b595;
 }
 
 .useful-links a.cambtn {
-    /* flex-grow: 2; */
-    min-width: 90px;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    /*margin-left: -25px;*/
+    padding: 0;
+    display: block;
     text-indent: -999999px;
-	background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+    background: url(../images/icons/icoARV.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
 }
 
 .useful-links {
@@ -191,38 +252,83 @@ button.secondary {
 
 /* Media Queries */
 @media all and (max-width: 400px) {
-	.header, .useful-links {
-	    font-size: 75%;
-	}
+    .header, .useful-links {
+        font-size: 75%;
+    }
 }
 
 @media all and (min-width: 800px) {
-	.container {
-	    max-width: 600px;
-	    margin: 0 auto;
-	}
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
 
-	.half {
-	    width: 290px;
-	    /* flex-flow: column; */
-	}
+    .header {
+        margin-top: 25px;
+    }
 
-	.useful-links a {
-	    /* font-size: 75%; */
-	    padding: 5px;
-	    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-	    background-position: 100% 15%;
-	    background-size: 100% 200%;
-	}
+    .aside {
+        max-width: 150px;
+        height: 100px;
+        float: right;
+    }
+
+    .half {
+        width: 290px;
+        /* flex-flow: column; */
+    }
+
+    .logo {
+        text-align: left;
+        height: 95px;
+        width: calc(100% - 160px);
+        float: left;
+        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+        background-position: 100% 10%;
+        background-size: 100% 200%;
+    }
+
+    .header .logo img{
+        max-height: 75px;
+        height: auto;
+        margin: auto;
+    }
+
+    .icon-menu a {
+        width: 40px;
+        height: 40px;
+        margin: 0 0 0 10px;
+    }
+
+    .useful-links a {
+        /* font-size: 75%; */
+        padding: 5px;
+        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+        background-position: 100% 15%;
+        background-size: 100% 200%;
+    }
+
+    .contCam {
+        min-width: 250px;
+    }
+
+    .animCam {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        background: #03b595;
+    }
 
     .useful-links a.cambtn {
         width: 40px;
         height: 40px;
+        margin: 0;
+        padding: 0;
+        display: block;
         text-indent: -999999px;
-        background: url(../images/icons/icoARV.png) no-repeat, #03b595;
-        /* background-position: center center; */
-        /* background-size: contain; */
-        /* background-repeat: no-repeat; */
+        background: url(../images/icons/icoARV.png) no-repeat;
+        background-position: center center;
+        background-size: contain;
     }
 }
 
