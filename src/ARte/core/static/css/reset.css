@@ -171,6 +171,10 @@ button.secondary {
     color: #03b595;
 }
 
+.welcome p {
+    line-height: 30px;
+}
+
 .icon-menu a {
     width: 30px;
     height: 30px;
@@ -294,7 +298,7 @@ button.secondary {
         text-align: right;
     }
 
-    .welcome {
+    .welcome, .welcome p {
         line-height: 50px;
     }
 
