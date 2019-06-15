@@ -1,18 +1,17 @@
 {# Receives a list of markers/objects to list #}
 
 {% block content %}
-    <section id="repo-{{element_type}}" class="repository-list">
 
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/repository-list.css">
-
-        {% for element in repository_list %}
-            <div id="{{ element.id }}" class="repository-item">
-                <img src="{{ element.source.url }}" height="50" width="50">
-            </div>
-        {% endfor %}
+        {% with repository_list = repository_list, element_type=element_type %}
+            {% include "users/components/item-list.jinja2" %}
+        {% endwith%}
 
         <script>
+            {%if selected %}
+                id = "#" + "{{element_type}}" + "-" + {{selected}}
+                $(id).css('background-color', 'red');
+                $('#existent-{{element_type}} > input').val({{selected}});
+            {% endif %}
             $('.repository-item').click(function(){
                 let elementId = $(this).attr('id');
                 let sectionId = $(this).parent().attr('id');
@@ -22,11 +21,10 @@
                 $(this).css('background-color', 'red');
             
                 if(sectionId == 'repo-marker'){
-                    $('#existent-marker > input').val(elementId);
+                    $('#existent-marker > input').val(elementId.split("-")[1]);
                 }else{
-                    $('#existent-object > input').val(elementId);
+                    $('#existent-object > input').val(elementId.split("-")[1]);
                 }
             });
         </script>
-    </section>
 {% endblock %}
