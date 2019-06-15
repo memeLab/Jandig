@@ -154,7 +154,7 @@ button.secondary {
     margin: auto;
 }
 
-.welcome, .icon-menu {
+.welcome, .icon-menu, .connect {
     height: 30px;
     text-align: right;
 }
@@ -162,6 +162,7 @@ button.secondary {
 .welcome {
     line-height: 30px;
     font-size: 0.85em;
+    overflow: hidden;
 }
 
 .welcome a, .welcome a:visited {
@@ -181,7 +182,7 @@ button.secondary {
 
 /****** temporary disable icons ******/
 .icon-menu a {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: pointer;
 }
 
@@ -286,6 +287,15 @@ button.secondary {
         background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
         background-position: 100% 10%;
         background-size: 100% 200%;
+    }
+
+    .welcome, .icon-menu, .connect {
+        height: 50px;
+        text-align: right;
+    }
+
+    .welcome {
+        line-height: 50px;
     }
 
     .header .logo img{
