@@ -1,22 +1,24 @@
 {# Receives a list of markers/objects to list #}
 
 {% block content %}
-    <section id="repo-{{element_type}}" class="repository-list">
-
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/repository-list.css">
-
-        {% for element in repository_list %}
-            <div id="{{ element.id }}" class="repository-item">
-                <img src="{{ element.marker.source.url }}" height="50" width="50">
-            </div>
-        {% endfor %}
+   
+        {% with repository_list = repository_list, element_type="artwork" %}
+            {% include "users/components/item-list.jinja2" %}
+        {% endwith%}
 
         <script>
             let artworks = {}
             let str_artworks = ""
+            
+            {% if selected %}
+                "{{selected}}".split(",").forEach(function(id){
+                    artworks[id] = id
+                    $("#artwork-"+id).css('background-color', "rgb(255,0,0)");
+                })
+            {% endif %}
+
             $('.repository-item').click(function(){
-                let elementId = $(this).attr('id');
+                let elementId = $(this).attr('id').split('-')[1];
                 let sectionId = $(this).parent().attr('id');
                 
                 // reset background
@@ -38,5 +40,4 @@
                 artworks_input.val(str_artworks);
             });
         </script>
-    </section>
 {% endblock %}

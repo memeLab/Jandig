@@ -74,7 +74,7 @@ class UploadMarkerForm(forms.ModelForm):
     
     class Meta:
         model = Marker
-        exclude = ('owner',)
+        exclude = ('owner', 'uploaded_at')
 
 
 class UploadObjectForm(forms.ModelForm):
@@ -87,7 +87,7 @@ class UploadObjectForm(forms.ModelForm):
     
     class Meta:
         model = Object
-        exclude = ('owner','scale','rotation','position')
+        exclude = ('uploaded_at', 'owner','scale','rotation','position')
 
 
 class ArtworkForm(forms.Form):
