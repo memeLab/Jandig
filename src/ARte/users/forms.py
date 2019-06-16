@@ -3,9 +3,10 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Marker, Object, Artwork
+from .models import Marker, Object, Artwork, Profile
 
 User = get_user_model()
 
@@ -44,6 +45,72 @@ class SignupForm(UserCreationForm):
 
         return email
 
+from .choices import COUNTRY_CHOICES
+
+class PasswordChangeForm(OrigPasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs['placeholder'] = _('Old Password')
+        self.fields['new_password1'].widget.attrs['placeholder'] = _('New Password')
+        self.fields['new_password2'].widget.attrs['placeholder'] = _('New Password Again')
+      
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username','email', 'bio', 'country', 'personal_site']
+    field_order=['email', 'username', 'personal_site', 'country', 'bio']
+    
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.initial['username'] = self.instance.user.username
+
+        # FIXME: user.email come as a string of a tuple, no idea why. "('email@bla.com',)"
+        # email = self.instance.user.email.replace("('", "").replace("',)", "")
+        self.initial['email'] = self.instance.user.email
+        self.initial['bio'] = self.instance.bio
+        self.initial['country'] = self.instance.country
+        self.initial['personal_site'] = self.instance.personal_site
+        self.fields['email'].widget.attrs['placeholder'] = _('E-mail')
+        self.fields['username'].widget.attrs['placeholder'] = _('Username')
+        self.fields['bio'].widget.attrs['placeholder'] = _('Personal Bio / Description')
+        self.fields['personal_site'].widget.attrs['placeholder'] = _('Personal Website')
+
+    email = forms.EmailField(
+        max_length=254,
+        help_text=_('Your e-mail address'),
+    )
+    username = forms.CharField(
+        max_length=12,
+        help_text=_('Your username'),
+    )
+    country = forms.ChoiceField(
+        choices=COUNTRY_CHOICES,
+        required=False
+        )
+    bio = forms.CharField(
+        max_length=500, 
+        required=False,
+        widget=forms.Textarea,
+        help_text=_('Personal Bio / Description'),
+        )
+    personal_site = forms.URLField(
+        required=False,
+        help_text=_('Personal Website'),
+        )
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if username and User.objects.filter(username=username).exclude(username=self.instance.user.username).exists():
+            raise forms.ValidationError(_('Username already in use'))
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exclude(username=self.instance.user.username).exists():
+            raise forms.ValidationError(_('Email address must be unique'))
+
+        return email
 
 class LoginForm(AuthenticationForm):
 

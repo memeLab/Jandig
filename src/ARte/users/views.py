@@ -1,12 +1,13 @@
 import json
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
 
-from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm
+from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 
@@ -309,5 +310,50 @@ def edit_exhibit(request):
             'form': ExhibitForm(initial=model_data), 
             'artworks': artworks,
             'selected_artworks': model_artworks,
+        }
+    )
+
+@login_required
+def edit_password(request):
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('profile')
+        else:
+            profile = Profile.objects.get(user=request.user)
+            ctx={
+                'form_password': PasswordChangeForm(request.user), 
+                'form_profile': ProfileForm(instance=profile)
+            }
+            return render(request,'users/profile-edit.jinja2',ctx)
+    return Http404
+
+@login_required
+def edit_profile(request):
+    profile = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            profile = form.save(commit=False)
+            user = profile.user
+            user.email = form.cleaned_data['email']
+            user.username = form.cleaned_data['username']
+            user.save(force_update=True)
+            profile.save()
+
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(
+        request,
+        'users/profile-edit.jinja2',
+        {
+            'form_profile': form,
+            'form_password': PasswordChangeForm(request.user),
         }
     )
