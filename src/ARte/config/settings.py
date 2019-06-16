@@ -165,6 +165,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
 # LOGIN / LOGOUT
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Sphinx docs
 DOCS_ROOT = os.path.join('../../', 'build/html')
