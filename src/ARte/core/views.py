@@ -51,3 +51,13 @@ def exhibit_select(request):
         form = ExhibitForm()
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})
+
+def exhibit_detail(request):
+    id = request.GET.get("id")
+    exhibit = Exhibit.objects.get(id=id)
+    ctx = {
+        'exhibit':exhibit,
+        'exhibitImage': "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
+        'artworks': exhibit.artworks.all()
+    }
+    return render(request, 'core/exhibit_detail.jinja2', ctx)

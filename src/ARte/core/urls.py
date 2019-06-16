@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import service_worker, index, upload_image, exhibit_select, collection
+from .views import service_worker, index, upload_image, exhibit_select, collection, exhibit_detail
 from .views_s.home import home, ar_viewer, community, docs, marker_generator
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('collection/', collection, name='collection'),
     path('docs/', docs, name='docs'),
     path('exhibit_select/', exhibit_select, name='exhibit_select'),
+    path('exhibit/', exhibit_detail, name="exhibit-detail"),
     path('generator/', marker_generator, name='marker-generator'),
     # path('agreement', *, *),
     # path('agreement', *, *),
