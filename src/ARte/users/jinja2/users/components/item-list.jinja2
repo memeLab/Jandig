@@ -12,13 +12,17 @@
             {% elif element_type == "artwork" %}
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
-                <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
+                {% if editable == True %}
+                    <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
+                {% endif %}
             {% else %}
                 <img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">
                 <div class="exhibit-info">
                     <p class="exhibit-name">Name: {{element.name}}</p>
                     <p class="exhibit-slug">URL {{element.slug}}</p>
+                {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}">edit</a>
+                {% endif %}
                 </div>
             {% endif %}
         </div>

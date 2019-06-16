@@ -12,7 +12,7 @@
         {% if profile %}
             {{_("Your Exhibits")}}
                 {% if exhibits %}
-                    {% with repository_list = exhibits, element_type="exhibit"%}
+                    {% with editable=True, repository_list = exhibits, element_type="exhibit"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                 {% else %}
@@ -23,14 +23,15 @@
                 {% endif %}
             {{_("Your Artworks")}}
                 {% if artworks %}
-                    {% with repository_list = artworks, element_type="artwork" %}
+                    {% with editable=True, repository_list = artworks, element_type="artwork" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                 {% else %}
                     <section id="repo-{{element_type}}" class="repository-list">
                         <p>{{_("You have no artworks :c")}}</p>
                         <a href="{{ url('create-artwork') }}">{{ _('Create') }}</a>
-                    </section>                {% endif %}
+                    </section>               
+                {% endif %}
             {{_("Your Markers")}}
                 {% if markers %}
                     {% with repository_list = markers, element_type="marker"%}

@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
-
+from users.models import Artwork, Marker, Object
 
 def service_worker(request):
     return render(request, 'core/sw.js',
@@ -20,6 +20,15 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+def collection(request):
+    ctx = {
+        "artworks": Artwork.objects.all(),
+        "exhibits": Exhibit.objects.all(),
+        "markers": Marker.objects.all(),
+        "objects": Object.objects.all(),
+    }
+
+    return render(request, 'core/collection.jinja2', ctx)
 
 def upload_image(request):
     if request.method == 'POST':

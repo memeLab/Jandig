@@ -1,0 +1,36 @@
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+    {% block subcontent %}
+    {% endblock %}
+    <section class="profile-options-flex">
+
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="/static/css/repository-list.css">
+        {{_("Exhibits")}}
+            {% if exhibits %}
+                {% with repository_list = exhibits, element_type="exhibit"%}
+                    {% include "users/components/item-list.jinja2" %}
+                {% endwith %}
+            {% endif %}
+        {{_("Artworks")}}
+            {% if artworks %}
+                {% with repository_list = artworks, element_type="artwork" %}
+                    {% include "users/components/item-list.jinja2" %}
+                {% endwith %}
+            {% endif %}
+        {{_("Markers")}}
+            {% if markers %}
+                {% with repository_list = markers, element_type="marker"%}
+                    {% include "users/components/item-list.jinja2" %}
+                {% endwith %}
+            {% endif %}
+        {{_("Objects")}}
+            {% if objects %}
+                {% with repository_list = objects, element_type="object" %}
+                    {% include "users/components/item-list.jinja2" %}
+                {% endwith%}
+            {% endif %}
+        {% include "users/components/elements-modal.jinja2" %}
+    </section>
+{% endblock %}
