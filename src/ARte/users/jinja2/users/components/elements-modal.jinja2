@@ -48,16 +48,16 @@
                 '<img id="augmented-src" src="' + augmented_src + '"/></p>'
             )
         }
-        function downloadElement(element_type, file_size){
+        function downloadElement(element_type, file_size, element_src){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
                     '<p id="element-download">' + 
-                    '<a id="png-download" href="#">.png (' + file_size + ' kb)</a></p>'
+                    '<a id="png-download" href="'+ element_src +'">.png (' + file_size + ' kb)</a></p>'
                 )
             }else{
                 $('#element-download').replaceWith(
                     '<p id="element-download">' + 
-                    '<a id="gif-download" href="#">.gif (' + file_size + ' kb)</a></p>'
+                    '<a id="gif-download" href="'+ element_src +'">.gif (' + file_size + ' kb)</a></p>'
                 )
             }
         }
@@ -90,7 +90,7 @@
                         elementAuthor(data['author']);
                         uploadedBy(data['owner'], data['uploaded_at']);
                         usedIn(data['artworks'], data['exhibits'], data['source']);
-                        downloadElement(data['type'], data['size']/1000);
+                        downloadElement(data['type'], data['size']/1000, data['source']);
                     }
                 });
             }else{
