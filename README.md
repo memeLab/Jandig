@@ -10,11 +10,17 @@ Jandig ARte uses image pattern detection to detect [augmented reality markers](h
 
 Jandig ARte is a Progressive Web App, which means you can open in every device with a browser and a camera. Also you can add Jandig ARte to your homescreen and it will run like a native app on your device.
 
-### Collab
-We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, Wordpress users willing to translate our website from Portuguese to English, someone to help improve the same [website](http://memelab.com.br/jandig/) and developers to help us with the platform, please contact us through People section below!
-
 ### People
-We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ) or Twitter: [Heloise Cullen](https://twitter.com/heloisecullen), [Pablo Diego](https://twitter.com/pablodiegosds), [VJ Pixel](https://twitter.com/vjpixel) and [Rodrigo Oliveira](https://twitter.com/ShamanRoh).
+We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ). There's a list of the main contributors of Jandig development:
+- @hvalois [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
+- @vjpixel [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel)
+- @pablodiegoss - [Twitter](https://twitter.com/pablodiegosds)
+- @rodrigocam [Twitter](https://twitter.com/ShamanRoh)
+- @Heloisecs - [Twitter](https://twitter.com/heloisecullen)
+- @thiagohersan
+
+### Collab
+We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
 
 ### Clipping
 You can find interviews and references to Jandig in the press [here](http://memelab.com.br/jandig/clipping/).
