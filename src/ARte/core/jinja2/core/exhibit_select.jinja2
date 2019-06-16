@@ -3,8 +3,9 @@
 {% block content %}
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
-    <div class="signup-modal">
+    <div class="signup-modal container flex">
         <div class="exhibit-form">
+            <h2>Choose the exhibition you're seeing</h2>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
                 {{ csrf_input }}
                 {% for field in form.visible_fields() %}

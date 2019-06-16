@@ -4,10 +4,11 @@
     {% block subcontent %}
     {% endblock %}
     <section class="profile-options-flex">
+        <div class="container">
 
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/profile.css">
-        <link rel="stylesheet" href="/static/css/repository-list.css">
+            {# FIXME: maybe this can be improved #}
+            <link rel="stylesheet" href="/static/css/profile.css">
+            <link rel="stylesheet" href="/static/css/repository-list.css">
 
         {% if profile %}
             {{_("Your Exhibits")}}
@@ -62,9 +63,10 @@
         <a class="option-link" href="{{ url('create-artwork') }}">{{ _('Create Jandig artwork') }}</a>
         <a class="option-link" href="{{ url('create-exhibit') }}">{{ _('Create exhibit') }}</a>
 
-        <section class="account-options">
-            <a href="{{ url('logout') }}"> {{ _('Log out') }} | </a>
-            <a href="#"> {{ _('Remove account') }}</a>
-        </section>
+            <section class="account-options">
+                <a href="{{ url('logout') }}"> {{ _('Log out') }} | </a>
+                <a href="#"> {{ _('Remove account') }}</a>
+            </section>
+        </div>
     </section>
 {% endblock %}
