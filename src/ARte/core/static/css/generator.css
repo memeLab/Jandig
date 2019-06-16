@@ -19,7 +19,7 @@ h1 a {
 h1 a:hover {
     text-decoration: underline;
 }*/
-.logo {
+.logoMG {
     text-align: left;
     height: 60px;
     width: 100%;
@@ -29,12 +29,28 @@ h1 a:hover {
     background-size: 100% 200%;
 }
 
-.header .logo img{
+.header .logoMG img{
     max-height: 55px;
     height: auto;
     margin: auto;
 }
 
+.downBoth {
+    text-align: center;
+    margin-left: 25px 0;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
+}
+
+.pdfMaker {
+    text-align: center;
+    margin-left: 25px 0;
+}
+
+.page-generator.flex {
+    margin: 25px 0;
+}
 
 label#buttonUpload {
     background: #000;

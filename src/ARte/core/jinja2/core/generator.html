@@ -34,70 +34,62 @@
             <button type="button" class="mdl-button">OK</button>
         </div>
     </dialog>
-    
+
     <div class="container">
-        <div class="logoMG" alt="Jandig Marker Generator">
-            <img src="/static/images/icons/jandigMG.png">
+        <div class="header">
+            <div class="logoMG" alt="Jandig Marker Generator">
+                <img src="/static/images/icons/jandigMG.png">
+            </div>
         </div>
 
         <div class='upload'>
             <label id='buttonUpload' for='fileinput' class=''>
                     <input type='file' id='fileinput' style='display: none'>
-                    Upload
+                    Upload your image
                 </label>
             <div class='tip' for='buttonUpload'>
-                Choose the image you want to put inside the marker.
+                Browse to the file you want to put inside the marker.
             </div>
         </div>
 
         <div id='imageContainer'></div>
 
+        <h2 class="downBoth">You will need both of these</h2>
         <div class='download flex'>
             <div class="half left">
                 <button id='buttonDownloadEncoded' class=''>
-                        Download Marker
+                        Download .patt Marker
                     </button>
                 <div class='tip' for='buttonDownloadEncoded'>
-                    Download marker encoded from the uploaded image
+                    Download the file encoded from the uploaded image.
                 </div>
             </div>
                 <div class="half right">
                 <button id='buttonDownloadFullImage' class=''>
-                        Download Image
+                        Download Image Marker
                     </button>
                 <div class='tip' for='buttonDownloadFullImage'>
-                    Download marker image
+                    Download marker image in .png format.
                 </div>
             </div>
         </div>
 
+    <h3 class="pdfMaker">You can also save it for print in a .pdf file!</h3>
     <div class='page-generator flex'>
         <div class='one-third'>
             <button id='buttonDownloadPDFOnePerPage' class='secondary'>
-                    One marker per Page
+                    One per Page
                 </button>
-            <div class='tip' for='buttonDownloadPDFOnePerPage'>
-                Download PDF
-                <br/> One marker per page
-            </div>
         </div>
         <div class='one-third'>
             <button id='buttonDownloadPDFTwoPerPage' class='secondary'>
-                PDF Two per Page
+                Two per page
             </button>
-            <div class='tip' for='buttonDownloadPDFTwoPerPage'>
-                Download PDF
-                <br/> Two marker per page
-            </div>
         </div>
         <div class='one-third'>
             <button id='buttonDownloadPDFSixPerPage' class='secondary'>
-                PDF Six per Page
+                Six per Page
             </button>
-            <div class='tip' for='buttonDownloadPDFSixPerPage'>
-                Download PDF.
-                <br/> Six marker per page
-            </div>
         </div>
     </div>
     </div>
