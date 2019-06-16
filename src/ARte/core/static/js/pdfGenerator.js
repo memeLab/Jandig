@@ -48,7 +48,7 @@ document.querySelector('#buttonDownloadFullImage').addEventListener('click', fun
 })
 
 
-document.querySelector('#patternRatioSlider').addEventListener('input', function() {
+/*document.querySelector('#patternRatioSlider').addEventListener('input', function() {
     // update the patternRatio number
     var patternRatio = document.querySelector('#patternRatioSlider').value / 100
     var domElement = document.querySelector('[for=patternRatioSlider] span')
@@ -56,7 +56,7 @@ document.querySelector('#patternRatioSlider').addEventListener('input', function
 
     // update fullMarkerImage
     updateFullMarkerImage()
-})
+})*/
 
 document.querySelector('#fileinput').addEventListener('change', function() {
     var file = this.files[0];
@@ -73,7 +73,8 @@ document.querySelector('#fileinput').addEventListener('change', function() {
 
 function updateFullMarkerImage() {
     // get patternRatio
-    var patternRatio = document.querySelector('#patternRatioSlider').value / 100
+//    var patternRatio = document.querySelector('#patternRatioSlider').value / 100
+    var patternRatio = 0.6
     console.log("aodsdaoksado")
     THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl) {
         fullMarkerURL = markerUrl
