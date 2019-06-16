@@ -12,6 +12,7 @@ services:
     volumes:
       - ../src/ARte/:/src/ARte/
       - ./media/:/src/ARte/users/media/
+      - ../build/html/:/build/html/
     
     env_file:
       - ../src/.envs/.django

@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dicas para produzir animações &#8212; documentação Jandig ARte </title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="Dicas para produzir marcadores" href="marcadores.html" />
+    <link rel="prev" title="Welcome to Jandig ARte’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dicas-para-produzir-animacoes">
+<h1>Dicas para produzir animações<a class="headerlink" href="#dicas-para-produzir-animacoes" title="Link permanente para este título">¶</a></h1>
+<p>Esse documento contém orientações técnicas e boas práticas para a
+produção de animações em realidade aumentada para o Jandig. Muitas
+dessas orientações podem ser utilizadas para produzir conteúdo para
+outras plataformas.</p>
+<p>Além de produzir uma versão considerando as limitações a seguir,
+recomendamos que seja produzida uma versão “ideal”, que pode ser
+utilizada em ambientes controlados e/ou no futuro (quanto essas
+limitações vão diminuir).</p>
+<div class="section" id="formato-de-arquivo">
+<h2>Formato de arquivo<a class="headerlink" href="#formato-de-arquivo" title="Link permanente para este título">¶</a></h2>
+<p>Atualmente, o único formato de arquivo suportado é GIF.</p>
+</div>
+<div class="section" id="detalhes">
+<h2>Detalhes<a class="headerlink" href="#detalhes" title="Link permanente para este título">¶</a></h2>
+<p>Utilize o mínimo de detalhes e de elementos pequenos que for possível,
+pois eles podem não ser identificados pelo público.</p>
+<p>Uma maneira de testar aqui é salvar as imagens do storyboard em
+300x300px e ver se é possível identificar todos os elementos. É
+importante lembrar que o público pode ver a animação à distância, de
+modo que ela fique bem pequena na tela do telefone.</p>
+</div>
+<div class="section" id="quantidade-de-cores">
+<h2>Quantidade de cores<a class="headerlink" href="#quantidade-de-cores" title="Link permanente para este título">¶</a></h2>
+<p>A recomendação é diminuir o máximo possível, de maneira a não
+comprometer as cores originais.</p>
+<p>Para otimizar esses valores, recomendamos minimizar o uso de degradês e
+evitar transições em fade.</p>
+<p>Uma técnica para planejar esse uso antes de produzir a animação, é
+exportar as imagens do storyboard em GIF com diferentes quantidades de
+cores.</p>
+</div>
+<div class="section" id="resolucao">
+<h2>Resolução<a class="headerlink" href="#resolucao" title="Link permanente para este título">¶</a></h2>
+<p>Para aumentar a compatibilidade de dispositivos, limitamos a resolução
+do quadro de exibição (que aparece em tela cheia no smartphone) em
+640x480 pixels. Como a animação só vai aparecer em um trecho desse
+quadro, recomendamos a criação do conteúdo em 300x300px.</p>
+<p>Caso haja um problema na visualização de detalhes, pode-se chegar até a
+400x400px, mas atualmente o ganho de uma resolução maior é quase
+imperceptível (enquanto onera bastante o tamanho do arquivo).</p>
+</div>
+<div class="section" id="framerate">
+<h2>Framerate<a class="headerlink" href="#framerate" title="Link permanente para este título">¶</a></h2>
+<p>A taxa de frames (medida em frames por segundo, ou quadros por segundo)
+recomendada é de, no máximo, 12 fps.</p>
+</div>
+<div class="section" id="loop">
+<h2>Loop<a class="headerlink" href="#loop" title="Link permanente para este título">¶</a></h2>
+<p>Para criar a ilusão de continuidade, a animação deve estar em loop. Ou
+seja, a transição do último ao primeiro frame deve ser imperceptível.</p>
+</div>
+<div class="section" id="tempo">
+<h2>Tempo<a class="headerlink" href="#tempo" title="Link permanente para este título">¶</a></h2>
+<p>Quanto mais curta a animação, melhor. Isso vai permitir melhor qualidade
+de imagens e garantir que o público assista todo o material. Até o
+momento, a animação mais longa feita para o Jandig tem aproximadamente
+20 segundos. A recomendação é que tenha até 15 segundos.</p>
+</div>
+<div class="section" id="tamanho-de-arquivo">
+<h2>Tamanho de arquivo<a class="headerlink" href="#tamanho-de-arquivo" title="Link permanente para este título">¶</a></h2>
+<p>Enquanto os parâmetros a seguir têm flexibilidade quanto às orientações,
+esse é o mais rígido. Os arquivos devem ter idealmente até 500 kB e no
+máximo com 1 MB. Esse é um fator decisivo na escolha de obras a serem
+incluídas em uma exposição, quanto menor, melhor.</p>
+<p>Essa limitação existe principalmente pelas seguintes razões: - Não temos
+controle da velocidade de conexão do público quando acessar o conteúdo,
+o que pode fazer com que o download de todas as obras demore. - Não
+queremos onerar o plano de dados do público. - Arquivos menores são mais
+leves necessitam de menor quantidade de processamento, tornando a
+plataforma compatível com um maior número de telefones.</p>
+</div>
+<div class="section" id="conclusao">
+<h2>Conclusão<a class="headerlink" href="#conclusao" title="Link permanente para este título">¶</a></h2>
+<p>Para se chegar a um resultado ótimo o ideal é testar os parâmetros em
+conjunto.</p>
+<p>Um processo recomendado é exportar com limitando ao máximo os parâmetros
+(8 cores, 200x200px, 5 fps) e com também com as recomendações mínimas de
+limitação (256 cores, 300x300px, 12 fps) e comparar.</p>
+<p>A partir daí, modificar com parâmetro por vez a partir das limitações
+mínimas, reduzindo só o framerate/resolução/cores para ver qual o mínimo
+que funciona bem.</p>
+<p>Se, após reduzir os 3 ao mínimo que funciona bem o arquivo ainda estiver
+grande, continuar diminuindo os parâmetros em combinações diferentes
+para até chegar a um resultado ótimo. Lembre-se também de manter a
+versão em alta resolução. Aqui a recomendação é salvar com 1000x1000px e
+24 fps.</p>
+<p>Caso você use Adobe Media encoder, há um tutorial que foi desenvolvido
+pela UEMG para <a class="reference external" href="https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf">download em
+PDF</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Jandig ARte</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dicas para produzir animações</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#formato-de-arquivo">Formato de arquivo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detalhes">Detalhes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quantidade-de-cores">Quantidade de cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resolucao">Resolução</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#framerate">Framerate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loop">Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tempo">Tempo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tamanho-de-arquivo">Tamanho de arquivo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusao">Conclusão</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="marcadores.html">Dicas para produzir marcadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publicando-obras.html">Como publicar conteúdo em realidade aumentada no Jandig</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="capítulo anterior">Welcome to Jandig ARte’s documentation!</a></li>
+      <li>Next: <a href="marcadores.html" title="próximo capítulo">Dicas para produzir marcadores</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Busca rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, pablodiegoss, rodrigocam, vjpixel, hvalois.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/animacoes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

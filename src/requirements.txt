@@ -7,3 +7,5 @@ invoke ~= 1.2.0
 django-environ == 0.4.4
 psycopg2-binary
 django-boogie
+sphinx ~= 2.1.1
+django-docs ~= 0.3.1

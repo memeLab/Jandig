@@ -134,6 +134,12 @@ def i18n(ctx, compile=False, edit=False, lang='pt_BR', keep_pot=False):
             print('Cleaning up')
             ctx.run('rm locale/*.pot')
 
+
+@task
+def docs(ctx):
+    ctx.run('sphinx-build docs/ build/')
+
+
 @task
 def populate(ctx):
     manage(ctx, 'populate_db')

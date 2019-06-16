@@ -8,10 +8,6 @@ def home(request):
 def ar_viewer(request):
     return render(request, 'core/exhibit.jinja2')
 
-
-def docs(request):
-    raise Http404
-
 def community(request):
     return render(request, 'core/community.jinja2')
 

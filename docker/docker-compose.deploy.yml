@@ -72,6 +72,7 @@ services:
     volumes:
       - static_staging_files:/collect/
       - ./media/staging/:/src/ARte/users/media/
+      - ../build/html/:/build/html/
     command: db -p collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
