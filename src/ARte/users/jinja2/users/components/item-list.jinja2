@@ -22,7 +22,7 @@
                 <div class="exhibit-info">
                     <p class="exhibit-name">{{element.name}}</p>
                     <p class="exhibit-slug">http://dev.jandig.app/<b>{{element.slug}}</b></p>
-                    <p class="exhibit-about">00 artworks | Published on 00/00/0000</p>
+                    <p class="exhibit-about">{{element.artworks_count}} artworks | Published on {{element.date}}</p>
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}">Edit</a>
                 {% endif %}

@@ -8,6 +8,7 @@
         <p>{{exhibit.slug}}</p>
         <p>{{_("Created by ")}} {{exhibit.owner.user.username}}</p>
     </div>
+    <p>{{exhibit.artworks_count}} artworks | Published on {{exhibit.date}}</p>        
     {{_("Artworks")}}
     {% with repository_list = artworks, element_type="artwork" %}
         {% include "users/components/item-list.jinja2" %}
