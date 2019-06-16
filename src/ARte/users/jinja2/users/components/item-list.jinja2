@@ -1,7 +1,7 @@
 {# FIXME: maybe this can be improved #}
 <link rel="stylesheet" href="/static/css/elements-modal.css">
 {% if element_type == "exhibit"%}
-    <section id="repo-{{element_type}}" class="exhibit-list">
+    <section id="repo-{{element_type}}" class="exhibit-list flex">
 {% else %}
     <section id="repo-{{element_type}}" class="repository-list">
 {% endif %}
@@ -18,10 +18,11 @@
             {% else %}
                 <img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">
                 <div class="exhibit-info">
-                    <p class="exhibit-name">Name: {{element.name}}</p>
-                    <p class="exhibit-slug">URL {{element.slug}}</p>
+                    <p class="exhibit-name">{{element.name}}</p>
+                    <p class="exhibit-slug">http://dev.jandig.app/<b>{{element.slug}}</b></p>
+                    <p class="exhibit-about">00 artworks | Published on 00/00/0000</p>
                 {% if editable == True %}
-                    <a href="{{ url('edit-exhibit') }}?id={{element.id}}">edit</a>
+                    <a href="{{ url('edit-exhibit') }}?id={{element.id}}">Edit</a>
                 {% endif %}
                 </div>
             {% endif %}
