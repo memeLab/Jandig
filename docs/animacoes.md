@@ -3,8 +3,6 @@ Esse documento contém orientações técnicas e boas práticas para a produçã
 
 Além de produzir uma versão considerando as limitações a seguir, recomendamos que seja produzida uma versão “ideal”, que pode ser utilizada em ambientes controlados e/ou no futuro (quanto essas limitações vão diminuir).
 
-A lista de animações atualmente na aplicação está no [repositório no GitHub](https://github.com/memeLab/ARte/tree/master/src/ARte/pwa/static/images). Algumas estão na pasta só para testes, e não podem ser acessadas.
-
 ### Formato de arquivo
 Atualmente, o único formato de arquivo suportado é GIF.
 
@@ -54,3 +52,5 @@ A partir daí, modificar com parâmetro por vez a partir das limitações mínim
 
 Se, após reduzir os 3 ao mínimo que funciona bem o arquivo ainda estiver grande, continuar diminuindo os parâmetros em combinações diferentes para até chegar a um resultado ótimo.
 Lembre-se também de manter a versão em alta resolução. Aqui a recomendação é salvar com 1000x1000px e 24 fps.
+
+Caso você use Adobe Media encoder, há um tutorial que foi desenvolvido pela UEMG para [download em PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
