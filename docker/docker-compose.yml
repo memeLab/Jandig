@@ -12,14 +12,12 @@ services:
     volumes:
       - ../src/ARte/:/src/ARte/
       - ./media/:/src/ARte/users/media/
-      - ../build/html/:/build/html/
-    
     env_file:
       - ../src/.envs/.django
       - ../src/.envs/.postgres
     depends_on:
       - postgres
-    command: db -p collect run -p
+    command: db -p docs collect run -p
 
   postgres:
     image: postgres

@@ -1,6 +1,5 @@
 
 src/ARte/config/__pycache__/
-/collect/
 *.pyc
 
 ##vscode
@@ -9,12 +8,11 @@ src/ARte/config/__pycache__/
 ##sqlite
 *.sqlite3
 
+build/
 src/data/certbot/
 docker/node_modules/
 node_modules/
 package-lock.json
-
-#**/**/**/migrations/*
 
 ## pycharm
 .idea

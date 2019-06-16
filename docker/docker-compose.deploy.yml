@@ -43,7 +43,7 @@ services:
     volumes:
       - static_dev_files:/collect/
       - ./media/dev/:/src/ARte/users/media/
-    command: db -p collect run -g -p
+    command: db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
   
@@ -72,8 +72,7 @@ services:
     volumes:
       - static_staging_files:/collect/
       - ./media/staging/:/src/ARte/users/media/
-      - ../build/html/:/build/html/
-    command: db -p collect run -g -p
+    command: db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
@@ -103,7 +102,7 @@ services:
     volumes:
       - static_prod_files:/collect/
       - ./media/prod/:/src/ARte/users/media/    
-    command: db -p collect run -g -p
+    command: db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
  
