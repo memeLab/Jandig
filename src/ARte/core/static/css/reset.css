@@ -53,9 +53,9 @@ blockquote {
     font-weight: bold;
 }
 
-input {
+/*input {
     max-width: 80%;
-}
+}*/
 
 input[type=submit] {
     width: 100%;
