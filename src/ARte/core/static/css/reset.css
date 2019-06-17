@@ -148,7 +148,7 @@ button.secondary {
     display: block;
 }
 
-.header .logo img{
+.logo img{
     max-height: 55px;
     height: auto;
     margin: auto;
