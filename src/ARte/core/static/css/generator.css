@@ -19,9 +19,10 @@ h1 a {
 h1 a:hover {
     text-decoration: underline;
 }*/
+
 .logoMG {
     text-align: left;
-    height: 60px;
+    height: 80px;
     width: 100%;
     float: left;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
@@ -37,15 +38,21 @@ h1 a:hover {
 
 .downBoth {
     text-align: center;
-    margin-left: 25px 0;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+    margin: 0;
+    background: #00f7c8;
+    color: #fff;
+    font-size: 1.5em;
+    line-height: 1.75em;
 }
 
 .pdfMaker {
     text-align: center;
-    margin-left: 25px 0;
+    margin: 25px 0;
+    font-size: 1.5em;
+    line-height: 1.75em;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
 }
 
 .page-generator.flex {
@@ -67,6 +74,8 @@ div#imageContainer {
     max-width: 320px;
     height: 320px;
     margin: 25px auto;
+    background: url(../images/icons/icoEptG.png) no-repeat center center;
+    background-size: cover;
 }
 
 div#imageContainer img {
@@ -75,11 +84,13 @@ div#imageContainer img {
 }
 
 .tip {
-    font-size: 0.75em;
+    font-size: 0.85em;
 }
 
 #topRightButtons {
     position: fixed;
-    top: 1em;
-    right: 1em;
+    top: 25px;
+    right: 25px;
+    height: 50px;
+    width: 50px;
 }
