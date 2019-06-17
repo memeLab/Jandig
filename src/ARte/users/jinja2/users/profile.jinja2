@@ -11,7 +11,7 @@
             <link rel="stylesheet" href="/static/css/repository-list.css">
 
             {% if profile %}
-                {{_("Your Exhibits")}}
+                <h1>{{_("Your Exhibits")}}</h1>
                     {% if exhibits %}
                         {% with editable=True, repository_list = exhibits, element_type="exhibit"%}
                             {% include "users/components/item-list.jinja2" %}
@@ -22,7 +22,7 @@
                             <a href="{{ url('create-exhibit') }}">{{ _('Create') }}</a>
                         </section>
                     {% endif %}
-                {{_("Your Artworks")}}
+                <h1>{{_("Your Artworks")}}</h1>
                     {% if artworks %}
                         {% with editable=True, repository_list = artworks, element_type="artwork" %}
                             {% include "users/components/item-list.jinja2" %}
@@ -33,7 +33,7 @@
                             <a href="{{ url('create-artwork') }}">{{ _('Create') }}</a>
                         </section>               
                     {% endif %}
-                {{_("Your Markers")}}
+                <h1>{{_("Your Markers")}}</h1>
                     {% if markers %}
                         {% with repository_list = markers, element_type="marker"%}
                             {% include "users/components/item-list.jinja2" %}
@@ -44,7 +44,7 @@
                             <a href="{{ url('marker-upload') }}">{{ _('Create') }}</a>
                         </section>
                     {% endif %}
-                {{_("Your Objects")}}
+                <h1>{{_("Your Objects")}}</h1>
                     {% if objects %}
                         {% with repository_list = objects, element_type="object" %}
                             {% include "users/components/item-list.jinja2" %}

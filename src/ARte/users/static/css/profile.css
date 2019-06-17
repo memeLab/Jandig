@@ -1,14 +1,14 @@
 .userbox {
     margin-bottom: 20px;
     background: #f1f1f1;
-    padding: 15px;
+    padding: 20px;
 }
 
 .countMrk, .countObj, .editProf {
     height: 20px;
     line-height: 20px;
     margin: 0;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .countMrk, .countObj {
@@ -31,11 +31,11 @@
 
 .bdgArt, .bdgCur {
     text-align: center;
-    height: 115px;
-    padding-top: 65px;
+    height: 50px;
+    padding-top: 60px;
     line-height: 25px;
     font-size: 0.85em;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .bdgArt {
@@ -51,7 +51,8 @@
 }
 
 .bdgArt.empty, .bdgCur.empty {
-    background: url('../images/icons/icoEpt.png') no-repeat center left;
+    background: url('../images/icons/icoEpt.png') no-repeat;
+    background-position: center top;
     background-size: auto;
 }
 
@@ -67,6 +68,7 @@
 
 .upMrk, .upObj {
     background-color: #f1f1f1;
+    flex-basis: calc(50% - 5px);
 }
 
 .createArtwork {
@@ -74,7 +76,8 @@
 }
 
 .createExhibition {
-    background-color: #eccdf0;    
+    background-color: #eccdf0;
+    margin-bottom: 20px; 
 }
 
 .profile-options-flex {
@@ -150,16 +153,20 @@
     .upload, .createArtwork, .createExhibition {
         height: 150px;
         margin-bottom: 20px;
-        flex-basis: calc(33% - 40px)
+        flex-basis: calc(33% - 10px)
     }
 
-    .upArt, .upObj {
-        height: 65px;
+    .upMrk, .upObj {
+        height: 70px;
+    }
+
+    .upMrk.sm-half.lg-full {
+        margin-bottom: 5px;
     }
 
     .separator {
         min-height: 150px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         max-width: 10px;
     }
 
