@@ -18,12 +18,12 @@
 }
 
 .countMrk {
-    background: url('../static/images/icons/icoMrk.png') no-repeat center left;
+    background: url('../images/icons/icoMrk.png') no-repeat center left;
     background-size: contain;
 }
 
 .countObj {
-    background: url('../static/images/icons/icoObj.png') no-repeat center left;
+    background: url('../images/icons/icoObj.png') no-repeat center left;
     background-size: contain;
 }
 
@@ -31,21 +31,24 @@
     text-align: left;
     height: 50px;
     padding-left: 65px;
+    line-height: 25px;
+    font-size: 0.85em;
     margin-bottom: 10px;
+    flex-basis: calc(50% - 70px);
 }
 
 .bdgArt {
-    background: url('../static/images/icons/bdgArt.png') no-repeat center left;
+    background: url('../images/icons/bdgArt.png') no-repeat center left;
     background-size: contain;
 }
 
 .bdgCur {
-    background: url('../static/images/icons/bdgCur.png') no-repeat center left;
+    background: url('../images/icons/bdgCur.png') no-repeat center left;
     background-size: contain;
 }
 
 .bdgArt.empty, .bdgCur.empty {
-    background: url('../static/images/icons/icoEpt.png') no-repeat center left;
+    background: url('../images/icons/icoEpt.png') no-repeat center left;
     background-size: contain;
 }
 

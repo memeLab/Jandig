@@ -107,6 +107,10 @@ button.secondary {
     margin-left: 1%;*/
 }
 
+.sm-full {
+    flex-basis: 100%;
+}
+
 .left {
     /*float: left;*/
     text-align: left;
@@ -186,8 +190,8 @@ button.secondary {
 
 /****** temporary disable icons ******/
 .icon-menu a {
-    opacity: 0.3;
-    cursor: pointer;
+    opacity: 0.2;
+    cursor: none;
 }
 
 .icon-menu a.btnLang {
@@ -245,14 +249,6 @@ button.secondary {
 
 .useful-links a {
     /*font-size: 75%;*/
-}
-
-.userbox {
-    margin-bottom: 20px;
-}
-
-.userbox .container {
-    background-color: #EFEFEF;
 }
 
 /* Media Queries */

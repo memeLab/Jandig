@@ -28,7 +28,7 @@ ser aplicadas sobre a borda sem prejuízo ao reconhecimento da obra, é
 recomendado que a altura deste texto jamais ultrapasse ¼ da largura
 total da borda.
 
-[inserir imagem de marcador]
+<img src="images/MarkerGuide.png" style="margin:25px auto">
 
 Simetria
 ~~~~~~~~
