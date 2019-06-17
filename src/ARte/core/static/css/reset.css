@@ -96,15 +96,23 @@ button.secondary {
 }
 
 .half {
-    width: 150px;
+    width: calc(50% - 10px);
     /* flex-flow: column; */
 }
 
 .one-third {
-    width: 30%;
+    width: calc(33% - 10px);
     /*display: inline-block;
     margin-right: 1%;
     margin-left: 1%;*/
+}
+
+.sm-one-third {
+    flex-basis: calc(33% - 10px);
+}
+
+.sm-half {
+    flex-basis: calc(50% - 10px);
 }
 
 .sm-full {
@@ -277,6 +285,18 @@ button.secondary {
     .half {
         width: 290px;
         /* flex-flow: column; */
+    }
+
+    .lg-one-third {
+        flex-basis: calc(33% - 10px);
+    }
+
+    .lg-half {
+        flex-basis: calc(50% - 10px);
+    }
+
+    .lg-full {
+        flex-basis: 100%;
     }
 
     .logo {

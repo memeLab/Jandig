@@ -28,13 +28,13 @@
 }
 
 .bdgArt, .bdgCur {
-    text-align: left;
-    height: 50px;
-    padding-left: 65px;
+    text-align: center;
+    height: 115px;
+    padding-top: 65px;
     line-height: 25px;
     font-size: 0.85em;
     margin-bottom: 10px;
-    flex-basis: calc(50% - 70px);
+    /*flex-basis: calc(50% - 70px);*/
 }
 
 .bdgArt {
@@ -50,6 +50,27 @@
 .bdgArt.empty, .bdgCur.empty {
     background: url('../images/icons/icoEpt.png') no-repeat center left;
     background-size: contain;
+}
+
+.upload, .separator, .createArtwork, .createExhibition {
+    height: 40px;
+}
+
+.separator {
+    height: 10px;
+    background-color: #05f7ae;
+}
+
+.upMark, .upObj {
+    background-color: #f1f1f1;
+}
+
+.createArtwork {
+    background-color: #cdf0d8;    
+}
+
+.createExhibition {
+    background-color: #eccdf0;    
 }
 
 .profile-options-flex {
@@ -84,3 +105,29 @@
     text-decoration: none;
     color: #0000EE;
 }*/
+
+/**** Media Queries *****/
+@media all and (min-width: 800px) {
+    .bdgArt, .bdgCur {
+        text-align: left;
+        height: 50px;
+        padding-left: 65px;
+        padding-top: 0px;
+        line-height: 25px;
+        font-size: 0.85em;
+        margin-bottom: 10px;
+        flex-basis: calc(50% - 70px);
+    }
+
+    .bdgArt,.bdgCur,.bdgArt.empty, .bdgCur.empty {
+        background-position: top center;
+    }
+
+    .upload, .separator, .createArtwork, .createExhibition {
+        height: 150px;
+    }
+
+    .separator {
+        max-width: 10px;
+    }
+}
