@@ -1,3 +1,54 @@
+.userbox {
+    margin-bottom: 20px;
+    background: #f1f1f1;
+    padding: 15px;
+}
+
+.countMrk, .countObj, .editProf {
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.countMrk, .countObj {
+    font-size: 0.75em;
+    padding-left: 25px;
+    text-align: left;
+}
+
+.countMrk {
+    background: url('../static/images/icons/icoMrk.png') no-repeat center left;
+    background-size: contain;
+}
+
+.countObj {
+    background: url('../static/images/icons/icoObj.png') no-repeat center left;
+    background-size: contain;
+}
+
+.bdgArt, .bdgCur {
+    text-align: left;
+    height: 50px;
+    padding-left: 65px;
+    margin-bottom: 10px;
+}
+
+.bdgArt {
+    background: url('../static/images/icons/bdgArt.png') no-repeat center left;
+    background-size: contain;
+}
+
+.bdgCur {
+    background: url('../static/images/icons/bdgCur.png') no-repeat center left;
+    background-size: contain;
+}
+
+.bdgArt.empty, .bdgCur.empty {
+    background: url('../static/images/icons/icoEpt.png') no-repeat center left;
+    background-size: contain;
+}
+
 .profile-options-flex {
     display: flex;
     flex-direction: column;
@@ -5,16 +56,18 @@
 }
 
 .profile-options-flex .option-link {
-    margin-bottom: 4%;
+    /* margin-bottom: 4%; */
     background-color: black;
-    line-height: 40px;
+    /* line-height: 40px; */
+    width: 100%;
+    display: block;
     font-weight: bold;
     text-align: center;
-    text-decoration: none;
+    /* text-decoration: none; */
     color: white;
 }
 
-.profile-options-flex .account-options {
+/*.profile-options-flex .account-options {
     margin-bottom: 4%;
     color: black;
 }
@@ -27,4 +80,4 @@
 .profile-options-flex > .account-options > a:visited{
     text-decoration: none;
     color: #0000EE;
-}
+}*/

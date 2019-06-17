@@ -19,7 +19,7 @@
 
 .exhibit-list .repository-item, #repo-artwork .repository-item {
     /* increasing percentage reduce number of elements per row */
-    flex: 0 1 calc(25% - 10px);
+    flex: 0 1 calc(50% - 10px);
 }
 
 p.exhibit-slug, p.exhibit-about, a.edit {
