@@ -4,6 +4,12 @@
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
     <div class="signup-modal container flex">
+        <div class="logo">
+            <a href="{{ url('home') }}">
+                    <img src="/static/images/icons/header_icon.png">
+            </a>
+        </div>
+
         <div class="exhibit-form">
             <h2>Choose the exhibition you're seeing</h2>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
