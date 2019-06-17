@@ -34,7 +34,7 @@
     line-height: 25px;
     font-size: 0.85em;
     margin-bottom: 10px;
-    /*flex-basis: calc(50% - 70px);*/
+    flex-basis: calc(50% - 70px);
 }
 
 .bdgArt {
@@ -61,7 +61,7 @@
     background-color: #05f7ae;
 }
 
-.upMark, .upObj {
+.upMrk, .upObj {
     background-color: #f1f1f1;
 }
 
@@ -81,14 +81,24 @@
 
 .profile-options-flex .option-link {
     /* margin-bottom: 4%; */
-    background-color: black;
-    /* line-height: 40px; */
+    /* background-color: black; */
+    line-height: 40px;
     width: 100%;
     display: block;
     font-weight: bold;
     text-align: center;
     /* text-decoration: none; */
-    color: white;
+    color: #000;
+}
+
+.profile-options-flex .userbox .option-link {
+    line-height: 20px;
+    font-size: 0.85em;-
+    width: 100%;
+    display: block;
+    font-weight: bold;
+    text-align: right;
+    color: #05f7ae;
 }
 
 /*.profile-options-flex .account-options {
@@ -123,11 +133,13 @@
         background-position: top center;
     }
 
-    .upload, .separator, .createArtwork, .createExhibition {
-        height: 150px;
+    .upload, .createArtwork, .createExhibition {
+        height: 40px;
+        margin-bottom: 10px;
     }
 
     .separator {
-        max-width: 10px;
+        max-height: 10px;
+        margin-bottom: 10px;
     }
 }
