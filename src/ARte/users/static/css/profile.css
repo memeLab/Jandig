@@ -123,6 +123,14 @@
 
 /**** Media Queries *****/
 @media all and (min-width: 800px) {
+    .countMrk, .countObj {
+        flex-basis: calc(30% - 20px);
+    }
+
+    .countMrk, .countObj, .editProf {
+        margin-bottom: 20px;
+    }
+
     .bdgArt, .bdgCur {
         text-align: left;
         height: 50px;
@@ -130,23 +138,29 @@
         padding-top: 0px;
         line-height: 25px;
         font-size: 0.85em;
-        margin-bottom: 10px;
+        margin-bottom: 0;
         flex-basis: calc(50% - 70px);
     }
 
     .bdgArt,.bdgCur,.bdgArt.empty, .bdgCur.empty {
-        background-position: top center;
+        background-position: left center;
         background-size: contain;
     }
 
     .upload, .createArtwork, .createExhibition {
-        height: 40px;
-        margin-bottom: 10px;
+        height: 150px;
+        margin-bottom: 20px;
+        flex-basis: calc(33% - 40px)
+    }
+
+    .upArt, .upObj {
+        height: 65px;
     }
 
     .separator {
-        max-height: 10px;
+        min-height: 150px;
         margin-bottom: 10px;
+        max-width: 10px;
     }
 
     .profile-options-flex .userbox .option-link {
