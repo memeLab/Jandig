@@ -13,8 +13,10 @@
 
 .countMrk, .countObj {
     font-size: 0.75em;
-    padding-left: 25px;
+    line-height: 1.75em;
+    padding-left: 27px;
     text-align: left;
+    flex-basis: calc(50% - 30px);
 }
 
 .countMrk {
@@ -34,26 +36,28 @@
     line-height: 25px;
     font-size: 0.85em;
     margin-bottom: 10px;
-    flex-basis: calc(50% - 70px);
 }
 
 .bdgArt {
-    background: url('../images/icons/bdgArt.png') no-repeat center left;
-    background-size: contain;
+    background: url('../images/icons/bdgArt.png') no-repeat;
+    background-position: center top;
+    background-size: auto;
 }
 
 .bdgCur {
-    background: url('../images/icons/bdgCur.png') no-repeat center left;
-    background-size: contain;
+    background: url('../images/icons/bdgCur.png') no-repeat;
+    background-position: center top;
+    background-size: auto;
 }
 
 .bdgArt.empty, .bdgCur.empty {
     background: url('../images/icons/icoEpt.png') no-repeat center left;
-    background-size: contain;
+    background-size: auto;
 }
 
 .upload, .separator, .createArtwork, .createExhibition {
     height: 40px;
+    margin-bottom: 10px;
 }
 
 .separator {
@@ -93,12 +97,13 @@
 
 .profile-options-flex .userbox .option-link {
     line-height: 20px;
-    font-size: 0.85em;-
+    font-size: 0.85em;
     width: 100%;
     display: block;
     font-weight: bold;
-    text-align: right;
-    color: #05f7ae;
+    text-align: center;
+    color: #03b595;
+    background: #e1e1e1;
 }
 
 /*.profile-options-flex .account-options {
@@ -131,6 +136,7 @@
 
     .bdgArt,.bdgCur,.bdgArt.empty, .bdgCur.empty {
         background-position: top center;
+        background-size: contain;
     }
 
     .upload, .createArtwork, .createExhibition {
@@ -141,5 +147,11 @@
     .separator {
         max-height: 10px;
         margin-bottom: 10px;
+    }
+
+    .profile-options-flex .userbox .option-link {
+        text-align: right;
+        color: #05f7ae;
+        background: none;
     }
 }
