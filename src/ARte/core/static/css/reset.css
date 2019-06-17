@@ -29,9 +29,11 @@ a, a:visited {
 
 h1 {
     font-size: 1.25em;
+    line-height: 1.75em;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
+    background-position: 100% 15%;
     background-size: 100% 200%;
+    margin-top: 40px;
 }
 
 h2 {
@@ -101,9 +103,9 @@ blockquote {
     margin: 2em 5em;
     color: #888;
     font-style: italic;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    /*background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
-    background-size: 100% 200%;
+    background-size: 100% 200%;*/
 }
 
 input[type=submit] {

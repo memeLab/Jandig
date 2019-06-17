@@ -1,6 +1,7 @@
 {% extends '/users/profile.jinja2' %}
 
 {% block subcontent %}
+<div class="container">
     <div class="password-form">
         <form name="password-form" action="{{url('edit-password')}}" method="post" enctype="multipart/form-data">
             {{ csrf_input }} 
@@ -24,5 +25,6 @@
             {% endfor%}
             <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
         </form>
+    </div>
 </div>
 {% endblock %}

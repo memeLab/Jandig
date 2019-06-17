@@ -75,14 +75,17 @@
 
 .upMrk a.option-link {
     background: url(../images/icons/icoMrk.png) no-repeat;
-    background-position: left center;
-    background-size: contain;
 }
 
 .upObj a.option-link {
     background: url(../images/icons/icoObj.png) no-repeat;
-    background-position: left center;
-    background-size: contain;
+}
+
+.upMrk a.option-link,
+.upObj a.option-link {
+    background-position: 15px center;
+    background-size: 20px 20px;
+    padding-left: 15px;
 }
 
 .createArtwork {
@@ -91,8 +94,6 @@
 
 .createArtwork a.option-link {
     background: url(../images/icons/icoArt.png) no-repeat;
-    background-position: left center;
-    background-size: contain;
 }
 
 .createExhibition {
@@ -102,8 +103,12 @@
 
 .createExhibition a.option-link {
     background: url(../images/icons/icoExb.png) no-repeat;
-    background-position: left center;
-    background-size: contain;
+}
+
+.createArtwork a.option-link,
+.createExhibition a.option-link {
+    background-position: 15px center;
+    background-size: 30px 30px;
 }
 
 .profile-options-flex {
