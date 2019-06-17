@@ -68,16 +68,42 @@
 
 .upMrk, .upObj {
     background-color: #f1f1f1;
+    font-size: 0.85em; 
     flex-basis: calc(50% - 5px);
+    margin: auto 0;
+}
+
+.upMrk a.option-link {
+    background: url(../images/icons/icoMrk.png) no-repeat;
+    background-position: left center;
+    background-size: contain;
+}
+
+.upObj a.option-link {
+    background: url(../images/icons/icoObj.png) no-repeat;
+    background-position: left center;
+    background-size: contain;
 }
 
 .createArtwork {
     background-color: #cdf0d8;    
 }
 
+.createArtwork a.option-link {
+    background: url(../images/icons/icoArt.png) no-repeat;
+    background-position: left center;
+    background-size: contain;
+}
+
 .createExhibition {
     background-color: #eccdf0;
     margin-bottom: 20px; 
+}
+
+.createExhibition a.option-link {
+    background: url(../images/icons/icoExb.png) no-repeat;
+    background-position: left center;
+    background-size: contain;
 }
 
 .profile-options-flex {
@@ -158,6 +184,7 @@
 
     .upMrk, .upObj {
         height: 70px;
+        flex-basis: 100%;
     }
 
     .upMrk.sm-half.lg-full {
@@ -168,6 +195,12 @@
         min-height: 150px;
         margin-bottom: 20px;
         max-width: 10px;
+    }
+
+    .createArtwork a.option-link, .createExhibition a.option-link {
+        background-position: top center;
+        background-size: auto;
+        padding-top: 60px;
     }
 
     .profile-options-flex .userbox .option-link {

@@ -27,6 +27,55 @@ a, a:visited {
     text-decoration: none;
 }
 
+h1 {
+    font-size: 1.25em;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
+}
+
+h2 {
+    font-size: 1.25em;
+    color: #03b595;
+}
+
+h3 {
+    font-size: 1.25em;
+    text-align: left;
+    padding-left: 30px;
+}
+
+h3:before {
+    width: 20px;
+    height: 20px;
+    background: #03b595;
+    display: inline-block;
+    margin: 5px 10px -3px -10px;
+    content: ' ';
+}
+
+h4 {
+    font-size: 1.1em;
+    color: #03b595;
+}
+
+h5 {
+    font-size: 1.1em;
+}
+
+h6 {
+    font-size: 1em;
+    color: #03b595;
+}
+
+hr {
+    height: 10px;
+    width: 80%;
+    border: none;
+    background: #03b595;
+    margin: 20px auto;
+}
+
 .account-options a {
     color: #777;
     padding: 0;
@@ -42,20 +91,20 @@ ul {
 }
 
 ul, ol {
-    padding: 0 0 0 2em;
+    padding: 0 0 0 5em;
+    text-align: left;
 }
 
 blockquote {
-    font-size: 1.75em;
+    font-size: 1.1em;
     line-height: 2.25em;
     margin: 2em 5em;
     color: #888;
-    font-weight: bold;
+    font-style: italic;
+    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+    background-position: 100% 10%;
+    background-size: 100% 200%;
 }
-
-/*input {
-    max-width: 80%;
-}*/
 
 input[type=submit] {
     width: 100%;
