@@ -312,26 +312,29 @@ button.secondary {
 
 h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
     height: 40px;
+    line-height: 45px;
+    text-align: left;
+    padding-left: 35px;
     background-position: left center;
-    background-size: 30px 30px;
+    background-size: 25px 25px;
     background-repeat: no-repeat;
     border-bottom: 10px solid #f1f1f1;
 }
 
 h1.titExb {
-    background: url(../images/icons/icoExb.png);
+    background-image: url(../images/icons/icoExb.png);
 }
 
 h1.titArt {
-    background: url(../images/icons/icoArt.png);
+    background-image: url(../images/icons/icoArt.png);
 }
 
 h1.titMrk {
-    background: url(../images/icons/icoMrk.png);
+    background-image: url(../images/icons/icoMrk.png);
 }
 
 h1.titObj {
-    background: url(../images/icons/icoObj.png);
+    background-image: url(../images/icons/icoObj.png);
 }
 
 /* Media Queries */
