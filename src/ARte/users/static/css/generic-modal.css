@@ -45,3 +45,30 @@
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+
+
+/********* Media Queries ***********/
+@media all and (min-width: 800px) {
+    .modal-container {
+        height: calc(100vh - 50px);
+        position: relative;
+        width: 80%;
+        max-width: 600px;
+        margin: 25px auto;
+        /* overflow: scroll; */
+    }
+
+    .modal-content {
+        padding: 20px;
+        width: 560px;
+        height: calc(100vh - 140px);
+    }
+
+    img#element-src {
+        height: 200px;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}

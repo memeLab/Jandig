@@ -25,14 +25,13 @@
             {% endblock %}
         {% else %}
             <section class="use-guide">
-                <h3>How to use</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Quisque urna tortor, vehicula nec
-                sodales ut, cursus in ipsum. Ut convallis rhoncus
-                nulla, a finibus leo ullamcorper non.re tincidunt
-                magna, vel fringilla nisi tincidunt sit amet</p>
-                <div class="authorize-camera">
-                    <a href="/exhibit_select"> {{ _('Authorize camera') }}</a>
+                <div class="container">
+                    <h4>Welcome to Jandig</h4>
+                    <bloquote>an opensource Augmented Reality art gallery and community</bloquote>
+                    <p>First of all, you need to grant camera access to the app.</p>
+                    <div class="authorize-camera">
+                        <a href="/exhibit_select"> {{ _('Authorize camera') }}</a>
+                    </div>
                 </div>
             </section>
         {% endif %}

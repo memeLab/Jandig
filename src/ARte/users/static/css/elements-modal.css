@@ -41,29 +41,3 @@ img#augmented-src{
     border-color: #4286f4;
     margin-bottom: 5%;
 }
-
-
-@media all and (min-width: 800px) {
-    .modal-container {
-        height: calc(100vh - 50px);
-        position: relative;
-        width: 80%;
-        max-width: 600px;
-        margin: 25px auto;
-        /* overflow: scroll; */
-    }
-
-    .modal-content {
-        padding: 20px;
-        width: 560px;
-        height: calc(100vh - 140px);
-    }
-
-    img#element-src {
-        height: 200px;
-        width: 200px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-    }
-}

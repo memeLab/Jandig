@@ -8,25 +8,25 @@
 
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="/static/css/repository-list.css">
-            {{_("Exhibits")}}
+            <h1 class="titExb">{{_("Exhibits")}}</h1>
                 {% if exhibits %}
                     {% with repository_list = exhibits, element_type="exhibit"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                 {% endif %}
-            {{_("Artworks")}}
+            <h1 class="titArt">{{_("Artworks")}}</h1>
                 {% if artworks %}
                     {% with repository_list = artworks, element_type="artwork" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                 {% endif %}
-            {{_("Markers")}}
+            <h1 class="titMrk">{{_("Markers")}}</h1>
                 {% if markers %}
                     {% with repository_list = markers, element_type="marker"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                 {% endif %}
-            {{_("Objects")}}
+            <h1 class="titObj">{{_("Objects")}}</h1>
                 {% if objects %}
                     {% with repository_list = objects, element_type="object" %}
                         {% include "users/components/item-list.jinja2" %}
