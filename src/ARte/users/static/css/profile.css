@@ -206,6 +206,11 @@
         background-position: top center;
         background-size: auto;
         padding-top: 60px;
+        margin-top: 25px;
+    }
+
+    .upMrk a.option-link, .upObj a.option-link {
+        margin-top: 15px;
     }
 
     .profile-options-flex .userbox .option-link {

@@ -32,17 +32,23 @@ a:visited{
     max-width: 50%;
 }*/
 
-.header .signup-btn {
-    background-color: black;
-    text-align: center;
-    height: 13%;
-    width: 18%;
-    padding: 4%;
+.connect.flex {
+    margin-left: 10px;
 }
 
-.header .signup-btn a{
-    text-decoration: none;
+.header .signup-btn, .header .login-btn {
+    background-color: black;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    width: calc(50% - 5px);
+}
+
+.header .signup-btn a, .header .login-btn a {
+    font-weight: bold;
     color: white;
+    display: block;
+    font-size: 0.75em;
 }
 
 /*.header {
@@ -108,11 +114,10 @@ a:visited{
 /*.use-guide a {
     text-decoration: none;
     color: white;
-}*/
+}
 
 .footer {
     min-height: 50px;
-    /*margin-top: 2%;*/
 }
 
 .footer .container {
@@ -121,10 +126,9 @@ a:visited{
 }
 
 .footer a {
-    /*text-decoration: none;*/
     font-size: 75%;
     margin: auto;
-}
+}*/
 
 /* Desktops */
 @media(min-width: 900px) {

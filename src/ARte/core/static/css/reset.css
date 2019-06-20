@@ -250,7 +250,7 @@ button.secondary {
 /****** temporary disable icons ******/
 .icon-menu a {
     opacity: 0.2;
-    cursor: none;
+    pointer-events: none;
 }
 
 .icon-menu a.btnLang {
@@ -337,6 +337,46 @@ h1.titObj {
     background-image: url(../images/icons/icoObj.png);
 }
 
+.footer {
+    min-height: 90px;
+}
+
+.footer .container {
+    height: 25px;
+}
+
+.footer a {
+    font-size: 75%;
+    line-height: 25px;
+    margin: auto;
+}
+
+.githb {
+    background-image: url(../images/icons/bulGit.png);
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    color: #05f7ae;
+    padding-left: 45px;
+}
+
+.license {
+    background-image: url(../images/icons/license.png);
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 90px;
+}
+
+.memelab {
+    background-image: url(../images/icons/memelab.png);
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    text-indent: -99999px;
+    max-width: 40px;
+}
+
 /* Media Queries */
 @media all and (max-width: 400px) {
     .header, .useful-links {
@@ -408,10 +448,10 @@ h1.titObj {
         margin: 0 0 0 10px;
     }
 
-    .useful-links a {
+    .useful-links a, a.useful {
         /* font-size: 75%; */
         padding: 5px;
-        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
+        background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
         background-position: 100% 15%;
         background-size: 100% 200%;
     }
@@ -437,6 +477,18 @@ h1.titObj {
         background: url(../images/icons/icoARV.png) no-repeat;
         background-position: center center;
         background-size: contain;
+    }
+
+    .footer {
+        min-height: 100px;
+    }
+
+    .footer .container {
+        height: 30px;
+    }
+
+    .footer a {
+        line-height: 30px;
     }
 }
 
