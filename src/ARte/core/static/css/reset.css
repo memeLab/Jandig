@@ -343,6 +343,7 @@ h1.titObj {
 
 .footer .container {
     height: 25px;
+    margin-bottom: 20px;
 }
 
 .footer a {
@@ -351,7 +352,12 @@ h1.titObj {
     margin: auto;
 }
 
-.githb {
+.footer a.useful {
+    margin: 0;
+    padding: 0;
+}
+
+a.github {
     background-image: url(../images/icons/bulGit.png);
     background-size: contain;
     background-position: left center;
@@ -360,7 +366,7 @@ h1.titObj {
     padding-left: 45px;
 }
 
-.license {
+a.license {
     background-image: url(../images/icons/license.png);
     background-size: contain;
     background-position: left center;
@@ -368,7 +374,7 @@ h1.titObj {
     padding-left: 90px;
 }
 
-.memelab {
+a.memelab {
     background-image: url(../images/icons/memelab.png);
     background-size: contain;
     background-position: left center;
