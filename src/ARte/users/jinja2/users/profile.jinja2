@@ -11,7 +11,7 @@
             <link rel="stylesheet" href="/static/css/repository-list.css">
 
             {% if profile %}
-                <h1 class="titExb">{{_("Your Exhibits")}}</h1>
+                <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
                     {% if exhibits %}
                         {% with editable=True, repository_list = exhibits, element_type="exhibit"%}
                             {% include "users/components/item-list.jinja2" %}

@@ -362,8 +362,8 @@ a.github {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    color: #05f7ae;
-    padding-left: 45px;
+    color: #03b595;
+    padding-left: 35px;
 }
 
 a.license {
@@ -371,7 +371,9 @@ a.license {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 90px;
+    padding-left: 85px;
+    margin-left: 0;
+    text-align: left;
 }
 
 a.memelab {
@@ -379,8 +381,11 @@ a.memelab {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
     text-indent: -99999px;
-    max-width: 40px;
+    max-width: 35px;
+    margin: 0;
 }
 
 /* Media Queries */
@@ -496,6 +501,20 @@ a.memelab {
     .footer a {
         line-height: 30px;
     }
+
+    a.github {
+        padding-left: 40px;
+    }
+
+    a.license {
+        padding-left: 100px;
+    }
+
+    a.memelab {
+        width: 30px;
+        height: 30px;
+        max-width: 40px;
+}
 }
 
 /* Hover Elements */

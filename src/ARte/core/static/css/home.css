@@ -39,9 +39,13 @@ a:visited{
 .header .signup-btn, .header .login-btn {
     background-color: black;
     text-align: center;
-    height: 30px;
-    line-height: 30px;
+    height: 20px;
+    line-height: 20px;
     width: calc(50% - 5px);
+}
+
+.header .login-btn {
+    background-color: #03b595;
 }
 
 .header .signup-btn a, .header .login-btn a {
@@ -67,12 +71,11 @@ a:visited{
 }*/
 
 .use-guide {
-    max-width: 400px;
+    max-width: 300px;
     margin: 0 auto;
-    border: 1px solid #4F4545;
-    margin-bottom: 5%;
-    padding-bottom: 5%;
-    background-color: #D9D9D9;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f1f1f1;
 }
 
 /*.text-content{
@@ -131,6 +134,14 @@ a:visited{
 }*/
 
 /* Desktops */
-@media(min-width: 900px) {
+@media(min-width: 800px) {
+    .use-guide {
+        max-width: 560px;
+        margin-bottom: 30px;
+    }
 
+    .header .signup-btn, .header .login-btn {
+        height: 30px;
+        line-height: 30px;
+    }
 }
