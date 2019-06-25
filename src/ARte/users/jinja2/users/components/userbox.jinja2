@@ -1,0 +1,46 @@
+{% set markers = request.user.profile.marker_set.all()|length %}
+{% set objects = request.user.profile.object_set.all()|length %}
+{% set exhibits = request.user.profile.exhibits.all()|length %}
+{% set artworks = request.user.profile.artwork_set.all()|length %}
+
+<section class="userbox flex">
+    <div class="countMrk sm-half lg-one-third">
+        {%if markers %}
+            {{ markers }} {{ _(' markers') }} 
+        {% else %}
+            {{ _('No uploads yet.')}}
+        {% endif %}
+    </div>
+    <div class="countObj sm-half lg-one-third">
+        {%if objects %}
+            {{ objects }} {{ _(' objects') }} 
+        {% else %}
+            {{ _('No uploads yet.')}}
+        {% endif %}
+    </div>
+    <div class="editProf sm-full lg-one-third">
+        <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit personal info') }}</a>
+    </div>
+    <div class="bdgArt empty half">
+        {%if artworks %}
+            {{ artworks }} {{ _(' artworks') }} 
+        {% else %}
+            <b>
+            {{ _('No artworks yet.')}}
+            </b>
+            <br /> 
+            {{ _('Create your first!')}}
+        {% endif %}
+    </div>
+    <div class="bdgCur empty half">
+        {%if exhibits %}
+            {{ exhibits }} {{ _(' exhibits') }} 
+        {% else %}
+            <b>
+            {{ _('No exhibitions yet.')}}
+            </b>
+            <br />
+            {{ _('Create your first!')}}
+        {% endif %}
+    </div>
+</section>
