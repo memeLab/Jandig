@@ -231,9 +231,11 @@ button.secondary {
 }
 
 .welcome {
-    line-height: 30px;
-    font-size: 0.85em;
+    /* line-height: 30px; */
+    height: 30px;
+    font-size: 0.65em;
     overflow: hidden;
+    vertical-align: bottom;
 }
 
 .welcome a, .welcome a:visited {
@@ -243,7 +245,7 @@ button.secondary {
 }
 
 .welcome p {
-    line-height: 30px;
+    line-height: 45px;
 }
 
 .icon-menu a {
@@ -265,6 +267,7 @@ button.secondary {
     background: url(../images/icons/icoLng.png) no-repeat;
     background-position: center center;
     background-size: contain;
+    margin: 0 0 0 auto; /***** Fix align ****/
 }
 
 .icon-menu a.btnSearch {
@@ -289,17 +292,18 @@ div.contCam:before {
     height: 0;
     width: 0;
     position: relative;
-    top: -10px;
+    top: -21px;
     left: 45px;
     border-color: #c9c9c9 transparent transparent #c9c9c9;
     border-style: solid;
-    border-width: 10px;
+    border-width: 7px;
+    pointer-events: none;
 }
 
 .animCam {
     width: 40px;
     height: 40px;
-    margin: 0 auto;
+    margin: -25px auto 0;
     background: #03b595;
 }
 
@@ -317,8 +321,9 @@ div.contCam:before {
 }
 
 .useful-links {
-    /* margin-bottom: 2%; */
     margin-bottom: 20px;
+    font-size: 0.75em;
+    font-weight: bold;
     clear: both;
 }
 
@@ -329,6 +334,10 @@ div.contCam:before {
 
 .useful-links a {
     /*font-size: 75%;*/
+    padding: 0 5px;
+    background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
+    background-position: 100% 15%;
+    background-size: 100% 200%;
 }
 
 h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
@@ -462,10 +471,11 @@ a.memelab {
     .welcome, .icon-menu, .connect {
         height: 50px;
         text-align: right;
+        font-size: 0.75em;
     }
 
     .welcome, .welcome p {
-        line-height: 50px;
+        line-height: 80px;
     }
 
     .header .logo img{
@@ -492,10 +502,17 @@ a.memelab {
         min-width: 250px;
     }
 
+    div.contCam:before {
+        top: -10px;
+        left: 125px;
+        border-width: 10px;
+    }
+
     .animCam {
         width: 40px;
         height: 40px;
         margin: 0 auto;
+        margin-top: -20px;
         background: #03b595;
     }
 
@@ -539,7 +556,30 @@ a.memelab {
 }
 
 /* Hover Elements */
+.useful-links a:hover,
 .account-options a:hover {
     color: #666;
     background-position: 0 100%;
 }
+
+
+/****** Animation  ********/
+.animCam {
+      animation: colorchange 4s; /* animation-name followed by duration in seconds*/
+         /* you could also use milliseconds (ms) or something like 2.5s */
+      -webkit-animation: colorchange 4s; /* Chrome and Safari */
+    }
+
+@keyframes colorchange
+    {
+      0%   {background: #03b595;}
+      50%  {background: #06f7ae;}
+      100% {background: #03b595;}
+    }
+
+@-webkit-keyframes colorchange
+    {
+      0%   {background: #03b595;}
+      50%  {background: #06f7ae;}
+      100% {background: #03b595;}
+    }
