@@ -552,12 +552,13 @@ a.memelab {
         width: 30px;
         height: 30px;
         max-width: 40px;
-}
+    }
 }
 
 /* Hover Elements */
 .useful-links a:hover,
 .account-options a:hover {
+    transition: all .2s ease-in;
     color: #666;
     background-position: 0 100%;
 }
@@ -565,6 +566,7 @@ a.memelab {
 
 /****** Animation  ********/
 .animCam {
+    /*transition: all .2s ease-in;*/
       animation: colorchange 4s; /* animation-name followed by duration in seconds*/
          /* you could also use milliseconds (ms) or something like 2.5s */
       -webkit-animation: colorchange 4s; /* Chrome and Safari */

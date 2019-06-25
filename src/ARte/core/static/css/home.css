@@ -75,7 +75,8 @@ a:visited{
     margin: 0 auto;
     margin-bottom: 20px;
     padding: 20px;
-    background-color: #f1f1f1;
+    /* background-color: #f1f1f1; */
+    background-image: url(../images/icons/fill.png);
 }
 
 /*.text-content{
