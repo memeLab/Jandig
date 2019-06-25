@@ -108,7 +108,7 @@ blockquote {
     background-size: 100% 200%;*/
 }
 
-input[type=submit] {
+input[type=submit],input[type="submit" i] {
     width: 100%;
     margin: 20px 0 0 0;
     color: #fff;
@@ -129,6 +129,11 @@ button {
     color: #fff;
     font-weight: bold;
     border: none;
+}
+
+input:disabled, input[type="submit" i]:disabled, input[type=submit]:disable, button.disable {
+    opacity: 0.2;
+    pointer-events: none;
 }
 
 button.secondary {
@@ -192,15 +197,18 @@ button.secondary {
 }
 
 .aside {
-    max-width: 150px;
+    max-width: 140px;
+    margin-left: -140px;
     height: 70px;
     float: right;
+    background: #fff;
 }
 
 .logo {
     text-align: left;
     height: 60px;
-    width: calc(100% - 125px);
+    width: 100%;
+    /*width: calc(100% - 125px);*/
     float: left;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
@@ -273,6 +281,19 @@ button.secondary {
 
 .contCam {
     min-width: 90px;
+}
+
+div.contCam:before {
+    content: '';
+    display: block;
+    height: 0;
+    width: 0;
+    position: relative;
+    top: -10px;
+    left: 45px;
+    border-color: #c9c9c9 transparent transparent #c9c9c9;
+    border-style: solid;
+    border-width: 10px;
 }
 
 .animCam {
@@ -406,9 +427,9 @@ a.memelab {
     }
 
     .aside {
-        max-width: 150px;
+        max-width: 250px;
         height: 100px;
-        float: right;
+        margin-left: -250px;
     }
 
     .half {
