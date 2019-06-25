@@ -384,7 +384,8 @@ h1.titObj {
 
 .footer a.useful {
     margin: 0;
-    padding: 0;
+    line-height: 25px;
+    /* padding: 0; */
 }
 
 a.github {
@@ -416,6 +417,37 @@ a.memelab {
     text-indent: -99999px;
     max-width: 35px;
     margin: 0;
+}
+
+a.intagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    text-indent: -99999px;
+    max-width: 35px;
+    margin: 0;
+}
+
+a.intagram {
+    background-image: url(../images/icons/icoIst.png);
+}
+
+a.twitter {
+    background-image: url(../images/icons/icoTwt.png);
+}
+
+a.facebook {
+    background-image: url(../images/icons/icoFcb.png);
+}
+
+a.telegram {
+    background-image: url(../images/icons/icoTel.png);
+}
+
+a.sq-github {
+    background-image: url(../images/icons/icoGit.png);
 }
 
 /* Media Queries */
@@ -557,19 +589,27 @@ a.memelab {
 
 /* Hover Elements */
 .useful-links a:hover,
+.footer a.useful,
 .account-options a:hover {
     transition: all .2s ease-in;
-    color: #666;
+    color: #FFF;
     background-position: 0 100%;
+}
+
+.header .logo img:hover,
+.animCam:hover {
+    transition: all .2s ease-in;
+    opacity: 0.9;
 }
 
 
 /****** Animation  ********/
 .animCam {
     /*transition: all .2s ease-in;*/
-      animation: colorchange 4s; /* animation-name followed by duration in seconds*/
+      animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
          /* you could also use milliseconds (ms) or something like 2.5s */
-      -webkit-animation: colorchange 4s; /* Chrome and Safari */
+      -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
+      /*animation-iteration-count: infinite;*/
     }
 
 @keyframes colorchange
