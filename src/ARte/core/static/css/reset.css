@@ -204,6 +204,7 @@ button.secondary {
 
 .header {
     margin-top: 25px;
+    font-size: 75%;
 }
 
 .aside {
@@ -308,6 +309,7 @@ div.contCam:before {
     border-style: solid;
     border-width: 7px;
     pointer-events: none;
+    z-index: 1;
 }
 
 .animCam {
@@ -335,6 +337,7 @@ div.contCam:before {
     font-size: 0.75em;
     font-weight: bold;
     clear: both;
+    font-size: 75%;
 }
 
 .useful-links .container {
@@ -467,11 +470,11 @@ a.sq-github {
 }
 
 /* Media Queries */
-@media all and (max-width: 400px) {
+/*@media all and (max-width: 400px) {
     .header, .useful-links {
         font-size: 75%;
     }
-}
+}*/
 
 @media all and (min-width: 800px) {
     .container {
@@ -628,6 +631,12 @@ a.sq-github {
 .social a:hover {
     transition: all .2s ease-in;
     opacity: 0.8;
+}
+
+.editProf a.option-link:hover,
+.welcome a {
+    transition: all .2s ease-in;
+    color: #06f7ae;
 }
 
 
