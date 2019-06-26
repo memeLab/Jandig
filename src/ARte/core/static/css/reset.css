@@ -427,7 +427,7 @@ a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
     height: 25px;
     text-indent: -99999px;
     max-width: 35px;
-    margin: 0;
+    margin: 5px 0px 5px 5px;
 }
 
 a.instagram {
@@ -571,6 +571,11 @@ a.sq-github {
 
     .footer a {
         line-height: 30px;
+    }
+
+a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+        width: 30px;
+        height: 30px;
     }
 
     a.github {
