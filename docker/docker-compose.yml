@@ -17,7 +17,7 @@ services:
       - ../src/.envs/.postgres
     depends_on:
       - postgres
-    command: db -p docs collect run -p
+    command: inv db -p docs collect run -p
 
   postgres:
     image: postgres

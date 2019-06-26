@@ -16,6 +16,7 @@ def robust_manage(ctx, cmd, env=None, **kwargs):
     env = {**os.environ, **(env or {})}
     path = env.get("PYTHONPATH", ":".join(sys.path))
     env.setdefault('PYTHONPATH', f'src:{path}')
+    print(cmd)
     ctx.run(cmd, pty=True, env=env)
 
 
@@ -120,19 +121,19 @@ def i18n(ctx, compile=False, edit=False, lang='pt_BR', keep_pot=False):
         robust_manage(ctx, 'makemessages', keep_pot=True, locale=lang)
 
         print('Extract Jinja translations')
-        ctx.run('pybabel extract -F etc/babel.cfg -o locale/jinja2.pot .')
+        ctx.run('pybabel extract -F ./etc/babel.cfg -o ./locale/jinja2.pot .')
 
         print('Join Django + Jinja translation files')
-        ctx.run('msgcat locale/django.pot locale/jinja2.pot --use-first -o locale/join.pot',
+        ctx.run('msgcat ./locale/jinja2.pot --use-first -o ./locale/join.pot',
                 pty=True)
-        ctx.run(r'''sed -i '/"Language: \\n"/d' locale/join.pot''', pty=True)
+        ctx.run(r'''sed -i '/"Language: \\n"/d' ./locale/join.pot''', pty=True)
 
         print(f'Update locale {lang} with Jinja2 messages')
-        ctx.run(f'msgmerge locale/{lang}/LC_MESSAGES/django.po locale/join.pot -U')
+        ctx.run(f'msgmerge ./locale/{lang}/LC_MESSAGES/django.po ./locale/join.pot -U')
 
         if not keep_pot:
             print('Cleaning up')
-            ctx.run('rm locale/*.pot')
+            ctx.run('rm ./locale/*.pot')
 
 
 @task
