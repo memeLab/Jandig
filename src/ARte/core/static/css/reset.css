@@ -201,7 +201,7 @@ button.secondary {
     margin-left: -140px;
     height: 70px;
     float: right;
-    background: #fff;
+    /*background: #fff;*/
 }
 
 .logo {
@@ -332,7 +332,8 @@ div.contCam:before {
     margin: auto;
 }
 
-.useful-links a {
+.useful-links a,
+.footer a.useful {
     /*font-size: 75%;*/
     padding: 0 5px;
     background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
@@ -402,7 +403,9 @@ a.license {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 85px;
+    padding-left: 65px;
+    font-size: 0.5em;
+    line-height: 20px;
     margin-left: 0;
     text-align: left;
 }
@@ -412,8 +415,8 @@ a.memelab {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     text-indent: -99999px;
     max-width: 35px;
     margin: 0;
@@ -573,7 +576,7 @@ a.sq-github {
         line-height: 30px;
     }
 
-a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+    a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
         width: 30px;
         height: 30px;
     }
@@ -584,6 +587,10 @@ a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
 
     a.license {
         padding-left: 100px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 0.75em;
     }
 
     a.memelab {
