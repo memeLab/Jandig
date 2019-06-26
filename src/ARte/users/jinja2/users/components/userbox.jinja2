@@ -21,26 +21,38 @@
     <div class="editProf sm-full lg-one-third">
         <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit personal info') }}</a>
     </div>
-    <div class="bdgArt empty half">
         {%if artworks %}
-            {{ artworks }} {{ _(' artworks') }} 
+            <div class="bdgArt half">
+                <b>
+                {{ _('Jandig Artist')}}
+                </b>
+                {{ artworks }} {{ _(' artworks') }} 
         {% else %}
-            <b>
-            {{ _('No artworks yet.')}}
-            </b>
-            <br /> 
-            {{ _('Create your first!')}}
+            <div class="bdgArt empty half">
+                <b>
+                {{ _('No artworks yet.')}}
+                </b>
+                <br /> 
+                <a class="" href="{{ url('create-artwork') }}">
+                    {{ _('Create your first!')}}
+                </a>
         {% endif %}
-    </div>
-    <div class="bdgCur empty half">
+            </div>
         {%if exhibits %}
-            {{ exhibits }} {{ _(' exhibits') }} 
+            <div class="bdgCur half">
+                <b>
+                {{ _('Jandig Curator')}}
+                </b>
+                {{ exhibits }} {{ _(' exhibits') }} 
         {% else %}
-            <b>
-            {{ _('No exhibitions yet.')}}
-            </b>
-            <br />
-            {{ _('Create your first!')}}
+            <div class="bdgCur empty half">
+                <b>
+                {{ _('No exhibitions yet.')}}
+                </b>
+                <br />
+                <a class="" href="{{ url('create-exhibit') }}">
+                    {{ _('Create your first!')}}
+                </a>
         {% endif %}
     </div>
 </section>

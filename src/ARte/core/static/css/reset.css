@@ -108,7 +108,7 @@ blockquote {
     background-size: 100% 200%;*/
 }
 
-input[type=submit],input[type="submit" i] {
+input[type=submit], input[type="submit" i] {
     width: 100%;
     margin: 20px 0 0 0;
     color: #fff;
@@ -119,7 +119,7 @@ input[type=submit],input[type="submit" i] {
     padding: 10px 0;
 }
 
-button {
+button, .button {
     background: #000;
     width: 100%;
     line-height: 40px;
@@ -408,6 +408,9 @@ a.license {
     line-height: 20px;
     margin-left: 0;
     text-align: left;
+    white-space: nowrap;
+    max-width: calc(100% - 160px);
+    overflow: hidden;
 }
 
 a.memelab {
