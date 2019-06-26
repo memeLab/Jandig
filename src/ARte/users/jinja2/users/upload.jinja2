@@ -5,26 +5,30 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/upload.css">
 
-        <h4> {{ _('Upload ') }}  {{ form_type }}</h4>
+        <h2>{{ _('Upload ') }}  {{ form_type }}</h2>
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" action="{{ url(route) }}" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
                     {%if route == 'object-upload' %}
-                        Choose object
+                        <h3>Choose object</h3>
                     {% else %}
-                        Choose marker image 
+                        <blockquote>
+                            No marker files yet? Don't fret! You can get them 
+                            <a href="https://dev.jandig.app/generator/" target="_blank">here</a>.
+                        </blockquote>
+                        <h3>Choose marker image</h3>
                     {% endif %}
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
                     {% if form_type == 'marker' %}
-                        <p class="upload-field" id="patt-field">
-                            Choose patt
+                        <h3>Choose .patt file</h3>
+                        <div class="upload-field" id="patt-field">
                             {{ form.visible_fields()[2] }}
                             {{ form.visible_fields()[2].errors }}
-                        </p>
+                        </div>
                     {% endif %}
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">
@@ -37,7 +41,7 @@
                     <div class="form-options">
                         <p>
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
-                            {{ _('I agree to have this content on <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>') }}
+                            {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>') }}
                         </p>
                     </div>
                     <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>

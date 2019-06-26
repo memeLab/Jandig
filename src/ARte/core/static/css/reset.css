@@ -137,7 +137,7 @@ button, .button {
     border: none;
 }
 
-input:disabled, input[type="submit" i]:disabled, input[type=submit]:disable, button.disable {
+input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
     opacity: 0.2;
     pointer-events: none;
 }
