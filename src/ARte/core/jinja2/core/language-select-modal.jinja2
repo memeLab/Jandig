@@ -1,0 +1,18 @@
+{% extends '/users/components/generic-modal.jinja2' %}
+
+
+{% block content %}
+    {# FIXME: maybe this can be improved #}
+    <link rel="stylesheet" href="/static/css/language-select-modal.css">    
+    <form action="/i18n/setlang/" method="post">
+    {# <form action="{{ url('lang-selector') }}" method="post">        #}
+        {{ csrf_input }}
+        {% for language in LANGUAGES %}
+            <p>
+                <input id="radio-{{language[0]}}" name="language" type="radio" value="{{language[0]}}">
+                <label for="radio-{{language[0]}}">{{language[0]}}</label>
+            </p>
+        {% endfor%}
+        <input class="select-btn next-btn" type="submit" value="{{ _('Ok') }}"/>
+    </form>
+{% endblock %}

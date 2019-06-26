@@ -1,0 +1,11 @@
+.modal-container {
+    height: 50%;
+    width: 50%;
+    margin-top: 50%;
+}
+
+.modal-content {
+    position: inherit;
+    height: 35%;
+    margin: auto;
+}
