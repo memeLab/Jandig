@@ -419,7 +419,7 @@ a.memelab {
     margin: 0;
 }
 
-a.intagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
@@ -430,7 +430,7 @@ a.intagram, a.twitter, a.facebook, a.telegram, a.sq-github {
     margin: 0;
 }
 
-a.intagram {
+a.instagram {
     background-image: url(../images/icons/icoIst.png);
 }
 
@@ -566,6 +566,7 @@ a.sq-github {
 
     .footer .container {
         height: 30px;
+        margin-bottom: 40px;
     }
 
     .footer a {
@@ -589,7 +590,7 @@ a.sq-github {
 
 /* Hover Elements */
 .useful-links a:hover,
-.footer a.useful,
+.footer a.useful:hover,
 .account-options a:hover {
     transition: all .2s ease-in;
     color: #FFF;
@@ -597,9 +598,11 @@ a.sq-github {
 }
 
 .header .logo img:hover,
-.animCam:hover {
+.animCam:hover,
+.memelab:hover,
+.social a:hover {
     transition: all .2s ease-in;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 
