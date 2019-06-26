@@ -4,8 +4,8 @@
 {% block content %}
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/language-select-modal.css">    
-    <form action="/i18n/setlang/" method="post">
-    {# <form action="{{ url('lang-selector') }}" method="post">        #}
+
+    <form action="{{ url('set_language') }}" method="post">       
         {{ csrf_input }}
         {% for language in LANGUAGES %}
             <p>
@@ -15,4 +15,9 @@
         {% endfor%}
         <input class="select-btn next-btn" type="submit" value="{{ _('Ok') }}"/>
     </form>
+    <script>
+        let selectedLanguage = {{request.LANGUAGE_CODE|tojson}};
+        let radioBtnQuery = '#radio-' + selectedLanguage;
+        $(radioBtnQuery).prop("checked", true);
+    </script>
 {% endblock %}

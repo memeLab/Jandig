@@ -64,15 +64,3 @@ def exhibit_detail(request):
         'artworks': exhibit.artworks.all()
     }
     return render(request, 'core/exhibit_detail.jinja2', ctx)
-
-
-def lang_selector(request):
-    user_language = request.POST.get('language', '')
-    response = redirect('home')
-    if user_language:
-        print('old ' + translation.get_language())
-        translation.activate(user_language)
-        print('new ' + translation.get_language())
-        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
-        
-    return response

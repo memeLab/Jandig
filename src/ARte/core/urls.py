@@ -12,6 +12,5 @@ urlpatterns = [
     path('generator/', marker_generator, name='marker-generator'),
     path('sw.js', service_worker, name='sw'),
     path('upload', upload_image, name='upload-image'),
-    path('i18n/', include('django.conf.urls.i18n'), name='lang-selector'),
-    # path('lang', lang_selector, name='lang-selector'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
