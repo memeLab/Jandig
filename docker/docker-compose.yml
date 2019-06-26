@@ -10,14 +10,15 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../src/ARte/:/src/ARte/
-      - ./media/:/src/ARte/users/media/
+      - ../src/ARte/:/ARte/src/ARte/
+      - ../locale/:/ARte/locale/
+      - ./media/:/ARte/src/ARte/users/media/
     env_file:
       - ../src/.envs/.django
       - ../src/.envs/.postgres
     depends_on:
       - postgres
-    command: inv db -p docs collect run -p
+    command: inv db -p i18n --compile docs collect run -p
 
   postgres:
     image: postgres

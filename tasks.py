@@ -124,7 +124,7 @@ def i18n(ctx, compile=False, edit=False, lang='pt_BR', keep_pot=False):
         ctx.run('pybabel extract -F ./etc/babel.cfg -o ./locale/jinja2.pot .')
 
         print('Join Django + Jinja translation files')
-        ctx.run('msgcat ./locale/jinja2.pot --use-first -o ./locale/join.pot',
+        ctx.run('msgcat ./locale/django.pot ./locale/jinja2.pot --use-first -o ./locale/join.pot',
                 pty=True)
         ctx.run(r'''sed -i '/"Language: \\n"/d' ./locale/join.pot''', pty=True)
 

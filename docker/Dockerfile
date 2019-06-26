@@ -5,7 +5,7 @@ WORKDIR /ARte
 COPY docs/ /ARte/docs/
 COPY ./src/ARte /ARte/src/ARte/
 COPY ./locale/ /ARte/locale/
-
 COPY ./tasks.py /ARte/tasks.py
-COPY ./etc/babel.cfg /ARte/etc/babel.cfg
+COPY ./etc/ /ARte/etc/
+
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf

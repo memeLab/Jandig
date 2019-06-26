@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from .views import service_worker, index, upload_image, exhibit_select, collection, exhibit_detail, lang_selector
+from .views import service_worker, index, upload_image, exhibit_select, collection, exhibit_detail
 from .views_s.home import home, ar_viewer, community, marker_generator
 
 urlpatterns = [
