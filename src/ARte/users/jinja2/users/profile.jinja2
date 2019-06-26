@@ -59,13 +59,14 @@
             {% endif %}
 
             {% include "users/components/userbox.jinja2" %}
+            
             {% include "users/components/createbox.jinja2" %}
 
 
-            <section class="account-options flex">
+            <!--<section class="account-options flex">
                 <a href="{{ url('logout') }}"> {{ _('Log out') }}
                 <a href="#"> {{ _('Remove account') }}</a>
-            </section>
+            </section>-->
         </div>
     </section>
 {% endblock %}

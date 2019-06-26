@@ -10,6 +10,12 @@ body {
     text-align: center;
 }
 
+body.colorful {
+    background-image: url(../images/icons/bg.png);
+    background-repeat: repeat-x;
+    background-position: center top;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: "Istok Web", serif;
     font-weight: bolder;
@@ -190,6 +196,10 @@ button.secondary {
     max-width: 320px;
     margin: 0 auto;
     text-align: center;
+}
+
+.colorful .container {
+    background-color: #fff;
 }
 
 .header {
