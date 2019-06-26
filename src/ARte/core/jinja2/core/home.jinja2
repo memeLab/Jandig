@@ -1,6 +1,15 @@
 <!doctype html>
 <html>
     <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37240876-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37240876-2');
+        </script>
         <link id="manifest" rel="manifest" href="/static/manifest.json">
         <link rel="stylesheet" href="/static/css/reset.css">
         <link rel="stylesheet" href="/static/css/home.css">
@@ -26,11 +35,11 @@
         {% else %}
             <section class="use-guide">
                 <div class="container">
-                    <h4>Welcome to Jandig</h4>
-                    <bloquote>An open source Augmented Reality art community.</bloquote>
+                    <h2>Welcome to Jandig</h2>
+                    <blockquote>An open source Augmented Reality art community.</blockquote>
                     <p>To see the artworks you need  to grant camera access to the app.</p>
-                    <div class="authorize-camera">
-                        <a href="/exhibit_select"> {{ _('Authorize camera') }}</a>
+                    <div class="go-to-camera">
+                        <a href="/exhibit_select"> {{ _('Go to camera') }}</a>
                     </div>
                 </div>
             </section>

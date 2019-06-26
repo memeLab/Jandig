@@ -7,6 +7,14 @@
         </div>
 
         <div class="aside">             
+            <div class="icon-menu flex">
+                <div class="trigger-modal">
+                    <a href="#" class="btnLang">Language</a>
+                </div>
+                <!--<a href="#" class="btnSearch">Search</a>
+                <a href="#" class="btnHelp">Help</a>-->
+            </div>
+
             {% if request.user.is_authenticated %}
                 <div class="welcome">
                     <p>
@@ -16,7 +24,7 @@
                         {% set markers = request.user.profile.marker_set.all()|length %}
                         {% set objects = request.user.profile.object_set.all()|length %}
                         {% set exhibits = request.user.profile.exhibits.all()|length %}
-
+                        
                         {% if not markers and not objects %}
                             {{ _('No uploads yet.') }}
                         {% elif markers and objects%}
@@ -35,6 +43,7 @@
                         {% endif %}
                     </p>
                 </div>          
+
             {% else %}
                 <div class="connect flex">
                     {# <div class="signup-btn">
@@ -45,18 +54,7 @@
                     </div> #}
                 </div>
             {% endif %}
-            <div class="icon-menu flex">
-                <div class="trigger-modal">
-                    <a href="#" class="btnLang">Language</a>
-                </div>
-                <a href="#" class="btnSearch">Search</a>
-                <a href="#" class="btnHelp">Help</a>
-            </div>
             {% include "core/language-select-modal.jinja2" %}
         </div>
     </div>
-    <script>
-        let language = {{request.LANGUAGE_CODE|tojson}};
-        console.log(language)
-    </script>
 </section>

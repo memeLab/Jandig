@@ -166,7 +166,7 @@ class ArtworkForm(forms.Form):
     existent_marker = forms.IntegerField(min_value=1, required=False)
     existent_object = forms.IntegerField(min_value=1, required=False)
     title = forms.CharField(max_length=50)
-    description = forms.CharField(widget=forms.Textarea, max_length=500)
+    description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
 
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)

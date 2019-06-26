@@ -1,6 +1,6 @@
-{% extends '/users/profile.jinja2' %}
+{% extends '/core/home.jinja2' %}
 
-{% block subcontent %}
+{% block content %}
 <div class="container">
     <div class="password-form">
         <form name="password-form" action="{{url('edit-password')}}" method="post" enctype="multipart/form-data">

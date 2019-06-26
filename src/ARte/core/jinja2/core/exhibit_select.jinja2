@@ -25,7 +25,7 @@
         </div>
     </div>
     <script>
-        $('#id_exhibit').click(function(){
+        $('#id_exhibit').on('change',function(e){
             if($(this).prop('value') != ''){
                 $('input[type="submit"]').prop('disabled', false);
             }else{
