@@ -297,7 +297,14 @@ input[type=submit].secondary {
     background: url(../images/icons/icoLng.png) no-repeat;
     background-position: center center;
     background-size: contain;
-    margin: 0 0 0 auto; /***** Fix align ****/
+    margin: 0 0 0 auto;
+    font-size: 1em;
+    color: #000;
+    padding: 10px;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
 }
 
 .icon-menu a.btnSearch {
@@ -649,10 +656,21 @@ a.sq-github {
 }
 
 /* Hover Elements */
+.useful-links a,
+.footer a.useful,
+.account-options a,
+.header .logo img,
+.animCam,
+.memelab,
+.social a,
+.editProf a.option-link,
+.welcome a {
+    transition: all .2s ease-in;
+}
+
 .useful-links a:hover,
 .footer a.useful:hover,
 .account-options a:hover {
-    transition: all .2s ease-in;
     color: #FFF;
     background-position: 0 100%;
 }
@@ -661,13 +679,11 @@ a.sq-github {
 .animCam:hover,
 .memelab:hover,
 .social a:hover {
-    transition: all .2s ease-in;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .editProf a.option-link:hover,
-.welcome a {
-    transition: all .2s ease-in;
+.welcome a:hover {
     color: #06f7ae;
 }
 
