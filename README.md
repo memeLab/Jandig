@@ -15,7 +15,7 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 - @hvalois [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
 - @vjpixel [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel)
 - @pablodiegoss - [Twitter](https://twitter.com/pablodiegosds)
-- @rodrigocam [Twitter](https://twitter.com/ShamanRoh)
+- @rodrigocam [Twitter](https://twitter.com/sayadiguin)
 - @Heloisecs - [Twitter](https://twitter.com/heloisecullen)
 - @thiagohersan
 
