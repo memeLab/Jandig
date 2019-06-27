@@ -5,7 +5,7 @@
     padding: 3%;
 }
 
-.creation-form {
+/*.creation-form {
     background-color: white;
 }
 
@@ -15,9 +15,9 @@
 
 .create-artwork {
     text-align: center;
-}
+}*/
 
-.select-btn {
+/*.select-btn {
     font-size: 14px;
     height: 35px;
     width: 90%;
@@ -26,7 +26,7 @@
     border-radius: 8px;
     border-color: #4286f4;
     margin-bottom: 5%;
-}
+}*/
 
 .form-options{
     font-size: 12px;
