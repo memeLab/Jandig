@@ -6,8 +6,6 @@
     <section class="profile-options-flex">
         <div class="container">
 
-            {% include "users/components/userbox.jinja2" %}
-            
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="/static/css/profile.css">
             <link rel="stylesheet" href="/static/css/repository-list.css">
@@ -60,7 +58,9 @@
                 {% include "users/components/elements-modal.jinja2" %}
             {% endif %}
 
-            <h1>{{_("Come on! Create new content now!")}}</h1>
+            {% include "users/components/userbox.jinja2" %}
+            
+            {#<h1>{{_("Come on! Create new content now!")}}</h1>#}
             {% include "users/components/createbox.jinja2" %}
 
         </div>
