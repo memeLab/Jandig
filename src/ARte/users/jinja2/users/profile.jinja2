@@ -58,39 +58,15 @@
                 {% include "users/components/elements-modal.jinja2" %}
             {% endif %}
 
-            <section class="userbox flex">
-                <div class="countMrk sm-half lg-one-third">No uploads yet.</div>
-                <div class="countObj sm-half lg-one-third">No uploads yet.</div>
-                <div class="editProf sm-full lg-one-third">
-                    <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit personal info') }}</a>
-                </div>
-                <div class="bdgArt empty half"><b>No artworks yet.</b></br>Create your first!</div>
-                <div class="bdgCur empty half"><b>No exhibitions yet.</b></br>Create your first!</div>
-            </section>
+            {% include "users/components/userbox.jinja2" %}
+            
+            {% include "users/components/createbox.jinja2" %}
 
-            <section class="createbox flex">
-                <div class="upload sm-full flex">
-                    <div class="upMrk sm-half lg-full">
-                        <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload marker') }}</a>
-                    </div>
-                    <div class="upObj sm-half lg-full">
-                        <a class="option-link" href="{{ url('object-upload') }}">{{ _('Upload object') }}</a>
-                    </div>
-                </div>
-                <div class="separator sm-full"></div>
-                <div class="createArtwork sm-full lg-full">
-                    <a class="option-link creArt" href="{{ url('create-artwork') }}">{{ _('Create Jandig artwork') }}</a>
-                </div>
-                <div class="createExhibition sm-full lg-full">
-                    <a class="option-link creExh" href="{{ url('create-exhibit') }}">{{ _('Create exhibition') }}</a>
-                </div>
-            </section>
 
-            <section class="account-options flex">
+            <!--<section class="account-options flex">
                 <a href="{{ url('logout') }}"> {{ _('Log out') }}
-                <span> | </span>
                 <a href="#"> {{ _('Remove account') }}</a>
-            </section>
+            </section>-->
         </div>
     </section>
 {% endblock %}

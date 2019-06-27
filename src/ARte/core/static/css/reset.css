@@ -10,6 +10,12 @@ body {
     text-align: center;
 }
 
+body.colorful {
+    background-image: url(../images/icons/bg.png);
+    background-repeat: repeat-x;
+    background-position: center top;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: "Istok Web", serif;
     font-weight: bolder;
@@ -108,30 +114,36 @@ blockquote {
     background-size: 100% 200%;*/
 }
 
-input[type=submit] {
+input {
     width: 100%;
-    margin: 20px 0 0 0;
-    color: #fff;
-    background: #000;
-    border: none;
-    font-size: 0.75em;
-    text-transform: uppercase;
-    padding: 10px 0;
+    height: 40px;
 }
 
-button {
-    background: #000;
+input[type=submit],
+input[type="submit" i],
+button,
+.button  {
     width: 100%;
-    line-height: 40px;
-    margin: 10px 0;
-    text-align: center;
-    display: inline-block;
+    margin: 20px 0;
+    background: #000;
+    border: none;
     color: #fff;
     font-weight: bold;
-    border: none;
+    font-size: 0.75em;
+    line-height: 40px;
+    text-transform: uppercase;
+    padding: 10px 0;
+    text-align: center;
+    display: inline-block;
 }
 
-button.secondary {
+input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+button.secondary,
+input[type=submit].secondary {
     background: #666;
     width: 100%;
     line-height: 30px;
@@ -187,20 +199,28 @@ button.secondary {
     text-align: center;
 }
 
+.colorful .container {
+    background-color: #fff;
+}
+
 .header {
     margin-top: 25px;
+    font-size: 75%;
 }
 
 .aside {
-    max-width: 150px;
+    max-width: 140px;
+    margin-left: -140px;
     height: 70px;
     float: right;
+    /*background: #fff;*/
 }
 
 .logo {
     text-align: left;
     height: 60px;
-    width: calc(100% - 125px);
+    width: 100%;
+    /*width: calc(100% - 125px);*/
     float: left;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
@@ -223,9 +243,11 @@ button.secondary {
 }
 
 .welcome {
-    line-height: 30px;
-    font-size: 0.85em;
+    /* line-height: 30px; */
+    height: 30px;
+    font-size: 0.65em;
     overflow: hidden;
+    vertical-align: bottom;
 }
 
 .welcome a, .welcome a:visited {
@@ -235,7 +257,7 @@ button.secondary {
 }
 
 .welcome p {
-    line-height: 30px;
+    line-height: 45px;
 }
 
 .icon-menu a {
@@ -257,6 +279,7 @@ button.secondary {
     background: url(../images/icons/icoLng.png) no-repeat;
     background-position: center center;
     background-size: contain;
+    margin: 0 0 0 auto; /***** Fix align ****/
 }
 
 .icon-menu a.btnSearch {
@@ -275,10 +298,25 @@ button.secondary {
     min-width: 90px;
 }
 
+div.contCam:before {
+    content: '';
+    display: block;
+    height: 0;
+    width: 0;
+    position: relative;
+    top: -21px;
+    left: 45px;
+    border-color: #c9c9c9 transparent transparent #c9c9c9;
+    border-style: solid;
+    border-width: 7px;
+    pointer-events: none;
+    z-index: 1;
+}
+
 .animCam {
     width: 40px;
     height: 40px;
-    margin: 0 auto;
+    margin: -25px auto 0;
     background: #03b595;
 }
 
@@ -296,9 +334,11 @@ button.secondary {
 }
 
 .useful-links {
-    /* margin-bottom: 2%; */
     margin-bottom: 20px;
+    font-size: 0.75em;
+    font-weight: bold;
     clear: both;
+    font-size: 75%;
 }
 
 .useful-links .container {
@@ -306,8 +346,13 @@ button.secondary {
     margin: auto;
 }
 
-.useful-links a {
+.useful-links a,
+.footer a.useful {
     /*font-size: 75%;*/
+    padding: 0 5px;
+    background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
+    background-position: 100% 15%;
+    background-size: 100% 200%;
 }
 
 h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
@@ -354,7 +399,8 @@ h1.titObj {
 
 .footer a.useful {
     margin: 0;
-    padding: 0;
+    line-height: 25px;
+    /* padding: 0; */
 }
 
 a.github {
@@ -371,9 +417,14 @@ a.license {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 85px;
+    padding-left: 65px;
+    font-size: 0.5em;
+    line-height: 20px;
     margin-left: 0;
     text-align: left;
+    white-space: nowrap;
+    max-width: calc(100% - 160px);
+    overflow: hidden;
 }
 
 a.memelab {
@@ -381,19 +432,50 @@ a.memelab {
     background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     text-indent: -99999px;
     max-width: 35px;
     margin: 0;
 }
 
+a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    text-indent: -99999px;
+    max-width: 35px;
+    margin: 5px 0px 5px 5px;
+}
+
+a.instagram {
+    background-image: url(../images/icons/icoIst.png);
+}
+
+a.twitter {
+    background-image: url(../images/icons/icoTwt.png);
+}
+
+a.facebook {
+    background-image: url(../images/icons/icoFcb.png);
+}
+
+a.telegram {
+    background-image: url(../images/icons/icoTel.png);
+}
+
+a.sq-github {
+    background-image: url(../images/icons/icoGit.png);
+}
+
 /* Media Queries */
-@media all and (max-width: 400px) {
+/*@media all and (max-width: 400px) {
     .header, .useful-links {
         font-size: 75%;
     }
-}
+}*/
 
 @media all and (min-width: 800px) {
     .container {
@@ -406,9 +488,9 @@ a.memelab {
     }
 
     .aside {
-        max-width: 150px;
+        max-width: 250px;
         height: 100px;
-        float: right;
+        margin-left: -250px;
     }
 
     .half {
@@ -441,10 +523,11 @@ a.memelab {
     .welcome, .icon-menu, .connect {
         height: 50px;
         text-align: right;
+        font-size: 0.75em;
     }
 
     .welcome, .welcome p {
-        line-height: 50px;
+        line-height: 80px;
     }
 
     .header .logo img{
@@ -471,10 +554,17 @@ a.memelab {
         min-width: 250px;
     }
 
+    div.contCam:before {
+        top: -10px;
+        left: 125px;
+        border-width: 10px;
+    }
+
     .animCam {
         width: 40px;
         height: 40px;
         margin: 0 auto;
+        margin-top: -20px;
         background: #03b595;
     }
 
@@ -496,10 +586,16 @@ a.memelab {
 
     .footer .container {
         height: 30px;
+        margin-bottom: 40px;
     }
 
     .footer a {
         line-height: 30px;
+    }
+
+    a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
+        width: 30px;
+        height: 30px;
     }
 
     a.github {
@@ -508,17 +604,62 @@ a.memelab {
 
     a.license {
         padding-left: 100px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 0.75em;
     }
 
     a.memelab {
         width: 30px;
         height: 30px;
         max-width: 40px;
-}
+    }
 }
 
 /* Hover Elements */
+.useful-links a:hover,
+.footer a.useful:hover,
 .account-options a:hover {
-    color: #666;
+    transition: all .2s ease-in;
+    color: #FFF;
     background-position: 0 100%;
 }
+
+.header .logo img:hover,
+.animCam:hover,
+.memelab:hover,
+.social a:hover {
+    transition: all .2s ease-in;
+    opacity: 0.8;
+}
+
+.editProf a.option-link:hover,
+.welcome a {
+    transition: all .2s ease-in;
+    color: #06f7ae;
+}
+
+
+/****** Animation  ********/
+.animCam {
+    /*transition: all .2s ease-in;*/
+      animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
+         /* you could also use milliseconds (ms) or something like 2.5s */
+      -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
+      /*animation-iteration-count: infinite;*/
+    }
+
+@keyframes colorchange
+    {
+      0%   {background: #03b595;}
+      50%  {background: #06f7ae;}
+      100% {background: #03b595;}
+    }
+
+@-webkit-keyframes colorchange
+    {
+      0%   {background: #03b595;}
+      50%  {background: #06f7ae;}
+      100% {background: #03b595;}
+    }

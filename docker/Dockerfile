@@ -1,11 +1,11 @@
 FROM jandigarte/requirements:latest
 
-RUN mkdir -p /src/ARte
-COPY docs/ /docs/
-COPY ./src/ARte /src/ARte
-
-COPY ./tasks.py /tasks.py
+RUN mkdir -p /ARte
+WORKDIR /ARte
+COPY docs/ /ARte/docs/
+COPY ./src/ARte /ARte/src/ARte/
+COPY ./locale/ /ARte/locale/
+COPY ./tasks.py /ARte/tasks.py
+COPY ./etc/ /ARte/etc/
 
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
-
-ENTRYPOINT ["inv"]

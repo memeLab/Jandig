@@ -43,12 +43,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
@@ -128,14 +128,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LOCALE_PATHS = (
-    os.path.join(str(ROOT_DIR), 'locale'),
+    # os.path.join(str(ROOT_DIR), 'locale'),
+    '/ARte/locale',
 )
 
 LANGUAGE_CODE = 'en'
 
 LANGUAGES = (
-    ('en_US', _('English')),
-    ('pt_BR', _('Brazilian Portuguese')),
+    ('en-us', _('English')),
+    ('pt-br', _('Brazilian Portuguese')),
 )
 
 TIME_ZONE = 'UTC'

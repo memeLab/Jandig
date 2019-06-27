@@ -1,12 +1,15 @@
-from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import translation
 from django.shortcuts import redirect
 
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
 from users.models import Artwork, Marker, Object
+
 
 def service_worker(request):
     return render(request, 'core/sw.js',
