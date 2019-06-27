@@ -114,35 +114,36 @@ blockquote {
     background-size: 100% 200%;*/
 }
 
-input[type=submit], input[type="submit" i] {
+input {
     width: 100%;
-    margin: 20px 0 0 0;
-    color: #fff;
-    background: #000;
-    border: none;
-    font-size: 0.75em;
-    text-transform: uppercase;
-    padding: 10px 0;
+    height: 40px;
 }
 
-button, .button {
-    background: #000;
+input[type=submit],
+input[type="submit" i],
+button,
+.button  {
     width: 100%;
-    line-height: 40px;
-    margin: 10px 0;
-    text-align: center;
-    display: inline-block;
+    margin: 20px 0;
+    background: #000;
+    border: none;
     color: #fff;
     font-weight: bold;
-    border: none;
+    font-size: 0.75em;
+    line-height: 40px;
+    text-transform: uppercase;
+    padding: 10px 0;
+    text-align: center;
+    display: inline-block;
 }
 
 input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
-    opacity: 0.2;
+    opacity: 0.4;
     pointer-events: none;
 }
 
-button.secondary {
+button.secondary,
+input[type=submit].secondary {
     background: #666;
     width: 100%;
     line-height: 30px;
