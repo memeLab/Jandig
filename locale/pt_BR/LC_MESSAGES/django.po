@@ -3,68 +3,68 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-18 16:31-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-06-26 21:24-0300\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: src/ARte/config/settings.py:136
 msgid "English"
-msgstr ""
+msgstr "Inglês"
 
 #: src/ARte/config/settings.py:137
 msgid "Brazilian Portuguese"
-msgstr ""
+msgstr "Português do Brasil"
 
 #: src/ARte/users/forms.py:17
 msgid "Your e-mail address"
-msgstr ""
+msgstr "Seu endereço de e-mail"
 
 #: src/ARte/users/forms.py:22
 msgid "Your username"
-msgstr ""
+msgstr "Seu nome de usuário"
 
 #: src/ARte/users/forms.py:28
 msgid "email"
-msgstr ""
+msgstr "e-mail"
 
 #: src/ARte/users/forms.py:29
 msgid "chosen username"
-msgstr ""
+msgstr "nome de usuário escolhido"
 
 #: src/ARte/users/forms.py:30 src/ARte/users/forms.py:52
 msgid "password"
-msgstr ""
+msgstr "senha"
 
 #: src/ARte/users/forms.py:31
 msgid "confirm password"
-msgstr ""
+msgstr "confirmar senha"
 
 #: src/ARte/users/forms.py:41
 msgid "Email address must be unique"
-msgstr ""
+msgstr "O endereço de e-mail deve ser único"
 
 #: src/ARte/users/forms.py:51
 msgid "username / email"
-msgstr ""
+msgstr "nome de usuário / e-mail"
 
 #: src/ARte/users/forms.py:69
 msgid "browse file"
-msgstr ""
+msgstr "procurar arquivo"
 
 #: src/ARte/users/forms.py:70
 msgid "declare different author name"
-msgstr ""
+msgstr "declarar outro autor"
 
 #: src/ARte/core/jinja2/core/base.jinja2:30
 #: src/ARte/core/jinja2/core/base2.jinja2:21
@@ -75,23 +75,23 @@ msgstr ""
 #: src/ARte/users/jinja2/users/login.jinja2:9
 #: src/ARte/users/jinja2/users/signup.jinja2:8
 msgid "Sign up"
-msgstr ""
+msgstr "Cadastro"
 
 #: src/ARte/core/jinja2/core/home.jinja2:33
 msgid "Repository"
-msgstr ""
+msgstr "Repositório"
 
 #: src/ARte/core/jinja2/core/home.jinja2:34
 msgid "Get involved"
-msgstr ""
+msgstr "Envolva-se"
 
 #: src/ARte/core/jinja2/core/home.jinja2:35
 msgid "Documentation"
-msgstr ""
+msgstr "Documentação"
 
 #: src/ARte/core/jinja2/core/home.jinja2:55
 msgid "Authorize camera"
-msgstr ""
+msgstr "Autorizar câmera"
 
 #: src/ARte/core/jinja2/core/home.jinja2:63
 msgid "Legal text"
@@ -99,53 +99,53 @@ msgstr ""
 
 #: src/ARte/core/jinja2/core/home.jinja2:64
 msgid "Footer links"
-msgstr ""
+msgstr "Links do rodapé"
 
 #: src/ARte/users/jinja2/users/login.jinja2:8
 msgid "Login to continue"
-msgstr ""
+msgstr "Faça login para continuar"
 
 #: src/ARte/users/jinja2/users/login.jinja2:25
 #: src/ARte/users/jinja2/users/signup.jinja2:30
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: src/ARte/users/jinja2/users/login.jinja2:28
 msgid "Recover password"
-msgstr ""
+msgstr "Recuperar senha"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:9
 msgid "Edit personal info"
-msgstr ""
+msgstr "Editar dados pessoais"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:10
 #: src/ARte/users/jinja2/users/upload-marker.jinja2:4
 msgid "Upload marker"
-msgstr ""
+msgstr "Subir marcador"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:11
 msgid "Upload object"
-msgstr ""
+msgstr "Subir objeto"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:12
 msgid "Create Jandig artwork"
-msgstr ""
+msgstr "Criar obra Jandig"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:13
 msgid "Create exhibit"
-msgstr ""
+msgstr "Criar exposição"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:16
 msgid "Log out"
-msgstr ""
+msgstr "Sair"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:17
 msgid "Remove account"
-msgstr ""
+msgstr "Remover conta"
 
 #: src/ARte/users/jinja2/users/signup.jinja2:9
 msgid "Log in"
-msgstr ""
+msgstr "Entrar"
 
 #: src/ARte/users/jinja2/users/signup.jinja2:23
 msgid "Legal agreement"
@@ -153,4 +153,4 @@ msgstr ""
 
 #: src/ARte/users/jinja2/users/signup.jinja2:27
 msgid "Remember me"
-msgstr ""
+msgstr "Lembre-se de mim"
