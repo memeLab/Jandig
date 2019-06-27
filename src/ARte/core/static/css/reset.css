@@ -555,6 +555,7 @@ a.sq-github {
 
     .welcome, .welcome p {
         line-height: 80px;
+        font-size: 1em;
     }
 
     .header .logo img{

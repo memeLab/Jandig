@@ -22,6 +22,11 @@
     flex: 0 1 calc(50% - 10px);
 }
 
+.exhibit-list .repository-item {
+    background: #faf3f9;
+    margin-bottom: 20px;
+}
+
 p.exhibit-slug, p.exhibit-about, a.edit {
     font-size: 0.65em;
 }

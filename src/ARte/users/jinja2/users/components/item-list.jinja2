@@ -17,10 +17,12 @@
                 {% endif %}
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
-                    <img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">
+                    {#<img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">#}
+                    <p class="exhibit-name">{{element.name}}</p>
                 </a>
                 <div class="exhibit-info">
-                    <p class="exhibit-name">{{element.name}}</p>
+                    <p class="by">{{_("Created by ")}} <b>{{exhibit.owner.user.username}}</b></p>
+                    {#<p class="exhibit-name">{{element.name}}</p>#}
                     <p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>
                     <p class="exhibit-about">{{element.artworks_count}} artworks | Published on {{element.date}}</p>
                 {% if editable == True %}
