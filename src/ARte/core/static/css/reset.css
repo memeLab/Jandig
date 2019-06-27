@@ -215,6 +215,9 @@ input[type=submit].secondary {
 
 .colorful .container {
     background-color: #fff;
+    margin-top: 40px;
+    padding: 20px;
+    max-width: 280px;
 }
 
 .header {
@@ -497,6 +500,11 @@ a.sq-github {
         margin: 0 auto;
     }
 
+    .colorful .container {
+        padding: 20px;
+        max-width: 560px;
+    }
+
     .header {
         margin-top: 25px;
     }
@@ -554,6 +562,10 @@ a.sq-github {
         width: 40px;
         height: 40px;
         margin: 0 0 0 10px;
+    }
+
+    .header .signup-btn a, .header .login-btn a {
+        font-size: 1em;
     }
 
     .useful-links a, a.useful {

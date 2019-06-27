@@ -3,13 +3,13 @@
 {% block content %}
     <link rel="stylesheet" href="/static/css/exhibit-detail.css">
     <div class="exhibit-detail">
-        <img src="{{exhibitImage}}" />
-        <p>{{exhibit.name}}</p>
-        <p>{{exhibit.slug}}</p>
-        <p>{{_("Created by ")}} {{exhibit.owner.user.username}}</p>
+        {# <img src="{{exhibitImage}}" /> #}
+        <h1>{{exhibit.name}}</h1>
+        <p class="url">{{ url('home') }}/<span>{{exhibit.slug}}</span></p>
+        <p class="by">{{_("Created by ")}} {{exhibit.owner.user.username}}</p>
     </div>
-    <p>{{exhibit.artworks_count}} artworks | Published on {{exhibit.date}}</p>        
-    {{_("Artworks")}}
+    <p class="stats">{{exhibit.artworks_count}} artworks | Published on {{exhibit.date}}</p>        
+    <h1 class="titArt">{{_("Artworks")}}</h1>
     {% with repository_list = artworks, element_type="artwork" %}
         {% include "users/components/item-list.jinja2" %}
     {% endwith %}
