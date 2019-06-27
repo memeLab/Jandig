@@ -226,11 +226,12 @@ input[type=submit].secondary {
 }
 
 .aside {
-    max-width: 140px;
-    margin-left: -140px;
+    max-width: 120px;
+    margin-left: -120px;
+    padding-left: 10px;
     height: 70px;
     float: right;
-    /*background: #fff;*/
+    background: #fff;
 }
 
 .logo {
@@ -309,6 +310,10 @@ input[type=submit].secondary {
     background: url(../images/icons/icoHlp.png) no-repeat;
     background-position: center center;
     background-size: contain;
+}
+
+.trigger-lang-modal {
+    margin: 0 0 0 auto;
 }
 
 .contCam {
@@ -630,7 +635,6 @@ a.sq-github {
 
     a.license {
         padding-left: 100px;
-        width: 30px;
         height: 30px;
         line-height: 30px;
         font-size: 0.75em;
