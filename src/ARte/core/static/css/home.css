@@ -79,6 +79,10 @@ a:visited{
     background-image: url(../images/icons/fill.png);
 }
 
+.use-guide blockquote:before, .use-guide blockquote:after {
+    background-image: #f1f1f1;
+}
+
 /*.text-content{
     border: 1px solid #4F4545;
     margin-top: 5%;

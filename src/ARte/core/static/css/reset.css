@@ -35,22 +35,24 @@ a, a:visited {
 
 h1 {
     font-size: 1.25em;
-    line-height: 1.75em;
+    line-height: 50px;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 15%;
     background-size: 100% 200%;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 h2 {
     font-size: 1.25em;
     color: #03b595;
+    margin: 30px auto 10px;
 }
 
 h3 {
-    font-size: 1.25em;
+    font-size: 1.1em;
+    line-height: 20px;
     text-align: left;
-    padding-left: 30px;
+    /* padding-left: 15px; */
 }
 
 h3:before {
@@ -58,7 +60,7 @@ h3:before {
     height: 20px;
     background: #03b595;
     display: inline-block;
-    margin: 5px 10px -3px -10px;
+    margin: 5px 10px -3px 0px;
     content: ' ';
 }
 
@@ -105,13 +107,25 @@ ul, ol {
 
 blockquote {
     font-size: 1.1em;
-    line-height: 2.25em;
-    margin: 2em 5em;
+    line-height: 2em;
+    margin: 10px 40px;
     color: #888;
     font-style: italic;
-    /*background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;*/
+}
+
+blockquote:before, blockquote:after {
+    max-width: 40px;
+    height: 40px;
+    display: block;
+    margin: 0 auto -20px 0;
+    background-image: url(../static/images/icons/fill.png);
+    content: '';
+    text-align: left;
+}
+
+blockquote:after {
+    text-align: right;
+    margin: -30px 0 20px auto;
 }
 
 input {
