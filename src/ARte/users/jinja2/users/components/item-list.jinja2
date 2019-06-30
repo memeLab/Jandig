@@ -13,7 +13,7 @@
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
                 {% if editable == True %}
-                    <a href="{{ url('edit-artwork') }}?id={{element.id}}">edit</a>
+                    <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                 {% endif %}
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
