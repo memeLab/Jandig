@@ -422,7 +422,7 @@ div.contCam:before {
 }
 
 .fill {
-    background-image: url(../images/icons/fill.png);
+    background: url(../images/icons/fill.png), #e6e6e6;
     padding: 20px;
     width: calc(100% - 40px);
     margin-bottom: 20px;

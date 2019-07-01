@@ -51,8 +51,8 @@
         function downloadElement(element_type, file_size, element_src){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
-                    '<p id="element-download">' + {{ _("Download this: ") }} +
-                    '<a id="png-download" href="'+ element_src +'">.png (' + file_size + ' kb)</a></p>'
+                    '<p id="element-download">' +
+                    '<a id="png-download" href="'+ element_src +'">Download .png (' + file_size + ' kb)</a></p>'
                 )
             }else{
                 $('#element-download').replaceWith(
