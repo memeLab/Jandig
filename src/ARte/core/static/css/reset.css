@@ -230,12 +230,12 @@ a.changeExb, a.jandigIco {
 }
 
 a.changeExb {
-    background-image: url(../static/images/icons/icoChgExb.png);
+    background-image: url(../images/icons/icoChgExb.png);
     background-position: center left;
 }
 
 a.jandigIco {
-    background-image: url(../static/images/icons/jandigIcon.png);
+    background-image: url(../images/icons/jandigIcon.png);
     background-position: center right;
 }
 
@@ -317,7 +317,7 @@ a.jandigIco {
     background-position: center center;
     background-size: contain;
     margin: 0 0 0 auto;
-    font-size: 1em;
+    font-size: 0.75em;
     color: #000;
     padding: 10px;
     height: 20px;
@@ -542,6 +542,7 @@ a.sq-github {
 
     .aside {
         max-width: 250px;
+        min-width: 250px;
         height: 100px;
         margin-left: -250px;
     }
