@@ -76,11 +76,11 @@ a:visited{
     margin-bottom: 20px;
     padding: 20px;
     /* background-color: #f1f1f1; */
-    background-image: url(../images/icons/fill.png);
+    background: url(../images/icons/fill.png), #e6e6e6;
 }
 
-.use-guide blockquote:before, .use-guide blockquote:after {
-    background-image: #f1f1f1;
+.use-guide blockquote:after, .use-guide blockquote:before {
+    background: #03b5951a;
 }
 
 /*.text-content{

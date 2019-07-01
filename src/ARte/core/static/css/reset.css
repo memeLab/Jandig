@@ -26,7 +26,7 @@ p, ul, ol {
     margin: 0 0 1em 0;
 }
 
-section {
+section, form {
     margin-bottom: 20px;
 }
 
@@ -133,8 +133,20 @@ blockquote:after {
 }
 
 input {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    height: 40px;
+}
+
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+}
+
+select {
     width: 100%;
     height: 40px;
+    padding: 0 10px;
 }
 
 input[type=submit],
