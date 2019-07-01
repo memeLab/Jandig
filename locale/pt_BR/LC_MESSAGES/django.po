@@ -379,19 +379,6 @@ msgstr "Informações da Exposição (2/2"
 msgid "Publish Exhibit"
 msgstr "Publicar Exposição"
 
-#: src/ARte/users/jinja2/users/login.jinja2:9
-msgid "Login to continue"
-msgstr "Faça login para continuar"
-
-#: src/ARte/users/jinja2/users/login.jinja2:10
-#: src/ARte/users/jinja2/users/signup.jinja2:8
-msgid "Sign up"
-msgstr "Cadastro"
-
-#: src/ARte/users/jinja2/users/login.jinja2:29
-msgid "Recover password"
-msgstr "Recuperar senha"
-
 #: src/ARte/users/jinja2/users/profile-edit.jinja2:14
 msgid "Change Password"
 msgstr "Trocar Senha"
@@ -470,14 +457,6 @@ msgstr " autor"
 msgid "I agree to have this content on <a target=\"_blank\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0</a>"
 msgstr "Concordo em publicar esse conteúdo em <a target=\"_blank\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0</a>"
 
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:4
-msgid "Upload marker"
-msgstr "Publicar marcador"
-
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:7
-msgid "Upload object"
-msgstr "Publicar objeto"
-
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:15
 msgid "Create exhibition"
 msgstr "Crir exposição"
@@ -519,10 +498,6 @@ msgstr "Compartilhe "
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:84
 msgid "Create artwork with this "
 msgstr "Criar oba com  "
-
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:22
-msgid "Edit personal info"
-msgstr "Editar informações pessoais"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:29
 msgid "No artworks yet."
