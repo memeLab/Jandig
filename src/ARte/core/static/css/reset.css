@@ -26,6 +26,10 @@ p, ul, ol {
     margin: 0 0 1em 0;
 }
 
+section {
+    margin-bottom: 20px;
+}
+
 a, a:visited {
     color: #03b595;
     color: #777;
@@ -118,7 +122,7 @@ blockquote:before, blockquote:after {
     height: 40px;
     display: block;
     margin: 0 auto -20px 0;
-    background-image: url(../static/images/icons/fill.png);
+    background-image: url(../images/icons/fill.png);
     content: '';
     text-align: left;
 }
@@ -226,7 +230,6 @@ input[type=text] {
 }
 
 a.changeExb, a.jandigIco {
-    text-indent: -9999px;
     height: 40px;
     text-align: left;
     line-height: 40px;
@@ -238,12 +241,15 @@ a.changeExb, a.jandigIco {
 a.changeExb {
     height: 20px;
     line-height: 20px;
-    padding: 5px;
+    font-size: 0.75em;
+    color: #fff;
+    padding: 5px 0 5px 40px;
     background-image: url(../images/icons/icoChgExb.png);
     background-position: center left;
 }
 
 a.jandigIco {
+    text-indent: -9999px;
     background-image: url(../images/icons/jandigIcon.png);
     background-position: center right;
 }
@@ -326,13 +332,16 @@ a.jandigIco {
     background-position: center center;
     background-size: contain;
     margin: 0 0 0 auto;
-    font-size: 0.75em;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
     color: #000;
     padding: 10px;
     height: 20px;
     width: 20px;
     line-height: 20px;
     text-align: center;
+    overflow: hidden;
 }
 
 .icon-menu a.btnSearch {
@@ -410,6 +419,13 @@ div.contCam:before {
     background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
     background-position: 100% 15%;
     background-size: 100% 200%;
+}
+
+.fill {
+    background: url(../images/icons/fill.png), #e6e6e6;
+    padding: 20px;
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
 }
 
 h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
