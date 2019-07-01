@@ -1,10 +1,10 @@
 from django.urls import path, re_path, include
 from .views import service_worker, index, upload_image, exhibit_select, collection, exhibit_detail
-from .views_s.home import home, ar_viewer, community, marker_generator
+from .views_s.home import home, ar_viewer, community, marker_generator, documentation
 
 urlpatterns = [
     path('', home, name='home'),
-    #path('ar', ar_viewer, name='ar_viewer'),
+    path('documentation/', documentation, name='documentation'),
     path('community/', community, name='community'),
     path('collection/', collection, name='collection'),
     path('exhibit_select/', exhibit_select, name='exhibit_select'),
