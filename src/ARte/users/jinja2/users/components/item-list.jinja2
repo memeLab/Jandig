@@ -18,7 +18,7 @@
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
                     {#<img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">#}
-                    <h3 class="exhibit-name">{{element.name}}</h3>
+                    <h1 class="exhibit-name">{{element.name}}</h1>
                 </a>
                 <div class="exhibit-info">
                     <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
