@@ -32,7 +32,7 @@
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
                 {{ _(" Used in ")|tojson }} +
-                '<a href="#">' + artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
+                artworks_count +  {{ _(" artworks")|tojson }} + 
                 {{ _(" and in ")|tojson }} + exhibits_count +
                 {{ _(" exhibits")|tojson }} +
                 '<img id="element-src" src="' + element_src + '"/></p>'
@@ -57,7 +57,7 @@
             }else{
                 $('#element-download').replaceWith(
                     '<p id="element-download">' + 
-                    '<a id="gif-download" href="'+ element_src +'">.gif (' + file_size + ' kb)</a></p>'
+                    '<a id="gif-download" href="'+ element_src +'">Download .gif (' + file_size + ' kb)</a></p>'
                 )
             }
         }
