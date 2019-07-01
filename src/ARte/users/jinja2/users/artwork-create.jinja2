@@ -20,7 +20,7 @@
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select marker (1/3)') }}</h4>
-                    <p class="upload-field" id="marker-source-field">
+                    {# <p class="upload-field" id="marker-source-field">
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
@@ -31,30 +31,31 @@
                     <p class="upload-field" id="marker-author-field">
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
-                    </p>
+                    </p> #}
                     <p id="existent-marker">
                         {{ form.visible_fields()[4].as_hidden() }}
                         {{ form.visible_fields()[4].errors }}
                     </p>
-                    <div class="form-options">
-                        <p>
-                            <input id="marker-agreement-chk" type="checkbox" name="agreement">
-                            {{ _('Legal agreement') }}
-                        </p>
-                    </div>
-                    <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
+                    {# <p class="gallery-title">{{ _('Or choose one from our repository') }}</p> #}
                     
                     {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
                         {% include "users/components/repository-list.jinja2" %}
                     {% endwith%}
                     
+                    <div class="form-options">
+                        <p>
+                            <input id="marker-agreement-chk" type="checkbox" name="agreement">
+                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                        </p>
+                    </div>
+
                     <button id="next-object" type="button" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
                 </div>
                 <div id="object-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select object (2/3)') }}</h4>
-                    <p class="upload-field" id="object-source-field">
+                    {# <p class="upload-field" id="object-source-field">
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
                     </p>
@@ -65,23 +66,23 @@
                     <p class="upload-field" id="object-author-field">
                         {{ form.visible_fields()[3] }}
                         {{ form.visible_fields()[3].errors }}
-                    </p>
+                    </p> #}
                     <p id="existent-object">
                         {{ form.visible_fields()[5].as_hidden() }}
                         {{ form.visible_fields()[5].errors }}
                     </p>
-                    <div class="form-options">
-                        <p>
-                            <input id="object-agreement-chk" type="checkbox" name="agreement">
-                            {{ _('Legal agreement') }}
-                        </p>
-                    </div>
-                    <p class="gallery-title">{{ _('Or choose one from our repository') }}</p>
+                    {# <p class="gallery-title">{{ _('Or choose one from our repository') }}</p> #}
                     
                     {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
                         {% include "users/components/repository-list.jinja2" %}
                     {% endwith%}
                     
+                    <div class="form-options">
+                        <p>
+                            <input id="object-agreement-chk" type="checkbox" name="agreement">
+                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                        </p>
+                    </div>
                     <button id="next-desc" type="button" class="select-btn next-btn">
                         {{ _('Next') }}
                     </button>
