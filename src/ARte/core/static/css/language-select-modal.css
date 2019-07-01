@@ -9,13 +9,14 @@
     visibility: hidden;
     transform: scale(1.1);
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    z-index: 100;
 }
 
-.lang-modal-container {
-    height: 50%;
-    width: 50%;
-    margin: auto;
-    margin-top: 40%;
+.lang-modal-content {
+    padding: 20px;
+    width: 360px;
+    height: calc(100% - 140px);
+    /* margin-top: 25%; */
 }
 
 .lang-modal-content {
