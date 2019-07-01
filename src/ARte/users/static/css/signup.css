@@ -59,7 +59,7 @@ a:visited{
 }
 
 select#id_exhibit {
-    height: 40px;
+    /* height: 40px; */
     width: 100%;
     /* font-size: 1.25em; */
     padding: 10px;
@@ -93,9 +93,9 @@ select#id_exhibit {
     opacity: 1;
 }
 
-body {
+/*body {
     background-image: url(https://lh3.googleusercontent.com/7RreXoEKQGWqalWJAX3R8Jf5RKBMJUcjWgkpa-m4y…5y-AQM1r1xXrnYGbqjkXlDZS-zoZdhEX57ZvBGA1NhyjxHxcHbgyjty8vbToQ=w487-h649-no);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center 30%;
-}
+}*/

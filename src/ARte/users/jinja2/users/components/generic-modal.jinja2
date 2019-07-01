@@ -3,14 +3,14 @@
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/generic-modal.css">
     
-<div class="modal-container">
-    {% block title %}
-    {% endblock %}
-    <div class="modal-content">
-        {% block content %}
+    <div class="modal-container">
+        {% block title %}
         {% endblock %}
+        <div class="modal-content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
-</div>
     <script>
         var modal = document.querySelector(".modal");
         var triggers = $(".trigger-modal");

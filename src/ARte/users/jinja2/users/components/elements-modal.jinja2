@@ -13,8 +13,8 @@
     <p id="download"> Download file:</p>
     <p id="element-download"></p>
     
-    <button id="share-element" class="select-btn"></button>
-    <button id="create-artwork" class="select-btn"></button>
+    {#<button id="share-element" class="select-btn"></button>
+    <button id="create-artwork" class="select-btn"></button>#}
     <script>
         function elementAuthor(author){
             $('#element-author').text({{ _("by ")|tojson }} + author);
@@ -23,7 +23,7 @@
             $('#element-upload-info').replaceWith(
                     '<p id="element-upload-info">' +
                     {{ _("Uploaded by ")|tojson }} +
-                    '<a href="#">' + owner + '</a>' + ', ' + 
+                    owner  + ', ' + 
                     {{ _("in ")|tojson }} + date + '</p>'
                 )
         }
@@ -32,9 +32,9 @@
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
                 {{ _(" Used in ")|tojson }} +
-                '<a href="#">' + artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
-                {{ _(" and in ")|tojson }} + '<a href="#">' + exhibits_count +
-                {{ _(" exhibits")|tojson }} + '</a>' +
+                artworks_count +  {{ _(" artworks")|tojson }} + 
+                {{ _(" and in ")|tojson }} + exhibits_count +
+                {{ _(" exhibits")|tojson }} +
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
@@ -42,8 +42,8 @@
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
                 {{ _(" Used in ")|tojson }} +
-                '<a href="#">' + exhibits_count +
-                {{ _(" exhibits")|tojson }} + '</a>' +
+                exhibits_count +
+                {{ _(" exhibits")|tojson }} + 
                 '<img id="marker-src" src="' + marker_src + '"/>' +
                 '<img id="augmented-src" src="' + augmented_src + '"/></p>'
             )
@@ -51,19 +51,19 @@
         function downloadElement(element_type, file_size, element_src){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
-                    '<p id="element-download">' + 
-                    '<a id="png-download" href="'+ element_src +'">.png (' + file_size + ' kb)</a></p>'
+                    '<p id="element-download">' +
+                    '<a id="png-download" href="'+ element_src +'">Download .png (' + file_size + ' kb)</a></p>'
                 )
             }else{
                 $('#element-download').replaceWith(
                     '<p id="element-download">' + 
-                    '<a id="gif-download" href="'+ element_src +'">.gif (' + file_size + ' kb)</a></p>'
+                    '<a id="gif-download" href="'+ element_src +'">Download .gif (' + file_size + ' kb)</a></p>'
                 )
             }
         }
         function replaceButtons(title, description){
             $('#share-element').replaceWith(
-               '<p> Title:' + title + '</p>'
+               '<h4>Title: ' + title + '</h4>'
             );
             $('#create-artwork').replaceWith(
                 '<p>' + description + '</p>'

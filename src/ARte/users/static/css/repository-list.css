@@ -1,20 +1,17 @@
 .repository-list {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
     max-width: 100%;
-    /*border: 1px solid black;*/
     padding: 0;
-    margin-bottom: 25px;
-    max-height: 160px;
-    overflow-y: scroll;
+    margin-bottom: 40px;
 }
 
 .repository-item{
     /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(25% - 10px);
-    padding-top: 15px;
+    padding: 20px 0px;
 }
 
 .exhibit-list .repository-item, #repo-artwork .repository-item {
@@ -22,11 +19,39 @@
     flex: 0 1 calc(50% - 10px);
 }
 
+.exhibit-list .repository-item {
+    background: #faf3f9;
+    margin-bottom: 20px;
+    padding: 0 0 10px 0;
+}
+
+.exhibit-list .repository-item a.edit {
+    float: right;
+    width: 20px;
+    height: 20px;
+    margin: -25px 20px 0px 0px;
+}
+
+h1.exhibit-name {
+    margin: 10px 0;
+}
+
 p.exhibit-slug, p.exhibit-about, a.edit {
     font-size: 0.65em;
 }
 
-p.exhibit-name {
-    font-weight: bold;
-    margin: 0;
+p.by {
+    font-size: 0.75em;
+}
+
+a.gotoExb {
+    background: #f9d7fa;
+    color: #000;
+    font-size: 0.75em;
+    clear: both;
+    padding: 5px 10px;
+}
+
+p.exhibit-about {
+    margin: 15px 0 5px 0;
 }

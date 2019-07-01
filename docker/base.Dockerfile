@@ -3,8 +3,9 @@ FROM debian:buster-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3 \
         python3-pip \
-        python3-setuptools
-
+        python3-setuptools \
+        gettext \
+        docutils-common
 COPY ./src/requirements.txt /src/requirements.txt
 
 RUN pip3 install --upgrade pip

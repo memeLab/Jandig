@@ -13,6 +13,8 @@ def environment(**options):
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
+        'LANGUAGES': settings.LANGUAGES,
+        'CUR_LANGUAGE': translation.get_language(),
     })
 
     env.install_gettext_translations(translation, newstyle=True)
