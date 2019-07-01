@@ -1,4 +1,4 @@
-Sobre o Jandig
+Sobre a Jandig
 ==============================
 
 Celulares e tablets são usados para ler marcadores e assim abrir “janelas” onde se encontram outros objetos de arte. O público é convidado a transcender o espaço de exposição, levando adesivos com marcadores para serem colados em outros locais, criando Zonas Autônomas Temporárias (TAZes). O público se torna co-autor, e os marcadores e obras digitais são reconfigurados pelos espaços.
@@ -18,4 +18,3 @@ Cada exposição é feita a partir da disposição de diversos marcadores, que u
 Para enxergar através das “janelas” e ver as imagens fabulosas o que elas revelam, o público deverá apontar seus dispositivos para os marcadores, para que o visualizador da plataforma Jandig ufaça a leitura dos mesmos e mostre o conteúdo em realidade aumentada
 
 As bordas são os elementos gráficos que engatilham o reconhecimento do objeto associado a cada marcador. Por esse motivo, não se deve cobri-las e elas devem sempre ser vistas completamente pela câmera. Colocar o dedo sobre uma das bordas ou aproximar demais a câmera do marcador inviabiliza o reconhecimento, por exemplo. Essa característica deve sempre ser levada em consideração na produção e aplicação dos marcadores.
-
