@@ -29,7 +29,7 @@
         {% if (request.user.is_authenticated and request.path == '/community/') or (request.path == '/community/')%}
             {% block community %}
             {% endblock %}
-        {% elif (request.user.is_authenticated) or (request.path == '/collection/') %}
+        {% elif (request.user.is_authenticated) or (request.path == '/collection/') or (request.path == '/documentation/') %}
             {% block content %}
             {% endblock %}
         {% else %}
