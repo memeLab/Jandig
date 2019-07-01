@@ -154,6 +154,7 @@ button,
 input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
     opacity: 0.4;
     pointer-events: none;
+    color: #777;
 }
 
 button.secondary,
@@ -164,6 +165,9 @@ input[type=submit].secondary {
     color: #fff;
 }
 
+input[type=text] {
+    padding: 0 10px;
+}
 
 .flex {
     display: flex;
