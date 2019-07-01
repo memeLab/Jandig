@@ -154,6 +154,7 @@ button,
 input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
     opacity: 0.4;
     pointer-events: none;
+    color: #777;
 }
 
 button.secondary,
@@ -164,6 +165,9 @@ input[type=submit].secondary {
     color: #fff;
 }
 
+input[type=text] {
+    padding: 0 10px;
+}
 
 .flex {
     display: flex;
@@ -211,6 +215,7 @@ input[type=submit].secondary {
     max-width: 320px;
     margin: 0 auto;
     text-align: center;
+    width: 100%;
 }
 
 .colorful .container {
@@ -222,14 +227,18 @@ input[type=submit].secondary {
 
 a.changeExb, a.jandigIco {
     text-indent: -9999px;
-    height: 20px;
+    height: 40px;
     text-align: left;
-    line-height: 20px;
+    line-height: 40px;
     background-repeat: no-repeat;
     background-size: contain;
+    min-width: calc(50% - 20px);
 }
 
 a.changeExb {
+    height: 20px;
+    line-height: 20px;
+    padding: 5px;
     background-image: url(../images/icons/icoChgExb.png);
     background-position: center left;
 }

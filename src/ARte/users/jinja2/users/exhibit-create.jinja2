@@ -7,11 +7,12 @@
         <link rel="stylesheet" href="/static/css/marker-creation.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
-        <h4> {{ _('Create Jandig exhibit') }}</h4>
-        <button id="select-artworks" class="select-btn">
-            {{ _('select artworks') }}
-        </button>
+        <div class="container">
+            <h1 class="titExb">{{ _('Create Jandig exhibition') }}</h1>
+            <button id="select-artworks" class="select-btn">
+                {{ _('select artworks') }}
+            </button>
+        </div>
         <div id="form-modal" class="modal">
             <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
