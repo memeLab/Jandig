@@ -11,7 +11,7 @@
         </div>
 
         <div class="exhibit-form">
-            <h2>Choose the exhibition you're seeing</h2>
+            <h2>{{_("Choose the exhibition you're seeing")}}</h2>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
                 {{ csrf_input }}
                 {% for field in form.visible_fields() %}
@@ -19,13 +19,20 @@
                         {{ field }}
                         {{ field.errors }}
                     </p>
-                {% endfor%}
+                {% endfor %}
                 <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
             </form>
         </div>
     </div>
     <script>
         $('#id_exhibit').on('change',function(e){
+            if($(this).prop('value') != ''){
+                $('input[type="submit"]').prop('disabled', false);
+            }else{
+                $('input[type="submit"]').prop('disabled', true);
+            }
+        });
+        $('#id_exhibit').on('load',function(e){
             if($(this).prop('value') != ''){
                 $('input[type="submit"]').prop('disabled', false);
             }else{
