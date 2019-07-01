@@ -1,10 +1,8 @@
-{# {% extends '/users/components/generic-modal.jinja2' %} #}
-
-<section class="modal lang-modal">
+<section class="lang-modal">
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/generic-modal.css">
     
-    <div class="lang-modal-container modal-container">
+    <div class="lang-modal-container">
         <h1 id="lang-modal-title">{{ _('Select your language') }}</h1>
         <div class="lang-modal-content">
             {# FIXME: maybe this can be improved #}
@@ -45,40 +43,3 @@
         window.addEventListener("click", windowOnClick);
     </script>
 </section>
-
-{# {% block content %} #}
-    {# FIXME: maybe this can be improved #}
-    {# <link rel="stylesheet" href="/static/css/language-select-modal.css">    
-
-    <form action="{{ url('set_language') }}" method="post">       
-        {{ csrf_input }}
-        {% for language in LANGUAGES %}
-            <p>
-                <input id="radio-{{language[0]}}" name="language" type="radio" value="{{language[0]}}">
-                <label for="radio-{{language[0]}}">{{language[0]}}</label>
-            </p>
-        {% endfor%}
-        <input class="select-btn next-btn" type="submit" value="{{ _('Ok') }}"/>
-    </form> <link rel="stylesheet" href="/static/css/language-select-modal.css">    
-
-    <form action="{{ url('set_language') }}" method="post">       
-        {{ csrf_input }}
-        {% for language in LANGUAGES %}
-            <p>
-                <input id="radio-{{language[0]}}" name="language" type="radio" value="{{language[0]}}">
-                <label for="radio-{{language[0]}}">{{language[0]}}</label>
-            </p>
-        {% endfor%}
-        <input class="select-btn next-btn" type="submit" value="{{ _('Ok') }}"/>
-    </form>
-    <script>
-        let selectedLanguage = {{request.LANGUAGE_CODE|tojson}};
-        let radioBtnQuery = '#radio-' + selectedLanguage;
-        $(radioBtnQuery).prop("checked", true);
-    </script>
-    <script>
-        let selectedLanguage = {{request.LANGUAGE_CODE|tojson}};
-        let radioBtnQuery = '#radio-' + selectedLanguage;
-        $(radioBtnQuery).prop("checked", true);
-    </script> #}
-{# {% endblock %} #}

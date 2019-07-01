@@ -35,22 +35,24 @@ a, a:visited {
 
 h1 {
     font-size: 1.25em;
-    line-height: 1.75em;
+    line-height: 50px;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 15%;
     background-size: 100% 200%;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 h2 {
     font-size: 1.25em;
     color: #03b595;
+    margin: 30px auto 10px;
 }
 
 h3 {
-    font-size: 1.25em;
+    font-size: 1.1em;
+    line-height: 20px;
     text-align: left;
-    padding-left: 30px;
+    /* padding-left: 15px; */
 }
 
 h3:before {
@@ -58,7 +60,7 @@ h3:before {
     height: 20px;
     background: #03b595;
     display: inline-block;
-    margin: 5px 10px -3px -10px;
+    margin: 5px 10px -3px 0px;
     content: ' ';
 }
 
@@ -105,13 +107,25 @@ ul, ol {
 
 blockquote {
     font-size: 1.1em;
-    line-height: 2.25em;
-    margin: 2em 5em;
+    line-height: 2em;
+    margin: 10px 40px;
     color: #888;
     font-style: italic;
-    /*background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;*/
+}
+
+blockquote:before, blockquote:after {
+    max-width: 40px;
+    height: 40px;
+    display: block;
+    margin: 0 auto -20px 0;
+    background-image: url(../static/images/icons/fill.png);
+    content: '';
+    text-align: left;
+}
+
+blockquote:after {
+    text-align: right;
+    margin: -30px 0 20px auto;
 }
 
 input {
@@ -132,7 +146,7 @@ button,
     font-size: 0.75em;
     line-height: 40px;
     text-transform: uppercase;
-    padding: 10px 0;
+    /*padding: 10px 0;*/
     text-align: center;
     display: inline-block;
 }
@@ -201,6 +215,28 @@ input[type=submit].secondary {
 
 .colorful .container {
     background-color: #fff;
+    margin-top: 40px;
+    padding: 20px;
+    max-width: 280px;
+}
+
+a.changeExb, a.jandigIco {
+    text-indent: -9999px;
+    height: 20px;
+    text-align: left;
+    line-height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+a.changeExb {
+    background-image: url(../images/icons/icoChgExb.png);
+    background-position: center left;
+}
+
+a.jandigIco {
+    background-image: url(../images/icons/jandigIcon.png);
+    background-position: center right;
 }
 
 .header {
@@ -209,11 +245,12 @@ input[type=submit].secondary {
 }
 
 .aside {
-    max-width: 140px;
-    margin-left: -140px;
+    max-width: 120px;
+    margin-left: -120px;
+    padding-left: 10px;
     height: 70px;
     float: right;
-    /*background: #fff;*/
+    background: #fff;
 }
 
 .logo {
@@ -279,7 +316,14 @@ input[type=submit].secondary {
     background: url(../images/icons/icoLng.png) no-repeat;
     background-position: center center;
     background-size: contain;
-    margin: 0 0 0 auto; /***** Fix align ****/
+    margin: 0 0 0 auto;
+    font-size: 0.75em;
+    color: #000;
+    padding: 10px;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
 }
 
 .icon-menu a.btnSearch {
@@ -292,6 +336,10 @@ input[type=submit].secondary {
     background: url(../images/icons/icoHlp.png) no-repeat;
     background-position: center center;
     background-size: contain;
+}
+
+.trigger-lang-modal {
+    margin: 0 0 0 auto;
 }
 
 .contCam {
@@ -483,12 +531,18 @@ a.sq-github {
         margin: 0 auto;
     }
 
+    .colorful .container {
+        padding: 20px;
+        max-width: 560px;
+    }
+
     .header {
         margin-top: 25px;
     }
 
     .aside {
         max-width: 250px;
+        min-width: 250px;
         height: 100px;
         margin-left: -250px;
     }
@@ -528,6 +582,7 @@ a.sq-github {
 
     .welcome, .welcome p {
         line-height: 80px;
+        font-size: 1em;
     }
 
     .header .logo img{
@@ -540,6 +595,10 @@ a.sq-github {
         width: 40px;
         height: 40px;
         margin: 0 0 0 10px;
+    }
+
+    .header .signup-btn a, .header .login-btn a {
+        font-size: 1em;
     }
 
     .useful-links a, a.useful {
@@ -604,7 +663,6 @@ a.sq-github {
 
     a.license {
         padding-left: 100px;
-        width: 30px;
         height: 30px;
         line-height: 30px;
         font-size: 0.75em;
@@ -618,10 +676,23 @@ a.sq-github {
 }
 
 /* Hover Elements */
+.useful-links a,
+.footer a.useful,
+.account-options a,
+.header .logo img,
+.animCam,
+.memelab,
+.social a,
+.editProf a.option-link,
+.welcome a,
+a.changeExb,
+a.jandigIco {
+    transition: all .2s ease-in;
+}
+
 .useful-links a:hover,
 .footer a.useful:hover,
 .account-options a:hover {
-    transition: all .2s ease-in;
     color: #FFF;
     background-position: 0 100%;
 }
@@ -629,14 +700,14 @@ a.sq-github {
 .header .logo img:hover,
 .animCam:hover,
 .memelab:hover,
-.social a:hover {
-    transition: all .2s ease-in;
-    opacity: 0.8;
+.social a:hover,
+a.changeExb:hover,
+a.jandigIco:hover {
+    opacity: 0.7;
 }
 
 .editProf a.option-link:hover,
-.welcome a {
-    transition: all .2s ease-in;
+.welcome a:hover {
     color: #06f7ae;
 }
 

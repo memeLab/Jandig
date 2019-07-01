@@ -9,7 +9,7 @@
         <div class="aside">             
             <div class="icon-menu flex">
                 <div class="trigger-lang-modal">
-                    <a href="#" class="btnLang">Language</a>
+                    <a href="#" class="btnLang">{{request.LANGUAGE_CODE}}</a>
                 </div>
                 <!--<a href="#" class="btnSearch">Search</a>
                 <a href="#" class="btnHelp">Help</a>-->
@@ -24,16 +24,15 @@
 
             {% else %}
                 <div class="connect flex">
-                    {# <div class="signup-btn">
+                    <div class="signup-btn">
                         <a href=" {{ url('signup') }}">{{ _('Sign up') }}</a>
-                    </div> #}
-                    {# <div class="login-btn">
+                    </div>
+                    <div class="login-btn">
                         <a href="/users/login">{{ _('Log in') }}</a>
-                    </div> #}
+                    </div>
                 </div>
             {% endif %}
+            {% include "core/language-select-modal.jinja2" %}
         </div>
     </div>
 </section>
-
-{% include "core/language-select-modal.jinja2" %}

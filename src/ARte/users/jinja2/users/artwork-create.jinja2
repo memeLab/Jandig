@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/static/css/marker-creation.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-        <h2>{{ _('Create Jandig artwork') }}</h2>
+        <h1 class="titArt">{{ _('Create Jandig artwork') }}</h1>
         <button id="select-marker" class="select-btn">
             {{ _('select marker') }}
         </button>
@@ -18,7 +18,7 @@
             <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select marker (1/3') }}</h4>
+                    <h4 class="modal-title">{{ _('Select marker (1/3)') }}</h4>
                     <p class="upload-field" id="marker-source-field">
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
@@ -52,7 +52,7 @@
                     </button>
                 </div>
                 <div id="object-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select object (2/3') }}</h4>
+                    <h4 class="modal-title">{{ _('Select object (2/3)') }}</h4>
                     <p class="upload-field" id="object-source-field">
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
@@ -86,7 +86,7 @@
                     </button>
                 </div>
                 <div id="description-modal" class="tab">
-                    <h4 class="modal-title">{{ _('About your artwork (3/3') }}</h4>
+                    <h4 class="modal-title">{{ _('About your artwork (3/3)') }}</h4>
                     <p class="upload-field">
                         {{ form.visible_fields()[6] }}
                         {{ form.visible_fields()[6].errors }}

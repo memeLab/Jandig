@@ -9,7 +9,7 @@
         <script>
             {%if selected %}
                 id = "#" + "{{element_type}}" + "-" + {{selected}}
-                $(id).css('background-color', 'red');
+                $(id).css('background-color', '#f1c9ec');
                 $('#existent-{{element_type}} > input').val({{selected}});
             {% endif %}
             $('.repository-item').click(function(){
@@ -18,7 +18,7 @@
                 
                 // reset background
                 $(this).parent().children().css('background-color', 'white')
-                $(this).css('background-color', 'red');
+                $(this).css('background-color', '#f1c9ec');
             
                 if(sectionId == 'repo-marker'){
                     $('#existent-marker > input').val(elementId.split("-")[1]);
