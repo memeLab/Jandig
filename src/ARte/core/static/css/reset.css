@@ -26,6 +26,10 @@ p, ul, ol {
     margin: 0 0 1em 0;
 }
 
+section {
+    margin-bottom: 20px;
+}
+
 a, a:visited {
     color: #03b595;
     color: #777;
@@ -118,7 +122,7 @@ blockquote:before, blockquote:after {
     height: 40px;
     display: block;
     margin: 0 auto -20px 0;
-    background-image: url(../static/images/icons/fill.png);
+    background-image: url(../images/icons/fill.png);
     content: '';
     text-align: left;
 }
