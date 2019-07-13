@@ -20,8 +20,8 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no exhibits ")}}</p>
-                            <a href="{{ url('create-exhibit') }}">{{ _('Create') }}</a>
+                            <p>{{_("You have no exhibitions ")}}</p>
+                            <a href="{{ url('create-exhibit') }}">{{ _('Create one') }}</a>
                         </section>
                     {% endif %}
                 <h1 class="titArt">{{_("Your Artworks")}}</h1>
@@ -32,7 +32,7 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no artworks ")}}</p>
-                            <a href="{{ url('create-artwork') }}">{{ _('Create') }}</a>
+                            <a href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
                         </section>               
                     {% endif %}
                 <h1 class="titMrk">{{_("Your Markers")}}</h1>
@@ -43,7 +43,7 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no markers ")}}</p>
-                            <a href="{{ url('marker-upload') }}">{{ _('Create') }}</a>
+                            <a href="{{ url('marker-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
                 <h1 class="titObj">{{_("Your Objects")}}</h1>
@@ -54,13 +54,12 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no objects ")}}</p>
-                            <a href="{{ url('object-upload') }}">{{ _('create') }}</a>
+                            <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
                 {% include "users/components/elements-modal.jinja2" %}
             {% endif %}
 
-            <h1>{{_("Come on! Create new content now!")}}</h1>
             {% include "users/components/createbox.jinja2" %}
 
         </div>
