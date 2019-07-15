@@ -48,11 +48,18 @@
     margin: -25px 20px 0px 0px;
 }
 
+a.delete{
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: -25px 20px 0px 0px;
+}
+
 h1.exhibit-name {
     margin: 10px 0;
 }
 
-p.exhibit-slug, p.exhibit-about, a.edit {
+p.exhibit-slug, p.exhibit-about, a.edit a.delete{
     font-size: 0.65em;
 }
 
