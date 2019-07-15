@@ -151,7 +151,7 @@ msgstr "Suas Exposições"
 
 #: src/ARte/core/jinja2/core/exhibit_select.jinja2:14
 msgid "Choose the exhibition you're seeing"
-msgstr ""
+msgstr "Selecione uma exibição para ver"
 
 #: src/ARte/core/jinja2/core/exhibit_select.jinja2:23
 #: src/ARte/users/jinja2/users/login.jinja2:26
@@ -213,7 +213,7 @@ msgstr "Ir para câmera"
 
 #: src/ARte/core/jinja2/core/language-select-modal.jinja2:3
 msgid "Select your language"
-msgstr ""
+msgstr "Selecione seu idioma"
 
 #: src/ARte/core/jinja2/core/language-select-modal.jinja2:16
 msgid "Ok"
@@ -222,11 +222,11 @@ msgstr "Ok"
 #: src/ARte/core/jinja2/core/ui.jinja2:4
 #, fuzzy
 msgid "Change exhibition"
-msgstr "Crir exposição"
+msgstr "Mudar exposição"
 
 #: src/ARte/core/jinja2/core/ui.jinja2:5
 msgid "Back to home"
-msgstr ""
+msgstr "Página inicial"
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:5
 msgid "AR Viewer"
@@ -238,7 +238,7 @@ msgstr "Coleção"
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:12
 msgid "My Stuff"
-msgstr ""
+msgstr "Minhas coisas"
 
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:11
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:13
@@ -298,7 +298,7 @@ msgstr "escolher obras"
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:20
 #, fuzzy
 msgid "Select artworks (1/2)"
-msgstr "Escolher Obras (1/2"
+msgstr "Escolher Obras (1/2)"
 
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:22
 msgid "Choose from your repository"
@@ -405,7 +405,7 @@ msgstr "escolher objeto"
 
 #: src/ARte/users/jinja2/users/upload.jinja2:21
 msgid "Choose marker image"
-msgstr ""
+msgstr "Selecione uma imagem de marcador"
 
 #: src/ARte/users/jinja2/users/upload.jinja2:44
 #, fuzzy
@@ -418,7 +418,7 @@ msgstr ""
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
-msgstr ""
+msgstr "Venha criar conteúdo, agora!"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:5
 msgid "Upload marker"
@@ -430,7 +430,7 @@ msgstr "Subir objeto"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:16
 msgid "Create exhibition"
-msgstr "Crir exposição"
+msgstr "Criar exposição"
 
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:20
 msgid "by "
@@ -483,11 +483,11 @@ msgstr "Criado por "
 #: src/ARte/users/jinja2/users/components/item-list.jinja2:27
 #, fuzzy
 msgid "See this exhibition"
-msgstr "Crir exposição"
+msgstr "Ver essa exposição"
 
 #: src/ARte/users/jinja2/users/components/item-list.jinja2:30
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:9
 msgid " markers"
@@ -513,7 +513,7 @@ msgstr "Obras Jandig"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:34
 msgid "No artworks yet."
-msgstr "Ainda em obras."
+msgstr "Sem obras ainda."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:38
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:56
