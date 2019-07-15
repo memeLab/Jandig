@@ -12,7 +12,7 @@ class Artwork2(models.Model):
     rotation = models.CharField(default="270 0 0", max_length=50)
 
 class Exhibit(models.Model):
-    owner = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="exhibits")
+    owner = models.ForeignKey(Profile,on_delete=models.DO_NOTHING,related_name="exhibits")
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork,related_name="exhibits")

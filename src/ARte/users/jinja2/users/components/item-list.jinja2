@@ -9,11 +9,17 @@
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
+                {% if not element.in_use %}
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="edit">{{ _("Delete")}}</a>
+                {% endif %}
             {% elif element_type == "artwork" %}
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
                 {% if editable == True %}
                     <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
+                {% endif %}
+                {% if not element.in_use %}
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="edit">{{ _("Delete")}}</a>
                 {% endif %}
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
@@ -28,6 +34,9 @@
                     <p class="exhibit-about">{{element.artworks_count}} artworks | {{element.date}}</p>
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
+                {% endif %}
+                {% if not element.in_use %}
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}" class="edit">{{ _("Delete")}}</a>
                 {% endif %}
                 </div>
             {% endif %}
