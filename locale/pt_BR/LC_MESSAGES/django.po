@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-15 17:35-0300\n"
+"POT-Creation-Date: 2019-07-15 18:05-0300\n"
 "PO-Revision-Date: 2019-06-30 23:03-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -157,7 +157,7 @@ msgstr "Selecione uma exibição para ver"
 #: src/ARte/users/jinja2/users/login.jinja2:26
 #: src/ARte/users/jinja2/users/profile-edit.jinja2:31
 #: src/ARte/users/jinja2/users/signup.jinja2:30
-#: src/ARte/users/jinja2/users/upload.jinja2:47
+#: src/ARte/users/jinja2/users/upload.jinja2:56
 msgid "Submit"
 msgstr "Enviar"
 
@@ -394,20 +394,39 @@ msgstr "Acordo legal"
 msgid "Remember me"
 msgstr "Lembre-se de mim"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:8
-msgid "Upload "
-msgstr "Upload "
+#: src/ARte/users/jinja2/users/components/createbox.jinja2:5
+#: src/ARte/users/jinja2/users/upload.jinja2:9
+msgid "Upload marker"
+msgstr "Subir marcador"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:15
+#: src/ARte/users/jinja2/users/components/createbox.jinja2:8
+#: src/ARte/users/jinja2/users/upload.jinja2:11
+msgid "Upload object"
+msgstr "Subir objeto"
+
+#: src/ARte/users/jinja2/users/upload.jinja2:19
 #, fuzzy
 msgid "Choose object"
 msgstr "escolher objeto"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:21
+#: src/ARte/users/jinja2/users/upload.jinja2:25
 msgid "Choose marker image"
 msgstr "Selecione uma imagem de marcador"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:44
+#: src/ARte/users/jinja2/users/upload.jinja2:31
+#, fuzzy
+msgid "Choose .patt file"
+msgstr "Selecione um arquivo .patt"
+
+#: src/ARte/users/jinja2/users/upload.jinja2:40
+msgid "I'm this marker author"
+msgstr "Sou autor/a desse marcador"
+
+#: src/ARte/users/jinja2/users/upload.jinja2:42
+msgid "I'm this object author"
+msgstr "Sou autor/a desse objeto"
+
+#: src/ARte/users/jinja2/users/upload.jinja2:53
 #, fuzzy
 msgid ""
 "I agree to have this content under <a target=\"_blank\" href=\"https://"
@@ -419,14 +438,6 @@ msgstr ""
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
 msgstr "Venha criar conteúdo, agora!"
-
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:5
-msgid "Upload marker"
-msgstr "Subir marcador"
-
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:8
-msgid "Upload object"
-msgstr "Subir objeto"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:16
 msgid "Create exhibition"
@@ -529,6 +540,9 @@ msgstr "Obras Jandig"
 msgid "No exhibitions yet."
 msgstr "Sem exposições ainda."
 
+#~ msgid "Upload "
+#~ msgstr "Upload "
+
 #~ msgid "Repository"
 #~ msgstr "Repositório"
 
@@ -568,14 +582,8 @@ msgstr "Sem exposições ainda."
 #~ msgid "Create exhibit"
 #~ msgstr "Criar exposição"
 
-#~ msgid "I'm this marker author"
-#~ msgstr "Sou autor/a desse marcador"
-
 #~ msgid "Or choose one from our repository"
 #~ msgstr "Ou escolha um de nosso repositório"
-
-#~ msgid "I'm this object author"
-#~ msgstr "Sou autor/a desse objeto"
 
 #~ msgid "create"
 #~ msgstr "criar"
