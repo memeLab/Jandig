@@ -27,7 +27,7 @@
                     <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
                     <p class="exhibit-about">{{element.artworks_count}} artworks | {{element.date}}</p>
                 {% if editable == True %}
-                    <a href="{{ url('edit-exhibit') }}" id={{element.id}}" class="edit">{{ _("Edit")}}</a>
+                    <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                 {% endif %}
                 </div>
             {% endif %}
