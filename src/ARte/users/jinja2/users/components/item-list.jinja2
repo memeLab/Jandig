@@ -36,7 +36,7 @@
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                 {% endif %}
                 {% if not element.in_use %}
-                    <a href="{{ url('delete-content') }}?content_type={{element_type}}" class="delete">{{ _("Delete")}}</a>
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{element.id}}" class="delete">{{ _("Delete")}}</a>
                 {% endif %}
                 </div>
             {% endif %}
