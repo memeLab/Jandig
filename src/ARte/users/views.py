@@ -372,16 +372,19 @@ def delete(request):
        delete_content(Object, request.user, request.GET.get('id', -1))
     elif content_type == 'artwork':
        delete_content(Artwork, request.user, request.GET.get('id', -1))
+    elif content_type == 'exhibit':
+       delete_content(Exhibit, request.user, request.GET.get('id', -1))
+
 
     return redirect('profile')
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
-        print('aaasda')
         instance = qs[0]
-        if instance.owner == user.profile:
-            print('a')
-            if not instance.in_use:
-                print('b')
+        if isinstance(instance, Artwork):
+            if instance.author == user.profile and not instance.in_use:
+                instance.delete()
+        elif instance.owner == user.profile:
+            if isinstance(instance, Exhibit) or not instance.in_use:
                 instance.delete()
