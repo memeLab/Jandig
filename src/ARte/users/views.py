@@ -155,7 +155,7 @@ def create_exhibit(request):
 
 @login_required
 def marker_upload(request):
-    return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
+    return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
 
 def element_get(request):
@@ -199,7 +199,7 @@ def element_get(request):
 
 @login_required
 def object_upload(request):
-    return upload_view(request, UploadObjectForm, _('object'), 'object-upload')
+    return upload_view(request, UploadObjectForm, 'object', 'object-upload')
 
 
 def upload_view(request, form_class, form_type, route):
