@@ -23,7 +23,7 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
-                    {% if form_type == 'marker' %}
+                    {% if form_type == 'marker' or form_type == 'marcador' %}
                         <h3>Choose .patt file</h3>
                         <div class="upload-field" id="patt-field">
                             {{ form.visible_fields()[2] }}
