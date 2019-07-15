@@ -52,6 +52,8 @@ def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
     existent_marker = form.cleaned_data['existent_marker']
+    marker = None
+    
     if(marker_src and marker_author):
         marker_instance = Marker(source=marker_src, author=marker_author)
         marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
@@ -69,6 +71,8 @@ def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
     existent_object = form.cleaned_data['existent_object']
+    augmented = None
+
     if(object_src and object_author):
         object_instance = Object(source=object_src, author=object_author)
         augmented = UploadObjectForm(instance=object_instance).save(commit=False)
