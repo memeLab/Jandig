@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="/static/css/login.css">
     <div class="login-modal container">
         <div class="modal-container">
-            <div class="flex">
-                <a href="/users/login">{{ _('Login to continue') }}</a>
+            <div class="modalMenu flex">
+                <span>{{ _('Login to continue') }}</span>
                 <a href="/users/signup">{{ _('Sign up') }}</a>
             </div>
             <div class="login-form">
@@ -25,7 +25,7 @@
                     </div>
                     <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
                 </form>
-                <div class="recover-password">
+                <div class="modalMenu recover-password">
                     <a  href="{{url('recover')}}">{{ _('Recover password') }}</a>
                 </div>
             </div>

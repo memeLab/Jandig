@@ -133,13 +133,13 @@ blockquote:after {
 }
 
 input {
-    width: calc(100% - 20px);
+    width: calc(100% - 24px);
     padding: 0 10px;
     height: 40px;
 }
 
 textarea {
-    width: calc(100% - 20px);
+    width: calc(100% - 24px);
     padding: 10px;
 }
 
@@ -183,6 +183,15 @@ input[type=submit].secondary {
 
 input[type=text] {
     padding: 0 10px;
+}
+
+input[type="checkbox" i] {
+    height: 20px;
+    width: 45px;
+    margin: 10px 0;
+    line-height: 40px;
+    display: inline-block;
+    vertical-align: sub;
 }
 
 .flex {
@@ -349,9 +358,9 @@ a.jandigIco {
     text-transform: uppercase;
     color: #000;
     padding: 10px;
-    height: 20px;
-    width: 20px;
-    line-height: 20px;
+    height: 10px;
+    width: 10px;
+    line-height: 13px;
     text-align: center;
     overflow: hidden;
 }
@@ -510,6 +519,7 @@ a.license {
     white-space: nowrap;
     max-width: calc(100% - 160px);
     overflow: hidden;
+    text-indent: -9999999px;
 }
 
 a.memelab {
@@ -553,6 +563,10 @@ a.telegram {
 
 a.sq-github {
     background-image: url(../images/icons/icoGit.png);
+}
+
+.form-options {
+    text-align: left;
 }
 
 /* Media Queries */
@@ -634,6 +648,12 @@ a.sq-github {
         margin: 0 0 0 10px;
     }
 
+    .icon-menu a.btnLang {
+        height: 20px;
+        width: 20px;
+        line-height: 20px;
+    }
+
     .header .signup-btn a, .header .login-btn a {
         font-size: 1em;
     }
@@ -703,6 +723,7 @@ a.sq-github {
         height: 30px;
         line-height: 30px;
         font-size: 0.75em;
+        text-indent: 0;
     }
 
     a.memelab {

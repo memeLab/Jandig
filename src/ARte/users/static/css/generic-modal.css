@@ -36,6 +36,16 @@
     overflow-y: scroll;
 }
 
+.modalMenu {
+    margin: 5px 0 15px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.modalMenu a, .modalMenu a:visited {
+    color: #06f7ae;
+}
+
 .show-modal {
     opacity: 1;
     visibility: visible;

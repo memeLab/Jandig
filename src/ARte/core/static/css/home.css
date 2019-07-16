@@ -39,9 +39,19 @@ a:visited{
 .header .signup-btn, .header .login-btn {
     background-color: black;
     text-align: center;
+    height: 25px;
+    line-height: 25px;
+    margin: 5px 0 0 5px;
+    padding: 0px 8px;
+    /* width: calc(50% - 5px); */
+}
+
+.header .signup-btn, .header .login-btn {
     height: 20px;
     line-height: 20px;
     width: calc(50% - 5px);
+    padding-left: 0px;
+    margin: 0; 
 }
 
 .header .login-btn {
