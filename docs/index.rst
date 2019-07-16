@@ -8,15 +8,7 @@ Ajuda
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    animacoes
    marcadores
    publicando-obras
-
-Índices e tabelas
-=================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
