@@ -43,6 +43,15 @@ a:visited{
     border-radius: 8px;
     border-color: #4286f4;
 }*/
+.modalMenu {
+    margin: 5px 0 15px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.modalMenu a, .modalMenu a:visited {
+    color: #06f7ae;
+}
 
 .signup-modal .logo {
     width: 100%;

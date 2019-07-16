@@ -72,9 +72,9 @@
     height: 0;
     width: 0;
     position: relative;
-    top: -21px;
-    left: 45px;
-    border-color: #c9c9c9 transparent transparent #c9c9c9;
+    top: 10px;
+    left: 35px;
+    border-color: #05f7ae transparent transparent #05f7ae;
     border-style: solid;
     border-width: 7px;
     pointer-events: none;
@@ -86,17 +86,18 @@
     font-size: 0.85em; 
     flex-basis: calc(50% - 5px);
     margin: auto 0;
+    height: 40px;
 }
 
-.supMrk:after, .upObj:after {
+.upMrk:after, .upObj:after {
     content: '';
     display: block;
     height: 0;
     width: 0;
     position: relative;
-    top: -21px;
-    left: 45px;
-    border-color: #c9c9c9 transparent transparent #c9c9c9;
+    top: 0px;
+    left: 50%;
+    border-color: #f1f1f1 transparent transparent #f1f1f1;
     border-style: solid;
     border-width: 7px;
     pointer-events: none;

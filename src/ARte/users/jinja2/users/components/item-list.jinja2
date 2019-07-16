@@ -3,7 +3,7 @@
 {% if element_type == "exhibit"%}
     <section id="repo-{{element_type}}" class="exhibit-list flex">
 {% else %}
-    <section id="repo-{{element_type}}" class="repository-list">
+    <section id="repo-{{element_type}}" class="repository-list flex">
 {% endif %}
     {% for element in repository_list %}
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">

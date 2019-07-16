@@ -46,14 +46,6 @@ a:visited{
     /* width: calc(50% - 5px); */
 }
 
-.header .signup-btn, .header .login-btn {
-    height: 20px;
-    line-height: 20px;
-    width: calc(50% - 5px);
-    padding-left: 0px;
-    margin: 0; 
-}
-
 .header .login-btn {
     background-color: #03b595;
 }
@@ -62,7 +54,7 @@ a:visited{
     font-weight: bold;
     color: white;
     display: block;
-    font-size: 1.25em;
+    font-size: 0.75em;
 }
 
 /*.header {
@@ -158,5 +150,8 @@ a:visited{
     .header .signup-btn, .header .login-btn {
         height: 40px;
         line-height: 40px;
+        width: calc(50% - 5px);
+        padding-left: 0px;
+        margin: 0; 
     }
 }

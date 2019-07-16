@@ -81,6 +81,15 @@
     opacity: 1;
 }
 
+.modalMenu {
+    margin: 5px 0 15px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.modalMenu a, .modalMenu a:visited {
+    color: #06f7ae;
+}
 
 /*body{
     background-image: url(../images/icons/bg.png);

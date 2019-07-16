@@ -44,6 +44,7 @@ h1 {
     background-position: 100% 15%;
     background-size: 100% 200%;
     margin-top: 10px;
+    width: 100%;
 }
 
 h2 {
@@ -313,6 +314,7 @@ a.jandigIco {
 .welcome, .icon-menu, .connect {
     height: 30px;
     text-align: right;
+    flex-flow: nowrap;
 }
 
 .welcome {
