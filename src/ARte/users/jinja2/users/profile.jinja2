@@ -20,7 +20,7 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no exhibitions.")}}</p>
+                            <p>{{_("You have no exhibitions. :c")}}</p>
                             <a href="{{ url('create-exhibit') }}">{{ _('Create one') }}</a>
                         </section>
                     {% endif %}
@@ -31,7 +31,7 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no artworks.")}}</p>
+                            <p>{{_("You have no artworks. :c")}}</p>
                             <a href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
                         </section>               
                     {% endif %}
@@ -42,7 +42,7 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no markers ")}}</p>
+                            <p>{{_("You have no markers. :c")}}</p>
                             <a href="{{ url('marker-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
@@ -53,7 +53,7 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no objects ")}}</p>
+                            <p>{{_("You have no objects. :c")}}</p>
                             <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
