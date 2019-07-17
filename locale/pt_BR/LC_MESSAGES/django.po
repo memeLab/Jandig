@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-15 18:05-0300\n"
-"PO-Revision-Date: 2019-07-17 11:21-0300\n"
+"PO-Revision-Date: 2019-07-17 12:21-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -262,7 +262,7 @@ msgid ""
 "uploaded, I cannot remove it. "
 msgstr ""
 "Concordo em publicar esse conteúdo sob CC BY-SA 4.0 e entendo que, uma "
-"vez publicado, não posso mais removê-lo."
+"vez publicado, não posso mais removê-lo. "
 
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:53
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:87
@@ -358,7 +358,7 @@ msgstr "Você não tem marcadores "
 #: src/ARte/users/jinja2/users/profile.jinja2:46
 #: src/ARte/users/jinja2/users/profile.jinja2:57
 msgid "Upload one"
-msgstr "Upload "
+msgstr "Enviar"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:49
 msgid "Your objects"
@@ -379,12 +379,12 @@ msgstr "Lembre-se de mim"
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:5
 #: src/ARte/users/jinja2/users/upload.jinja2:9
 msgid "Upload marker"
-msgstr "Subir marcador"
+msgstr "Enviar marcador"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:8
 #: src/ARte/users/jinja2/users/upload.jinja2:11
 msgid "Upload object"
-msgstr "Subir objeto"
+msgstr "Enviar objeto"
 
 #: src/ARte/users/jinja2/users/upload.jinja2:19
 msgid "Choose object"
