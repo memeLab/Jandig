@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-15 18:05-0300\n"
-"PO-Revision-Date: 2019-07-16 10:34-0300\n"
+"PO-Revision-Date: 2019-07-17 11:21-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -416,7 +416,7 @@ msgstr ""
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
-msgstr "Ei! Venha criar conteúdo agora!"
+msgstr "Vem aqui! Crie conteúdo agora!"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:16
 msgid "Create exhibition"
@@ -485,7 +485,7 @@ msgstr " marcadores"
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:11
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:18
 msgid "No uploads yet."
-msgstr "Nada publicado."
+msgstr "Ainda sem conteúdo."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:16
 msgid " objects"
@@ -506,7 +506,7 @@ msgstr "Sem obras ainda."
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:38
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:56
 msgid "Create your first!"
-msgstr "Crie seu primeiro!"
+msgstr "Crie sua primeira!"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:45
 msgid "Jandig Curator"
@@ -547,10 +547,10 @@ msgstr "Sem exposições ainda."
 #~ msgstr "Atrubuição-CompartilhaIgual 4.0 Internacional (CC BY-SA 4.0)"
 
 #~ msgid "No objects yet."
-#~ msgstr "Nenhum objeto."
+#~ msgstr "Ainda sem objetos."
 
 #~ msgid "No markers yet."
-#~ msgstr "Nenhum marcador."
+#~ msgstr "Ainda sem marcadores."
 
 #~ msgid "No exhibits yet."
 #~ msgstr "Ainda sem exposições."
