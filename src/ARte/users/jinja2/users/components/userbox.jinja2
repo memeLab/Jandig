@@ -6,20 +6,20 @@
 <section class="userbox flex">
     <div class="countMrk sm-half lg-one-third">
         {%if markers %}
-            {{ markers }} {{ _(' markers') }} 
+            {{ markers }} {{ _(' marker(s)') }} 
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
     </div>
     <div class="countObj sm-half lg-one-third">
         {%if objects %}
-            {{ objects }} {{ _(' objects') }} 
+            {{ objects }} {{ _(' object(s)') }} 
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
     </div>
     <div class="editProf sm-full lg-one-third">
-        <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit personal info') }}</a>
+        <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit profile') }}</a>
     </div>
         {%if artworks %}
             <div class="bdgArt half">
