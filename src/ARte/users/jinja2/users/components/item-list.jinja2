@@ -9,7 +9,7 @@
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
-                {% if not element.in_use %}
+                {% if deletable == True and not element.in_use %}
                     <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
                 {% endif %}
             {% elif element_type == "artwork" %}
@@ -18,8 +18,8 @@
                 {% if editable == True %}
                     <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                 {% endif %}
-                {% if not element.in_use %}
-                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="dekete">{{ _("Delete")}}</a>
+                {% if deletable == True and not element.in_use %}
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
                 {% endif %}
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
@@ -35,7 +35,9 @@
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                 {% endif %}
+                {% if deletable == True %}                
                     <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{element.id}}" class="delete">{{ _("Delete")}}</a>
+                {% endif %}
                 </div>
             {% endif %}
         </div>
