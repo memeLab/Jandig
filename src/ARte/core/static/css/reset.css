@@ -355,7 +355,7 @@ a.jandigIco {
     background-position: center center;
     background-size: contain;
     margin: 0 0 0 auto;
-    font-size: 1.5em;
+    font-size: 0.8em;
     font-weight: bold;
     text-transform: uppercase;
     color: #000;
@@ -654,10 +654,7 @@ a.sq-github {
         height: 20px;
         width: 20px;
         line-height: 20px;
-    }
-
-    .header .signup-btn a, .header .login-btn a {
-        font-size: 1em;
+        font-size: 1.35em;
     }
 
     .useful-links a, a.useful {

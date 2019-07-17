@@ -153,5 +153,10 @@ a:visited{
         width: calc(50% - 5px);
         padding-left: 0px;
         margin: 0; 
+        margin-left: 10px;
+    }
+
+    .header .signup-btn a, .header .login-btn a {
+        font-size: 1em;
     }
 }

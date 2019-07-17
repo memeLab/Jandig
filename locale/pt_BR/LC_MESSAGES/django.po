@@ -485,7 +485,7 @@ msgstr " marcadores"
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:11
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:18
 msgid "No uploads yet."
-msgstr "Ainda sem conteúdo."
+msgstr "Nada publicado."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:16
 msgid " objects"
@@ -547,10 +547,10 @@ msgstr "Sem exposições ainda."
 #~ msgstr "Atrubuição-CompartilhaIgual 4.0 Internacional (CC BY-SA 4.0)"
 
 #~ msgid "No objects yet."
-#~ msgstr "Ainda sem objetos."
+#~ msgstr "Nenhum objeto."
 
 #~ msgid "No markers yet."
-#~ msgstr "Ainda sem marcadores."
+#~ msgstr "Nenhum marcador."
 
 #~ msgid "No exhibits yet."
 #~ msgstr "Ainda sem exposições."

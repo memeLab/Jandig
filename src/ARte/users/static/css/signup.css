@@ -45,11 +45,18 @@ a:visited{
 }*/
 .modalMenu {
     margin: 5px 0 15px;
-    font-size: 0.75em;
+    line-height: 20px;
     font-weight: bold;
 }
 
 .modalMenu a, .modalMenu a:visited {
+    font-size: 0.75em;
+    color: #06f7ae;
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out;
+}
+
+.modalMenu a:hover {
     color: #06f7ae;
 }
 

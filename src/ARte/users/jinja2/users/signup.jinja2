@@ -4,6 +4,12 @@
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
     <div class="signup-modal container">
+        <div class="logo">
+            <a href="{{ url('home') }}">
+                    <img src="/static/images/icons/header_icon.png">
+            </a>
+        </div>
+
         <div class="modalMenu flex">
             <span>{{ _('Sign up') }}</span>
             <a href="/users/login">{{ _('Log in') }}</a>
