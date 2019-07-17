@@ -186,7 +186,7 @@ input[type=text] {
     padding: 0 10px;
 }
 
-input[type="checkbox" i] {
+input[type="checkbox" i], input[type="radio" i] {
     height: 20px;
     width: 45px;
     margin: 10px 0;
@@ -249,6 +249,10 @@ input[type="checkbox" i] {
     margin-top: 40px;
     padding: 20px;
     max-width: 280px;
+}
+
+a.button, a.button:visited {
+    color: #fff;
 }
 
 a.changeExb, a.jandigIco {

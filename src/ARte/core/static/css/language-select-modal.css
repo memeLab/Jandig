@@ -12,11 +12,10 @@
     z-index: 100;
 }
 
-.lang-modal-content {
+/*.lang-modal-content {
     padding: 20px;
     width: 360px;
     height: calc(100% - 140px);
-    /* margin-top: 25%; */
 }
 
 .lang-modal-content {
@@ -25,6 +24,14 @@
     margin: auto;
     background-color: white;
     padding: 20px;
+}*/
+
+.lang-modal-content {
+    padding: 20px;
+    width: 360px;
+    width: calc(100% - 80px);
+    margin: auto;
+    background-color: #fff;
 }
 
 .show-lang-modal {
@@ -35,7 +42,7 @@
 }
 
 #lang-modal-title {
-    margin: 0;
+    margin: 20px 0 0 0;
     line-height: 50px;
     color: white;
     text-align: center;
@@ -52,9 +59,7 @@
     }
 
     .lang-modal-content {
-        padding: 20px;
         width: 360px;
-        height: calc(45vh - 140px);
         margin-top: 25%;
     }
 
