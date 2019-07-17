@@ -7,7 +7,7 @@ from django.core.files.storage import default_storage
 from .choices import COUNTRY_CHOICES
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     bio = models.TextField(max_length=500, blank=True)
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
@@ -25,7 +25,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Marker(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
     source = models.ImageField(upload_to='markers/')
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -42,9 +42,16 @@ class Marker(models.Model):
         from core.models import Exhibit
         return Exhibit.objects.filter(artworks__marker=self).count()
 
+    @property
+    def in_use(self):
+        if self.artworks_count > 0 or self.exhibits_count > 0:
+            return True
+
+        return False
+
 
 class Object(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
     source = models.ImageField(upload_to='objects/')
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -63,6 +70,14 @@ class Object(models.Model):
         from core.models import Exhibit
         return Exhibit.objects.filter(artworks__augmented=self).count()
 
+    @property
+    def in_use(self):
+        if self.artworks_count > 0 or self.exhibits_count > 0:
+            return True
+
+        return False
+
+
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
 def remove_source_file(sender, instance, **kwargs):
@@ -70,9 +85,9 @@ def remove_source_file(sender, instance, **kwargs):
 
 
 class Artwork(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    marker = models.ForeignKey(Marker, on_delete=models.CASCADE)
-    augmented = models.ForeignKey(Object, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
+    augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -81,3 +96,10 @@ class Artwork(models.Model):
     def exhibits_count(self):
         from core.models import Exhibit
         return Exhibit.objects.filter(artworks__in=[self]).count()
+
+    @property
+    def in_use(self):
+        if self.exhibits_count > 0:
+            return True
+
+        return False

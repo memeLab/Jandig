@@ -52,6 +52,8 @@ def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
     existent_marker = form.cleaned_data['existent_marker']
+    marker = None
+    
     if(marker_src and marker_author):
         marker_instance = Marker(source=marker_src, author=marker_author)
         marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
@@ -69,6 +71,8 @@ def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
     existent_object = form.cleaned_data['existent_object']
+    augmented = None
+
     if(object_src and object_author):
         object_instance = Object(source=object_src, author=object_author)
         augmented = UploadObjectForm(instance=object_instance).save(commit=False)
@@ -155,7 +159,7 @@ def create_exhibit(request):
 
 @login_required
 def marker_upload(request):
-    return upload_view(request, UploadMarkerForm, _('marker'), 'marker-upload')
+    return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
 
 def element_get(request):
@@ -199,7 +203,7 @@ def element_get(request):
 
 @login_required
 def object_upload(request):
-    return upload_view(request, UploadObjectForm, _('object'), 'object-upload')
+    return upload_view(request, UploadObjectForm, 'object', 'object-upload')
 
 
 def upload_view(request, form_class, form_type, route):
@@ -357,3 +361,30 @@ def edit_profile(request):
             'form_password': PasswordChangeForm(request.user),
         }
     )
+
+@login_required
+def delete(request):
+    content_type = request.GET.get('content_type', None)
+
+    if content_type == 'marker':
+       delete_content(Marker, request.user, request.GET.get('id', -1))
+    elif content_type == 'object':
+       delete_content(Object, request.user, request.GET.get('id', -1))
+    elif content_type == 'artwork':
+       delete_content(Artwork, request.user, request.GET.get('id', -1))
+    elif content_type == 'exhibit':
+       delete_content(Exhibit, request.user, request.GET.get('id', -1))
+
+
+    return redirect('profile')
+
+def delete_content(model, user, instance_id):
+    qs = model.objects.filter(id=instance_id)
+    if qs:
+        instance = qs[0]
+        if isinstance(instance, Artwork):
+            if instance.author == user.profile and not instance.in_use:
+                instance.delete()
+        elif instance.owner == user.profile:
+            if isinstance(instance, Exhibit) or not instance.in_use:
+                instance.delete()
