@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-07-18 12:07-0300\n"
-"PO-Revision-Date: 2019-07-17 12:21-0300\n"
+"PO-Revision-Date: 2019-07-18 12:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -123,7 +123,7 @@ msgstr "URL da exposição"
 #: src/ARte/core/jinja2/core/base.jinja2:42
 #, fuzzy
 msgid "Please override the \"content\" block of your template!"
-msgstr "Por favor sobreescreva o bloco \"conteúdo\" de seu modelo!"
+msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:11
 msgid "Jandig exhibitions"
@@ -142,7 +142,6 @@ msgid "Jandig objects"
 msgstr "Objetos Jandig"
 
 #: src/ARte/core/jinja2/core/exhibit_detail.jinja2:11
-#, fuzzy
 msgid "Exhibition artworks"
 msgstr "Obras dessa exposição"
 
@@ -235,7 +234,7 @@ msgstr "Minhas Coisas"
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:15
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:11
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:13
@@ -330,9 +329,8 @@ msgid "Your exhibitions"
 msgstr "Suas exposições"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:23
-#, fuzzy
 msgid "You have no exhibitions. :c"
-msgstr "Você não tem exposições "
+msgstr "Você não tem exposições. :c"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:24
 #: src/ARte/users/jinja2/users/profile.jinja2:35
@@ -344,18 +342,16 @@ msgid "Your artworks"
 msgstr "Suas obras"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:34
-#, fuzzy
 msgid "You have no artworks. :c"
-msgstr "Você não tem obras "
+msgstr "Você não tem obras. :c"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:38
 msgid "Your markers"
 msgstr "Seus marcadores"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:45
-#, fuzzy
 msgid "You have no markers. :c"
-msgstr "Você não tem marcadores "
+msgstr "Você não tem marcadores. :c"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:46
 #: src/ARte/users/jinja2/users/profile.jinja2:57
@@ -367,9 +363,8 @@ msgid "Your objects"
 msgstr "Seus objetos"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:56
-#, fuzzy
 msgid "You have no objects. :c"
-msgstr "Você não tem objetos "
+msgstr "Você não tem objetos. :c"
 
 #: src/ARte/users/jinja2/users/signup.jinja2:29
 msgid "Remember me"
@@ -469,7 +464,7 @@ msgstr "Criar obra com "
 #: src/ARte/users/jinja2/users/components/item-list.jinja2:22
 #: src/ARte/users/jinja2/users/components/item-list.jinja2:39
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: src/ARte/users/jinja2/users/components/item-list.jinja2:30
 msgid "Created by "
@@ -484,9 +479,8 @@ msgid "Edit"
 msgstr "Editar"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:9
-#, fuzzy
 msgid " marker(s)"
-msgstr " marcadores"
+msgstr " marcador(es)"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:11
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:18
@@ -494,14 +488,12 @@ msgid "No uploads yet."
 msgstr "Ainda sem conteúdo."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:16
-#, fuzzy
 msgid " object(s)"
-msgstr " objetos"
+msgstr " objeto(s)"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:22
-#, fuzzy
 msgid "Edit profile"
-msgstr "Editar dados pessoais"
+msgstr "Editar perfil"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:27
 msgid "Jandig Artist"
