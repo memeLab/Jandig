@@ -17,7 +17,7 @@
             <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select Artworks (1/2') }}</h4>
+                    <h4 class="modal-title">{{ _('Select artworks (1/2)') }}</h4>
 
                     <p class="gallery-title">{{ _('Choose from your repository') }}</p>
                     
@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <div id="artwork-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Exhibit Information (2/2') }}</h4>
+                    <h4 class="modal-title">{{ _('Exhibit Information (2/2)') }}</h4>
                       <p class="upload-field" id="info-name-field">
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
@@ -43,7 +43,7 @@
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish exhibit') }}"/>
                 </div>
             </form>
         </div>

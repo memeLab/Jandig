@@ -13,7 +13,7 @@
             {% if selected %}
                 "{{selected}}".split(",").forEach(function(id){
                     artworks[id] = id
-                    $("#artwork-"+id).css('background-color', "rgb(255,0,0)");
+                    $("#artwork-"+id).css('background-color', "rgb(217,217,217)");
                 })
             {% endif %}
 
@@ -22,7 +22,7 @@
                 let sectionId = $(this).parent().attr('id');
                 
                 // reset background
-                if($(this).css('background-color') == "rgb(255, 0, 0)"){
+                if($(this).css('background-color') == "rgb(217, 217, 217)"){
                     $(this).css('background-color', "rgb(255,255,255)");
                     delete artworks[elementId]
                 }else{

@@ -26,7 +26,7 @@ p, ul, ol {
     margin: 0 0 1em 0;
 }
 
-section {
+section, form {
     margin-bottom: 20px;
 }
 
@@ -44,6 +44,7 @@ h1 {
     background-position: 100% 15%;
     background-size: 100% 200%;
     margin-top: 10px;
+    width: 100%;
 }
 
 h2 {
@@ -133,8 +134,20 @@ blockquote:after {
 }
 
 input {
+    width: calc(100% - 24px);
+    padding: 0 10px;
+    height: 40px;
+}
+
+textarea {
+    width: calc(100% - 24px);
+    padding: 10px;
+}
+
+select {
     width: 100%;
     height: 40px;
+    padding: 0 10px;
 }
 
 input[type=submit],
@@ -171,6 +184,15 @@ input[type=submit].secondary {
 
 input[type=text] {
     padding: 0 10px;
+}
+
+input[type="checkbox" i], input[type="radio" i] {
+    height: 20px;
+    width: 45px;
+    margin: 10px 0;
+    line-height: 40px;
+    display: inline-block;
+    vertical-align: sub;
 }
 
 .flex {
@@ -227,6 +249,10 @@ input[type=text] {
     margin-top: 40px;
     padding: 20px;
     max-width: 280px;
+}
+
+a.button, a.button:visited {
+    color: #fff;
 }
 
 a.changeExb, a.jandigIco {
@@ -292,6 +318,7 @@ a.jandigIco {
 .welcome, .icon-menu, .connect {
     height: 30px;
     text-align: right;
+    flex-flow: nowrap;
 }
 
 .welcome {
@@ -332,14 +359,14 @@ a.jandigIco {
     background-position: center center;
     background-size: contain;
     margin: 0 0 0 auto;
-    font-size: 1.5em;
+    font-size: 0.8em;
     font-weight: bold;
     text-transform: uppercase;
     color: #000;
     padding: 10px;
-    height: 20px;
-    width: 20px;
-    line-height: 20px;
+    height: 10px;
+    width: 10px;
+    line-height: 13px;
     text-align: center;
     overflow: hidden;
 }
@@ -498,6 +525,7 @@ a.license {
     white-space: nowrap;
     max-width: calc(100% - 160px);
     overflow: hidden;
+    text-indent: -9999999px;
 }
 
 a.memelab {
@@ -543,6 +571,10 @@ a.sq-github {
     background-image: url(../images/icons/icoGit.png);
 }
 
+.form-options {
+    text-align: left;
+}
+
 /* Media Queries */
 /*@media all and (max-width: 400px) {
     .header, .useful-links {
@@ -573,7 +605,7 @@ a.sq-github {
     }
 
     .half {
-        width: 290px;
+        width: 270px;
         /* flex-flow: column; */
     }
 
@@ -622,8 +654,11 @@ a.sq-github {
         margin: 0 0 0 10px;
     }
 
-    .header .signup-btn a, .header .login-btn a {
-        font-size: 1em;
+    .icon-menu a.btnLang {
+        height: 20px;
+        width: 20px;
+        line-height: 20px;
+        font-size: 1.35em;
     }
 
     .useful-links a, a.useful {
@@ -691,6 +726,7 @@ a.sq-github {
         height: 30px;
         line-height: 30px;
         font-size: 0.75em;
+        text-indent: 0;
     }
 
     a.memelab {

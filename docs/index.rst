@@ -8,10 +8,7 @@ Ajuda
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   * animacoes
-   * marcadores
-   * publicando-obras
-
-   
+   animacoes
+   marcadores
+   publicando-obras

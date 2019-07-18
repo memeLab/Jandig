@@ -44,7 +44,7 @@
     font-size: 11px;
 }
 
-.upload-field input{
+/*.upload-field input{
     font-size: 13px;;
     height: 25px;
     width: 100%;
@@ -60,7 +60,7 @@
     text-align: center;
     border-radius: 8px;
     border-color: #4286f4;
-}
+}*/
 
 .tab {
     display: none;
