@@ -189,6 +189,11 @@ msgstr ""
 "Conteúdo sob licenciamento CC BY-SA, a não ser quando explicitado o "
 "contrário."
 
+#: src/ARte/core/jinja2/core/header.jinja2:21
+#, fuzzy
+msgid "Welcome, "
+msgstr "Bem vindo, "
+
 #: src/ARte/core/jinja2/core/header.jinja2:28
 #: src/ARte/users/jinja2/users/login.jinja2:16
 #: src/ARte/users/jinja2/users/signup.jinja2:14
