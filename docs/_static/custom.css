@@ -252,30 +252,79 @@ a.jandigIco {
 }*/
 
 .logo {
-    background-image: url(../../images/icons/jandigIcon.png);
-    background-position: center right;
+    background-image: url(../../static/images/icons/header_icon.png);
+    background-position: top left;
     background-repeat: no-repeat;
-    /*text-align: left;
-    height: 60px;
-    width: 100%;
-    width: calc(100% - 125px);
-    float: left;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;*/
+    background-size: contain;
+    font-size: 12px;
+    margin: 0;
+    padding: 65px 0 0 0;
+    /* text-indent: -999999px; */
 }
 
 div.sphinxsidebar .logo a {
-    border-bottom: 5px solid #777;
+    border-bottom: 5px solid #d6d6d6;
+    margin: 0 0 20px 0;
+    line-height: 35px;
+    text-align: center;
+    color: #777;
 }
 
 div.sphinxsidebar ul li.toctree-l1 > a {
     font-size: 100%;
 }
+
 div.sphinxsidebar a {
     color: #444;
     text-decoration: none;
     border-bottom: 5px solid #d6d6d6;
+}
+
+li.toctree-l1 {
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    margin: 0;
+    padding: 5px;
+    line-height: 10px;
+}
+
+div.sphinxsidebar a:hover {
+    border-bottom: 5px solid #999;
+}
+
+div.sphinxsidebar .sphinxsidebarwrapper h3, div.sphinxsidebar .sphinxsidebarwrapper h4 {
+    font-family: Georgia, serif;
+    color: #444;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    padding: 0;
+}
+
+.bodywrapper a.reference {
+    text-decoration: none;
+    border-bottom: 5px solid #d6d6d6;
+    /* margin-bottom: 40px; */
+    line-height: 40px;
+}
+
+.bodywrapper a.reference:hover {
+    border-bottom: 5px solid #999;
+}
+
+@media screen and (max-width: 875px) {
+    div.sphinxsidebar {
+        display: block;
+        float: none;
+        width: 92% !important;
+        margin: 50px auto 0px !important;
+        padding: 10px 20px;
+        background: none !important;
+        color: #000 !important;
+    }
 }
 
 .logo a {
