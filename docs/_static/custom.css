@@ -1,4 +1,4 @@
-/*  @import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');  */
+@import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');
 
 body {
     color: #000;
@@ -220,7 +220,7 @@ input[type=submit].secondary {
     max-width: 280px;
 }
 
-a.changeExb, a.jandigIco {
+/*a.changeExb, a.jandigIco {
     text-indent: -9999px;
     height: 20px;
     text-align: left;
@@ -235,8 +235,6 @@ a.changeExb {
 }
 
 a.jandigIco {
-    background-image: url(../images/icons/jandigIcon.png);
-    background-position: center right;
 }
 
 .header {
@@ -251,21 +249,38 @@ a.jandigIco {
     height: 70px;
     float: right;
     background: #fff;
-}
+}*/
 
 .logo {
-    text-align: left;
+    background-image: url(../../images/icons/jandigIcon.png);
+    background-position: center right;
+    background-repeat: no-repeat;
+    /*text-align: left;
     height: 60px;
     width: 100%;
-    /*width: calc(100% - 125px);*/
+    width: calc(100% - 125px);
     float: left;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
-    background-size: 100% 200%;
+    background-size: 100% 200%;*/
+}
+
+div.sphinxsidebar .logo a {
+    border-bottom: 5px solid #777;
+}
+
+div.sphinxsidebar ul li.toctree-l1 > a {
+    font-size: 100%;
+}
+div.sphinxsidebar a {
+    color: #444;
+    text-decoration: none;
+    border-bottom: 5px solid #d6d6d6;
 }
 
 .logo a {
     display: block;
+    margin-bottom: 20px;
 }
 
 .logo img{
@@ -565,13 +580,13 @@ a.sq-github {
     }
 
     .logo {
-        text-align: left;
+        /*text-align: left;
         height: 95px;
         width: calc(100% - 160px);
         float: left;
         background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
         background-position: 100% 10%;
-        background-size: 100% 200%;
+        background-size: 100% 200%;*/
     }
 
     .welcome, .icon-menu, .connect {
