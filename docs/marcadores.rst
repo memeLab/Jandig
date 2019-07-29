@@ -28,7 +28,11 @@ ser aplicadas sobre a borda sem prejuízo ao reconhecimento da obra, é
 recomendado que a altura deste texto jamais ultrapasse ¼ da largura
 total da borda.
 
-<img src="images/MarkerGuide.png" style="margin:25px auto">
+.. image:: images/MarkerGuide.png
+    :width: 80%
+    :align: center
+    :height: auto
+    :alt: Marker Guide
 
 Simetria
 ~~~~~~~~

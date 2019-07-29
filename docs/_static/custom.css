@@ -16,6 +16,18 @@ body.colorful {
     background-position: center top;
 }
 
+div.body > .section {
+    text-align: left;
+    margin: 30px;
+}
+
+div.body section h1, div.body h2, div.body section h3, div.body section h4, div.body section h5, div.body section h6 {
+    font-family: "Istok Web", serif;
+    font-weight: bolder;
+    /*margin: 30px 0px 10px 0px;
+    padding: 0;*/
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: "Istok Web", serif;
     font-weight: bolder;
@@ -253,7 +265,7 @@ a.jandigIco {
 
 .logo {
     background-image: url(../../static/images/icons/header_icon.png);
-    background-position: top left;
+    background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
     font-size: 12px;
@@ -264,8 +276,9 @@ a.jandigIco {
 
 div.sphinxsidebar .logo a {
     border-bottom: 5px solid #d6d6d6;
-    margin: 0 0 20px 0;
-    line-height: 35px;
+    margin: 25px 0 20px 0;
+    letter-spacing: 0.1em;
+    line-height: 25px;
     text-align: center;
     color: #777;
 }
@@ -325,6 +338,13 @@ div.sphinxsidebar .sphinxsidebarwrapper h3, div.sphinxsidebar .sphinxsidebarwrap
         background: none !important;
         color: #000 !important;
     }
+
+    div.sphinxsidebar .logo a {
+        border-bottom: 5px solid #d6d6d6;
+        margin: 10px 0 20px 0;
+        letter-spacing: 0.25em;
+    }
+
 }
 
 .logo a {
@@ -628,7 +648,7 @@ a.sq-github {
         flex-basis: 100%;
     }
 
-    .logo {
+    div.sphinxsidebarwrapper h1.logo {
         /*text-align: left;
         height: 95px;
         width: calc(100% - 160px);
@@ -636,6 +656,7 @@ a.sq-github {
         background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
         background-position: 100% 10%;
         background-size: 100% 200%;*/
+        margin-bottom: 20px;
     }
 
     .welcome, .icon-menu, .connect {
