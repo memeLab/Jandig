@@ -233,6 +233,16 @@
         max-width: 10px;
     }
 
+    .separator:after {
+        top: 50px;
+        left: 10px;
+    }
+
+    .upMrk:after, .upObj:after {
+        top: -30px;
+        left: 100%;
+    }
+
     .createArtwork a.option-link, .createExhibition a.option-link {
         background-position: top center;
         background-size: auto;

@@ -36,7 +36,7 @@
 }
 
 .exhibit-list .repository-item {
-    background: #faf3f9;
+    background: url(../images/icons/fill.png), #e6e6e6;
     margin-bottom: 20px;
     padding: 0 0 10px 0;
 }
@@ -57,6 +57,8 @@ a.delete{
 
 h1.exhibit-name {
     margin: 10px 0;
+    font-size: 0.9em;
+    background: #faf3f9;
 }
 
 p.exhibit-slug, p.exhibit-about, a.edit a.delete{

@@ -29,7 +29,7 @@ recomendado que a altura deste texto jamais ultrapasse ¼ da largura
 total da borda.
 
 .. image:: images/MarkerGuide.png
-    :width: 80%
+    :width: 320px
     :align: center
     :height: auto
     :alt: Marker Guide
