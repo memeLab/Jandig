@@ -8,7 +8,7 @@
         <h1 class="exhibit-name">{{exhibit.name}}</h1>
         <p class="url">https://jandig.app/<span>{{exhibit.slug}}</span></p>
         <p class="by">{{_("Created by ")}} <b>{{exhibit.owner.user.username}}</b></p>
-        <p class="stats">{{exhibit.artworks_count}} {{_("artworks)}} | {{_("Published on")}}  {{exhibit.date}}</p>        
+        <p class="stats">{{exhibit.artworks_count}} {{_("artworks)}} | {{_("Published on"}}  {{exhibit.date}}</p>        
         <h1 class="titArt">{{_("Exhibition artworks")}}</h1>
         {% with repository_list = artworks, element_type="artwork" %}
             {% include "users/components/item-list.jinja2" %}
