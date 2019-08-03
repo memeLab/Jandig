@@ -56,9 +56,22 @@ a.delete{
 }
 
 h1.exhibit-name {
-    margin: 10px 0;
-    font-size: 0.9em;
-    background: #faf3f9;
+    margin: 0 0 10px 0;
+    padding: 0 15px;
+    max-width: calc(100% - 30px);
+    max-height: 50px;
+    font-size: 0.85em;
+    font-weight: bold;
+    background: #b019a670;
+    color: #5b0058;
+    overflow: hidden;
+    text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;
+    overflow-wrap: initial;
+}
+
+h1.exhibit-name:hover {
+    background: #b019a650;
+    color: #af00a9;
 }
 
 p.exhibit-slug, p.exhibit-about, a.edit a.delete{

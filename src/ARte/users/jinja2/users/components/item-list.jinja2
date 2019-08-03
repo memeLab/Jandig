@@ -27,11 +27,11 @@
                     <h1 class="exhibit-name">{{element.name}}</h1>
                 </a>
                 <div class="exhibit-info">
-                    <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
                     {#<p class="exhibit-name">{{element.name}}</p>#}
                     {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
                     <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
-                    <p class="exhibit-about">{{element.artworks_count}} artwork(s) | {{element.date}}</p>
+                    <p class="exhibit-about">{{element.artworks_count}} artwork(s)</p>
+                    <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b>{{element.date}}</p>
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                 {% endif %}

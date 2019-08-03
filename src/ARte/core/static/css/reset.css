@@ -460,6 +460,7 @@ h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
     line-height: 45px;
     text-align: left;
     padding-left: 35px;
+    width: calc(100% - 35px);
     background-position: left center;
     background-size: 25px 25px;
     background-repeat: no-repeat;
