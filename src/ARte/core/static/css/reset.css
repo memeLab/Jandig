@@ -361,6 +361,7 @@ a.jandigIco {
     margin: 0 0 0 auto;
     font-size: 0.8em;
     font-weight: bold;
+    font-family: monospace;
     text-transform: uppercase;
     color: #000;
     padding: 10px;
@@ -657,9 +658,9 @@ a.sq-github {
 
     .icon-menu a.btnLang {
         height: 20px;
-        width: 20px;
-        line-height: 20px;
-        font-size: 1.35em;
+        width: 19px;
+        line-height: 23px;
+        font-size: 2.5em;
     }
 
     .useful-links a, a.useful {

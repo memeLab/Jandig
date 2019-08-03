@@ -1,7 +1,7 @@
 .repository-list {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-wrap: wrap;
     max-width: 100%;
     padding: 0;
@@ -35,7 +35,14 @@
     flex: 0 1 calc(50% - 10px);
 }
 
-.exhibit-list .repository-item {
+#repo-artwork .repository-item {
+    flex: 0 1 calc(33% - 10px);
+    background: url(../images/icons/fill.png);
+    background-position: 100% 20%;
+    margin-bottom: 20px;
+}
+
+.exhibit-list .repository-item, .exhibit-detail {
     background: url(../images/icons/fill.png), #e6e6e6;
     margin-bottom: 20px;
     padding: 0 0 10px 0;
