@@ -45,7 +45,7 @@
 .exhibit-list .repository-item, .exhibit-detail {
     background: url(../images/icons/fill.png), #e6e6e6;
     margin-bottom: 20px;
-    padding: 0 0 10px 0;
+    padding: 0;
 }
 
 .exhibit-list .repository-item a.edit {
@@ -98,7 +98,7 @@ p.by, p.exhibit-about {
     padding: 0 0 0 15px;
 }
 
-p.exbDate, p.exhibit-about {
+p.exbDate {
     flex-basis: calc(25% - 15px);
 }
 
@@ -108,20 +108,29 @@ p.exbDate {
 }
 
 a.gotoExb {
-    background: #f9d7fa;
+    background: #f9d7fa94;
     color: #000;
     font-size: 0.75em;
     clear: both;
-    padding: 5px 10px;
+    padding: 5px 25px 5px 10px;
+    margin: -7px 15px 0 0;
+    text-align: right;
+    flex-basis: calc(60% - 60px);
 }
 
 a.gotoExb:after {
     content: "";
-    height: 20px;
-    width: 20px;
-    background: #f9d7fa;
+    height: 25px;
+    width: 25px;
+    background: url(../images/icons/icoCamPurp.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    margin: -7px 0px 0px 5px;
 }
 
 p.exhibit-about {
     font-weight: bold;
+    line-height: 30px;
+    margin-top: 5px;
+    flex-basis: calc(33% - 15px);
 }

@@ -14,6 +14,7 @@
                 {% endif %}
             {% elif element_type == "artwork" %}
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                <div class="separator sm-full"></div>
                 <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
                 {% if editable == True %}
                     <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
@@ -31,7 +32,7 @@
                     {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
                     <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
                     <p class="exbDate">{{element.date}}</p>
-                    <p class="exhibit-about">{{element.artworks_count}} {{ _("artwork(s)")}}</p>
+                    <p class="exhibit-about">{{element.artworks_count}} {{ _("artwork(s)") }}</p>
                     <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
