@@ -42,7 +42,7 @@
     margin-bottom: 20px;
 }
 
-.exhibit-list .repository-item, .exhibit-detail {
+.exhibit-list .repository-item, .exhibit-detail-box {
     background: url(../images/icons/fill.png), #e6e6e6;
     margin-bottom: 20px;
     padding: 0;

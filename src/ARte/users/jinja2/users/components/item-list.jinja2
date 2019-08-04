@@ -13,15 +13,17 @@
                     <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
                 {% endif %}
             {% elif element_type == "artwork" %}
-                <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
-                <div class="separator sm-full"></div>
-                <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
-                {% if editable == True %}
-                    <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
-                {% endif %}
-                {% if deletable == True and not element.in_use %}
-                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
-                {% endif %}
+                <div class="artwork-elements flex">
+                    <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    <div class="separator"></div>
+                    <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
+                    {% if editable == True %}
+                        <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
+                    {% endif %}
+                    {% if deletable == True and not element.in_use %}
+                        <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
+                    {% endif %}
+                </div>
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
                     {#<img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">#}
