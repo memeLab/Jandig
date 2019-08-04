@@ -81,12 +81,30 @@ h1.exhibit-name:hover {
     color: #af00a9;
 }
 
-p.exhibit-slug, p.exhibit-about, a.edit a.delete{
+p.exhibit-slug, a.edit a.delete{
     font-size: 0.65em;
 }
 
-p.by {
+p.by, p.exbDate, p.exhibit-about {
     font-size: 0.75em;
+}
+
+p.by {
+    flex-basis: calc(75% - 20px);
+}
+
+p.by, p.exhibit-about {
+    text-align: left;
+    padding: 0 0 0 15px;
+}
+
+p.exbDate, p.exhibit-about {
+    flex-basis: calc(25% - 15px);
+}
+
+p.exbDate {
+    padding: 0 15px 0 0;
+    text-align: right;
 }
 
 a.gotoExb {
@@ -97,6 +115,13 @@ a.gotoExb {
     padding: 5px 10px;
 }
 
+a.gotoExb:after {
+    content: "";
+    height: 20px;
+    width: 20px;
+    background: #f9d7fa;
+}
+
 p.exhibit-about {
-    margin: 15px 0 5px 0;
+    font-weight: bold;
 }
