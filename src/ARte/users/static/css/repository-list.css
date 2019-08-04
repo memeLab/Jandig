@@ -1,7 +1,7 @@
 .repository-list {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: self-end;
+    justify-content: flex-start;
     flex-wrap: wrap;
     max-width: 100%;
     padding: 0;
@@ -69,16 +69,16 @@ h1.exhibit-name {
     max-height: 50px;
     font-size: 0.85em;
     font-weight: bold;
-    background: #b019a670;
-    color: #5b0058;
+    background: #b019a650;
+    color: #af00a9;
     overflow: hidden;
     text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;
     overflow-wrap: initial;
 }
 
 h1.exhibit-name:hover {
-    background: #b019a650;
-    color: #af00a9;
+    background: #b019a670;
+    color: #5b0058;
 }
 
 p.exhibit-slug, a.edit a.delete{
@@ -87,6 +87,10 @@ p.exhibit-slug, a.edit a.delete{
 
 p.by, p.exbDate, p.exhibit-about {
     font-size: 0.75em;
+}
+
+p.by, p.exbDate {
+    color: #868686;
 }
 
 p.by {
@@ -108,14 +112,21 @@ p.exbDate {
 }
 
 a.gotoExb {
-    background: #f9d7fa94;
-    color: #000;
+    background: #f9d7fa70;
+    color: #af00a9;
     font-size: 0.75em;
     clear: both;
     padding: 5px 25px 5px 10px;
     margin: -7px 15px 0 0;
     text-align: right;
     flex-basis: calc(60% - 60px);
+    opacity: 0.75;
+}
+
+a.gotoExb:hover {
+    background: #f9d7fa90;
+    opacity: 0.9;
+    color: #5b0058;
 }
 
 a.gotoExb:after {
@@ -126,6 +137,11 @@ a.gotoExb:after {
     background-size: contain;
     position: absolute;
     margin: -7px 0px 0px 5px;
+    opacity: 0.7;
+}
+
+a.gotoExb:hover a.gotoExb:after {
+    opacity: 0.9;
 }
 
 p.exhibit-about {
@@ -133,4 +149,8 @@ p.exhibit-about {
     line-height: 30px;
     margin-top: 5px;
     flex-basis: calc(33% - 15px);
+}
+
+.artwork-elements.flex {
+    justify-content: space-around;
 }
