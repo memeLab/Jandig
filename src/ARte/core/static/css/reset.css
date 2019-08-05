@@ -580,10 +580,22 @@ a.sq-github {
 .artwork-elements .separator {
     width: 10px;
     height: 50px;
-    background: #f1f1f1;
-    /* position: absolute; */
-    /* top: 86px; */
-    /* left: 50%; */
+    background: #06f6ab;
+}
+
+.artwork-elements .separator:after {
+    content: '';
+    display: block;
+    height: 0;
+    width: 0;
+    position: relative;
+    top: -21px;
+    left: 10px;
+    border-color: #06f6ab transparent transparent #06f6ab;
+    border-style: solid;
+    border-width: 7px;
+    pointer-events: none;
+    z-index: 1;
 }
 
 /* Media Queries */
@@ -758,7 +770,11 @@ a.sq-github {
 .editProf a.option-link,
 .welcome a,
 a.changeExb,
-a.jandigIco {
+a.jandigIco,
+.signup-btn,
+.login-btn,
+.trigger-lang-modal,
+.license {
     transition: all .2s ease-in;
 }
 
@@ -774,7 +790,11 @@ a.jandigIco {
 .memelab:hover,
 .social a:hover,
 a.changeExb:hover,
-a.jandigIco:hover {
+a.jandigIco:hover,
+.signup-btn,
+.login-btn,
+.trigger-lang-modal,
+.license {
     opacity: 0.7;
 }
 
