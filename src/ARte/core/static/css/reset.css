@@ -581,6 +581,7 @@ a.sq-github {
     width: 10px;
     height: 50px;
     background: #06f6ab;
+    margin: 0 10px 0 -5px;
 }
 
 .artwork-elements .separator:after {
@@ -589,7 +590,7 @@ a.sq-github {
     height: 0;
     width: 0;
     position: relative;
-    top: -21px;
+    top: 15px;
     left: 10px;
     border-color: #06f6ab transparent transparent #06f6ab;
     border-style: solid;
@@ -791,10 +792,10 @@ a.jandigIco,
 .social a:hover,
 a.changeExb:hover,
 a.jandigIco:hover,
-.signup-btn,
-.login-btn,
-.trigger-lang-modal,
-.license {
+.signup-btn:hover,
+.login-btn:hover,
+.trigger-lang-modal:hover,
+.license:hover {
     opacity: 0.7;
 }
 
