@@ -46,10 +46,12 @@ exibir a imagem.
 Cores e gradientes
 ~~~~~~~~~~~~~~~~~~
 
-Para garantir maior fidelidade tanto no reconhecimento pelo sistema,
-quanto nas infinitas possibilidades de aplicação dos marcadores, não
+Para garantir infinitas possibilidades de aplicação dos marcadores, não
 utilizamos cores ou gradientes nas imagens centrais. A única cor
 utilizada é preto 100%, sem a utilização de tons.
+
+Essa não é uma limitação do sistema. É possível utilizar qualquer imagem
+como marcador, seguindo as outras recomendações nesse documento.
 
 Impressão e afins
 ~~~~~~~~~~~~~~~~~
@@ -62,7 +64,7 @@ na sua produção.
 É importante que as margens externas e internas da borda estejam sempre
 bem delimitadas. No caso de adesivos ou de aplicação em fundo mais
 escuros, garanta uma margem branca ao redor borda preta. Essa reserva de
-espaço deve ter, ao menos, 3% da largura total do marcador (ver imagem).
+espaço deve ter, ao menos, 3% da largura total do marcador.
 
 Iluminação
 ----------
