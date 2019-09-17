@@ -35,7 +35,7 @@ total da borda.
     :alt: Marker Guide
 
 Simetria
-~~~~~~~~
+--------
 
 Considerando que a visualização do objeto depende da posição do marcador
 em relação à câmera, evitamos utilizar imagens com simetria tanto no
@@ -44,7 +44,7 @@ sistema de reconhecimento se confunda quanto à orientação em que deve
 exibir a imagem.
 
 Cores e gradientes
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Para garantir infinitas possibilidades de aplicação dos marcadores, não
 utilizamos cores ou gradientes nas imagens centrais. A única cor
@@ -54,7 +54,7 @@ Essa não é uma limitação do sistema. É possível utilizar qualquer imagem
 como marcador, seguindo as outras recomendações nesse documento.
 
 Impressão e afins
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Reflexos, inclusive sobre as bordas, podem impedir que os seus
 marcadores sejam reconhecidos como tal. Para que sejam mais facilmente
@@ -75,7 +75,7 @@ iluminação distribuída, que não gere reflexos e evite utilizar
 iluminação de coloração muito âmbar.
 
 Adesivos
-~~~~~~~~
+--------
 
 Embora marcadores consigam ser reconhecidos até em formatos muito
 pequenos, costumamos produzir adesivos de marcadores Jandig com 5 x 5
