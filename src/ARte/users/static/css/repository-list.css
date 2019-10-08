@@ -50,20 +50,22 @@
 
 .exhibit-list .repository-item a.edit {
     /*float: right;*/
-    background: url(../images/icons/edit.png) no-repeat;
+    background: url(../images/icons/edit.png) no-repeat center center;
     background-size: contain;
     width: 20px;
     height: 20px;
     margin: 0px 10px 0px 0px;
+    text-indent: -99999px;
 }
 
 .exhibit-list .repository-item a.delete{
     /*float: left;*/
-    background: url(../images/icons/delete.png) no-repeat;
+    background: url(../images/icons/delete.png) no-repeat center center;
     background-size: contain;
     width: 20px;
     height: 20px;
     margin: 0px;
+    text-indent: -99999px;
 }
 
 h1.exhibit-name {
