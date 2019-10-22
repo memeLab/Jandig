@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
+from .views import signup, recover_password, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -11,7 +11,7 @@ urlpatterns = [
         authentication_form=LoginForm,
     ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('recover/', auth_views.PasswordResetView.as_view(), name='recover'),
+    path('recover/', recover_password, name='recover'),
 
     path('profile/', profile, name='profile'),
     path('profile/edit/', edit_profile, name="edit-profile"),

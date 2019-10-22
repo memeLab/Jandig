@@ -130,6 +130,26 @@ class LoginForm(AuthenticationForm):
         return username_or_email
 
 
+class RecoverPasswordForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(RecoverPasswordForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['placeholder'] = _('username / email')
+
+    def clean_username(self):
+        username_or_email = self.cleaned_data.get('username')
+        if '@' in username_or_email:
+            user = User.objects.get(email=username_or_email)
+            if user:
+                return user.username
+
+        return username_or_email
+
+    class Meta:
+        model = User
+        fields = ['username']
+
 class UploadMarkerForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
