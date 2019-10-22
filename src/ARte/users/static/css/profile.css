@@ -149,14 +149,11 @@
 }
 
 .profile-options-flex .option-link {
-    /* margin-bottom: 4%; */
-    /* background-color: black; */
     line-height: 40px;
     width: 100%;
     display: block;
     font-weight: bold;
     text-align: center;
-    /* text-decoration: none; */
     color: #000;
 }
 
@@ -171,20 +168,6 @@
     background: #e1e1e1;
 }
 
-/*.profile-options-flex .account-options {
-    margin-bottom: 4%;
-    color: black;
-}
-
-.profile-options-flex .account-options a{
-    text-decoration: none;
-    color: #0000EE;
-}
-
-.profile-options-flex > .account-options > a:visited{
-    text-decoration: none;
-    color: #0000EE;
-}*/
 
 /**** Media Queries *****/
 @media all and (min-width: 800px) {

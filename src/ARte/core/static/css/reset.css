@@ -57,7 +57,6 @@ h3 {
     font-size: 1.1em;
     line-height: 20px;
     text-align: left;
-    /* padding-left: 15px; */
 }
 
 h3:before {
@@ -163,7 +162,6 @@ button,
     font-size: 0.75em;
     line-height: 40px;
     text-transform: uppercase;
-    /*padding: 10px 0;*/
     text-align: center;
     display: inline-block;
 }
@@ -204,14 +202,10 @@ input[type="checkbox" i], input[type="radio" i] {
 
 .half {
     width: calc(50% - 10px);
-    /* flex-flow: column; */
 }
 
 .one-third {
     width: calc(33% - 10px);
-    /*display: inline-block;
-    margin-right: 1%;
-    margin-left: 1%;*/
 }
 
 .sm-one-third {
@@ -227,12 +221,10 @@ input[type="checkbox" i], input[type="radio" i] {
 }
 
 .left {
-    /*float: left;*/
     text-align: left;
 }
 
 .right {
-    /*float: right;*/
     text-align: right;
 }
 
@@ -298,7 +290,6 @@ a.jandigIco {
     text-align: left;
     height: 60px;
     width: 100%;
-    /*width: calc(100% - 125px);*/
     float: left;
     background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
     background-position: 100% 10%;
@@ -322,7 +313,6 @@ a.jandigIco {
 }
 
 .welcome {
-    /* line-height: 30px; */
     height: 30px;
     font-size: 0.65em;
     overflow: hidden;
@@ -344,7 +334,6 @@ a.jandigIco {
     height: 30px;
     margin: 0 0 0 10px;
     display: block;
-    /*text-indent: -999999px;*/
     font-size: 0;
 }
 
@@ -418,7 +407,6 @@ div.contCam:before {
     width: 40px;
     height: 40px;
     margin: 0;
-    /*margin-left: -25px;*/
     padding: 0;
     display: block;
     text-indent: -999999px;
@@ -442,7 +430,6 @@ div.contCam:before {
 
 .useful-links a,
 .footer a.useful {
-    /*font-size: 75%;*/
     padding: 0 5px;
     background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
     background-position: 100% 15%;
@@ -502,7 +489,6 @@ h1.titObj {
 .footer a.useful {
     margin: 0;
     line-height: 25px;
-    /* padding: 0; */
 }
 
 a.github {
@@ -600,12 +586,6 @@ a.sq-github {
 }
 
 /* Media Queries */
-/*@media all and (max-width: 400px) {
-    .header, .useful-links {
-        font-size: 75%;
-    }
-}*/
-
 @media all and (min-width: 800px) {
     .container {
         max-width: 600px;
@@ -630,7 +610,6 @@ a.sq-github {
 
     .half {
         width: 270px;
-        /* flex-flow: column; */
     }
 
     .lg-one-third {
@@ -686,7 +665,6 @@ a.sq-github {
     }
 
     .useful-links a, a.useful {
-        /* font-size: 75%; */
         padding: 5px;
         background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
         background-position: 100% 15%;
@@ -807,11 +785,8 @@ a.jandigIco:hover,
 
 /****** Animation  ********/
 .animCam {
-    /*transition: all .2s ease-in;*/
       animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
-         /* you could also use milliseconds (ms) or something like 2.5s */
       -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
-      /*animation-iteration-count: infinite;*/
     }
 
 @keyframes colorchange

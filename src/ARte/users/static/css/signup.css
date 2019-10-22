@@ -1,48 +1,3 @@
-/*a{
-    color: white;
-    text-decoration: none;
-}
-
-a:visited{
-    color: black;
-    text-decoration: none;
-}
-
-.flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding-top: 5%;
-    padding-bottom: 5%;
-}
-
-.signup-modal {
-    border: 1px solid #4F4545; 
-    margin-top: 20%;
-    margin-left: 10%;
-    margin-bottom:25%;
-    z-index: 1;
-    width: 75%;
-}
-
-.signup-modal .signup-form {
-    background-color: white;
-    padding-top: 3%;
-    text-align: center;
-}
-
-.signup-modal .signup-form .signup-field {
-    text-align: center;
-}
-
-.signup-field input{
-    font-size: 15px;;
-    height: 35px;
-    width: 90%;
-    text-align: center;
-    border-radius: 8px;
-    border-color: #4286f4;
-}*/
 .modalMenu {
     margin: 10px 0 20px;
     line-height: 20px;
@@ -76,9 +31,7 @@ a:visited{
 }
 
 select#id_exhibit {
-    /* height: 40px; */
     width: 100%;
-    /* font-size: 1.25em; */
     padding: 10px;
 }
 
@@ -94,25 +47,7 @@ select#id_exhibit {
     height: 20px;
 }
 
-/*.submit-btn {
-    font-size: 16px;;
-    height: 40px;
-    width: 90%;
-    text-align: center;
-    background-color: #D9D9D9;
-    border-radius: 8px;
-    border-color: #4286f4;
-    margin-bottom: 5%;
-}*/
-
 ::placeholder{
     color: black;
     opacity: 1;
 }
-
-/*body {
-    background-image: url(https://lh3.googleusercontent.com/7RreXoEKQGWqalWJAX3R8Jf5RKBMJUcjWgkpa-m4y…5y-AQM1r1xXrnYGbqjkXlDZS-zoZdhEX57ZvBGA1NhyjxHxcHbgyjty8vbToQ=w487-h649-no);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center 30%;
-}*/

@@ -25,14 +25,31 @@
 }
 
 .repository-item {
-    /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(25% - 10px);
     padding: 20px 0px;
 }
 
 .exhibit-list .repository-item, #repo-artwork .repository-item {
-    /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(50% - 10px);
+}
+
+.repository-item a.edit, .repository-item a.delete {
+    float: right;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    text-indent: -99999px;
+    border: 8px solid #fff;
+}
+
+.repository-item a.edit {
+    background: url(../images/icons/edit.png) no-repeat center center;
+    margin: 10px 0px -20px auto;
+}
+
+.repository-item a.delete{
+    background: url(../images/icons/delete.png) no-repeat center center;
+    margin: 10px 10px -20px 10px;
 }
 
 #repo-artwork .repository-item {
@@ -48,7 +65,7 @@
     padding: 0;
 }
 
-.exhibit-list .repository-item a.edit {
+/*.exhibit-list .repository-item a.edit {
     float: right;
     background: url(../images/icons/edit.png) no-repeat center center;
     background-size: contain;
@@ -68,7 +85,7 @@
     margin: 10px 10px -20px 10px;
     text-indent: -99999px;
     border: 8px solid #fff;
-}
+}*/
 
 h1.exhibit-name {
     margin: 0 0 10px 0;
@@ -149,7 +166,6 @@ p.exhibit-about {
 
 .artwork-elements.flex {
     justify-content: space-evenly;
-    /* align-items: end; */
 }
 
 
