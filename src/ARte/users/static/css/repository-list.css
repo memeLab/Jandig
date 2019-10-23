@@ -40,15 +40,22 @@
     height: 20px;
     text-indent: -99999px;
     border: 8px solid #fff;
+    opacity: 1;
+}
+
+.repository-item a.edit:hover, .repository-item a.delete:hover {
+    opacity: 0.7;
 }
 
 .repository-item a.edit {
     background: url(../images/icons/edit.png) no-repeat center center;
+    background-size: contain;
     margin: 10px 0px -20px auto;
 }
 
 .repository-item a.delete{
     background: url(../images/icons/delete.png) no-repeat center center;
+    background-size: contain;
     margin: 10px 10px -20px 10px;
 }
 
@@ -56,13 +63,19 @@
     flex: 0 1 calc(33% - 10px);
     background: url(../images/icons/fill.png);
     background-position: 100% 20%;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .exhibit-list .repository-item, .exhibit-detail-box {
     background: url(../images/icons/fill.png), #e6e6e6;
     margin-bottom: 25px;
     padding: 0;
+}
+
+#repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
+#repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
+    margin: 25px 0px -60px -25px;
+    position: absolute;
 }
 
 /*.exhibit-list .repository-item a.edit {

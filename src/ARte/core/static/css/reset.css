@@ -566,8 +566,19 @@ a.sq-github {
 .artwork-elements .separator {
     width: 10px;
     height: 50px;
+    max-height: 50px;
+    min-height: 50px;
     background: #06f6ab;
     margin: 0 10px 0 -5px;
+}
+
+.artwork-elements img.trigger-modal {
+    margin: 0px 15px 10px;
+}
+
+.artwork-elements a.edit, .artwork-elements a.delete {
+    margin: 0px 10px -40px auto;
+    display: block;
 }
 
 .artwork-elements .separator:after {
