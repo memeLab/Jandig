@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
 
-from .forms import SignupForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
+from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 
@@ -29,6 +29,17 @@ def signup(request):
         form = SignupForm()
 
     return render(request, 'users/signup.jinja2', {'form': form})
+
+
+def recover_password(request):
+    if request.method == 'POST':
+        # TODO: send recovery email stuff
+        return redirect('home')
+
+    else:
+        form = RecoverPasswordForm()
+
+    return render(request, 'users/recover-password.jinja2', {'form': form})
 
 
 @login_required
