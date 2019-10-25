@@ -72,11 +72,27 @@
     padding: 0;
 }
 
+#repo-marker.repository-list.flex,
+#repo-object.repository-list.flex {
+    justify-content: flex-start;
+}
+
+#repo-marker.repository-list.flex .repository-item,
+#repo-object.repository-list.flex .repository-item {
+    flex: 0 1 calc(25%);
+}
+
 #repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
 #repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
     margin: 25px 0px -60px -25px;
     position: absolute;
 }
+
+.artwork-elements a.edit, .artwork-elements a.delete {
+    margin: 10px 10px -40px auto;
+    display: block;
+}
+
 
 /*.exhibit-list .repository-item a.edit {
     float: right;

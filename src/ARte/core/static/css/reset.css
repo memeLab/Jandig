@@ -576,11 +576,6 @@ a.sq-github {
     margin: 0px 15px 10px;
 }
 
-.artwork-elements a.edit, .artwork-elements a.delete {
-    margin: 0px 10px -40px auto;
-    display: block;
-}
-
 .artwork-elements .separator:after {
     content: '';
     display: block;
