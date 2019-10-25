@@ -93,28 +93,9 @@
     display: block;
 }
 
-
-/*.exhibit-list .repository-item a.edit {
-    float: right;
-    background: url(../images/icons/edit.png) no-repeat center center;
-    background-size: contain;
-    width: 20px;
-    height: 20px;
-    margin: 10px 0px -20px auto;
-    text-indent: -99999px;
-    border: 8px solid #fff;
+.artwork-elements a.delete {
+    margin: 10px 10px -40px 0;
 }
-
-.exhibit-list .repository-item a.delete{
-    float: right;
-    background: url(../images/icons/delete.png) no-repeat center center;
-    background-size: contain;
-    width: 20px;
-    height: 20px;
-    margin: 10px 10px -20px 10px;
-    text-indent: -99999px;
-    border: 8px solid #fff;
-}*/
 
 h1.exhibit-name {
     margin: 0 0 10px 0;
@@ -123,8 +104,8 @@ h1.exhibit-name {
     max-height: 50px;
     font-size: 0.85em;
     font-weight: bold;
+    color: #5b0058;
     background: #b019a650;
-    color: #af00a9;
     overflow: hidden;
     text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;
     overflow-wrap: initial;
@@ -132,7 +113,7 @@ h1.exhibit-name {
 
 h1.exhibit-name:hover {
     background: #b019a670;
-    color: #5b0058;
+    color: #af00a9;
 }
 
 p.exhibit-slug, a.edit, a.delete{
