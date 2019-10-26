@@ -13,7 +13,6 @@
             {% if selected %}
                 "{{selected}}".split(",").forEach(function(id){
                     artworks[id] = id
-                    $("#artwork-"+id).css('background-color', "green");
                     $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
                 })
             {% endif %}
