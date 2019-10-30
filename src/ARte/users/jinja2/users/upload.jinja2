@@ -6,9 +6,9 @@
         <link rel="stylesheet" href="/static/css/upload.css">
 
         {% if form_type == 'marker' %}
-            <h2>{{ _('Upload marker') }}</h2>
+            <h2>{{ _('Upload Marker') }}</h2>
         {% elif form_type == 'object' %}
-            <h2>{{ _('Upload object') }}</h2>
+            <h2>{{ _('Upload Object') }}</h2>
         {% endif %}
         <section class="upload-form">
             <div class="container">
@@ -16,13 +16,13 @@
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
                     {%if route == 'object-upload' %}
-                        <h3>{{_("Choose object")}}</h3>
+                        <h3>{{_("Choose Object")}}</h3>
                     {% else %}
                         <blockquote>
-                            No marker files yet? Don't fret! You can get them 
+                            No Marker files yet? Don't fret! You can get them 
                             <a href="https://dev.jandig.app/generator/" target="_blank" class="useful">here</a>.
                         </blockquote>
-                        <h3>{{ _("Choose marker image") }}</h3>
+                        <h3>{{ _("Choose Marker image") }}</h3>
                     {% endif %}
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
@@ -37,9 +37,9 @@
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         {% if form_type == 'marker' %}
-                            {{ _("I'm this marker author") }}
+                            {{ _("I'm this Marker author") }}
                         {% elif form_type == 'object' %}
-                            {{ _("I'm this object author") }}
+                            {{ _("I'm this Object author") }}
                         {% endif %}
                         
                     </p>
