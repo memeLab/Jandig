@@ -13,20 +13,22 @@
             {% if selected %}
                 "{{selected}}".split(",").forEach(function(id){
                     artworks[id] = id
-                    $("#artwork-"+id).css('background-color', "rgb(217,217,217)");
+                    $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
                 })
             {% endif %}
 
             $('.repository-item').click(function(){
+                console.log("cl");
                 let elementId = $(this).attr('id').split('-')[1];
                 let sectionId = $(this).parent().attr('id');
                 
                 // reset background
-                if($(this).css('background-color') == "rgb(217, 217, 217)"){
-                    $(this).css('background-color', "rgb(255,255,255)");
+                if($(this).css('border-bottom-style') != "none"){
+                    console.log("ASDF");
+                    $(this).css("border-bottom","none");
                     delete artworks[elementId]
                 }else{
-                    $(this).css('background-color', "rgb(255,0,0)");
+                    $(this).css("border-bottom","3px solid #a6a6a6");
                     artworks[elementId] = elementId
                 }
                 str_artworks = ""

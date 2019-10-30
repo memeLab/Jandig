@@ -28,10 +28,14 @@ ser aplicadas sobre a borda sem prejuízo ao reconhecimento da obra, é
 recomendado que a altura deste texto jamais ultrapasse ¼ da largura
 total da borda.
 
-<img src="images/MarkerGuide.png" style="margin:25px auto">
+.. image:: images/MarkerGuide.png
+    :width: 320px
+    :align: center
+    :height: auto
+    :alt: Marker Guide
 
 Simetria
-~~~~~~~~
+--------
 
 Considerando que a visualização do objeto depende da posição do marcador
 em relação à câmera, evitamos utilizar imagens com simetria tanto no
@@ -40,15 +44,17 @@ sistema de reconhecimento se confunda quanto à orientação em que deve
 exibir a imagem.
 
 Cores e gradientes
-~~~~~~~~~~~~~~~~~~
+------------------
 
-Para garantir maior fidelidade tanto no reconhecimento pelo sistema,
-quanto nas infinitas possibilidades de aplicação dos marcadores, não
+Para garantir infinitas possibilidades de aplicação dos marcadores, não
 utilizamos cores ou gradientes nas imagens centrais. A única cor
 utilizada é preto 100%, sem a utilização de tons.
 
+Essa não é uma limitação do sistema. É possível utilizar qualquer imagem
+como marcador, seguindo as outras recomendações nesse documento.
+
 Impressão e afins
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Reflexos, inclusive sobre as bordas, podem impedir que os seus
 marcadores sejam reconhecidos como tal. Para que sejam mais facilmente
@@ -58,7 +64,7 @@ na sua produção.
 É importante que as margens externas e internas da borda estejam sempre
 bem delimitadas. No caso de adesivos ou de aplicação em fundo mais
 escuros, garanta uma margem branca ao redor borda preta. Essa reserva de
-espaço deve ter, ao menos, 3% da largura total do marcador (ver imagem).
+espaço deve ter, ao menos, 3% da largura total do marcador.
 
 Iluminação
 ----------
@@ -69,7 +75,7 @@ iluminação distribuída, que não gere reflexos e evite utilizar
 iluminação de coloração muito âmbar.
 
 Adesivos
-~~~~~~~~
+--------
 
 Embora marcadores consigam ser reconhecidos até em formatos muito
 pequenos, costumamos produzir adesivos de marcadores Jandig com 5 x 5

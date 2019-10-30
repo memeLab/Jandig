@@ -1,4 +1,4 @@
-/*  @import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');  */
+@import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');
 
 body {
     color: #000;
@@ -14,6 +14,30 @@ body.colorful {
     background-image: url(../images/icons/bg.png);
     background-repeat: repeat-x;
     background-position: center top;
+}
+
+div.body > .section {
+    text-align: left;
+    margin: 30px;
+}
+
+div.body .section h1, div.body .section h2, div.body .section h3, div.body .section h4, div.body .section h5, div.body .section h6 {
+    font-family: "Istok Web", serif;
+    font-weight: bolder;
+    /*margin: 30px 0px 10px 0px;
+    padding: 0;*/
+}
+
+div.body .section h1 {
+    font-size: 1.75em;
+}
+
+div.body .section h2 {
+    font-size: 1.5em;
+}
+
+div.body .section h3 {
+    font-size: 1.25em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -220,7 +244,7 @@ input[type=submit].secondary {
     max-width: 280px;
 }
 
-a.changeExb, a.jandigIco {
+/*a.changeExb, a.jandigIco {
     text-indent: -9999px;
     height: 20px;
     text-align: left;
@@ -235,8 +259,6 @@ a.changeExb {
 }
 
 a.jandigIco {
-    background-image: url(../images/icons/jandigIcon.png);
-    background-position: center right;
 }
 
 .header {
@@ -251,21 +273,95 @@ a.jandigIco {
     height: 70px;
     float: right;
     background: #fff;
-}
+}*/
 
 .logo {
-    text-align: left;
-    height: 60px;
-    width: 100%;
-    /*width: calc(100% - 125px);*/
-    float: left;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+    background-image: url(../../static/images/icons/header_icon.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    font-size: 12px;
+    margin: 0;
+    padding: 65px 0 0 0;
+    /* text-indent: -999999px; */
+}
+
+div.sphinxsidebar .logo a {
+    border-bottom: 5px solid #d6d6d6;
+    margin: 25px 0 20px 0;
+    letter-spacing: 0.1em;
+    line-height: 25px;
+    text-align: center;
+    color: #777;
+}
+
+div.sphinxsidebar ul li.toctree-l1 > a {
+    font-size: 100%;
+}
+
+div.sphinxsidebar a {
+    color: #444;
+    text-decoration: none;
+    border-bottom: 5px solid #d6d6d6;
+}
+
+li.toctree-l1 {
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    margin: 0;
+    padding: 5px;
+    line-height: 10px;
+}
+
+div.sphinxsidebar a:hover {
+    border-bottom: 5px solid #999;
+}
+
+div.sphinxsidebar .sphinxsidebarwrapper h3, div.sphinxsidebar .sphinxsidebarwrapper h4 {
+    font-family: Georgia, serif;
+    color: #444;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    padding: 0;
+}
+
+.bodywrapper a.reference {
+    text-decoration: none;
+    border-bottom: 5px solid #d6d6d6;
+    /* margin-bottom: 40px; */
+    line-height: 40px;
+}
+
+.bodywrapper a.reference:hover {
+    border-bottom: 5px solid #999;
+}
+
+@media screen and (max-width: 875px) {
+    div.sphinxsidebar {
+        display: block;
+        float: none;
+        width: 92% !important;
+        margin: 50px auto 0px !important;
+        padding: 10px 20px;
+        background: none !important;
+        color: #000 !important;
+    }
+
+    div.sphinxsidebar .logo a {
+        border-bottom: 5px solid #d6d6d6;
+        margin: 10px 0 20px 0;
+        letter-spacing: 0.25em;
+    }
+
 }
 
 .logo a {
     display: block;
+    margin-bottom: 20px;
 }
 
 .logo img{
@@ -564,14 +660,15 @@ a.sq-github {
         flex-basis: 100%;
     }
 
-    .logo {
-        text-align: left;
+    div.sphinxsidebarwrapper h1.logo {
+        /*text-align: left;
         height: 95px;
         width: calc(100% - 160px);
         float: left;
         background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
         background-position: 100% 10%;
-        background-size: 100% 200%;
+        background-size: 100% 200%;*/
+        margin-bottom: 20px;
     }
 
     .welcome, .icon-menu, .connect {

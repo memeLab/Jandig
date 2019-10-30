@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-18 12:07-0300\n"
+"POT-Creation-Date: 2019-07-22 13:58+0000\n"
 "PO-Revision-Date: 2019-07-18 12:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -189,6 +189,11 @@ msgstr ""
 "Conteúdo sob licenciamento CC BY-SA, a não ser quando explicitado o "
 "contrário."
 
+#: src/ARte/core/jinja2/core/header.jinja2:21
+#, fuzzy
+msgid "Welcome, "
+msgstr "Bem vindo, "
+
 #: src/ARte/core/jinja2/core/header.jinja2:28
 #: src/ARte/users/jinja2/users/login.jinja2:16
 #: src/ARte/users/jinja2/users/signup.jinja2:14
@@ -199,6 +204,18 @@ msgstr "Cadastro"
 #: src/ARte/users/jinja2/users/signup.jinja2:15
 msgid "Log in"
 msgstr "Entrar"
+
+#: src/ARte/core/jinja2/core/home.jinja2:38
+msgid "Welcome to Jandig"
+msgstr "Bem vindo ao Jandig"
+
+#: src/ARte/core/jinja2/core/home.jinja2:39
+msgid "An open source Augmented Reality art community."
+msgstr "Uma comunidade open source de arte em Realidade Aumentada."
+
+#: src/ARte/core/jinja2/core/home.jinja2:40
+msgid "To see the artworks you need  to grant camera access to the app."
+msgstr "Para ver as obras você precisa dar acesso a câmera no aplicativo"
 
 #: src/ARte/core/jinja2/core/home.jinja2:42
 msgid "Go to camera"

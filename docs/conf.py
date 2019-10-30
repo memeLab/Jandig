@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Jandig ARte'
+project = 'Jandig ARte Help'
 copyright = '2019, pablodiegoss, rodrigocam, vjpixel, hvalois'
 author = 'pablodiegoss, rodrigocam, vjpixel, hvalois'
 

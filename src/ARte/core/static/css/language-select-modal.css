@@ -12,20 +12,6 @@
     z-index: 100;
 }
 
-/*.lang-modal-content {
-    padding: 20px;
-    width: 360px;
-    height: calc(100% - 140px);
-}
-
-.lang-modal-content {
-    position: inherit;
-    height: 35%;
-    margin: auto;
-    background-color: white;
-    padding: 20px;
-}*/
-
 .lang-modal-content {
     padding: 20px;
     width: 360px;
@@ -55,7 +41,6 @@
         width: 80%;
         max-width: 600px;
         margin: 25px auto;
-        /* overflow: scroll; */
     }
 
     .lang-modal-content {

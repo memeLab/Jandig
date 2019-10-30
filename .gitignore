@@ -23,3 +23,4 @@ docker/media/
 
 # translations
 *.mo
+*.po~
