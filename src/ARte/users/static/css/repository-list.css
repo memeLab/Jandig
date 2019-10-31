@@ -1,7 +1,7 @@
 .repository-list {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-wrap: wrap;
     max-width: 100%;
     padding: 0;
@@ -25,56 +25,183 @@
 }
 
 .repository-item {
-    /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(25% - 10px);
     padding: 20px 0px;
 }
 
 .exhibit-list .repository-item, #repo-artwork .repository-item {
-    /* increasing percentage reduce number of elements per row */
     flex: 0 1 calc(50% - 10px);
 }
 
-.exhibit-list .repository-item {
-    background: #faf3f9;
-    margin-bottom: 20px;
-    padding: 0 0 10px 0;
-}
-
-.exhibit-list .repository-item a.edit {
+.repository-item a.edit, .repository-item a.delete {
     float: right;
+    background-size: contain;
     width: 20px;
     height: 20px;
-    margin: -25px 20px 0px 0px;
+    text-indent: -99999px;
+    border: 8px solid #fff;
+    opacity: 1;
 }
 
-a.delete{
-    float: left;
-    width: 20px;
-    height: 20px;
-    margin: -25px 20px 0px 0px;
+.repository-item a.edit:hover, .repository-item a.delete:hover {
+    opacity: 0.7;
+}
+
+.repository-item a.edit {
+    background: url(../images/icons/edit.png) no-repeat center center;
+    background-size: contain;
+    margin: 10px 0px -20px auto;
+}
+
+.repository-item a.delete{
+    background: url(../images/icons/delete.png) no-repeat center center;
+    background-size: contain;
+    margin: 10px 10px -20px 10px;
+}
+
+#repo-artwork .repository-item {
+    flex: 0 1 calc(33% - 10px);
+    background: url(../images/icons/fill.png);
+    background-position: 100% 20%;
+    margin-bottom: 30px;
+}
+
+.exhibit-list .repository-item, .exhibit-detail-box {
+    background: url(../images/icons/fill.png), #e6e6e6;
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+#repo-marker.repository-list.flex,
+#repo-object.repository-list.flex {
+    justify-content: flex-start;
+}
+
+#repo-marker.repository-list.flex .repository-item,
+#repo-object.repository-list.flex .repository-item {
+    flex: 0 1 calc(25%);
+}
+
+#repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
+#repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
+    margin: 25px 0px -60px -25px;
+    position: absolute;
+}
+
+.artwork-elements a.edit, .artwork-elements a.delete {
+    margin: 10px 10px -40px auto;
+    display: block;
+}
+
+.artwork-elements a.delete {
+    margin: 10px 10px -40px 0;
 }
 
 h1.exhibit-name {
-    margin: 10px 0;
+    margin: 0 0 10px 0;
+    padding: 0 15px;
+    max-width: calc(100% - 30px);
+    max-height: 50px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #5b0058;
+    background: #b019a650;
+    overflow: hidden;
+    text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;
+    overflow-wrap: initial;
 }
 
-p.exhibit-slug, p.exhibit-about, a.edit a.delete{
+h1.exhibit-name:hover {
+    background: #b019a670;
+    color: #af00a9;
+}
+
+p.exhibit-slug, a.edit, a.delete{
     font-size: 0.65em;
 }
 
-p.by {
+p.by, p.exbDate, p.exhibit-about {
     font-size: 0.75em;
+    margin: 0 0 0 10px;
+}
+
+p.by, p.exbDate {
+    color: #868686;
+}
+
+p.exbDate {
+    padding: 0 15px 0 0;
+    text-align: right;
 }
 
 a.gotoExb {
-    background: #f9d7fa;
-    color: #000;
-    font-size: 0.75em;
+    background: #f9d7fa70;
+    color: #af00a9;
+    font-size: 0.65em;
     clear: both;
-    padding: 5px 10px;
+    padding: 5px 25px 5px 10px;
+    margin: -5px 15px 0 10px;
+    text-align: right;
+    flex-basis: 100%;
+    opacity: 0.75;
+    line-height: 20px;
+}
+
+a.gotoExb:hover {
+    background: #f9d7fa90;
+    opacity: 0.9;
+    color: #5b0058;
+}
+
+a.gotoExb:after {
+    content: "";
+    height: 25px;
+    width: 25px;
+    background: url(../images/icons/icoCamPurp.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    margin: -5px 0px 0px 5px;
+    opacity: 0.7;
+}
+
+a.gotoExb:hover a.gotoExb:after {
+    opacity: 0.9;
 }
 
 p.exhibit-about {
-    margin: 15px 0 5px 0;
+    font-weight: bold;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.artwork-elements.flex {
+    justify-content: space-evenly;
+}
+
+
+/********* Media Queries ***********/
+@media all and (min-width: 800px) {
+    p.by {
+        flex-basis: calc(75% - 40px);
+    }
+
+    p.by, p.exhibit-about {
+        text-align: left;
+        padding: 0 0 0 15px;
+    }
+
+    p.exbDate {
+        flex-basis: calc(25% - 15px);
+    }
+
+    p.exhibit-about {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        flex-basis: calc(33% - 15px);
+    }
+
+    a.gotoExb {
+        margin: 0 15px 0 0;
+        flex-basis: calc(60% - 75px);
+    }
 }
