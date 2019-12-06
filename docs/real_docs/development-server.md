@@ -11,3 +11,16 @@ With the previous command you can use ARte only on the local machine running the
 ```shell
 $ ngrok http 8000
 ```
+
+### Generating translation (.po) files
+
+To collect and be able to translate new strings inside our django and jinja2 files, you can use our tasks.py for inv if configured correctly or docker directly without having much more than docker-compose, like so:
+
+```
+// Requires installing src/requirements.
+$inv i18n
+
+// or inside the docker folder.
+$docker-compose run --rm django inv i18n
+
+```
