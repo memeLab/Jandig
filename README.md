@@ -17,6 +17,7 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 - @pablodiegoss - [Twitter](https://twitter.com/pablodiegosds)
 - @rodrigocam [Twitter](https://twitter.com/sayadiguin)
 - @Heloisecs - [Twitter](https://twitter.com/heloisecullen)
+- @LeoSGomes [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/), [GitHub](https://github.com/LeoSilvaGomes)
 - @thiagohersan
 - @kisobral [Instagram](https://www.instagram.com/hugsob/), [GitHub](https://github.com/kisobral)
 
