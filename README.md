@@ -20,6 +20,7 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 - @LeoSGomes [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/), [GitHub](https://github.com/LeoSilvaGomes)
 - @thiagohersan
 - @kisobral [Instagram](https://www.instagram.com/hugsob/), [GitHub](https://github.com/kisobral)
+- @rhuancpq [Twitter](https://twitter.com/rhuancpq), [GitHub](https://github.com/rhuancpq)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
