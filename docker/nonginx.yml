@@ -6,6 +6,9 @@ services:
     image: jandigarte/django:latest
     ports:
       - 8000:8000
+    build:
+        context: ../
+        dockerfile: ./docker/Dockerfile
     env_file:
       - ../src/.envs/.prod_deploy
     depends_on:
