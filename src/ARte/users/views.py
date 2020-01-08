@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
@@ -59,6 +60,7 @@ def profile(request):
     }
     return render(request, 'users/profile.jinja2', ctx)
 
+@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -78,6 +80,7 @@ def get_marker(request, form):
 
     return marker
 
+@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
@@ -173,6 +176,7 @@ def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
 
+@cache_page(60 * 60)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
