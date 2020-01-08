@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+
+  prod_django:
+    image: jandigarte/django:latest
+    ports:
+      - 8000:8000
+    env_file:
+      - ../src/.envs/.prod_deploy
+    depends_on:
+      - prod_postgres
+    volumes:
+      - static_prod_files:/collect/
+      - ./media/prod/:/src/ARte/users/media/    
+    command: inv db -p docs collect run -g -p
+ 
+  prod_postgres:
+    image: postgres
+    env_file:
+      - ../src/.envs/.prod_deploy
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+volumes:
+  postgres_prod_data:
+  static_prod_files:
