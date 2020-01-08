@@ -16,7 +16,7 @@ services:
     command: inv db -p docs collect run -g -p
  
   prod_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.prod_deploy
     volumes:
