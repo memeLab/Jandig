@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import translation
 from django.shortcuts import redirect
+from django.views.decorators.cache import cache_page
 
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
@@ -23,6 +24,7 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+@cache_page(60 * 60)
 def collection(request):
     ctx = {
         "artworks": Artwork.objects.all(),

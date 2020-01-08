@@ -3,11 +3,14 @@ from locust import HttpLocust, TaskSet
 def index(l):
     l.client.get("/")
 
-def collection(l):
+def load_gifs(l):
     l.client.get("/collection/")
 
+def exhibit(l):
+    l.client.get("/longavida/")
+
 class UserBehavior(TaskSet):
-    tasks = {index: 2, collection: 1}
+    tasks = {exhibit:1}
 
     # def on_start(self):
     #     login(self)
