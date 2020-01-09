@@ -48,7 +48,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
   
   dev_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.dev_deploy
     volumes:
@@ -77,7 +77,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
 
   staging_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.staging_deploy
     volumes:
@@ -107,7 +107,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
  
   prod_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.prod_deploy
     volumes:
