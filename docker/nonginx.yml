@@ -15,7 +15,7 @@ services:
       - prod_postgres
     volumes:
       - static_prod_files:/collect/
-      - ./media/prod/:/src/ARte/users/media/    
+      - ./media/prod/:/ARte/src/ARte/users/media/    
     command: inv db -p docs collect run -g -p
  
   prod_postgres:
