@@ -38,14 +38,14 @@
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
-        function usedInExhibit(exhibits_count, marker_src, augmented_src){
+        function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src){
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
                 {{ _(" Used in ")|tojson }} +
                 exhibits_count +
                 {{ _(" exhibits")|tojson }} + 
-                '<img id="marker-src" class="trigger-erase" src="' + marker_src + '"/>' +
-                '<img id="augmented-src" class="trigger-erase" src="' + augmented_src + '"/></p>'
+                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' + 
+                '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
             )
             $('.trigger-erase').click(eraseModal);        
         }
@@ -103,7 +103,7 @@
                     url: elemUrl,
                     success: function(data){
                         elementAuthor(data['author']);
-                        usedInExhibit(data['exhibits'], data['marker'], data['augmented']);
+                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented']);
                         replaceButtons(data['title'], data['description']);
                     }
                 });
@@ -113,7 +113,8 @@
         function eraseModal() {
             $('#element-analytics').replaceWith('<p id="element-analytics"></p>');
             $('#element-author').replaceWith('<p id="element-author"></p>'); 
-        }
+            fillModal($(this));
+            }
     
 
         function manageModal(){

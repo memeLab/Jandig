@@ -6,15 +6,7 @@ img#element-src{
     display: block;
 }
 
-img#marker-src{
-    height: 35%;
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
-
-img#augmented-src{
+img.artwork-content{
     height: 35%;
     width: 40%;
     margin-left: auto;

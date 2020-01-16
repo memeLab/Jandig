@@ -186,6 +186,8 @@ def element_get(request):
         
     if element_type == 'artwork':
         data = {
+	    'id_marker' : element.marker.id,
+	    'id_object' : element.augmented.id,
             'type': element_type,
             'author': element.author.user.username,
             'exhibits': element.exhibits_count,
@@ -197,6 +199,7 @@ def element_get(request):
         }
     else:
         data = {
+            'id' : element.id,
             'type': element_type,
             'author': element.author,
             'owner': element.owner.user.username,
