@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
@@ -122,7 +123,7 @@ def create_artwork(request):
     else:
         form = ArtworkForm()
 
-    marker_list = get_makers(request)
+    marker_list = get_markers(request)
     object_list = get_objects(request)
 
     return render(

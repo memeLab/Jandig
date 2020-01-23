@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
-from users.views import Artwork, Exhibit, Object, Marker
-
+from users.models import Artwork, Object, Marker
+from core.models import Exhibit
 
 def handle_upload_image(image):
     path = "core" + static(f"images/{image.name}")

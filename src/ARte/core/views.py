@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import translation
 from django.shortcuts import redirect
+from django.views.decorators.cache import cache_page
 
 from .helpers import *
 from .forms import UploadFileForm, ExhibitForm
