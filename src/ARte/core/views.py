@@ -5,12 +5,12 @@ from django.urls import reverse
 from django.utils import translation
 from django.shortcuts import redirect
 
-from .helpers import handle_upload_image
+from .helpers import *
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
 from users.models import Artwork, Marker, Object
 
-
+@cache_page(60 * 60)
 def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
@@ -23,12 +23,13 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+@cache_page(60 *60)
 def collection(request):
     ctx = {
-        "artworks": Artwork.objects.all(),
-        "exhibits": Exhibit.objects.all(),
-        "markers": Marker.objects.all(),
-        "objects": Object.objects.all(),
+        "artworks": get_artworks(request),
+        "exhibits": get_exhibits(request),
+        "markers": get_markers(request),
+        "objects": get_objects(request),
     }
 
     return render(request, 'core/collection.jinja2', ctx)

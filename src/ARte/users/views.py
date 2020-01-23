@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
-
+from core.helpers import *
 
 def signup(request):
 
@@ -43,6 +43,7 @@ def recover_password(request):
 
 
 @login_required
+@cache_page(60 * 60)
 def profile(request): 
     profile = Profile.objects.get(user=request.user)
     
@@ -121,8 +122,8 @@ def create_artwork(request):
     else:
         form = ArtworkForm()
 
-    marker_list = Marker.objects.all()
-    object_list = Object.objects.all()
+    marker_list = get_makers(request)
+    object_list = get_objects(request)
 
     return render(
         request,
@@ -274,8 +275,8 @@ def edit_artwork(request):
         'users/artwork-create.jinja2',
         {
             'form': ArtworkForm(initial=model_data), 
-            'marker_list': Marker.objects.all(),
-            'object_list': Object.objects.all(),
+            'marker_list': get_markers(request),
+            'object_list': get_objects(request),
             'selected_marker': model.marker.id,
             'selected_object': model.augmented.id
         }
