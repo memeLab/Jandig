@@ -9,17 +9,21 @@ def handle_upload_image(image):
             destination.write(chunk)
 
 
-def get_stuff(model_name, model):
-    def function(request):
+def get_function_for_all(model_name, model):
+    def get_all_from_db(request):
         try:
-            session_stuff = request.session[model_name]
+            session_items = request.session[model_name]
         except(KeyError):
             request.session[model_name] = model.objects.all()
-            session_stuff = request.session[model_name]
-        return session_stuff
-    return function
+            session_items = request.session[model_name]
+        return session_items
+    return get_all_from_db
+
+get_artworks = get_function_for_all('artworks', Artwork)
+get_exhibits = get_function_for_all('exhibits', Exhibit)
+get_markers = get_function_for_all('markers', Marker)
+get_objects = get_function_for_all('objects', Object)
 
 get_artworks = get_stuff('artworks', Artwork)
 get_exhibits = get_stuff('exhibits', Exhibit)
 get_markers = get_stuff('markers', Marker)
-get_objects = get_stuff('objects', Object)
