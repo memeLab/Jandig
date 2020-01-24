@@ -130,25 +130,12 @@ class LoginForm(AuthenticationForm):
         return username_or_email
 
 
-class RecoverPasswordForm(forms.ModelForm):
+class RecoverPasswordForm(forms.Form):
+    username_or_email = forms.CharField(label='username / email', max_length="50")
 
-    def __init__(self, *args, **kwargs):
-        super(RecoverPasswordForm, self).__init__(*args, **kwargs)
+class RecoverPasswordCodeForm(forms.Form):
+    verification_code = forms.CharField(label='Verification code', max_length="200")
 
-        self.fields['username'].widget.attrs['placeholder'] = _('username / email')
-
-    def clean_username(self):
-        username_or_email = self.cleaned_data.get('username')
-        if '@' in username_or_email:
-            user = User.objects.get(email=username_or_email)
-            if user:
-                return user.username
-
-        return username_or_email
-
-    class Meta:
-        model = User
-        fields = ['username']
 
 class UploadMarkerForm(forms.ModelForm):
     
