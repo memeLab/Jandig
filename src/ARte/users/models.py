@@ -31,8 +31,9 @@ class Marker(models.Model):
     patt = models.FileField(upload_to='patts/')
 
     class Meta:
-        permissions = ["moderator", "curator", "admin"]
-
+        permissions = [
+            ("moderator", "Can remove improper content"),
+        ]
     def __str__(self):
         return self.source.name
 
@@ -63,7 +64,9 @@ class Object(models.Model):
     rotation = models.CharField(default="270 0 0", max_length=50)
 
     class Meta:
-        permissions = ["moderator", "curator", "admin"]
+        permissions = [
+            ("moderator", "Can remove improper content"),
+        ]
 
 
     def __str__(self):
@@ -101,8 +104,9 @@ class Artwork(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        permissions = ["moderator", "curator", "admin"]
-
+        permissions = [
+            ("moderator", "Can remove improper content"),
+        ]
 
     @property
     def exhibits_count(self):
