@@ -64,3 +64,4 @@ def exhibit_detail(request):
         'artworks': exhibit.artworks.all()
     }
     return render(request, 'core/exhibit_detail.jinja2', ctx)
+

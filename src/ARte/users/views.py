@@ -402,3 +402,44 @@ def delete_content(model, user, instance_id):
         elif instance.owner == user.profile:
             if isinstance(instance, Exhibit) or not instance.in_use:
                 instance.delete()
+
+@login_required        
+def mod_delete(request):
+    content_type = request.GET.get('content_type', None)
+
+    if content_type == 'marker':
+       mod_delete_content(Marker, request.user, request.GET.get('id', -1))
+    elif content_type == 'object':
+       mod_delete_content(Object, request.user, request.GET.get('id', -1))
+    elif content_type == 'artwork':
+       mod_delete_content(Artwork, request.user, request.GET.get('id', -1))
+    elif content_type == 'exhibit':
+       mod_delete_content(Exhibit, request.user, request.GET.get('id', -1))
+
+
+def mod_delete_content (model, instance_id): #add user field
+    qs = model.objects.filter(id=instance_id)
+    if qs:
+        instance = qs[0]
+        #if user.has_perm(moderator)
+        if isinstance(instance, Artwork):
+            instance.mod_delete()
+        elif isinstance(instance, Exhibit):
+            instance.mod_delete()
+        #elif isinstance(instance, Object):
+        #elif isinstance(instance, Marker):
+
+        return redirect('moderator-page')
+    #else
+        #return redirect('permission-denied')
+
+def mod(request):
+    ctx = {
+        "objects" : Object.objects.all(),
+        "markers" : Marker.objects.all(),
+        "artworks": Artwork.objects.all(),
+    }    
+    return render(request, 'users/moderator-page.jinja2', ctx)
+
+def permission_denied (request):
+    return render(request, 'users/permission-denied.jinja2')
