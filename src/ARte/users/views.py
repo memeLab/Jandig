@@ -1,5 +1,5 @@
 import json
-from django.contrib.auth import login, authenticate
+import django.contrib.auth
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -402,36 +402,15 @@ def delete_content(model, user, instance_id):
         elif instance.owner == user.profile:
             if isinstance(instance, Exhibit) or not instance.in_use:
                 instance.delete()
-
-@login_required        
-def mod_delete(request):
-    content_type = request.GET.get('content_type', None)
-
-    if content_type == 'marker':
-       mod_delete_content(Marker, request.user, request.GET.get('id', -1))
-    elif content_type == 'object':
-       mod_delete_content(Object, request.user, request.GET.get('id', -1))
-    elif content_type == 'artwork':
-       mod_delete_content(Artwork, request.user, request.GET.get('id', -1))
-    elif content_type == 'exhibit':
-       mod_delete_content(Exhibit, request.user, request.GET.get('id', -1))
-
-
-def mod_delete_content (model, instance_id): #add user field
-    qs = model.objects.filter(id=instance_id)
-    if qs:
-        instance = qs[0]
-        #if user.has_perm(moderator)
-        if isinstance(instance, Artwork):
-            instance.mod_delete()
-        elif isinstance(instance, Exhibit):
-            instance.mod_delete()
-        #elif isinstance(instance, Object):
-        #elif isinstance(instance, Marker):
-
-        return redirect('moderator-page')
-    #else
-        #return redirect('permission-denied')
+        elif user.has_perm(moderator) and not instance.in_use:
+            instance.delete()
+        elif user.has_perm(moderator) and instance.in_use:
+            if isinstance(instance, Object):
+                artworkIn = Artwork.objects.filter(augmented=instance)
+                artworkIn.delete()
+            elif isinstance(instance, Marker):
+                artworkIn = Artwork.objects.filter(marker=instance)
+                artworkIn.delete()
 
 def mod(request):
     ctx = {

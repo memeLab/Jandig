@@ -12,7 +12,6 @@ class Profile(models.Model):
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
 
-
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -30,6 +29,10 @@ class Marker(models.Model):
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     patt = models.FileField(upload_to='patts/')
+
+    class Meta:
+        permissions = ["moderator", "curator", "admin"]
+
     def __str__(self):
         return self.source.name
 
@@ -58,6 +61,11 @@ class Object(models.Model):
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
+
+    class Meta:
+        permissions = ["moderator", "curator", "admin"]
+
+
     def __str__(self):
         return self.source.name
 
@@ -91,6 +99,10 @@ class Artwork(models.Model):
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        permissions = ["moderator", "curator", "admin"]
+
 
     @property
     def exhibits_count(self):
