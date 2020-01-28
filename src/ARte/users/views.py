@@ -46,12 +46,18 @@ def recover_password(request):
 @login_required
 @cache_page(60 * 60)
 def profile(request):
-    profile = get_profile(request)
+    profile = Profile.objects.select_related().get(user=request.user)
+
+    # exhibits = Exhibit.objects.filter(owner__user=request.user)
+    # markers = get_user_markers(request, profile)
+    # objects = get_user_objects(request, profile)
+    # artworks = get_user_artworks(request, profile)
     
-    exhibits = get_user_exhibits(request)
-    markers = get_user_markers(request)
-    objects = get_user_objects(request)
-    artworks = get_user_artworks(request)
+    exhibits = profile.exhibits.all()
+    markers = profile.marker_set.all()
+    objects = profile.object_set.all()
+    artworks = profile.artwork_set.all()
+    
     ctx = {
         'exhibits': exhibits,
         'artworks': artworks,
