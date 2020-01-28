@@ -56,7 +56,7 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'config.settings.debug'    
 }
 def debug(request):
-    return True
+    return DEBUG
 
 ## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
 if env.bool('DEV_STATIC', False):
