@@ -6,7 +6,7 @@ from django.utils import translation
 from django.shortcuts import redirect
 from django.views.decorators.cache import cache_page
 
-from .helpers import *
+from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
 from users.models import Artwork, Marker, Object
