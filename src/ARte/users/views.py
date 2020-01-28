@@ -127,8 +127,8 @@ def create_artwork(request):
     else:
         form = ArtworkForm()
 
-    marker_list = get_markers(request)
-    object_list = get_objects(request)
+    marker_list = Marker.objects.all()
+    object_list = Object.objects.all()
 
     return render(
         request,
@@ -282,8 +282,8 @@ def edit_artwork(request):
         'users/artwork-create.jinja2',
         {
             'form': ArtworkForm(initial=model_data), 
-            'marker_list': get_markers(request),
-            'object_list': get_objects(request),
+            'marker_list': Marker.objects.all(),
+            'object_list': Object.objects.all(),
             'selected_marker': model.marker.id,
             'selected_object': model.augmented.id
         }
