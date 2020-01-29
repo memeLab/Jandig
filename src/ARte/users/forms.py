@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
+from django.forms.widgets import NumberInput
 
 from .models import Marker, Object, Artwork, Profile
 
@@ -150,6 +151,8 @@ class UploadMarkerForm(forms.ModelForm):
         model = Marker
         exclude = ('owner', 'uploaded_at')
 
+#class RangeInput(NumberInput): #TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT ROTATION, SCALE AND POSITION
+#    input_type = 'range'
 
 class UploadObjectForm(forms.ModelForm):
     
@@ -158,10 +161,13 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
-    
+        self.fields['scale'].widget.attrs['placeholder'] = _('1 1')
+        self.fields['rotation'].widget.attrs['placeholder'] = _('270 0 0')
+        self.fields['position'].widget.attrs['placeholder'] = _('0 0 0')
+            
     class Meta:
         model = Object
-        exclude = ('uploaded_at', 'owner','scale','rotation','position')
+        exclude = ('uploaded_at', 'owner')
 
 
 class ArtworkForm(forms.Form):
