@@ -75,8 +75,8 @@ def recover_password(request):
 
             msg = MIMEMultipart()
             message = 'You have requested a new password. This is your verification code: {}\nCopy it and put into the field.'.format(verification_code)
-            password = 'rzoosoabbakehbqx'
-            msg['From'] = "hockpond@gmail.com"
+            password = 'svxrhkcftyvhtvyy'
+            msg['From'] = "jandig@memelab.com.br"
             msg['To'] = '{}'.format(recovering_email)
             msg['Subject'] = "Recover Password"
 
