@@ -29,14 +29,19 @@
                     </p>
                     {% if form_type == 'object' %}
                         <h2>{{_("Adjust scale")}}</h2>
-                        {{ form.visible_fields()[2] }}
-                        {{ form.visible_fields()[2].errors }}
+                        <h3>X</h3>
+                        <input id="X-scale" value="1">
+                        <h3>Y</h3>
+                        <input id = "Y-scale" value = "1">
                         <h2>{{_("Adjust position")}}</h2>
-                        {{ form.visible_fields()[3] }}
-                        {{ form.visible_fields()[3].errors }}
+                        <h3>X:</h3>
+                        <input id = "X-position" value = "0">
+                        <h3>X:</h3>
+                        <input id = "Y-position" value = "0">
+                        <h3>X:</h3>
+                        <input id = "Z-position" value = "0">
                         <h2>{{_("Adjust rotation")}}</h2>
-                        {{ form.visible_fields()[4] }}
-                        {{ form.visible_fields()[4].errors }}
+                        <input id = "Z-rotation" value = "0">
                     {% endif %}
                     {% if form_type == 'marker' %}
                         <h3>{{ _('Choose .patt file') }}</h3>
@@ -87,7 +92,41 @@
                     $('#author-field > input').prop('readonly', false);
                     $('#author-field > input').val("");
                 }
-            })
+            });
+
+            $("input").change(function(e) {
+                for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {                  
+                    var file = e.originalEvent.srcElement.files[i];
+        
+                    var img = document.createElement("img");
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                      img.src = reader.result;
+                      img.class = "img-preview"
+                    }
+                    reader.readAsDataURL(file);            
+                    $("input").after(img);
+                }
+            });
+
+            if(form_type == "object"){
+                $("input").event( 
+                    function(e){
+                        var zrot = document.getElementById('z-rotation');
+                        var xscl = document.getElementById('x-scale');
+                        var yscl = document.getElementById('y-scale');
+                        var xpos = document.getElementById('x-position');
+                        var ypos = document.getElementById('y-position');
+                        var zpos = document.getElementById('z-position');
+
+                        var scl = xscl + " " + yscl;
+                        var rot = zrot+270 + "0 0";
+                        var pos = xpos + " " + ypos + " " + zpos;
+
+                        //FILL THE FIELDS
+                    }               
+                )
+            };
         </script>
     </section>
 {% endblock %}
