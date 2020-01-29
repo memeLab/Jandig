@@ -76,6 +76,15 @@ class Object(models.Model):
             return True
 
         return False
+    
+    def set_scale(self, horizontal, vertical):
+        self.scale = horizontal + " " + vertical
+    
+    def set_position(self, x, y, z):
+        self.position = x + " " + y + " " + z
+
+    def set_rotation(self, angle):
+        self.rotation = angle+270 + " 0 0"
 
 
 @receiver(post_delete, sender=Object)
