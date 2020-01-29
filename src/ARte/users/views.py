@@ -388,29 +388,40 @@ def delete(request):
        delete_content(Artwork, request.user, request.GET.get('id', -1))
     elif content_type == 'exhibit':
        delete_content(Exhibit, request.user, request.GET.get('id', -1))
-
-
     return redirect('profile')
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
-        instance = qs[0]
-        if isinstance(instance, Artwork):
-            if instance.author == user.profile and not instance.in_use:
-                instance.delete()
-        elif instance.owner == user.profile:
-            if isinstance(instance, Exhibit) or not instance.in_use:
-                instance.delete()
-        elif user.has_perm(moderator) and not instance.in_use:
+        instance = qs[0]      
+        if user.has_perm('users.moderator') and not instance.in_use:
             instance.delete()
-        elif user.has_perm(moderator) and instance.in_use:
+        elif user.has_perm('users.moderator') and instance.in_use:
             if isinstance(instance, Object):
                 artworkIn = Artwork.objects.filter(augmented=instance)
                 artworkIn.delete()
             elif isinstance(instance, Marker):
                 artworkIn = Artwork.objects.filter(marker=instance)
                 artworkIn.delete()
+            elif isinstance(instance, Artwork):
+                instance.delete()
+        elif instance.owner == user.profile:
+            if isinstance(instance, Exhibit) or not instance.in_use:
+                instance.delete()  
+
+def mod_delete(request):   
+    content_type = request.GET.get('content_type', None)
+
+    if content_type == 'marker':
+       delete_content(Marker, request.user, request.GET.get('id', -1))
+    elif content_type == 'object':
+       delete_content(Object, request.user, request.GET.get('id', -1))
+    elif content_type == 'artwork':
+       delete_content(Artwork, request.user, request.GET.get('id', -1))
+    elif content_type == 'exhibit':
+       delete_content(Exhibit, request.user, request.GET.get('id', -1))
+    return redirect('moderator-page')
+
 
 def mod(request):
     ctx = {

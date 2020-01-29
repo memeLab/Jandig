@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import permission_denied, mod, signup, recover_password, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
+from .views import mod_delete, permission_denied, mod, signup, recover_password, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('content/delete/', delete, name='delete-content'),
     path('moderator-page/', mod, name='moderator-page'),
     path('permission-denied/', permission_denied, name='permission-denied'),
+    path('content/mod-delete/', mod_delete, name='mod-delete-content'),
 ]
