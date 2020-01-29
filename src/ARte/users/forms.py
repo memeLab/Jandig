@@ -123,10 +123,14 @@ class LoginForm(AuthenticationForm):
     def clean_username(self):
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
+            if not User.objects.filter(email=username_or_email).exists():
+                raise forms.ValidationError(_('E-mail unregistered'))
             user = User.objects.get(email=username_or_email)
             if user:
                 return user.username
-
+        else:
+            if not User.objects.filter(username=username_or_email).exists():
+                raise forms.ValidationError(_('Username unregistered'))
         return username_or_email
 
 
