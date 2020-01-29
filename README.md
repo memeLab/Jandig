@@ -23,6 +23,7 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 - @rhuancpq [Twitter](https://twitter.com/rhuancpq), [GitHub](https://github.com/rhuancpq)
 - @ventusof
 - @luccaepp [Twitter](https://twitter.com/luccaepp), [GitHub](https://github.com/luccaepp)
+- @hockpond [GitHub](https://github.com/hockpond)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
