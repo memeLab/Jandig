@@ -12,18 +12,18 @@ Jandig ARte is a Progressive Web App, which means you can open in every device w
 
 ### People
 We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ). There's a list of the main contributors of Jandig development:
-- [@vjpixel]((https://github.com/vjpixel)) [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel)
-- [@pablodiegoss](https://github.com/pablodiegoss) - [Twitter](https://twitter.com/pablodiegosds)
-- [@rodrigocam](https://github.com/rodrigocam) [Twitter](https://twitter.com/sayadiguin)
-- [@hvalois](https://github.com/hvalois) [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
-- [@hockpond](https://github.com/hockpond) [GitHub](https://github.com/hockpond)
-- [@anacforcelli](https://github.com/anacforcelli)
-- [@luccaepp](https://github.com/luccaepp) [Twitter](https://twitter.com/luccaepp), [GitHub](https://github.com/luccaepp)
-- [@Heloisecs](https://github.com/Heloisecs) - [Twitter](https://twitter.com/heloisecullen)
-- [@LeoSGomes](https://github.com/LeoSilvaGomes) [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/), [GitHub](https://github.com/LeoSilvaGomes)
-- [@kisobral](https://github.com/KiSobral) [Instagram](https://www.instagram.com/hugsob/), [GitHub](https://github.com/kisobral)
-- [@rhuancpq](https://github.com/Rhuancpq) [Twitter](https://twitter.com/rhuancpq), [GitHub](https://github.com/rhuancpq)
-- [@thiagohersan](https://github.com/thiagohersan)
+* @vjpixel - [GitHub](https://github.com/vjpixel), [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel), 
+* @pablodiegoss - [GitHub](https://github.com/pablodiegoss), [Twitter](https://twitter.com/pablodiegosds)
+* @rodrigocam - [GitHub](https://github.com/rodrigocam), [Twitter](https://twitter.com/sayadiguin)
+* @hvalois - [GitHub](https://github.com/hvalois), [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
+* @hockpond - [GitHub](https://github.com/hockpond)
+* @anacforcelli - [GitHub](https://github.com/anacforcelli)
+* @luccaepp - [GitHub](https://github.com/luccaepp), [Twitter](https://twitter.com/luccaepp)
+* @Heloisecs - [GitHub](https://github.com/Heloisecs), [Twitter](https://twitter.com/heloisecullen)
+* @LeoSGomes - [GitHub](https://github.com/LeoSilvaGomes), [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/)
+* @kisobral - [GitHub](https://github.com/KiSobral), [Instagram](https://www.instagram.com/hugsob/)
+* @rhuancpq - [GitHub](https://github.com/Rhuancpq), [Twitter](https://twitter.com/rhuancpq)
+* @thiagohersan - [GitHub](https://github.com/thiagohersan)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
