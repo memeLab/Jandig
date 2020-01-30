@@ -38,16 +38,26 @@
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
-        function usedInExhibit(exhibits_count, marker_src, augmented_src){
+        function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src){
+            let objet_tag = ''
+            if(augmentd_src.split('.')[1] == 'gif'){
+                object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+            }else{
+                object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+            }
+
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
                 {{ _(" Used in ")|tojson }} +
                 exhibits_count +
                 {{ _(" exhibits")|tojson }} + 
-                '<img id="marker-src" src="' + marker_src + '"/>' +
-                '<img id="augmented-src" src="' + augmented_src + '"/></p>'
+                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' + 
+                object_tag
             )
+            $('.trigger-erase').click(eraseModal);        
         }
+
+        
         function downloadElement(element_type, file_size, element_src){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
@@ -69,13 +79,14 @@
                 '<p>' + description + '</p>'
             );
         }
-        $('.trigger-modal').click(function(){
-            let elemType = $(this).attr('data-elem-type');
+
+        function fillModal(element){
+            let elemType = element.attr('data-elem-type');
             $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             
             let elemUrl = {{url('element-get')|tojson}};
-            elemUrl += ("?" + elemType + "_id=" + $(this).attr('id'));
-            
+            elemUrl += ("?" + elemType + "_id=" + element.attr('id'));
+
             if(elemType != "artwork"){
                 $('#share-element').text(
                     {{ _('Share this ')|tojson }} + elemType
@@ -99,12 +110,26 @@
                     url: elemUrl,
                     success: function(data){
                         elementAuthor(data['author']);
-                        usedInExhibit(data['exhibits'], data['marker'], data['augmented']);
+                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented']);
                         replaceButtons(data['title'], data['description']);
                     }
                 });
             }
-        })
+        }
+
+        function eraseModal() {
+            $('#element-analytics').replaceWith('<p id="element-analytics"></p>');
+            $('#element-author').replaceWith('<p id="element-author"></p>'); 
+            fillModal($(this));
+            }
+    
+
+        function manageModal(){
+            element = $(this);
+            fillModal(element);            
+        }
+
+        $('.trigger-modal').click(manageModal);
         
     </script>
 {% endblock %}

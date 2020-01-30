@@ -15,6 +15,10 @@
         <h1 class="titArt">{{_("Exhibition artworks")}}</h1>
         {% with repository_list = artworks, element_type="artwork" %}
             {% include "users/components/item-list.jinja2" %}
+            
         {% endwith %}
+
+        {% include "users/components/elements-modal.jinja2" %}
+
     </div>
 {% endblock %}

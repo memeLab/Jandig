@@ -17,7 +17,14 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 - @pablodiegoss - [Twitter](https://twitter.com/pablodiegosds)
 - @rodrigocam [Twitter](https://twitter.com/sayadiguin)
 - @Heloisecs - [Twitter](https://twitter.com/heloisecullen)
+- @LeoSGomes [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/), [GitHub](https://github.com/LeoSilvaGomes)
 - @thiagohersan
+- @kisobral [Instagram](https://www.instagram.com/hugsob/), [GitHub](https://github.com/kisobral)
+- @rhuancpq [Twitter](https://twitter.com/rhuancpq), [GitHub](https://github.com/rhuancpq)
+- @ventusof
+- @luccaepp [Twitter](https://twitter.com/luccaepp), [GitHub](https://github.com/luccaepp)
+- @hockpond [GitHub](https://github.com/hockpond)
+- @anacforcelli [GitHub](https://github.com/anacforcelli)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
@@ -42,8 +49,8 @@ To run Jandig ARte all you need to do is:
 - Voila!
 
 ```
-git clone https://github.com/memeLab/ARte
-cd ARte
+git clone https://github.com/memeLab/Jandig
+cd Jandig
 docker-compose -f docker/docker-compose.yml up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.

@@ -31,8 +31,6 @@ total da borda.
 .. image:: images/MarkerGuide.png
     :width: 320px
     :align: center
-    :height: auto
-    :alt: Marker Guide
 
 Simetria
 --------
