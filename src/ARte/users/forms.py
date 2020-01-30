@@ -123,32 +123,23 @@ class LoginForm(AuthenticationForm):
     def clean_username(self):
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
+            if not User.objects.filter(email=username_or_email).exists():
+                raise forms.ValidationError(_('Username/email not found'))
             user = User.objects.get(email=username_or_email)
             if user:
                 return user.username
-
+        else:
+            if not User.objects.filter(username=username_or_email).exists():
+                raise forms.ValidationError(_('Username/email not found'))
         return username_or_email
 
 
-class RecoverPasswordForm(forms.ModelForm):
+class RecoverPasswordForm(forms.Form):
+    username_or_email = forms.CharField(label='username / email', max_length="50")
 
-    def __init__(self, *args, **kwargs):
-        super(RecoverPasswordForm, self).__init__(*args, **kwargs)
+class RecoverPasswordCodeForm(forms.Form):
+    verification_code = forms.CharField(label='Verification code', max_length="200")
 
-        self.fields['username'].widget.attrs['placeholder'] = _('username / email')
-
-    def clean_username(self):
-        username_or_email = self.cleaned_data.get('username')
-        if '@' in username_or_email:
-            user = User.objects.get(email=username_or_email)
-            if user:
-                return user.username
-
-        return username_or_email
-
-    class Meta:
-        model = User
-        fields = ['username']
 
 class UploadMarkerForm(forms.ModelForm):
     
@@ -156,7 +147,9 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = 'image/png, image/jpg'
         self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['patt'].widget.attrs['accept'] = '.patt'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -170,6 +163,7 @@ class UploadObjectForm(forms.ModelForm):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = '.gif, .mp4, .webm'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -195,6 +189,7 @@ class ArtworkForm(forms.Form):
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
         self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+
 
 
 class ExhibitForm(forms.Form):

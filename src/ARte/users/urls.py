@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, recover_password, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
+from .views import signup, recover_password, recover_edit_password, invalid_recovering_email, recover_code, wrong_verification_code, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -12,10 +12,14 @@ urlpatterns = [
     ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('recover/', recover_password, name='recover'),
+    path('recover-code/', recover_code, name='recover-code'),
 
     path('profile/', profile, name='profile'),
     path('profile/edit/', edit_profile, name="edit-profile"),
     path('profile/edit-password/', edit_password, name="edit-password"),
+    path('wrong-verification-code', wrong_verification_code, name="wrong-verification-code"),
+    path('invalid-recovering-email', invalid_recovering_email, name="invalid-recovering-email"),
+    path('recover-edit-password', recover_edit_password, name="recover-edit-password"),
     ## deal with password reset
 
     path('markers/upload/', marker_upload, name='marker-upload'),
