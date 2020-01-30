@@ -1,11 +1,14 @@
 import json
 import django.contrib.auth
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
+import logging
+log = logging.getLogger('ej')
 
 from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
@@ -393,33 +396,39 @@ def delete(request):
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
+        log.warning('queryset encontrada')
         instance = qs[0]      
-        if user.has_perm('users.moderator') and not instance.in_use:
+        if user.has_perm('users.moderator') and ((not instance.in_use) or isinstance(instance, Exhibit)):
             instance.delete()
         elif user.has_perm('users.moderator') and instance.in_use:
+            log.warning('tem moderador')
             if isinstance(instance, Object):
                 artworkIn = Artwork.objects.filter(augmented=instance)
                 artworkIn.delete()
+                instance.delete()
             elif isinstance(instance, Marker):
+                log.warning('marcador vai apagar')
                 artworkIn = Artwork.objects.filter(marker=instance)
                 artworkIn.delete()
+                instance.delete()
             elif isinstance(instance, Artwork):
                 instance.delete()
         elif instance.owner == user.profile:
             if isinstance(instance, Exhibit) or not instance.in_use:
                 instance.delete()  
 
+@login_required
 def mod_delete(request):   
     content_type = request.GET.get('content_type', None)
 
     if content_type == 'marker':
-       delete_content(Marker, request.user, request.GET.get('id', -1))
+       delete_content(Marker, request.user, request.GET.get('instance_id', -1))
     elif content_type == 'object':
-       delete_content(Object, request.user, request.GET.get('id', -1))
+       delete_content(Object, request.user, request.GET.get('instance_id', -1))
     elif content_type == 'artwork':
-       delete_content(Artwork, request.user, request.GET.get('id', -1))
+       delete_content(Artwork, request.user, request.GET.get('instance_id', -1))
     elif content_type == 'exhibit':
-       delete_content(Exhibit, request.user, request.GET.get('id', -1))
+       delete_content(Exhibit, request.user, request.GET.get('instance_id', -1))
     return redirect('moderator-page')
 
 
