@@ -147,7 +147,9 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = 'image/png, image/jpg'
         self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['patt'].widget.attrs['accept'] = '.patt'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -161,6 +163,7 @@ class UploadObjectForm(forms.ModelForm):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = '.gif, .mp4, .webm'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -186,6 +189,7 @@ class ArtworkForm(forms.Form):
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
         self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+
 
 
 class ExhibitForm(forms.Form):
