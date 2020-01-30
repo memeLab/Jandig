@@ -8,7 +8,11 @@
     {% for element in repository_list %}
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
-                <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
+                    {% if element.source.url.split('.')[1] == "gif" %}
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
+                    {% else %} 
+                        <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% endif %}
                 {% if deletable == True and not element.in_use %}
                     {% if element_type == "marker" %}
                         <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" onclick="return confirm('Are you sure you want to delete this marker?')" class="delete">{{ _("Delete")}}</a>
@@ -21,7 +25,11 @@
                 <div class="artwork-elements flex">
                     <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                     <div class="separator"></div>
-                    <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
+                    {% if element.augmented.source.url.split('.')[1] == "gif" %}
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
+                    {% else %} 
+                        <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                     {% endif %}
