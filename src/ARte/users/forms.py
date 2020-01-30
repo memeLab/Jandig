@@ -124,13 +124,13 @@ class LoginForm(AuthenticationForm):
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
             if not User.objects.filter(email=username_or_email).exists():
-                raise forms.ValidationError(_('E-mail unregistered'))
+                raise forms.ValidationError(_('Username/email not found'))
             user = User.objects.get(email=username_or_email)
             if user:
                 return user.username
         else:
             if not User.objects.filter(username=username_or_email).exists():
-                raise forms.ValidationError(_('Username unregistered'))
+                raise forms.ValidationError(_('Username/email not found'))
         return username_or_email
 
 
