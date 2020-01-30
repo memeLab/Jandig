@@ -396,31 +396,28 @@ def delete(request):
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
-        log.warning('queryset encontrada')
-        instance = qs[0]      
-        if user.has_perm('users.moderator') and ((not instance.in_use) or isinstance(instance, Exhibit)):
+        instance = qs[0] 
+        if isinstance(instance, Exhibit) and (instance.owner == user.profile or user.has_perm('users.moderator')):
             instance.delete()
-        elif user.has_perm('users.moderator') and instance.in_use:
-            log.warning('tem moderador')
-            if isinstance(instance, Object):
-                artworkIn = Artwork.objects.filter(augmented=instance)
-                artworkIn.delete()
+        else:
+            if user.has_perm('users.moderator') and not instance.in_use:
                 instance.delete()
-            elif isinstance(instance, Marker):
-                log.warning('marcador vai apagar')
-                artworkIn = Artwork.objects.filter(marker=instance)
-                artworkIn.delete()
-                instance.delete()
-            elif isinstance(instance, Artwork):
-                instance.delete()
-        elif instance.owner == user.profile:
-            if isinstance(instance, Exhibit) or not instance.in_use:
-                instance.delete()  
+            elif user.has_perm('users.moderator') and instance.in_use:
+                if isinstance(instance, Object):
+                    artworkIn = Artwork.objects.filter(augmented=instance)
+                    artworkIn.delete()
+                    instance.delete()
+                elif isinstance(instance, Marker):
+                    artworkIn = Artwork.objects.filter(marker=instance)
+                    artworkIn.delete()
+                    instance.delete()
+                elif isinstance(instance, Artwork):
+                    instance.delete()
+
 
 @login_required
 def mod_delete(request):   
     content_type = request.GET.get('content_type', None)
-
     if content_type == 'marker':
        delete_content(Marker, request.user, request.GET.get('instance_id', -1))
     elif content_type == 'object':
@@ -428,7 +425,7 @@ def mod_delete(request):
     elif content_type == 'artwork':
        delete_content(Artwork, request.user, request.GET.get('instance_id', -1))
     elif content_type == 'exhibit':
-       delete_content(Exhibit, request.user, request.GET.get('instance_id', -1))
+       delete_content(Exhibit, request.user, request.GET.get('id', -1))
     return redirect('moderator-page')
 
 
@@ -437,7 +434,9 @@ def mod(request):
         "objects" : Object.objects.all(),
         "markers" : Marker.objects.all(),
         "artworks": Artwork.objects.all(),
-    }    
+        "exhibits": Exhibit.objects.all(),
+        "permission" : request.user.has_perm('users.moderator'),
+    }   
     return render(request, 'users/moderator-page.jinja2', ctx)
 
 def permission_denied (request):

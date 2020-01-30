@@ -2,13 +2,7 @@
     <section class="not-welcome-container">
         <div class="container">
             <h1 class="notWelcomeText">{{ _('You dont have permission to be here, please click on the button to go back.') }}</h1>
-            <button type="button" onclick="redirect()"> {{_('Take me back to where I belong!')}}</button>
-            <script>
-            function redirect()
-            {
-               location.replace('https://jandig.app')
-            }
-            </script>
+            <a href="{{ url('home') }}"><button type="button" > {{_('Take me back to where I belong!')}}</button></a>
         </div>        
     </section>
     {% endblock notwelcome %}
