@@ -47,9 +47,8 @@
                     {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
                     <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
                     <p class="exbDate">{{element.date}}</p>
-                    <p class="exhibit-about">{{element.artworks_count}} {{ _("artwork(s)") }}</p>
+                    <p class="exhibit-about"><a href="{{url('exhibit-detail')}}?id={{element.id}}">{{element.artworks_count}} {{ _("artwork(s)") }}</a></p>
                     <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
-                    <a href="{{url('exhibit-detail')}}?id={{element.id}}" class="gotoExb"  style="margin-left: 140px;">{{ _("See its artwork(s)") }}</a>
                 {% if editable == True %}
                     <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                 {% endif %}
