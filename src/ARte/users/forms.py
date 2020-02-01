@@ -161,7 +161,7 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
-        self.fields['scale'].disabled
+        self.fields['scale'] #FIIIIIX MEEEEEEEEE
         self.fields['rotation'].disabled
         self.fields['position'].disabled
             
