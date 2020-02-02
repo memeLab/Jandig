@@ -4,17 +4,19 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import translation
 from django.shortcuts import redirect
+from django.views.decorators.cache import cache_page
 
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
 from users.models import Artwork, Marker, Object
 
-
+@cache_page(60 * 60)
 def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
+@cache_page(60 * 60)
 def index(request):
     ctx = {
         "artworks": [
@@ -23,6 +25,7 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+@cache_page(60 * 60)
 def collection(request):
     ctx = {
         "artworks": Artwork.objects.all(),
@@ -44,6 +47,7 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
+@cache_page(60 * 60)
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -55,6 +59,7 @@ def exhibit_select(request):
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})
 
+@cache_page(60 * 60)
 def exhibit_detail(request):
     id = request.GET.get("id")
     exhibit = Exhibit.objects.get(id=id)
