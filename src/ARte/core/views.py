@@ -24,14 +24,62 @@ def index(request):
     return render(request, 'core/exhibit.jinja2', ctx)
 
 def collection(request):
+
+    exhibits = []
+    artworks = []
+    markers  = []
+    objects  = []
+
+    if Exhibit.objects.count() < 9: # 9 is the number for 8 items to show at most
+        x = Exhibit.objects.count()+1
+    else:
+        x = 9
+    if Artwork.objects.count() < 9:
+        y = Artwork.objects.count()+1
+    else:
+        y = 9
+    if Marker.objects.count() < 9:
+        z = Marker.objects.count()+1
+    else:
+        z = 9
+    if Object.objects.count() < 9:
+        w = Object.objects.count()+1
+    else:
+        w = 9
+
+    for i in range(1, x):
+        exhibits.append(Exhibit.objects.get(id = i))
+    for i in range(1, y):
+        artworks.append(Artwork.objects.get(id = i))
+    for i in range(1, z):
+        markers.append (Marker.objects.get(id = i))
+    for i in range(1, w):
+        objects.append (Object.objects.get(id = i))
+
     ctx = {
-        "artworks": Artwork.objects.all(),
-        "exhibits": Exhibit.objects.all(),
-        "markers": Marker.objects.all(),
-        "objects": Object.objects.all(),
+        "artworks": artworks,
+        "exhibits": exhibits,
+        "markers": markers,
+        "objects": objects,
     }
 
     return render(request, 'core/collection.jinja2', ctx)
+
+def see_all(request):
+    request_type = request.GET.get('which')
+    ctx = {}    
+    if   request_type == 'objects':
+        ctx = { 'objects' : Object.objects.all(), }
+    elif request_type == 'markers':
+        ctx = { 'markers ': Marker.objects.all(), } 
+    elif request_type == 'artworks':
+        ctx = { 'artworks': Artwork.objects.all(), }
+    elif request_type == 'exhibits':
+        ctx = { 'exhibits': Exhibit.objects.all(), }
+
+    return render(request, 'core/collection.jinja2', ctx)
+
+
 
 def upload_image(request):
     if request.method == 'POST':
