@@ -13,7 +13,7 @@
         {% endif %}
         <section class="upload-form">
             <div class="container">
-                <form name="upload-form" action="{{ url(route) }}" method="post" enctype="multipart/form-data">
+                <form name="upload-form" action="" onsubmit="passarguments()" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
                     {%if route == 'object-upload' %}
@@ -28,21 +28,24 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
+                    {# class RangeInput(NumberInput): #TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT ROTATION, SCALE AND POSITION #}
+                    {#    input_type = 'range'#}
+
                     {% if form_type == 'object' %}
                         <h2>{{_("Adjust scale")}}</h2>
                         <h3>X</h3>
-                        <input id="X-scale" value="1">
+                        <input id="X-scale" class="trigger-change-value">
                         <h3>Y</h3>
-                        <input id = "Y-scale" value = "1">
+                        <input id = "Y-scale" class="trigger-change-value">
                         <h2>{{_("Adjust position")}}</h2>
                         <h3>X:</h3>
-                        <input id = "X-position" value = "0">
-                        <h3>X:</h3>
-                        <input id = "Y-position" value = "0">
-                        <h3>X:</h3>
-                        <input id = "Z-position" value = "0">
+                        <input id = "X-position" class="trigger-change-value">
+                        <h3>Y:</h3>
+                        <input id = "Y-position" class="trigger-change-value">
+                        <h3>Z:</h3>
+                        <input id = "Z-position" class="trigger-change-value">
                         <h2>{{_("Adjust rotation")}}</h2>
-                        <input id = "Z-rotation" value = "0">
+                        <input id = "Z-rotation" class="trigger-change-value">
 
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
@@ -103,7 +106,6 @@
             });
 
             $("input").change(function(e) { //make preview image of teh object show
-                if(form_type == 'object'){
                     for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {                  
                         var file = e.originalEvent.srcElement.files[i];
             
@@ -116,29 +118,31 @@
                         reader.readAsDataURL(file);            
                         $("input").after(img);
                     }
-                }
+                
             });
 
-            if(form_type == "object"){ //pass arguments to the forms
-                $("input").event( 
-                    function(e){
-                        var zrot = document.getElementById('z-rotation');
-                        var xscl = document.getElementById('x-scale');
-                        var yscl = document.getElementById('y-scale');
-                        var xpos = document.getElementById('x-position');
-                        var ypos = document.getElementById('y-position');
-                        var zpos = document.getElementById('z-position');
+            function passarguments(e){
+                    e.preventDefault();
+                    var zrot = document.getElementById('Z-rotation').value;
+                    var xscl = document.getElementById('X-scale').value;
+                    var yscl = document.getElementById('Y-scale').value;
+                    var xpos = document.getElementById('X-position').value;
+                    var ypos = document.getElementById('Y-position').value;
+                    var zpos = document.getElementById('Z-position').value;
 
-                        var scl = xscl + " " + yscl;
-                        var rot = zrot+270 + "0 0";
-                        var pos = xpos + " " + ypos + " " + zpos;
+                    console.log(zrot, xscl, yscl, xpos, ypos, zpos);
 
-                        $('#id_scale').value    = scl; 
-                        $('#id_rotation').value = rot;
-                        $('#id_position').value = pos;
-                    }               
-                )
-            };
+                    var scl = xscl + " " + yscl;
+                    var rot = zrot+270 + "0 0";
+                    var pos = xpos + " " + ypos + " " + zpos;
+
+                    $('#id_scale > input').val(scl); 
+                    $('#id_rotation > input').value = rot;
+                    $('#id_position > input').value = pos;
+            }
+            
+
+            
         </script>
     </section>
 {% endblock %}

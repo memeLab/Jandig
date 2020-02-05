@@ -322,6 +322,8 @@ def upload_view(request, form_class, form_type, route):
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
+            a = form.cleaned_data('scale')
+            log.warning(a)
             upload = form.save(commit=False)
             upload.owner = request.user.profile
             upload.save()

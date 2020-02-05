@@ -151,8 +151,7 @@ class UploadMarkerForm(forms.ModelForm):
         model = Marker
         exclude = ('owner', 'uploaded_at')
 
-#class RangeInput(NumberInput): #TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT ROTATION, SCALE AND POSITION
-#    input_type = 'range'
+
 
 class UploadObjectForm(forms.ModelForm):
     
