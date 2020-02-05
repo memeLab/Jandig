@@ -32,22 +32,23 @@
                     {#    input_type = 'range'#}
 
                     {% if form_type == 'object' %}
-
+                    <button id="edit_attrs_btn" value="{{_('Change scale, rotation and position')}}">
+                    <div id="edit_object_attributes">
                         <h2>{{_("Adjust scale")}}</h2>
                         <h3>X</h3>
-                        <input id = "X-scale" class="trigger-change-value">
+                        <input id = "X-scale" class="trigger-change-value" value ="1">
                         <h3>Y</h3>
-                        <input id = "Y-scale" class="trigger-change-value">
+                        <input id = "Y-scale" class="trigger-change-value" value ="1">
                         <h2>{{_("Adjust position")}}</h2>
                         <h3>X:</h3>
-                        <input id = "X-position" class="trigger-change-value">
+                        <input id = "X-position" class="trigger-change-value" value ="0">
                         <h3>Y:</h3>
-                        <input id = "Y-position" class="trigger-change-value">
+                        <input id = "Y-position" class="trigger-change-value" value ="0">
                         <h3>Z:</h3>
-                        <input id = "Z-position" class="trigger-change-value">
+                        <input id = "Z-position" class="trigger-change-value" value ="0">
 
                         <h2>{{_("Adjust rotation")}}</h2>
-                        <input id = "Z-rotation" class="trigger-change-value">
+                        <input id = "Z-rotation" class="trigger-change-value" value ="0">
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
@@ -55,7 +56,7 @@
                         {{ form.hidden_fields()[1].errors }}
                         {{ form.hidden_fields()[2] }}
                         {{ form.hidden_fields()[2].errors }}
-
+                    </div>
                     {% endif %}
                     {% if form_type == 'marker' %}
                         <h3>{{ _('Choose .patt file') }}</h3>
@@ -145,6 +146,11 @@
                     $('#id_position').val(pos);
                 }
             ); 
+
+            $("#edit_attrs_btn").onclick(function(e){
+                //$("#edit_object_attributes").stylesheet
+            }
+                
         </script>
     </section>
 {% endblock %}
