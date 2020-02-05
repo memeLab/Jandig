@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
-from django.forms.widgets import NumberInput
+from django.forms.widgets import HiddenInput
 
 from .models import Marker, Object, Artwork, Profile
 
@@ -160,9 +160,9 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
-        self.fields['scale'].widget.attrs['placeholder'] = _('scale')
-        self.fields['rotation'].widget.attrs['placeholder'] = _('rotation')
-        self.fields['position'].widget.attrs['placeholder'] = _('position')
+        self.fields['scale'].widget = HiddenInput()
+        self.fields['rotation'].widget = HiddenInput()
+        self.fields['position'].widget = HiddenInput()
             
     class Meta:
         model = Object
