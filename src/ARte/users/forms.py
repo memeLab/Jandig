@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
+from django.forms.widgets import HiddenInput
 
 from .models import Marker, Object, Artwork, Profile
 
@@ -157,6 +158,7 @@ class UploadMarkerForm(forms.ModelForm):
         exclude = ('owner', 'uploaded_at')
 
 
+
 class UploadObjectForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
@@ -165,10 +167,13 @@ class UploadObjectForm(forms.ModelForm):
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['source'].widget.attrs['accept'] = '.gif, .mp4, .webm'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
-    
+        self.fields['scale'].widget = HiddenInput()
+        self.fields['rotation'].widget = HiddenInput()
+        self.fields['position'].widget = HiddenInput()
+            
     class Meta:
         model = Object
-        exclude = ('uploaded_at', 'owner','scale','rotation','position')
+        exclude = ('uploaded_at', 'owner')
 
 
 class ArtworkForm(forms.Form):
