@@ -14,12 +14,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
-
+from core.helpers import *
 
 def signup(request):
 
@@ -139,15 +140,15 @@ def invalid_recovering_email(request):
 
 
 @login_required
+@cache_page(60 * 60)
 def profile(request):
+    profile = Profile.objects.select_related().get(user=request.user)
+
+    exhibits = profile.exhibits.all()
+    markers = profile.marker_set.all()
+    objects = profile.object_set.all()
+    artworks = profile.artwork_set.all()
     
-     
-    profile = Profile.objects.get(user=request.user)
-    
-    exhibits = Exhibit.objects.filter(owner=profile)
-    artworks = Artwork.objects.filter(author=profile)
-    markers = Marker.objects.filter(owner=profile)
-    objects = Object.objects.filter(owner=profile)
     ctx = {
         'exhibits': exhibits,
         'artworks': artworks,
@@ -157,6 +158,7 @@ def profile(request):
     }
     return render(request, 'users/profile.jinja2', ctx)
 
+@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -176,6 +178,7 @@ def get_marker(request, form):
 
     return marker
 
+@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
@@ -196,6 +199,7 @@ def get_augmented(request, form):
     return augmented
 
 @login_required
+@cache_page(60 * 60)
 def create_artwork(request):
     if request.method == 'POST':
         form = ArtworkForm(request.POST, request.FILES)
@@ -235,6 +239,7 @@ def create_artwork(request):
 
 
 @login_required
+@cache_page(60 * 60)
 def create_exhibit(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -270,7 +275,7 @@ def create_exhibit(request):
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
-
+@cache_page(60 * 60)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
@@ -334,6 +339,7 @@ def upload_view(request, form_class, form_type, route):
 
 
 @login_required
+@cache_page(60 * 60)
 def edit_artwork(request): 
     id = request.GET.get("id","-1")
     model = Artwork.objects.filter(id=id)
@@ -381,6 +387,7 @@ def edit_artwork(request):
 
 
 @login_required
+@cache_page(60 * 60)
 def edit_exhibit(request): 
     id = request.GET.get("id","-1")
     model = Exhibit.objects.filter(id=id)
