@@ -165,7 +165,7 @@ class UploadObjectForm(forms.ModelForm):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
-        self.fields['source'].widget.attrs['accept'] = '.gif, .mp4, .webm'
+        self.fields['source'].widget.attrs['accept'] = 'image/*, .mp4, .webm'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['scale'].widget = HiddenInput()
         self.fields['rotation'].widget = HiddenInput()
