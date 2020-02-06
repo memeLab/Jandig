@@ -1,12 +1,47 @@
 function takePicture() {
-    const scene = document.getElementsByTagName("canvas")[0]
-    const pictureURI = scene.toDataURL("image/png")
+
+
+    const scene = document.getElementsByTagName("canvas")[0];
+    var ctx = scene.getContext("2d");
+
+    pictureURI = scene.toDataURL("image/png");
+    var image = new Image();
+    image.src = pictureURI;
+
+    flipImage(image);
     
-    let link = document.getElementById("picture-link")
-    link.href = pictureURI
-    link.download = getPhotoFileName('png')
-    link.click()
 }
+
+function flipImage(image){
+  var myCanvas=document.createElement("canvas");
+  var myCanvasContext=myCanvas.getContext("2d");
+
+  var imgWidth=image.width;
+  var imgHeight=image.height;
+  myCanvas.width= imgWidth;
+  myCanvas.height=imgWidth;
+
+  myCanvasContext.drawImage(image,0,0);
+  myCanvasContext.clearRect(0,0,myCanvas.width,myCanvas.height);
+  myCanvasContext.save();
+  myCanvasContext.translate(myCanvas.width/2,myCanvas.height/2);
+  myCanvasContext.rotate(-90*Math.PI/180);
+  myCanvasContext.drawImage(image,-image.width/2,-image.width/2);
+  myCanvasContext.restore();
+  var imageData=myCanvasContext.getImageData(0,0, imgHeight, imgWidth);
+  myCanvas.width= imgHeight;
+
+  myCanvasContext.putImageData(imageData,0,0,0,0, imageData.width, imageData.height);
+  let link = document.getElementById("picture-link");
+  link.href = myCanvas.toDataURL("image/png");
+  link.download = getPhotoFileName('png');
+  link.click();
+  myCanvasContext.restore();
+  
+
+}
+
+
 
 function getPhotoFileName(extension) {
     const date = new Date();
