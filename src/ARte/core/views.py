@@ -25,36 +25,10 @@ def index(request):
 
 def collection(request):
 
-    exhibits = []
-    artworks = []
-    markers  = []
-    objects  = []
-
-    if Exhibit.objects.count() < 9: # 9 is the number for 8 items to show at most
-        x = Exhibit.objects.count()+1
-    else:
-        x = 9
-    if Artwork.objects.count() < 9:
-        y = Artwork.objects.count()+1
-    else:
-        y = 9
-    if Marker.objects.count() < 9:
-        z = Marker.objects.count()+1
-    else:
-        z = 9
-    if Object.objects.count() < 9:
-        w = Object.objects.count()+1
-    else:
-        w = 9
-
-    for i in range(1, x):
-        exhibits.append(Exhibit.objects.get(id = i))
-    for i in range(1, y):
-        artworks.append(Artwork.objects.get(id = i))
-    for i in range(1, z):
-        markers.append (Marker.objects.get(id = i))
-    for i in range(1, w):
-        objects.append (Object.objects.get(id = i))
+    exhibits = Exhibit.objects.all().order_by('-id')[:4]
+    artworks = Artwork.objects.all().order_by('-id')[:8]
+    markers  = Marker.objects.all().order_by('-id')[:8]
+    objects  = Object.objects.all().order_by('-id')[:8]
 
     ctx = {
         "artworks": artworks,
