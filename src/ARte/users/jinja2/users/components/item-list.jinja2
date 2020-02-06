@@ -8,10 +8,10 @@
     {% for element in repository_list %}
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
-                    {% if element.source.url.split('.')[1] == "gif" %}
-                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
-                    {% else %} 
+                    {% if element.source.url.split('.')[1] == "mp4" or element.source.url.split('.')[1] == "webm" %}
                         <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% else %} 
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
                     {% endif %}
                 {% if deletable == True and not element.in_use %}
                     {% if element_type == "marker" %}
@@ -25,10 +25,10 @@
                 <div class="artwork-elements flex">
                     <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                     <div class="separator"></div>
-                    {% if element.augmented.source.url.split('.')[1] == "gif" %}
-                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
-                    {% else %} 
+                    {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
                         <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% else %} 
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
                     {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
