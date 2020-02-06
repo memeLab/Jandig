@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, recover_password, recover_edit_password, invalid_recovering_email, recover_code, wrong_verification_code, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
+from .views import signup, recover_password, download_exhibit, recover_edit_password, invalid_recovering_email, recover_code, wrong_verification_code, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -20,7 +20,6 @@ urlpatterns = [
     path('wrong-verification-code', wrong_verification_code, name="wrong-verification-code"),
     path('invalid-recovering-email', invalid_recovering_email, name="invalid-recovering-email"),
     path('recover-edit-password', recover_edit_password, name="recover-edit-password"),
-    ## deal with password reset
 
     path('markers/upload/', marker_upload, name='marker-upload'),
     path('objects/upload/', object_upload, name='object-upload'),
@@ -31,6 +30,7 @@ urlpatterns = [
     
     path('exhibits/create/', create_exhibit, name='create-exhibit'),
     path('exhibits/edit/', edit_exhibit, name='edit-exhibit'),
+    path('download-exhibit', download_exhibit, name="download-exhibit"),
 
     path('content/delete/', delete, name='delete-content'),
 ]

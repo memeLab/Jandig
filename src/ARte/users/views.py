@@ -265,6 +265,44 @@ def create_exhibit(request):
         }
     )
 
+def download_exhibit(request):
+    exhibit_id = request.GET.get('id')
+    exhibit = Exhibit.objects.get(id=exhibit_id)
+    artworks = list(exhibit.artworks.all())
+
+    marker_names = []
+    object_names = []
+    patt_names = []
+
+    all_data = []
+
+    for artwork in artworks:
+        marker_names.append(artwork.marker.source.name)
+        object_names.append(artwork.augmented.source.name)
+        patt_names.append(str(artwork.marker.patt))
+
+    for marker_name in marker_names:
+        data = {
+            "link": marker_name
+        }
+
+        all_data.append(data)
+
+    for object_name in object_names:
+        data = {
+            "link": object_name
+        }
+
+        all_data.append(data)
+
+    for patt_name in patt_names:
+        data = {
+            "link": patt_name
+        }
+
+        all_data.append(data)
+    
+    return HttpResponse(json.dumps(all_data))
 
 @login_required
 def marker_upload(request):
