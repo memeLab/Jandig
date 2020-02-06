@@ -38,12 +38,12 @@
                         <h2>{{_("Adjust scale")}}</h2>
                         <input id = "scale" class="trigger-change-value" value ="1">
                         <h2>{{_("Adjust position")}}</h2>
-                        <h3>X:</h3>
+                        <h3>Horizontal:</h3>
                         <input id = "X-position" class="trigger-change-value" value ="0">
-                        <h3>Y:</h3>
+                        <h3>Vertical:</h3>
                         <input id = "Y-position" class="trigger-change-value" value ="0">
-                        <h3>Z:</h3>
-                        <input id = "Z-position" class="trigger-change-value" value ="0">                       
+                        
+                        <input id = "Z-position" class="trigger-change-value" value ="0" hidden>                       
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
