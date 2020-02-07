@@ -59,6 +59,12 @@
     margin: 10px 10px -20px 10px;
 }
 
+.repository-item a.preview {
+    background: url(../images/icons/preview.png) no-repeat center center;
+    background-size: contain;
+    margin: 10px 10px -20px 10px;
+}
+
 #repo-artwork .repository-item {
     flex: 0 1 calc(33% - 10px);
     background: url(../images/icons/fill.png);
