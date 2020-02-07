@@ -140,7 +140,6 @@ def invalid_recovering_email(request):
 
 
 @login_required
-@cache_page(60 * 60)
 def profile(request):
     profile = Profile.objects.select_related().get(user=request.user)
 
@@ -199,7 +198,6 @@ def get_augmented(request, form):
     return augmented
 
 @login_required
-@cache_page(60 * 60)
 def create_artwork(request):
     if request.method == 'POST':
         form = ArtworkForm(request.POST, request.FILES)
@@ -239,7 +237,6 @@ def create_artwork(request):
 
 
 @login_required
-@cache_page(60 * 60)
 def create_exhibit(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -339,7 +336,6 @@ def upload_view(request, form_class, form_type, route):
 
 
 @login_required
-@cache_page(60 * 60)
 def edit_artwork(request): 
     id = request.GET.get("id","-1")
     model = Artwork.objects.filter(id=id)
@@ -387,7 +383,6 @@ def edit_artwork(request):
 
 
 @login_required
-@cache_page(60 * 60)
 def edit_exhibit(request): 
     id = request.GET.get("id","-1")
     model = Exhibit.objects.filter(id=id)

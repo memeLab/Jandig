@@ -16,7 +16,6 @@ def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
-@cache_page(60 * 60)
 def index(request):
     ctx = {
         "artworks": [
@@ -25,7 +24,7 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
-@cache_page(60 * 60)
+@cache_page(60 * 2)
 def collection(request):
 
     exhibits = Exhibit.objects.all().order_by('-id')[:4]
@@ -42,6 +41,7 @@ def collection(request):
 
     return render(request, 'core/collection.jinja2', ctx)
 
+@cache_page(60 * 2)
 def see_all(request):
     request_type = request.GET.get('which')
     ctx = {}    
@@ -69,7 +69,7 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
-@cache_page(60 * 60)
+@cache_page(60 * 2)
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -81,7 +81,6 @@ def exhibit_select(request):
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})
 
-@cache_page(60 * 60)
 def exhibit_detail(request):
     id = request.GET.get("id")
     exhibit = Exhibit.objects.get(id=id)
