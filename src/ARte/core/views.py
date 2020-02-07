@@ -24,14 +24,36 @@ def index(request):
     return render(request, 'core/exhibit.jinja2', ctx)
 
 def collection(request):
+
+    exhibits = Exhibit.objects.all().order_by('-id')[:4]
+    artworks = Artwork.objects.all().order_by('-id')[:8]
+    markers  = Marker.objects.all().order_by('-id')[:8]
+    objects  = Object.objects.all().order_by('-id')[:8]
+
     ctx = {
-        "artworks": Artwork.objects.all(),
-        "exhibits": Exhibit.objects.all(),
-        "markers": Marker.objects.all(),
-        "objects": Object.objects.all(),
+        "artworks": artworks,
+        "exhibits": exhibits,
+        "markers": markers,
+        "objects": objects,
     }
 
     return render(request, 'core/collection.jinja2', ctx)
+
+def see_all(request):
+    request_type = request.GET.get('which')
+    ctx = {}    
+    if   request_type == 'objects':
+        ctx = { 'objects' : Object.objects.all(), }
+    elif request_type == 'markers':
+        ctx = { 'markers ': Marker.objects.all(), } 
+    elif request_type == 'artworks':
+        ctx = { 'artworks': Artwork.objects.all(), }
+    elif request_type == 'exhibits':
+        ctx = { 'exhibits': Exhibit.objects.all(), }
+
+    return render(request, 'core/collection.jinja2', ctx)
+
+
 
 def upload_image(request):
     if request.method == 'POST':
