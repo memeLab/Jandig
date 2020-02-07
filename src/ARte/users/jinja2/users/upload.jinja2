@@ -141,14 +141,13 @@
                         var yprop = (high*1.0)/wide;
                     }
 
-                    var scl  = document.getElementById('scale').value;
+                    var scal = document.getElementById('scale').value;
                     var xpos = document.getElementById('X-position').value;
                     var ypos = document.getElementById('Y-position').value;
-                    var zpos = document.getElementById('Z-position').value;
 
-                    var scl = scl*xprop + " " + scl*yprop;
+                    var scl = xprop + " " + yprop;
                     var rot = "270 0 0";
-                    var pos = xpos + " " + ypos + " " + zpos;
+                    var pos = xpos + " " + ypos + " " + scal;
 
                     $('#id_scale').val(scl); 
                     $('#id_rotation').val(rot);
