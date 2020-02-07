@@ -33,6 +33,14 @@ def collection(request):
 
     return render(request, 'core/collection.jinja2', ctx)
 
+def artwork_preview(request):
+    artwork_id=request.GET.get("id")
+    
+    ctx = {
+        "artworks": Artwork.objects.filter(id = artwork_id)
+    }
+    return render(request, 'core/exhibit.jinja2', ctx)
+
 def upload_image(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
