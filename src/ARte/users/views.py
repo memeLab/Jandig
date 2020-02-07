@@ -14,12 +14,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
-
+from core.helpers import *
 
 def signup(request):
 
@@ -140,14 +141,13 @@ def invalid_recovering_email(request):
 
 @login_required
 def profile(request):
+    profile = Profile.objects.select_related().get(user=request.user)
+
+    exhibits = profile.exhibits.all()
+    markers = profile.marker_set.all()
+    objects = profile.object_set.all()
+    artworks = profile.artwork_set.all()
     
-     
-    profile = Profile.objects.get(user=request.user)
-    
-    exhibits = Exhibit.objects.filter(owner=profile)
-    artworks = Artwork.objects.filter(author=profile)
-    markers = Marker.objects.filter(owner=profile)
-    objects = Object.objects.filter(owner=profile)
     ctx = {
         'exhibits': exhibits,
         'artworks': artworks,
@@ -157,6 +157,7 @@ def profile(request):
     }
     return render(request, 'users/profile.jinja2', ctx)
 
+@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -176,6 +177,7 @@ def get_marker(request, form):
 
     return marker
 
+@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
@@ -270,7 +272,7 @@ def create_exhibit(request):
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
-
+@cache_page(60 * 60)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
