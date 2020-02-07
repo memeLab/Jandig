@@ -48,7 +48,7 @@ def see_all(request):
     if   request_type == 'objects':
         ctx = { 'objects' : Object.objects.all(), }
     elif request_type == 'markers':
-        ctx = { 'markers ': Marker.objects.all(), } 
+        ctx = { 'markers':  Marker.objects.all(), } 
     elif request_type == 'artworks':
         ctx = { 'artworks': Artwork.objects.all(), }
     elif request_type == 'exhibits':
