@@ -143,10 +143,10 @@
                     var xpos = document.getElementById('X-position').value;
                     var ypos = document.getElementById('Y-position').value;
 
-                    var scl = xprop + " " + yprop;
+                    var scl = scal*xprop + " " + scal*yprop;
                     var rot = "270 0 0";
-                    var pos = xpos + " " + ypos + " " + scal;
-
+                    var pos = xpos + " " + ypos + " 0"; //messing with the Z gives some really weird things
+ 
                     $('#id_scale').val(scl); 
                     $('#id_rotation').val(rot);
                     $('#id_position').val(pos);
