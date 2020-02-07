@@ -26,7 +26,7 @@
                     {% endif %}
                 <h1 class="titArt">{{_("Your artworks")}}</h1>
                     {% if artworks %}
-                        {% with deletable=True, editable=True, repository_list = artworks, element_type="artwork" %}
+                        {% with preview=True, deletable=True, editable=True, repository_list = artworks, element_type="artwork" %}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}

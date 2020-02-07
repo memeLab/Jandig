@@ -34,8 +34,7 @@ def collection(request):
     return render(request, 'core/collection.jinja2', ctx)
 
 def artwork_preview(request):
-    artwork_id=request.GET.get("id")
-    
+    artwork_id=request.GET.get("id")    
     ctx = {
         "artworks": Artwork.objects.filter(id = artwork_id)
     }

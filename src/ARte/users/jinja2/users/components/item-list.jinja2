@@ -23,6 +23,9 @@
                     {% if deletable == True and not element.in_use %}
                         <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" class="delete">{{ _("Delete")}}</a>
                     {% endif %}
+                    {% if preview == True %}
+                        <a href="{{ url('artwork-preview') }}?id={{ element.id }}" class="preview">{{_("Preview Artwork")}}</a>
+                    {% endif %}
                 </div>
             {% else %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
