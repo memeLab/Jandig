@@ -14,7 +14,7 @@ services:
     depends_on:
       - prod_postgres
     volumes:
-      - ./static/:/collect/
+      - ./static/:/ARte/collect/
       - ./media/prod/:/ARte/src/ARte/users/media/    
     command: inv db -p docs collect run -g -p
  
