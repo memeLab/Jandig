@@ -1,19 +1,25 @@
 import json
+from datetime import datetime
+import hashlib
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import django.contrib.auth
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, get_user_model
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
-import logging
-log = logging.getLogger('ej')
+from django.views.decorators.cache import cache_page
 
-from .forms import SignupForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
+
+from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
-
+from core.helpers import *
 
 def signup(request):
 
@@ -28,31 +34,119 @@ def signup(request):
             login(request, user)
             return redirect('home')
 
+
     else:
         form = SignupForm()
 
     return render(request, 'users/signup.jinja2', {'form': form})
 
+User = get_user_model()
 
 def recover_password(request):
     if request.method == 'POST':
-        # TODO: send recovery email stuff
-        return redirect('home')
+        form = RecoverPasswordForm(request.POST)
+
+        if form.is_valid():
+            username_or_email = form.cleaned_data.get('username_or_email')
+            global recovering_email
+
+            if '@' in username_or_email:
+                recovering_email = username_or_email
+                
+                if not User.objects.filter(email=recovering_email).exists():
+                    return redirect('invalid-recovering-email')
+                
+            else:
+                if not User.objects.filter(username=username_or_email).exists():
+                    return redirect('invalid-recovering-email')
+                
+                user = User.objects.get(username=username_or_email)
+                recovering_email = user.email
+                log.warning(user)
+            
+            now = datetime.now()
+            today =  '{}{}{}{}{}{}{}'.format(now.year, now.month, now.day, now.hour, now.minute, now.second, now.microsecond)
+            hash_code = str(today) + (recovering_email * 4)
+
+            global verification_code
+
+            verification_code = hashlib.md5(bytes(hash_code, encoding='utf-8'))
+            verification_code = verification_code.hexdigest()
+
+            msg = MIMEMultipart()
+            message = 'You have requested a new password. This is your verification code: {}\nCopy it and put into the field.'.format(verification_code)
+            password = 'svxrhkcftyvhtvyy'
+            msg['From'] = "jandig@memelab.com.br"
+            msg['To'] = '{}'.format(recovering_email)
+            msg['Subject'] = "Recover Password"
+
+            msg.attach(MIMEText(message, 'plain'))
+
+            email_server = smtplib.SMTP('smtp.gmail.com: 587')
+            email_server.starttls()
+            email_server.login(msg['From'], password)
+            email_server.sendmail(msg['From'], msg['To'], msg.as_string())
+            email_server.quit()
+
+        return redirect('recover-code')
 
     else:
         form = RecoverPasswordForm()
 
     return render(request, 'users/recover-password.jinja2', {'form': form})
 
+def recover_code(request):
+    if request.method == 'POST':
+        form = RecoverPasswordCodeForm(request.POST)
+
+        if form.is_valid():
+            code = form.cleaned_data.get('verification_code')
+
+            log.warning('Inserido: ' + code)
+            log.warning('Correto: ' + verification_code)
+
+            if(code == verification_code):
+                global recover_password_user
+                recover_password_user = User.objects.get(email=recovering_email)
+                return redirect('recover-edit-password')
+            else:
+                return redirect('wrong-verification-code')
+                
+        return redirect('home')
+    else:
+        form = RecoverPasswordCodeForm()
+
+    return render(request, 'users/recover-password-code.jinja2', {'form': form})
+
+def recover_edit_password(request):
+    if request.method == 'POST':
+        form = SetPasswordForm(recover_password_user, data=request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('login')
+    else:
+        form = SetPasswordForm(recover_password_user)
+
+    return render(request, 'users/recover-edit-password.jinja2', {'form': form})
+
+def wrong_verification_code(request):
+    return render(request, 'users/wrong-verification-code.jinja2')
+
+def invalid_recovering_email(request):
+    return render(request, 'users/invalid-recovering-email.jinja2')
+
 
 @login_required
-def profile(request): 
-    profile = Profile.objects.get(user=request.user)
+def profile(request):
+    profile = Profile.objects.select_related().get(user=request.user)
+
+    exhibits = profile.exhibits.all()
+    markers = profile.marker_set.all()
+    objects = profile.object_set.all()
+    artworks = profile.artwork_set.all()
     
-    exhibits = Exhibit.objects.filter(owner=profile)
-    artworks = Artwork.objects.filter(author=profile)
-    markers = Marker.objects.filter(owner=profile)
-    objects = Object.objects.filter(owner=profile)
     ctx = {
         'exhibits': exhibits,
         'artworks': artworks,
@@ -62,6 +156,7 @@ def profile(request):
     }
     return render(request, 'users/profile.jinja2', ctx)
 
+@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -81,6 +176,7 @@ def get_marker(request, form):
 
     return marker
 
+@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
@@ -175,7 +271,7 @@ def create_exhibit(request):
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
-
+@cache_page(60 * 60)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'

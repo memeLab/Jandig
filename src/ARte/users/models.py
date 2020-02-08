@@ -51,13 +51,12 @@ class Marker(models.Model):
     def in_use(self):
         if self.artworks_count > 0 or self.exhibits_count > 0:
             return True
-
         return False
 
 
 class Object(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
-    source = models.ImageField(upload_to='objects/')
+    source = models.FileField(upload_to='objects/')
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     scale = models.CharField(default="1 1", max_length=50)
