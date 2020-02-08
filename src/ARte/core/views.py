@@ -16,6 +16,11 @@ def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
+@cache_page(60 * 60)
+def manifest(request):
+    return render(request, 'core/manifest.json',
+                  content_type='application/x-javascript')
+
 def index(request):
     ctx = {
         "artworks": [
