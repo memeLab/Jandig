@@ -40,10 +40,10 @@
         }
         function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src){
             let objet_tag = ''
-            if(augmented_src.split('.')[1] == 'gif'){
-                object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
-            }else{
+            if(augmented_src.split('.')[1] == 'mp4' || augmented_src.split('.')[1] == 'webm'){
                 object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+            }else{
+                object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
             }
 
             $('#element-analytics').replaceWith(

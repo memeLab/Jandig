@@ -46,7 +46,6 @@ class Marker(models.Model):
     def in_use(self):
         if self.artworks_count > 0 or self.exhibits_count > 0:
             return True
-
         return False
 
 

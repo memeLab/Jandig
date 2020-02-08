@@ -4,36 +4,36 @@
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
   "display": "standalone",
-  "Scope": "/",
+  "scope": "/",
   "start_url": "/",
   "icons": [
     {
-      "src": "images/icons/app/ic_launcher_MDPI.png",
+      "src": "static/images/icons/app/ic_launcher_MDPI.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "images/icons/app/ic_launcher_HDPI.png",
+      "src": "static/images/icons/app/ic_launcher_HDPI.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "images/icons/app/ic_launcher_XHDPI.png",
+      "src": "static/images/icons/app/ic_launcher_XHDPI.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "images/icons/app/ic_launcher_XXHDPI.png",
+      "src": "static/images/icons/app/ic_launcher_XXHDPI.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "images/icons/app/ic_launcher_XXXHDPI.png",
+      "src": "static/images/icons/app/ic_launcher_XXXHDPI.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "images/icons/app/GooglePlay.png",
+      "src": "static/images/icons/app/GooglePlay.png",
       "sizes": "512x512",
       "type": "image/png"
     }

@@ -8,10 +8,10 @@
     {% for element in repository_list %}
         <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
             {% if element_type == "marker" or element_type == "object" %}
-                    {% if element.source.url.split('.')[1] == "gif" %}
-                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
-                    {% else %} 
+                    {% if element.source.url.split('.')[1] == "mp4" or element.source.url.split('.')[1] == "webm" %}
                         <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% else %} 
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="50" width="50">
                     {% endif %}
                 {% if deletable == True and not element.in_use %}
                     {% if element_type == "marker" %}
@@ -25,10 +25,10 @@
                 <div class="artwork-elements flex">
                     <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                     <div class="separator"></div>
-                    {% if element.augmented.source.url.split('.')[1] == "gif" %}
-                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
-                    {% else %} 
+                    {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
                         <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50" muted autoplay loop>
+                    {% else %} 
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="50" width="50">
                     {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
@@ -70,18 +70,22 @@
         })
 
         async function requestURLs(element_id, exhibit_url) {
-            const api_url='{{ url('download-exhibit') }}?id=' + element_id;
+            const api_url='{{ url('download-exhibit') }}?id=' + element_id; 
             const response = await axios.get(api_url)
             const data = response.data
             
-            await axios.get(exhibit_url)
+            const website = await axios.get(exhibit_url) // Faz a requisição da página da exibição
+            console.log(website)
 
             for(let i = 0; i < data.length; i++) {
-                await axios.get(`/media/${data[i].link}`).
+                const storage = await axios.get(`/media/${data[i].link}`). // Faz a requisição de cada objeto, marker, etc
                     catch(error => {
                         console.log(error)
                     })
+
+                console.log(storage)
             }
+            
         }
     </script>
 </section>
