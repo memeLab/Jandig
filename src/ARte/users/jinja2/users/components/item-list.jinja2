@@ -70,18 +70,22 @@
         })
 
         async function requestURLs(element_id, exhibit_url) {
-            const api_url='{{ url('download-exhibit') }}?id=' + element_id;
+            const api_url='{{ url('download-exhibit') }}?id=' + element_id; 
             const response = await axios.get(api_url)
             const data = response.data
             
-            await axios.get(exhibit_url)
+            const website = await axios.get(exhibit_url) // Faz a requisição da página da exibição
+            console.log(website)
 
             for(let i = 0; i < data.length; i++) {
-                await axios.get(`/media/${data[i].link}`).
+                const storage = await axios.get(`/media/${data[i].link}`). // Faz a requisição de cada objeto, marker, etc
                     catch(error => {
                         console.log(error)
                     })
+
+                console.log(storage)
             }
+            
         }
     </script>
 </section>
