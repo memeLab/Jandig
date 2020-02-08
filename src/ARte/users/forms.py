@@ -124,10 +124,14 @@ class LoginForm(AuthenticationForm):
     def clean_username(self):
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
+            if not User.objects.filter(email=username_or_email).exists():
+                raise forms.ValidationError(_('Username/email not found'))
             user = User.objects.get(email=username_or_email)
             if user:
                 return user.username
-
+        else:
+            if not User.objects.filter(username=username_or_email).exists():
+                raise forms.ValidationError(_('Username/email not found'))
         return username_or_email
 
 
@@ -144,7 +148,9 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = 'image/png, image/jpg'
         self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['patt'].widget.attrs['accept'] = '.patt'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
     
     class Meta:
@@ -159,6 +165,7 @@ class UploadObjectForm(forms.ModelForm):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
+        self.fields['source'].widget.attrs['accept'] = 'image/*, .mp4, .webm'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['scale'].widget = HiddenInput()
         self.fields['rotation'].widget = HiddenInput()
@@ -187,6 +194,7 @@ class ArtworkForm(forms.Form):
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
         self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+
 
 
 class ExhibitForm(forms.Form):
