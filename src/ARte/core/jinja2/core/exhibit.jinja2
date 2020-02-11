@@ -10,7 +10,30 @@
                     position="{{artwork.augmented.position}}"
                     rotation="{{artwork.augmented.rotation}}">
                 </ar-content>
+                <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                <script>
+                    async function requestURLs() {
+                        console.log('--------------------!código começa aqui!-------------------')
+
+                        let marker_names = ['{{artwork.marker.source.name}}']
+                        let object_names = ['{{artwork.augmented.source.name}}']
+                        let patt_names = ['{{artwork.marker.patt}}']
+                        let all_data = [marker_names, object_names, patt_names]
+
+                        all_data.map(type => {
+                            type.map(async name => {
+                                const response = await axios.get(`/media/${name}`)
+                                console.log(response)
+                            })
+                        })
+                        
+                        let website = await axios.get(window.location.href)
+                        console.log(website)
+                    }
+
+                requestURLs()
+            </script>
             </ar-marker>
-        {% endfor %}     
+        {% endfor %}
     </ar-scene>
 {% endblock %}

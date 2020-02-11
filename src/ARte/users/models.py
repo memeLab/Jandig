@@ -97,6 +97,11 @@ class Artwork(models.Model):
         return Exhibit.objects.filter(artworks__in=[self]).count()
 
     @property
+    def exhibits_list(self):
+        from core.models import Exhibit
+        return list(Exhibit.objects.filter(artworks__in=[self]))
+    
+    @property
     def in_use(self):
         if self.exhibits_count > 0:
             return True
