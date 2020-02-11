@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.core.files.storage import default_storage
+import re
 
 from .choices import COUNTRY_CHOICES
 
@@ -75,6 +76,32 @@ class Object(models.Model):
             return True
 
         return False
+    
+    @property
+    def xscale(self):
+        a = re.findall(r'[\d\.\d]+', self.scale)
+        width = float(a[0])
+        height = float(a[1])
+        if width > 1 :
+            height = height*1.0/width
+            width = 1
+        elif height > 1 :
+            width = width*1.0/height
+            height = 1
+        return width
+
+    @property
+    def yscale(self):
+        a = re.findall(r'[\d\.\d]+', self.scale)
+        width = float(a[0])
+        height = float(a[1])
+        if width > 1 :
+            height = height*1.0/width
+            width = 1
+        elif height > 1 :
+            width = width*1.0/height
+            height = 1
+        return height
 
 
 @receiver(post_delete, sender=Object)
