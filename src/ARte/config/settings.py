@@ -55,8 +55,9 @@ MIDDLEWARE = [
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'config.settings.debug'    
 }
+
 def debug(request):
-    return DEBUG
+    return env.bool('DEBUG_TOOLBAR', False)
 
 ## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
 if env.bool('DEV_STATIC', False):
