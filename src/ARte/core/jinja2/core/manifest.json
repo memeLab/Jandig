@@ -6,6 +6,7 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "static/images/icons/app/ic_launcher_MDPI.png",
