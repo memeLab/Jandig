@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .forms import LoginForm
-from .views import signup, recover_password, recover_edit_password, invalid_recovering_email, recover_code, wrong_verification_code, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
+from .views import edit_object, signup, recover_password, recover_edit_password, invalid_recovering_email, recover_code, wrong_verification_code, profile, marker_upload, object_upload, create_artwork, create_exhibit, edit_artwork, element_get, edit_exhibit, edit_profile, edit_password, delete
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -26,7 +26,7 @@ urlpatterns = [
     path('objects/upload/', object_upload, name='object-upload'),
     path('element/get/', element_get, name='element-get'),
 
-    path('objects/edit/', object_edit, name='edit-object'),
+    path('objects/edit/', edit_object, name='edit-object'),
 
     path('artworks/create/', create_artwork, name='create-artwork'),
     path('artworks/edit/', edit_artwork, name="edit-artwork"),

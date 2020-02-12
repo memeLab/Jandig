@@ -336,10 +336,10 @@ def upload_view(request, form_class, form_type, route):
 
 
 @login_required
-def object_edit(request):
+def edit_object(request):
     id = request.GET.get("id","-1")
     model = Object.objects.filter(id=id)
-    if(not model or model.first().author != Profile.objects.get(user=request.user)):
+    if(not model or model.first().owner != Profile.objects.get(user=request.user)):
         raise Http404
 
     if(request.method == "POST"):
@@ -348,22 +348,22 @@ def object_edit(request):
         form.full_clean()
         if form.is_valid():
             model_data={
-                "scale": form.cleaned_data["scale"]
-                "position": form.cleaned_data["position"]
-                "rotation": form.cleaned_data["rotation"]
+                "scale": form.cleaned_data["scale"],
+                "position": form.cleaned_data["position"],
+                "rotation": form.cleaned_data["rotation"],
             }
             model.update(**model_data)
             return redirect('profile')
 
     model = model.first()
     model_data = {
-        "owner" = model.owner
-        "source" = model.source
-        "uploaded_at" = model.uploaded_at
-        "author" = model.author
-        "scale" = model.scale
-        "position" = model.position
-        "rotation" = model.rotation
+        "owner": model.owner,
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "scale": model.scale,
+        "position": model.position,
+        "rotation": model.rotation,
     }
 
     return render(
@@ -389,7 +389,7 @@ def edit_artwork(request):
         form.full_clean()
         if form.is_valid():
             model_data={
-                "marker":get_marker(request,form),
+                "marker": get_marker(request,form),
                 "augmented": get_augmented(request, form),
                 "title": form.cleaned_data["title"],
                 "description": form.cleaned_data["description"],

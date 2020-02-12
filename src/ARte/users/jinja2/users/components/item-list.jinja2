@@ -29,9 +29,9 @@
                     <img id="artwork-{{ element.id }}-marker" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                     <div class="separator"></div>
                     {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
-                        <video id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.yscale * 50 }}" width="{{ element.xscale * 50 }}" muted autoplay loop>
+                        <video id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yscale * 50 }}" width="{{ element.augmented.xscale * 50 }}" muted autoplay loop>
                     {% else %} 
-                        <img id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.yscale * 50 }}" width="{{ element.xscale * 50 }}">
+                        <img id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yscale * 50 }}" width="{{ element.augmented.xscale * 50 }}">
                     {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
