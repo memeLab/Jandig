@@ -6,10 +6,12 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/upload.css">
 
-        {% if form_type == 'marker' %}
+        {% if form_type == 'marker' and edit == False %}
             <h2>{{ _('Upload Marker') }}</h2>
-        {% elif form_type == 'object' %}
+        {% elif form_type == 'object' and edit == False %}
             <h2>{{ _('Upload Object') }}</h2>
+        {% else %}
+            <h2>{{_('Edit_object')}}</h2>
         {% endif %}
         <section class="upload-form">
             <div class="container">
@@ -28,9 +30,9 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
-                    {##TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT ROTATION, SCALE AND POSITION #}
-                    {#    <input ... type = 'range'... 
-                          but only when preview image is shown #}
+
+                    {# TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT SCALE AND POSITION #}
+                    {# <input ... type = 'range'... #}
 
                     {% if form_type == 'object' %}
                     <div id="edit_object_attributes">
@@ -56,6 +58,7 @@
                         {{ form.hidden_fields()[1].errors }}
                         {{ form.hidden_fields()[2] }}
                         {{ form.hidden_fields()[2].errors }}
+
                     </div>
                     {% endif %}
                     {% if form_type == 'marker' %}
@@ -155,12 +158,6 @@
                     $('#id_scale').val(scl); 
                     $('#id_rotation').val(rot);
                     $('#id_position').val(pos);
-
-                    /*if ($("#img-preview")){ //if preview image exists, its attributes change according to the input
-                        img = $("#img-preview");
-                        img.stylesheet.width = 50*xprop;
-                        img.stylesheet.height = 50*yprop;
-                        rotation and position relating to teh marker reference imageb*/
                 }
             ); 
                             

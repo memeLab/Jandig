@@ -332,7 +332,23 @@ def upload_view(request, form_class, form_type, route):
         form = form_class()
 
     return render(request,'users/upload.jinja2',
-        {'form_type': form_type, 'form': form, 'route': route})
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
+
+
+@login_required
+def object_edit(request):
+    if request.method == 'POST':
+        form = form_class(request.POST, request.FILES)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.owner = request.user.profile
+            upload.save()
+            return redirect('home')
+    else:
+        form = form_class()
+
+    return render(request,'users/upload.jinja2',
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': True})
 
 
 @login_required

@@ -26,6 +26,8 @@ urlpatterns = [
     path('objects/upload/', object_upload, name='object-upload'),
     path('element/get/', element_get, name='element-get'),
 
+    path('objects/edit/', object_edit, name='object-edit'),
+
     path('artworks/create/', create_artwork, name='create-artwork'),
     path('artworks/edit/', edit_artwork, name="edit-artwork"),
     
