@@ -48,7 +48,7 @@
                     {% endif %}
                 <h1 class="titObj">{{_("Your objects")}}</h1>
                     {% if objects %}
-                        {% with deletable=True, repository_list = objects, element_type="object" %}
+                        {% with deletable=True, editable=True, repository_list = objects, element_type="object" %}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
