@@ -33,15 +33,22 @@
                           but only when preview image is shown #}
 
                     {% if form_type == 'object' %}
-                    {#<button id="edit_attrs_btn">{{_('Change scale, rotation and position')}}</button>
-                    <div id="edit_object_attributes" hidden>#}
-                        <h2>{{_("Adjust scale")}}</h2>
-                        <input id = "scale" class="trigger-change-value" value ="1">
-                        <h2>{{_("Adjust position")}}</h2>
+                    <div id="edit_object_attributes">
+
+                        <h2 id="scaleTitle" class="tipTrigger">{{_("Adjust scale")}}</h2>
+                        <div id="tip1">
+                            {{_("Scale should be adjusted relative to marker size on the screen.<br>A scale of 2 will render an Object twice the size of the marker.")}}
+                        </div>
+                        <input id="scale" class="trigger-change-value" value ="1">
+
+                        <h2 id="positionTitle" class="tipTrigger">{{_("Adjust position")}}</h2>
+                        <div id="tip2">
+                            {{_("Position is adjusted related to the marker's size on the screen.<br>If horizontal position is 2, the center of the Object will be to the right<br>in a distance 2 times the size of its Marker's side.")}}
+                        </div>
                         <h3>Horizontal:</h3>
-                        <input id = "X-position" class="trigger-change-value" value ="0">
+                        <input id="X-position" class="trigger-change-value" value ="0">
                         <h3>Vertical:</h3>
-                        <input id = "Y-position" class="trigger-change-value" value ="0">                     
+                        <input id="Y-position" class="trigger-change-value" value ="0">                     
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
@@ -49,7 +56,7 @@
                         {{ form.hidden_fields()[1].errors }}
                         {{ form.hidden_fields()[2] }}
                         {{ form.hidden_fields()[2].errors }}
-                    {#</div>#}
+                    </div>
                     {% endif %}
                     {% if form_type == 'marker' %}
                         <h3>{{ _('Choose .patt file') }}</h3>
@@ -119,8 +126,6 @@
                         }
                         reader.readAsDataURL(file);            
                         $("input").after(image_preview); //make preview image of the object/marker show  
-
-                        //$("#edit-attrs-btn").disabled = false;
                     }                
                 }
             );
@@ -158,16 +163,7 @@
                         rotation and position relating to teh marker reference imageb*/
                 }
             ); 
-
-            /*$('#edit_attrs_btn').click( //button action to show the div to edit object attributes
-                function(e){
-                    if($('#img-preview')){
-                        $('#edit-object-attributes').hidden = false;
-                    }
-                }
-            )*/
-               
-                
+                            
         </script>
     </section>
 {% endblock %}
