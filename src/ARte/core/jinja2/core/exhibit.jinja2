@@ -1,6 +1,21 @@
 {% extends '/core/base.jinja2' %}
 
 {% block content %}
+<script>
+        window.addEventListener("orientationchange", function() {
+            document.location.reload(true)
+        });
+    </script>
+    <style>
+        @media screen and (orientation: landscape) {
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+    
     <ar-scene>
         {% for artwork in artworks %}
             <ar-marker patt="{{artwork.marker.patt.url}}">
