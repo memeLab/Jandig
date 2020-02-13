@@ -190,7 +190,7 @@ class UploadObjectForm(forms.ModelForm):
         self.fields['scale'].widget = HiddenInput()
         self.fields['rotation'].widget = HiddenInput()
         self.fields['position'].widget = HiddenInput()
-        self.fields['title'].widget.attrs['placeholder'] = _("Marker's title")
+        self.fields['title'].widget.attrs['placeholder'] = _("Object's title")
         log.warning(self.fields)
             
     class Meta:
