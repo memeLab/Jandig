@@ -1,7 +1,10 @@
 import re
 
+import logging
+log = logging.getLogger('ej')
+
 from django import forms
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
@@ -114,14 +117,13 @@ class ProfileForm(forms.ModelForm):
         return email
 
 class LoginForm(AuthenticationForm):
-
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
-
         self.fields['username'].widget.attrs['placeholder'] = _('username / email')
         self.fields['password'].widget.attrs['placeholder'] = _('password')
 
     def clean_username(self):
+        global username_or_email
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
             if not User.objects.filter(email=username_or_email).exists():
@@ -133,6 +135,23 @@ class LoginForm(AuthenticationForm):
             if not User.objects.filter(username=username_or_email).exists():
                 raise forms.ValidationError(_('Username/email not found'))
         return username_or_email
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        username_or_email_exists = True
+        
+        if '@' in username_or_email:
+            if not User.objects.filter(email=username_or_email).exists():
+                username_or_email_exists = False
+        else:
+            if not User.objects.filter(username=username_or_email).exists():
+                username_or_email_exists = False
+                
+        user = authenticate(username=username_or_email, password=password)
+        if(not user and username_or_email_exists):
+            raise forms.ValidationError(_('Wrong password'))
+
+        return password
 
 
 class RecoverPasswordForm(forms.Form):

@@ -256,7 +256,7 @@ def create_exhibit(request):
     else:
         form = ExhibitForm()
 
-    artworks = Artwork.objects.filter(author=request.user.profile)
+    artworks = Artwork.objects.all()
 
     return render(
         request,
