@@ -88,6 +88,8 @@
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             } else if (title != '') {
                 $('#modal-title').text(title);
+            } else {
+                $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             }
             
             let elemUrl = {{url('element-get')|tojson}};
