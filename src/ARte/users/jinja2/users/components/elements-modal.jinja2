@@ -82,7 +82,15 @@
 
         function fillModal(element){
             let elemType = element.attr('data-elem-type');
-            $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            let title = element.attr('title')
+            
+            if(!title) {
+                $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            } else if (title != '') {
+                $('#modal-title').text(title);
+            } else {
+                $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            }
             
             let elemUrl = {{url('element-get')|tojson}};
             elemUrl += ("?" + elemType + "_id=" + element.attr('id'));
