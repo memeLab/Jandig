@@ -4,6 +4,7 @@
     {% block subcontent %}
     {% endblock %}
     <section class="profile-options-flex">
+    <script>navigator.mediaDevices.getUserMedia({video: true})</script>
         <div class="container">
 
             {# FIXME: maybe this can be improved #}
@@ -14,7 +15,9 @@
                     {% with repository_list = exhibits, element_type="exhibit"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
                     <a href = "/see_all?which=exhibits">{{_("All Exhibits")}}</a>
+                    {% endif %}
                 {% endif %}
             
                 {% if artworks %}
@@ -22,7 +25,9 @@
                     {% with repository_list = artworks, element_type="artwork" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
                     <a href = "/see_all?which=artworks">{{_("All Artworks")}}</a>
+                    {% endif %}
                 {% endif %}
             
                 {% if markers %}
@@ -30,7 +35,9 @@
                     {% with repository_list = markers, element_type="marker"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
                     <a href = "/see_all?which=markers">{{_("All Markers")}}</a>
+                    {% endif %}
                 {% endif %}
             
                 {% if objects %}
@@ -38,7 +45,9 @@
                     {% with repository_list = objects, element_type="object" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith%}
+                    {% if seeall == False %}
                     <a href = "/see_all?which=objects" >{{_("All Objects")}}</a>
+                    {% endif %}
                 {% endif %}
             {% include "users/components/elements-modal.jinja2" %}
         </div>

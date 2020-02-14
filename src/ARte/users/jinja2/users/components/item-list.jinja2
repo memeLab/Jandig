@@ -26,12 +26,24 @@
                 {% endif %}
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
-                    <img id="artwork-{{ element.id }}-marker" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    {% if element.title %}
+                        <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    {% else %}
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    {% endif %}
                     <div class="separator"></div>
                     {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
-                        <video id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop>
-                    {% else %} 
-                        <img id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
+                        {% if element.title %}
+                            <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop>
+                        {% else %}
+                            <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop>
+                        {% endif %}
+                    {% else %}
+                        {% if element.title %}
+                            <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
+                        {% else %}
+                            <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
+                        {% endif %}
                     {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
@@ -45,23 +57,49 @@
                     {#<img src="https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png" height="50" width="50">#}
                     <h1 class="exhibit-name">{{element.name}}</h1>
                 </a>
-                <div class="exhibit-info flex">
-                    {#<p class="exhibit-name">{{element.name}}</p>#}
-                    {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
-                    <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
-                    <p class="exbDate">{{element.date}}</p>
-                    <p class="exhibit-about"><a href="{{url('exhibit-detail')}}?id={{element.id}}">{{element.artworks_count}} {{ _("artwork(s)") }}</a></p>
-                    <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
-                {% if editable == True %}
-                    <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
-                {% endif %}
-                {% if deletable == True %}                
-                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{element.id}}" onclick="return confirm('Are you sure you want to delete this exhibition?')" class="delete">{{ _("Delete")}}</a>
-                {% endif %}
+                <div>
+                    <div class="exhibit-info flex">
+                        {#<p class="exhibit-name">{{element.name}}</p>#}
+                        {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
+                        <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
+                        <p class="exbDate">{{element.date}}</p>
+                        <p class="exhibit-about"><a href="{{url('exhibit-detail')}}?id={{element.id}}">{{element.artworks_count}} {{ _("artwork(s)") }}</a></p>
+                        <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this exhibition") }}</a>
+                    {% if editable == True %}
+                        <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
+                    {% endif %}
+                    {% if deletable == True %}                
+                        <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{element.id}}" onclick="return confirm('Are you sure you want to delete this exhibition?')" class="delete">{{ _("Delete")}}</a>
+                    {% endif %}
+                    </div>
+                    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                    <script>
+                        async function requestURLs(element_id, exhibit_url) {
+                            const api_url='{{ url('download-exhibit') }}?id=' + element_id; 
+                            const response = await axios.get(api_url)
+                            const data = response.data
+                            
+                            const website = await axios.get(exhibit_url) // Faz a requisição da página da exibição
+                            console.log(website)
+
+                            for(let i = 0; i < data.length; i++) {
+                                const storage = await axios.get(`/media/${data[i].link}`). // Faz a requisição de cada objeto, marker, etc
+                                    catch(error => {
+                                        console.log(error)
+                                    })
+
+                                console.log(storage)
+                            }   
+                        }
+
+                        requestURLs('{{ element.id }}', '{{"/"+element.slug+"/"}}')
+                    </script>
+                    <img onload="requestURLs('{{ element.id }}', '{{"/"+element.slug+"/"}}')"><img>
                 </div>
             {% endif %}
         </div>
     {% endfor %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {# Importao axios (biblioteca para fazer request em api) #} 
     <script>
         $(".exhibit-slug").each(function(i,exhibit_slug){
             highlight_part = "<b>" + exhibit_slug.innerHTML.split("<b>")[1]
