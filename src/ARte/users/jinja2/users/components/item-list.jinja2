@@ -14,9 +14,9 @@
                 {% endif %}
             {% elif element_type == "object" %}
                 {% if element.source.url.split('.')[1] == "mp4" or element.source.url.split('.')[1] == "webm" %}
-                    <video id="{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yscale * 50 }}" width="{{ element.xscale * 50 }}" muted autoplay loop>
+                    <video id="{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}" muted autoplay loop>
                 {% else %} 
-                    <img id="{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yscale * 50 }}" width="{{ element.xscale * 50 }}">
+                    <img id="{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}">
                 {% endif %}
                 {% if deletable == True and not element.in_use %}
                     <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" onclick="return confirm('Are you sure you want to delete this object?')" class="delete">{{ _("Delete")}}</a>    
@@ -29,9 +29,9 @@
                     <img id="artwork-{{ element.id }}-marker" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
                     <div class="separator"></div>
                     {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
-                        <video id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yscale * 50 }}" width="{{ element.augmented.xscale * 50 }}" muted autoplay loop>
+                        <video id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop>
                     {% else %} 
-                        <img id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yscale * 50 }}" width="{{ element.augmented.xscale * 50 }}">
+                        <img id="artwork-{{ element.id }}-object" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
                     {% endif %}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>

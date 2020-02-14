@@ -78,7 +78,7 @@ class Object(models.Model):
         return False
     
     @property
-    def xscale(self):
+    def xproportion(self):
         a = re.findall(r'[\d\.\d]+', self.scale)
         width = float(a[0])
         height = float(a[1])
@@ -91,7 +91,7 @@ class Object(models.Model):
         return width
 
     @property
-    def yscale(self):
+    def yproportion(self):
         a = re.findall(r'[\d\.\d]+', self.scale)
         width = float(a[0])
         height = float(a[1])
@@ -102,6 +102,36 @@ class Object(models.Model):
             width = width*1.0/height
             height = 1
         return height
+
+    @property
+    def xscale(self):
+        a = re.findall(r'[\d\.\d]+', self.scale)
+        return a[0]
+
+    @property
+    def yscale(self):
+        a = re.findall(r'[\d\.\d]+', self.scale)
+        return a[1]
+
+    @property
+    def fullscale(self):
+        x = self.xscale
+        y = self.yscale
+        if x > y:
+            return x
+        else:
+            return y
+
+    @property
+    def xposition(self):
+        a = re.findall(r'[\d\.\d]+', self.position)
+        return a[0]
+
+    @property
+    def yposition(self):
+        a = re.findall(r'[\d\.\d]+', self.position)
+        return a[1]
+
 
 
 @receiver(post_delete, sender=Object)

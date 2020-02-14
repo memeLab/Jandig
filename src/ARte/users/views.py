@@ -338,26 +338,23 @@ def upload_view(request, form_class, form_type, route):
 @login_required
 def edit_object(request):
     id = request.GET.get("id","-1")
-    model = Object.objects.filter(id=id)
-    if(not model or model.first().owner != Profile.objects.get(user=request.user)):
+    model = Object.objects.get(id=id)
+    if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
     if(request.method == "POST"):
-        form = UploadObjectForm(request.POST, request.FILES)
+        form = UploadObjectForm(request.POST, request.FILES, instance = model)
 
         form.full_clean()
         if form.is_valid():
-            model_data={
-                "scale": form.cleaned_data["scale"],
-                "position": form.cleaned_data["position"],
-                "rotation": form.cleaned_data["rotation"],
-            }
-            model.update(**model_data)
+            if form.cleaned_data["source"] == None:
+                form.cleaned_data["source"] == model.source
+            form.save()
             return redirect('profile')
+        else:
+            log.warning(form.errors)
 
-    model = model.first()
     model_data = {
-        "owner": model.owner,
         "source": model.source,
         "uploaded_at": model.uploaded_at,
         "author": model.author,
@@ -371,6 +368,7 @@ def edit_object(request):
         'users/edit-object.jinja2',
         {
             'form': UploadObjectForm(initial=model_data),
+            'model': model,
         }
     )
 
