@@ -1,7 +1,7 @@
 {% extends '/core/base.jinja2' %}
 
 {% block content %}
-<script>
+    <script>
         window.addEventListener("orientationchange", function() {
             document.location.reload(true)
         });
@@ -27,9 +27,9 @@
                 </ar-content>
                 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
                 <script>
-                    async function requestURLs() {
-                        console.log('--------------------!código começa aqui!-------------------')
-
+                    async function requestURLS() {
+                        let website = await axios.get(window.location.href)
+                        console.log(website)
                         let marker_names = ['{{artwork.marker.source.name}}']
                         let object_names = ['{{artwork.augmented.source.name}}']
                         let patt_names = ['{{artwork.marker.patt}}']
@@ -41,13 +41,17 @@
                                 console.log(response)
                             })
                         })
-                        
-                        let website = await axios.get(window.location.href)
-                        console.log(website)
                     }
 
-                requestURLs()
-            </script>
+                    async function download() {
+                        let website = await axios.get(window.location.href)
+                        document.getElementById('loadingGif').style.display = 'flex'
+                        await requestURLS()
+                        document.getElementById('loadingGif').style.display = 'none'
+                    }
+
+                    download()
+                </script>
             </ar-marker>
         {% endfor %}
     </ar-scene>
