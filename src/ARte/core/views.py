@@ -16,6 +16,11 @@ def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
+@cache_page(60 * 60)
+def manifest(request):
+    return render(request, 'core/manifest.json',
+                  content_type='application/x-javascript')
+
 def index(request):
     ctx = {
         "artworks": [
@@ -28,7 +33,7 @@ def index(request):
 def collection(request):
 
     exhibits = Exhibit.objects.all().order_by('-id')[:4]
-    artworks = Artwork.objects.all().order_by('-id')[:8]
+    artworks = Artwork.objects.all().order_by('-id')[:6]
     markers  = Marker.objects.all().order_by('-id')[:8]
     objects  = Object.objects.all().order_by('-id')[:8]
 
@@ -37,6 +42,7 @@ def collection(request):
         "exhibits": exhibits,
         "markers": markers,
         "objects": objects,
+        "seeall": False,
     }
 
     return render(request, 'core/collection.jinja2', ctx)
@@ -46,13 +52,13 @@ def see_all(request):
     request_type = request.GET.get('which')
     ctx = {}    
     if   request_type == 'objects':
-        ctx = { 'objects' : Object.objects.all(), }
+        ctx = { 'objects' : Object.objects.all(), "seeall":True, }
     elif request_type == 'markers':
-        ctx = { 'markers':  Marker.objects.all(), } 
+        ctx = { 'markers':  Marker.objects.all(), "seeall":True, } 
     elif request_type == 'artworks':
-        ctx = { 'artworks': Artwork.objects.all(), }
+        ctx = { 'artworks': Artwork.objects.all(), "seeall":True, }
     elif request_type == 'exhibits':
-        ctx = { 'exhibits': Exhibit.objects.all(), }
+        ctx = { 'exhibits': Exhibit.objects.all(), "seeall":True, }
 
     return render(request, 'core/collection.jinja2', ctx)
 
@@ -76,7 +82,6 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
-@cache_page(60 * 2)
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
