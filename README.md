@@ -12,12 +12,18 @@ Jandig ARte is a Progressive Web App, which means you can open in every device w
 
 ### People
 We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ). There's a list of the main contributors of Jandig development:
-- @hvalois [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
-- @vjpixel [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel)
-- @pablodiegoss - [Twitter](https://twitter.com/pablodiegosds)
-- @rodrigocam [Twitter](https://twitter.com/sayadiguin)
-- @Heloisecs - [Twitter](https://twitter.com/heloisecullen)
-- @thiagohersan
+* @vjpixel - [GitHub](https://github.com/vjpixel), [Twitter](https://twitter.com/vjpixel), [Instagram](https://instagram.com/vjpixel), 
+* @pablodiegoss - [GitHub](https://github.com/pablodiegoss), [Twitter](https://twitter.com/pablodiegosds)
+* @rodrigocam - [GitHub](https://github.com/rodrigocam), [Twitter](https://twitter.com/sayadiguin)
+* @hvalois - [GitHub](https://github.com/hvalois), [Twitter](https://twitter.com/hebertvalois), [Instagram](https://www.instagram.com/hebertvalois/)
+* @hockpond - [GitHub](https://github.com/hockpond)
+* @anacforcelli - [GitHub](https://github.com/anacforcelli)
+* @luccaepp - [GitHub](https://github.com/luccaepp), [Twitter](https://twitter.com/luccaepp)
+* @Heloisecs - [GitHub](https://github.com/Heloisecs), [Twitter](https://twitter.com/heloisecullen)
+* @LeoSGomes - [GitHub](https://github.com/LeoSilvaGomes), [Twitter](https://twitter.com/LeoSGomes), [Instagram](https://www.instagram.com/leonardodasilvagomes/)
+* @kisobral - [GitHub](https://github.com/KiSobral), [Instagram](https://www.instagram.com/hugsob/)
+* @rhuancpq - [GitHub](https://github.com/Rhuancpq), [Twitter](https://twitter.com/rhuancpq)
+* @thiagohersan - [GitHub](https://github.com/thiagohersan)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
@@ -42,8 +48,8 @@ To run Jandig ARte all you need to do is:
 - Voila!
 
 ```
-git clone https://github.com/memeLab/ARte
-cd ARte
+git clone https://github.com/memeLab/Jandig
+cd Jandig
 docker-compose -f docker/docker-compose.yml up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.

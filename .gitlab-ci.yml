@@ -2,7 +2,7 @@ stages:
   - build
 
 .build:
-  image : docker
+  image: docker
   stage: build
   services:
     - docker:dind

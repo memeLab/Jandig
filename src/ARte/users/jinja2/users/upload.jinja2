@@ -1,3 +1,4 @@
+
 {% extends '/core/home.jinja2' %}
 
 {% block content %}
@@ -12,7 +13,7 @@
         {% endif %}
         <section class="upload-form">
             <div class="container">
-                <form name="upload-form" action="{{ url(route) }}" method="post" enctype="multipart/form-data">
+                <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
                     {%if route == 'object-upload' %}
@@ -27,14 +28,50 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
+                    {##TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT ROTATION, SCALE AND POSITION #}
+                    {#    <input ... type = 'range'... 
+                          but only when preview image is shown #}
+
+                    {% if form_type == 'object' %}
+                   {# <button id="edit_attrs_btn" value="{{_('Change scale, rotation and position')}}">
+                    <div id="edit_object_attributes"> #}
+                        {{ form.visible_fields()[2] }}
+                        {{ form.visible_fields()[2].errors }}
+                        <h2>{{_("Adjust scale")}}</h2>
+                        <h3>X</h3>
+                        <input id = "X-scale" class="trigger-change-value" value ="1">
+                        <h3>Y</h3>
+                        <input id = "Y-scale" class="trigger-change-value" value ="1">
+                        <h2>{{_("Adjust position")}}</h2>
+                        <h3>X:</h3>
+                        <input id = "X-position" class="trigger-change-value" value ="0">
+                        <h3>Y:</h3>
+                        <input id = "Y-position" class="trigger-change-value" value ="0">
+                        <h3>Z:</h3>
+                        <input id = "Z-position" class="trigger-change-value" value ="0">
+
+                        <h2>{{_("Adjust rotation")}}</h2>
+                        <input id = "Z-rotation" class="trigger-change-value" value ="0">
+
+                        {{ form.hidden_fields()[0] }}
+                        {{ form.hidden_fields()[0].errors }}
+                        {{ form.hidden_fields()[1] }}
+                        {{ form.hidden_fields()[1].errors }}
+                        {{ form.hidden_fields()[2] }}
+                        {{ form.hidden_fields()[2].errors }}
+                    {#</div>#}
+                    {% endif %}
                     {% if form_type == 'marker' %}
                         <h3>{{ _('Choose .patt file') }}</h3>
                         <div class="upload-field" id="patt-field">
+                            {{ form.visible_fields()[3] }}
+                            {{ form.visible_fields()[3].errors }}
                             {{ form.visible_fields()[2] }}
                             {{ form.visible_fields()[2].errors }}
                         </div>
                     {% endif %}
                     <p class="form-options">
+
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         {% if form_type == 'marker' %}
                             {{ _("I'm this Marker author") }}
@@ -57,7 +94,9 @@
                 </form>
             </div>
         </section>
+
         <script>
+
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true){
                     $('input[type="submit"]').prop('disabled', false);
@@ -76,7 +115,59 @@
                     $('#author-field > input').prop('readonly', false);
                     $('#author-field > input').val("");
                 }
-            })
+            });
+
+            /*$("#id_source").change(
+                function(e) {               //make preview image of the object/marker show
+                    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {                  
+                        var file = e.originalEvent.srcElement.files[i];
+            
+                        var img = document.createElement("img");
+                        var reader = new FileReader();
+                        reader.onloadend = function() {
+                        img.src = reader.result;
+                        img.class = "img-preview"
+                        }
+                        reader.readAsDataURL(file);            
+                        $("input").after(img);
+                    }                
+                }
+            );*/
+
+            $(".trigger-change-value").on('change keyup',
+                function(){
+                    var zrot = document.getElementById('Z-rotation').value;
+                    var xscl = document.getElementById('X-scale').value;
+                    var yscl = document.getElementById('Y-scale').value;
+                    var xpos = document.getElementById('X-position').value;
+                    var ypos = document.getElementById('Y-position').value;
+                    var zpos = document.getElementById('Z-position').value;
+
+                    var scl = xscl + " " + yscl;
+                    var rot = parseInt(zrot)+270 + " 0 0";
+                    var pos = xpos + " " + ypos + " " + zpos;
+
+                    $('#id_scale').val(scl); 
+                    $('#id_rotation').val(rot);
+                    $('#id_position').val(pos);
+
+                    /*if ($(".img-preview")){ //if preview image exists, its attributes change according to the input
+                        img = $(".img-preview");
+                        img.stylesheet.width = 50*xscl;
+                        img.stylesheet.height = 50*yscl;
+                        rotation and position relating to teh marker reference image*/
+                }
+            ); 
+
+            /*$('#edit_attrs_btn').click( //button action to show the division to edit object attributes
+                function(e){
+                    if($('.img-preview')){
+                        $('#edit-object-attributes').disabled = false;
+                    }
+                }
+            )*/
+               
+                
         </script>
     </section>
 {% endblock %}
