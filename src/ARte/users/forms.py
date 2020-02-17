@@ -214,8 +214,8 @@ class ArtworkForm(forms.Form):
 
         self.fields['marker_author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['augmented_author'].widget.attrs['placeholder'] = _('declare different author name')
-        self.fields['title'].widget.attrs['placeholder'] = _('artwork title')
-        self.fields['description'].widget.attrs['placeholder'] = _('artwork description')
+        self.fields['title'].widget.attrs['placeholder'] = _('Artwork title')
+        self.fields['description'].widget.attrs['placeholder'] = _('Artwork description')
 
 
 
