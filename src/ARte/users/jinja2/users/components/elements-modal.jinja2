@@ -39,7 +39,7 @@
             )
         }
         function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src){
-            let objet_tag = ''
+            let object_tag = ''
             if(augmented_src.split('.')[1] == 'mp4' || augmented_src.split('.')[1] == 'webm'){
                 object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
             }else{
@@ -82,7 +82,7 @@
 
         function fillModal(element){
             let elemType = element.attr('data-elem-type');
-            let title = element.attr('title')
+            let title = element.attr('title');
             
             if(!title) {
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
@@ -129,7 +129,7 @@
             $('#element-analytics').replaceWith('<p id="element-analytics"></p>');
             $('#element-author').replaceWith('<p id="element-author"></p>'); 
             fillModal($(this));
-            }
+        }
     
 
         function manageModal(){

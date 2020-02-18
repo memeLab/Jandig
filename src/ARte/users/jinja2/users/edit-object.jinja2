@@ -6,18 +6,17 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/upload.css">
 
-        <h2>{{_('Edit_object')}}</h2>
+        <h2>{{_('Edit object')}}</h2>
         
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
+                        <h3>{{_("Edit Object's title")}}</h3>
+                        {{ form.visible_fields()[2] }}
+                        {{ form.visible_fields()[2].errors }}
                     <p class="upload-field" id="source-field">
-                        <h3>{{_("Choose Object")}}</h3>
-                        <script>
-                        console.log('lakdhahduiefduie')
-                        console.log('{{ form.visible_fields()}}')</script>
-                                        
+                        <h3>{{_("Choose Object")}}</h3>                                                     
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>

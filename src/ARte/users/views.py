@@ -399,6 +399,7 @@ def edit_object(request):
         "scale": model.scale,
         "position": model.position,
         "rotation": model.rotation,
+        "title": model.title,
     }
 
     return render(
