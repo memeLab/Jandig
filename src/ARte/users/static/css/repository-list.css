@@ -33,7 +33,7 @@
     flex: 0 1 calc(50% - 10px);
 }
 
-.repository-item a.edit, .repository-item a.delete {
+.repository-item a.edit, .repository-item a.delete, .repository-item a.preview {
     float: right;
     background-size: contain;
     width: 20px;
@@ -43,7 +43,7 @@
     opacity: 1;
 }
 
-.repository-item a.edit:hover, .repository-item a.delete:hover {
+.repository-item a.edit:hover, .repository-item a.delete:hover, .repository-item a.preview:hover {
     opacity: 0.7;
 }
 
@@ -63,7 +63,10 @@
 .repository-item a.preview {
     background: url(../images/icons/preview.png) no-repeat center center;
     background-size: contain;
-    margin: 10px 10px -20px 10px;
+    margin: 10px 10px -40px 0;
+    font-size: 0;
+    width: 20px;
+    height: 20px
 }
 
 
