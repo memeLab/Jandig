@@ -39,7 +39,7 @@
     width: 20px;
     height: 20px;
     text-indent: -99999px;
-    border: 2px solid #fff;
+    border: 8px solid #fff;
     opacity: 1;
 }
 
@@ -83,13 +83,13 @@
 }
 
 #repo-marker .repository-item a.edit, #repo-object .repository-item a.edit {
-    margin: 0px 0px -60px -25px;
-    position: relative;
+    margin: -20px 0px 0px -14px;
+    position: absolute;
 }
 
 #repo-object .repository-item a.delete, #repo-marker .repository-item a.delete {
-    margin: 0px 40px -60px -25px;
-    position: relative;
+    margin: 36px 0px 0px -14px;
+    position: absolute;
 }
 
 
