@@ -8,25 +8,25 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         
-        <h1 class="titArt">{{ _('Create Jandig artwork') }}</h1>
+        <h1 class="titArt">{{ _('Create Jandig Artwork') }}</h1>
         <button id="select-marker" class="select-btn">
-            {{ _('select marker') }}
+            {{ _('Select Marker') }}
         </button>
         <button id="select-object" class="select-btn">
-            {{ _('select object') }}
+            {{ _('Select Object') }}
         </button>
         <div id="form-modal" class="modal">
             <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select marker (1/3)') }}</h4>
+                    <h4 class="modal-title">{{ _('Select Marker (1/3)') }}</h4>
                     {# <p class="upload-field" id="marker-source-field">
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
                     <p class="form-options">
                         <input id="marker-author-chk" type="checkbox" name="author">
-                        {{ _("I'm this marker author") }}
+                        {{ _("I'm this Marker author") }}
                     </p>
                     <p class="upload-field" id="marker-author-field">
                         {{ form.visible_fields()[1] }}
@@ -54,14 +54,14 @@
                     </button>
                 </div>
                 <div id="object-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select object (2/3)') }}</h4>
+                    <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
                     {# <p class="upload-field" id="object-source-field">
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
                     </p>
                     <p class="form-options">
                         <input id="object-author-chk" type="checkbox" name="author">
-                        {{ _("I'm this object author") }}
+                        {{ _("I'm this Object author") }}
                     </p>
                     <p class="upload-field" id="object-author-field">
                         {{ form.visible_fields()[3] }}
