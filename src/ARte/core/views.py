@@ -4,15 +4,21 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import translation
 from django.shortcuts import redirect
+from django.views.decorators.cache import cache_page
 
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Artwork2, Exhibit
 from users.models import Artwork, Marker, Object
 
-
+@cache_page(60 * 60)
 def service_worker(request):
     return render(request, 'core/sw.js',
+                  content_type='application/x-javascript')
+
+@cache_page(60 * 60)
+def manifest(request):
+    return render(request, 'core/manifest.json',
                   content_type='application/x-javascript')
 
 def index(request):
@@ -23,15 +29,40 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+@cache_page(60 * 2)
 def collection(request):
+
+    exhibits = Exhibit.objects.all().order_by('-id')[:4]
+    artworks = Artwork.objects.all().order_by('-id')[:6]
+    markers  = Marker.objects.all().order_by('-id')[:8]
+    objects  = Object.objects.all().order_by('-id')[:8]
+
     ctx = {
-        "artworks": Artwork.objects.all(),
-        "exhibits": Exhibit.objects.all(),
-        "markers": Marker.objects.all(),
-        "objects": Object.objects.all(),
+        "artworks": artworks,
+        "exhibits": exhibits,
+        "markers": markers,
+        "objects": objects,
+        "seeall": False,
     }
 
     return render(request, 'core/collection.jinja2', ctx)
+
+@cache_page(60 * 2)
+def see_all(request):
+    request_type = request.GET.get('which')
+    ctx = {}    
+    if   request_type == 'objects':
+        ctx = { 'objects' : Object.objects.all(), "seeall":True, }
+    elif request_type == 'markers':
+        ctx = { 'markers':  Marker.objects.all(), "seeall":True, } 
+    elif request_type == 'artworks':
+        ctx = { 'artworks': Artwork.objects.all(), "seeall":True, }
+    elif request_type == 'exhibits':
+        ctx = { 'exhibits': Exhibit.objects.all(), "seeall":True, }
+
+    return render(request, 'core/collection.jinja2', ctx)
+
+
 
 def upload_image(request):
     if request.method == 'POST':
@@ -65,3 +96,10 @@ def exhibit_detail(request):
     }
     return render(request, 'core/exhibit_detail.jinja2', ctx)
 
+def artwork_preview(request):
+    artwork_id=request.GET.get("id")
+    
+    ctx = {
+        "artworks": Artwork.objects.filter(id = artwork_id)
+    }
+    return render(request, 'core/exhibit.jinja2', ctx)

@@ -8,29 +8,49 @@
 
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="/static/css/repository-list.css">
-            <h1 class="titExb">{{_("Jandig Exhibitions")}}</h1>
+            
                 {% if exhibits %}
+                    <h1 class="titExb">{{_("Jandig Exhibitions")}}</h1>
                     {% with repository_list = exhibits, element_type="exhibit"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
+                    <a href = "/see_all?which=exhibits">{{_("All Exhibits")}}</a>
+                    {% endif %}
                 {% endif %}
-            <h1 class="titArt">{{_("Jandig Artworks")}}</h1>
+            
                 {% if artworks %}
+                    <h1 class="titArt">{{_("Jandig Artworks")}}</h1>
                     {% with repository_list = artworks, element_type="artwork" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
+                    <a href = "/see_all?which=artworks">{{_("All Artworks")}}</a>
+                    {% endif %}
                 {% endif %}
-            <h1 class="titMrk">{{_("Jandig Markers")}}</h1>
+            
                 {% if markers %}
+                    <h1 class="titMrk">{{_("Jandig Markers")}}</h1>
                     {% with repository_list = markers, element_type="marker"%}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
+                    {% if seeall == False %}
+                    <a href = "/see_all?which=markers">{{_("All Markers")}}</a>
+                    {% endif %}
                 {% endif %}
-            <h1 class="titObj">{{_("Jandig Objects")}}</h1>
+            
                 {% if objects %}
+                    <h1 class="titObj">{{_("Jandig Objects")}}</h1>
                     {% with repository_list = objects, element_type="object" %}
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith%}
+                    {% if seeall == False %}
+                    <a href = "/see_all?which=objects" >{{_("All Objects")}}</a>
+                    {% endif %}
+                {% endif %}
+
+                {% if not exhibits and not artworks and not markers and not objects %}
+                    <h1 class="titObj">{{_("This element isn't being used yet. :(")}}</h1>
                 {% endif %}
             {% include "users/components/elements-modal.jinja2" %}
         </div>

@@ -27,25 +27,32 @@
                     {{ _("in ")|tojson }} + date + '</p>'
                 )
         }
-        function usedIn(artworks_count, exhibits_count, element_src){
+        function usedIn(artworks_count, exhibits_count, element_src, element_id, elemType){
 
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
-                {{ _(" Used in ")|tojson }} +
-                artworks_count +  {{ _(" artworks")|tojson }} + 
-                {{ _(" and in ")|tojson }} + exhibits_count +
-                {{ _(" exhibits")|tojson }} +
+                {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' +
+                artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
+                {{ _(" and in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' + exhibits_count +
+                {{ _(" Exhibits")|tojson }} + '</a>' +
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
-        function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src){
+        function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src, element_id){
+            let objet_tag = ''
+            if(augmented_src.split('.')[1] == 'mp4' || augmented_src.split('.')[1] == 'webm'){
+                object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+            }else{
+                object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+            }
+
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
-                {{ _(" Used in ")|tojson }} +
+                {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=artwork">' + 
                 exhibits_count +
-                {{ _(" exhibits")|tojson }} + 
+                {{ _(" Exhibits")|tojson }} + '</a>' +
                 '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' + 
-                '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
+                object_tag
             )
             $('.trigger-erase').click(eraseModal);        
         }
@@ -75,7 +82,16 @@
 
         function fillModal(element){
             let elemType = element.attr('data-elem-type');
-            $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            let title = element.attr('title')
+            let element_id = element.attr('id')
+            
+            if(!title) {
+                $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            } else if (title != '') {
+                $('#modal-title').text(title);
+            } else {
+                $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
+            }
             
             let elemUrl = {{url('element-get')|tojson}};
             elemUrl += ("?" + elemType + "_id=" + element.attr('id'));
@@ -93,7 +109,7 @@
                     success: function(data){
                         elementAuthor(data['author']);
                         uploadedBy(data['owner'], data['uploaded_at']);
-                        usedIn(data['artworks'], data['exhibits'], data['source']);
+                        usedIn(data['artworks'], data['exhibits'], data['source'], element_id, elemType);
                         downloadElement(data['type'], data['size']/1000, data['source']);
                     }
                 });
@@ -103,7 +119,7 @@
                     url: elemUrl,
                     success: function(data){
                         elementAuthor(data['author']);
-                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented']);
+                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
                     }
                 });
