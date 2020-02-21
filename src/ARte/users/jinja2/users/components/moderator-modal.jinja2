@@ -1,0 +1,39 @@
+{% extends "users/components/generic-modal.jinja2" %}
+
+{% block content %}
+    <p id = "artworks"></p>
+    <p id = "exhibits"></p>
+    
+    <script>
+
+        function manage_modal(){
+            element = $(this)
+            let elemType = element.attr('data-elem-type');
+            
+            let elemUrl = {{url('element-get')|tojson}};
+            elemUrl += ("?" + elemType + "_id=" + element.attr('id'));  
+
+            if (elemType == "artwork"){
+                $('#artworks').replaceWith(<p id = "artworks"></p>);
+                $('#exhibits').replaceWith(
+                    <p id = "exhibits">
+                        
+                    </p>
+                );
+            }else{
+                $('#artworks').replaceWith(
+                    <p id = "artworks">
+
+                    </p>);
+                $('#exhibits').replaceWith(
+                    <p id = "exhibits">
+                                            
+                    </p>
+                );
+            }
+        }
+
+        $(".trigger-modal").onclick(manage_modal);
+    </script>
+{% endblock content %}
+  

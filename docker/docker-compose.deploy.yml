@@ -42,13 +42,13 @@ services:
       - dev_postgres
     volumes:
       - static_dev_files:/collect/
-      - ./media/dev/:/src/ARte/users/media/
+      - ./media/dev/:/ARte/src/ARte/users/media/
     command: inv db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
   
   dev_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.dev_deploy
     volumes:
@@ -71,13 +71,13 @@ services:
       - staging_postgres
     volumes:
       - static_staging_files:/collect/
-      - ./media/staging/:/src/ARte/users/media/
+      - ./media/staging/:/ARte/src/ARte/users/media/
     command: inv db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
   staging_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.staging_deploy
     volumes:
@@ -101,13 +101,13 @@ services:
       - prod_postgres
     volumes:
       - static_prod_files:/collect/
-      - ./media/prod/:/src/ARte/users/media/    
+      - ./media/prod/:/ARte/src/ARte/users/media/    
     command: inv db -p docs collect run -g -p
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
  
   prod_postgres:
-    image: postgres
+    image: postgres:11.6
     env_file:
       - ../src/.envs/.prod_deploy
     volumes:

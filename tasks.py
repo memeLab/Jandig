@@ -38,7 +38,7 @@ def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
     Run development server
     """
     if gunicorn:
-        ctx.run('cd src/ARte && gunicorn --bind 0.0.0.0:8000 config.wsgi', env={"DEV_DB":"False"})
+        ctx.run('cd src/ARte && gunicorn --worker-class=gevent --worker-connections=10000 --workers=17 --log-level debug --bind 0.0.0.0:8000 config.wsgi', env={"DEV_DB":"False"})
     else:
         manage(ctx, "runserver 0.0.0.0:8000", postgres, whitenoise)
     

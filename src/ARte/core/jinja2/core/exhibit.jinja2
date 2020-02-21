@@ -1,6 +1,21 @@
 {% extends '/core/base.jinja2' %}
 
 {% block content %}
+<script>
+        window.addEventListener("orientationchange", function() {
+            document.location.reload(true)
+        });
+    </script>
+    <style>
+        @media screen and (orientation: landscape) {
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+    
     <ar-scene>
         {% for artwork in artworks %}
             <ar-marker patt="{{artwork.marker.patt.url}}">
@@ -10,7 +25,59 @@
                     position="{{artwork.augmented.position}}"
                     rotation="{{artwork.augmented.rotation}}">
                 </ar-content>
+                <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                <script>
+                    async function requestURLS(tentativas) {
+                        if(tentativas > 3) {
+                            let p = document.createElement("p")
+                            let text = document.createTextNode("You don't have an internet connection to download the. Try again later.")
+                            p.appendChild(text)
+                            return
+                        }
+
+                        let website = await axios.get(window.location.href).catch(error => {
+                            console.log(error)
+
+                            let seconds = new Date().getTime() / 1000
+                            let current_seconds = seconds
+                            while(current_seconds - seconds <= 10) {
+                                current_seconds = new Date().getTime() / 1000
+                            }
+
+                            requestURLS(tentativas + 1)
+                        })
+                        console.log(website)
+                        let marker_names = ['{{artwork.marker.source.name}}']
+                        let object_names = ['{{artwork.augmented.source.name}}']
+                        let patt_names = ['{{artwork.marker.patt}}']
+                        let all_data = [marker_names, object_names, patt_names]
+
+                        all_data.map(type => {
+                            type.map(async name => {
+                                const response = await axios.get(`/media/${name}`)catch(error => {
+                                    console.log(error)
+
+                                    let seconds = new Date().getTime() / 1000
+                                    let current_seconds = seconds
+                                    while(current_seconds - seconds <= 10) {
+                                        current_seconds = new Date().getTime() / 1000
+                                    }
+
+                                    requestURLS(tentativas + 1)
+                                })
+                                console.log(response)
+                            })
+                        })
+                        
+                        let website = await axios.get(window.location.href)
+                        document.getElementById('loadingGif').style.display = 'flex'
+                        await requestURLS(1)
+                        document.getElementById('loadingGif').style.display = 'none'
+                    }
+
+                requestURLs()
+            </script>
             </ar-marker>
-        {% endfor %}     
+        {% endfor %}
     </ar-scene>
 {% endblock %}

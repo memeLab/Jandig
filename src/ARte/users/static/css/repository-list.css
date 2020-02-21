@@ -33,7 +33,7 @@
     flex: 0 1 calc(50% - 10px);
 }
 
-.repository-item a.edit, .repository-item a.delete {
+.repository-item a.edit, .repository-item a.delete, .repository-item a.preview {
     float: right;
     background-size: contain;
     width: 20px;
@@ -43,7 +43,7 @@
     opacity: 1;
 }
 
-.repository-item a.edit:hover, .repository-item a.delete:hover {
+.repository-item a.edit:hover, .repository-item a.delete:hover, .repository-item a.preview:hover {
     opacity: 0.7;
 }
 
@@ -58,6 +58,13 @@
     background-size: contain;
     margin: 10px 10px -20px 10px;
 }
+
+.repository-item a.preview {
+    background: url(../images/icons/preview.png) no-repeat center center;
+    background-size: contain;
+    margin: 10px 10px -20px 10px;
+}
+
 
 #repo-artwork .repository-item {
     flex: 0 1 calc(33% - 10px);
@@ -178,6 +185,33 @@ p.exhibit-about {
     justify-content: space-evenly;
 }
 
+a.seeall  {
+    margin: -20px auto 55px;
+    display: block;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: right;
+    line-height: 2.5em;
+    border-top: 3px rgba(0, 0, 0, 0.025) solid;
+}
+
+p.url {
+    clear: both;
+    margin: 10px auto 10px 25px;
+    display: block;
+    flex: 1 100%;
+    text-align: left;
+}
+
+p.url span {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.exhibit-detail-box p.by, .exhibit-detail-box a.gotoExb {
+    flex: 1 100%;
+    margin: 10px 25px 20px;
+}
 
 /********* Media Queries ***********/
 @media all and (min-width: 800px) {
@@ -203,5 +237,9 @@ p.exhibit-about {
     a.gotoExb {
         margin: 0 15px 0 0;
         flex-basis: calc(60% - 75px);
+    }
+
+    .exhibit-detail-box p.by, .exhibit-detail-box a.gotoExb {
+        flex: 1 35%;
     }
 }
