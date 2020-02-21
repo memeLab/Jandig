@@ -75,6 +75,7 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
+@cache_page(60 * 60)
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -86,6 +87,7 @@ def exhibit_select(request):
 
     return render(request, 'core/exhibit_select.jinja2', {'form':form})
 
+@cache_page(60 * 60)
 def exhibit_detail(request):
     id = request.GET.get("id")
     exhibit = Exhibit.objects.get(id=id)
@@ -95,3 +97,11 @@ def exhibit_detail(request):
         'artworks': exhibit.artworks.all()
     }
     return render(request, 'core/exhibit_detail.jinja2', ctx)
+
+def artwork_preview(request):
+    artwork_id=request.GET.get("id")
+    
+    ctx = {
+        "artworks": Artwork.objects.filter(id = artwork_id)
+    }
+    return render(request, 'core/exhibit.jinja2', ctx)

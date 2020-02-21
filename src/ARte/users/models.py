@@ -40,9 +40,18 @@ class Marker(models.Model):
         return Artwork.objects.filter(marker=self).count()
 
     @property
+    def artworks_list(self):
+        return Artwork.objects.filter(marker=self)
+
+    @property
     def exhibits_count(self):
         from core.models import Exhibit
         return Exhibit.objects.filter(artworks__marker=self).count()
+
+    @property
+    def exhibits_list(self):
+        from core.models import Exhibit
+        return Exhibit.objects.filter(artworks__marker=self)
 
     @property
     def in_use(self):
@@ -68,9 +77,18 @@ class Object(models.Model):
         return Artwork.objects.filter(augmented=self).count()
 
     @property
+    def artworks_list(self):
+        return Artwork.objects.filter(augmented=self)
+
+    @property
     def exhibits_count(self):
         from core.models import Exhibit
         return Exhibit.objects.filter(artworks__augmented=self).count()
+
+    @property
+    def exhibits_list(self):
+        from core.models import Exhibit
+        return Exhibit.objects.filter(artworks__augmented=self)
 
     @property
     def in_use(self):

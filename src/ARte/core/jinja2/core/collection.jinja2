@@ -49,6 +49,10 @@
                     <a href = "/see_all?which=objects" >{{_("All Objects")}}</a>
                     {% endif %}
                 {% endif %}
+
+                {% if not exhibits and not artworks and not markers and not objects %}
+                    <h1 class="titObj">{{_("This element isn't being used yet. :(")}}</h1>
+                {% endif %}
             {% include "users/components/elements-modal.jinja2" %}
         </div>
     </section>
