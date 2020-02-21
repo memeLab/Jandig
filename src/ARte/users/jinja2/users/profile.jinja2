@@ -42,18 +42,18 @@
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no markers. :c")}}</p>
+                            <p>{{_("You have no Markers. :c")}}</p>
                             <a href="{{ url('marker-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
                 <h1 class="titObj">{{_("Your Objects")}}</h1>
                     {% if objects %}
-                        {% with deletable=True, repository_list = objects, element_type="object" %}
+                        {% with deletable=True, editable=True, repository_list = objects, element_type="object" %}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no objects. :c")}}</p>
+                            <p>{{_("You have no Objects. :c")}}</p>
                             <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}

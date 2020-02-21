@@ -267,12 +267,50 @@ def create_exhibit(request):
         }
     )
 
+def download_exhibit(request):
+    exhibit_id = request.GET.get('id')
+    exhibit = Exhibit.objects.get(id=exhibit_id)
+    artworks = list(exhibit.artworks.all())
+
+    marker_names = []
+    object_names = []
+    patt_names = []
+
+    all_data = []
+
+    for artwork in artworks:
+        marker_names.append(artwork.marker.source.name)
+        object_names.append(artwork.augmented.source.name)
+        patt_names.append(str(artwork.marker.patt))
+
+    for marker_name in marker_names:
+        data = {
+            "link": marker_name
+        }
+
+        all_data.append(data)
+
+    for object_name in object_names:
+        data = {
+            "link": object_name
+        }
+
+        all_data.append(data)
+
+    for patt_name in patt_names:
+        data = {
+            "link": patt_name
+        }
+
+        all_data.append(data)
+    
+    return HttpResponse(json.dumps(all_data))
 
 @login_required
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
-@cache_page(60 * 60)
+@cache_page(60 * 2)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
@@ -332,7 +370,47 @@ def upload_view(request, form_class, form_type, route):
         form = form_class()
 
     return render(request,'users/upload.jinja2',
-        {'form_type': form_type, 'form': form, 'route': route})
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
+
+
+@login_required
+def edit_object(request):
+    id = request.GET.get("id","-1")
+    model = Object.objects.get(id=id)
+    if(not model or model.owner != Profile.objects.get(user=request.user)):
+        raise Http404
+
+    if(request.method == "POST"):
+        form = UploadObjectForm(request.POST, request.FILES, instance = model)
+
+        form.full_clean()
+        if form.is_valid():
+            if form.cleaned_data["source"] == None:
+                form.cleaned_data["source"] == model.source
+            form.save()
+            return redirect('profile')
+        else:
+            log.warning(form.errors)
+
+    model_data = {
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "scale": model.scale,
+        "position": model.position,
+        "rotation": model.rotation,
+        "title": model.title,
+    }
+
+    return render(
+        request,
+        'users/edit-object.jinja2',
+        {
+            'form': UploadObjectForm(initial=model_data),
+            'model': model,
+        }
+    )
+
 
 
 @login_required
@@ -348,7 +426,7 @@ def edit_artwork(request):
         form.full_clean()
         if form.is_valid():
             model_data={
-                "marker":get_marker(request,form),
+                "marker": get_marker(request,form),
                 "augmented": get_augmented(request, form),
                 "title": form.cleaned_data["title"],
                 "description": form.cleaned_data["description"],
