@@ -12,7 +12,11 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
-
+    
+    class Meta:
+        permissions = [
+            ("moderator", "Can moderate content"),
+        ]
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -32,6 +36,7 @@ class Marker(models.Model):
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default='')
     patt = models.FileField(upload_to='patts/')
+
     def __str__(self):
         return self.source.name
 
@@ -69,6 +74,7 @@ class Object(models.Model):
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
+
     def __str__(self):
         return self.source.name
 

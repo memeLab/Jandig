@@ -1,0 +1,40 @@
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+    {% block subcontent %}
+    {% endblock %}
+    {% if permission == False %}
+        {% include "users/permission-denied.jinja2" %}
+    {% else %}
+        <section class="moderator-display-flex">
+            <div class="container">        
+                <link rel="stylesheet" href="/static/css/repository-list.css">
+                <h1 class="titExhb">{{_("Jandig Exhibits")}}</h1>
+                    {% if exhibits %}
+                        {% with deletable = True, repository_list = exhibits, element_type="exhibit"%}
+                            {% include "users/components/moderator-item-list.jinja2" %}
+                        {% endwith %}
+                    {% endif %}
+                <h1 class="titArt">{{_("Jandig Artworks")}}</h1>
+                    {% if artworks %}
+                        {% with deletable = True, repository_list = artworks, element_type="artwork"%}
+                            {% include "users/components/moderator-item-list.jinja2" %}
+                        {% endwith %}
+                    {% endif %}
+                <h1 class="titMrk">{{_("Jandig Markers")}}</h1>
+                    {% if markers %}
+                        {% with deletable = True, repository_list = markers, element_type="marker"%}
+                            {% include "users/components/moderator-item-list.jinja2" %}
+                        {% endwith %}
+                    {% endif %}
+                <h1 class="titObj">{{_("Jandig Objects")}}</h1>
+                    {% if objects %}
+                        {% with deletable = True, repository_list = objects, element_type="object" %}
+                            {% include "users/components/moderator-item-list.jinja2" %}
+                        {% endwith%}
+                    {% endif %}                
+                {% include "users/components/moderator-modal.jinja2" %}
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

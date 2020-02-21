@@ -7,6 +7,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 log = logging.getLogger('ej')
 from django.contrib.auth import login, authenticate
+import django.contrib.auth
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.contrib.auth.forms import SetPasswordForm
@@ -566,20 +568,28 @@ def delete(request):
        delete_content(Artwork, request.user, request.GET.get('id', -1))
     elif content_type == 'exhibit':
        delete_content(Exhibit, request.user, request.GET.get('id', -1))
-
-
     return redirect('profile')
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
-        instance = qs[0]
-        if isinstance(instance, Artwork):
-            if instance.author == user.profile and not instance.in_use:
+        instance = qs[0] 
+        if isinstance(instance, Exhibit) and (instance.owner == user.profile or user.has_perm('users.moderator')):
+            instance.delete()
+        else:
+            if user.has_perm('users.moderator') and not instance.in_use:
                 instance.delete()
-        elif instance.owner == user.profile:
-            if isinstance(instance, Exhibit) or not instance.in_use:
-                instance.delete()
+            elif user.has_perm('users.moderator') and instance.in_use:
+                if isinstance(instance, Object):
+                    artworkIn = Artwork.objects.filter(augmented=instance)
+                    artworkIn.delete()
+                    instance.delete()
+                elif isinstance(instance, Marker):
+                    artworkIn = Artwork.objects.filter(marker=instance)
+                    artworkIn.delete()
+                    instance.delete()
+                elif isinstance(instance, Artwork):
+                    instance.delete()
 
 
 def related_content(request):
@@ -610,3 +620,30 @@ def related_content(request):
         ctx = {'exhibits': exhibits, "seeall:":False} 
     
     return render(request, 'core/collection.jinja2', ctx)
+
+@login_required
+def mod_delete(request):   
+    content_type = request.GET.get('content_type', None)
+    if content_type == 'marker':
+       delete_content(Marker, request.user, request.GET.get('instance_id', -1))
+    elif content_type == 'object':
+       delete_content(Object, request.user, request.GET.get('instance_id', -1))
+    elif content_type == 'artwork':
+       delete_content(Artwork, request.user, request.GET.get('instance_id', -1))
+    elif content_type == 'exhibit':
+       delete_content(Exhibit, request.user, request.GET.get('id', -1))
+    return redirect('moderator-page')
+
+
+def mod(request):
+    ctx = {
+        "objects" : Object.objects.all(),
+        "markers" : Marker.objects.all(),
+        "artworks": Artwork.objects.all(),
+        "exhibits": Exhibit.objects.all(),
+        "permission" : request.user.has_perm('users.moderator'),
+    }   
+    return render(request, 'users/moderator-page.jinja2', ctx)
+
+def permission_denied (request):
+    return render(request, 'users/permission-denied.jinja2')
