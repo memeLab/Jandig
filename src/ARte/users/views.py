@@ -310,7 +310,7 @@ def download_exhibit(request):
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
-@cache_page(60 * 60)
+@cache_page(60 * 2)
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'

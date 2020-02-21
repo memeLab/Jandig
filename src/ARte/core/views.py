@@ -74,7 +74,6 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
-@cache_page(60 * 60)
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
