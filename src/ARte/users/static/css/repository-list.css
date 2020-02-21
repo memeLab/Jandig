@@ -59,14 +59,10 @@
     margin: 10px 10px -20px 10px;
 }
 
-
 .repository-item a.preview {
     background: url(../images/icons/preview.png) no-repeat center center;
     background-size: contain;
-    margin: 10px 10px -40px 0;
-    font-size: 0;
-    width: 20px;
-    height: 20px
+    margin: 10px 10px -20px 10px;
 }
 
 
@@ -93,16 +89,11 @@
     flex: 0 1 calc(25%);
 }
 
-#repo-marker .repository-item a.edit, #repo-object .repository-item a.edit {
-    margin: -20px 0px 0px -14px;
+#repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
+#repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
+    margin: 25px 0px -60px -25px;
     position: absolute;
 }
-
-#repo-object .repository-item a.delete, #repo-marker .repository-item a.delete {
-    margin: 36px 0px 0px -14px;
-    position: absolute;
-}
-
 
 .artwork-elements a.edit, .artwork-elements a.delete {
     margin: 10px 10px -40px auto;
