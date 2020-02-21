@@ -54,7 +54,7 @@
 
                         all_data.map(type => {
                             type.map(async name => {
-                                const response = await axios.get(`/media/${name}`)catch(error => {
+                                const response = await axios.get(`/media/${name}`).catch(error => {
                                     console.log(error)
 
                                     let seconds = new Date().getTime() / 1000
