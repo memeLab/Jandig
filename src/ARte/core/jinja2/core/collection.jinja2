@@ -15,7 +15,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all?which=exhibits">{{_("All Exhibits")}}</a>
+                    <a href = "/see_all?which=exhibits" class="seeall">{{_("All Exhibits")}}</a>
                     {% endif %}
                 {% endif %}
             
@@ -25,7 +25,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all?which=artworks">{{_("All Artworks")}}</a>
+                    <a href = "/see_all?which=artworks" class="seeall">{{_("All Artworks")}}</a>
                     {% endif %}
                 {% endif %}
             
@@ -35,7 +35,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all?which=markers">{{_("All Markers")}}</a>
+                    <a href= "/see_all?which=markers" class="seeall">{{_("All Markers")}}</a>
                     {% endif %}
                 {% endif %}
             
@@ -45,7 +45,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith%}
                     {% if seeall == False %}
-                    <a href = "/see_all?which=objects" >{{_("All Objects")}}</a>
+                    <a href= "/see_all?which=objects" class="seeall">{{_("All Objects")}}</a>
                     {% endif %}
                 {% endif %}
 
