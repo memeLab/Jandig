@@ -240,6 +240,6 @@ p.url span {
     }
 
     .exhibit-detail-box p.by, .exhibit-detail-box a.gotoExb {
-        flex: 1 50%;
+        flex: 1 35%;
     }
 }
