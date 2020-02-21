@@ -63,7 +63,6 @@ def see_all(request):
     return render(request, 'core/collection.jinja2', ctx)
 
 
-
 def upload_image(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
