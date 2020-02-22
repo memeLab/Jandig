@@ -1,3 +1,6 @@
 from django.contrib import admin
+from users.models import Artwork, Profile, Object
 
-# Register your models here.
+admin.site.register(Artwork)
+admin.site.register(Profile)
+admin.site.register(Object)
