@@ -157,7 +157,7 @@ msgstr "Obras Jandig"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:28
 msgid "All Artworks"
-msgstr "Todas Obras"
+msgstr "Todas as Obras"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:33
 #, fuzzy
@@ -166,7 +166,7 @@ msgstr "Marcadores Jandig"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:38
 msgid "All Markers"
-msgstr "Todos Marcadores"
+msgstr "Todos os Marcadores"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:43
 #, fuzzy
@@ -175,7 +175,7 @@ msgstr "Objetos Jandig"
 
 #: src/ARte/core/jinja2/core/collection.jinja2:48
 msgid "All Objects"
-msgstr "Todos Objetos"
+msgstr "Todos os Objetos"
 
 #: src/ARte/core/jinja2/core/exhibit_detail.jinja2:11
 msgid "See this exhibition"
@@ -359,7 +359,7 @@ msgstr "Escolher Obras (1/2)"
 
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:22
 msgid "Choose from your repository"
-msgstr "Esolha de seu repositório"
+msgstr "Escolha de seu repositório"
 
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:37
 msgid "Exhibit Information (2/2)"
@@ -407,8 +407,8 @@ msgid "Your Exhibitions"
 msgstr "Suas Exposições"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:23
-msgid "You have no Exhibitions. :c"
-msgstr "Você não tem Exposições. :c"
+msgid "You have no Exhibitions. :("
+msgstr "Você não tem Exposições. :("
 
 #: src/ARte/users/jinja2/users/profile.jinja2:24
 #: src/ARte/users/jinja2/users/profile.jinja2:35
@@ -420,16 +420,16 @@ msgid "Your Artworks"
 msgstr "Suas Obras"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:34
-msgid "You have no Artworks. :c"
-msgstr "Você não tem Obras. :c"
+msgid "You have no Artworks. :("
+msgstr "Você não tem Obras. :("
 
 #: src/ARte/users/jinja2/users/profile.jinja2:38
 msgid "Your Markers"
 msgstr "Seus Marcadores"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:45
-msgid "You have no markers. :c"
-msgstr "Você não tem marcadores. :c"
+msgid "You have no markers. :("
+msgstr "Você não tem marcadores. :("
 
 #: src/ARte/users/jinja2/users/profile.jinja2:46
 #: src/ARte/users/jinja2/users/profile.jinja2:57
@@ -441,8 +441,8 @@ msgid "Your Objects"
 msgstr "Seus Objetos"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:56
-msgid "You have no objects. :c"
-msgstr "Você não tem objetos. :c"
+msgid "You have no objects. :("
+msgstr "Você não tem objetos. :("
 
 #: src/ARte/users/jinja2/users/recover-edit-password.jinja2:14
 msgid "Choose a new password and repeat it."
@@ -518,7 +518,7 @@ msgstr "Seu código de verificação é inválido."
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
-msgstr "Vem aqui! Crie conteúdo agora!"
+msgstr "Vem cá! Crie conteúdo agora!"
 
 #: src/ARte/users/jinja2/users/components/createbox.jinja2:16
 msgid "Create Exhibition"
@@ -558,7 +558,7 @@ msgstr " Exposições"
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:88
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:92
 msgid "This is a Jandig "
-msgstr "Isso é um Jandig "
+msgstr "Isso é um "
 
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:100
 msgid "Share this "
