@@ -123,7 +123,6 @@ class LoginForm(AuthenticationForm):
         self.fields['password'].widget.attrs['placeholder'] = _('password')
 
     def clean_username(self):
-        global username_or_email
         username_or_email = self.cleaned_data.get('username')
         if '@' in username_or_email:
             if not User.objects.filter(email=username_or_email).exists():
@@ -134,25 +133,32 @@ class LoginForm(AuthenticationForm):
         else:
             if not User.objects.filter(username=username_or_email).exists():
                 raise forms.ValidationError(_('Username/email not found'))
+        
+        # Already is a valid username
         return username_or_email
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
-        username_or_email_exists = True
+        username_or_email = self.data.get('username')
+        user = None
+        username_or_email_wrong = False
         
         if '@' in username_or_email:
-            if not User.objects.filter(email=username_or_email).exists():
-                username_or_email_exists = False
+            if User.objects.filter(email=username_or_email).exists():
+                username = User.objects.get(email=username_or_email).username
+                user = authenticate(username = username, password=password)
+            else:
+                username_or_email_wrong = True
+                # raise forms.ValidationError(_('Email Wrong!'))
         else:
-            if not User.objects.filter(username=username_or_email).exists():
-                username_or_email_exists = False
-                
-        user = authenticate(username=username_or_email, password=password)
-        if not user:
-            user = authenticate(username = User.objects.get(email=username_or_email).username, password=password)
-
-        if(not user and username_or_email_exists):
-            raise forms.ValidationError(_('Wrong password'))
+            if User.objects.filter(username=username_or_email).exists():
+                user = authenticate(username=username_or_email, password=password)
+            else:
+                username_or_email_wrong = True
+                # raise forms.ValidationError(_('Username Wrong!'))
+        
+        if not user and not username_or_email_wrong:
+            raise forms.ValidationError(_('Wrong password!'))
 
         return password
 

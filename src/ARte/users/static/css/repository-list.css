@@ -41,6 +41,9 @@
     text-indent: -99999px;
     border: 8px solid #fff;
     opacity: 1;
+    display: block;
+    background-size: contain; 
+    margin: 10px 10px -20px auto;  
 }
 
 .repository-item a.edit:hover, .repository-item a.delete:hover, .repository-item a.preview:hover {
@@ -49,22 +52,18 @@
 
 .repository-item a.edit {
     background: url(../images/icons/edit.png) no-repeat center center;
-    background-size: contain;
-    margin: 10px 0px -20px auto;
+    background-size: contain;   
 }
 
 .repository-item a.delete{
     background: url(../images/icons/delete.png) no-repeat center center;
-    background-size: contain;
-    margin: 10px 10px -20px 10px;
+    background-size: contain;   
 }
 
 .repository-item a.preview {
     background: url(../images/icons/preview.png) no-repeat center center;
-    background-size: contain;
-    margin: 10px 10px -20px 10px;
+    background-size: contain;   
 }
-
 
 #repo-artwork .repository-item {
     flex: 0 1 calc(33% - 10px);
@@ -91,13 +90,13 @@
 
 #repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
 #repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
-    margin: 25px 0px -60px -25px;
+    /*margin: 25px 0px -60px -25px;*/
+    margin: -20px 0 -30px 40px;
     position: absolute;
 }
 
-.artwork-elements a.edit, .artwork-elements a.delete {
+.artwork-elements a.edit, .artwork-elements a.delete, .artwork-elements a.preview {
     margin: 10px 10px -40px auto;
-    display: block;
 }
 
 .artwork-elements a.delete {
@@ -125,6 +124,13 @@ h1.exhibit-name:hover {
 
 p.exhibit-slug, a.edit, a.delete{
     font-size: 0.65em;
+}
+
+p.by {
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin: 0 10px;
 }
 
 p.by, p.exbDate, p.exhibit-about {
@@ -178,7 +184,7 @@ a.gotoExb:hover a.gotoExb:after {
 p.exhibit-about {
     font-weight: bold;
     line-height: 30px;
-    margin-bottom: 10px;
+    margin: 10px 10px 10px 0;
 }
 
 .artwork-elements.flex {
@@ -216,7 +222,9 @@ p.url span {
 /********* Media Queries ***********/
 @media all and (min-width: 800px) {
     p.by {
-        flex-basis: calc(75% - 40px);
+        flex-basis: calc(75% - 55px);
+        text-align: left;
+        margin: 0;
     }
 
     p.by, p.exhibit-about {
@@ -226,6 +234,7 @@ p.url span {
 
     p.exbDate {
         flex-basis: calc(25% - 15px);
+        margin-left: 25px;
     }
 
     p.exhibit-about {
