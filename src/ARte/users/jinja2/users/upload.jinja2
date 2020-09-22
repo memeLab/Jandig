@@ -128,27 +128,45 @@
             });
 
             $("#id_source").change(
-                function(e) {               
-                    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {                  
-                        var file = e.originalEvent.srcElement.files[i];
-            
-                        var image_preview = document.createElement("img");
-                        var reader = new FileReader();
-                        reader.onloadend = function() {
+                function(e) {
+                    var file = e.originalEvent.srcElement.files[0];
+                    var image_preview = null;
+                    var previewAndLoadFile = null;
+                    if (file.type === "video/mp4" || file.type === "video/webm") {
+                        image_preview = document.createElement("video");
+                        previewAndLoadFile = function() {
                             image_preview.src = reader.result;
                             image_preview.id = "img-preview";
-                            image_preview.hidden = "hidden";
+                            image_preview.controls = "controls";
+                            image_preview.autoplay = "autoplay";
+                            image_preview.muted = "muted";
+                            document.getElementById("id_source").after(image_preview); //make preview image of the object/marker show
                         }
-                        reader.readAsDataURL(file);            
-                        $("input").after(image_preview); //make preview image of the object/marker show  
-                    }                
+                    } else {
+                        image_preview = document.createElement("img");
+                        previewAndLoadFile = function() {
+                            image_preview.src = reader.result;
+                            image_preview.id = "img-preview";
+                            document.getElementById("id_source").after(image_preview); //make preview image of the object/marker show
+                        }
+                    }
+                    var reader = new FileReader();
+                    reader.onloadend = previewAndLoadFile;
+                    reader.readAsDataURL(file);
                 }
             );
 
             function updateValues(){
                 var image_preview = document.querySelector('#img-preview');
-                var high = image_preview.naturalHeight;
-                var wide = image_preview.naturalWidth;
+                var high = null;
+                var wide = null;
+                if (image_preview.tagName == "IMG") {
+                    high = image_preview.naturalHeight;
+                    wide = image_preview.naturalWidth;
+                } else {
+                    high = image_preview.videoHeight;
+                    wide = image_preview.videoWidth;
+                }
 
                 if(high >= wide){
                     var yprop = 1
