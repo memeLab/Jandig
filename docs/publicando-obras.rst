@@ -30,3 +30,46 @@ Como publicar conteúdo em realidade aumentada no Jandig
 
 Acesse a URL definitiva que você acabou de criar, aponte a câmera para
 o Marcador e veja a mágica acontecer!
+
+
+Bem vindo ao Jandig ARte! 
+
+Para os artistas e usuários de primeira viagem, gostaríamos primeiramente de mostrar nossa gratidão por terem escolhido e confiado em nossa plataforma para exporem seus trabalhos e obras de arte. 
+
+Neste documento iremos detalhar passo a passo como criar suas próprias obras de arte com realidade aumentada, passando por etapas essenciais para sua construção, como marcadores, objetos, suas relações e como juntos podem se tornar artworks e exposições.  
+
+Vamos lá, pois esta é uma leitura rápida e após entenderem como a plataforma funciona em sua integridade, criar exposições e obras no Jandig será mais fácil do que nunca.
+
+Primeiros passos
+----------------
+
+Antes de mais nada, é necessário saber que para que um artista possa criar suas exposições no Jandig, uma conta da plataforma precisa ser criada. Siga os passos abaixo para entender como:
+
+.. figure:: ../docs/images/main-page-jandig.png
+   :scale: 50%
+   :alt: Página principal do Jandig
+   :target: jandig.app
+   
+   Página principal do Jandig
+
+1) Ao acessar o Jandig, a partir da `URL`_ apropriada, clique no botão preto "Sign up".
+
+.. _URL: jandig.app
+
+.. _imagem: https://jandig.app/users/signup/
+
+.. figure:: ../docs/images/sign-up-page.png
+   :scale: 50%
+   :alt: Página de cadastro
+   :target: jandig.app/users/signup
+   
+   Página de cadastro
+
+2) Insira as informações requisitadas, como na `imagem`_, e submeta seu cadastro!
+
+.. figure:: ../docs/images/main-page-logged.png
+   :scale: 50%
+   :alt: Página principal pós-login
+   :target: jandig.app
+
+   Página principal pós-login
