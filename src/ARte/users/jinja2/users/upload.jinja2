@@ -132,6 +132,8 @@
                     var file = e.originalEvent.srcElement.files[0];
                     var image_preview = null;
                     var previewAndLoadFile = null;
+                    var content_box = document.createElement("div");
+                    content_box.id = "content-box";
                     if (file.type === "video/mp4" || file.type === "video/webm") {
                         image_preview = document.createElement("video");
                         previewAndLoadFile = function() {
@@ -140,16 +142,19 @@
                             image_preview.controls = "controls";
                             image_preview.autoplay = "autoplay";
                             image_preview.muted = "muted";
-                            document.getElementById("id_source").after(image_preview); //make preview image of the object/marker show
+                            document.getElementById("id_source").after(content_box);
+                            document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
                         }
                     } else {
                         image_preview = document.createElement("img");
                         previewAndLoadFile = function() {
                             image_preview.src = reader.result;
                             image_preview.id = "img-preview";
-                            document.getElementById("id_source").after(image_preview); //make preview image of the object/marker show
+                            document.getElementById("id_source").after(content_box);
+                            document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
                         }
                     }
+                    
                     var reader = new FileReader();
                     reader.onloadend = previewAndLoadFile;
                     reader.readAsDataURL(file);
