@@ -97,19 +97,19 @@ Jandig also enable users to create their own artworks and exhibitions, following
 
 | Identifier | Requirements |
 | - | - | - | - |
-| RF01 | Permitir que o usuário crie, edite, exclua sua conta e encerre sua sessão |
-| RF02 | Permitir que o usuário recupere sua senha |
-| RF03 | Permitir que o usuário possa escolher a opção de linguagem entre o inglês e o português |
-| RF04 | Permitir que o artista faça upload de uma imagem a ser usada como marcador na plataforma |
-| RF05 | Permitir que o artista faça upload de um marcador na plataforma e possa editá-lo |
-| RF06 | Permitir que o artista faça upload de um objeto na plataforma e possa editá-lo |
-| RF07 | Permitir que o artista crie uma obra de arte jandig |
-| RF08 | Permitir que o artista exclua e edite uma obra de arte de sua autoria |
-| RF09 | Permitir que o artista crie uma exposição digital |
-| RF10 | Permitir que o artista exclua e edite uma exposição de sua autoria |
-| RF11 | Permitir que o artista possa ver seus marcadores, objetos, obras de arte e exibições |
-| RF12 | Permitir que o artista possa fazer o download de seus marcadores, objetos, obras de arte e exibições |
-| RF13 | Permitir que o usuário possa ver toda a coleção de objetos, marcadores, obras de arte e exposições publicadas por qualquer pessoa e possa fazer o download de qualquer item da coleção |
-| RF14 | Fornecer um espaço com dicas para que o usuário saiba mais sobre o funcionamento da plataforma, podendo também buscar algum conteúdo por palavras-chave  |
-| RF15 | Permitir que o usuário possa escolher qual exibição deseja interagir |
-| RF16 | Permitir que o usuário (com login opcional) possa interagir com exibições utilizando a câmera |  
+| RF01 | Allow the user to create, edit, delete their account and log out |
+| RF02 | Allow the user to recover their password |
+| RF03 | Allow the user to choose the language option between English and Portuguese |
+| RF04 | Allow the artist to upload an image to be used as a marker on the platform |
+| RF05 | Allow the artist to upload a marker to the platform and allow it to be edited |
+| RF06 | Allow the artist to upload a object to the platform and allow it to be edited |
+| RF07 | Allow the artist to create a jandig artwork |
+| RF08 | Allow the artist to delete and edit a artwork of his own |
+| RF09 | Allow the artist to create a digital exhibition |
+| RF10 | Allow the artist to delete and edit an exhibition of his own |
+| RF11 | Allow the artist to see your markers, objects, artworks and exhibitions |
+| RF12 | Allow the artist to download your markers, objects, artwork and exhibitions |
+| RF13 | Allow the user to see the entire collection of objects, markers, artwork and exhibitions published by anyone and also download any item in the collection |
+| RF14 | Provide a space with tips for the user to learn more about the platform's operation, and allow them to search for some content by keywords |
+| RF15 | Allow the user to choose which exhibition they want to interact with |
+| RF16 | Allow the user (with optional login) to interact with exhibitions using the camera  on a mobile device |  
