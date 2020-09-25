@@ -96,7 +96,7 @@ Jandig also enable users to create their own artworks and exhibitions, following
 # 5. Product requirements
 
 | Identifier | Requirements |
-| - | - | - | - |
+| - | - |
 | RF01 | Allow the user to create, edit, delete their account and log out |
 | RF02 | Allow the user to recover their password |
 | RF03 | Allow the user to choose the language option between English and Portuguese |
