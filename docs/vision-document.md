@@ -91,6 +91,25 @@ Jandig also enable users to create their own artworks and exhibitions, following
 
 - The user needs to have access to a smartphone with a built-in camera and internet access.
 
-- The responsive web app will be utilized by people that desire to AR view artworks that were made within the app requirements.
+- The responsive web app will be utilized by people that desire to see AR artworks that were made within the app requirements.
 
-# 5. Product Requisites
+# 5. Product requirements
+
+| Identifier | Requirements |
+| - | - | - | - |
+| RF01 | Permitir que o usuário crie, edite, exclua sua conta e encerre sua sessão |
+| RF02 | Permitir que o usuário recupere sua senha |
+| RF03 | Permitir que o usuário possa escolher a opção de linguagem entre o inglês e o português |
+| RF04 | Permitir que o artista faça upload de uma imagem a ser usada como marcador na plataforma |
+| RF05 | Permitir que o artista faça upload de um marcador na plataforma e possa editá-lo |
+| RF06 | Permitir que o artista faça upload de um objeto na plataforma e possa editá-lo |
+| RF07 | Permitir que o artista crie uma obra de arte jandig |
+| RF08 | Permitir que o artista exclua e edite uma obra de arte de sua autoria |
+| RF09 | Permitir que o artista crie uma exposição digital |
+| RF10 | Permitir que o artista exclua e edite uma exposição de sua autoria |
+| RF11 | Permitir que o artista possa ver seus marcadores, objetos, obras de arte e exibições |
+| RF12 | Permitir que o artista possa fazer o download de seus marcadores, objetos, obras de arte e exibições |
+| RF13 | Permitir que o usuário possa ver toda a coleção de objetos, marcadores, obras de arte e exposições publicadas por qualquer pessoa e possa fazer o download de qualquer item da coleção |
+| RF14 | Fornecer um espaço com dicas para que o usuário saiba mais sobre o funcionamento da plataforma, podendo também buscar algum conteúdo por palavras-chave  |
+| RF15 | Permitir que o usuário possa escolher qual exibição deseja interagir |
+| RF16 | Permitir que o usuário (com login opcional) possa interagir com exibições utilizando a câmera |  
