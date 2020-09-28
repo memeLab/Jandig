@@ -47,6 +47,12 @@ Before anything else, an account need to be created, so that artists can deploy 
 
 To do that, please refer to the steps below.
 
+1) Access Jandig's website by clicking in the appropriate `URL`_, and click the "Sign up" button.
+
+.. _URL: jandig.app
+
+.. _image: https://jandig.app/users/signup/
+
 .. figure:: ../docs/images/main-page-jandig.png
    :scale: 50%
    :alt: Jandig main screen
@@ -54,12 +60,9 @@ To do that, please refer to the steps below.
    
    Jandig main screen
 
-1) Access Jandig's website by clicking in the appropriate `URL`_, and click the "Sign up" button.
 
-.. _URL: jandig.app
 
-.. _image: https://jandig.app/users/signup/
-
+2) Fill the spaces with your informations, as shown in the `image`_, and submit it!
 .. figure:: ../docs/images/sign-up-page.png
    :scale: 50%
    :alt: Sign up page
@@ -67,7 +70,8 @@ To do that, please refer to the steps below.
    
    Sign up page
 
-2) Fill the spaces with your informations, as shown in the `image`_, and submit it!
+
+3) Congratulations! You have succesfully created your Jandig ARte account and can now actively contribute to the art community with your AR-based pieces!
 
 .. figure:: ../docs/images/main-page-logged.png
    :scale: 50%
@@ -76,7 +80,6 @@ To do that, please refer to the steps below.
 
    Post-login page
 
-3) Congratulations! You have succesfully created your Jandig ARte account and can now actively contribute to the art community with your AR-based pieces!
 
 Creating your first artwork
 ===========================
@@ -94,6 +97,10 @@ They caracteristically have a black border that is inserted around the drawing, 
 
 To create a marker, all you need to have with you is your image. It can be anything, from a painting to a random picture you saved from google images (but be aware that most of the times these images will be scanned by your smartphone's camera, so it is advised that your image is not too big or have too many small details that will not be able to be enjoyed through the camera). Jandig will do all the work of processing and generating your marker.
 
+To do that, head to this `page`_, and submit your image for marker generation. Take a look at the imagem down below to see what it looks like, and where to upload your image.
+
+.. _page: https://jandig.app/generator/
+
 .. figure:: ../docs/images/marker-generator.png
    :scale: 50%
    :alt: Marker generator page
@@ -101,6 +108,46 @@ To create a marker, all you need to have with you is your image. It can be anyth
 
    Marker generator page
 
-To do that, head to this `page`_, and submit your image for marker generation. Take a look at the imagem down below to see what it looks like, and where to upload your image.
+Ok, so now that you have uploaded your image, go ahead and download the two files that will be given to you by Jandig, the .patt marker file and the image marker file. For the sake of brevity and simpicity of this manual, the pattern file (.patt) is the file created and used by most AR toolkits as the pattern the AR technology will recognize.
 
-.. _page: https://jandig.app/generator/
+Store these two files in a safe location, for safekeeping.
+
+Now all you have to do is upload the file! Go back to the application's `main`_ page and select the button that says "Upload Marker". You will be greeted by this screen.
+
+.. _main: https://jandig.app
+
+.. figure: ../docs/images/upload-marker.png
+   :scale: 50%
+   :alt: Marker upload page
+   :target: https://jandig.app/users/markers/upload/
+   
+   Marker upload page
+   
+This is where you will submit your marker, so go ahead and fill the spaces with information like title and author's name, in case you're not the marker's creator, as well as choosing from your computer the appropriate marker image (that .png file from before) and the marker pattern (that .patt file from before). Don't forget to read all the informations the page contain.
+
+Voila! You have succesfully created and added to your collection an AR marker. For the next step, we will be creating an object!
+
+Objects
+-------
+
+When you upload a marker, the application will re-direct you to the main page again. From there, look for the button that says "Upload Object", which is right below the "Upload Marker" button. Go ahead and click it, and the application will lead you to this `page`_ right here.
+
+.. figure: ..docs/images/upload-object.png
+   :scale: 50%
+   
+   Object upload page
+ 
+In this page, you will submit your object. In Jandig terms, the object is the animation that will show up in your screen when you read the marker throgh your device's camera. It is the real magic of AR and the one which all the work before will be useful for. So let's take a look at the page and learn how to upload a marker.
+
+While this submission form is bigger, the process is much simpler. Before filling it out, take your time to select and locate the .gif that you will want to upload. There is no restriction on the application regarding the GIF type, size, theme, looping and whatnot. But the Jandig creators recommend that you choose a GIF that has a perfect loop and is on par with the marker's thematic. Also, don't feel restricted to using a gif that you have found on the internet or social media. Go ahead and use all your artistic skills to create your own! 
+
+Now is the time to keep in mind that scale and position of the object will affect the artwork. There are two fiels where you can fill with numbers related to those two parameters:
+
+1) The scale parameter, which is set by default to 1. If you want your image to be bigger, say twice the size, just change this number to 2. If you want it to be three times it's original size, set it to 3, and so on for other sizes. This also applies for smaller sizes and decimals, such as 0.5 will be half the original objects size.
+2) The position parameter, which should be adjusted relative to the size of the object on the screen. This one is further broke down into another two different parameters, horizontal and vertical. These two parameters can be better understood taking in consideration a graph. Their default values will be set to 0, which marks the center of the graph, where the horizontal and vertical lines intersect. Let's take a look at how to tamper with them:
+   a) Horizontal: If the value is positive and is 2, for example, the center of the object will be placed in a distance 2 times the size of it's marker side to the right. If this value is negative, say -2, it will be placed at the same distance 2 times the size of it's marker side to the left.
+   b) Vertical: If the value is positive and is 2, for example, the center of the object will be placed in a distance 2 times the size of it's marker side, above it. If this value is negative, say -2, it will be placed at the same distance 2 times the size of it's marker side, below it.
+   
+After you have succesfully uploaded your image, and set your values, don't forget to give it a title and say whether you're its author or not. 
+
+Voila! You have succesfully created your markers object and can now create your artwork! Remember that these two, marker and object, are not yet linked to one another. This will happen in the next step.
