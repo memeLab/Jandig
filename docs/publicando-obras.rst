@@ -116,7 +116,7 @@ Now all you have to do is upload the file! Go back to the application's `main`_ 
 
 .. _main: https://jandig.app
 
-.. figure: ../docs/images/upload-marker.png
+.. figure:: ../docs/images/upload-marker.png
    :scale: 50%
    :alt: Marker upload page
    :target: https://jandig.app/users/markers/upload/
@@ -132,7 +132,7 @@ Objects
 
 When you upload a marker, the application will re-direct you to the main page again. From there, look for the button that says "Upload Object", which is right below the "Upload Marker" button. Go ahead and click it, and the application will lead you to this `page`_ right here.
 
-.. figure: ..docs/images/upload-object.png
+.. figure:: ../docs/images/upload-object.png
    :scale: 50%
    
    Object upload page
@@ -151,3 +151,30 @@ Now is the time to keep in mind that scale and position of the object will affec
 After you have succesfully uploaded your image, and set your values, don't forget to give it a title and say whether you're its author or not. 
 
 Voila! You have succesfully created your markers object and can now create your artwork! Remember that these two, marker and object, are not yet linked to one another. This will happen in the next step.
+
+Artworks
+--------
+
+Ok, so now that we have gone through everythin we needed to get done to create an artwork, let's get to the process of actually creating it. A Jandig artwork is defined by the junction of two things that will work together to create the interaction that we want to achieve.
+
+You guessed it right, we will need to make use of the previously created marker and object. In this section we will select one marker and one object so that the magic can be done and an AR artwork can be seen through your device's camera. Head back to Jandig's main page once again and look for this button:
+
+.. figure:: ../docs/images/artwork-button.png
+
+Click it, and you will be redirected to a page that looks like this:
+
+.. figure:: ../docs/images/artwork-page.png
+
+The process is pretty straight forward and simple and pratically the same for both itens. You will be greeted by a pop-up with a lot of markers, and objects in their case, or none. In the case of this manual ExampleUser, all of the test case markers and objects appeared. 
+
+Simply select one marker, aggree to the terms and go press next to select one object. Here's an example of selected marker and object:
+
+.. figure:: ../docs/images/select-marker.png
+
+.. figure:: ../docs/images/select-object.png
+
+Give a title and a description and you're done!
+
+.. figure:: ../docs/images/finish-art.png
+
+Voila! You have succesfully created your first Jandig artwork and are almost finished with this manual!
