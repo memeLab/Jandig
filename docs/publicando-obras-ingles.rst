@@ -187,7 +187,7 @@ Voila! You have succesfully created your first Jandig Artwork and are almost fin
 Exhibitions
 ~~~~~~~~~~~~
 
-Now in this step, you will be able to exhibit your Artwork to the world through the creation of an Exhibition. It is through it that the public will have access to interact with your Artworks.
+Welcome to the last step! In this final phase, we will show you how to exhibit your artwork to the world, using the process of creating an Exhibition. It is through exhibitions that the gerenal public, which include common users and even other artists, will have access to and be able to interact with your artworks.
 
 To get started, simply access the "Create Exhibition" icon.
 
@@ -231,3 +231,4 @@ You can see all your Exhibitions in the "My stuff" menu. And you can also access
 
    Exhibition created page
 
+And that's it! If you have got to this step, you have succesfully created and displayed your very own AR artworks to the world. Congrats on making it this far, and enjoy all the experiences that jandig has to offer!
