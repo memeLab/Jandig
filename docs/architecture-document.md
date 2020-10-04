@@ -1,6 +1,6 @@
 # Software Architecture Document (SAD)
 ## Use-Case View
-### Authentication
+### Account Access and Management
 
 The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is an user that hasn't log in the app.
 
@@ -18,4 +18,4 @@ The following diagram points out all of the steps for creating a new exhibition 
 
 Below are shown some other interesting features from Jandig ARte:
 
-![](use-case-diagram-features.png)
+![](images/use-case-diagram-features.png)
