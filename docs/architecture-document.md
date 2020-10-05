@@ -19,3 +19,34 @@ The following diagram points out all of the steps for creating a new exhibition 
 Below are shown some other interesting features from Jandig ARte:
 
 ![](images/use-case-diagram-features.png)
+
+
+## Logical View
+
+### Overview
+
+ Since the software is django-based , it contains projects, apps and layers . in janding Arte cases , we have two main apps: core and users .
+ 
+ ![](images/package-diagram-logical-view.png)    
+ 
+ 
+### Architecturally Significant Design Packages
+
+#### "Profile" Class Diagram 
+![](images/class-diagram-profile.png)
+
+#### "Marker" Class Diagram 
+![](images/class-diagram-marker.png)
+
+#### "Artwork" Class Diagram 
+![](images/class-diagram-artwork.png)
+
+#### "Object" Class Diagram 
+![](images/class-diagram-object.png)
+
+#### "Artwork2" Class Diagram 
+![](images/class-diagram-artwork2.png)
+
+#### "Exhibit" Class Diagram 
+![](images/class-diagram-exhibit.png)
+
