@@ -40,6 +40,17 @@ Project's main programming language is Python, through Django framework. Django 
 Jandig ARte is a **Progressive Web App (PWA)**, which means it is an web app that has a similar use to a native mobile app. It uses **PostgreSQL** as database.
 
 
+## Architectural Goals and Constraints
+
+Jandig was created for providing a low-cost and easy-to-use augmented reality experience to artists and art contemplators. That said, the software must be:
+
+- Easy to learn, use and memorize;
+- Usable through a smartphone, allowing more people to use it;
+- No previous knowledge of programming necessary for using it;
+- Free, or cheap enough;
+- Available in different languages, so people around the world can use it;
+- Open Source, so community can work together for making it awesome!
+
 ## Use-Case View
 ### Account Access and Management
 
