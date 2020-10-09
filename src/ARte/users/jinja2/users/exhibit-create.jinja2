@@ -43,7 +43,7 @@
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
-                    <input class="select-btn next-btn" onclick="qualquerCoisa()" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
             </form>
         </div>
@@ -73,12 +73,15 @@
             }
 
 
-            function qualquerCoisa() {
+            function cleanSlug() {
                 var slug = document.getElementById('id_slug').value
                 let validate = /^[a-zA-Z0-9_]*$/
                 if(!slug.match(validate)) {
-                    alert("Slug can't contain spaces or special characters")
+                    $('input[type="submit"]').prop('disabled', true);
+                    alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
+                    
                 }
+                location.reload();
             }
 
             setInterval(activateNextButton, 100);
