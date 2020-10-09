@@ -239,8 +239,8 @@ class ExhibitForm(forms.Form):
 
     def clean_slug(self):
         data = self.cleaned_data['slug']
-        # if not re.match("^[a-zA-Z0-9_]*$", data):
-            # raise forms.ValidationError(_("Slug can't contain spaces or special characters"))
+        if not re.match("^[a-zA-Z0-9_]*$", data):
+            raise forms.ValidationError(_("Slug can't contain spaces or special characters"))
         return data
 
     def __init__(self, *args, **kwargs):

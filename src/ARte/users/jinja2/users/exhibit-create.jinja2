@@ -43,7 +43,7 @@
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn" onclick="qualquerCoisa()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
             </form>
         </div>
@@ -71,6 +71,16 @@
                     $('#next-info').prop('disabled', true);
                 }
             }
+
+
+            function qualquerCoisa() {
+                var slug = document.getElementById('id_slug').value
+                let validate = /^[a-zA-Z0-9_]*$/
+                if(!slug.match(validate)) {
+                    alert("Slug can't contain spaces or special characters")
+                }
+            }
+
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
