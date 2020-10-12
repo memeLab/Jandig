@@ -49,8 +49,8 @@
 }
 
 #content-box {
-    height: 50vh;
-    width: 65vh;
+    height: 50%;
+    width: 65%;
 }
 
 img {
@@ -65,7 +65,7 @@ video{
 
 @media only screen and (max-width: 600px){
     #content-box {
-        height: 45vh;
-        width: 45vh;
+        height: 60%;
+        width: 60%;
     }
 };
