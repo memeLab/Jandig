@@ -1,1 +1,10 @@
 /* Put specific styles here */
+
+#search-box {
+    width: 50%;
+}
+
+#search-button {
+    width: 50%;
+}
+

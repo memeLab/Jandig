@@ -3,6 +3,7 @@
 {% block content %}
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
+    <link rel="stylesheet" href="/static/css/exhibit-detail.css">
     <div class="signup-modal container flex">
         <div class="logo">
             <a href="{{ url('home') }}">
@@ -12,6 +13,10 @@
 
         <div class="exhibit-form">
             <h2>{{_("Choose the Exhibition you're seeing")}}</h2>
+            <div>
+                <input type="text" id="search-box" name="search" />
+                <button id="search-button" onclick="findExhibit()">Submete ai mano<button/>
+            </div>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
                 {{ csrf_input }}
                 {% for field in form.visible_fields() %}
@@ -20,11 +25,21 @@
                         {{ field.errors }}
                     </p>
                 {% endfor %}
-                <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
+                <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
             </form>
         </div>
     </div>
     <script>
+        function findExhibit() {
+            let field = document.getElementById('id_exhibit').options;
+            let searchValue = document.getElementById("search-box").value;
+            for (keys in field) {
+                if (field[keys].innerHTML == searchValue) {
+                    field[keys].selected = "selected";
+                }
+            }
+        }
+
         $('#id_exhibit').on('change',function(e){
             if($(this).prop('value') != ''){
                 $('input[type="submit"]').prop('disabled', false);
