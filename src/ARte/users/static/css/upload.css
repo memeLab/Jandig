@@ -47,3 +47,25 @@
 #positionTitle:hover + #tip2 {
     display: inline-block;
 }
+
+#content-box {
+    height: 50%;
+    width: 65%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+video{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+@media only screen and (max-width: 600px){
+    #content-box {
+        height: 60%;
+        width: 60%;
+    }
+};
