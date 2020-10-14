@@ -35,7 +35,7 @@
             let field = document.getElementById('id_exhibit').options;
             let searchValue = document.getElementById("search-box").value;
             for (keys in field) {
-                if (field[keys].innerHTML == searchValue) {
+                if (field[keys].innerHTML.search(searchValue) >= 0) {
                     field[keys].selected = "selected";
                 }
             }
