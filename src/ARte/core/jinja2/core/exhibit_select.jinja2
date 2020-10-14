@@ -4,6 +4,7 @@
     {# FIXME: maybe this can be improved #}
     <link rel="stylesheet" href="/static/css/signup.css">
     <link rel="stylesheet" href="/static/css/exhibit-detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="signup-modal container flex">
         <div class="logo">
             <a href="{{ url('home') }}">
@@ -13,9 +14,9 @@
 
         <div class="exhibit-form">
             <h2>{{_("Choose the Exhibition you're seeing")}}</h2>
-            <div>
+            <div class="search-area">
                 <input type="text" id="search-box" name="search" />
-                <button id="search-button" onclick="findExhibit()">Submete ai mano<button/>
+                <button id="search-button" onclick="findExhibit()"><i class="fa fa-search"></i></button>
             </div>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
                 {{ csrf_input }}
