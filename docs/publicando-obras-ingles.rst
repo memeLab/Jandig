@@ -19,9 +19,9 @@ Important: set the Patern Ratio to 0.60.
 
 3) Click on "Upload Marker" and upload the image (with extension ".PNG") and Marker (".PATT") created in the previous step. This image is the one that the Jandig camera will recognize.
 
-4) Click on "Upload Object" and upload the GIF with your animation. This image Jandig will display over the camera.
+4) Click on "Upload Object" and upload the GIF or video (WEBM or MP4 format) with your animation. This image Jandig will display over the camera.
 
-5) Click on "Create jandig artwork", choose the corresponding Marker and Object you just uploaded. An Artwork is the set of Marker and Object, linking to be presented in augmented reality.
+5) Click on "Create Jandig Artwork", choose the corresponding Marker and Object you just uploaded. An Artwork is the set of Marker and Object, linking to be presented in augmented reality.
 
 6) Click on "Create Exhibition". Choose one or several works. Give the set a title and define its URL. It will be used to access the set of Artworks created. For example, if you enter "expotest" the definitive URL to access your creations will be "https://jandig.app/expotest".
 
@@ -79,9 +79,9 @@ Markers
 
 Markers are the very basis of your future Artwork. They are essentially an image, made by you, or not, that is processed so that it can be succesfully read by Jandig and present your Artwork. 
 
-They caracteristically have a black border that is inserted around the drawing, and this border serves as the "Marker", or signal, that Jandig recognizes and fires up its system. 
+They caracteristically have a black border that is inserted around the drawing, and this border serves for Jandig to recognize the Markers.
 
-To create a Marker, all you need to have with you is your image. It can be anything, from a painting to a random picture you saved from google images (but be aware that most of the times these images will be scanned by your smartphone's camera, so it is advised that your image is not too big or have too many small details that will not be able to be enjoyed through the camera). Jandig will do all the work of processing and generating your Marker.
+To create a Marker, all you need to have with you is your image. It can be anything, from a painting to a random picture you saved from Google Images. Jandig will do all the work of processing and generating your Marker.
 
 To do that, head to this `page`_, and submit your image for Marker generation. Take a look at the imagem down below to see what it looks like, and where to upload your image.
 
@@ -94,7 +94,7 @@ To do that, head to this `page`_, and submit your image for Marker generation. T
 
    Marker generator page
 
-Ok, so now that you have uploaded your image, go ahead and download the two files that will be given to you by Jandig, the .patt Marker file and the image Marker file. For the sake of brevity and simpicity of this manual, the pattern file (.patt) is the file created and used by most AR toolkits as the pattern the AR technology will recognize.
+Ok, so now that you have uploaded your image, go ahead and download the two files that will be given to you by Jandig, the .patt Marker file and the image Marker file. For the sake of brevity and simplicity of this manual, the pattern file (.patt) is the file created and used by most AR toolkits as the pattern the AR technology will recognize.
 
 Store these two files in a safe location, for safekeeping.
 
@@ -123,9 +123,11 @@ When you upload a Marker, the application will re-direct you to the main page ag
    
    Object upload page
  
-In this page, you will submit your Object. In Jandig terms, the Object is the animation that will show up in your screen when you read the Marker throgh your device's camera. It is the real magic of AR and the one which all the work before will be useful for. So let's take a look at the page and learn how to upload a Marker.
+In this page, you will submit your Object. In Jandig terms, the Object is the animation that will show up in your screen when you read the Marker throgh your device's camera. It is the real magic of AR and the one which all the work before will be useful for. So let's take a look at the page and learn how to upload an Object.
 
-While this submission form is bigger, the process is much simpler. Before filling it out, take your time to select and locate the .gif that you will want to upload. There is no restriction on the application regarding the GIF type, size, theme, looping and whatnot. But the Jandig creators recommend that you choose a GIF that has a perfect loop and is on par with the Marker's thematic. Also, don't feel restricted to using a gif that you have found on the internet or social media. Go ahead and use all your artistic skills to create your own! 
+While this submission form is bigger, the process is much simpler. Before filling it out, select and locate the file you want to upload. The formats currently supported in Jandig are .gif, .webm (including transparency) and .mp4.
+
+There are no restrictions on size, theme, looping and other specifications, but we recommend that you choose content that has a perfect loop and is related to the Marker theme. Also, do not restrict yourself to using a file that you have found on the internet or on social media. Go ahead and use all your artistic skills to create your own!
 
 Now is the time to keep in mind that scale and position of the Object will affect the Artwork. There are two fields where you can fill with numbers related to those two parameters:
 
@@ -187,7 +189,7 @@ Voila! You have succesfully created your first Jandig Artwork and are almost fin
 Exhibitions
 ~~~~~~~~~~~~
 
-Welcome to the last step! In this final phase, we will show you how to exhibit your artwork to the world, using the process of creating an Exhibition. It is through exhibitions that the gerenal public, which include common users and even other artists, will have access to and be able to interact with your artworks.
+Welcome to the last step! In this final phase, we will show you how to exhibit your Artwork to the world, using the process of creating an Exhibition. It is through exhibitions that the gerenal public, which include common users and even other artists, will have access to and be able to interact with your Artworks.
 
 To get started, simply access the "Create Exhibition" icon.
 
@@ -197,7 +199,7 @@ To get started, simply access the "Create Exhibition" icon.
 
    Create Exhibition icon page
 
-Next, you need to confirm that you want to select artwork from the collection.
+Next, you need to confirm that you want to select Artwork from the collection.
 
 .. figure:: ../docs/images/exhibition-select-artwork-button.png
    :scale: 30%
@@ -231,4 +233,4 @@ You can see all your Exhibitions in the "My stuff" menu. And you can also access
 
    Exhibition created page
 
-And that's it! If you have got to this step, you have succesfully created and displayed your very own AR artworks to the world. Congrats on making it this far, and enjoy all the experiences that jandig has to offer!
+And that's it! If you have got to this step, you have succesfully created and displayed your very own AR Artworks to the world. Congrats on making it this far, and enjoy all the experiences that jandig has to offer!
