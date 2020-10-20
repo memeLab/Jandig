@@ -11,4 +11,5 @@ Ajuda
 
    animacoes
    marcadores
-   publicando-obras
+   publicando-obras-ingles
+   publicando-obras-portugues
