@@ -573,7 +573,10 @@ def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
     if qs:
         instance = qs[0] 
-        if isinstance(instance, Exhibit) and (instance.owner == user.profile or user.has_perm('users.moderator')):
+
+        if(isinstance(instance, Artwork)) and (instance.author == user.profile or user.has_perm('users.moderator')):
+            instance.delete()
+        elif isinstance(instance, model) and (instance.owner == user.profile or user.has_perm('users.moderator')):
             instance.delete()
         else:
             if user.has_perm('users.moderator') and not instance.in_use:
