@@ -1,0 +1,16 @@
+@startuml
+
+hide circle
+
+class "Exhibit (models.Model)" as C {
+  {field} - owner: models.ForeignKey()
+  {field} - name: models.CharField()
+  {field} - slug: models.CharField()
+  {field} - artworks: models.ManyToManyField()
+  {field} - creation_date: models.DateTimeField()
+  {method} + __str__(self) 
+  {method} + artworks_count(self)
+  {method} + date(self)
+}
+
+@enduml

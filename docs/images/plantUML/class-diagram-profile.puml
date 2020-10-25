@@ -1,0 +1,14 @@
+@startuml
+
+hide circle
+
+class "Profile (models.Model)" as C {
+  {field} - user: models.OneToOneField()
+  {field} - bio: models.TextField()
+  {field} - country: models.CharField()
+  {field} - personal_site: models.UrlField()
+  {method} + create_user_profile(sender, instance, created, **kwarg)
+  {method} + save_user_profile(sender, instance, **kwargs)
+}
+
+@enduml
