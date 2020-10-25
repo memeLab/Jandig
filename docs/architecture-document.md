@@ -3,6 +3,7 @@
 |Version | description| Author(s) | date |
 |--------|------------|-----------|------|
 |1.0|Initial version|Victor Gomide & Emanuel Holanda|05/10/2020| 
+|1.1|New diagrams in  PlantUml| VIctor Gomide & Emanuel Holanda |24/10/2020|
 
 
 # Software Architecture Document (SAD)
@@ -30,7 +31,7 @@ This document is extremely important for understanding the project as a whole, s
  - [CSUN's Software Architecture Document Template](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjX4638opzsAhXlHrkGHfRtDwkQFjALegQIARAC&url=https%3A%2F%2Fprojects.cecs.pdx.edu%2Fattachments%2Fdownload%2F3180%2FSoftware_Architecture_Document_SF.docx&usg=AOvVaw0aIZsfpWJeIJ52HMgh7nXx)
  - [Documento de Arquitetura de Software - Facom/UFU](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwi9m7T2rpzsAhVuF7kGHVbrBYwQFjACegQIARAC&url=http%3A%2F%2Fwww.facom.ufu.br%2F~flavio%2Fpds1%2Ffiles%2F2016-01%2Frup_sad-template-documento-arquitetura.dot&usg=AOvVaw3qyZZysozErnD64wCX-vOy)
  - [Documento de Arquitetura de Software RDI-AEE](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiE78LEr5zsAhV7GLkGHSWyAVMQFjAAegQIBRAC&url=http%3A%2F%2Frepositorio.aee.edu.br%2Fbitstream%2Faee%2F1106%2F3%2FTCC2_2018_2_GabrielLeiteDias_MatheusLimadeAlbuquerque_Apendice2.pdf&usg=AOvVaw2wXEOkYpBHmN32ChHHDgOh)
-
+- [The Django Book: Django's Structure](https://djangobook.com/mdj2-django-structure/)
 
 ### Overview
 
@@ -71,9 +72,10 @@ The diagram below shows how account access and management is done, with users an
 ![](images/use-case-diagram-user.png)
 
 
-### Exhibition Creation
+### Artist Role
 
-The following diagram points out all of the steps for creating a new exhibition in Jandig ARte, from the point of view of the Artist and of any other user of the app.
+The following diagram shows the application's features focused on the Artist's role.
+
 
 ![](images/use-case-diagram-artist.png)
 
@@ -106,9 +108,6 @@ Since the software is Django-based, it contains projects, apps and layers. in Ja
 
 #### "Object" Class Diagram
 ![](images/class-diagram-object.png)
-
-#### "Artwork2" Class Diagram
-![](images/class-diagram-artwork2.png)
 
 #### "Exhibit" Class Diagram
 ![](images/class-diagram-exhibit.png)
