@@ -1,0 +1,39 @@
+@startuml
+
+left to right direction
+
+actor "Artist"      as A
+actor "Other users" as OU
+
+rectangle {
+    usecase "Upload marker"                     as UC1
+    usecase "Upload object"                     as UC2
+    usecase "Create artwork"                    as UC3
+    usecase "Try artwork out"                   as UC4
+    usecase "Edit artwork"                      as UC5
+    usecase "Delete artwork"                    as UC6
+    usecase "Create exhibition"                 as UC7
+    usecase "Edit exhibition"                   as UC8
+    usecase "Delete exhibition"                 as UC9
+    usecase "View itens uploaded by Artist"     as UC10
+    usecase "Download itens uploaded by Artist" as UC11
+}
+
+' Artist's relationships
+A -- UC1
+A -- UC2
+A -- UC3
+A -- UC4
+A -- UC5
+A -- UC6
+A -- UC7
+A -- UC8
+A -- UC9
+A -- UC10
+A -- UC11
+
+' Other users' relationships
+UC10 -- OU
+UC11 -- OU
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+
+rectangle "Client Side" as C {
+    rectangle "Django Template" as DT
+}
+
+rectangle "Server Side" as S {
+    rectangle "Django Framework" as DF {
+        rectangle "App Logic" as AL
+        rectangle "View Logic" as VL
+        rectangle "Model" as M
+    }
+    database "Database" as DB
+}
+
+DT <--> AL
+DT <--> VL
+AL <--> M
+VL <--> M
+M <--> DB
+
+@enduml
