@@ -36,13 +36,14 @@
                 <div id="artwork-modal" class="tab">
                     <h4 class="modal-title">{{ _('Exhibit Information (2/2)') }}</h4>
                       <p class="upload-field" id="info-name-field">
-                        {{ form.visible_fields()[0] }}
-                        {{ form.visible_fields()[0].errors }}
+                          {{ form.visible_fields()[0] }}
+                          {{ form.visible_fields()[0].errors }}
                       </p>
-                    <p class="upload-field" id="info-slug-field">
-                        {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
-                    </p>
+                      <label style="float: left; width: 35%; display: flex; padding-top: 3%">https://jandig.app/</label>
+                        <p style="float: right; width: 65%">
+                            {{ form.visible_fields()[1] }}
+                            {{ form.visible_fields()[1].errors }} 
+                        </p>
                     <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
             </form>
