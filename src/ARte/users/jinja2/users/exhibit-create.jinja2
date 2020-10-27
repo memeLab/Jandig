@@ -5,6 +5,7 @@
     <section class="create-exhibit">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/marker-creation.css">
+        <link rel="stylesheet" href="/static/css/label.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
@@ -39,7 +40,8 @@
                           {{ form.visible_fields()[0] }}
                           {{ form.visible_fields()[0].errors }}
                       </p>
-                      <label style="float: left; width: 35%; display: flex; padding-top: 3%">https://jandig.app/</label>
+                    <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
+                      <label class="url-helper">https://jandig.app/</label>
                         <p style="float: right; width: 65%">
                             {{ form.visible_fields()[1] }}
                             {{ form.visible_fields()[1].errors }} 

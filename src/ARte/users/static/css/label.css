@@ -1,0 +1,33 @@
+.url-helper {
+    float: left; 
+    width: 35%; 
+    font-weight: bold;
+}
+
+@media screen and (min-width: 601px) {
+    label.url-helper {
+      font-size: 15px;
+      padding-top: 3%;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    label.url-helper {
+      font-size: 12px;
+      padding-top: 3.2%;
+    }
+  }
+
+  @media screen and (max-width: 371px) {
+    label.url-helper {
+      font-size: 10px;
+      padding-top: 5%;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    label.url-helper {
+      font-size: 9px;
+      padding-top: 6%;
+    }
+  }
