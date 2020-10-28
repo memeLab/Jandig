@@ -50,7 +50,7 @@
     opacity: 0.7;
 }
 
-.repository-item a.edit {
+.repository-item a.edit { 
     background: url(../images/icons/edit.png) no-repeat center center;
     background-size: contain;   
 }
@@ -88,9 +88,12 @@
     flex: 0 1 calc(25%);
 }
 
-#repo-marker .repository-item a.delete, #repo-marker .repository-item a.edit,
-#repo-object .repository-item a.delete, #repo-object .repository-item a.edit {
-    /*margin: 25px 0px -60px -25px;*/
+#repo-marker .repository-item a.delete, #repo-object .repository-item a.delete {
+    margin: -20px 0 0 85px;   
+    position: absolute;
+}
+
+#repo-marker .repository-item a.edit, #repo-object .repository-item a.edit {
     margin: -20px 0 -30px 40px;
     position: absolute;
 }
