@@ -334,6 +334,7 @@ def element_get(request):
             'created_at': element.created_at.strftime('%d %b, %Y'),
             'marker': element.marker.source.url,
             'augmented': element.augmented.source.url,
+            'augmented_size': element.augmented.source.size,
             'title': element.title,
             'description': element.description,
         }
