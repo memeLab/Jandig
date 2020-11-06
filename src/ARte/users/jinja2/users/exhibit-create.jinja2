@@ -80,11 +80,8 @@
                 var slug = document.getElementById('id_slug').value
                 let validate = /^[a-zA-Z0-9_]*$/
                 if(!slug.match(validate)) {
-                    $('input[type="submit"]').prop('disabled', true);
                     alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
-                    
                 }
-                location.reload();
             }
 
             setInterval(activateNextButton, 100);
