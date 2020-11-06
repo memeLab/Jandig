@@ -1,0 +1,17 @@
+@startuml
+
+hide circle
+
+class "Artwork (models.Model)" as C {
+  {field} - author: models.ForeignKey()
+  {field} - marker: models.ForeignKey()
+  {field} - augmented: models.ForeignKey()
+  {field} - title: models.CharField()
+  {field} - description: models.TextField()
+  {field} - created_at: models.DateTimeField()
+  {method} + exhibits_count(self)
+  {method} + exhibits_list(self)
+  {method} + in_use(self)
+}
+
+@enduml

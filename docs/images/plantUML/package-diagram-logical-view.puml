@@ -1,0 +1,22 @@
+@startuml
+
+hide circle
+
+package ArTE <<project>> {
+    package users <<app>> {
+        package "models.py" as M1 {
+            class Profile
+            class Marker
+            class Artwork
+            class Object
+        }
+    }
+
+    package core <<app>> {
+        package "models.py" as M2 {
+            class Exhibit
+        }
+    }
+}
+       
+@enduml

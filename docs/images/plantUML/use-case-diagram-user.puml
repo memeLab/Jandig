@@ -1,0 +1,39 @@
+@startuml
+
+left to right direction
+
+actor "Visitor"                     as V
+actor "User"                        as U
+actor "Jandig ArTE" <<application>> as J
+
+rectangle {
+    usecase "View registration form" as UC1
+    usecase "Register"               as UC2
+    usecase "View login form"        as UC3
+    usecase "Recover password"       as UC4
+    usecase "Login"                  as UC5
+    usecase "View home page"         as UC6
+    usecase "Edit account data"      as UC7
+    usecase "Delete account"         as UC8
+    usecase "Log out"                as UC9
+}
+
+' Visitor's relationships
+UC1 -- V
+V -- UC2
+
+' User's relationships
+UC3 -- U
+U -- UC4
+U -- UC5
+UC6 -- U
+U -- UC7
+U -- UC8
+U -- UC9
+
+' System's relationships
+UC1 -- J
+UC3 -- J
+UC6 -- J
+
+@enduml

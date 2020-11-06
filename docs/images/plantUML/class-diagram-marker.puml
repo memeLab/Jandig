@@ -1,0 +1,20 @@
+@startuml
+
+hide circle
+
+class "Marker (models.Model)" as C {
+  {field} - owner: models.ForeignKey()
+  {field} - source: models.ImageField()
+  {field} - uploaded_at: models.DateTimeField()
+  {field} - author: models.CharField()
+  {field} - title: models.CharField()
+  {field} - patt: models.FileField()
+  {method} + __str__(self)
+  {method} + artworks_count(self)
+  {method} + artworks_list(self)
+  {method} + exhibits_count(self)
+  {method} + exhibits_list(self)
+  {method} + in_use(self)
+}
+
+@enduml

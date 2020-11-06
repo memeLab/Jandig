@@ -1,0 +1,18 @@
+@startuml
+
+left to right direction
+
+actor "Visitor" as V
+
+rectangle {
+    usecase "Interact with exhibitions" as UC1
+    usecase "Change app language"       as UC2
+    usecase "Access help section"       as UC3
+}
+
+' Visitor's relationships
+V -- UC1
+V -- UC2
+V -- UC3
+
+@enduml
