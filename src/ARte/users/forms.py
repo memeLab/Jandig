@@ -239,12 +239,12 @@ class ExhibitForm(forms.Form):
 
     def clean_slug(self):
         data = self.cleaned_data['slug']
-        # if not re.match("^[a-zA-Z0-9_]*$", data):
-            # raise forms.ValidationError(_("Slug can't contain spaces or special characters"))
+        if not re.match("^[a-zA-Z0-9_]*$", data):
+            raise forms.ValidationError(_("Url can't contain spaces or special characters"))
         return data
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
 
         self.fields['name'].widget.attrs['placeholder'] = _('Exhibit Title')
-        self.fields['slug'].widget.attrs['placeholder'] = _('Exhibit URL')
+        self.fields['slug'].widget.attrs['placeholder'] = _('Complete with your Exhibit URL here')

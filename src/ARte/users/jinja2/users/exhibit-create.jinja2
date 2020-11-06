@@ -5,6 +5,7 @@
     <section class="create-exhibit">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/marker-creation.css">
+        <link rel="stylesheet" href="/static/css/label.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
@@ -36,14 +37,16 @@
                 <div id="artwork-modal" class="tab">
                     <h4 class="modal-title">{{ _('Exhibit Information (2/2)') }}</h4>
                       <p class="upload-field" id="info-name-field">
-                        {{ form.visible_fields()[0] }}
-                        {{ form.visible_fields()[0].errors }}
+                          {{ form.visible_fields()[0] }}
+                          {{ form.visible_fields()[0].errors }}
                       </p>
-                    <p class="upload-field" id="info-slug-field">
-                        {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
-                    </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
+                      <label class="url-helper">https://jandig.app/</label>
+                        <p style="float: right; width: 65%">
+                            {{ form.visible_fields()[1] }}
+                            {{ form.visible_fields()[1].errors }} 
+                        </p>
+                    <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
             </form>
         </div>
@@ -71,6 +74,19 @@
                     $('#next-info').prop('disabled', true);
                 }
             }
+
+
+            function cleanSlug() {
+                var slug = document.getElementById('id_slug').value
+                let validate = /^[a-zA-Z0-9_]*$/
+                if(!slug.match(validate)) {
+                    $('input[type="submit"]').prop('disabled', true);
+                    alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
+                    
+                }
+                location.reload();
+            }
+
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
