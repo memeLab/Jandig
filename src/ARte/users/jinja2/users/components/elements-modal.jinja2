@@ -121,6 +121,7 @@
                         elementAuthor(data['author']);
                         usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
+                        downloadElement(data['type'], data['augmented_size']/1000, data['augmented']);
                     }
                 });
             }
