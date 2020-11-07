@@ -63,6 +63,19 @@ video{
     max-height: 100%;
 }
 
+div#imageContainer {
+    max-width: 320px;
+    height: 320px;
+    margin: 25px auto;
+    background: url(../images/icons/icoEptG.png) no-repeat center center;
+    background-size: cover;
+}
+
+div#imageContainer img {
+    max-width: 100%;
+    height: auto;
+}
+
 @media only screen and (max-width: 600px){
     #content-box {
         height: 60%;

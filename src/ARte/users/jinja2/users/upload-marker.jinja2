@@ -14,10 +14,6 @@
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
-                        <blockquote>
-                            No Marker files yet? Don't fret! You can get them here
-                            <button type="button" onclick="window.open('/generator', '_blank')">MARKER GENERATOR</button>
-                        </blockquote>
                         <p class="title-field"  id="title-field">
                             <h3>{{_("Choose Marker's title")}}
                             {{ form.visible_fields()[2] }}
@@ -27,6 +23,8 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
+
+                    <div id="imageContainer"></div>
 
                     {% if form_type == 'marker' %}
                         <h3>{{ _('Choose .patt file') }}</h3>
@@ -77,7 +75,24 @@
                     $('#author-field > input').prop('readonly', false);
                     $('#author-field > input').val("");
                 }
-            });                            
+            });
+
+            $("#id_source").change(
+                function(e) {
+                    var file = e.originalEvent.srcElement.files[0];
+                    var marker_preview = document.createElement("img");
+
+                    previewAndLoadFile = function() {
+                        marker_preview.src = reader.result;
+                        marker_preview.id = "img-preview";
+                        document.getElementById("imageContainer").appendChild(marker_preview); //make preview image of the object/marker show
+                    }
+
+                    var reader = new FileReader();
+                    reader.onloadend = previewAndLoadFile;
+                    reader.readAsDataURL(file);
+                }
+            );
         </script>
     </section>
 {% endblock %}
