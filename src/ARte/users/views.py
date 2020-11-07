@@ -371,7 +371,12 @@ def upload_view(request, form_class, form_type, route):
             return redirect('home')
     else:
         form = form_class()
-    return render(request,'users/upload.jinja2',
+
+    if form_type == 'marker':
+        return render(request,'users/upload-marker.jinja2',
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
+
+    return render(request,'users/upload-object.jinja2',
         {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
 
 

@@ -1,0 +1,83 @@
+
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+    <section class="upload container">
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="/static/css/upload.css">
+
+        {% if form_type == 'marker' and edit == False %}
+            <h2>{{ _('Upload Marker') }}</h2>
+        {% endif %}
+        <section class="upload-form">
+            <div class="container">
+                <form name="upload-form" method="post" enctype="multipart/form-data">
+                    {{ csrf_input }}
+                    <p class="upload-field" id="source-field">
+                        <blockquote>
+                            No Marker files yet? Don't fret! You can get them here
+                            <button type="button" onclick="window.open('/generator', '_blank')">MARKER GENERATOR</button>
+                        </blockquote>
+                        <p class="title-field"  id="title-field">
+                            <h3>{{_("Choose Marker's title")}}
+                            {{ form.visible_fields()[2] }}
+                            {{ form.visible_fields()[2].errors }}
+                        </p>     
+                        <h3>{{ _("Choose Marker image") }}</h3>
+                        {{ form.visible_fields()[0] }}
+                        {{ form.visible_fields()[0].errors }}
+                    </p>
+
+                    {% if form_type == 'marker' %}
+                        <h3>{{ _('Choose .patt file') }}</h3>
+                        <div class="upload-field" id="patt-field">
+                            {{ form.visible_fields()[3] }}
+                            {{ form.visible_fields()[3].errors }}
+                        </div>
+                    {% endif %}
+                    <p class="form-options">
+
+                        <input id="author-chk" type="checkbox" name="author" value="1">
+                        {% if form_type == 'marker' %}
+                            {{ _("I'm this Marker author") }}
+                        {% endif %}
+                        
+                    </p>
+                    <p class="upload-field" id="author-field">
+                        {{ form.visible_fields()[1] }}
+                        {{ form.visible_fields()[1].errors }}
+                    </p>
+                    <div class="form-options">
+                        <p>
+                            <input id="agreement-chk" type="checkbox" name="agreement" value="1">
+                            {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
+                        </p>
+                    </div> 
+                    <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
+                </form>
+            </div>
+        </section>
+
+        <script>
+            $('#agreement-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    $('input[type="submit"]').prop('disabled', false);
+                }else{
+                    $('input[type="submit"]').prop('disabled', true);
+                }
+            });
+
+            $('#author-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    let user = $('div.welcome > p > a')[0].innerText;
+                    console.log(user);
+                    $('#author-field > input').val(user);
+                    $('#author-field > input').prop('readonly', true);
+                }else{
+                    $('#author-field > input').prop('readonly', false);
+                    $('#author-field > input').val("");
+                }
+            });                            
+        </script>
+    </section>
+{% endblock %}

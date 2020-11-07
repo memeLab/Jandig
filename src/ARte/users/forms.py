@@ -187,8 +187,6 @@ class UploadMarkerForm(forms.ModelForm):
         model = Marker
         exclude = ('owner', 'uploaded_at')
 
-
-
 class UploadObjectForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
