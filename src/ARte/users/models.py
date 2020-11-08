@@ -105,42 +105,69 @@ class Object(models.Model):
     
     @property
     def xproportion(self):
+        '''
+        The 'xproportion' method is used to always reduce scale
+        to 1:[something], so that new calculations can be made 
+        when a new scale value is entered by the user.
+        '''
         a = re.findall(r'[\d\.\d]+', self.scale)
         width = float(a[0])
         height = float(a[1])
-        if width > 1 :
-            height = height*1.0/width
+        if width > height :
+            height = (height*1.0)/width
             width = 1
-        elif height > 1 :
-            width = width*1.0/height
+        else :
+            width = (width*1.0)/height
             height = 1
         return width
 
     @property
     def yproportion(self):
+        '''
+        The 'yproportion' method is used to always reduce scale
+        to 1:[something], so that new calculations can be made 
+        when a new scale value is entered by the user.
+        '''
         a = re.findall(r'[\d\.\d]+', self.scale)
         width = float(a[0])
         height = float(a[1])
-        if width > 1 :
-            height = height*1.0/width
+        if width > height :
+            height = (height*1.0)/width
             width = 1
-        elif height > 1 :
-            width = width*1.0/height
+        else :
+            width = (width*1.0)/height
             height = 1
         return height
 
     @property
     def xscale(self):
+        '''
+        The 'xscale' method returns the original proportion
+        of the Object multiplied by the scale value entered
+        by the user, and thus the Object appears resized in
+        augmented reality.
+        '''
         a = re.findall(r'[\d\.\d]+', self.scale)
         return a[0]
 
     @property
     def yscale(self):
+        '''
+        The 'yscale' method returns the original proportion
+        of the Object multiplied by the scale value entered
+        by the user, and thus the Object appears resized in
+        augmented reality.
+        '''
         a = re.findall(r'[\d\.\d]+', self.scale)
         return a[1]
 
     @property
     def fullscale(self):
+        '''
+        The 'fullscale' method is a workaround to show the
+        users the last scale value entered by them, when
+        they attempt to edit it.
+        '''
         x = self.xscale
         y = self.yscale
         if x > y:
