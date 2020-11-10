@@ -12,3 +12,4 @@ django-docs ~= 0.3.1
 babel ~= 2.7.0
 django-debug-toolbar
 gevent
+pymarker

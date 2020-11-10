@@ -178,14 +178,12 @@ class UploadMarkerForm(forms.ModelForm):
         log.warning(self.fields)
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['source'].widget.attrs['accept'] = 'image/png, image/jpg'
-        self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
-        self.fields['patt'].widget.attrs['accept'] = '.patt'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _("Marker's title")
 
     class Meta:
         model = Marker
-        exclude = ('owner', 'uploaded_at')
+        exclude = ('owner', 'uploaded_at', 'patt')
 
 class UploadObjectForm(forms.ModelForm):
     
