@@ -5,6 +5,7 @@
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/upload.css">
+        <script src="/static/js/threex-arpatternfile.js"></script>
 
         {% if form_type == 'marker' and edit == False %}
             <h2>{{ _('Upload Marker') }}</h2>
@@ -27,7 +28,6 @@
                     <div id="imageContainer"></div>
 
                     {% if form_type == 'marker' %}
-                        <h3>{{ _('Choose .patt file') }}</h3>
                         <div class="upload-field" id="patt-field">
                             {{ form.visible_fields()[3] }}
                             {{ form.visible_fields()[3].errors }}
@@ -77,22 +77,36 @@
                 }
             });
 
+            var innerImageURL = null;
+            var fullMarkerURL = null;
+
             $("#id_source").change(
                 function(e) {
                     var file = e.originalEvent.srcElement.files[0];
-                    var marker_preview = document.createElement("img");
-
-                    previewAndLoadFile = function() {
-                        marker_preview.src = reader.result;
-                        marker_preview.id = "img-preview";
-                        document.getElementById("imageContainer").appendChild(marker_preview); //make preview image of the object/marker show
-                    }
-
                     var reader = new FileReader();
-                    reader.onloadend = previewAndLoadFile;
+                    reader.onload = function(event) {
+                        innerImageURL = event.target.result;
+                        uploadFullMarkerImage(e);
+                    };
                     reader.readAsDataURL(file);
                 }
             );
+
+            function uploadFullMarkerImage(e) {
+                var patternRatio = 0.6;
+
+                THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl) {
+                    fullMarkerURL = markerUrl
+
+                    var fullMarkerImage = document.createElement('img')
+                    fullMarkerImage.src = fullMarkerURL
+
+                    // put fullMarkerImage into #imageContainer
+                    var container = document.querySelector('#imageContainer')
+                    while (container.firstChild) container.removeChild(container.firstChild);
+                    container.appendChild(fullMarkerImage)                    
+                })
+            }
         </script>
     </section>
 {% endblock %}
