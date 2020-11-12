@@ -17,12 +17,11 @@
                     <p class="upload-field" id="source-field">
                         <p class="title-field"  id="title-field">
                             <h3>{{_("Choose Marker's title")}}
-                            {{ form.visible_fields()[2] }}
-                            {{ form.visible_fields()[2].errors }}
+                            {{ form.visible_fields()[1] }}
+                            {{ form.visible_fields()[1].errors }}
                         </p>     
                         <h3>{{ _("Choose Marker image") }}</h3>
-                        {{ form.visible_fields()[0] }}
-                        {{ form.visible_fields()[0].errors }}
+                        <input type="file" id="marker" name="marker" accept="image/png, image/jpg">
                     </p>
 
                     <div id="imageContainer"></div>
@@ -36,8 +35,8 @@
                         
                     </p>
                     <p class="upload-field" id="author-field">
-                        {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
+                        {{ form.visible_fields()[0] }}
+                        {{ form.visible_fields()[0].errors }}
                     </p>
                     <div class="form-options">
                         <p>
@@ -74,7 +73,7 @@
             var innerImageURL = null;
             var fullMarkerURL = null;
 
-            $("#id_source").change(
+            $("#marker").change(
                 function(e) {
                     var file = e.originalEvent.srcElement.files[0];
                     var reader = new FileReader();

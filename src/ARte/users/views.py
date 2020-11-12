@@ -3,6 +3,8 @@ import logging
 from datetime import datetime
 import hashlib
 import smtplib
+import time
+from pymarker.core import generate_marker, generate_patt
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 log = logging.getLogger('ej')
@@ -17,6 +19,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
+from django.core.files.storage import FileSystemStorage
+from django.core.files import File
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
@@ -363,7 +367,8 @@ def object_upload(request):
 
 def upload_view(request, form_class, form_type, route):
     if request.method == 'POST':
-        form = form_class(request.POST, request.FILES)
+        create_marker(request.FILES['marker'])
+        form = form_class(request.POST)
         if form.is_valid():
             upload = form.save(commit=False)
             upload.owner = request.user.profile
@@ -379,6 +384,13 @@ def upload_view(request, form_class, form_type, route):
     return render(request,'users/upload-object.jinja2',
         {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
 
+def create_marker(file):
+    fs = FileSystemStorage()
+    fileimage = fs.save(file.name, file)
+    fileurl = fs.url(fileimage)
+    path = 'src/ARte/users' + fileurl
+    generate_marker(path)
+    generate_patt(path)
 
 @login_required
 def edit_object(request):
