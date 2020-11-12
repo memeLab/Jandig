@@ -2,7 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.core.files.storage import default_storage
+from django.core.files.storage import FileSystemStorage
+from django.core.files import File
+from django.core.files.base import ContentFile
+from io import BytesIO, StringIO
+from PIL import Image
+from pymarker.core import generate_marker, generate_patt
+
 import re
 
 from .choices import COUNTRY_CHOICES
@@ -40,6 +46,14 @@ class Marker(models.Model):
     def __str__(self):
         return self.source.name
 
+    def save(self, *args, **kwargs):
+        fs = FileSystemStorage()
+        fileimage = fs.save(self.source.name, self.source)
+        fileurl = fs.url(fileimage)
+        path = 'src/ARte/users' + fileurl
+        self.source = create_marker(path)
+        super().save(*args, **kwargs)
+
     @property
     def artworks_count(self):
         return Artwork.objects.filter(marker=self).count()
@@ -64,6 +78,16 @@ class Marker(models.Model):
             return True
         return False
 
+def create_marker(path):
+    generate_marker(path)
+    sliced = path.split('.')
+    marker_path = sliced[0] + '_marker.' + sliced[1]
+    output = BytesIO()
+    marker_pil = Image.open(marker_path)
+    marker_pil.save(output, format='PNG', quality=100)
+    output.seek(0)
+    marker = ContentFile(output.getvalue(), name=marker_pil.filename)
+    return marker
 
 class Object(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
