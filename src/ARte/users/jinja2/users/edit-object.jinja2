@@ -49,25 +49,10 @@
 
                     </div>
     
-                    {# <p class="form-options">
-
-                        <input id="author-chk" type="checkbox" name="author" value="1">
-                        {% if form_type == 'marker' %}
-                            {{ _("I'm this Marker author") }}
-                        {% elif form_type == 'object' %}
-                            {{ _("I'm this Object author") }}
-                        {% endif %}
-                        
-                    </p>#}
                     <p class="upload-field" id="author-field" hidden>
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
-                    {#<div class="form-options">
-                        <p>
-                            <input id="agreement-chk" type="checkbox" name="agreement" value="1">
-                            {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
-                        </p>
                     </div> #}
                     <input onclick="updateValues()" class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
                 </form>
@@ -75,26 +60,6 @@
         </section>
 
         <script>
-
-            /*$('#agreement-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    $('input[type="submit"]').prop('disabled', false);
-                }else{
-                    $('input[type="submit"]').prop('disabled', true);
-                }
-            });
-
-            $('#author-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    let user = $('div.welcome > p > a')[0].innerText;
-                    console.log(user);
-                    $('#author-field > input').val(user);
-                    $('#author-field > input').prop('readonly', true);
-                }else{
-                    $('#author-field > input').prop('readonly', false);
-                    $('#author-field > input').val("");
-                }
-            });*/
 
             $("#id_source").change(
                 function(e) {               
@@ -130,8 +95,8 @@
                     }
                 }
                 else{
-                    xprop = {{ model.xproportion }};
-                    yprop = {{ model.yproportion }};
+                    xprop = {{ model.proportion.xproportion }};
+                    yprop = {{ model.proportion.yproportion }};
                 }
 
                 var scal = document.getElementById('scale').value;

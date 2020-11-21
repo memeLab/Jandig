@@ -102,7 +102,7 @@ class Object(models.Model):
             return True
 
         return False
-    
+
     @property
     def xproportion(self):
         a = re.findall(r'[\d\.\d]+', self.scale)

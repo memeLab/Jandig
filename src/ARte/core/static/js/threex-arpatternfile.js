@@ -26,9 +26,6 @@ THREEx.ArPatternFile.encodeImage = function(image) {
     canvas.width = 16;
     canvas.height = 16;
 
-    // document.body.appendChild(canvas)
-    // canvas.style.width = '200px'
-
 
     var patternFileString = ''
     for (var orientation = 0; orientation > -2 * Math.PI; orientation -= Math.PI / 2) {
@@ -47,7 +44,6 @@ THREEx.ArPatternFile.encodeImage = function(image) {
         if (orientation !== 0) patternFileString += '\n'
             // NOTE bgr order and not rgb!!! so from 2 to 0
         for (var channelOffset = 2; channelOffset >= 0; channelOffset--) {
-            // console.log('channelOffset', channelOffset)
             for (var y = 0; y < imageData.height; y++) {
                 for (var x = 0; x < imageData.width; x++) {
 
@@ -83,7 +79,6 @@ THREEx.ArPatternFile.triggerDownload = function(patternFileString) {
 THREEx.ArPatternFile.buildFullMarker = function(innerImageURL, pattRatio, onComplete) {
     var whiteMargin = 0.1
     var blackMargin = (1 - 2 * whiteMargin) * ((1 - pattRatio) / 2)
-        // var blackMargin = 0.2
 
     var innerMargin = whiteMargin + blackMargin
 

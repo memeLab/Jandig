@@ -37,19 +37,4 @@ class Command(BaseCommand):
                 )
         a1.save()
 
-        # e1 = Exhibit()
-        # e2 = Exhibit()
-       
-        # e1.name = "exibicao1"
-        # e2.name = "exibicao2"
-        
-        # e1.slug = e1.url
-        # e2.slug = e2.url
-        
-        # e1.save()
-        # e2.save()
-
-        # e1.artworks.add(a1)
-        # e2.artworks.add(a1)
-
         self.stdout.write("Finished populating models")

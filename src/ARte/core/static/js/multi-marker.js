@@ -22,11 +22,7 @@ function createMarkerFile() {
     file.subMarkersControls[1].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-kanji.patt'
     file.subMarkersControls[2].parameters.type = 'pattern'
     file.subMarkersControls[2].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-letterF.patt'
-    //file.subMarkersControls[3].parameters.type = 'pattern'
-    //file.subMarkersControls[3].parameters.patternUrl = absoluteBaseURL + 'static/patts/pattern-hiro.patt'
-    
-
-    // json.strinfy the value and store it in localStorage
+   
     return file
 }
 
