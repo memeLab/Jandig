@@ -236,8 +236,6 @@ def create_artwork(request):
         }
     )
 
-
-
 @login_required
 def create_exhibit(request):
     if request.method == 'POST':
@@ -374,6 +372,8 @@ def upload_view(request, form_class, form_type, route):
     return render(request,'users/upload.jinja2',
         {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
 
+def edit_view(request, form_class, form_type, route):
+    pass
 
 @login_required
 def edit_object(request):
