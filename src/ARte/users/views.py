@@ -410,7 +410,7 @@ def edit_view(request, form_class, form_type, route):
 
 @login_required
 def edit_object(request):
-    return edit_view(request, UploadObjectForm, 'Object', 'edit-object')
+    return edit_view(request, UploadObjectForm, 'Object', route='users/edit-object.jinja2')
     
     # id = request.GET.get("id","-1")
     # model = Object.objects.get(id=id)
