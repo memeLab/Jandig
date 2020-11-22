@@ -370,16 +370,24 @@ def upload_view(request, form_class, form_type, route):
     else:
         form = form_class()
     return render(request,'users/upload.jinja2',
-        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
+        {
+            'form_type': form_type, 
+            'form': form, 
+            'route': route, 
+            'edit': False
+        }
+    )
 
 def edit_view(request, form_class, form_type, route):
     id = request.GET.get("id", "-1")
-    model = Object.objects.get(id=id)
+    model = models.form_type.objects.get(id=id)
+    print(form_type)
+    print('\n\n\n\n')
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
     if(request.method == "POST"):
-        form = form_class(request.Post, request.FILES, instance = model)
+        form = form_class(request.POST, request.FILES, instance = model)
 
         form.full_clean()
         if form.is_valid():
@@ -403,6 +411,7 @@ def edit_view(request, form_class, form_type, route):
     return render(
         request, route,
         {
+            'form_type': form_type,
             'form': form_class(initial=model_data),
             'model': model,
         }
