@@ -373,17 +373,13 @@ def upload_view(request, form_class, form_type, route):
         {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
 
 def edit_view(request, form_class, form_type, route):
-    pass
-
-@login_required
-def edit_object(request):
-    id = request.GET.get("id","-1")
+    id = request.GET.get("id", "-1")
     model = Object.objects.get(id=id)
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
     if(request.method == "POST"):
-        form = UploadObjectForm(request.POST, request.FILES, instance = model)
+        form = form_class(request.Post, request.FILES, instance = model)
 
         form.full_clean()
         if form.is_valid():
@@ -393,7 +389,7 @@ def edit_object(request):
             return redirect('profile')
         else:
             log.warning(form.errors)
-
+    
     model_data = {
         "source": model.source,
         "uploaded_at": model.uploaded_at,
@@ -405,15 +401,55 @@ def edit_object(request):
     }
 
     return render(
-        request,
-        'users/edit-object.jinja2',
+        request, route,
         {
-            'form': UploadObjectForm(initial=model_data),
+            'form': form_class(initial=model_data),
             'model': model,
         }
     )
 
+@login_required
+def edit_object(request):
+    return edit_view(request, UploadObjectForm, 'Object', 'edit-object')
+    
+    # id = request.GET.get("id","-1")
+    # model = Object.objects.get(id=id)
+    # print(model)
+    # print(Object)
+    # print('\n\n\n\n')
+    # if(not model or model.owner != Profile.objects.get(user=request.user)):
+    #     raise Http404
 
+    # if(request.method == "POST"):
+    #     form = UploadObjectForm(request.POST, request.FILES, instance = model)
+
+    #     form.full_clean()
+    #     if form.is_valid():
+    #         if form.cleaned_data["source"] == None:
+    #             form.cleaned_data["source"] == model.source
+    #         form.save()
+    #         return redirect('profile')
+    #     else:
+    #         log.warning(form.errors)
+
+    # model_data = {
+    #     "source": model.source,
+    #     "uploaded_at": model.uploaded_at,
+    #     "author": model.author,
+    #     "scale": model.scale,
+    #     "position": model.position,
+    #     "rotation": model.rotation,
+    #     "title": model.title,
+    # }
+
+    # return render(
+    #     request,
+    #     'users/edit-object.jinja2',
+    #     {
+    #         'form': UploadObjectForm(initial=model_data),
+    #         'model': model,
+    #     }
+    # )
 
 @login_required
 def edit_artwork(request): 
