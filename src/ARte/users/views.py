@@ -387,12 +387,11 @@ def edit_view(request, form_class, route, model, model_data):
 
         form.full_clean()
         if form.is_valid():
-            if form.cleaned_data["source"] == None:
-                form.cleaned_data["source"] == model.source
-                form.save()
-                return redirect('profile')
-            else:
-                log.warning(form.errors)
+            form.cleaned_data["source"] == model.source
+            form.save()
+            return redirect('profile')
+        else:
+            log.warning(form.errors)
         
 
     return render(
@@ -419,41 +418,41 @@ def edit_object(request):
     }
     return edit_view(request, UploadObjectForm, route='users/edit-object.jinja2', model=model, model_data=model_data)
 
-# @login_required
-# def edit_marker(request):
-#     id = request.GET.get("id", "-1")
-#     model = Marker.objects.get(id=id)
+@login_required
+def edit_marker(request):
+    id = request.GET.get("id", "-1")
+    model = Marker.objects.get(id=id)
 
-#     if(not model or model.owner != Profile.objects.get(user=request.user)):
-#         raise Http404
+    if(not model or model.owner != Profile.objects.get(user=request.user)):
+        raise Http404
 
-#     if(request.method == "POST"):
-#         form = UploadMarkerForm(request.POST, request.FILES, instance = model)
+    if(request.method == "POST"):
+        form = UploadMarkerForm(request.POST, request.FILES, instance = model)
 
-#         form.full_clean()
-#         if form.is_valid():
-#             if form.cleaned_data["source"] == None:
-#                 form.cleaned_data["source"] == model.source
-#                 form.save()
-#                 return redirect('profile')
-#             else:
-#                 log.warning(form.errors)
+        form.full_clean()
+        if form.is_valid():
+            if form.cleaned_data["source"] == None:
+                form.cleaned_data["source"] == model.source
+                form.save()
+                return redirect('profile')
+            else:
+                log.warning(form.errors)
         
-#     model_data = {
-#         "source": model.source,
-#         "uploaded_at": model.uploaded_at,
-#         "author": model.author,
-#         "patt": model.patt,
-#         "title": model.title,
-#     }
+    model_data = {
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "patt": model.patt,
+        "title": model.title,
+    }
 
-#     return render(
-#         request, 'users/edit-marker.jinja2',
-#         {
-#             'form': UploadMarkerForm(initial=model_data),
-#             'model': model,
-#         }
-#     )
+    return render(
+        request, 'users/edit-marker.jinja2',
+        {
+            'form': UploadMarkerForm(initial=model_data),
+            'model': model,
+        }
+    )
     
 
 @login_required
