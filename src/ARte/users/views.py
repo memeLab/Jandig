@@ -378,10 +378,7 @@ def upload_view(request, form_class, form_type, route):
         }
     )
 
-def edit_view(request, form_class, form_type, route):
-    id = request.GET.get("id", "-1")
-    model = form_type.objects.get(id=id)
-
+def edit_view(request, form_class, route, model, model_data):
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -397,15 +394,6 @@ def edit_view(request, form_class, form_type, route):
             else:
                 log.warning(form.errors)
         
-    model_data = {
-        "source": model.source,
-        "uploaded_at": model.uploaded_at,
-        "author": model.author,
-        "scale": model.scale,
-        "position": model.position,
-        "rotation": model.rotation,
-        "title": model.title,
-    }
 
     return render(
         request, route,
@@ -417,44 +405,56 @@ def edit_view(request, form_class, form_type, route):
 
 @login_required
 def edit_object(request):
-    return edit_view(request, UploadObjectForm, Object, route='users/edit-object.jinja2')
+    id = request.GET.get("id", "-1")
+    model = Object.objects.get(id=id)
+
+    model_data = {
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "scale": model.scale,
+        "position": model.position,
+        "rotation": model.rotation,
+        "title": model.title,
+    }
+    return edit_view(request, UploadObjectForm, route='users/edit-object.jinja2', model=model, model_data=model_data)
+
+# @login_required
+# def edit_marker(request):
+#     id = request.GET.get("id", "-1")
+#     model = Marker.objects.get(id=id)
+
+#     if(not model or model.owner != Profile.objects.get(user=request.user)):
+#         raise Http404
+
+#     if(request.method == "POST"):
+#         form = UploadMarkerForm(request.POST, request.FILES, instance = model)
+
+#         form.full_clean()
+#         if form.is_valid():
+#             if form.cleaned_data["source"] == None:
+#                 form.cleaned_data["source"] == model.source
+#                 form.save()
+#                 return redirect('profile')
+#             else:
+#                 log.warning(form.errors)
+        
+#     model_data = {
+#         "source": model.source,
+#         "uploaded_at": model.uploaded_at,
+#         "author": model.author,
+#         "patt": model.patt,
+#         "title": model.title,
+#     }
+
+#     return render(
+#         request, 'users/edit-marker.jinja2',
+#         {
+#             'form': UploadMarkerForm(initial=model_data),
+#             'model': model,
+#         }
+#     )
     
-    # id = request.GET.get("id","-1")
-    # model = Object.objects.get(id=id)
-
-    # if(not model or model.owner != Profile.objects.get(user=request.user)):
-    #     raise Http404
-
-    # if(request.method == "POST"):
-    #     form = UploadObjectForm(request.POST, request.FILES, instance = model)
-
-    #     form.full_clean()
-    #     if form.is_valid():
-    #         if form.cleaned_data["source"] == None:
-    #             form.cleaned_data["source"] == model.source
-    #         form.save()
-    #         return redirect('profile')
-    #     else:
-    #         log.warning(form.errors)
-
-    # model_data = {
-    #     "source": model.source,
-    #     "uploaded_at": model.uploaded_at,
-    #     "author": model.author,
-    #     "scale": model.scale,
-    #     "position": model.position,
-    #     "rotation": model.rotation,
-    #     "title": model.title,
-    # }
-
-    # return render(
-    #     request,
-    #     'users/edit-object.jinja2',
-    #     {
-    #         'form': UploadObjectForm(initial=model_data),
-    #         'model': model,
-    #     }
-    # )
 
 @login_required
 def edit_artwork(request): 
