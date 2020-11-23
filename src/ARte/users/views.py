@@ -380,9 +380,8 @@ def upload_view(request, form_class, form_type, route):
 
 def edit_view(request, form_class, form_type, route):
     id = request.GET.get("id", "-1")
-    model = models.form_type.objects.get(id=id)
-    print(form_type)
-    print('\n\n\n\n')
+    model = form_type.objects.get(id=id)
+
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -393,11 +392,11 @@ def edit_view(request, form_class, form_type, route):
         if form.is_valid():
             if form.cleaned_data["source"] == None:
                 form.cleaned_data["source"] == model.source
-            form.save()
-            return redirect('profile')
-        else:
-            log.warning(form.errors)
-    
+                form.save()
+                return redirect('profile')
+            else:
+                log.warning(form.errors)
+        
     model_data = {
         "source": model.source,
         "uploaded_at": model.uploaded_at,
@@ -411,7 +410,6 @@ def edit_view(request, form_class, form_type, route):
     return render(
         request, route,
         {
-            'form_type': form_type,
             'form': form_class(initial=model_data),
             'model': model,
         }
@@ -419,13 +417,11 @@ def edit_view(request, form_class, form_type, route):
 
 @login_required
 def edit_object(request):
-    return edit_view(request, UploadObjectForm, 'Object', route='users/edit-object.jinja2')
+    return edit_view(request, UploadObjectForm, Object, route='users/edit-object.jinja2')
     
     # id = request.GET.get("id","-1")
     # model = Object.objects.get(id=id)
-    # print(model)
-    # print(Object)
-    # print('\n\n\n\n')
+
     # if(not model or model.owner != Profile.objects.get(user=request.user)):
     #     raise Http404
 
