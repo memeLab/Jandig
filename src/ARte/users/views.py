@@ -160,44 +160,36 @@ def profile(request):
     return render(request, 'users/profile.jinja2', ctx)
 
 @cache_page(60 * 60)
+def get_element(request, form, form_class, form_type, source, author, existent_element):
+    element = None
+    
+    if(source and author):
+        instance = form_type(source=source, author=author)
+        element = form_class(instance=instance).save(commit=False)
+        element.save()
+    elif(existent_element):
+        qs = form_type.objects.filter(id=existent_element)
+        if qs:
+            element = qs[0]
+            element.owner = request.user.profile
+    
+    return element
+
+@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
     existent_marker = form.cleaned_data['existent_marker']
-    marker = None
     
-    if(marker_src and marker_author):
-        marker_instance = Marker(source=marker_src, author=marker_author)
-        marker = UploadMarkerForm(instance=marker_instance).save(commit=False)
-        marker.owner = request.user.profile
-        marker.save()
-    elif(existent_marker):
-        qs = Marker.objects.filter(id=existent_marker)
-        if qs:
-            marker = qs[0]
-            marker.owner = request.user.profile
-
-    return marker
+    return get_element(request, form, UploadMarkerForm, Marker, source=marker_src, author=marker_author, existent_element=existent_marker)
 
 @cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
     existent_object = form.cleaned_data['existent_object']
-    augmented = None
-
-    if(object_src and object_author):
-        object_instance = Object(source=object_src, author=object_author)
-        augmented = UploadObjectForm(instance=object_instance).save(commit=False)
-        augmented.owner = request.user.profile
-        augmented.save()
-    elif(existent_object):
-        qs = Object.objects.filter(id=existent_object)
-        if qs:
-            augmented = qs[0]
-            augmented.owner = request.user.profile
-
-    return augmented
+   
+    return get_element(request, form, UploadObjectForm, Object, source=object_src, author=object_author, existent_element=existent_object)
 
 @login_required
 def create_artwork(request):
@@ -306,9 +298,6 @@ def download_exhibit(request):
     
     return HttpResponse(json.dumps(all_data))
 
-@login_required
-def marker_upload(request):
-    return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
 
 @cache_page(60 * 2)
 def element_get(request):
@@ -353,13 +342,7 @@ def element_get(request):
 
     return HttpResponse(serialized, content_type='application/json')
 
-
-@login_required
-def object_upload(request):
-    return upload_view(request, UploadObjectForm, 'object', 'object-upload')
-
-
-def upload_view(request, form_class, form_type, route):
+def upload_elements(request, form_class, form_type, route):
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
@@ -378,7 +361,15 @@ def upload_view(request, form_class, form_type, route):
         }
     )
 
-def edit_view(request, form_class, route, model, model_data):
+@login_required
+def marker_upload(request):
+    return upload_elements(request, UploadMarkerForm, 'marker', 'marker-upload')
+
+@login_required
+def object_upload(request):
+    return upload_elements(request, UploadObjectForm, 'object', 'object-upload')
+
+def edit_elements(request, form_class, route, model, model_data):
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -416,7 +407,7 @@ def edit_object(request):
         "rotation": model.rotation,
         "title": model.title,
     }
-    return edit_view(request, UploadObjectForm, route='users/edit-object.jinja2', model=model, model_data=model_data)
+    return edit_elements(request, UploadObjectForm, route='users/edit-object.jinja2', model=model, model_data=model_data)
 
 @login_required
 def edit_marker(request):
@@ -431,7 +422,7 @@ def edit_marker(request):
         "title": model.title,
     }
 
-    return edit_view(request, UploadMarkerForm, route='users/edit-marker.jinja2', model=model, model_data=model_data)
+    return edit_elements(request, UploadMarkerForm, route='users/edit-marker.jinja2', model=model, model_data=model_data)
 
     
 
