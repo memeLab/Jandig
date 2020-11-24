@@ -37,7 +37,7 @@
                     {% endif %}
                 <h1 class="titMrk">{{_("Your Markers")}}</h1>
                     {% if markers %}
-                        {% with deletable=True, repository_list = markers, element_type="marker"%}
+                        {% with deletable=True, editable=True, repository_list = markers, element_type="marker"%}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}

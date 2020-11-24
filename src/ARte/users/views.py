@@ -423,21 +423,6 @@ def edit_marker(request):
     id = request.GET.get("id", "-1")
     model = Marker.objects.get(id=id)
 
-    if(not model or model.owner != Profile.objects.get(user=request.user)):
-        raise Http404
-
-    if(request.method == "POST"):
-        form = UploadMarkerForm(request.POST, request.FILES, instance = model)
-
-        form.full_clean()
-        if form.is_valid():
-            if form.cleaned_data["source"] == None:
-                form.cleaned_data["source"] == model.source
-                form.save()
-                return redirect('profile')
-            else:
-                log.warning(form.errors)
-        
     model_data = {
         "source": model.source,
         "uploaded_at": model.uploaded_at,
@@ -446,13 +431,8 @@ def edit_marker(request):
         "title": model.title,
     }
 
-    return render(
-        request, 'users/edit-marker.jinja2',
-        {
-            'form': UploadMarkerForm(initial=model_data),
-            'model': model,
-        }
-    )
+    return edit_view(request, UploadMarkerForm, route='users/edit-marker.jinja2', model=model, model_data=model_data)
+
     
 
 @login_required
