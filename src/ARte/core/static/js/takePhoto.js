@@ -1,7 +1,7 @@
 function takePicture() {
     const scene = document.getElementsByTagName("canvas")[0]
     const pictureURI = scene.toDataURL("image/png")
-    
+
     let link = document.getElementById("picture-link")
     link.href = pictureURI
     link.download = getPhotoFileName('png')

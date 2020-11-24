@@ -17,7 +17,7 @@ class Command(BaseCommand):
         image = lambda str: ImageFile(open(path(str), "rb"))
 
         marker = Marker(
-            source=image("markers/gueixa.png"), 
+            source=image("markers/gueixa.png"),
             author=p1,
             owner=p1,
             patt=image("patts/gueixa.patt")

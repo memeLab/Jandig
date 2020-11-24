@@ -21,11 +21,11 @@
                     <h4 class="modal-title">{{ _('Select Artworks (1/2)') }}</h4>
 
                     <p class="gallery-title">{{ _('Choose from your repository') }}</p>
-                    
+
                     {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
                         {% include "users/components/artworks-list.jinja2" %}
                     {% endwith%}
-                    
+
                     <p id="artworks-selected">
                         {{ form.visible_fields()[2].as_hidden() }}
                         {{ form.visible_fields()[2].errors }}
@@ -44,7 +44,7 @@
                       <label class="url-helper">https://jandig.app/</label>
                         <p style="float: right; width: 65%">
                             {{ form.visible_fields()[1] }}
-                            {{ form.visible_fields()[1].errors }} 
+                            {{ form.visible_fields()[1].errors }}
                         </p>
                     <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
@@ -61,7 +61,7 @@
             function validateTab(tab){
                 if(tab == 'artworks'){
                     let artworks = $('#artworks-selected > input')[0];
-                   
+
                     if(artworks.textLength != 0){
                         return true;
                     }

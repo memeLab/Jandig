@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('artworks/create/', create_artwork, name='create-artwork'),
     path('artworks/edit/', edit_artwork, name="edit-artwork"),
-    
+
     path('exhibits/create/', create_exhibit, name='create-exhibit'),
     path('exhibits/edit/', edit_exhibit, name='edit-exhibit'),
     path('download-exhibit', download_exhibit, name="download-exhibit"),

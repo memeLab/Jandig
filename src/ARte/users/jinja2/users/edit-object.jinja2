@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/static/css/upload.css">
 
         <h2>{{_('Edit object')}}</h2>
-        
+
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
@@ -16,7 +16,7 @@
                         {{ form.visible_fields()[2] }}
                         {{ form.visible_fields()[2].errors }}
                     <p class="upload-field" id="source-field">
-                        <h3>{{_("Choose Object")}}</h3>                                                     
+                        <h3>{{_("Choose Object")}}</h3>
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
@@ -38,7 +38,7 @@
                         <h3>Horizontal:</h3>
                         <input id="X-position" class="trigger-change-value" value ="{{ model.xposition }}">
                         <h3>Vertical:</h3>
-                        <input id="Y-position" class="trigger-change-value" value ="{{ model.yposition }}">                     
+                        <input id="Y-position" class="trigger-change-value" value ="{{ model.yposition }}">
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
@@ -48,7 +48,7 @@
                         {{ form.hidden_fields()[2].errors }}
 
                     </div>
-    
+
                     <p class="upload-field" id="author-field" hidden>
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
@@ -62,10 +62,10 @@
         <script>
 
             $("#id_source").change(
-                function(e) {               
-                    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {                  
+                function(e) {
+                    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
                         var file = e.originalEvent.srcElement.files[i];
-            
+
                         var image_preview = document.createElement("img");
                         var reader = new FileReader();
                         reader.onloadend = function() {
@@ -73,13 +73,13 @@
                             image_preview.id = "img-preview";
                             image_preview.hidden = "hidden";
                         }
-                        reader.readAsDataURL(file);            
-                        $("input").after(image_preview); //make preview image of the object/marker show  
-                    }                
+                        reader.readAsDataURL(file);
+                        $("input").after(image_preview); //make preview image of the object/marker show
+                    }
                 }
             );
 
-            
+
             function updateValues(){
                 var image_preview = document.querySelector('#img-preview');
                 if (image_preview){
@@ -106,12 +106,12 @@
                 var scl = scal*xprop + " " + scal*yprop;
                 var rot = "270 0 0";
                 var pos = xpos + " " + ypos + " 0"; //messing with the Z gives some really weird things
- 
-                $('#id_scale').val(scl); 
+
+                $('#id_scale').val(scl);
                 $('#id_rotation').val(rot);
                 $('#id_position').val(pos);
             }
-                            
+
         </script>
     </section>
 {% endblock %}

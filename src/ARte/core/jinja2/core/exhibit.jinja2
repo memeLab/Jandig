@@ -15,12 +15,12 @@
             }
         }
     </style>
-    
+
     <ar-scene>
         {% for artwork in artworks %}
             <ar-marker patt="{{artwork.marker.patt.url}}">
-                <ar-content 
-                    src="{{artwork.augmented.source.url}}" 
+                <ar-content
+                    src="{{artwork.augmented.source.url}}"
                     scale="{{artwork.augmented.scale}}"
                     position="{{artwork.augmented.position}}"
                     rotation="{{artwork.augmented.rotation}}">
@@ -68,7 +68,7 @@
                                 console.log(response)
                             })
                         })
-                        
+
                         let website = await axios.get(window.location.href)
                         document.getElementById('loadingGif').style.display = 'flex'
                         await requestURLS(1)

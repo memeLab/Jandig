@@ -12,7 +12,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
-    
+
     class Meta:
         permissions = [
             ("moderator", "Can moderate content"),
@@ -183,7 +183,7 @@ class Artwork(models.Model):
     def exhibits_list(self):
         from core.models import Exhibit
         return list(Exhibit.objects.filter(artworks__in=[self]))
-    
+
     @property
     def in_use(self):
         if self.exhibits_count > 0:
