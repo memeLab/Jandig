@@ -51,45 +51,19 @@ def recover_password(request):
 
         if recover_password_form.is_valid():
             username_or_email = recover_password_form.cleaned_data.get('username_or_email')
-            global global_recovering_email
+            username_or_email_is_valid = check_if_username_or_email_exist(username_or_email)
+            if (not username_or_email_is_valid):
+                return redirect('invalid_recovering_email_or_username')
 
-            if '@' in username_or_email:
-                global_recovering_email = username_or_email
-                
-                if not User.objects.filter(email=global_recovering_email).exists():
-                    return redirect('invalid_recovering_email_or_username')
-                
-            else:
-                if not User.objects.filter(username=username_or_email).exists():
-                    return redirect('invalid_recovering_email_or_username')
-                
-                user = User.objects.get(username=username_or_email)
-                global_recovering_email = user.email
-                log.warning(user)
-            
-            datetime_now = datetime.now()
-            today =  '{}{}{}{}{}{}{}'.format(datetime_now.year, datetime_now.month, datetime_now.day, datetime_now.hour, datetime_now.minute, datetime_now.second, datetime_now.microsecond)
-            hash_code = str(today) + (global_recovering_email * 4)
+            global global_recovering_email
+            global_recovering_email = get_user_email(username_or_email)
 
             global global_verification_code
+            global_verification_code = generate_verification_code(global_recovering_email)
 
-            global_verification_code = hashlib.md5(bytes(hash_code, encoding='utf-8'))
-            global_verification_code = global_verification_code.hexdigest()
-
-            multipart_message = MIMEMultipart()
             message = 'You have requested a new password. This is your verification code: {}\nCopy it and put into the field.'.format(global_verification_code)
-            password = 'svxrhkcftyvhtvyy'
-            multipart_message['From'] = "jandig@memelab.com.br"
-            multipart_message['To'] = '{}'.format(global_recovering_email)
-            multipart_message['Subject'] = "Recover Password"
-
-            multipart_message.attach(MIMEText(message, 'plain'))
-
-            email_server = smtplib.SMTP('smtp.gmail.com: 587')
-            email_server.starttls()
-            email_server.login(multipart_message['From'], password)
-            email_server.sendmail(multipart_message['From'], multipart_message['To'], multipart_message.as_string())
-            email_server.quit()
+            multipart_message = build_multipart_message(global_recovering_email, message)
+            send_email_to_recover_password(message, multipart_message)
 
         return redirect('recover-code')
 
@@ -97,6 +71,51 @@ def recover_password(request):
         recover_password_form = RecoverPasswordForm()
 
     return render(request, 'users/recover-password.jinja2', {'form': recover_password_form})
+
+
+def get_user_email(username_or_email):
+    if '@' in username_or_email:
+        return username_or_email
+    user = User.objects.get(username=username_or_email)
+    log.warning(user)
+    return user.email
+
+def check_if_username_or_email_exist(username_or_email):
+    if '@' in username_or_email:
+        if not User.objects.filter(email=username_or_email).exists():
+            return False
+    else:
+        if not User.objects.filter(username=username_or_email).exists():
+            return False
+    return True
+
+def generate_verification_code(email):
+    datetime_now = datetime.now()
+    today =  '{}{}{}{}{}{}{}'.format(datetime_now.year, datetime_now.month, datetime_now.day, datetime_now.hour, datetime_now.minute, datetime_now.second, datetime_now.microsecond)
+    decrypt_code = str(today) + (email * 4)
+    verification_code = generate_hash_code(decrypt_code)
+    return verification_code
+
+def generate_hash_code(decrypt_code):
+    hash_code = hashlib.md5(bytes(decrypt_code, encoding='utf-8'))
+    return hash_code.hexdigest()
+
+def send_email_to_recover_password(message, multipart_message):
+    password = 'svxrhkcftyvhtvyy'
+    email_server = smtplib.SMTP('smtp.gmail.com: 587')
+    email_server.starttls()
+    email_server.login(multipart_message['From'], password)
+    email_server.sendmail(multipart_message['From'], multipart_message['To'], multipart_message.as_string())
+    email_server.quit()
+
+def build_multipart_message(email, message):
+    multipart_message = MIMEMultipart()
+    multipart_message['From'] = "jandig@memelab.com.br"
+    multipart_message['To'] = '{}'.format(email)
+    multipart_message['Subject'] = "Recover Password"
+
+    multipart_message.attach(MIMEText(message, 'plain'))
+    return multipart_message
 
 def recover_code(request):
     if request.method == 'POST':
