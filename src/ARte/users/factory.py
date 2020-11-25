@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class UserFactory(DjangoModelFactory):
     username = 'Testador'
-    email = 'test2019ador@gmail.com'
+    email = 'testador@memelab.com'
 
     class Meta:
         model = User
