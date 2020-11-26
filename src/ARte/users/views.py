@@ -590,20 +590,25 @@ def delete_content(model, user, instance_id):
         
 
 def delete_content_Moderator(instance,user):
+    
     isInstanceSameTypeofModel = isinstance(instance, model)
+    isObject = isinstance(instance, Object)
+    isMarker = isinstance(instance, Marker)
+    isArtwork = isinstance(instance, Artwork)
+
 
     if isInstanceSameTypeofModel or not instance.in_use:
         instance.delete()
     elif instance.in_use:
-                if isinstance(instance, Object):
+                if isObject:
                     artworkIn = Artwork.objects.filter(augmented=instance)
                     artworkIn.delete()
                     instance.delete()
-                elif isinstance(instance, Marker):
+                elif isMarker:
                     artworkIn = Artwork.objects.filter(marker=instance)
                     artworkIn.delete()
                     instance.delete()
-                elif isinstance(instance, Artwork):
+                elif isArtwork:
                     instance.delete()
 
 
