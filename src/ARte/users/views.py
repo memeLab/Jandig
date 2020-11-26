@@ -559,7 +559,7 @@ def edit_profile(request):
 @login_required
 def delete(request):
     content_type = request.GET.get('content_type', None)
-
+   
     if content_type == 'marker':
        delete_content(Marker, request.user, request.GET.get('id', -1))
     elif content_type == 'object':
@@ -572,17 +572,29 @@ def delete(request):
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
+   
     if qs:
         instance = qs[0] 
-
-        if(isinstance(instance, Artwork)) and (instance.author == user.profile or user.has_perm('users.moderator')):
-            instance.delete()
-        elif isinstance(instance, model) and (instance.owner == user.profile or user.has_perm('users.moderator')):
-            instance.delete()
+        if user.has_perm('users.moderator'):
+            delete_content_Moderator(instance,user)
         else:
-            if user.has_perm('users.moderator') and not instance.in_use:
+            isArtwork = isinstance(instance, Artwork)
+            if isArtwork:
+                hasPermission = (instance.author == user.profile)
+            else:
+                hasPermission = (instance.owner == user.profile)
+        
+            isInstanceSameTypeofModel = isinstance(instance, model)
+            if isInstanceSameTypeofModel and hasPermission:
                 instance.delete()
-            elif user.has_perm('users.moderator') and instance.in_use:
+        
+
+def delete_content_Moderator(instance,user):
+    isInstanceSameTypeofModel = isinstance(instance, model)
+
+    if isInstanceSameTypeofModel or not instance.in_use:
+        instance.delete()
+    elif instance.in_use:
                 if isinstance(instance, Object):
                     artworkIn = Artwork.objects.filter(augmented=instance)
                     artworkIn.delete()
