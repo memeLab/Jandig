@@ -13,7 +13,7 @@
             {# Begin defining variables #}
 
             {% if element_type =="marker" or element_type=="object" %}
-                {%set canEdit_objectORmarker%}
+                {%set canEdit_object%}
                     {% if editable == True and not element.in_use%}
                         <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>                
                     {% endif %}
@@ -92,7 +92,7 @@
             {% elif element_type == "object" %}
                 {{loadObject_videoORimage}}
                 {{canDelete_Entity}}
-                {{canEdit_objectORmarker}}
+                {{canEdit_object}}
 
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
