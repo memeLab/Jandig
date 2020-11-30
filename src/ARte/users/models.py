@@ -214,7 +214,9 @@ class Artwork(models.Model):
 
     @property
     def in_use(self):
-        if self.exhibits_count > 0:
-            return True
+        if  type(self.exhibits_count)==int:   
+             if self.exhibits_count > 0:
+                 return True
+             
+             return False
 
-        return False
