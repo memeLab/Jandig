@@ -4,7 +4,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.core.files.storage import default_storage
 import re
-from .calcula import Calcartwork
+from .calcula import CalcExhibit
 from .choices import COUNTRY_CHOICES
 
 class Profile(models.Model):
@@ -80,20 +80,22 @@ class Object(models.Model):
 
     @property
     def artworks_count(self):
-        return Artwork.objects.filter(augmented=self).count()
+        calc1=CalcExhibit(self)
+        calc1.artworks_count_Object()  
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(augmented=self)
+        calc1=CalcExhibit(self)
+        calc1.artworks_list_Object()
 
     @property
     def exhibits_count(self):
-       calc1=Calcartwork(self)
+       calc1=CalcExhibit(self)
        calc1.exhibits_count_Object()    
 
     @property
     def exhibits_list(self):
-        calc1=Calcartwork(self)
+        calc1=CalcExhibit(self)
         calc1.exhibits_list_Object() 
 
     @property
@@ -102,8 +104,9 @@ class Object(models.Model):
             if self.exhibits_count > 0 :  
                  return True
         else:
-            if self.artworks_count > 0 :
-                 return True         
+            if(self.artworks_count)==int:
+              if self.artworks_count > 0 :
+                  return True         
         return False
     
     @property
@@ -207,12 +210,12 @@ class Artwork(models.Model):
     
     @property
     def exhibits_count(self):
-       calc1=Calcartwork(self)
+       calc1=CalcExhibit(self)
        calc1.exhibits_count_Artwrok()    
 
     @property
     def exhibits_list(self):
-        calc1=Calcartwork(self)
+        calc1=CalcExhibit(self)
         calc1.exhibits_list_Artwork() 
 
     @property

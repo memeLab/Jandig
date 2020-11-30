@@ -3,7 +3,7 @@
 
 from django.db import models
 
-class Calcartwork(models.Model,object):
+class CalcExhibit(models.Model,object):
 
    def __init__(self,work):   
       self.work=work        
@@ -23,3 +23,13 @@ class Calcartwork(models.Model,object):
    def exhibits_list_Object(self):
         from core.models import Exhibit
         return list(Exhibit.objects.filter(artworks__augmented=self.work))
+
+   def  artworks_list_Object(self):
+        from .models import Artwork
+        return Artwork.objects.filter(augmented=self.work)
+
+   def artworks_count_Object(self):
+        from .models import Artwork
+        return Artwork.objects.filter(augmented=self.work).count()
+         
+      
