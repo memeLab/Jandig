@@ -4,7 +4,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.core.files.storage import default_storage
 import re
-
+from .calcula import Calcartwork
 from .choices import COUNTRY_CHOICES
 
 class Profile(models.Model):
@@ -201,16 +201,17 @@ class Artwork(models.Model):
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
 
+    
     @property
     def exhibits_count(self):
-        from core.models import Exhibit
-        return Exhibit.objects.filter(artworks__in=[self]).count()
+       calc1=Calcartwork(self)
+       calc1.exhibits_count()    
 
     @property
     def exhibits_list(self):
-        from core.models import Exhibit
-        return list(Exhibit.objects.filter(artworks__in=[self]))
-    
+        calc1=Calcartwork(self)
+        calc1.exhibits_list() 
+
     @property
     def in_use(self):
         if self.exhibits_count > 0:
