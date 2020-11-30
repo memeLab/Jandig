@@ -88,19 +88,22 @@ class Object(models.Model):
 
     @property
     def exhibits_count(self):
-        from core.models import Exhibit
-        return Exhibit.objects.filter(artworks__augmented=self).count()
+       calc1=Calcartwork(self)
+       calc1.exhibits_count_Object()    
 
     @property
     def exhibits_list(self):
-        from core.models import Exhibit
-        return Exhibit.objects.filter(artworks__augmented=self)
+        calc1=Calcartwork(self)
+        calc1.exhibits_list_Object() 
 
     @property
     def in_use(self):
-        if self.artworks_count > 0 or self.exhibits_count > 0:
-            return True
-
+        if type(self.exhibits_count)==int: 
+            if self.exhibits_count > 0 :  
+                 return True
+        else:
+            if self.artworks_count > 0 :
+                 return True         
         return False
     
     @property
@@ -205,12 +208,12 @@ class Artwork(models.Model):
     @property
     def exhibits_count(self):
        calc1=Calcartwork(self)
-       calc1.exhibits_count()    
+       calc1.exhibits_count_Artwrok()    
 
     @property
     def exhibits_list(self):
         calc1=Calcartwork(self)
-        calc1.exhibits_list() 
+        calc1.exhibits_list_Artwork() 
 
     @property
     def in_use(self):
