@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.core.files.storage import default_storage
 import re
 from .choices import COUNTRY_CHOICES
-
+from .calcula import CalcExhibit
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     bio = models.TextField(max_length=500, blank=True)
@@ -77,36 +77,30 @@ class Object(models.Model):
     def __str__(self):
         return self.source.name
 
-    #@property
-    #def artworks_count(self):
-     #   calc1=CalcExhibit(self)
-      #  calc1.artworks_count_Object()  
+    @property
+    def artworks_count(self):
+       calc1=CalcExhibit(self)
+       return  calc1.artworks_count_Object()  
 
-    #@property
-    #def artworks_list(self):
-     #   calc1=CalcExhibit(self)
-      #  calc1.artworks_list_Object()
+    @property
+    def artworks_list(self):
+       calc1=CalcExhibit(self)
+       return calc1.artworks_list_Object()
 
-    #@property
-    #def exhibits_count(self):
-     #  calc1=CalcExhibit(self)
-      # calc1.exhibits_count_Object()    
+    @property
+    def exhibits_count(self):
+       calc1=CalcExhibit(self)
+       return calc1.exhibits_count_Object()    
 
-    #@property
-    #def exhibits_list(self):
-     #   calc1=CalcExhibit(self)
-      #  calc1.exhibits_list_Object() 
+    @property
+    def exhibits_list(self):
+        calc1=CalcExhibit(self)
+        return calc1.exhibits_list_Object() 
 
-    #@property
-    #def in_use(self):
-     #   if type(self.exhibits_count)==int: 
-      #      if self.exhibits_count > 0 :  
-                # return True
-        #else:
-         #   if(self.artworks_count)==int:
-          #    if self.artworks_count > 0 :
-           #       return True         
-        #return False
+    @property
+    def in_use(self): 
+      calc1=CalcExhibit(self)
+      return calc1.in_use_Artwork_Exhibit()   
     
     @property
     def xproportion(self):
@@ -209,21 +203,16 @@ class Artwork(models.Model):
     
     @property
     def exhibits_count(self):
-       from .calcula import CalcExhibit
        calc1=CalcExhibit(self)
        return calc1.exhibits_count_Artwrok()    
 
     @property
-    def exhibits_list(self):
-        from .calcula import CalcExhibit
+    def exhibits_list(self):     
         calc1=CalcExhibit(self)
         return calc1.exhibits_list_Artwork() 
 
     @property
-    def in_use(self):
-        #if(type(self.exhibits_count)==int):   
-        if self.exhibits_count > 0:
-           return True
-             
-        return False
+    def in_use(self):   
+      calc1=CalcExhibit(self)
+      return calc1.in_use_Artwork()   
 
