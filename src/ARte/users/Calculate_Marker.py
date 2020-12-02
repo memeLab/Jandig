@@ -1,8 +1,8 @@
 from .models import Marker
 from core.models import Exhibit
 from .models import Artwork
-
-class calcMarker(models.Models,Marker)
+from django.db import models
+class calcMarker(models.Models,Marker):
     def __init__(self,work:Marker):
         self.work=work
 
