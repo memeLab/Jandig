@@ -1,7 +1,7 @@
 import re
 
 from django.contrib.auth.models import User
-from django.core.files.storage import default_storage
+from django.core.files.storage :wqimport default_storage
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -42,31 +42,6 @@ class Marker(models.Model):
     def __str__(self):
         return self.source.name
 
-    @property
-    def artworks_count(self):
-        return Artwork.objects.filter(marker=self).count()
-
-    @property
-    def artworks_list(self):
-        return Artwork.objects.filter(marker=self)
-
-    @property
-    def exhibits_count(self):
-        from core.models import Exhibit
-
-        return Exhibit.objects.filter(artworks__marker=self).count()
-
-    @property
-    def exhibits_list(self):
-        from core.models import Exhibit
-        return Exhibit.objects.filter(artworks__marker=self)
-    
-    @property
-    def in_use(self):
-        from .Calculate_Marker import calcMarker
-        calc1=calcMarker(self) 
-        return calc1.in_use()   
-
 
 class Object(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
@@ -81,35 +56,7 @@ class Object(models.Model):
     def __str__(self):
         return self.source.name
     
-    @property
-    def exhibits_count(self):
-       from .calculate_Object import calcObject
-       calc1=calcObject(self)
-       return calc1.artworks_count()    
-
-    @property
-    def exhibits_list(self):
-       from .calculate_Object import calcObject 
-       calc1=calcObject(self)
-       return calc1.artworks_list()    
-
-    @property
-    def artworks_count(self):
-       from .calculate_Object import calcObject 
-       calc1=calcObject(self)
-       return calc1.exhibits_count()    
-
-    @property
-    def artwork_list(self):
-      from .calculate_Object import calcObject 
-      calc1=calcObject(self)
-      return calc1.exhibits_list() 
-
-    @property
-    def in_use(self):
-      from .calculate_Object import calcObject 
-      calc1=calcObject(self)
-      return calc1.in_use()   
+   
     
     @property
     def xproportion(self):
@@ -210,21 +157,5 @@ class Artwork(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     
-    @property
-    def exhibits_count(self):
-       from .calculate_Artwork import CalcArtwork 
-       calc1=CalcArtwork(self)
-       return calc1.exhibits_count_Artwrok()    
-
-    @property
-    def exhibits_list(self): 
-        from .calculate_Artwork import CalcArtwork 
-        calc1=CalcArtwork(self)
-        return calc1.exhibits_list_Artwork() 
-
-    @property
-    def in_use(self):
-      from .calculate_Artwork import CalcArtwork      
-      calc1=CalcArtwork(self)
-      return calc1.in_use_Artwork()   
+  
 
