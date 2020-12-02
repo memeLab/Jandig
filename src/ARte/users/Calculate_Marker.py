@@ -1,27 +1,27 @@
-  from .models import Marker
-  from core.models import Exhibit
-  from .models import Artwork
-  class calcMarker(models.Models,Marker)
+from .models import Marker
+from core.models import Exhibit
+from .models import Artwork
 
-    def __init__(self,work:Maker):
-        self.work=work   
-  
-   def exhibits_count(self):
+class calcMarker(models.Models,Marker)
+    def __init__(self,work:Marker):
+        self.work=work
+
+    def exhibits_count(self):
         return Exhibit.objects.filter(artworks__marker=self.work).count()
-    
-   def exhibits_list(self):
+
+    def exhibits_list(self):
         return list(Exhibit.objects.filter(artworks__marker=self.work))
 
-   def  artworks_list(self):     
+    def  artworks_list(self):
         return Artwork.objects.filter(marker=self.work)
 
-   def artworks_count(self):   
+    def artworks_count(self):
         return Artwork.objects.filter(marker=self.work).count()
 
-   def in_use(self): 
-       if self.work.exhibits_count > 0 :  
-           return True
-       else:
-          if self.work.artworks_count > 0 :
-            return True         
-       return False 
+    def in_use(self):
+        if self.work.exhibits_count > 0 :
+            return True
+        else:
+            if self.work.artworks_count > 0 :
+                return True
+        return False
