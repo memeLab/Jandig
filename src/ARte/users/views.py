@@ -23,6 +23,9 @@ from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, Upl
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 from core.helpers import *
+from calculate_Object import calcObject
+from calculate_Artwork import CalcArtwork
+from Calculate_Marker  import calcMarker 
 
 def signup(request):
 
@@ -311,26 +314,24 @@ def download_exhibit(request):
 @login_required
 def marker_upload(request):
     return upload_view(request, UploadMarkerForm, 'marker', 'marker-upload')
-
-@cache_page(60 * 2)
-def element_get(request):
-    if request.GET.get('marker_id', None):
-        element_type = 'marker'
-        element = get_object_or_404(Marker, pk=request.GET['marker_id'])
-    elif request.GET.get('object_id', None):
-        element_type = 'object'
-        element = get_object_or_404(Object, pk=request.GET['object_id'])
-    elif request.GET.get('artwork_id', None):
-        element_type = 'artwork'
-        element = get_object_or_404(Artwork, pk=request.GET['artwork_id'])
-        
-    if element_type == 'artwork':
+def set_count(element):
+    if(type(element)==Marker):
+        calcobject=CalcObject(element)
+        return calcobject.exhibits_count()
+    else:
+        calcmarker=CalcArtwork(element)
+        return calcmarker.exhibits_count()
+def set_count_artwork(element):
+    calc_artwork=CalcArtwork(element)
+    return calc_artwork.exhibits_count()    
+def set_data(element):
+   if element_type == 'artwork':
         data = {
 	    'id_marker' : element.marker.id,
 	    'id_object' : element.augmented.id,
             'type': element_type,
             'author': element.author.user.username,
-            'exhibits': element.exhibits_count,
+            'exhibits':set_conut_artwork(element),
             'created_at': element.created_at.strftime('%d %b, %Y'),
             'marker': element.marker.source.url,
             'augmented': element.augmented.source.url,
@@ -345,11 +346,28 @@ def element_get(request):
             'author': element.author,
             'owner': element.owner.user.username,
             'artworks': element.artworks_count,
-            'exhibits': element.exhibits_count,
+            'exhibits':set_count(element),
             'source': element.source.url,
             'size': element.source.size,
             'uploaded_at': element.uploaded_at.strftime('%d %b, %Y'),
         }
+
+     return data
+
+
+@cache_page(60 * 2)
+def element_get(request):
+    if request.GET.get('marker_id', None):
+        element_type = 'marker'
+        element = get_object_or_404(Marker, pk=request.GET['marker_id'])
+    elif request.GET.get('object_id', None):
+        element_type = 'object'
+        element = get_object_or_404(Object, pk=request.GET['object_id'])
+    elif request.GET.get('artwork_id', None):
+        element_type = 'artwork'
+        element = get_object_or_404(Artwork, pk=request.GET['artwork_id'])
+        
+    data=setdata(element) 
 
     serialized = json.dumps(data)
 
@@ -603,22 +621,22 @@ def related_content(request):
 
     if element_type == 'object':
         element = Object.objects.get(id=element_id)
-
-        artworks = element.artworks_list
-        exhibits = element.exhibits_list
+        calcobject=calcObject(element);      
+        artworks = calc1.artworks_list
+        exhibits = calc1.exhibits_list
 
         ctx = {'artworks': artworks, 'exhibits': exhibits, "seeall:":False}
     elif element_type == 'marker':
         element = Marker.objects.get(id=element_id)
-        
-        artworks = element.artworks_list
-        exhibits = element.exhibits_list
+        calc_marker=calcMarker(element)
+        artworks = calc_marker.artworks_list
+        exhibits = calc_marker.exhibits_list
 
         ctx = {'artworks': artworks, 'exhibits': exhibits, "seeall:":False}
     elif element_type == 'artwork':
         element = Artwork.objects.get(id=element_id)
-        
-        exhibits = element.exhibits_list
+        calc_artwork=CalcArtwork(element)
+        exhibits = calc_artwork.exhibits_list
        
         ctx = {'exhibits': exhibits, "seeall:":False} 
     
