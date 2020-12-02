@@ -3,7 +3,7 @@ from core.models import Exhibit
 from django.db import models
 from .models import Artwork
 
-class calcObject(models.Models,Object):
+class calcObject(models.Model):
     def __init__(self,work:Object):
         self.work=work
 

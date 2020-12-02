@@ -63,8 +63,8 @@ class Marker(models.Model):
     
     @property
     def in_use(self):
-        from .Calculate_Marker import CalcMarker
-        calc1=CalcMarker(self) 
+        from .Calculate_Marker import calcMarker
+        calc1=calcMarker(self) 
         return calc1.in_use()   
 
 
@@ -95,8 +95,8 @@ class Object(models.Model):
 
     @property
     def artworks_count(self):
-       from .calculate_Object import calcObjectt 
-       calc1=calcObjectt(self)
+       from .calculate_Object import calcObject 
+       calc1=calcObject(self)
        return calc1.exhibits_count()    
 
     @property

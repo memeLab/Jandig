@@ -1,6 +1,6 @@
 from django.db import models
 from .models import Artwork
-class CalcArtwork(models.Model,object):
+class CalcArtwork(models.Model):
     def __init__(self,work: Artwork):
        self.work=work
 
