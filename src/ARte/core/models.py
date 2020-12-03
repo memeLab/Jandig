@@ -4,7 +4,7 @@ from datetime import datetime
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 import urllib
-
+import re 
 
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
