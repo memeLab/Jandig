@@ -47,11 +47,12 @@ class Marker(models.Model):
         return self.source.name
 
     def save(self, *args, **kwargs):
-        fs = FileSystemStorage()
-        fileimage = fs.save(self.source.name, self.source)
-        fileurl = fs.url(fileimage)
+        filestorage = FileSystemStorage()
+        fileimage = filestorage.save(self.source.name, self.source)
+        fileurl = filestorage.url(fileimage)
         path = 'src/ARte/users' + fileurl
         self.source = create_marker(path)
+        self.patt = create_patt(path)
         super().save(*args, **kwargs)
 
     @property
@@ -78,10 +79,18 @@ class Marker(models.Model):
             return True
         return False
 
+
+def create_patt(path):
+    generate_patt(path)
+    sliced = path.split('.')
+    patt_path = sliced[0] + '.patt'
+    return patt_path
+
+
 def create_marker(path):
     generate_marker(path)
     sliced = path.split('.')
-    marker_path = sliced[0] + '_marker.' + sliced[1]
+    marker_path = sliced[0] + '_marker.png'
     output = BytesIO()
     marker_pil = Image.open(marker_path)
     marker_pil.save(output, format='PNG', quality=100)
