@@ -6,21 +6,21 @@ from django.contrib.auth.models import User
 
 class UserFactory(DjangoModelFactory):
     username = 'Testador'
-    email = 'test2019ador@gmail.com'
+    email = 'testador@memelab.com'
 
     class Meta:
         model = User
 
 class ObjectFactory(DjangoModelFactory):
     id = 1
-    owner = 'Matheus'
     source = 'objects/osaka.gif'
-    uploaded_at = (2020, 11, 25, 14, 30, 0)
+    owner = 'Matheus'
     author = 'Matheus'
+    uploaded_at = (2020, 11, 25, 14, 30, 0)
     title = 'osaka'
-    scale = '1 1'
     position = '0 0 0'
+    scale = '1 1'
     rotation = '270 0 0'
-
     class Meta:
+
         model = Object

@@ -2,9 +2,6 @@ import json
 import logging
 from datetime import datetime
 import hashlib
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 log = logging.getLogger('ej')
 from django.contrib.auth import login, authenticate
 import django.contrib.auth
@@ -23,6 +20,9 @@ from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, Upl
 from .models import Marker, Object, Artwork, Profile
 from core.models import Exhibit
 from core.helpers import *
+from .services.email_service import EmailService
+from .services.user_service import UserService
+from .services.encrypt_service import EncryptService
 
 def signup(request):
 
@@ -47,56 +47,37 @@ User = get_user_model()
 
 def recover_password(request):
     if request.method == 'POST':
-        form = RecoverPasswordForm(request.POST)
+        recover_password_form = RecoverPasswordForm(request.POST)
 
-        if form.is_valid():
-            username_or_email = form.cleaned_data.get('username_or_email')
-            global recovering_email
+        if recover_password_form.is_valid():
+            username_or_email = recover_password_form.cleaned_data.get('username_or_email')
+            user_service = UserService()
+            username_or_email_is_valid = user_service.check_if_username_or_email_exist(username_or_email)
+            if (not username_or_email_is_valid):
+                return redirect('invalid_recovering_email_or_username')
 
-            if '@' in username_or_email:
-                recovering_email = username_or_email
+            global global_recovering_email
+            global_recovering_email = user_service.get_user_email(username_or_email)
 
-                if not User.objects.filter(email=recovering_email).exists():
-                    return redirect('invalid-recovering-email')
+            global global_verification_code
+            encrypt_service = EncryptService()
+            global_verification_code = encrypt_service.generate_verification_code(global_recovering_email)
 
-            else:
-                if not User.objects.filter(username=username_or_email).exists():
-                    return redirect('invalid-recovering-email')
-
-                user = User.objects.get(username=username_or_email)
-                recovering_email = user.email
-                log.warning(user)
-
-            now = datetime.now()
-            today =  '{}{}{}{}{}{}{}'.format(now.year, now.month, now.day, now.hour, now.minute, now.second, now.microsecond)
-            hash_code = str(today) + (recovering_email * 4)
-
-            global verification_code
-
-            verification_code = hashlib.md5(bytes(hash_code, encoding='utf-8'))
-            verification_code = verification_code.hexdigest()
-
-            msg = MIMEMultipart()
-            message = 'You have requested a new password. This is your verification code: {}\nCopy it and put into the field.'.format(verification_code)
-            password = 'svxrhkcftyvhtvyy'
-            msg['From'] = "jandig@memelab.com.br"
-            msg['To'] = '{}'.format(recovering_email)
-            msg['Subject'] = "Recover Password"
-
-            msg.attach(MIMEText(message, 'plain'))
-
-            email_server = smtplib.SMTP('smtp.gmail.com: 587')
-            email_server.starttls()
-            email_server.login(msg['From'], password)
-            email_server.sendmail(msg['From'], msg['To'], msg.as_string())
-            email_server.quit()
+            build_message_and_send_to_user(global_recovering_email)
 
         return redirect('recover-code')
 
     else:
-        form = RecoverPasswordForm()
+        recover_password_form = RecoverPasswordForm()
 
-    return render(request, 'users/recover-password.jinja2', {'form': form})
+    return render(request, 'users/recover-password.jinja2', {'form': recover_password_form})
+
+def build_message_and_send_to_user(email):
+    message = 'You have requested a new password. This is your verification code: {}\nCopy it and put into the field.'.format(global_verification_code)
+    email_service = EmailService(message)
+    multipart_message = email_service.build_multipart_message(email)
+    email_service.send_email_to_recover_password(multipart_message)
+
 
 def recover_code(request):
     if request.method == 'POST':
@@ -106,11 +87,11 @@ def recover_code(request):
             code = form.cleaned_data.get('verification_code')
 
             log.warning('Inserido: ' + code)
-            log.warning('Correto: ' + verification_code)
+            log.warning('Correto: ' + global_verification_code)
 
-            if(code == verification_code):
+            if(code == global_verification_code):
                 global recover_password_user
-                recover_password_user = User.objects.get(email=recovering_email)
+                recover_password_user = User.objects.get(email=global_recovering_email)
                 return redirect('recover-edit-password')
             else:
                 return redirect('wrong-verification-code')
@@ -137,7 +118,7 @@ def recover_edit_password(request):
 def wrong_verification_code(request):
     return render(request, 'users/wrong-verification-code.jinja2')
 
-def invalid_recovering_email(request):
+def invalid_recovering_email_or_username(request):
     return render(request, 'users/invalid-recovering-email.jinja2')
 
 
