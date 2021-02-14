@@ -2,14 +2,12 @@ import factory
 
 from django.test import TestCase, Client, RequestFactory
 from unittest import mock
-
-from .views import recover_password
+from .views import edit_object, recover_password
 from .services.email_service import EmailService
 from .services.encrypt_service import EncryptService
 from .services.user_service import UserService
-from .factory import UserFactory
+from .factory import ObjectFactory, UserFactory
 
-# Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self):
         self.client_test = RequestFactory()
@@ -17,10 +15,10 @@ class UserTestCase(TestCase):
         self.encrypt_service = EncryptService()
         self.user_service = UserService()
     
-    def test_redirect_to_recover_password_page(self):
         request = self.client_test.get('/recover/', follow=True)
-        response = recover_password(request)
+    def test_redirect_to_recover_password_page(self):
         self.assertEqual(response.status_code, 200)
+        response = recover_password(request)
 
     def test_recover_password_invalid_email(self):
         request = self.client_test.post('/recover/', {'username_or_email': 'testadorinvalid@memelab.com'}, follow=True)
@@ -90,3 +88,13 @@ class UserTestCase(TestCase):
         user_data = UserFactory()
         response = self.user_service.get_user_email(username)
         self.assertEquals(response, "testador@memelab.com")
+
+
+class EditObjectTestCase(TestCase):
+    def setUp(self):
+        self.client_test = RequestFactory()
+
+    def test_redirect(self):
+        request = self.client_test.get('objects/edit', follow=True)
+        response = edit_object(request)
+        self.assertEqual(response.status_code, 200)

@@ -42,27 +42,27 @@
     border: 8px solid #fff;
     opacity: 1;
     display: block;
-    background-size: contain; 
-    margin: 10px 10px -20px auto;  
+    background-size: contain;
+    margin: 10px 10px -20px auto;
 }
 
 .repository-item a.edit:hover, .repository-item a.delete:hover, .repository-item a.preview:hover {
     opacity: 0.7;
 }
 
-.repository-item a.edit { 
+.repository-item a.edit {
     background: url(../images/icons/edit.png) no-repeat center center;
-    background-size: contain;   
+    background-size: contain;
 }
 
 .repository-item a.delete{
     background: url(../images/icons/delete.png) no-repeat center center;
-    background-size: contain;   
+    background-size: contain;
 }
 
 .repository-item a.preview {
     background: url(../images/icons/preview.png) no-repeat center center;
-    background-size: contain;   
+    background-size: contain;
 }
 
 #repo-artwork .repository-item {
@@ -89,7 +89,7 @@
 }
 
 #repo-marker .repository-item a.delete, #repo-object .repository-item a.delete {
-    margin: -20px 0 0 85px;   
+    margin: -20px 0 0 85px;
     position: absolute;
 }
 

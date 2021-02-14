@@ -11,6 +11,4 @@ Issues that have been resolved with this PR.
 * Task 2
 
 ### Have you confirmed the application builds locally without error? See [here](https://github.com/memeLab/Jandig#running).
-
 - [ ] Yes
-- [ ] No

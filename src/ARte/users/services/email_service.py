@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 class EmailService():
     def __init__(self, email_message):
         self.jandig_email = "jandig@memelab.com.br"
-        self.jandig_email_password = "svxrhkcftyvhtvyy"
+        self.jandig_email_password = "password"
         self.email_message = email_message
 
     def send_email_to_recover_password(self, multipart_message):

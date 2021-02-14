@@ -6,14 +6,14 @@
 <section class="userbox flex">
     <div class="countMrk sm-half lg-one-third">
         {%if markers %}
-            {{ markers }} {{ _(' marker(s)') }} 
+            {{ markers }} {{ _(' marker(s)') }}
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
     </div>
     <div class="countObj sm-half lg-one-third">
         {%if objects %}
-            {{ objects }} {{ _(' Object(s)') }} 
+            {{ objects }} {{ _(' Object(s)') }}
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
@@ -27,13 +27,13 @@
                 {{ _('Jandig Artist')}}
                 </b>
                 <br />
-                {{ artworks }} {{ _(' Artworks') }} 
+                {{ artworks }} {{ _(' Artworks') }}
         {% else %}
             <div class="bdgArt empty half">
                 <b>
                 {{ _('No Artworks yet.')}}
                 </b>
-                <br /> 
+                <br />
                 <a class="" href="{{ url('create-artwork') }}">
                     {{ _('Create your first!')}}
                 </a>
@@ -45,7 +45,7 @@
                 {{ _('Jandig Curator')}}
                 </b>
                 <br />
-                {{ exhibits }} {{ _(' Exhibits') }} 
+                {{ exhibits }} {{ _(' Exhibits') }}
         {% else %}
             <div class="bdgCur empty half">
                 <b>
