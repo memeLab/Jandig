@@ -11,8 +11,6 @@ def job():
     print("backup done")
     
 
-# schedule.every(60).seconds.do(job)
-
 schedule.every().day.at("22:00").do(job)
 
 while 1:
