@@ -12,17 +12,20 @@
                 {% if deletable == True and not element.in_use %}
                         <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" onclick="return confirm('Are you sure you want to delete this marker?')" class="delete">{{ _("Delete")}}</a>
                 {% endif %}
+                {% if editable == True %}
+                    <a href="{{ url('edit-marker') }}?id={{element.id}}" class="edit">edit</a>
+                {% endif %}
             {% elif element_type == "object" %}
                 {% if element.source.url.split('.')[1] == "mp4" or element.source.url.split('.')[1] == "webm" %}
                     <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}" muted autoplay loop></video>
-                {% else %} 
+                {% else %}
                     <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}">
                 {% endif %}
                 {% if deletable == True and not element.in_use %}
                     <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" onclick="return confirm('Are you sure you want to delete this object?')" class="delete">{{ _("Delete")}}</a>    
                 {% endif %}
-                {% if editable == True and not element.in_use %}
-                    <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>                
+                {% if editable == True %}
+                    <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>
                 {% endif %}
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
@@ -71,7 +74,7 @@
                     {% if editable == True %}
                         <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
                     {% endif %}
-                    {% if deletable == True %}                
+                    {% if deletable == True %}
                         <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{element.id}}" onclick="return confirm('Are you sure you want to delete this Exhibition?')" class="delete">{{ _("Delete")}}</a>
                     {% endif %}
                     </div>
@@ -79,7 +82,7 @@
             {% endif %}
         </div>
     {% endfor %}
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {# Importao axios (biblioteca para fazer request em api) #} 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {# Importao axios (biblioteca para fazer request em api) #}
     <script>
         $(".exhibit-slug").each(function(i,exhibit_slug){
             highlight_part = "<b>" + exhibit_slug.innerHTML.split("<b>")[1]

@@ -8,7 +8,7 @@
 
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="/static/css/repository-list.css">
-            
+
                 {% if exhibits %}
                     <h1 class="titExb">{{_("Jandig Exhibitions")}}</h1>
                     {% with repository_list = exhibits, element_type="exhibit"%}
@@ -18,7 +18,7 @@
                     <a href = "/see_all?which=exhibits" class="seeall">{{_("All Exhibits")}}</a>
                     {% endif %}
                 {% endif %}
-            
+
                 {% if artworks %}
                     <h1 class="titArt">{{_("Jandig Artworks")}}</h1>
                     {% with repository_list = artworks, element_type="artwork" %}
@@ -28,7 +28,7 @@
                     <a href = "/see_all?which=artworks" class="seeall">{{_("All Artworks")}}</a>
                     {% endif %}
                 {% endif %}
-            
+
                 {% if markers %}
                     <h1 class="titMrk">{{_("Jandig Markers")}}</h1>
                     {% with repository_list = markers, element_type="marker"%}
@@ -38,7 +38,7 @@
                     <a href= "/see_all?which=markers" class="seeall">{{_("All Markers")}}</a>
                     {% endif %}
                 {% endif %}
-            
+
                 {% if objects %}
                     <h1 class="titObj">{{_("Jandig Objects")}}</h1>
                     {% with repository_list = objects, element_type="object" %}
