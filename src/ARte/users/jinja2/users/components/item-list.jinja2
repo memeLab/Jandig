@@ -48,7 +48,7 @@
                             <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
                         {% endif %}
                     {% endif %}
-                    {% if editable == True %}
+                    {% if editable == True and not element.in_use %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                     {% endif %}
                     {% if deletable == True and not element.in_use %}
