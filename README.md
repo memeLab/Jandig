@@ -24,6 +24,12 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 * @kisobral - [GitHub](https://github.com/KiSobral), [Instagram](https://www.instagram.com/hugsob/)
 * @rhuancpq - [GitHub](https://github.com/Rhuancpq), [Twitter](https://twitter.com/rhuancpq)
 * @thiagohersan - [GitHub](https://github.com/thiagohersan)
+* @manuengsf - [Github](https://github.com/manuengsf)
+* @darmsDD - [Github](https://github.com/darmsDD)
+* @MatheusBlanco - [Github](https://github.com/MatheusBlanco)
+* @devsalula - [Github](https://github.com/devsalula)
+* @shayanealcantara [Github](https://github.com/shayanealcantara)
+* @victoralvesgomide - [Github](https://github.com/victoralvesgomide)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
@@ -35,10 +41,10 @@ You can find interviews and references to Jandig in the press [here](http://meme
 To contribute to Jandig ARte it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
-We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/).
+We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless as possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/).
 
 ### Installing
-Docker has good documentation on their website for installing docker and docker-compose for different operating systems like [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and [Debian](https://docs.docker.com/install/linux/docker-ce/debian/). To install docker-compose choose your operating system [here](https://docs.docker.com/compose/install/)
+Docker has good documentation on their website for installing docker and docker-compose for different operating systems like [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and [Debian](https://docs.docker.com/install/linux/docker-ce/debian/). To install docker-compose choose your operating system [here](https://docs.docker.com/compose/install/).
 
 ### Running
 To run Jandig ARte all you need to do is:
@@ -54,13 +60,18 @@ docker-compose -f docker/docker-compose.yml up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
-sudo docker-compose up -f docker/docker-compose.yml
+sudo docker-compose -f docker/docker-compose.yml up
 ```
 
 Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [localhost:8000](localhost:8000). If you want to test on a mobile device, you will need a https connection, we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate a https link for you.
 
- - `sudo npm install -G ngrok`
- - `ngrok http 8000`
- 
- ngrok will prompt 3 links, select the one with `https` at beginning
+```
+sudo snap install ngrok
+ngrok http 8000
+```
+
+ngrok will prompt 3 links:
+
 ![usage](https://user-images.githubusercontent.com/12930004/54871980-ab41da00-4d9b-11e9-8b80-bb1d4bec420d.png)
+
+Select the one with `https` at beginning.

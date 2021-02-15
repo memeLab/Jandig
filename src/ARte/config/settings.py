@@ -177,4 +177,4 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Sphinx docs
-DOCS_ROOT = os.path.join('../../', 'build/')
+DOCS_ROOT = os.path.join(BASE_DIR, '../../build/')

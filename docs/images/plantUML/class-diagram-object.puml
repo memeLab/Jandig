@@ -1,0 +1,31 @@
+@startuml
+
+hide circle
+
+class "Object (models.Model)" as C {
+  {field} - owner: models.ForeignKey()
+  {field} - source: models.FileField()
+  {field} - uploaded_at: models.DateTimeField()
+  {field} - author: models.CharField() 
+  {field} - title: models.CharField()
+  {field} - scale: models.CharField()
+  {field} - position: models.CharField()
+  {field} - rotation: models.CharField()
+  {method} + __str__(self) 
+  {method} + artworks_count(self)
+  {method} + artworks_list(self)
+  {method} + exhibits_count(self)
+  {method} + exhibits_list(self)
+  {method} + in_use(self) 
+  {method} + xproportion(self)
+  {method} + yproportion(self)
+  {method} + xscale(self)
+  {method} + yscale(self)
+  {method} + fullscale(self)
+  {method} + xposition(self)
+  {method} + yposition(self)
+}
+ 
+@enduml
+
+

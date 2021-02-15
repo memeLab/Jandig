@@ -1,7 +1,6 @@
 from boogie.router import Router
 
 from .models import Exhibit
-# from users.models import Artwork
 
 urlpatterns = Router(
     template="core/exhibit.jinja2",

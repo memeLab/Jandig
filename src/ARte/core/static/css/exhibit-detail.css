@@ -1,1 +1,16 @@
 /* Put specific styles here */
+
+#search-box {
+    margin: 0;
+}
+
+#search-button {
+    width: 10%;
+    margin: 0;
+}
+
+.search-area {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5%;
+}
