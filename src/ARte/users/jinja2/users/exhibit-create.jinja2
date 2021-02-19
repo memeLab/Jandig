@@ -75,13 +75,17 @@
                 }
             }
 
-
             function cleanSlug() {
                 var slug = document.getElementById('id_slug').value
+                var traduction = document.getElementsByClassName('btnLang')[0]
+                traduction = traduction.innerText;
                 let validate = /^[a-zA-Z0-9_]*$/
-                if(!slug.match(validate)) {
+                if(!slug.match(validate) && (traduction == 'EN-US')) {
                     alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
                 }
+                if(!slug.match(validate) && (traduction == 'PT-BR')) {
+                     alert("Url " + slug + " não pode conter espaços ou caracteres especiais (i.e: :, /)");
+                }   
             }
 
             setInterval(activateNextButton, 100);
