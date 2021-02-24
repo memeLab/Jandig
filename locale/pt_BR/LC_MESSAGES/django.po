@@ -136,6 +136,15 @@ msgstr "Título da Exposição"
 msgid "Exhibit URL"
 msgstr "URL da exposição"
 
+#: src/ARte/users/forms.py:247
+msgid "Duplicated slug. Please choose another slug for your exhibit."
+msgstr "Slug Duplicado. Por favor escolha outro slug para sua exibição."
+
+#: src/ARte/users/forms.py:249
+msgid "Duplicated name. Please choose another name for your exhibit."
+msgstr "Nome Duplicado. Por favor escolhar outro nome para sua exibição."
+
+
 #: src/ARte/core/jinja2/core/base.jinja2:44
 #, fuzzy
 msgid "Please override the \"content\" block of your template!"
