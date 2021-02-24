@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
+from core.models import Exhibit
 
 from .models import Marker, Object, Artwork, Profile
 
@@ -239,8 +240,11 @@ class ExhibitForm(forms.Form):
 
     def clean_slug(self):
         data = self.cleaned_data['slug']
+        name = self.cleaned_data['name']
         if not re.match("^[a-zA-Z0-9_]*$", data):
             raise forms.ValidationError(_("Url can't contain spaces or special characters"))
+        if Exhibit.objects.filter(name=name).exists():
+            raise forms.ValidationError(_("Duplicated name"))
         return data
 
     def __init__(self, *args, **kwargs):
