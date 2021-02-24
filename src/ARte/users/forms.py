@@ -239,13 +239,15 @@ class ExhibitForm(forms.Form):
     artworks = forms.CharField(max_length=1000)
 
     def clean_slug(self):
-        data = self.cleaned_data['slug']
+        slug = self.cleaned_data['slug']
         name = self.cleaned_data['name']
-        if not re.match("^[a-zA-Z0-9_]*$", data):
+        if not re.match("^[a-zA-Z0-9_]*$", slug):
             raise forms.ValidationError(_("Url can't contain spaces or special characters"))
+        if Exhibit.objects.filter(slug=slug).exists():
+            raise forms.ValidationError(_("Duplicated slug. Please choose another slug for your exhibit."))
         if Exhibit.objects.filter(name=name).exists():
-            raise forms.ValidationError(_("Duplicated name"))
-        return data
+            raise forms.ValidationError(_("Duplicated name. Please choose another name for your exhibit."))
+        return slug
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
