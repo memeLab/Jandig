@@ -181,7 +181,7 @@
                     var yprop = (high*1.0)/wide;
                 }
 
-                var scal = document.getElementById('scale').value;
+                var scal = document.getElementById('scale').value.replace(",",".");
                 var xpos = document.getElementById('X-position').value;
                 var ypos = document.getElementById('Y-position').value;
                 var scl = scal*xprop + " " + scal*yprop;
