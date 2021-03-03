@@ -442,7 +442,7 @@ def edit_artwork(request):
 
     return render(
         request,
-        'users/artwork-create.jinja2',
+        'users/artwork-edit.jinja2',
         {
             'form': ArtworkForm(initial=model_data),
             'marker_list': Marker.objects.all(),
