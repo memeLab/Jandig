@@ -494,7 +494,7 @@ def edit_exhibit(request):
     artworks = Artwork.objects.filter(author=request.user.profile)
     return render(
         request,
-        'users/exhibit-create.jinja2',
+        'users/exhibit-edit.jinja2',
         {
             'form': ExhibitForm(initial=model_data),
             'artworks': artworks,
