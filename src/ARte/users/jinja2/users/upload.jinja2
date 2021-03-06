@@ -2,9 +2,46 @@
 {% extends '/core/home.jinja2' %}
 
 {% block content %}
+    <style>
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;  
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: #03b595;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #03b595;
+            cursor: pointer;
+        }
+
+        #Y-position-value, #X-position-value {
+            color: #03b595;
+            font-weight: bold;
+        }
+    </style>
+
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/upload.css">
+        <link rel="stylesheet" href="/static/css/upload.css" type="text/css">
 
         {% if form_type == 'marker' and edit == False %}
             <h2>{{ _('Upload Marker') }}</h2>
@@ -60,9 +97,19 @@
                             {{_("Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left.")}}
                         </div>
                         <h3>Horizontal:</h3>
-                        <input id="X-position" class="trigger-change-value" value ="0">
+                        <div class="slider-container"> 
+                            <input id="X-position" type="range" min="0" max="500" class="trigger-change-value slider" value="0" oninput="updateXValue()">
+                        </div>
+                        <p>
+                            <span id="X-position-value">0</span>
+                        </p>
                         <h3>Vertical:</h3>
-                        <input id="Y-position" class="trigger-change-value" value ="0">
+                        <div class="slider-container"> 
+                            <input id="Y-position" type="range" min="0" max="500" class="trigger-change-value slider" value ="0" oninput="updateYValue()">
+                        </div>
+                        <p>
+                            <span id="Y-position-value">0</span>
+                        </p>
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
@@ -160,6 +207,18 @@
                     reader.readAsDataURL(file);
                 }
             );
+
+            function updateXValue() {
+                var slider = document.getElementById("X-position");
+                var output = document.getElementById("X-position-value");
+                output.innerHTML = slider.value;
+            }
+
+            function updateYValue() {
+                var slider = document.getElementById("Y-position");
+                var output = document.getElementById("Y-position-value");
+                output.innerHTML = slider.value;
+            }
 
             function updateValues(){
                 var image_preview = document.querySelector('#img-preview');
