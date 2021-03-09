@@ -37,6 +37,21 @@
             color: #03b595;
             font-weight: bold;
         }
+        
+        #shadowbox-container {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin: 20px;
+        }
+
+        #shadowbox {
+            width: 100px;
+            height: 100px;
+            background-color: #03b595;
+        }
     </style>
 
     <section class="upload container">
@@ -79,10 +94,6 @@
                         {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
-
-                    {# TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT SCALE AND POSITION #}
-                    {# <input ... type = 'range'... #}
-
                     {% if form_type == 'object' %}
                     <div id="edit_object_attributes">
 
@@ -96,16 +107,20 @@
                         <div id="tip2">
                             {{_("Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left.")}}
                         </div>
+
+                        <div id="shadowbox-container">
+                            <div id="shadowbox"></div>
+                        </div>
                         <h3>Horizontal:</h3>
                         <div class="slider-container"> 
-                            <input id="X-position" type="range" min="0" max="500" class="trigger-change-value slider" value="0" oninput="updateXValue()">
+                            <input id="X-position" type="range" min="-100" max="100" class="trigger-change-value slider" value="0" oninput="updateXValue()">
                         </div>
                         <p>
                             <span id="X-position-value">0</span>
                         </p>
                         <h3>Vertical:</h3>
                         <div class="slider-container"> 
-                            <input id="Y-position" type="range" min="0" max="500" class="trigger-change-value slider" value ="0" oninput="updateYValue()">
+                            <input id="Y-position" type="range" min="-100" max="100" class="trigger-change-value slider" value ="0" oninput="updateYValue()">
                         </div>
                         <p>
                             <span id="Y-position-value">0</span>
@@ -210,14 +225,37 @@
 
             function updateXValue() {
                 var slider = document.getElementById("X-position");
-                var output = document.getElementById("X-position-value");
-                output.innerHTML = slider.value;
+                var display_value = document.getElementById("X-position-value");
+                display_value.innerHTML = slider.value;
+
+                updateBoxShadow();
             }
 
             function updateYValue() {
                 var slider = document.getElementById("Y-position");
-                var output = document.getElementById("Y-position-value");
-                output.innerHTML = slider.value;
+                var display_value = document.getElementById("Y-position-value");
+                display_value.innerHTML = slider.value;
+
+                updateBoxShadow();
+            }
+
+            function updateBoxShadow() {
+                var vertical_slider = document.getElementById("Y-position").value;
+                var horizontal_slider = document.getElementById("X-position").value;
+            
+                let height = 100+Math.abs(vertical_slider);
+
+                var shadowbox_container = document.getElementById("shadowbox-container");
+                var shadowbox = document.getElementById("shadowbox");
+
+                if(vertical_slider > 0) {
+                    shadowbox_container.style.alignItems = "flex-start";
+                } else {
+                    shadowbox_container.style.alignItems = "flex-end";
+                }
+
+                shadowbox_container.style.height = `${height}px`;
+                shadowbox.style.boxShadow = `${horizontal_slider}px ${vertical_slider}px #d3d3d3`;
             }
 
             function updateValues(){
