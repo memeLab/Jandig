@@ -10,16 +10,20 @@ from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 from .models import Exhibit
 from users.models import Artwork, Marker, Object
+from django.views.decorators.http import require_GET
+
 
 @cache_page(60 * 60)
 def service_worker(request):
     return render(request, 'core/sw.js',
                   content_type='application/x-javascript')
 
+
 @cache_page(60 * 60)
 def manifest(request):
     return render(request, 'core/manifest.json',
                   content_type='application/x-javascript')
+
 
 def index(request):
     ctx = {
@@ -29,13 +33,14 @@ def index(request):
 
     return render(request, 'core/exhibit.jinja2', ctx)
 
+
 @cache_page(60 * 2)
 def collection(request):
 
     exhibits = Exhibit.objects.all().order_by('-id')[:4]
     artworks = Artwork.objects.all().order_by('-id')[:6]
-    markers  = Marker.objects.all().order_by('-id')[:8]
-    objects  = Object.objects.all().order_by('-id')[:8]
+    markers = Marker.objects.all().order_by('-id')[:8]
+    objects = Object.objects.all().order_by('-id')[:8]
 
     ctx = {
         "artworks": artworks,
@@ -47,18 +52,19 @@ def collection(request):
 
     return render(request, 'core/collection.jinja2', ctx)
 
+
 @cache_page(60 * 2)
 def see_all(request):
     request_type = request.GET.get('which')
-    ctx = {}    
-    if   request_type == 'objects':
-        ctx = { 'objects' : Object.objects.all(), "seeall":True, }
+    ctx = {}
+    if request_type == 'objects':
+        ctx = {'objects': Object.objects.all(), "seeall": True, }
     elif request_type == 'markers':
-        ctx = { 'markers':  Marker.objects.all(), "seeall":True, } 
+        ctx = {'markers':  Marker.objects.all(), "seeall": True, }
     elif request_type == 'artworks':
-        ctx = { 'artworks': Artwork.objects.all(), "seeall":True, }
+        ctx = {'artworks': Artwork.objects.all(), "seeall": True, }
     elif request_type == 'exhibits':
-        ctx = { 'exhibits': Exhibit.objects.all(), "seeall":True, }
+        ctx = {'exhibits': Exhibit.objects.all(), "seeall": True, }
 
     return render(request, 'core/collection.jinja2', ctx)
 
@@ -74,6 +80,7 @@ def upload_image(request):
         form = UploadFileForm()
     return render(request, 'core/upload.jinja2', {'form': form})
 
+
 def exhibit_select(request):
     if request.method == 'POST':
         form = ExhibitForm(request.POST)
@@ -83,23 +90,34 @@ def exhibit_select(request):
     else:
         form = ExhibitForm()
 
-    return render(request, 'core/exhibit_select.jinja2', {'form':form})
+    return render(request, 'core/exhibit_select.jinja2', {'form': form})
+
 
 @cache_page(60 * 60)
 def exhibit_detail(request):
     id = request.GET.get("id")
     exhibit = Exhibit.objects.get(id=id)
     ctx = {
-        'exhibit':exhibit,
+        'exhibit': exhibit,
         'exhibitImage': "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
         'artworks': exhibit.artworks.all()
     }
     return render(request, 'core/exhibit_detail.jinja2', ctx)
 
+
 def artwork_preview(request):
-    artwork_id=request.GET.get("id")
-    
+    artwork_id = request.GET.get("id")
+
     ctx = {
-        "artworks": Artwork.objects.filter(id = artwork_id)
+        "artworks": Artwork.objects.filter(id=artwork_id)
     }
     return render(request, 'core/exhibit.jinja2', ctx)
+
+
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: ",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
