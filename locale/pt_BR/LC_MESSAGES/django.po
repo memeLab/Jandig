@@ -630,6 +630,11 @@ msgstr "Curador Jandig"
 msgid "No Exhibitions yet."
 msgstr "Sem Exposições ainda."
 
+#: src/ARte/core/jinja2/core/collection.jinja2:53
+msgid "We found no content on your Collection, try uploading an object."
+msgstr "Não encontramos nenhum conteudo dentro da sua Coleção. Tente fazer upload de um Objeto antes."
+
+
 #~ msgid " exhibits"
 #~ msgstr " exposições"
 
