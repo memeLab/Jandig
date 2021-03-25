@@ -377,6 +377,10 @@ msgstr "Informações da Exposição (2/2)"
 msgid "Publish Exhibit"
 msgstr "Publicar Exposição"
 
+#: src/ARte/users/jinja2/users/exhibit-create.jinja2:82
+msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
+msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+
 #: src/ARte/users/jinja2/users/invalid-recovering-email.jinja2:14
 msgid "There is no user with this e-mail/username."
 msgstr "Não há usuário com esse e-mail/nome."
