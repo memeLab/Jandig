@@ -15,6 +15,8 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
+from django.utils.functional import SimpleLazyObject
+
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
@@ -129,7 +131,14 @@ def invalid_recovering_email_or_username(request):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-    profile = Profile.objects.select_related().get(user=request.user)
+   
+    user = request.GET.get('user')
+    
+    if user:
+        profile = Profile.objects.get(user=user)
+    else:
+         profile = Profile.objects.select_related().get(user=request.user)
+
 
     exhibits = profile.exhibits.all()
     markers = profile.marker_set.all()
@@ -141,7 +150,8 @@ def profile(request):
         'artworks': artworks,
         'markers':markers,
         'objects':objects,
-        'profile':True
+        'profile':True, 
+        'button_enable': False if user else True
     }
     return render(request, 'users/profile.jinja2', ctx)
 
@@ -305,6 +315,7 @@ def element_get(request):
 	    'id_object' : element.augmented.id,
             'type': element_type,
             'author': element.author.user.username,
+            'owner_id': element.author.user.id,
             'exhibits': element.exhibits_count,
             'created_at': element.created_at.strftime('%d %b, %Y'),
             'marker': element.marker.source.url,
@@ -319,6 +330,7 @@ def element_get(request):
             'type': element_type,
             'author': element.author,
             'owner': element.owner.user.username,
+            'owner_id': element.owner_id,
             'artworks': element.artworks_count,
             'exhibits': element.exhibits_count,
             'source': element.source.url,
