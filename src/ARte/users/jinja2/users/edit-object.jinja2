@@ -35,7 +35,7 @@
                         </div>
 
                         {% with xposition=model.xposition, yposition=model.yposition %}
-                            {% include "users/components/range-slider.jinja2" %}
+                            {% include "users/components/object-position.jinja2" %}
                         {% endwith %}
 
                         {{ form.hidden_fields()[0] }}

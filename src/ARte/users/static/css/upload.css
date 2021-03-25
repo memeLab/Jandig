@@ -9,28 +9,6 @@
     padding-left: 5%;
 }
 
-.row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    justify-content: flex-start;
-}
-
-.box {
-    height: 15px;
-    width: 15px;
-    margin-right: 5px;
-    border: 1px solid black;
-}
-
-.object-color-box {
-    background-color: #03b595;
-}
-
-.marker-color-box {
-    background-color: #d3d3d3;
-}
-
 .form-options input{
     width: 20px;
     height: 20px;
