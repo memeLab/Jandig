@@ -15,7 +15,7 @@
             {% if profile %}
                 <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
                     {% if exhibits %}
-                        {% with deletable=True, editable=True, repository_list = exhibits, element_type="exhibit"%}
+                        {% with deletable=button_enable, editable=button_enable, repository_list = exhibits, element_type="exhibit"%}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -26,7 +26,7 @@
                     {% endif %}
                 <h1 class="titArt">{{_("Your Artworks")}}</h1>
                     {% if artworks %}
-                        {% with preview=True, deletable=True, editable=True, repository_list = artworks, element_type="artwork" %}
+                        {% with preview=True, deletable=button_enable, editable=button_enable, repository_list = artworks, element_type="artwork" %}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -37,7 +37,7 @@
                     {% endif %}
                 <h1 class="titMrk">{{_("Your Markers")}}</h1>
                     {% if markers %}
-                        {% with deletable=True, editable=True, repository_list = markers, element_type="marker"%}
+                        {% with deletable=button_enable, editable=button_enable, repository_list = markers, element_type="marker"%}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -48,7 +48,7 @@
                     {% endif %}
                 <h1 class="titObj">{{_("Your Objects")}}</h1>
                     {% if objects %}
-                        {% with deletable=True, editable=True, repository_list = objects, element_type="object" %}
+                        {% with deletable=button_enable, editable=button_enable, repository_list = objects, element_type="object" %}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}

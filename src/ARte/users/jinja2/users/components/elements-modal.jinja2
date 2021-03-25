@@ -7,15 +7,16 @@
 {% endblock %}
 
 {% block content %}
-    <p id="element-author"></p>
+    <a id="element-author" href="#"></a>
     <p id="element-upload-info"></p>
     <p id="element-analytics"></p>
     <p id="download"> Download file:</p>
     <p id="element-download"></p>
 
     <script>
-        function elementAuthor(author){
+        function elementAuthor(author, owner_id){
             $('#element-author').text({{ _("by ")|tojson }} + author);
+            $('#element-author').attr("href", "{{ url('profile') }}?user=" + owner_id);
         }
         function uploadedBy(owner, date){
             $('#element-upload-info').replaceWith(
@@ -105,7 +106,7 @@
                 $.ajax({
                     url: elemUrl,
                     success: function(data){
-                        elementAuthor(data['author']);
+                        elementAuthor(data['author'], data['owner_id']);
                         uploadedBy(data['owner'], data['uploaded_at']);
                         usedIn(data['artworks'], data['exhibits'], data['source'], element_id, elemType);
                         downloadElement(data['type'], data['size']/1000, data['source']);
@@ -116,7 +117,7 @@
                 $.ajax({
                     url: elemUrl,
                     success: function(data){
-                        elementAuthor(data['author']);
+                        elementAuthor(data['author'], data['owner_id']);
                         usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
                         downloadElement(data['type'], data['augmented_size']/1000, data['augmented']);
