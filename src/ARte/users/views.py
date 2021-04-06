@@ -14,6 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_http_methods
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
@@ -23,6 +24,7 @@ from core.helpers import *
 from .services.email_service import EmailService
 from .services.user_service import UserService
 from .services.encrypt_service import EncryptService
+
 
 def signup(request):
 
@@ -115,14 +117,17 @@ def recover_edit_password(request):
 
     return render(request, 'users/recover-edit-password.jinja2', {'form': form})
 
+@require_http_methods(["GET"])
 def wrong_verification_code(request):
     return render(request, 'users/wrong-verification-code.jinja2')
 
+@require_http_methods(["GET"])
 def invalid_recovering_email_or_username(request):
     return render(request, 'users/invalid-recovering-email.jinja2')
 
 
 @login_required
+@require_http_methods(["GET"])
 def profile(request):
     profile = Profile.objects.select_related().get(user=request.user)
 
@@ -157,6 +162,7 @@ def get_element(request, form, form_class, form_type, source, author, existent_e
     return element
 
 @cache_page(60 * 60)
+@require_http_methods(["GET"])
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -165,6 +171,7 @@ def get_marker(request, form):
     return get_element(request, form, UploadMarkerForm, Marker, source=marker_src, author=marker_author, existent_element=existent_marker)
 
 @cache_page(60 * 60)
+@require_http_methods(["GET"])
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']
@@ -184,13 +191,13 @@ def create_artwork(request):
 
             if marker and augmented:
                 artwork_title = form.cleaned_data['title']
-                artwork_desc = form.cleaned_data['description']
+                artwork_desc = form.cleaned_data['deion']
                 Artwork(
                     author=request.user.profile,
                     marker=marker,
                     augmented=augmented,
                     title=artwork_title,
-                    description=artwork_desc
+                    deion=artwork_desc
                 ).save()
             return redirect('home')
     else:
@@ -240,6 +247,7 @@ def create_exhibit(request):
         }
     )
 
+@require_http_methods(["GET"])
 def download_exhibit(request):
     exhibit_id = request.GET.get('id')
     exhibit = Exhibit.objects.get(id=exhibit_id)
@@ -281,6 +289,7 @@ def download_exhibit(request):
 
 
 @cache_page(60 * 2)
+@require_http_methods(["GET"])
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
@@ -304,7 +313,7 @@ def element_get(request):
             'augmented': element.augmented.source.url,
             'augmented_size': element.augmented.source.size,
             'title': element.title,
-            'description': element.description,
+            'deion': element.deion,
         }
     else:
         data = {
@@ -422,7 +431,7 @@ def edit_artwork(request):
                 "marker": get_marker(request,form),
                 "augmented": get_augmented(request, form),
                 "title": form.cleaned_data["title"],
-                "description": form.cleaned_data["description"],
+                "deion": form.cleaned_data["deion"],
             }
             print(model_data['augmented'])
             model.update(**model_data)
@@ -435,7 +444,7 @@ def edit_artwork(request):
         "augmented": model.augmented,
         "augmented_author": model.augmented.author,
         "title": model.title,
-        "description": model.description,
+        "deion": model.deion,
         "existent_marker": model.marker.id,
         "existent_object": model.augmented.id,
     }
@@ -548,6 +557,7 @@ def edit_profile(request):
     )
 
 @login_required
+@require_http_methods(["GET"])
 def delete(request):
     content_type = request.GET.get('content_type', None)
    
@@ -602,7 +612,7 @@ def delete_content_Moderator(instance,user):
         elif isArtwork:
             instance.delete()
 
-
+@require_http_methods(["GET"])
 def related_content(request):
     element_id = request.GET.get('id')
     element_type = request.GET.get('type')
@@ -633,6 +643,7 @@ def related_content(request):
     return render(request, 'core/collection.jinja2', ctx)
 
 @login_required
+@require_http_methods(["GET"])
 def mod_delete(request):
     content_type = request.GET.get('content_type', None)
     if content_type == 'marker':
