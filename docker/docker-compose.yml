@@ -16,6 +16,7 @@ services:
     env_file:
       - ../src/.envs/.django
       - ../src/.envs/.postgres
+      - ../src/.envs/.smtp
     depends_on:
       - postgres
     command: inv db -p i18n --compile docs collect run -p
