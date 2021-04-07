@@ -1,21 +1,19 @@
 import smtplib
-import environ
+import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-env = environ.Env()
-
-
 class EmailService:
     def __init__(self, email_message):
-        print(env("JANDIG_EMAIL"))
-        self.jandig_email = env("JANDIG_EMAIL")
-        self.jandig_email_password = env("JANDIG_EMAIL_PASSWORD")
+        self.smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+        self.smtp_port = int(os.environ.get("SMTP_PORT", 587))
+        self.jandig_email = os.environ["JANDIG_EMAIL"]
+        self.jandig_email_password = os.environ["JANDIG_EMAIL_PASSWORD"]
         self.email_message = email_message
 
     def send_email_to_recover_password(self, multipart_message):
-        email_server = smtplib.SMTP("smtp.gmail.com: 587")
+        email_server = smtplib.SMTP(self.smtp_server, self.smtp_port)
         email_server.starttls()
         email_server.login(multipart_message["From"], self.jandig_email_password)
         email_server.sendmail(
