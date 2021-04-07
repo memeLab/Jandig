@@ -349,6 +349,22 @@ msgstr "Publicar obra"
 msgid "Create Jandig Exhibition"
 msgstr "Criar Exposição Jandig"
 
+#: src/ARte/users/jinja2/users/artwork-edit.jinja2:11
+msgid "Edit Jandig Artwork"
+msgstr "Editar Obra Jandig"
+
+#: src/ARte/users/jinja2/users/artwork-edit.jinja2:75
+msgid "Edit Artwork"
+msgstr "Editar Obra"
+
+#: src/ARte/users/jinja2/users/exhibit-edit.jinja2:12
+msgid "Edit Jandig Exhibition"
+msgstr "Editar Exposição Jandig"
+
+#: src/ARte/users/jinja2/users/exhibit-edit.jinja2:49
+msgid "Edit Exhibit"
+msgstr "Editar Exposição"
+
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:13
 msgid "Select Artworks"
 msgstr "Escolher Obras"
