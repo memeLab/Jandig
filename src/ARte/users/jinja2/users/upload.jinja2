@@ -118,7 +118,6 @@
             $('#author-chk').click(function(){
                 if($(this).prop('checked') == true){
                     let user = $('div.welcome > p > a')[0].innerText;
-                    console.log(user);
                     $('#author-field > input').val(user);
                     $('#author-field > input').prop('readonly', true);
                 }else{
