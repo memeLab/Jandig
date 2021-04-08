@@ -37,7 +37,7 @@
                         </p>
                     </div>
 
-                    <button id="next-object" type="button" class="select-btn next-btn">
+                    <button id="next-object" type="button" class="select-btn next-btn" disabled>
                         {{ _('Next') }}
                     </button>
                 </div>
@@ -58,7 +58,7 @@
                             {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
                         </p>
                     </div>
-                    <button id="next-desc" type="button" class="select-btn next-btn">
+                    <button id="next-desc" type="button" class="select-btn next-btn" disabled="disabled">
                         {{ _('Next') }}
                     </button>
                 </div>
@@ -84,14 +84,6 @@
                 $('#' + tabs[tabNumber].id).show();
             }
 
-            function validateTab(tab){
-
-            }
-
-            function activateNextButton(){
-
-            }
-
             $('#select-marker').click(function(){
                 currentTab = 0;
                 $('#form-modal').modal({showClose: false});
@@ -114,21 +106,38 @@
                 showTab(currentTab);
             })
 
-            // checkboxes
-            $('#marker-agreement-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    $('input[type="submit"]').prop('disabled', false);
+            function validateNextButton(checkbox, button){
+                if(checkbox.prop('checked') == true){
+                    button.prop('disabled', false);
                 }else{
-                    $('input[type="submit"]').prop('disabled', true);
+                    button.prop('disabled', true);
                 }
+            }
+
+            function validateSubmit() {
+                unchecked_inputs = $('input[name="agreement"]').not(':checked').length;
+
+                if(unchecked_inputs > 0){
+                    $('input[type="submit"]').prop('disabled', true);
+                }else{
+                    $('input[type="submit"]').prop('disabled', false);
+                }
+            }
+
+            $('#marker-agreement-chk').click(function(){
+                let checkbox = $(this);
+                let nextButton = $('#next-object');
+
+                validateNextButton(checkbox, nextButton);
+                validateSubmit();
             });
 
             $('#object-agreement-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    $('input[type="submit"]').prop('disabled', false);
-                }else{
-                    $('input[type="submit"]').prop('disabled', true);
-                }
+                let checkbox = $(this);
+                let nextButton = $('#next-desc');
+
+                validateNextButton(checkbox, nextButton);
+                validateSubmit();
             });
 
             {% if selected_marker %}
