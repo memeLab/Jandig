@@ -8,7 +8,6 @@
 
         <script>
             let artworks = {}
-            let str_artworks = ""
 
             {% if selected %}
                 "{{selected}}".split(",").forEach(function(id){
@@ -17,29 +16,25 @@
                 })
             {% endif %}
 
-            $('.repository-item').click(function(){
-                console.log("cl");
-                let elementId = $(this).attr('id').split('-')[1];
-                let sectionId = $(this).parent().attr('id');
+            function isArtworkSelected(artwork) {
+                return $(artwork).css('border-bottom-style') != "none";
+            }
 
-                // reset background
-                if($(this).css('border-bottom-style') != "none"){
-                    console.log("ASDF");
+            $('.repository-item').click(function(){
+                let artworkId = $(this).attr('id').split('-')[1];
+
+                if(isArtworkSelected(this)){
                     $(this).css("border-bottom","none");
-                    delete artworks[elementId]
+                    delete artworks[artworkId];
                 }else{
                     $(this).css("border-bottom","3px solid #a6a6a6");
-                    artworks[elementId] = elementId
+                    artworks[artworkId] = artworkId;
                 }
-                str_artworks = ""
-                for (element in artworks){
-                    str_artworks += element+","
-                }
-                // Remove last comma
-                str_artworks = str_artworks.substr(0, str_artworks.length-1)
 
+                let selected_artworks = Object.values(artworks).join(',');
                 let artworks_input = $('#artworks-selected > input');
-                artworks_input.val(str_artworks);
+
+                artworks_input.val(selected_artworks);
             });
         </script>
 {% endblock %}
