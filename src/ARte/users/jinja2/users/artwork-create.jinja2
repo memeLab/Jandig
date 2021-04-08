@@ -77,34 +77,11 @@
             </form>
         </div>
         <script>
-            let currentTab = 0;
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
                 $('#' + tabs[tabNumber].id).show();
             }
-
-            $('#select-marker').click(function(){
-                currentTab = 0;
-                $('#form-modal').modal({showClose: false});
-                showTab(currentTab);
-            })
-
-            $('#select-object').click(function(){
-                currentTab = 1;
-                $('#form-modal').modal({showClose: false})
-                showTab(currentTab);
-            })
-
-            $('#next-object').click(function(){
-                currentTab = 1;
-                showTab(currentTab);
-            })
-
-            $('#next-desc').click(function(){
-                currentTab = 2;
-                showTab(currentTab);
-            })
 
             function validateNextButton(checkbox, button){
                 if(checkbox.prop('checked') == true){
@@ -115,14 +92,35 @@
             }
 
             function validateSubmit() {
-                unchecked_inputs = $('input[name="agreement"]').not(':checked').length;
+                let selected_object = $("#id_existent_object");
+                let selected_marker = $("#id_existent_marker");
+                let unchecked_inputs = $('input[name="agreement"]').not(':checked').length;
 
-                if(unchecked_inputs > 0){
-                    $('input[type="submit"]').prop('disabled', true);
-                }else{
+                if(unchecked_inputs == 0 && selected_object[0].value && selected_marker[0].value){
                     $('input[type="submit"]').prop('disabled', false);
+                }else{
+                    $('input[type="submit"]').prop('disabled', true);
                 }
             }
+
+            $('#select-marker').click(function(){
+                $('#form-modal').modal({showClose: false});
+                showTab(0);
+            })
+
+            $('#select-object').click(function(){
+                $('#form-modal').modal({showClose: false})
+                showTab(1);
+            })
+
+            $('#next-object').click(function(){
+                showTab(1);
+            })
+
+            $('#next-desc').click(function(){
+                showTab(2);
+                validateSubmit();
+            })
 
             $('#marker-agreement-chk').click(function(){
                 let checkbox = $(this);
@@ -139,15 +137,6 @@
                 validateNextButton(checkbox, nextButton);
                 validateSubmit();
             });
-
-            {% if selected_marker %}
-                $('#marker-agreement-chk').prop("checked", true);
-                $('input[type="submit"]').prop('disabled', false);
-            {% endif %}
-            {% if selected_object %}
-                $('input[type="submit"]').prop('disabled', false);
-                $('#object-agreement-chk').prop("checked", true);
-             {% endif %}
         </script>
     </section>
 {% endblock %}

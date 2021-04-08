@@ -17,13 +17,13 @@
             {% endif %}
 
             function isArtworkSelected(artwork) {
-                return $(artwork).css('border-bottom-style') != "none";
+                return artwork.css('border-bottom-style') != "none";
             }
 
             $('.repository-item').click(function(){
                 let artworkId = $(this).attr('id').split('-')[1];
 
-                if(isArtworkSelected(this)){
+                if(isArtworkSelected($(this))){
                     $(this).css("border-bottom","none");
                     delete artworks[artworkId];
                 }else{
