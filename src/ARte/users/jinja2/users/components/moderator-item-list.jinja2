@@ -42,7 +42,6 @@
     <script>
         $(".exhibit-slug").each(function(i,exhibit_slug){
             highlight_part = "<b>" + exhibit_slug.innerHTML.split("<b>")[1]
-            console.log(highlight_part)
             site_url = window.location.protocol + "//" + window.location.host + "/"
             exhibit_slug.innerHTML = site_url + highlight_part
         })
