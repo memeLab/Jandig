@@ -86,65 +86,34 @@
 
             function validateTab(tab){
 
-                if(tab == 'marker'){
-                    let fileUpload = $('#marker-source-field > input')[0];
-                    let existentMarker = $('#existent-marker > input')[0];
-                    let markerAuthor = $('#marker-author-field > input')[0];
-                    let agreement = $('#marker-agreement-chk')
-
-                    if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
-                        return true;
-                    }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else if(tab == 'object'){
-                    let fileUpload = $('#object-source-field > input')[0];
-                    let existentMarker = $('#existent-object > input')[0];
-                    let markerAuthor = $('#object-author-field > input')[0];
-                    let agreement = $('#object-agreement-chk')
-
-                    if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
-                        return true;
-                    }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }
             }
+
             function activateNextButton(){
-                if(validateTab('marker')){
-                    $('#next-object').prop('disabled', false);
-                }else{
-                    $('#next-object').prop('disabled', true);
-                }
 
-                if(validateTab('object')){
-                    $('#next-desc').prop('disabled', false);
-                }else{
-                    $('#next-desc').prop('disabled', true);
-                }
             }
+
             $('#select-marker').click(function(){
                 currentTab = 0;
                 $('#form-modal').modal({showClose: false});
                 showTab(currentTab);
             })
+
             $('#select-object').click(function(){
                 currentTab = 1;
                 $('#form-modal').modal({showClose: false})
                 showTab(currentTab);
             })
+
             $('#next-object').click(function(){
                 currentTab = 1;
                 showTab(currentTab);
             })
+
             $('#next-desc').click(function(){
                 currentTab = 2;
                 showTab(currentTab);
             })
+
             // checkboxes
             $('#marker-agreement-chk').click(function(){
                 if($(this).prop('checked') == true){
@@ -153,16 +122,6 @@
                     $('input[type="submit"]').prop('disabled', true);
                 }
             });
-            $('#marker-author-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    let user = $('div.welcome > p > a')[0].innerText;
-                    $('#marker-author-field > input').prop('value',user);
-                    $('#marker-author-field > input').prop('readonly', true);
-                }else{
-                    $('#marker-author-field > input').prop('readonly', false);
-                    $('#marker-author-field > input').prop('value', "");
-                }
-            })
 
             $('#object-agreement-chk').click(function(){
                 if($(this).prop('checked') == true){
@@ -171,16 +130,6 @@
                     $('input[type="submit"]').prop('disabled', true);
                 }
             });
-            $('#object-author-chk').click(function(){
-                if($(this).prop('checked') == true){
-                    let user = $('div.welcome > p > a')[0].innerText;
-                    $('#object-author-field > input').prop('value', user);
-                    $('#object-author-field > input').prop('readonly', true);
-                }else{
-                    $('#object-author-field > input').prop('readonly', false);
-                    $('#object-author-field > input').prop('value', "");
-                }
-            })
 
             {% if selected_marker %}
                 $('#marker-agreement-chk').prop("checked", true);
