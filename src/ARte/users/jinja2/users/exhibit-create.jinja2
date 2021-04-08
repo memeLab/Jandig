@@ -51,7 +51,10 @@
             </form>
         </div>
         <script>
-            let currentTab = 0;
+            const MARKER_TAB = 0; 
+            const ARTWORK_TAB = 1; 
+
+            let currentTab = MARKER_TAB;
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
@@ -87,12 +90,12 @@
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
-                currentTab = 0;
+                currentTab = MARKER_TAB;
                 $('#form-modal').modal({showClose: false});
                 showTab(currentTab);
             })
             $('#next-info').click(function(){
-                currentTab = 1;
+                currentTab = ARTWORK_TAB;
                 showTab(currentTab);
             })
         </script>

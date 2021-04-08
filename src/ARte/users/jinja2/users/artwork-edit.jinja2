@@ -77,6 +77,10 @@
             </form>
         </div>
         <script>
+            const MARKER_TAB = 0; 
+            const OBJECT_TAB = 1; 
+            const DESCRIPTION_TAB = 2; 
+
             let currentTab = 0;
             function showTab(tabNumber){
                 let tabs = $('.tab');
@@ -128,21 +132,21 @@
                 }
             }
             $('#select-marker').click(function(){
-                currentTab = 0;
+                currentTab = MARKER_TAB;
                 $('#form-modal').modal({showClose: false});
                 showTab(currentTab);
             })
             $('#select-object').click(function(){
-                currentTab = 1;
+                currentTab = OBJECT_TAB;
                 $('#form-modal').modal({showClose: false})
                 showTab(currentTab);
             })
             $('#next-object').click(function(){
-                currentTab = 1;
+                currentTab = OBJECT_TAB;
                 showTab(currentTab);
             })
             $('#next-desc').click(function(){
-                currentTab = 2;
+                currentTab = DESCRIPTION_TAB;
                 showTab(currentTab);
             })
             // checkboxes
