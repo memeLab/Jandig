@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
-        <h1 class="titArt">{{ _('Create Jandig Artwork') }}</h1>
+        <h1 class="titArt">{{ _('Edit Jandig Artwork') if selected_marker else _('Create Jandig Artwork')}}</h1>
         <button id="select-marker" class="select-btn">
             {{ _('Select Marker') }}
         </button>
@@ -72,7 +72,7 @@
                         {{ form.visible_fields()[7] }}
                         {{ form.visible_fields()[7].errors }}
                     </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish artwork') }}" disabled="disabled" />
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
                 </div>
             </form>
         </div>
@@ -83,17 +83,21 @@
                 $('#' + tabs[tabNumber].id).show();
             }
 
-            function validateNextButton(checkbox, button){
-                if(checkbox.prop('checked') == true){
+            function checkAgreement(checkbox){
+                return checkbox.prop('checked') == true;
+            }
+
+            function validateNextButton(condition, button) {
+                if(condition){
                     button.prop('disabled', false);
                 }else{
                     button.prop('disabled', true);
                 }
-            }
+            } 
 
             function validateSubmit() {
-                let selected_object = $("#id_existent_object");
                 let selected_marker = $("#id_existent_marker");
+                let selected_object = $("#id_existent_object");
                 let unchecked_inputs = $('input[name="agreement"]').not(':checked').length;
 
                 if(unchecked_inputs == 0 && selected_object[0].value && selected_marker[0].value){
@@ -101,6 +105,33 @@
                 }else{
                     $('input[type="submit"]').prop('disabled', true);
                 }
+            }
+
+            function validateMarkerTab(){
+                let selected_marker = $("#id_existent_marker");
+                let checkbox = $("#marker-agreement-chk");
+                let nextButton = $('#next-object');
+
+                let tabCondition = checkAgreement(checkbox) && selected_marker[0].value > 0;
+
+                validateNextButton(tabCondition, nextButton);
+                validateSubmit();
+            }
+
+            function validateObjectTab(){
+                let checkbox = $("#object-agreement-chk");
+                let nextButton = $('#next-desc');
+                let selected_object = $("#id_existent_object");
+
+                let tabCondition = checkAgreement(checkbox) && selected_object[0].value > 0;
+
+                validateNextButton(tabCondition, nextButton);
+                validateSubmit();
+            }
+
+            function validateTabs(){
+                validateMarkerTab();
+                validateObjectTab();
             }
 
             $('#select-marker').click(function(){
@@ -123,20 +154,24 @@
             })
 
             $('#marker-agreement-chk').click(function(){
-                let checkbox = $(this);
-                let nextButton = $('#next-object');
-
-                validateNextButton(checkbox, nextButton);
-                validateSubmit();
+                validateMarkerTab();
             });
 
             $('#object-agreement-chk').click(function(){
-                let checkbox = $(this);
-                let nextButton = $('#next-desc');
-
-                validateNextButton(checkbox, nextButton);
-                validateSubmit();
+                validateObjectTab();
             });
+
+            {% if selected_marker %}
+                $('#marker-agreement-chk').prop("checked", true);
+                $('input[type="submit"]').prop('disabled', false);
+            {% endif %}
+            {% if selected_object %}
+                $('input[type="submit"]').prop('disabled', false);
+                $('#object-agreement-chk').prop("checked", true);
+            {% endif %}
+
+            validateTabs();
+
         </script>
     </section>
 {% endblock %}
