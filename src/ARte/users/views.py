@@ -455,7 +455,6 @@ def edit_artwork(request):
 
 @login_required
 def edit_exhibit(request):
-    print('hi')
     id = request.GET.get("id","-1")
     model = Exhibit.objects.filter(id=id)
     if(not model or model.first().owner != Profile.objects.get(user=request.user)):
@@ -493,7 +492,6 @@ def edit_exhibit(request):
     }
 
     artworks = Artwork.objects.filter(author=request.user.profile)
-    print(model_artworks)
     return render(
         request,
         'users/exhibit-edit.jinja2',
