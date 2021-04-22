@@ -26,8 +26,8 @@
                     {% for field in form.visible_fields() %}
                         <p class="login-field {{field.name}}">
                             {{ field }}
-                            {{ field.errors }}
                         </p>
+                        <h4 style="color:red">{{ field.errors }}</h4>
                     {% endfor%}
                     <div class="form-options">
                         <p>
