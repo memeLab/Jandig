@@ -129,11 +129,39 @@
 
             $("#id_source").change(
                 function(e) {
+
+                    var previous_content_box = document.getElementById('content-box'); 
+                    if(previous_content_box){
+                        previous_content_box.remove()
+                    }
+
+
                     var file = e.originalEvent.srcElement.files[0];
                     var image_preview = null;
                     var previewAndLoadFile = null;
                     var content_box = document.createElement("div");
                     content_box.id = "content-box";
+                    content_box.style.position = "relative"
+
+                    var close_icon = document.createElement("div");
+                    close_icon.id = "close-icon"; 
+                    close_icon.style.position =  "absolute" 
+                    close_icon.style.top =  "10px"
+                    close_icon.style.right =  "10px"
+                    close_icon.style.padding =  "5px 10px" 
+                    close_icon.style.borderRadius= "5px"
+                    close_icon.style.cursor= "pointer"
+                    close_icon.style.color =  "white"
+                    close_icon.style.background =  "#ff6961"
+                    close_icon.innerHTML = "x"
+                    close_icon.onclick = function(){
+                        this.parentElement.remove(); 
+                        document.querySelector('input[type="file"]').value = ""
+                    }
+
+                    content_box.appendChild(close_icon);
+                    
+
                     if (file.type === "video/mp4" || file.type === "video/webm") {
                         image_preview = document.createElement("video");
                         previewAndLoadFile = function() {
@@ -192,7 +220,6 @@
                 $('#id_rotation').val(rot);
                 $('#id_position').val(pos);
             }
-
 
         </script>
     </section>
