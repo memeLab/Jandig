@@ -13,6 +13,9 @@ class Profile(models.Model):
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
 
+    def __str__(self):
+        return self.user
+
     class Meta:
         permissions = [
             ("moderator", "Can moderate content"),
@@ -200,6 +203,9 @@ class Artwork(models.Model):
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
     @property
     def exhibits_count(self):
