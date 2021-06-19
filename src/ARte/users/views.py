@@ -376,8 +376,8 @@ def edit_elements(request, form_class, route, model, model_data):
 
 @login_required
 def edit_object(request):
-    id = request.GET.get("id", "-1")
-    model = Object.objects.get(id=id)
+    index = request.GET.get("id", "-1")
+    model = Object.objects.get(id=index)
 
     model_data = {
         "source": model.source,
@@ -392,8 +392,8 @@ def edit_object(request):
 
 @login_required
 def edit_marker(request):
-    id = request.GET.get("id", "-1")
-    model = Marker.objects.get(id=id)
+    index = request.GET.get("id", "-1")
+    model = Marker.objects.get(id=index)
 
     model_data = {
         "source": model.source,
@@ -408,8 +408,8 @@ def edit_marker(request):
 
 @login_required
 def edit_artwork(request):
-    id = request.GET.get("id","-1")
-    model = Artwork.objects.filter(id=id)
+    index = request.GET.get("id","-1")
+    model = Artwork.objects.filter(id=index)
     if(not model or model.first().author != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -455,8 +455,8 @@ def edit_artwork(request):
 
 @login_required
 def edit_exhibit(request):
-    id = request.GET.get("id","-1")
-    model = Exhibit.objects.filter(id=id)
+    index = request.GET.get("id","-1")
+    model = Exhibit.objects.filter(id=index)
     if(not model or model.first().owner != Profile.objects.get(user=request.user)):
         raise Http404
 

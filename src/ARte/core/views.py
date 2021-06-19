@@ -87,8 +87,8 @@ def exhibit_select(request):
 
 @cache_page(60 * 60)
 def exhibit_detail(request):
-    id = request.GET.get("id")
-    exhibit = Exhibit.objects.get(id=id)
+    index = request.GET.get("id")
+    exhibit = Exhibit.objects.get(id=index)
     ctx = {
         'exhibit':exhibit,
         'exhibitImage': "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
