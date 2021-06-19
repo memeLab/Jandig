@@ -662,10 +662,6 @@ msgstr "Sem Exposições ainda."
 msgid "Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker."
 msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
 
-#: src/ARte/users/jinja2/users/upload.jinja2:54
-msgid "Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker."
-msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
-
 #~ msgid " exhibits"
 #~ msgstr " exposições"
 
