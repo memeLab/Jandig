@@ -160,13 +160,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+USE_S3 = os.getenv("USE_S3", "False").lower() == "true"
+if USE_S3:
+    # AWS credentials
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+    }
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
+    AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'core', 'static'),
-    os.path.join(BASE_DIR, 'users', 'static')
-]
+    # Static configuration
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
+
+    AWS_PUBLIC_MEDIA_LOCATION = "media/public"
+    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'core', 'static'),
+        os.path.join(BASE_DIR, 'users', 'static')
+    ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
