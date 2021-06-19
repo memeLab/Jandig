@@ -13,5 +13,9 @@ DJANGO_SETTINGS_MODULE=config.settings
 DJANGO_ADMIN_URL=admin/
 DEV_DB=False
 DEBUG_TOOLBAR=False
+
+# SMTP
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
 JANDIG_EMAIL=staging_jandig@memelab.com.br
 JANDIG_EMAIL_PASSWORD=staging_password
