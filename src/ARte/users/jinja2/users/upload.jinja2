@@ -4,7 +4,7 @@
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/upload.css">
+        <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
         {% if form_type == 'marker' and edit == False %}
             <h2>{{ _('Upload Marker') }}</h2>
