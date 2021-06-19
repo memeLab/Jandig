@@ -18,7 +18,7 @@ services:
       - ../src/.envs/.postgres
     depends_on:
       - postgres
-    command: inv db -p i18n --compile docs collect run -p
+    command: ./run.sh
 
   postgres:
     image: postgres:12.6
