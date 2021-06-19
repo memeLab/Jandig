@@ -161,6 +161,10 @@ USE_TZ = True
 
 COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 USE_S3 = os.getenv("USE_S3", "False").lower() == "true"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'core', 'static'),
+    os.path.join(BASE_DIR, 'users', 'static')
+]
 if USE_S3:
     # AWS credentials
     AWS_S3_OBJECT_PARAMETERS = {
@@ -175,7 +179,6 @@ if USE_S3:
     AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 
     # Static configuration
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
     STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
@@ -184,10 +187,7 @@ if USE_S3:
 else:
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'core', 'static'),
-        os.path.join(BASE_DIR, 'users', 'static')
-    ]
+ 
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
