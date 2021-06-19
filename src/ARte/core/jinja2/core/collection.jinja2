@@ -50,7 +50,7 @@
                 {% endif %}
 
                 {% if not exhibits and not artworks and not markers and not objects %}
-                    <h1 class="titObj" style="font-size: 1em;">{{_("This element isn't being used yet. :(")}}</h1>
+                    <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
                 {% endif %}
             {% include "users/components/elements-modal.jinja2" %}
         </div>
