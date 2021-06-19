@@ -136,6 +136,10 @@ msgstr "Título da Exposição"
 msgid "Exhibit URL"
 msgstr "URL da exposição"
 
+#: src/ARte/users/forms.py:251
+msgid "Complete with your Exhibit URL here"
+msgstr "Complete sua URL de exibição aqui"
+
 #: src/ARte/core/jinja2/core/base.jinja2:44
 #, fuzzy
 msgid "Please override the \"content\" block of your template!"
@@ -333,6 +337,10 @@ msgstr ""
 msgid "Next"
 msgstr "Próximo"
 
+#: src/ARte/users/jinja2/users/exhibit-create.jinja2:43
+msgid "Your exhibit URL will look like this"
+msgstr "Sua URL de exibição vai se parecer com isso."
+
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:57
 msgid "Select Object (2/3)"
 msgstr "Selecione Objeto (2/3)"
@@ -384,6 +392,10 @@ msgstr "Informações da Exposição (2/2)"
 #: src/ARte/users/jinja2/users/exhibit-create.jinja2:46
 msgid "Publish Exhibit"
 msgstr "Publicar Exposição"
+
+#: src/ARte/users/jinja2/users/exhibit-create.jinja2:82
+msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
+msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
 
 #: src/ARte/users/jinja2/users/invalid-recovering-email.jinja2:14
 msgid "There is no user with this e-mail/username."
