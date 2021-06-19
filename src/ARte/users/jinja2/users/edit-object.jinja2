@@ -25,16 +25,24 @@
                     {# <input ... type = 'range'... #}
                     <div id="edit_object_attributes">
 
-                        <h2 id="scaleTitle" class="tipTrigger">{{_("Adjust scale")}}</h2>
-                        <div id="tip1">
-                            {{_("Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.")}}
-                        </div>
+                        <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
+                        <span
+                            id="tooltipText"
+                            data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
                         <input id="scale" class="trigger-change-value" value ="{{ model.fullscale }}">
 
-                        <h2 id="positionTitle" class="tipTrigger">{{_("Adjust position")}}</h2>
-                        <div id="tip2">
-                            {{_("Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left.")}}
-                        </div>
+                        <h2 id="positionTitle">{{_("Adjust position")}}</h2>
+                        <span 
+                            id="tooltipText"
+                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left." 
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
                         <h3>Horizontal:</h3>
                         <input id="X-position" class="trigger-change-value" value ="{{ model.xposition }}">
                         <h3>Vertical:</h3>
@@ -99,7 +107,7 @@
                     yprop = {{ model.yproportion }};
                 }
 
-                var scal = document.getElementById('scale').value.replace(",",".");
+                var scal = document.getElementById('scale').value;
                 var xpos = document.getElementById('X-position').value;
                 var ypos = document.getElementById('Y-position').value;
 
