@@ -191,13 +191,13 @@ def create_artwork(request):
 
             if marker and augmented:
                 artwork_title = form.cleaned_data['title']
-                artwork_desc = form.cleaned_data['deion']
+                artwork_desc = form.cleaned_data['description']
                 Artwork(
                     author=request.user.profile,
                     marker=marker,
                     augmented=augmented,
                     title=artwork_title,
-                    deion=artwork_desc
+                    description=artwork_desc
                 ).save()
             return redirect('home')
     else:
@@ -313,7 +313,7 @@ def element_get(request):
             'augmented': element.augmented.source.url,
             'augmented_size': element.augmented.source.size,
             'title': element.title,
-            'deion': element.deion,
+            'description': element.description,
         }
     else:
         data = {
@@ -431,7 +431,7 @@ def edit_artwork(request):
                 "marker": get_marker(request,form),
                 "augmented": get_augmented(request, form),
                 "title": form.cleaned_data["title"],
-                "deion": form.cleaned_data["deion"],
+                "description": form.cleaned_data["description"],
             }
             print(model_data['augmented'])
             model.update(**model_data)
@@ -444,7 +444,7 @@ def edit_artwork(request):
         "augmented": model.augmented,
         "augmented_author": model.augmented.author,
         "title": model.title,
-        "deion": model.deion,
+        "description": model.description,
         "existent_marker": model.marker.id,
         "existent_object": model.augmented.id,
     }
