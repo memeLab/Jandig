@@ -1,6 +1,6 @@
 {% extends '/users/components/generic-modal.jinja2' %}
 
-<link rel="stylesheet" href="/static/css/repository-list.css">
+<link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
 
 {% block title %}
     <h1 id="modal-title"></h1>
@@ -12,9 +12,7 @@
     <p id="element-analytics"></p>
     <p id="download"> Download file:</p>
     <p id="element-download"></p>
-    
-    {#<button id="share-element" class="select-btn"></button>
-    <button id="create-artwork" class="select-btn"></button>#}
+
     <script>
         function elementAuthor(author){
             $('#element-author').text({{ _("by ")|tojson }} + author);
@@ -23,7 +21,7 @@
             $('#element-upload-info').replaceWith(
                     '<p id="element-upload-info">' +
                     {{ _("Uploaded by ")|tojson }} +
-                    owner  + ', ' + 
+                    owner  + ', ' +
                     {{ _("in ")|tojson }} + date + '</p>'
                 )
         }
@@ -48,16 +46,16 @@
 
             $('#element-analytics').replaceWith(
                 '<p id="element-analytics">'+
-                {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=artwork">' + 
+                {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=artwork">' +
                 exhibits_count +
                 {{ _(" Exhibits")|tojson }} + '</a>' +
-                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' + 
+                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' +
                 object_tag
             )
-            $('.trigger-erase').click(eraseModal);        
+            $('.trigger-erase').click(eraseModal);
         }
 
-        
+
         function downloadElement(element_type, file_size, element_src){
             if(element_type == "marker"){
                 $('#element-download').replaceWith(
@@ -66,7 +64,7 @@
                 )
             }else{
                 $('#element-download').replaceWith(
-                    '<p id="element-download">' + 
+                    '<p id="element-download">' +
                     '<a id="gif-download" href="'+ element_src +'">Download .gif (' + file_size + ' kb)</a></p>'
                 )
             }
@@ -84,7 +82,7 @@
             let elemType = element.attr('data-elem-type');
             let title = element.attr('title')
             let element_id = element.attr('id')
-            
+
             if(!title) {
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             } else if (title != '') {
@@ -92,7 +90,7 @@
             } else {
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             }
-            
+
             let elemUrl = {{url('element-get')|tojson}};
             elemUrl += ("?" + elemType + "_id=" + element.attr('id'));
 
@@ -129,17 +127,17 @@
 
         function eraseModal() {
             $('#element-analytics').replaceWith('<p id="element-analytics"></p>');
-            $('#element-author').replaceWith('<p id="element-author"></p>'); 
+            $('#element-author').replaceWith('<p id="element-author"></p>');
             fillModal($(this));
         }
-    
+
 
         function manageModal(){
             element = $(this);
-            fillModal(element);            
+            fillModal(element);
         }
 
         $('.trigger-modal').click(manageModal);
-        
+
     </script>
 {% endblock %}

@@ -24,6 +24,12 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 * @kisobral - [GitHub](https://github.com/KiSobral), [Instagram](https://www.instagram.com/hugsob/)
 * @rhuancpq - [GitHub](https://github.com/Rhuancpq), [Twitter](https://twitter.com/rhuancpq)
 * @thiagohersan - [GitHub](https://github.com/thiagohersan)
+* @manuengsf - [Github](https://github.com/manuengsf)
+* @darmsDD - [Github](https://github.com/darmsDD)
+* @MatheusBlanco - [Github](https://github.com/MatheusBlanco)
+* @devsalula - [Github](https://github.com/devsalula)
+* @shayanealcantara [Github](https://github.com/shayanealcantara)
+* @victoralvesgomide - [Github](https://github.com/victoralvesgomide)
 
 ### Collab
 We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!

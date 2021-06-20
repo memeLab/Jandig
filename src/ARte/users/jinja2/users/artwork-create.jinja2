@@ -4,10 +4,10 @@
 {% block content %}
     <section class="create-artwork container">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/marker-creation.css">
+        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        
+
         <h1 class="titArt">{{ _('Create Jandig Artwork') }}</h1>
         <button id="select-marker" class="select-btn">
             {{ _('Select Marker') }}
@@ -20,28 +20,16 @@
                 {{ csrf_input }}
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Marker (1/3)') }}</h4>
-                    {# <p class="upload-field" id="marker-source-field">
-                        {{ form.visible_fields()[0] }}
-                        {{ form.visible_fields()[0].errors }}
-                    </p>
-                    <p class="form-options">
-                        <input id="marker-author-chk" type="checkbox" name="author">
-                        {{ _("I'm this Marker author") }}
-                    </p>
-                    <p class="upload-field" id="marker-author-field">
-                        {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
-                    </p> #}
+
                     <p id="existent-marker">
                         {{ form.visible_fields()[4].as_hidden() }}
                         {{ form.visible_fields()[4].errors }}
                     </p>
-                    {# <p class="gallery-title">{{ _('Or choose one from our repository') }}</p> #}
-                    
+
                     {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
                         {% include "users/components/repository-list.jinja2" %}
                     {% endwith %}
-                    
+
                     <div class="form-options">
                         <p>
                             <input id="marker-agreement-chk" type="checkbox" name="agreement">
@@ -55,28 +43,15 @@
                 </div>
                 <div id="object-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
-                    {# <p class="upload-field" id="object-source-field">
-                        {{ form.visible_fields()[2] }}
-                        {{ form.visible_fields()[2].errors }}
-                    </p>
-                    <p class="form-options">
-                        <input id="object-author-chk" type="checkbox" name="author">
-                        {{ _("I'm this Object author") }}
-                    </p>
-                    <p class="upload-field" id="object-author-field">
-                        {{ form.visible_fields()[3] }}
-                        {{ form.visible_fields()[3].errors }}
-                    </p> #}
                     <p id="existent-object">
                         {{ form.visible_fields()[5].as_hidden() }}
                         {{ form.visible_fields()[5].errors }}
                     </p>
-                    {# <p class="gallery-title">{{ _('Or choose one from our repository') }}</p> #}
-                    
+
                     {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
                         {% include "users/components/repository-list.jinja2" %}
                     {% endwith%}
-                    
+
                     <div class="form-options">
                         <p>
                             <input id="object-agreement-chk" type="checkbox" name="agreement">
@@ -102,28 +77,26 @@
             </form>
         </div>
         <script>
-            let currentTab = 0;
+            const MARKER_TAB = 0; 
+            const OBJECT_TAB = 1; 
+            const DESCRIPTION_TAB = 2; 
+
+            let currentTab = MARKER_TAB;
             function showTab(tabNumber){
                 let tabs = $('.tab');
+                console.log(tabs)
                 tabs.hide();
                 $('#' + tabs[tabNumber].id).show();
             }
 
             function validateTab(tab){
-            //{# let markerUpload = $('#marker-source-field > input')[0];
-            //let objectUpload = $('#object-source-field > input')[0];
-            //if(markerUpload.files.length > 0){
-            //    id = "#" + "{{element_type}}" + "-" + {{selected}}
-            //    $(id).css('background-color', 'red');
-            //    $('#existent-{{element_type}} > input').val({{selected}});
-            //} #}
 
                 if(tab == 'marker'){
                     let fileUpload = $('#marker-source-field > input')[0];
                     let existentMarker = $('#existent-marker > input')[0];
                     let markerAuthor = $('#marker-author-field > input')[0];
                     let agreement = $('#marker-agreement-chk')
-                    
+
                     if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
                         return true;
                     }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
@@ -136,7 +109,7 @@
                     let existentMarker = $('#existent-object > input')[0];
                     let markerAuthor = $('#object-author-field > input')[0];
                     let agreement = $('#object-agreement-chk')
-                    
+
                     if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
                         return true;
                     }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
@@ -159,26 +132,22 @@
                     $('#next-desc').prop('disabled', true);
                 }
             }
-            // setInterval(activateNextButton, 1000);
-            // modal events
             $('#select-marker').click(function(){
-                currentTab = 0;
+                currentTab = MARKER_TAB;
                 $('#form-modal').modal({showClose: false});
                 showTab(currentTab);
             })
             $('#select-object').click(function(){
-                currentTab = 1;
+                currentTab = OBJECT_TAB;
                 $('#form-modal').modal({showClose: false})
                 showTab(currentTab);
             })
             $('#next-object').click(function(){
-                currentTab = 1;
-                //$('#form-modal').modal({showClose: false})
+                currentTab = OBJECT_TAB;
                 showTab(currentTab);
             })
             $('#next-desc').click(function(){
-                currentTab = 2;
-                //$('#description-modal').modal({showClose: false})
+                currentTab = DESCRIPTION_TAB;
                 showTab(currentTab);
             })
             // checkboxes

@@ -32,7 +32,7 @@ class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
-        
+
         self.fields['email'].widget.attrs['placeholder'] = _('email')
         self.fields['username'].widget.attrs['placeholder'] = _('chosen username')
         self.fields['password1'].widget.attrs['placeholder'] = _('password')
@@ -58,14 +58,14 @@ class PasswordChangeForm(OrigPasswordChangeForm):
         self.fields['old_password'].widget.attrs['placeholder'] = _('Old Password')
         self.fields['new_password1'].widget.attrs['placeholder'] = _('New Password')
         self.fields['new_password2'].widget.attrs['placeholder'] = _('New Password Again')
-      
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username','email', 'bio', 'country', 'personal_site']
     field_order=['email', 'username', 'personal_site', 'country', 'bio']
-    
+
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.initial['username'] = self.instance.user.username
@@ -94,7 +94,7 @@ class ProfileForm(forms.ModelForm):
         required=False
         )
     bio = forms.CharField(
-        max_length=500, 
+        max_length=500,
         required=False,
         widget=forms.Textarea,
         help_text=_('Personal Bio / Description'),
@@ -134,7 +134,7 @@ class LoginForm(AuthenticationForm):
         else:
             if not User.objects.filter(username=username_or_email).exists():
                 raise forms.ValidationError(_('Username/email not found'))
-        
+
         # Already is a valid username
         return username_or_email
 
@@ -143,7 +143,7 @@ class LoginForm(AuthenticationForm):
         username_or_email = self.data.get('username')
         user = None
         username_or_email_wrong = False
-        
+
         if '@' in username_or_email:
             if User.objects.filter(email=username_or_email).exists():
                 username = User.objects.get(email=username_or_email).username
@@ -157,7 +157,7 @@ class LoginForm(AuthenticationForm):
             else:
                 username_or_email_wrong = True
                 # raise forms.ValidationError(_('Username Wrong!'))
-        
+
         if not user and not username_or_email_wrong:
             raise forms.ValidationError(_('Wrong password!'))
 
@@ -172,7 +172,7 @@ class RecoverPasswordCodeForm(forms.Form):
 
 
 class UploadMarkerForm(forms.ModelForm):
-    
+
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
@@ -191,7 +191,7 @@ class UploadMarkerForm(forms.ModelForm):
 
 
 class UploadObjectForm(forms.ModelForm):
-    
+
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
@@ -203,7 +203,7 @@ class UploadObjectForm(forms.ModelForm):
         self.fields['position'].widget = HiddenInput()
         self.fields['title'].widget.attrs['placeholder'] = _("Object's title")
         log.warning(self.fields)
-            
+
     class Meta:
         model = Object
         exclude = ('uploaded_at', 'owner')

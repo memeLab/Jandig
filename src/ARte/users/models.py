@@ -12,7 +12,10 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
     personal_site = models.URLField()
-    
+
+    def __str__(self):
+        return self.user
+
     class Meta:
         permissions = [
             ("moderator", "Can moderate content"),

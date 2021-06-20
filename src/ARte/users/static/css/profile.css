@@ -83,7 +83,7 @@
 
 .upMrk, .upObj {
     background-color: #f1f1f1;
-    font-size: 0.85em; 
+    font-size: 0.85em;
     flex-basis: calc(50% - 5px);
     margin: auto 0;
     height: 40px;
@@ -120,7 +120,7 @@
 }
 
 .createArtwork {
-    background-color: #cdf0d8;    
+    background-color: #cdf0d8;
 }
 
 .createArtwork a.option-link {
@@ -129,7 +129,7 @@
 
 .createExhibition {
     background-color: #eccdf0;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .createExhibition a.option-link {

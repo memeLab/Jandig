@@ -15,12 +15,12 @@
             }
         }
     </style>
-    
+
     <ar-scene>
         {% for artwork in artworks %}
             <ar-marker patt="{{artwork.marker.patt.url}}">
-                <ar-content 
-                    src="{{artwork.augmented.source.url}}" 
+                <ar-content
+                    src="{{artwork.augmented.source.url}}"
                     scale="{{artwork.augmented.scale}}"
                     position="{{artwork.augmented.position}}"
                     rotation="{{artwork.augmented.rotation}}">
@@ -46,7 +46,6 @@
 
                             requestURLS(tentativas + 1)
                         })
-                        console.log(website)
                         let marker_names = ['{{artwork.marker.source.name}}']
                         let object_names = ['{{artwork.augmented.source.name}}']
                         let patt_names = ['{{artwork.marker.patt}}']
@@ -65,10 +64,9 @@
 
                                     requestURLS(tentativas + 1)
                                 })
-                                console.log(response)
                             })
                         })
-                        
+
                         let website = await axios.get(window.location.href)
                         document.getElementById('loadingGif').style.display = 'flex'
                         await requestURLS(1)
