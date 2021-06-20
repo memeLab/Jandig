@@ -14,8 +14,6 @@ class Marker(models.Model):
     title = models.CharField(max_length=60, default='')
     patt = models.FileField(upload_to='patts/')
     
-    class Meta:
-           db_table = 'users_marker'
 
     def __str__(self):
         return self.source.name
@@ -54,8 +52,6 @@ class Object(models.Model):
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
 
-    class Meta:
-           db_table = 'users_object'
 
     def __str__(self):
         return self.source.name
@@ -175,8 +171,6 @@ class Artwork(models.Model):
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-           db_table = 'users_artwork'
 
     @property
     def exhibits_count(self):
