@@ -162,7 +162,6 @@ def get_element(request, form, form_class, form_type, source, author, existent_e
     return element
 
 @cache_page(60 * 60)
-@require_http_methods(["GET"])
 def get_marker(request, form):
     marker_src = form.cleaned_data['marker']
     marker_author = form.cleaned_data['marker_author']
@@ -171,7 +170,6 @@ def get_marker(request, form):
     return get_element(request, form, UploadMarkerForm, Marker, source=marker_src, author=marker_author, existent_element=existent_marker)
 
 @cache_page(60 * 60)
-@require_http_methods(["GET"])
 def get_augmented(request, form):
     object_src = form.cleaned_data['augmented']
     object_author = form.cleaned_data['augmented_author']

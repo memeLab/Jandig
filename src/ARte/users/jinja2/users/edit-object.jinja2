@@ -21,8 +21,6 @@
                         {{ form.visible_fields()[0].errors }}
                     </p>
 
-                    {# TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT SCALE AND POSITION #}
-                    {# <input ... type = 'range'... #}
                     <div id="edit_object_attributes">
 
                         <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
@@ -43,10 +41,10 @@
                         >
                             ?
                         </span>
-                        <h3>Horizontal:</h3>
-                        <input id="X-position" class="trigger-change-value" value ="{{ model.xposition }}">
-                        <h3>Vertical:</h3>
-                        <input id="Y-position" class="trigger-change-value" value ="{{ model.yposition }}">
+
+                        {% with xposition=model.xposition, yposition=model.yposition %}
+                            {% include "users/components/object-position.jinja2" %}
+                        {% endwith %}
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
