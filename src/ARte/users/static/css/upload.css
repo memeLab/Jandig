@@ -40,6 +40,20 @@
     top: -110px;
 }
 
+#tooltipText {
+    position: relative;
+    background: rgba(0,0,0,0.85);
+    color: rgb(255, 255, 255);
+    text-align: center;padding: 0px 7px;
+    left: 100px;
+    top: -30px;
+}
+
+.tooltip:hover:before {
+  display:block;
+}
+
+
 #scaleTitle:hover + #tip1 {
     display: inline-block;
 }
@@ -68,4 +82,36 @@ video{
         height: 60%;
         width: 60%;
     }
-};
+}
+
+
+.tooltip {
+  position:relative; /* making the .tooltip span a container for the tooltip text */
+  border-bottom:1px #000; /* little indicater to indicate it's hoverable */
+}
+
+.tooltip:before {
+  content: attr(data-text); /* here's the magic */
+  position:absolute;
+  
+  /* vertically center */
+  top:50%;
+  transform:translateY(-50%);
+  
+  /* move to right */
+  left:100%;
+  margin-left:15px; /* and add a small left margin */
+  
+  /* basic styles */
+  width:200px;
+  padding:10px;
+  border-radius:10px;
+  background:#000;
+  color: #fff;
+  text-align:center;
+
+  display:none; /* hide by default */
+}
+
+
+;

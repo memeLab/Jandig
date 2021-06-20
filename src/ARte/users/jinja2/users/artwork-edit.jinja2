@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
-        <h1 class="titArt">{{ _('Create Jandig Artwork') }}</h1>
+        <h1 class="titArt">{{ _('Edit Jandig Artwork') }}</h1>
         <button id="select-marker" class="select-btn">
             {{ _('Select Marker') }}
         </button>
@@ -72,7 +72,7 @@
                         {{ form.visible_fields()[7] }}
                         {{ form.visible_fields()[7].errors }}
                     </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish artwork') }}" disabled="disabled" />
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') }}" disabled="disabled" />
                 </div>
             </form>
         </div>
@@ -81,10 +81,9 @@
             const OBJECT_TAB = 1; 
             const DESCRIPTION_TAB = 2; 
 
-            let currentTab = MARKER_TAB;
+            let currentTab = 0;
             function showTab(tabNumber){
                 let tabs = $('.tab');
-                console.log(tabs)
                 tabs.hide();
                 $('#' + tabs[tabNumber].id).show();
             }

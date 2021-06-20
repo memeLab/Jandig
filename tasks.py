@@ -141,6 +141,6 @@ def docs(ctx):
     ctx.run('sphinx-build docs/ build/')
 
 
-@task
-def populate(ctx):
-    manage(ctx, 'populate_db')
+#@task
+#def populate(ctx):
+ #   manage(ctx, 'populate_db')
