@@ -1,8 +1,6 @@
-from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils import translation
 from django.shortcuts import redirect
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
@@ -11,7 +9,6 @@ from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
 
 from .models import Exhibit, Artwork, Marker, Object
-from django.views.decorators.http import require_GET
 
 
 
@@ -120,7 +117,7 @@ def artwork_preview(request):
     return render(request, 'core/exhibit.jinja2', ctx)
 
 
-@require_GET
+@require_http_methods(["GET"])
 def robots_txt(request):
     lines = [
         "User-Agent: *",
