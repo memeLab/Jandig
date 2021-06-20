@@ -1,0 +1,4 @@
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+JANDIG_EMAIL=local_jandig@memelab.com.br
+JANDIG_EMAIL_PASSWORD=local_password

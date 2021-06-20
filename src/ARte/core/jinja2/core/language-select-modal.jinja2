@@ -3,7 +3,7 @@
         <h1 id="lang-modal-title">{{ _('Select your language') }}</h1>
         <div class="lang-modal-content">
             {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="/static/css/language-select-modal.css">
+            <link rel="stylesheet" href="{{ static ('css/language-select-modal.css') }}">
 
             <form action="{{ url('set_language') }}" method="post">
                 {{ csrf_input }}

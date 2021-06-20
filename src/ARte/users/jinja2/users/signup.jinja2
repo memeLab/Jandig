@@ -2,11 +2,11 @@
 
 {% block content %}
     {# FIXME: maybe this can be improved #}
-    <link rel="stylesheet" href="/static/css/signup.css">
+    <link rel="stylesheet" href="{{ static ('css/signup.css') }}">
     <div class="signup-modal container">
         <div class="logo">
             <a href="{{ url('home') }}">
-                    <img src="/static/images/icons/header_icon.png">
+                    <img src="{{ static ('images/icons/header_icon.png') }}">
             </a>
         </div>
 
