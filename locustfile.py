@@ -1,4 +1,4 @@
-from locust import HttpLocust, TaskSet, between
+from locust import HttpLocust, Set, between
 
 def index(l):
     l.client.get("/")
@@ -9,9 +9,9 @@ def load_gifs(l):
 def exhibit(l):
     l.client.get("/longavida/")
 
-class UserBehavior(TaskSet):
-    tasks = {exhibit:1}
+class UserBehavior(Set):
+    s = {exhibit:1}
 
 class WebsiteUser(HttpLocust):
-    task_set = UserBehavior
+    _set = UserBehavior
     wait_time = between(3,5)

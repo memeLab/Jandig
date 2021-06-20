@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from .views import artwork_preview, see_all, service_worker, index, upload_image, exhibit_select, collection, exhibit_detail, manifest
+from .views import artwork_preview, see_all, service_worker, index, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
 from .views_s.home import home, ar_viewer, community, marker_generator, documentation
 
 urlpatterns = [
@@ -16,4 +16,5 @@ urlpatterns = [
     path('upload', upload_image, name='upload-image'),
     path('i18n/', include('django.conf.urls.i18n')),
     path('see_all/', see_all, name='see-all'),
+    path('robots.txt/', robots_txt),
 ]

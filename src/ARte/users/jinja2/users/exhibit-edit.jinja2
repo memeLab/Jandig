@@ -9,7 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
-            <h1 class="titExb">{{ _('Create Jandig Exhibition') }}</h1>
+            <h1 class="titExb">{{ _('Edit Jandig Exhibition') }}</h1>
             <button id="select-artworks" class="select-btn">
                 {{ _('Select Artworks') }}
             </button>
@@ -46,17 +46,19 @@
                             {{ form.visible_fields()[1] }}
                             {{ form.visible_fields()[1].errors }}
                         </p>
-                    <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Edit Exhibit') }}"/>
                 </div>
             </form>
         </div>
         <script>
+
             const MARKER_TAB = 0; 
             const ARTWORK_TAB = 1; 
 
             let currentTab = MARKER_TAB;
             function showTab(tabNumber){
                 let tabs = $('.tab');
+                
                 tabs.hide();
                 $('#' + tabs[tabNumber].id).show();
             }
@@ -78,12 +80,13 @@
                 }
             }
 
+
             function cleanSlug() {
                 var slug = document.getElementById('id_slug').value
                 let validate = /^[a-zA-Z0-9_]*$/
-                if (!slug.match(validate)) {
-                    alert("{{ _("Urls can't contain spaces or special characters (i.e: .:, /)") }}")
-                }   
+                if(!slug.match(validate)) {
+                    alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
+                }
             }
 
             setInterval(activateNextButton, 100);

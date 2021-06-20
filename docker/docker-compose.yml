@@ -14,16 +14,15 @@ services:
       - ../locale/:/ARte/locale/
       - ./media/:/ARte/src/ARte/users/media/
     env_file:
-      - ../src/.envs/.django
-      - ../src/.envs/.postgres
+      - ../src/.envs/.env
     depends_on:
       - postgres
-    command: inv db -p i18n --compile docs collect run -p
+    command: ./run.sh
 
   postgres:
-    image: postgres:11.6
+    image: postgres:12.6
     env_file:
-      - ../src/.envs/.postgres
+      - ../src/.envs/.env
     command: postgres -c max_connections=10000
     ports:
       - "5432:5432"

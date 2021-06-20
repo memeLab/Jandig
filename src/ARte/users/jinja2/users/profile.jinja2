@@ -9,8 +9,8 @@
             {% include "users/components/userbox.jinja2" %}
 
             {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="/static/css/profile.css">
-            <link rel="stylesheet" href="/static/css/repository-list.css">
+            <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
+            <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
 
             {% if profile %}
                 <h1 class="titExb">{{_("Your Exhibitions")}}</h1>

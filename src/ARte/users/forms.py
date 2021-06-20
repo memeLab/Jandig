@@ -10,7 +10,8 @@ from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeFo
 from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
 
-from .models import Marker, Object, Artwork, Profile
+from core.models import Marker, Object, Artwork
+from .models import Profile
 
 User = get_user_model()
 
