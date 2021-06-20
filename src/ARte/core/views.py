@@ -9,9 +9,8 @@ from django.views.decorators.http import require_http_methods
 
 from .helpers import handle_upload_image
 from .forms import UploadFileForm, ExhibitForm
-from .models import Exhibit
-from users.models import Artwork, Marker, Object
-
+from .models import Exhibit, Artwork, Marker, Object
+ 
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def service_worker(request):

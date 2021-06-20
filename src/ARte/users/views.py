@@ -18,9 +18,9 @@ from django.views.decorators.http import require_http_methods
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
-from .models import Marker, Object, Artwork, Profile
-from core.models import Exhibit
+from core.models import Exhibit, Marker, Object, Artwork
 from core.helpers import *
+from .models import Profile
 from .services.email_service import EmailService
 from .services.user_service import UserService
 from .services.encrypt_service import EncryptService
