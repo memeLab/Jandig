@@ -18,13 +18,11 @@
             {% endif %}
 
             $('.repository-item').click(function(){
-                console.log("cl");
                 let elementId = $(this).attr('id').split('-')[1];
                 let sectionId = $(this).parent().attr('id');
 
                 // reset background
                 if($(this).css('border-bottom-style') != "none"){
-                    console.log("ASDF");
                     $(this).css("border-bottom","none");
                     delete artworks[elementId]
                 }else{
