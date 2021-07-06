@@ -3,6 +3,7 @@ import environ
 from .wait_db import start_services
 from django.utils.translation import ugettext_lazy as _
 
+from socket import gethostbyname, gethostname
 
 ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
 APPS_DIR = ROOT_DIR.path('ARte')
@@ -23,7 +24,15 @@ DEBUG = env.bool('DJANGO_DEBUG', False)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='gw)48fp(ct67v4+0_tpxl=$vw=-x&y9(&0n6!n4mpw5m!4gaor')
 
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS = [
+    "localhost",
+    "0.0.0.0",
+    "127.0.0.1",
+    gethostname(),
+    gethostbyname(gethostname()),
+]
+CUSTOM_ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 
 # Application definition
 
