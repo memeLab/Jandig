@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
 ]
 CUSTOM_ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
-
+print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users',
     'core',
     'docs',
+    #'django_extensions',
 ]
 
 MIDDLEWARE = [
