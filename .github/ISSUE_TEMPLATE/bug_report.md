@@ -25,7 +25,7 @@ If applicable, add screenshots or screencasts to help explain your problem.
 
 **Please, tell us which device/browser (with versions) are used when finding the bug:**
  - OS: [ex.: iOS 12]
- - Browser [ex.: Chrome 91.0.4472.114]
+ - Browser: [ex.: Chrome 91.0.4472.114]
 
 **Additional Information**
 Add other information about the problem here, if necessary.
