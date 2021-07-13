@@ -12,6 +12,7 @@ django-docs ~= 0.3.1
 babel ~= 2.7.0
 django-debug-toolbar
 gevent
+django-extensions
 factory_boy
 boto3~=1.17.26
 django-storages~=1.11.1
