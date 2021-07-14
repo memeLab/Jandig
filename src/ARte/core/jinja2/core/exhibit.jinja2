@@ -18,9 +18,9 @@
 
     <ar-scene>
         {% for artwork in artworks %}
-            <ar-marker patt="{{artwork.marker.patt.url}}">
+            <ar-marker patt="/media/public/{{artwork.marker.patt.name}}">
                 <ar-content
-                    src="{{artwork.augmented.source.url}}"
+                    src="/media/public/{{artwork.augmented.source.name}}"
                     scale="{{artwork.augmented.scale}}"
                     position="{{artwork.augmented.position}}"
                     rotation="{{artwork.augmented.rotation}}">
