@@ -8,7 +8,7 @@
     {% else %}
         <section class="moderator-display-flex">
             <div class="container">
-                <link rel="stylesheet" href="/static/css/repository-list.css">
+                <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
                 <h1 class="titExhb">{{_("Jandig Exhibits")}}</h1>
                     {% if exhibits %}
                         {% with deletable = True, repository_list = exhibits, element_type="exhibit"%}

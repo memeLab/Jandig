@@ -3,6 +3,7 @@ import environ
 from .wait_db import start_services
 from django.utils.translation import ugettext_lazy as _
 
+from socket import gethostbyname, gethostname
 
 ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
 APPS_DIR = ROOT_DIR.path('ARte')
@@ -23,9 +24,34 @@ DEBUG = env.bool('DJANGO_DEBUG', False)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='gw)48fp(ct67v4+0_tpxl=$vw=-x&y9(&0n6!n4mpw5m!4gaor')
 
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
-
+ALLOWED_HOSTS = [
+    "localhost",
+    "0.0.0.0",
+    "127.0.0.1",
+    gethostname(),
+    gethostbyname(gethostname()),
+]
+CUSTOM_ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
+print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 # Application definition
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://081a2c3476b24a9f9a51d74bde539b62@o968990.ingest.sentry.io/5920229",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +65,7 @@ INSTALLED_APPS = [
     'users',
     'core',
     'docs',
+    #'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -160,13 +187,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
+USE_S3 = os.getenv("USE_S3", "False").lower() == "true"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core', 'static'),
     os.path.join(BASE_DIR, 'users', 'static')
 ]
+if USE_S3:
+    # AWS credentials
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+    }
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
+    AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
+
+    # Static configuration
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
+
+    AWS_PUBLIC_MEDIA_LOCATION = "media/public"
+    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
+ 
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')

@@ -17,8 +17,8 @@ class UserTestCase(TestCase):
     
         request = self.client_test.get('/recover/', follow=True)
     def test_redirect_to_recover_password_page(self):
-        self.assertEqual(response.status_code, 200)
         response = recover_password(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_recover_password_invalid_email(self):
         request = self.client_test.post('/recover/', {'username_or_email': 'testadorinvalid@memelab.com'}, follow=True)

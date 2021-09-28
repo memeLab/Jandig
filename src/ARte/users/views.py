@@ -14,15 +14,17 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_http_methods
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
-from .models import Marker, Object, Artwork, Profile
-from core.models import Exhibit
+from core.models import Exhibit, Marker, Object, Artwork
 from core.helpers import *
+from .models import Profile
 from .services.email_service import EmailService
 from .services.user_service import UserService
 from .services.encrypt_service import EncryptService
+
 
 def signup(request):
 
@@ -115,14 +117,17 @@ def recover_edit_password(request):
 
     return render(request, 'users/recover-edit-password.jinja2', {'form': form})
 
+@require_http_methods(["GET"])
 def wrong_verification_code(request):
     return render(request, 'users/wrong-verification-code.jinja2')
 
+@require_http_methods(["GET"])
 def invalid_recovering_email_or_username(request):
     return render(request, 'users/invalid-recovering-email.jinja2')
 
 
 @login_required
+@require_http_methods(["GET"])
 def profile(request):
     profile = Profile.objects.select_related().get(user=request.user)
 
@@ -240,6 +245,7 @@ def create_exhibit(request):
         }
     )
 
+@require_http_methods(["GET"])
 def download_exhibit(request):
     exhibit_id = request.GET.get('id')
     exhibit = Exhibit.objects.get(id=exhibit_id)
@@ -281,6 +287,7 @@ def download_exhibit(request):
 
 
 @cache_page(60 * 2)
+@require_http_methods(["GET"])
 def element_get(request):
     if request.GET.get('marker_id', None):
         element_type = 'marker'
@@ -376,8 +383,8 @@ def edit_elements(request, form_class, route, model, model_data):
 
 @login_required
 def edit_object(request):
-    id = request.GET.get("id", "-1")
-    model = Object.objects.get(id=id)
+    index = request.GET.get("id", "-1")
+    model = Object.objects.get(id=index)
 
     model_data = {
         "source": model.source,
@@ -392,8 +399,8 @@ def edit_object(request):
 
 @login_required
 def edit_marker(request):
-    id = request.GET.get("id", "-1")
-    model = Marker.objects.get(id=id)
+    index = request.GET.get("id", "-1")
+    model = Marker.objects.get(id=index)
 
     model_data = {
         "source": model.source,
@@ -408,8 +415,8 @@ def edit_marker(request):
 
 @login_required
 def edit_artwork(request):
-    id = request.GET.get("id","-1")
-    model = Artwork.objects.filter(id=id)
+    index = request.GET.get("id","-1")
+    model = Artwork.objects.filter(id=index)
     if(not model or model.first().author != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -442,7 +449,7 @@ def edit_artwork(request):
 
     return render(
         request,
-        'users/artwork-create.jinja2',
+        'users/artwork-edit.jinja2',
         {
             'form': ArtworkForm(initial=model_data),
             'marker_list': Marker.objects.all(),
@@ -455,8 +462,8 @@ def edit_artwork(request):
 
 @login_required
 def edit_exhibit(request):
-    id = request.GET.get("id","-1")
-    model = Exhibit.objects.filter(id=id)
+    index = request.GET.get("id","-1")
+    model = Exhibit.objects.filter(id=index)
     if(not model or model.first().owner != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -494,7 +501,7 @@ def edit_exhibit(request):
     artworks = Artwork.objects.filter(author=request.user.profile)
     return render(
         request,
-        'users/exhibit-create.jinja2',
+        'users/exhibit-edit.jinja2',
         {
             'form': ExhibitForm(initial=model_data),
             'artworks': artworks,
@@ -548,6 +555,7 @@ def edit_profile(request):
     )
 
 @login_required
+@require_http_methods(["GET"])
 def delete(request):
     content_type = request.GET.get('content_type', None)
    
@@ -602,7 +610,7 @@ def delete_content_Moderator(instance,user):
         elif isArtwork:
             instance.delete()
 
-
+@require_http_methods(["GET"])
 def related_content(request):
     element_id = request.GET.get('id')
     element_type = request.GET.get('type')
@@ -633,6 +641,7 @@ def related_content(request):
     return render(request, 'core/collection.jinja2', ctx)
 
 @login_required
+@require_http_methods(["GET"])
 def mod_delete(request):
     content_type = request.GET.get('content_type', None)
     if content_type == 'marker':

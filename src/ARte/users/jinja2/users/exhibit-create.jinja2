@@ -4,8 +4,8 @@
 {% block content %}
     <section class="create-exhibit">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/marker-creation.css">
-        <link rel="stylesheet" href="/static/css/label.css">
+        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
+        <link rel="stylesheet" href="{{ static ('css/label.css') }}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
@@ -51,7 +51,10 @@
             </form>
         </div>
         <script>
-            let currentTab = 0;
+            const MARKER_TAB = 0; 
+            const ARTWORK_TAB = 1; 
+
+            let currentTab = MARKER_TAB;
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
@@ -75,24 +78,23 @@
                 }
             }
 
-
             function cleanSlug() {
                 var slug = document.getElementById('id_slug').value
                 let validate = /^[a-zA-Z0-9_]*$/
-                if(!slug.match(validate)) {
-                    alert("Url " + slug + " can't contain spaces or special characters (i.e: :, /)");
-                }
+                if (!slug.match(validate)) {
+                    alert("{{ _("Urls can't contain spaces or special characters (i.e: .:, /)") }}")
+                }   
             }
 
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
-                currentTab = 0;
+                currentTab = MARKER_TAB;
                 $('#form-modal').modal({showClose: false});
                 showTab(currentTab);
             })
             $('#next-info').click(function(){
-                currentTab = 1;
+                currentTab = ARTWORK_TAB;
                 showTab(currentTab);
             })
         </script>

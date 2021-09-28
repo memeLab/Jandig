@@ -24,3 +24,5 @@ docker/media/
 # translations
 *.mo
 *.po~
+
+src/.envs/.env

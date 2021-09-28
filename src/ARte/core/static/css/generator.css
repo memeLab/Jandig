@@ -1,82 +1,98 @@
 .logoMG {
-    text-align: left;
-    height: 80px;
-    width: 100%;
-    float: left;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+  text-align: left;
+  height: 80px;
+  width: 100%;
+  float: left;
+  background-image: linear-gradient(
+    to top,
+    #77777766,
+    #77777766 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 10%;
+  background-size: 100% 200%;
 }
 
-.header .logoMG img{
-    max-height: 55px;
-    height: auto;
-    margin: auto;
+.header .logoMG img {
+  max-height: 55px;
+  height: auto;
+  margin: auto;
 }
 
 .downBoth {
-    text-align: center;
-    margin: 0;
-    background: #00f7c8;
-    color: #fff;
-    font-size: 1.5em;
-    line-height: 1.75em;
+  text-align: center;
+  margin: 0;
+  background: #00f7c8;
+  color: #fff;
+  font-size: 1.5em;
+  line-height: 1.75em;
 }
 
 .pdfMaker {
-    text-align: center;
-    margin: 25px 0;
-    font-size: 1.5em;
-    line-height: 1.75em;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+  text-align: center;
+  margin: 25px 0;
+  font-size: 1.5em;
+  line-height: 1.75em;
+  background-image: linear-gradient(
+    to top,
+    #77777766,
+    #77777766 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 10%;
+  background-size: 100% 200%;
 }
 
 .page-generator.flex {
-    margin: 25px 0;
+  margin: 25px 0;
 }
 
 label#buttonUpload {
-    background: #000;
-    width: 100%;
-    line-height: 40px;
-    margin: 10px auto;
-    text-align: center;
-    display: inline-block;
-    color: #fff;
-    font-weight: bold;
+  background: #000;
+  width: 100%;
+  line-height: 40px;
+  margin: 10px auto;
+  text-align: center;
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
 }
 
 div#imageContainer {
-    max-width: 320px;
-    height: 320px;
-    margin: 25px auto;
-    background: url(../images/icons/icoEptG.png) no-repeat center center;
-    background-size: cover;
+  max-width: 320px;
+  height: 320px;
+  margin: 25px auto;
+  background: url(../images/icons/icoEptG.png) no-repeat center center;
+  background-size: cover;
 }
 
 div#imageContainer img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .tip {
-    font-size: 0.85em;
+  font-size: 0.85em;
 }
 
 #topRightButtons {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    height: 40px;
-    width: 40px;
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  height: 40px;
+  width: 40px;
 }
 
 button#show-info {
-    background: transparent;
-    margin: 0;
-    padding: 0;
-    height: 40px;
-    width: 40px;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+}
+
+.button {
+  cursor: pointer;
 }
