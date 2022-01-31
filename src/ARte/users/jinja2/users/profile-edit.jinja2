@@ -9,7 +9,7 @@
     </section>
     <div class="password-form">
         <form name="password-form" action="{{url('edit-password')}}" method="post" enctype="multipart/form-data">
-            {{ csrf_input }} 
+            {{ csrf_input }}
             {% for field in form_password.visible_fields() %}
                 <p class="password-field {{field.name}}">
                     {{ field }}
@@ -21,7 +21,7 @@
     </div>
     <div class="profile-form">
         <form name="profile-form" action="{{url('edit-profile')}}" method="post" enctype="multipart/form-data">
-            {{ csrf_input }}            
+            {{ csrf_input }}
             {% for field in form_profile.visible_fields() %}
                 <p class="profile-field {{field.name}}">
                     {{ field }}

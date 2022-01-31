@@ -1,0 +1,70 @@
+{# Range slider interface to select object and marker positions (offset) #}
+
+{% block content %}
+        <link rel="stylesheet" href="/static/css/object-position.css">
+
+        <div id="box-shadow-container">
+            <div id="box-shadow"></div>
+        </div>
+        <div class="row">
+            <div class='box object-color-box'></div><span>Objeto</span>
+        </div>
+        <div class="row">
+            <div class='box marker-color-box'></div><span>Marcador</span>
+        </div>
+        <h3>Horizontal:</h3>
+        <div class="slider-container"> 
+            <input id="X-position" type="range" min="-100" max="100" class="trigger-change-value slider" value="{{ xposition }}" oninput="updateXValue()">
+        </div>
+        <p>
+            <span id="X-position-value">{{ xposition }}</span>
+        </p>
+        <h3>Vertical:</h3>
+        <div class="slider-container"> 
+            <input id="Y-position" type="range" min="-100" max="100" class="trigger-change-value slider" value="{{ yposition }}" oninput="updateYValue()">
+        </div>
+        <p>
+            <span id="Y-position-value">{{ yposition }}</span>
+        </p>
+
+        <script>
+            window.onload = function() {
+                updateBoxShadow();
+            }
+
+            function updateXValue() {
+                var slider = document.getElementById("X-position");
+                var display_value = document.getElementById("X-position-value");
+                display_value.innerHTML = slider.value;
+
+                updateBoxShadow();
+            }
+
+            function updateYValue() {
+                var slider = document.getElementById("Y-position");
+                var display_value = document.getElementById("Y-position-value");
+                display_value.innerHTML = slider.value;
+
+                updateBoxShadow();
+            }
+
+            function updateBoxShadow() {
+                var vertical_offset = document.getElementById("Y-position").value;
+                var horizontal_offset = document.getElementById("X-position").value;
+
+                var box_shadow_container = document.getElementById("box-shadow-container");
+                var box_shadow = document.getElementById("box-shadow");
+
+                if(vertical_offset > 0) {
+                    box_shadow_container.style.alignItems = "flex-start";
+                } else {
+                    box_shadow_container.style.alignItems = "flex-end";
+                }
+
+                var container_height = 100+Math.abs(vertical_offset);
+                box_shadow_container.style.height = `${container_height}px`;
+
+                box_shadow.style.boxShadow = `${horizontal_offset}px ${vertical_offset}px #d3d3d3`;
+            }
+        </script>
+{% endblock %}

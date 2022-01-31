@@ -1,6 +1,9 @@
 ---
 name: Bug report
 about: Report a bug to help us improve Jandig
+title: ''
+labels: bug
+assignees: ''
 
 ---
 
@@ -17,11 +20,12 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what was expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Screen captures**
+If applicable, add screenshots or screencasts to help explain your problem.
 
-**Please, tell us which device/browser is used when finding the bug):**
- - OS: [ex.: iOS], Browser [ex.: chrome], Version [ex.: 22]
+**Please, tell us which device/browser (with versions) are used when finding the bug:**
+ - OS: [ex.: iOS 12]
+ - Browser: [ex.: Chrome 91.0.4472.114]
 
 **Additional Information**
 Add other information about the problem here, if necessary.

@@ -11,7 +11,7 @@
         gtag('config', 'UA-37240876-2');
         </script>
         <link id="manifest" rel="manifest" href="/manifest.json">
-        <link rel="stylesheet" href="/static/css/reset.css">
+        <link rel="stylesheet" href="{{ static('css/reset.css') }}">
         <title>Jandig</title>
         <meta name="Description" content="Augmented reality art!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,16 +20,12 @@
 
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     </head>
-    
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 
-    <script src="/static/js/bowser.js"></script>
-    <script src="/static/js/detect.js"></script>
-    <script src="/static/js/main.js"></script>
-    {# <script src="/static/artoolkit.min.js" defer></script> #}
-    {# <script src="/static/three.min.js" defer></script> #}
-    {# <script src="/static/artoolkit.three.js" defer></script> #}
-    {# <script src="/static/ar-gif.min.js" defer></script> #}
+    <script src="{{ static('js/bowser.js') }}"></script>
+    <script src="{{ static('js/detect.js') }}"></script>
+    <script src="{{ static('js/main.js') }}"></script>
 
     <body class="colorful">
         {% if content is defined %}
@@ -45,6 +41,5 @@
                 {% endif %}
             {% endblock %}
         {% endif %}
-        {# <ar-scene></ar-scene> #}
     </body>
 </html>

@@ -7,8 +7,8 @@
         {% include "users/permission-denied.jinja2" %}
     {% else %}
         <section class="moderator-display-flex">
-            <div class="container">        
-                <link rel="stylesheet" href="/static/css/repository-list.css">
+            <div class="container">
+                <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
                 <h1 class="titExhb">{{_("Jandig Exhibits")}}</h1>
                     {% if exhibits %}
                         {% with deletable = True, repository_list = exhibits, element_type="exhibit"%}
@@ -32,7 +32,7 @@
                         {% with deletable = True, repository_list = objects, element_type="object" %}
                             {% include "users/components/moderator-item-list.jinja2" %}
                         {% endwith%}
-                    {% endif %}                
+                    {% endif %}
                 {% include "users/components/moderator-modal.jinja2" %}
             </div>
         </section>

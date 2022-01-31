@@ -7,10 +7,10 @@
         <div class="container">
 
             {% include "users/components/userbox.jinja2" %}
-            
+
             {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="/static/css/profile.css">
-            <link rel="stylesheet" href="/static/css/repository-list.css">
+            <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
+            <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
 
             {% if profile %}
                 <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
@@ -33,11 +33,11 @@
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no Artworks. :c")}}</p>
                             <a href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
-                        </section>               
+                        </section>
                     {% endif %}
                 <h1 class="titMrk">{{_("Your Markers")}}</h1>
                     {% if markers %}
-                        {% with deletable=True, repository_list = markers, element_type="marker"%}
+                        {% with deletable=True, editable=True, repository_list = markers, element_type="marker"%}
                             {% include "users/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}

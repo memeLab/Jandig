@@ -1,11 +1,11 @@
-<section class="lang-modal">    
+<section class="lang-modal">
     <div class="lang-modal-container">
         <h1 id="lang-modal-title">{{ _('Select your language') }}</h1>
         <div class="lang-modal-content">
             {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="/static/css/language-select-modal.css">    
+            <link rel="stylesheet" href="{{ static ('css/language-select-modal.css') }}">
 
-            <form action="{{ url('set_language') }}" method="post">       
+            <form action="{{ url('set_language') }}" method="post">
                 {{ csrf_input }}
                 {% for language in LANGUAGES %}
                     <p>
@@ -25,7 +25,7 @@
     <script>
         let langModal = document.querySelector(".lang-modal");
         let langTriggers = $(".trigger-lang-modal");
-        
+
         function toggleLangModal() {
             langModal.classList.toggle("show-lang-modal");
         }

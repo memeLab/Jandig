@@ -1,6 +1,6 @@
 .url-helper {
-    float: left; 
-    width: 35%; 
+    float: left;
+    width: 35%;
     font-weight: bold;
 }
 
@@ -10,7 +10,7 @@
       padding-top: 3%;
     }
   }
-  
+
   @media screen and (max-width: 600px) {
     label.url-helper {
       font-size: 12px;
