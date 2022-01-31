@@ -1,35 +1,31 @@
 from django.db import models
+from config.storage_backends import PublicMediaStorage
+from .helpers import handle_upload_marker, handle_upload_patt
 from users.models import Profile
 from datetime import datetime
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 import urllib
 import re 
-from django.core.files.storage import FileSystemStorage
+
 from django.core.files import File
 from django.core.files.base import ContentFile
 from io import BytesIO, StringIO
 from PIL import Image
-from pymarker.core import generate_marker, generate_patt
+from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
 def create_patt(path):
-    generate_patt(path)
-    sliced = path.split('.')
-    patt_path = sliced[0] + '.patt'
-    return patt_path
+    patt_str = generate_patt_from_image(path)
+    string_file = StringIO(patt_str)
+    handle_upload_patt(string_file)
+    return string_file
 
 
 def create_marker(path):
-    generate_marker(path)
-    sliced = path.split('.')
-    marker_path = sliced[0] + '_marker.png'
-    output = BytesIO()
-    marker_pil = Image.open(marker_path)
-    marker_pil.save(output, format='PNG', quality=100)
-    output.seek(0)
-    marker = ContentFile(output.getvalue(), name=marker_pil.filename)
-    return marker
-    
+    marker_image = generate_marker_from_image(path)
+    handle_upload_marker(marker_image)
+    return marker_image
+
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
     source = models.ImageField(upload_to='markers/')
@@ -39,7 +35,7 @@ class Marker(models.Model):
     patt = models.FileField(upload_to='patts/')
     
     def save(self, *args, **kwargs):
-        filestorage = FileSystemStorage()
+        filestorage = PublicMediaStorage()
         fileimage = filestorage.save(self.source.name, self.source)
         fileurl = filestorage.url(fileimage)
         path = 'src/ARte/users' + fileurl

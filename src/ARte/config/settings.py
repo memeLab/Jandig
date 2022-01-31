@@ -192,6 +192,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core', 'static'),
     os.path.join(BASE_DIR, 'users', 'static')
 ]
+
 if USE_S3:
     # AWS credentials
     AWS_S3_OBJECT_PARAMETERS = {
