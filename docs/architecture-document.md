@@ -7,6 +7,7 @@
 |1.2|Reference the Plant UML source code in the doc|Gabrielle Ribeiro, Gustavo Duarte & Victor Amaral|09/02/2022|
 |1.3|Refactor the architectural reference topic|Hugo Sobral, Sofia Patrocínio|10/02/2022|
 |1.4|Fix typos|Sofia Patrocínio, Hugo Sobral|10/02/2022|
+|1.5| Update package diagram logic view Plant UML | João Pedro Guedes|10/02/2022|
 
 
 # Software Architecture Document (SAD)
