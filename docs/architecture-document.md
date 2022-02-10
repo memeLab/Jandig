@@ -6,6 +6,7 @@
 |1.1|New diagrams in  PlantUml| VIctor Gomide & Emanuel Holanda |24/10/2020|
 |1.2|Reference the Plant UML source code in the doc|Gabrielle Ribeiro, Gustavo Duarte & Victor Amaral|09/02/2022|
 |1.3|Refactor the architectural reference topic|Hugo Sobral, Sofia Patrocínio|10/02/2022|
+|1.4|Fix typos|Sofia Patrocínio, Hugo Sobral|10/02/2022|
 
 
 # Software Architecture Document (SAD)
@@ -49,7 +50,7 @@ In order to explain Jandig ARte's architecture from different points of views, h
 
 ## Architectural Representation
 
-Project's main programming language is Python, through Django framework. Django uses an exclusive architecture called **MVT (Model-View-Template)**, in which **Model** represents the data layer, **Template** represents user's interface and **View** acts as an intermediary layer. Jandig also uses **Jinja** for enhancing Django's Template view fot MVT architecture.
+Project's main programming language is Python, through Django framework. Django uses an exclusive architecture called **MVT (Model-View-Template)**, in which **Model** represents the data layer, **Template** represents user's interface and **View** acts as an intermediary layer. Jandig also uses **Jinja** for enhancing Django's Template view for MVT architecture.
 
 Jandig ARte is a **Progressive Web App (PWA)**, which means it is an web app that has a similar use to a native mobile app. It uses **PostgreSQL** as database.
 
@@ -69,13 +70,13 @@ Model-View-Template (also called MVT) is a specific Django architecture focused 
 
 ### Jinja
 
-Jinja is a Python based web template engine. Jinja can generate any markup as source code and also provides Python-like expressions for templates. The engine template allows customization of tags, filters, tests and global settings, and unlike the Django template engine, Jinja allows the template designer to call functions with arguments on objetcs. 
+Jinja is a Python based web template engine. Jinja can generate any markup as source code and also provides Python-like expressions for templates. The engine template allows customization of tags, filters, tests and global settings, and unlike the Django template engine, Jinja allows the template designer to call functions with arguments on objects. 
 
 ### Progressive Web App
 
 A progressive Web App is a subtype of web software applications that is built to deliver enhanced capabilities, reliability and installability while reaching anyone, anywhere on any device with a standards-compilant browser (this includes desktop as well as mobile devices).
 
-This kind of application offers a bunch of benefits to projects, since PWA's are ever-present, on home screens, docks and taskbars. They can also read and write files from the local file system, interact with data stored on device and ever access the device hardware.
+This kind of application offers a bunch of benefits to projects, since PWA's are ever-present, on home screens, docks and taskbars. They can also read and write files from the local file system, interact with data stored on device and even access the device hardware.
 
 ### PostgreSQL
 
@@ -91,13 +92,13 @@ Jandig was created for providing a low-cost and easy-to-use augmented reality ex
 - No previous knowledge of programming necessary for using it;
 - Free, or cheap enough;
 - Available in different languages, so people around the world can use it;
-- Open Source, so community can work together for making it awesome!
+- Open Source, so the community can work together to make it awesome!
 
 
 ## Use-Case View
 ### Account Access and Management
 
-The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is an user that hasn't log in the app.
+The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is a user that hasn't log in the app.
 
 ![use-case-diagram-user](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-user.puml)
 
