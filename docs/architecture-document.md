@@ -47,7 +47,7 @@ In order to explain Jandig ARte's architecture from different points of views, h
 
 Project's main programming language is Python, through Django framework. Django uses an exclusive architecture called **MTV (Model-Template-View)**, in which **Model** represents the data layer, **Template** represents user's interface and **View** acts as an intermediary layer between them:
 
-![](images/mtv-architecture-diagram.png)
+![mtv-architecture-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/mtv-architecture-diagram.puml)
 
 Jandig ARte is a **Progressive Web App (PWA)**, which means it is an web app that has a similar use to a native mobile app. It uses **PostgreSQL** as database.
 
@@ -69,45 +69,41 @@ Jandig was created for providing a low-cost and easy-to-use augmented reality ex
 
 The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is an user that hasn't log in the app.
 
-![](images/use-case-diagram-user.png)
 
+![use-case-diagram-user](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-user.puml)
 
 ### Artist Role
 
 The following diagram shows the application's features focused on the Artist's role.
 
-
-![](images/use-case-diagram-artist.png)
-
+![use-case-diagram-artist](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-artist.puml)
 
 ### Other Features
 
 Below are shown some other interesting features from Jandig ARte:
 
-![](images/use-case-diagram-features.png)
-
+![use-case-diagram-features](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-features.puml)
 
 ## Logical View
 ### Overview
 
 Since the software is Django-based, it contains projects, apps and layers. in Jandig ARte case, we have two main apps: "core" and "users".
  
-![](images/package-diagram-logical-view.png)    
- 
+![package-diagram-logical-view](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/package-diagram-logical-view.puml) 
  
 ### Architecturally Significant Design Packages
 
 #### "Profile" Class Diagram
-![](images/class-diagram-profile.png)
+![Profile-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-profile.puml)
 
 #### "Marker" Class Diagram
-![](images/class-diagram-marker.png)
+![Marker-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-marker.puml)
 
 #### "Artwork" Class Diagram
-![](images/class-diagram-artwork.png)
+![Artwork-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-artwork.puml)
 
 #### "Object" Class Diagram
-![](images/class-diagram-object.png)
+![Object-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-object.puml)
 
 #### "Exhibit" Class Diagram
-![](images/class-diagram-exhibit.png)
+![Exhibit-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-exhibit.puml)
