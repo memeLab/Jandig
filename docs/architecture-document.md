@@ -4,6 +4,7 @@
 |--------|------------|-----------|------|
 |1.0|Initial version|Victor Gomide & Emanuel Holanda|05/10/2020| 
 |1.1|New diagrams in  PlantUml| VIctor Gomide & Emanuel Holanda |24/10/2020|
+|1.2|Reference the Plant UML source code in the doc| Gabrielle Ribeiro, Gustavo Duarte & Victor Amaral |09/02/2022|
 
 
 # Software Architecture Document (SAD)
