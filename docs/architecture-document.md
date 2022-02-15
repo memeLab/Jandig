@@ -8,6 +8,7 @@
 |1.3|Refactor the architectural reference topic|Hugo Sobral, Sofia Patrocínio|10/02/2022|
 |1.4|Fix typos|Sofia Patrocínio, Hugo Sobral|10/02/2022|
 |1.5| Update package diagram logic view Plant UML | João Pedro Guedes|10/02/2022|
+|1.6| Add images to technologies and links to their documentation | João Pedro Guedes|15/02/2022|
 
 
 # Software Architecture Document (SAD)
@@ -57,7 +58,9 @@ Jandig ARte is a **Progressive Web App (PWA)**, which means it is an web app tha
 
 ### Django Framework
 
-Django is a Python based web framework that provides a rapid, clean and pragmatic development. Django also offers a bunch of benefits that can take care of the hassle of web development, *i.e.*, Django is a fast, secure and scalable tool.
+![django-icon](https://www.djangoproject.com/m/img/logos/django-logo-negative.png)
+
+Django is a Python based web framework that provides a rapid, clean and pragmatic development. Django also offers a bunch of benefits that can take care of the hassle of web development, *i.e.*, Django is a fast, secure and scalable tool. You can read more about it [here](https://www.djangoproject.com/start/overview/)
 
 ### Model-View-Template
 
@@ -70,8 +73,9 @@ Model-View-Template (also called MVT) is a specific Django architecture focused 
 **Template** stands for the visualization layer and can be seen as the front-end dynamic component of Django.   
 
 ### Jinja
+![jinja-logo](https://jinja.palletsprojects.com/en/3.0.x/_images/jinja-logo.png)
 
-Jinja is a Python based web template engine. Jinja can generate any markup as source code and also provides Python-like expressions for templates. The engine template allows customization of tags, filters, tests and global settings, and unlike the Django template engine, Jinja allows the template designer to call functions with arguments on objects. 
+Jinja is a Python based web template engine. Jinja can generate any markup as source code and also provides Python-like expressions for templates. The engine template allows customization of tags, filters, tests and global settings, and unlike the Django template engine, Jinja allows the template designer to call functions with arguments on objects. You can read more about it [here](https://jinja.palletsprojects.com/en/3.0.x/intro/)
 
 ### Progressive Web App
 
@@ -81,7 +85,9 @@ This kind of application offers a bunch of benefits to projects, since PWA's are
 
 ### PostgreSQL
 
-PostgreSQL is an advanced version of SQL. In short, PostgreSQL is an open source relational database system that supports both SQL and JSON querying, it also provides support to different functions of SQL-like statements, such as foreign keys, subqueries, triggers and many different user-defined types and functions.
+![postgreSQL](https://miro.medium.com/max/800/0*z58cqZWxu2_4q5-g.jpg)
+
+PostgreSQL is an advanced version of SQL. In short, PostgreSQL is an open source relational database system that supports both SQL and JSON querying, it also provides support to different functions of SQL-like statements, such as foreign keys, subqueries, triggers and many different user-defined types and functions. You can read more about it [here](https://www.postgresql.org/)
 
 
 ## Architectural Goals and Constraints
