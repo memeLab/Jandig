@@ -7,8 +7,9 @@
 |1.2|Reference the Plant UML source code in the doc|Gabrielle Ribeiro, Gustavo Duarte & Victor Amaral|09/02/2022|
 |1.3|Refactor the architectural reference topic|Hugo Sobral, Sofia Patrocínio|10/02/2022|
 |1.4|Fix typos|Sofia Patrocínio, Hugo Sobral|10/02/2022|
-|1.5| Update package diagram logic view Plant UML | João Pedro Guedes|10/02/2022|
-|1.6| Add images to technologies and links to their documentation | João Pedro Guedes|15/02/2022|
+|1.5|Update package diagram logic view Plant UML|João Pedro Guedes|10/02/2022|
+|1.6|Add images to technologies and links to their documentation|João Pedro Guedes|15/02/2022|
+|1.7|Add description of the actors present in the use case view|Sofia Patrocinio|21/02/2022|
 
 
 # Software Architecture Document (SAD)
@@ -105,19 +106,19 @@ Jandig was created for providing a low-cost and easy-to-use augmented reality ex
 ## Use-Case View
 ### Account Access and Management
 
-The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is a user that hasn't log in the app.
+The diagram below shows how account access and management is done, with users and system as actors. Please note that Visitor is a user that hasn't log in the app to access an exhibition.
 
 ![use-case-diagram-user](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-user.puml)
 
 ### Artist Role
 
-The following diagram shows the application's features focused on the Artist's role.
+The following diagram shows the application's features focused on the Artist's role. The Artist's role can share their artworks and exhibitions.
 
 ![use-case-diagram-artist](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-artist.puml)
 
 ### Other Features
 
-Below are shown some other interesting features from Jandig ARte:
+Below are shown some other interesting features from Jandig ARte that doesn't need log in:
 
 ![use-case-diagram-features](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/use-case-diagram-features.puml)
 
