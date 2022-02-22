@@ -42,6 +42,10 @@ select#id_exhibit {
     padding-left: 5%;
 }
 
+.errorlist{
+    color: red  ;
+}
+
 .form-options input{
     width: 20px;
     height: 20px;
