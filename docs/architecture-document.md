@@ -10,6 +10,7 @@
 |1.5|Update package diagram logic view Plant UML|João Pedro Guedes|10/02/2022|
 |1.6|Add images to technologies and links to their documentation|João Pedro Guedes|15/02/2022|
 |1.7|Add description of the actors present in the use case view|Sofia Patrocinio|21/02/2022|
+|1.7|Add description in logical view and write implementation view|João Pedro Guedes|23/02/2022|
 
 
 # Software Architecture Document (SAD)
@@ -124,12 +125,17 @@ Below are shown some other interesting features from Jandig ARte that doesn't ne
 
 
 ## Logical View
-### Overview
+The logical view describe the system scructure, showning how the system is organized in terms of packages, intefaces etc.
+### Package Diagram
 
 Since the software is Django-based, it contains projects, apps and layers. in Jandig ARte case, we have two main apps: "core" and "users".
  
 ![package-diagram-logical-view](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/package-diagram-logical-view.puml) 
  
+
+## Implementation View
+The implementation view describes how the system will be implemented. One of its main features is the Class Diagram.
+
 ### Architecturally Significant Design Packages
 #### "Profile" Class Diagram
 ![Profile-class-diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/memeLab/Jandig/develop/docs/images/plantUML/class-diagram-profile.puml)
