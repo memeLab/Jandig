@@ -354,6 +354,10 @@ def upload_elements(request, form_class, form_type, route):
 def object_upload(request):
     return upload_elements(request, UploadObjectForm, 'object', 'object-upload')
 
+@login_required
+def marker_upload(request):
+    return upload_elements(request, UploadMarkerForm, 'marker', 'marker-upload')
+
 def edit_elements(request, form_class, route, model, model_data):
     if(not model or model.owner != Profile.objects.get(user=request.user)):
         raise Http404
