@@ -1,5 +1,4 @@
-from django.shortcuts import render, Http404
-from django.urls import reverse
+from django.shortcuts import render
 
 def home(request):
     return render(request, 'users/profile.jinja2',{})
