@@ -1,13 +1,13 @@
 from locust import HttpLocust, Set, between
 
-def index(l):
-    l.client.get("/")
+def index(load):
+    load.client.get("/")
 
-def load_gifs(l):
-    l.client.get("/collection/")
+def load_gifs(load):
+    load.client.get("/collection/")
 
-def exhibit(l):
-    l.client.get("/longavida/")
+def exhibit(load):
+    load.client.get("/longavida/")
 
 class UserBehavior(Set):
     s = {exhibit:1}
