@@ -1,8 +1,8 @@
 import importlib
 import os
 import time
-
 import logging
+import psycopg2
 
 SERVICES_STARTED = False
 
@@ -46,8 +46,6 @@ def start_postgres():
 
 
 def can_connect(dbname, user, password, host):
-    import psycopg2
-
     try:
         psycopg2.connect(
             dbname=dbname,
