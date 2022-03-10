@@ -8,8 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
 
 from .choices import COUNTRY_CHOICES
-from core.models import Marker, Object, Artwork
-from .models import Profile
+from core.models import Marker, Object
 
 import logging
 log = logging.getLogger('ej')
