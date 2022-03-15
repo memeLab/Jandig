@@ -144,6 +144,9 @@ class LoginForm(AuthenticationForm):
         user = None
         username_or_email_wrong = False
 
+        if ' ' in username_or_email:
+            raise forms.ValidationError(_(f'Username/email not found'))
+
         if '@' in username_or_email:
             if User.objects.filter(email=username_or_email).exists():
                 username = User.objects.get(email=username_or_email).username
