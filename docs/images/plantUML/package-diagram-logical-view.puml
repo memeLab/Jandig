@@ -3,6 +3,42 @@
 hide circle
 
 package ArTE <<project>> {
+    package config {
+
+    }
+
+    package core <<app>> {
+        package "models.py" as M2 {
+            class Exhibit
+        }
+
+        package jinja2 {
+            package users {
+
+            }
+        }
+
+        package migrations {
+            
+        }
+
+        package static {
+            package css {
+            
+            }
+            package image {
+            
+            }
+            package js {
+            
+            }
+        }
+
+        package view_s {
+            
+        }
+    }
+
     package users <<app>> {
         package "models.py" as M1 {
             class Profile
@@ -10,13 +46,28 @@ package ArTE <<project>> {
             class Artwork
             class Object
         }
-    }
+        package jinja2 {
+            package users {
 
-    package core <<app>> {
-        package "models.py" as M2 {
-            class Exhibit
+            }
+        }
+        package media {
+            package markers {
+                
+            }
+        }
+        package migrations {
+
+        }
+        package services {
+
+        }
+        package statics {
+            package css {
+            }
         }
     }
+
 }
        
 @enduml
