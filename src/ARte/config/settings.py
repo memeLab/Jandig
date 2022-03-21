@@ -39,19 +39,27 @@ print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+def traces_sampler(sampling_context):
+    url = sampling_context["wsgi_environ"]["PATH_INFO"]
+    if "/status" in url:
+        return 0
+    elif "/static/" in url:
+        return 0
+    return 0.1
+
 sentry_sdk.init(
     dsn="https://081a2c3476b24a9f9a51d74bde539b62@o968990.ingest.sentry.io/5920229",
     integrations=[DjangoIntegration()],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
+    send_default_pii=True,
+    traces_sampler=traces_sampler,
 )
+
+# Sentry configuration
+ENABLE_SENTRY_LOGS = env("ENABLE_SENTRY_LOGS", default=False)
+HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
