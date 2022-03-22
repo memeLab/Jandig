@@ -365,7 +365,6 @@ def edit_elements(request, form_class, route, model, model_data):
 
         form.full_clean()
         if form.is_valid():
-            # form.cleaned_data["source"] == model.source
             form.save()
             return redirect('profile')
         

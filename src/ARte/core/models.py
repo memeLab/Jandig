@@ -2,8 +2,7 @@ from django.db import models
 from users.models import Profile
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
-import re 
-# from core.models import Exhibit
+import re
 
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
