@@ -88,7 +88,7 @@ def exhibit_select(request):
         form = ExhibitForm(request.POST)
         if form.is_valid():
             exhibit = form.cleaned_data.get('exhibit')
-            return redirect("/" + exhibit.slug)
+            return redirect("/" + exhibit)
     else:
         form = ExhibitForm()
 
