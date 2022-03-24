@@ -3,7 +3,7 @@ version: '3.5'
 services:
   django:
     image: jandigarte/django:latest
-    restart: always
+    restart: "no"
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
