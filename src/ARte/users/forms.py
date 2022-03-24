@@ -1,8 +1,5 @@
 import re
 
-import logging
-log = logging.getLogger('ej')
-
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,8 +7,11 @@ from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeFo
 from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
 
-from core.models import Marker, Object, Artwork
-from .models import Profile
+from .choices import COUNTRY_CHOICES
+from core.models import Marker, Object
+
+import logging
+log = logging.getLogger('ej')
 
 User = get_user_model()
 
@@ -50,7 +50,6 @@ class SignupForm(UserCreationForm):
 
         return email
 
-from .choices import COUNTRY_CHOICES
 
 class PasswordChangeForm(OrigPasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -186,7 +185,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ('owner', 'uploaded_at')
+        fields = ('source', 'author', 'title', 'patt')
 
 
 
@@ -206,7 +205,7 @@ class UploadObjectForm(forms.ModelForm):
 
     class Meta:
         model = Object
-        exclude = ('uploaded_at', 'owner')
+        fields = ('source', 'author', 'title', 'scale', 'position', 'rotation')
 
 
 class ArtworkForm(forms.Form):

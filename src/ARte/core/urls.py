@@ -1,6 +1,6 @@
-from django.urls import path, re_path, include
-from .views import artwork_preview, see_all, service_worker, index, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
-from .views_s.home import home, ar_viewer, community, marker_generator, documentation
+from django.urls import path, include
+from .views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
+from .views_s.home import home, community, marker_generator, documentation
 
 urlpatterns = [
     path('', home, name='home'),

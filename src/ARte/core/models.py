@@ -1,10 +1,8 @@
 from django.db import models
 from users.models import Profile
-from datetime import datetime
 from django.dispatch import receiver
-from django.db.models.signals import post_save, post_delete
-import urllib
-import re 
+from django.db.models.signals import post_delete
+import re
 
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
@@ -28,12 +26,10 @@ class Marker(models.Model):
 
     @property
     def exhibits_count(self):
-        from core.models import Exhibit
         return Exhibit.objects.filter(artworks__marker=self).count()
 
     @property
     def exhibits_list(self):
-        from core.models import Exhibit
         return Exhibit.objects.filter(artworks__marker=self)
 
     @property
@@ -66,12 +62,10 @@ class Object(models.Model):
 
     @property
     def exhibits_count(self):
-        from core.models import Exhibit
         return Exhibit.objects.filter(artworks__augmented=self).count()
 
     @property
     def exhibits_list(self):
-        from core.models import Exhibit
         return Exhibit.objects.filter(artworks__augmented=self)
 
     @property
@@ -150,8 +144,7 @@ class Object(models.Model):
         y = self.yscale
         if x > y:
             return x
-        else:
-            return y
+        return y
 
     @property
     def xposition(self):
@@ -174,12 +167,10 @@ class Artwork(models.Model):
 
     @property
     def exhibits_count(self):
-        from core.models import Exhibit
         return Exhibit.objects.filter(artworks__in=[self]).count()
 
     @property
     def exhibits_list(self):
-        from core.models import Exhibit
         return list(Exhibit.objects.filter(artworks__in=[self]))
     
     @property
