@@ -337,7 +337,7 @@ msgid "Your Exhibitions"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:21
-msgid "You have no exhibits :c"
+msgid "You have no Exhibitions. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:22
@@ -351,7 +351,7 @@ msgid "Your Artworks"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:32
-msgid "You have no artworks :c"
+msgid "You have no Artworks. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:36
@@ -359,7 +359,7 @@ msgid "Your Markers"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:43
-msgid "You have no markers :c"
+msgid "You have no Markers. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:47
@@ -367,7 +367,7 @@ msgid "Your Objects"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:54
-msgid "You have no objects :c"
+msgid "You have no Objects. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:55

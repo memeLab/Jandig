@@ -430,47 +430,63 @@ msgstr "Remover conta"
 msgid "Change Password"
 msgstr "Trocar Senha"
 
-#: src/ARte/users/jinja2/users/profile.jinja2:16
+#: src/ARte/users/jinja2/users/profile.jinja2:17
 msgid "Your Exhibitions"
 msgstr "Suas Exposições"
 
+#: src/ARte/users/jinja2/users/profile.jinja2:16
+msgid "Exhibitions"
+msgstr "Exposições"
+
 #: src/ARte/users/jinja2/users/profile.jinja2:23
-msgid "You have no Exhibitions. :("
-msgstr "Você não tem Exposições. :("
+msgid "You have no Exhibitions. :c"
+msgstr "Você não tem Exposições. :c"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:24
 #: src/ARte/users/jinja2/users/profile.jinja2:35
 msgid "Create one"
 msgstr "Criar"
 
-#: src/ARte/users/jinja2/users/profile.jinja2:27
+#: src/ARte/users/jinja2/users/profile.jinja2:32
 msgid "Your Artworks"
 msgstr "Suas Obras"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:34
-msgid "You have no Artworks. :("
-msgstr "Você não tem Obras. :("
+msgid "Artworks"
+msgstr "Obras"
 
-#: src/ARte/users/jinja2/users/profile.jinja2:38
+#: src/ARte/users/jinja2/users/profile.jinja2:34
+msgid "You have no Artworks. :c"
+msgstr "Você não tem Obras. :c"
+
+#: src/ARte/users/jinja2/users/profile.jinja2:47
 msgid "Your Markers"
 msgstr "Seus Marcadores"
 
+#: src/ARte/users/jinja2/users/profile.jinja2:49
+msgid "Markers"
+msgstr "Marcadores"
+
 #: src/ARte/users/jinja2/users/profile.jinja2:45
-msgid "You have no markers. :("
-msgstr "Você não tem marcadores. :("
+msgid "You have no Markers. :c"
+msgstr "Você não tem Marcadores. :c"
 
 #: src/ARte/users/jinja2/users/profile.jinja2:46
 #: src/ARte/users/jinja2/users/profile.jinja2:57
 msgid "Upload one"
 msgstr "Enviar"
 
-#: src/ARte/users/jinja2/users/profile.jinja2:49
+#: src/ARte/users/jinja2/users/profile.jinja2:62
 msgid "Your Objects"
 msgstr "Seus Objetos"
 
+#: src/ARte/users/jinja2/users/profile.jinja2:64
+msgid "Objects"
+msgstr "Objetos"
+
 #: src/ARte/users/jinja2/users/profile.jinja2:56
-msgid "You have no objects. :("
-msgstr "Você não tem objetos. :("
+msgid "You have no Objects. :c"
+msgstr "Você não tem Objetos. :c"
 
 #: src/ARte/users/jinja2/users/recover-edit-password.jinja2:14
 msgid "Choose a new password and repeat it."
