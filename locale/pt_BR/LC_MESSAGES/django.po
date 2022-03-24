@@ -623,7 +623,7 @@ msgstr " marcador(es)"
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:11
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:18
 msgid "No uploads yet."
-msgstr "Ainda sem conteúdo."
+msgstr "Sem conteúdo."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:16
 msgid " Object(s)"
@@ -643,7 +643,7 @@ msgstr " Obras"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:34
 msgid "No Artworks yet."
-msgstr "Sem Obras ainda."
+msgstr "Sem Obras."
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:38
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:56
@@ -656,7 +656,7 @@ msgstr "Curador Jandig"
 
 #: src/ARte/users/jinja2/users/components/userbox.jinja2:52
 msgid "No Exhibitions yet."
-msgstr "Sem Exposições ainda."
+msgstr "Sem Exposições."
 
 #: src/ARte/users/jinja2/users/edit-object.jinja2:31
 msgid "Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker."
@@ -702,13 +702,13 @@ msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma 
 #~ msgstr "Atrubuição-CompartilhaIgual 4.0 Internacional (CC BY-SA 4.0)"
 
 #~ msgid "No objects yet."
-#~ msgstr "Ainda sem objetos."
+#~ msgstr "Sem objetos."
 
 #~ msgid "No markers yet."
-#~ msgstr "Ainda sem marcadores."
+#~ msgstr "Sem marcadores."
 
 #~ msgid "No exhibits yet."
-#~ msgstr "Ainda sem exposições."
+#~ msgstr "Sem exposições."
 
 #~ msgid "Create exhibit"
 #~ msgstr "Criar exposição"
