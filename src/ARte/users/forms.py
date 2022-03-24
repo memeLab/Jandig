@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
+from core.models import Exhibit
 
 from core.models import Marker, Object, Artwork
 from .models import Profile
@@ -239,10 +240,15 @@ class ExhibitForm(forms.Form):
     artworks = forms.CharField(max_length=1000)
 
     def clean_slug(self):
-        data = self.cleaned_data['slug']
-        if not re.match("^[a-zA-Z0-9_]*$", data):
+        slug = self.cleaned_data['slug']
+        name = self.cleaned_data['name']
+        if not re.match("^[a-zA-Z0-9_]*$", slug):
             raise forms.ValidationError(_("Url can't contain spaces or special characters"))
-        return data
+        if Exhibit.objects.filter(slug=slug).exists():
+            raise forms.ValidationError(_("That exhibit slug is already in use. Please choose another slug for your exhibit."))
+        if Exhibit.objects.filter(name=name).exists():
+            raise forms.ValidationError(_("That exhibit name is already in use. Please choose another name for your exhibit."))
+        return slug
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
