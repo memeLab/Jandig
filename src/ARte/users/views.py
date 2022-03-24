@@ -15,8 +15,6 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
-from django.utils.functional import SimpleLazyObject
-
 
 
 from .forms import SignupForm, RecoverPasswordCodeForm, RecoverPasswordForm, UploadMarkerForm, UploadObjectForm, ArtworkForm, ExhibitForm, ProfileForm, PasswordChangeForm
