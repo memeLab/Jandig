@@ -142,7 +142,7 @@ msgstr "Complete sua URL de exibição aqui"
 
 #: src/ARte/users/forms.py:248
 msgid "That exhibit slug is already in use. Please choose another slug for your exhibit."
-msgstr "O Slug desta exibição ja esta sendo usado. Por favor escolha outro slug para sua exibição."
+msgstr "Este link de exibição já está sendo utilizado. Por favor escolha outro link para sua exibição."
 
 #: src/ARte/users/forms.py:250
 msgid "Duplicated name. Please choose another name for your exhibit."
