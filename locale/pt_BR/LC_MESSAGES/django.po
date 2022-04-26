@@ -146,7 +146,7 @@ msgstr "Este link de exibição já está sendo utilizado. Por favor escolha out
 
 #: src/ARte/users/forms.py:250
 msgid "Duplicated name. Please choose another name for your exhibit."
-msgstr "O nome desta exibição ja esta sendo usado. Por favor escolhar outro nome para sua exibição."
+msgstr "Este nome de exibição já está em uso. Por favor, escolha outro nome."
 
 #: src/ARte/core/jinja2/core/base.jinja2:44
 #, fuzzy
