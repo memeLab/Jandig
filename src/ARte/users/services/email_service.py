@@ -26,7 +26,7 @@ class EmailService:
     def build_multipart_message(self, user_email):
         multipart_message = MIMEMultipart()
         multipart_message["From"] = self.jandig_email
-        multipart_message["To"] = "{}".format(user_email)
+        multipart_message["To"] = f"{user_email}"
         multipart_message["Subject"] = "Recover Password"
 
         multipart_message.attach(MIMEText(self.email_message, "plain"))

@@ -2,6 +2,8 @@ import os
 import environ
 from .wait_db import start_services
 from django.utils.translation import ugettext_lazy as _
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from socket import gethostbyname, gethostname
 
@@ -36,8 +38,6 @@ ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 # Application definition
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
@@ -94,6 +94,7 @@ DEBUG_TOOLBAR_CONFIG = {
 def debug(request):
     return env.bool('DEBUG_TOOLBAR', False)
 
+
 ## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
 if env.bool('DEV_STATIC', False):
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
@@ -103,7 +104,7 @@ if env.bool('DEV_STATIC', False):
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
-     {
+    {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,

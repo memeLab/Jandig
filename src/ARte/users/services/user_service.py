@@ -1,7 +1,7 @@
+from django.contrib.auth.models import User
+
 import logging
 log = logging.getLogger('ej')
-
-from django.contrib.auth.models import User
 
 
 class UserService():
