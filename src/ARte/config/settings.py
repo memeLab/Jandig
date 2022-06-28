@@ -39,19 +39,27 @@ print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 # Application definition
 
 
+def traces_sampler(sampling_context):
+    url = sampling_context["wsgi_environ"]["PATH_INFO"]
+    if "/status" in url:
+        return 0
+    elif "/static/" in url:
+        return 0
+    return 0.1
+
 sentry_sdk.init(
     dsn="https://081a2c3476b24a9f9a51d74bde539b62@o968990.ingest.sentry.io/5920229",
     integrations=[DjangoIntegration()],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
+    send_default_pii=True,
+    traces_sampler=traces_sampler,
 )
+
+# Sentry configuration
+ENABLE_SENTRY_LOGS = env("ENABLE_SENTRY_LOGS", default=False)
+HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -184,41 +192,53 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
-USE_S3 = os.getenv("USE_S3", "False").lower() == "true"
+# AWS credentials
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
+AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
+AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
+AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
+USE_MINIO = os.getenv("USE_MINIO", "false").lower() in ("true", "True", "1")
+if USE_MINIO:
+    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_S3_ENDPOINT_URL", "http://storage:9000")
+    AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
+    AWS_S3_USE_SSL = False
+    AWS_S3_SECURE_URLS = False
+    HTTP_PROTOCOL = "http"
+else:
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    HTTP_PROTOCOL = "https"
+
+# Static configuration
+# Add your own apps statics in this list
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core', 'static'),
     os.path.join(BASE_DIR, 'users', 'static')
 ]
-if USE_S3:
-    # AWS credentials
-    AWS_S3_OBJECT_PARAMETERS = {
-        "CacheControl": "max-age=86400",
-    }
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
-    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
-    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
-    AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
+COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
+STATIC_URL = f"{HTTP_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
-    # Static configuration
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
-    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
-
-    AWS_PUBLIC_MEDIA_LOCATION = "media/public"
-    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
-else:
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
- 
-
-MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
+MEDIA_URL = f"{HTTP_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+
+AWS_PUBLIC_MEDIA_LOCATION = "media/public"
+DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+
+AWS_PRIVATE_MEDIA_LOCATION = "media/private"
+PRIVATE_FILE_STORAGE = "config.storage_backends.PrivateMediaStorage"
+
+AWS_PRIVATE_MEDIA_DIFFERENT_BUCKET_LOCATION = "media/private"
+AWS_PRIVATE_STORAGE_BUCKET_NAME = os.getenv("AWS_PRIVATE_STORAGE_BUCKET_NAME", "")
+PRIVATE_FILE_DIFFERENT_BUCKET_STORAGE = "config.storage_backends.PrivateMediaStorage"
+
 
 # LOGIN / LOGOUT
 LOGIN_URL = 'login'

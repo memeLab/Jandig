@@ -1,8 +1,35 @@
 from django.db import models
+from config.storage_backends import PublicMediaStorage
+from .helpers import handle_upload_marker, handle_upload_patt
 from users.models import Profile
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 import re
+
+from django.core.files import File
+from django.core.files.base import ContentFile
+from io import BytesIO, StringIO
+from PIL import Image
+from pymarker.core import generate_marker_from_image, generate_patt_from_image
+
+def create_patt(filename, original_filename):
+    filestorage = PublicMediaStorage()
+    with Image.open(filestorage.open(filename)) as image:
+        patt_str = generate_patt_from_image(image)
+        # string_file = StringIO(patt_str.encode('UTF-8'))
+        # string_file.name = original_filename
+        patt_file = filestorage.save("patts/" + original_filename + ".patt", ContentFile(patt_str.encode('utf-8')))
+        return patt_file
+
+
+def create_marker(filename, original_filename):
+    filestorage = PublicMediaStorage()
+    with Image.open(filestorage.open(filename)) as image:
+        marker_image = generate_marker_from_image(image)
+        marker_image.name = original_filename
+        marker_image.__commited = False
+        # marker = filestorage.save("markers/" + original_filename, marker_image)
+        return marker_image
 
 class Marker(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
@@ -12,6 +39,25 @@ class Marker(models.Model):
     title = models.CharField(max_length=60, default='')
     patt = models.FileField(upload_to='patts/')
     
+    def save(self, *args, **kwargs):
+        # filestorage = PublicMediaStorage()
+        # # Image Filename
+        # original_filename = self.source.name
+        # filename = filestorage.save(f"original_{original_filename}", self.source)
+        # # Complete Image URL on storage
+        # print("aaaaa"*30)
+        # with Image.open(self.source) as image:
+        #     print(image)
+        # print("aaaaa"*30)
+        # # fileurl = filestorage.url(filename)
+        # print(filename)
+        # self.source = create_marker(filename, original_filename)
+        # self.patt = create_patt(filename, original_filename)
+        print("B"*30)
+        print(self.source)
+        print(self.patt)
+        print("B"*30)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.source.name

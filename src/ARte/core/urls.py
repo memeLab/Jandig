@@ -17,4 +17,5 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('see_all/', see_all, name='see-all'),
     path('robots.txt/', robots_txt),
+    path('status/', health_check),
 ]

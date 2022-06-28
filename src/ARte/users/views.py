@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
+from django.core.files.storage import FileSystemStorage
+from django.core.files import File
 
 from core.models import Exhibit, Marker, Object, Artwork
 from .models import Profile
@@ -343,28 +345,27 @@ def upload_elements(request, form_class, form_type, route):
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
-            upload = form.save(commit=False)
-            upload.owner = request.user.profile
+            upload = form.save(owner=request.user.profile)
+            # upload.owner = request.user.profile
             upload.save()
             return redirect('home')
     else:
         form = form_class()
-    return render(request,'users/upload.jinja2',
-        {
-            'form_type': form_type,
-            'form': form,
-            'route': route,
-            'edit': False
-        }
-    )
 
-@login_required
-def marker_upload(request):
-    return upload_elements(request, UploadMarkerForm, 'marker', 'marker-upload')
+    if form_type == 'marker':
+        return render(request,'users/upload-marker.jinja2',
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
+
+    return render(request,'users/upload-object.jinja2',
+        {'form_type': form_type, 'form': form, 'route': route, 'edit': False})
 
 @login_required
 def object_upload(request):
     return upload_elements(request, UploadObjectForm, 'object', 'object-upload')
+
+@login_required
+def marker_upload(request):
+    return upload_elements(request, UploadMarkerForm, 'marker', 'marker-upload')
 
 def edit_elements(request, form_class, route, model, model_data):
     if(not model or model.owner != Profile.objects.get(user=request.user)):
