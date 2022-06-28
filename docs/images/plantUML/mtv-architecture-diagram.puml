@@ -3,7 +3,7 @@
 left to right direction
 
 rectangle "Client Side" as C {
-    rectangle "Django Template" as DT
+    rectangle "Jinja Template" as DT
 }
 
 rectangle "Server Side" as S {
