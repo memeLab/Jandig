@@ -3,7 +3,6 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-
 class EmailService:
     def __init__(self, email_message):
         self.smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
@@ -15,7 +14,7 @@ class EmailService:
     def send_email_to_recover_password(self, multipart_message):
         email_server = smtplib.SMTP(self.smtp_server, self.smtp_port)
         email_server.starttls()
-        email_server.login(multipart_message["From"], self.jandig_email_password)
+        email_server.login(self.jandig_email, self.jandig_email_password)
         email_server.sendmail(
             multipart_message["From"],
             multipart_message["To"],
@@ -24,9 +23,9 @@ class EmailService:
         email_server.quit()
 
     def build_multipart_message(self, user_email):
-        multipart_message = MIMEMultipart()
-        multipart_message["From"] = self.jandig_email
-        multipart_message["To"] = f"{user_email}"
+        multipart_message = MIMEMultipart('alternative')
+        multipart_message["From"] = f'Jandig <{self.jandig_email}>'
+        multipart_message["To"] = "{}".format(user_email)
         multipart_message["Subject"] = "Recover Password"
 
         multipart_message.attach(MIMEText(self.email_message, "plain"))
