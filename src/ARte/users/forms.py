@@ -1,8 +1,5 @@
 import re
 
-import logging
-log = logging.getLogger('ej')
-
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,8 +7,11 @@ from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeFo
 from django.utils.translation import ugettext_lazy as _
 from django.forms.widgets import HiddenInput
 
-from core.models import Marker, Object, Artwork
-from .models import Profile
+from .choices import COUNTRY_CHOICES
+from core.models import Marker, Object
+
+import logging
+log = logging.getLogger('ej')
 
 User = get_user_model()
 
@@ -50,7 +50,6 @@ class SignupForm(UserCreationForm):
 
         return email
 
-from .choices import COUNTRY_CHOICES
 
 class PasswordChangeForm(OrigPasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -171,6 +170,12 @@ class RecoverPasswordCodeForm(forms.Form):
     verification_code = forms.CharField(label='Verification code', max_length="200")
 
 
+from django.core.files.base import ContentFile, File
+from io import BytesIO, StringIO
+from PIL import Image
+from django.core.files.images import ImageFile
+from pymarker.core import generate_marker_from_image, generate_patt_from_image
+
 class UploadMarkerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -179,16 +184,29 @@ class UploadMarkerForm(forms.ModelForm):
         log.warning(self.fields)
         self.fields['source'].widget.attrs['placeholder'] = _('browse file')
         self.fields['source'].widget.attrs['accept'] = 'image/png, image/jpg'
-        self.fields['patt'].widget.attrs['placeholder'] = _('browse file')
-        self.fields['patt'].widget.attrs['accept'] = '.patt'
         self.fields['author'].widget.attrs['placeholder'] = _('declare different author name')
         self.fields['title'].widget.attrs['placeholder'] = _("Marker's title")
 
     class Meta:
         model = Marker
-        exclude = ('owner', 'uploaded_at')
+        exclude = ('owner', 'uploaded_at', 'patt')
 
-
+    def save(self, *args, **kwargs):
+        with Image.open(self.instance.source) as image:
+            pil_image = generate_marker_from_image(image)
+            blob = BytesIO()
+            pil_image.save(blob, 'JPEG')
+            filename = self.instance.source.name
+            self.instance.source.save(filename, File(blob),save=False)
+            patt_str = generate_patt_from_image(image)
+            self.instance.patt.save(filename + ".patt", ContentFile(patt_str.encode('utf-8')),save=False)
+            
+            if kwargs.get("owner"):
+                self.instance.owner = kwargs.get("owner")
+                del kwargs["owner"]
+            self.instance.save()
+        
+            return super(UploadMarkerForm,self).save(*args, **kwargs)
 
 class UploadObjectForm(forms.ModelForm):
 
@@ -206,7 +224,7 @@ class UploadObjectForm(forms.ModelForm):
 
     class Meta:
         model = Object
-        exclude = ('uploaded_at', 'owner')
+        fields = ('source', 'author', 'title', 'scale', 'position', 'rotation')
 
 
 class ArtworkForm(forms.Form):

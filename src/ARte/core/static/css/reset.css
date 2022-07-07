@@ -1,409 +1,769 @@
 /*  @import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');  */
 
 body {
-    color: #000;
-    background: #FFF;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-    font-family: "Istok Web", sans-serif;
-    text-align: center;
+  color: #000;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-family: "Istok Web", sans-serif;
+  text-align: center;
 }
 
 body.colorful {
-    background-image: url(../images/icons/bg.png);
-    background-repeat: repeat-x;
-    background-position: center top;
+  background-image: url(../images/icons/bg.png);
+  background-repeat: repeat-x;
+  background-position: center top;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Istok Web", serif;
-    font-weight: bolder;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Istok Web", serif;
+  font-weight: bolder;
 }
 
-p, ul, ol {
-    line-height: 1.75;
-    margin: 0 0 1em 0;
+p,
+ul,
+ol {
+  line-height: 1.75;
+  margin: 0 0 1em 0;
 }
 
-section, form {
-    margin-bottom: 20px;
+section,
+form {
+  margin-bottom: 20px;
 }
 
-a, a:visited {
-    color: #03b595;
-    color: #777;
-    padding: 0;
-    text-decoration: none;
+a,
+a:visited {
+  color: #03b595;
+  color: #777;
+  padding: 0;
+  text-decoration: none;
 }
 
 h1 {
-    font-size: 1.25em;
-    line-height: 50px;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 15%;
-    background-size: 100% 200%;
-    margin-top: 10px;
-    width: 100%;
+  font-size: 1.25em;
+  line-height: 50px;
+  background-image: linear-gradient(
+    to top,
+    #77777766,
+    #77777766 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 15%;
+  background-size: 100% 200%;
+  margin-top: 10px;
+  width: 100%;
 }
 
 h2 {
-    font-size: 1.25em;
-    color: #03b595;
-    margin: 30px auto 10px;
+  font-size: 1.25em;
+  color: #03b595;
+  margin: 30px auto 10px;
 }
 
 h3 {
-    font-size: 1.1em;
-    line-height: 20px;
-    text-align: left;
+  font-size: 1.1em;
+  line-height: 20px;
+  text-align: left;
 }
 
 h3:before {
-    width: 20px;
-    height: 20px;
-    background: #03b595;
-    display: inline-block;
-    margin: 5px 10px -3px 0px;
-    content: ' ';
+  width: 20px;
+  height: 20px;
+  background: #03b595;
+  display: inline-block;
+  margin: 5px 10px -3px 0px;
+  content: " ";
 }
 
 h4 {
-    font-size: 1.1em;
-    color: #03b595;
+  font-size: 1.1em;
+  color: #03b595;
 }
 
 h5 {
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 
 h6 {
-    font-size: 1em;
-    color: #03b595;
+  font-size: 1em;
+  color: #03b595;
 }
 
 hr {
-    height: 10px;
-    width: 80%;
-    border: none;
-    background: #03b595;
-    margin: 20px auto;
+  height: 10px;
+  width: 80%;
+  border: none;
+  background: #03b595;
+  margin: 20px auto;
 }
 
 .account-options a {
-    color: #777;
-    padding: 0;
-    text-decoration: none;
-    transition: all .2s ease-in;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+  color: #777;
+  padding: 0;
+  text-decoration: none;
+  transition: all 0.2s ease-in;
+  background-image: linear-gradient(
+    to top,
+    #77777766,
+    #77777766 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 10%;
+  background-size: 100% 200%;
 }
 
 ul {
-    list-style: square;
+  list-style: square;
 }
 
-ul, ol {
-    padding: 0 0 0 5em;
-    text-align: left;
+ul,
+ol {
+  padding: 0 0 0 5em;
+  text-align: left;
 }
 
 blockquote {
-    font-size: 1.1em;
-    line-height: 2em;
-    margin: 10px 40px;
-    color: #888;
-    font-style: italic;
+  font-size: 1.1em;
+  line-height: 2em;
+  margin: 10px 40px;
+  color: #888;
+  font-style: italic;
 }
 
-blockquote:before, blockquote:after {
-    max-width: 40px;
-    height: 40px;
-    display: block;
-    margin: 0 auto -20px 0;
-    background-image: url(../images/icons/fill.png);
-    content: '';
-    text-align: left;
+blockquote:before,
+blockquote:after {
+  max-width: 40px;
+  height: 40px;
+  display: block;
+  margin: 0 auto -20px 0;
+  background-image: url(../images/icons/fill.png);
+  content: "";
+  text-align: left;
 }
 
 blockquote:after {
-    text-align: right;
-    margin: -30px 0 20px auto;
+  text-align: right;
+  margin: -30px 0 20px auto;
 }
 
 input {
-    width: calc(100% - 24px);
-    padding: 0 10px;
-    height: 40px;
+  width: calc(100% - 24px);
+  padding: 0 10px;
+  height: 40px;
 }
 
 textarea {
-    width: calc(100% - 24px);
-    padding: 10px;
+  width: calc(100% - 24px);
+  padding: 10px;
 }
 
 select {
-    width: 100%;
-    height: 40px;
-    padding: 0 10px;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
 }
 
-input[type=submit],
+input[type="submit"],
 input[type="submit" i],
 button,
-.button  {
-    width: 100%;
-    margin: 20px 0;
-    background: #000;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 0.75em;
-    line-height: 40px;
-    text-transform: uppercase;
-    text-align: center;
-    display: inline-block;
+.button {
+  width: 100%;
+  margin: 20px 0;
+  background: #000;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.75em;
+  line-height: 40px;
+  text-transform: uppercase;
+  text-align: center;
+  display: inline-block;
 }
 
-input:disabled, input[type="submit" i]:disabled, input[type=submit]:disabled, button.disabled {
-    opacity: 0.4;
-    pointer-events: none;
-    color: #777;
+input:disabled,
+input[type="submit" i]:disabled,
+input[type="submit"]:disabled,
+button.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  color: #777;
 }
 
 button.secondary,
-input[type=submit].secondary {
-    background: #666;
-    width: 100%;
-    line-height: 30px;
-    color: #fff;
+input[type="submit"].secondary {
+  background: #666;
+  width: 100%;
+  line-height: 30px;
+  color: #fff;
 }
 
-input[type=text] {
-    padding: 0 10px;
+input[type="text"] {
+  padding: 0 10px;
 }
 
-input[type="checkbox" i], input[type="radio" i] {
-    height: 20px;
-    width: 45px;
-    margin: 10px 0;
-    line-height: 40px;
-    display: inline-block;
-    vertical-align: sub;
+input[type="checkbox" i],
+input[type="radio" i] {
+  height: 20px;
+  width: 45px;
+  margin: 10px 0;
+  line-height: 40px;
+  display: inline-block;
+  vertical-align: sub;
 }
 
 .flex {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .half {
-    width: calc(50% - 10px);
+  width: calc(50% - 10px);
 }
 
 .one-third {
-    width: calc(33% - 10px);
+  width: calc(33% - 10px);
 }
 
 .sm-one-third {
-    flex-basis: calc(33% - 10px);
+  flex-basis: calc(33% - 10px);
 }
 
 .sm-half {
-    flex-basis: calc(50% - 10px);
+  flex-basis: calc(50% - 10px);
 }
 
 .sm-full {
-    flex-basis: 100%;
+  flex-basis: 100%;
 }
 
 .left {
-    text-align: left;
+  text-align: left;
 }
 
 .right {
-    text-align: right;
+  text-align: right;
 }
 
 /* Structure */
 .container {
-    max-width: 320px;
-    margin: 0 auto;
-    text-align: center;
-    width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
 }
 
 .colorful .container {
-    background-color: #fff;
-    margin-top: 40px;
-    padding: 20px;
-    max-width: 280px;
+  background-color: #fff;
+  margin-top: 40px;
+  padding: 20px;
+  max-width: 280px;
 }
 
-a.button, a.button:visited {
-    color: #fff;
+a.button,
+a.button:visited {
+  color: #fff;
 }
 
-a.changeExb, a.jandigIco {
-    height: 40px;
-    text-align: left;
-    line-height: 40px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    min-width: calc(50% - 20px);
+a.changeExb,
+a.jandigIco {
+  height: 40px;
+  text-align: left;
+  line-height: 40px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-width: calc(50% - 20px);
 }
 
 a.changeExb {
-    height: 20px;
-    line-height: 20px;
-    font-size: 0.75em;
-    color: #fff;
-    padding: 5px 0 5px 40px;
-    background-image: url(../images/icons/icoChgExb.png);
-    background-position: center left;
+  height: 20px;
+  line-height: 20px;
+  font-size: 0.75em;
+  color: #fff;
+  padding: 5px 0 5px 40px;
+  background-image: url(../images/icons/icoChgExb.png);
+  background-position: center left;
 }
 
 a.jandigIco {
-    text-indent: -9999px;
-    background-image: url(../images/icons/jandigIcon.png);
-    background-position: center right;
+  text-indent: -9999px;
+  background-image: url(../images/icons/jandigIcon.png);
+  background-position: center right;
 }
 
 .header {
-    margin-top: 25px;
-    font-size: 75%;
+  margin-top: 25px;
+  font-size: 75%;
 }
 
 .aside {
-    max-width: 120px;
-    margin-left: -120px;
-    padding-left: 10px;
-    height: 70px;
-    float: right;
-    background: #fff;
+  max-width: 120px;
+  margin-left: -120px;
+  padding-left: 10px;
+  height: 70px;
+  float: right;
+  background: #fff;
 }
 
 .logo {
-    text-align: left;
-    height: 60px;
-    width: 100%;
-    float: left;
-    background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-    background-position: 100% 10%;
-    background-size: 100% 200%;
+  text-align: left;
+  height: 60px;
+  width: 100%;
+  float: left;
+  background-image: linear-gradient(
+    to top,
+    #77777766,
+    #77777766 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 10%;
+  background-size: 100% 200%;
 }
 
 .logo a {
-    display: block;
+  display: block;
 }
 
-.logo img{
-    max-height: 55px;
-    height: auto;
-    margin: auto;
+.logo img {
+  max-height: 55px;
+  height: auto;
+  margin: auto;
 }
 
-.welcome, .icon-menu, .connect {
-    height: 30px;
-    text-align: right;
-    flex-flow: nowrap;
+.welcome,
+.icon-menu,
+.connect {
+  height: 30px;
+  text-align: right;
+  flex-flow: nowrap;
 }
 
 .welcome {
-    height: 30px;
-    font-size: 0.65em;
-    overflow: hidden;
-    vertical-align: bottom;
+  height: 30px;
+  font-size: 0.65em;
+  overflow: hidden;
+  vertical-align: bottom;
 }
 
-.welcome a, .welcome a:visited {
-    font-size: 1.25em;
-    font-weight: bold;
-    color: #03b595;
+.welcome a,
+.welcome a:visited {
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #03b595;
 }
 
 .welcome p {
-    line-height: 45px;
+  line-height: 45px;
 }
 
 .icon-menu a {
-    width: 30px;
-    height: 30px;
-    margin: 0 0 0 10px;
-    display: block;
-    font-size: 0;
+  width: 30px;
+  height: 30px;
+  margin: 0 0 0 10px;
+  display: block;
+  font-size: 0;
 }
 
 /****** temporary disable icons ******/
 .icon-menu a {
-    opacity: 0.2;
-    pointer-events: none;
+  opacity: 0.2;
+  pointer-events: none;
 }
 
 .icon-menu a.btnLang {
-    background: url(../images/icons/icoLng.png) no-repeat;
-    background-position: center center;
-    background-size: contain;
-    margin: 0 0 0 auto;
-    font-size: 0.8em;
-    font-weight: bold;
-    font-family: monospace;
-    text-transform: uppercase;
-    color: #000;
-    padding: 10px;
-    height: 10px;
-    width: 10px;
-    line-height: 13px;
-    text-align: center;
-    overflow: hidden;
+  background: url(../images/icons/icoLng.png) no-repeat;
+  background-position: center center;
+  background-size: contain;
+  margin: 0 0 0 auto;
+  font-size: 0.8em;
+  font-weight: bold;
+  font-family: monospace;
+  text-transform: uppercase;
+  color: #000;
+  padding: 10px;
+  height: 10px;
+  width: 10px;
+  line-height: 13px;
+  text-align: center;
+  overflow: hidden;
 }
 
 .icon-menu a.btnSearch {
-    background: url(../images/icons/icoSrc.png) no-repeat;
-    background-position: center center;
-    background-size: contain;
+  background: url(../images/icons/icoSrc.png) no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 .icon-menu a.btnHelp {
-    background: url(../images/icons/icoHlp.png) no-repeat;
-    background-position: center center;
-    background-size: contain;
+  background: url(../images/icons/icoHlp.png) no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 .trigger-lang-modal {
-    margin: 0 0 0 auto;
+  margin: 0 0 0 auto;
 }
 
 .contCam {
-    min-width: 90px;
+  min-width: 90px;
 }
 
 div.contCam:before {
-    content: '';
-    display: block;
-    height: 0;
-    width: 0;
-    position: relative;
-    top: -21px;
-    left: 45px;
-    border-color: #c9c9c9 transparent transparent #c9c9c9;
-    border-style: solid;
-    border-width: 7px;
-    pointer-events: none;
-    z-index: 1;
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  position: relative;
+  top: -21px;
+  left: 45px;
+  border-color: #c9c9c9 transparent transparent #c9c9c9;
+  border-style: solid;
+  border-width: 7px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .animCam {
-    width: 40px;
-    height: 40px;
-    margin: -25px auto 0;
-    background: #03b595;
+  width: 40px;
+  height: 40px;
+  margin: -25px auto 0;
+  background: #03b595;
 }
 
 .useful-links a.cambtn {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  text-indent: -999999px;
+  background: url(../images/icons/icoARV.png) no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.useful-links {
+  margin-bottom: 20px;
+  font-size: 0.75em;
+  font-weight: bold;
+  clear: both;
+  font-size: 75%;
+}
+
+.useful-links .container {
+  height: 50px;
+  margin: auto;
+}
+
+.useful-links a,
+.footer a.useful {
+  padding: 0 5px;
+  background-image: linear-gradient(
+    to top,
+    #05f7ae,
+    #05f7ae 50%,
+    transparent 50%,
+    transparent
+  );
+  background-position: 100% 15%;
+  background-size: 100% 200%;
+}
+
+.fill {
+  background: url(../images/icons/fill.png), #e6e6e6;
+  padding: 20px;
+  width: calc(100% - 40px);
+  margin-bottom: 20px;
+}
+
+h1.titExb,
+h1.titArt,
+h1.titMrk,
+h1.titObj {
+  height: 40px;
+  line-height: 45px;
+  text-align: left;
+  padding-left: 35px;
+  width: calc(100% - 35px);
+  background-position: left center;
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  border-bottom: 10px solid #f1f1f1;
+}
+
+h1.titExb {
+  background-image: url(../images/icons/icoExb.png);
+}
+
+h1.titArt {
+  background-image: url(../images/icons/icoArt.png);
+}
+
+h1.titMrk {
+  background-image: url(../images/icons/icoMrk.png);
+}
+
+h1.titObj {
+  background-image: url(../images/icons/icoObj.png);
+}
+
+.footer {
+  min-height: 90px;
+}
+
+.footer .container {
+  height: 25px;
+  margin-bottom: 20px;
+}
+
+.footer a {
+  font-size: 75%;
+  line-height: 25px;
+  margin: auto;
+}
+
+.footer a.useful {
+  margin: 0;
+  line-height: 25px;
+}
+
+a.github {
+  background-image: url(../images/icons/bulGit.png);
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  color: #03b595;
+  padding-left: 35px;
+}
+
+a.license {
+  background-image: url(../images/icons/license.png);
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  padding-left: 65px;
+  font-size: 0.5em;
+  line-height: 20px;
+  margin-left: 0;
+  text-align: left;
+  white-space: nowrap;
+  max-width: calc(100% - 160px);
+  overflow: hidden;
+  text-indent: -9999999px;
+}
+
+a.memelab {
+  background-image: url(../images/icons/memelab.png);
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  text-indent: -99999px;
+  max-width: 35px;
+  margin: 0;
+}
+
+a.instagram,
+a.twitter,
+a.facebook,
+a.telegram,
+a.sq-github {
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  text-indent: -99999px;
+  max-width: 35px;
+  margin: 5px 0px 5px 5px;
+}
+
+a.instagram {
+  background-image: url(../images/icons/icoIst.png);
+}
+
+a.twitter {
+  background-image: url(../images/icons/icoTwt.png);
+}
+
+a.facebook {
+  background-image: url(../images/icons/icoFcb.png);
+}
+
+a.telegram {
+  background-image: url(../images/icons/icoTel.png);
+}
+
+a.sq-github {
+  background-image: url(../images/icons/icoGit.png);
+}
+
+.form-options {
+  text-align: left;
+}
+
+.artwork-elements .separator {
+  width: 10px;
+  height: 50px;
+  max-height: 50px;
+  min-height: 50px;
+  background: #06f6ab;
+  margin: 0 10px 0 -5px;
+}
+
+.artwork-elements img.trigger-modal {
+  cursor: pointer;
+  margin: 0px 15px 10px;
+}
+
+.artwork-elements .separator:after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  position: relative;
+  top: 15px;
+  left: 10px;
+  border-color: #06f6ab transparent transparent #06f6ab;
+  border-style: solid;
+  border-width: 7px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Media Queries */
+@media all and (min-width: 800px) {
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .colorful .container {
+    padding: 20px;
+    max-width: 560px;
+  }
+
+  .header {
+    margin-top: 25px;
+  }
+
+  .aside {
+    max-width: 250px;
+    min-width: 250px;
+    height: 100px;
+    margin-left: -250px;
+  }
+
+  .half {
+    width: 270px;
+  }
+
+  .lg-one-third {
+    flex-basis: calc(33% - 10px);
+  }
+
+  .lg-half {
+    flex-basis: calc(50% - 10px);
+  }
+
+  .lg-full {
+    flex-basis: 100%;
+  }
+
+  .logo {
+    text-align: left;
+    height: 95px;
+    width: calc(100% - 160px);
+    float: left;
+    background-image: linear-gradient(
+      to top,
+      #77777766,
+      #77777766 50%,
+      transparent 50%,
+      transparent
+    );
+    background-position: 100% 10%;
+    background-size: 100% 200%;
+  }
+
+  .welcome,
+  .icon-menu,
+  .connect {
+    height: 50px;
+    text-align: right;
+    font-size: 0.75em;
+  }
+
+  .welcome,
+  .welcome p {
+    line-height: 80px;
+    font-size: 1em;
+  }
+
+  .header .logo img {
+    max-height: 75px;
+    height: auto;
+    margin: auto;
+  }
+
+  .icon-menu a {
+    width: 40px;
+    height: 40px;
+    margin: 0 0 0 10px;
+  }
+
+  .icon-menu a.btnLang {
+    height: 20px;
+    width: 19px;
+    line-height: 23px;
+    font-size: 2.5em;
+  }
+
+  .useful-links a,
+  a.useful {
+    padding: 5px;
+    background-image: linear-gradient(
+      to top,
+      #05f7ae,
+      #05f7ae 50%,
+      transparent 50%,
+      transparent
+    );
+    background-position: 100% 15%;
+    background-size: 100% 200%;
+  }
+
+  .contCam {
+    min-width: 250px;
+  }
+
+  div.contCam:before {
+    top: -10px;
+    left: 125px;
+    border-width: 10px;
+  }
+
+  .animCam {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    margin-top: -20px;
+    background: #03b595;
+  }
+
+  .useful-links a.cambtn {
     width: 40px;
     height: 40px;
     margin: 0;
@@ -413,335 +773,47 @@ div.contCam:before {
     background: url(../images/icons/icoARV.png) no-repeat;
     background-position: center center;
     background-size: contain;
-}
+  }
 
-.useful-links {
-    margin-bottom: 20px;
+  .footer {
+    min-height: 100px;
+  }
+
+  .footer .container {
+    height: 30px;
+    margin-bottom: 40px;
+  }
+
+  .footer a {
+    line-height: 30px;
+  }
+
+  a.instagram,
+  a.twitter,
+  a.facebook,
+  a.telegram,
+  a.sq-github {
+    width: 30px;
+    height: 30px;
+  }
+
+  a.github {
+    padding-left: 40px;
+  }
+
+  a.license {
+    padding-left: 100px;
+    height: 30px;
+    line-height: 30px;
     font-size: 0.75em;
-    font-weight: bold;
-    clear: both;
-    font-size: 75%;
-}
+    text-indent: 0;
+  }
 
-.useful-links .container {
-    height: 50px;
-    margin: auto;
-}
-
-.useful-links a,
-.footer a.useful {
-    padding: 0 5px;
-    background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
-    background-position: 100% 15%;
-    background-size: 100% 200%;
-}
-
-.fill {
-    background: url(../images/icons/fill.png), #e6e6e6;
-    padding: 20px;
-    width: calc(100% - 40px);
-    margin-bottom: 20px;
-}
-
-h1.titExb, h1.titArt, h1.titMrk, h1.titObj {
-    height: 40px;
-    line-height: 45px;
-    text-align: left;
-    padding-left: 35px;
-    width: calc(100% - 35px);
-    background-position: left center;
-    background-size: 25px 25px;
-    background-repeat: no-repeat;
-    border-bottom: 10px solid #f1f1f1;
-}
-
-h1.titExb {
-    background-image: url(../images/icons/icoExb.png);
-}
-
-h1.titArt {
-    background-image: url(../images/icons/icoArt.png);
-}
-
-h1.titMrk {
-    background-image: url(../images/icons/icoMrk.png);
-}
-
-h1.titObj {
-    background-image: url(../images/icons/icoObj.png);
-}
-
-.footer {
-    min-height: 90px;
-}
-
-.footer .container {
-    height: 25px;
-    margin-bottom: 20px;
-}
-
-.footer a {
-    font-size: 75%;
-    line-height: 25px;
-    margin: auto;
-}
-
-.footer a.useful {
-    margin: 0;
-    line-height: 25px;
-}
-
-a.github {
-    background-image: url(../images/icons/bulGit.png);
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat;
-    color: #03b595;
-    padding-left: 35px;
-}
-
-a.license {
-    background-image: url(../images/icons/license.png);
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat;
-    padding-left: 65px;
-    font-size: 0.5em;
-    line-height: 20px;
-    margin-left: 0;
-    text-align: left;
-    white-space: nowrap;
-    max-width: calc(100% - 160px);
-    overflow: hidden;
-    text-indent: -9999999px;
-}
-
-a.memelab {
-    background-image: url(../images/icons/memelab.png);
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    text-indent: -99999px;
-    max-width: 35px;
-    margin: 0;
-}
-
-a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
-    text-indent: -99999px;
-    max-width: 35px;
-    margin: 5px 0px 5px 5px;
-}
-
-a.instagram {
-    background-image: url(../images/icons/icoIst.png);
-}
-
-a.twitter {
-    background-image: url(../images/icons/icoTwt.png);
-}
-
-a.facebook {
-    background-image: url(../images/icons/icoFcb.png);
-}
-
-a.telegram {
-    background-image: url(../images/icons/icoTel.png);
-}
-
-a.sq-github {
-    background-image: url(../images/icons/icoGit.png);
-}
-
-.form-options {
-    text-align: left;
-}
-
-.artwork-elements .separator {
-    width: 10px;
-    height: 50px;
-    max-height: 50px;
-    min-height: 50px;
-    background: #06f6ab;
-    margin: 0 10px 0 -5px;
-}
-
-.artwork-elements img.trigger-modal {
-    margin: 0px 15px 10px;
-}
-
-.artwork-elements .separator:after {
-    content: '';
-    display: block;
-    height: 0;
-    width: 0;
-    position: relative;
-    top: 15px;
-    left: 10px;
-    border-color: #06f6ab transparent transparent #06f6ab;
-    border-style: solid;
-    border-width: 7px;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Media Queries */
-@media all and (min-width: 800px) {
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .colorful .container {
-        padding: 20px;
-        max-width: 560px;
-    }
-
-    .header {
-        margin-top: 25px;
-    }
-
-    .aside {
-        max-width: 250px;
-        min-width: 250px;
-        height: 100px;
-        margin-left: -250px;
-    }
-
-    .half {
-        width: 270px;
-    }
-
-    .lg-one-third {
-        flex-basis: calc(33% - 10px);
-    }
-
-    .lg-half {
-        flex-basis: calc(50% - 10px);
-    }
-
-    .lg-full {
-        flex-basis: 100%;
-    }
-
-    .logo {
-        text-align: left;
-        height: 95px;
-        width: calc(100% - 160px);
-        float: left;
-        background-image: linear-gradient(to top, #77777766, #77777766 50%, transparent 50%, transparent);
-        background-position: 100% 10%;
-        background-size: 100% 200%;
-    }
-
-    .welcome, .icon-menu, .connect {
-        height: 50px;
-        text-align: right;
-        font-size: 0.75em;
-    }
-
-    .welcome, .welcome p {
-        line-height: 80px;
-        font-size: 1em;
-    }
-
-    .header .logo img{
-        max-height: 75px;
-        height: auto;
-        margin: auto;
-    }
-
-    .icon-menu a {
-        width: 40px;
-        height: 40px;
-        margin: 0 0 0 10px;
-    }
-
-    .icon-menu a.btnLang {
-        height: 20px;
-        width: 19px;
-        line-height: 23px;
-        font-size: 2.5em;
-    }
-
-    .useful-links a, a.useful {
-        padding: 5px;
-        background-image: linear-gradient(to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent);
-        background-position: 100% 15%;
-        background-size: 100% 200%;
-    }
-
-    .contCam {
-        min-width: 250px;
-    }
-
-    div.contCam:before {
-        top: -10px;
-        left: 125px;
-        border-width: 10px;
-    }
-
-    .animCam {
-        width: 40px;
-        height: 40px;
-        margin: 0 auto;
-        margin-top: -20px;
-        background: #03b595;
-    }
-
-    .useful-links a.cambtn {
-        width: 40px;
-        height: 40px;
-        margin: 0;
-        padding: 0;
-        display: block;
-        text-indent: -999999px;
-        background: url(../images/icons/icoARV.png) no-repeat;
-        background-position: center center;
-        background-size: contain;
-    }
-
-    .footer {
-        min-height: 100px;
-    }
-
-    .footer .container {
-        height: 30px;
-        margin-bottom: 40px;
-    }
-
-    .footer a {
-        line-height: 30px;
-    }
-
-    a.instagram, a.twitter, a.facebook, a.telegram, a.sq-github {
-        width: 30px;
-        height: 30px;
-    }
-
-    a.github {
-        padding-left: 40px;
-    }
-
-    a.license {
-        padding-left: 100px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 0.75em;
-        text-indent: 0;
-    }
-
-    a.memelab {
-        width: 30px;
-        height: 30px;
-        max-width: 40px;
-    }
+  a.memelab {
+    width: 30px;
+    height: 30px;
+    max-width: 40px;
+  }
 }
 
 /* Hover Elements */
@@ -760,14 +832,14 @@ a.jandigIco,
 .login-btn,
 .trigger-lang-modal,
 .license {
-    transition: all .2s ease-in;
+  transition: all 0.2s ease-in;
 }
 
 .useful-links a:hover,
 .footer a.useful:hover,
 .account-options a:hover {
-    color: #FFF;
-    background-position: 0 100%;
+  color: #fff;
+  background-position: 0 100%;
 }
 
 .header .logo img:hover,
@@ -780,31 +852,40 @@ a.jandigIco:hover,
 .login-btn:hover,
 .trigger-lang-modal:hover,
 .license:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .editProf a.option-link:hover,
 .welcome a:hover {
-    color: #06f7ae;
+  color: #06f7ae;
 }
-
 
 /****** Animation  ********/
 .animCam {
-      animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
-      -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
-    }
+  animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
+  -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
+}
 
-@keyframes colorchange
-    {
-      0%   {background: #03b595;}
-      50%  {background: #06f7ae;}
-      100% {background: #03b595;}
-    }
+@keyframes colorchange {
+  0% {
+    background: #03b595;
+  }
+  50% {
+    background: #06f7ae;
+  }
+  100% {
+    background: #03b595;
+  }
+}
 
-@-webkit-keyframes colorchange
-    {
-      0%   {background: #03b595;}
-      50%  {background: #06f7ae;}
-      100% {background: #03b595;}
-    }
+@-webkit-keyframes colorchange {
+  0% {
+    background: #03b595;
+  }
+  50% {
+    background: #06f7ae;
+  }
+  100% {
+    background: #03b595;
+  }
+}

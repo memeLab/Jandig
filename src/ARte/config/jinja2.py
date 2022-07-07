@@ -19,4 +19,3 @@ def environment(**options):
 
     env.install_gettext_translations(translation, newstyle=True)
     return env
-
