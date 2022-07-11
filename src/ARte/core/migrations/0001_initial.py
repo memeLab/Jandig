@@ -9,30 +9,56 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Artwork2',
+            name="Artwork2",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('patt', models.CharField(default='hiro', max_length=50)),
-                ('gif', models.CharField(default='peixe', max_length=50)),
-                ('scale', models.CharField(default='1 1', max_length=50)),
-                ('position', models.CharField(default='0 0 0', max_length=50)),
-                ('rotation', models.CharField(default='270 0 0', max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                ("patt", models.CharField(default="hiro", max_length=50)),
+                ("gif", models.CharField(default="peixe", max_length=50)),
+                ("scale", models.CharField(default="1 1", max_length=50)),
+                ("position", models.CharField(default="0 0 0", max_length=50)),
+                ("rotation", models.CharField(default="270 0 0", max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Exhibit',
+            name="Exhibit",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('slug', models.CharField(max_length=50, unique=True)),
-                ('artworks', models.ManyToManyField(related_name='exhibits', to='users.Artwork')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='exhibits', to='users.Profile')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                ("slug", models.CharField(max_length=50, unique=True)),
+                (
+                    "artworks",
+                    models.ManyToManyField(related_name="exhibits", to="users.Artwork"),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="exhibits",
+                        to="users.Profile",
+                    ),
+                ),
             ],
         ),
     ]

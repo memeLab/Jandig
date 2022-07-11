@@ -19,4 +19,4 @@ jobs:
           pip install flake8
       - name: Run flake8 linter
         run: |
-          flake8 --max-line-length=200
+          flake8 --max-line-length=200 src/

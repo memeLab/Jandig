@@ -7,23 +7,29 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0003_artwork_created_at'),
+        ("users", "0003_artwork_created_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='artwork',
-            name='augmented',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Object'),
+            model_name="artwork",
+            name="augmented",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="users.Object"
+            ),
         ),
         migrations.AlterField(
-            model_name='artwork',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile'),
+            model_name="artwork",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="users.Profile"
+            ),
         ),
         migrations.AlterField(
-            model_name='artwork',
-            name='marker',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Marker'),
+            model_name="artwork",
+            name="marker",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="users.Marker"
+            ),
         ),
     ]

@@ -6,7 +6,7 @@ import psycopg2
 
 SERVICES_STARTED = False
 
-log = logging.getLogger('ej')
+log = logging.getLogger("ej")
 
 
 def start_services():
@@ -20,39 +20,33 @@ def start_services():
     SERVICES_STARTED = True
 
 
-
-log = logging.getLogger('ej')
+log = logging.getLogger("ej")
 
 
 def start_postgres():
-    settings_path = os.environ['DJANGO_SETTINGS_MODULE']
+    settings_path = os.environ["DJANGO_SETTINGS_MODULE"]
     settings = importlib.import_module(settings_path)
 
-    db = settings.DATABASES['default']
-    dbname = db['NAME']
-    user = db['USER']
-    password = db['PASSWORD']
-    host = db['HOST']
+    db = settings.DATABASES["default"]
+    dbname = db["NAME"]
+    user = db["USER"]
+    password = db["PASSWORD"]
+    host = db["HOST"]
 
     for _ in range(100):
         if can_connect(dbname, user, password, host):
             log.info("Postgres is available. Continuing...")
             return
-        log.warning('Postgres is unavailable. Retrying in 0.5 seconds')
+        log.warning("Postgres is unavailable. Retrying in 0.5 seconds")
         time.sleep(0.5)
 
-    log.critical('Maximum number of attempts connecting to postgres database')
-    raise RuntimeError('could not connect to database')
+    log.critical("Maximum number of attempts connecting to postgres database")
+    raise RuntimeError("could not connect to database")
 
 
 def can_connect(dbname, user, password, host):
     try:
-        psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host
-        )
+        psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
     except psycopg2.OperationalError:
         return False
     return True

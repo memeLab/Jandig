@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0006_auto_20200213_1934'),
+        ("users", "0006_auto_20200213_1934"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='profile',
-            options={'permissions': [('moderator', 'Can moderate content')]},
+            name="profile",
+            options={"permissions": [("moderator", "Can moderate content")]},
         ),
     ]

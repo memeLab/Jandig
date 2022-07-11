@@ -3,6 +3,7 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+
 class EmailService:
     def __init__(self, email_message):
         self.smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
@@ -23,8 +24,8 @@ class EmailService:
         email_server.quit()
 
     def build_multipart_message(self, user_email):
-        multipart_message = MIMEMultipart('alternative')
-        multipart_message["From"] = f'Jandig <{self.jandig_email}>'
+        multipart_message = MIMEMultipart("alternative")
+        multipart_message["From"] = f"Jandig <{self.jandig_email}>"
         multipart_message["To"] = "{}".format(user_email)
         multipart_message["Subject"] = "Recover Password"
 
