@@ -7,6 +7,7 @@ RUN apt-get update && \
     curl
 
 COPY ./pyproject.toml /ARte/pyproject.toml
+COPY ./poetry.lock /ARte/poetry.lock
 
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
 ENV PATH "${PATH}:/root/.poetry/bin"
