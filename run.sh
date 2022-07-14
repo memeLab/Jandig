@@ -1,3 +1,3 @@
 #!/bin/bash
-pip list
-inv i18n --compile docs run -p -g
+poetry show
+poetry run inv i18n --compile docs run -p -g
