@@ -28,10 +28,30 @@ docker-compose -f docker/docker-compose.yml up
 ```
 
 ### ERROR - Env file not found
+
 If you receive an ERROR message saying they couldn't find env file, you probably don't create the .env file yet. So navigate to **Jandig\src\\.envs\\** and create a file named **.env** and copy the content of **.example** and paste it in this file. Then run the above code again.
 
 ### ERROR - System can't found CreateFile
 If you are receiving the following ERROR, that means your Docker have problems to initiate. Try to initialize manually the Docker Desktop with admin privileges, you can see if the Docker Desktop is running in your toolbar. If your docker isn't open yet consult the [DockerDesktop](https://docs.microsoft.com/pt-br/windows/wsl/tutorials/wsl-containers) documentation.
 
+![env-file](./images/installation-guide-createFile.png)
+
+### ERROR - Duplicated dependency
+If you are receiving the following ERROR or a simuletd one, that means that are duplicated depencies. Sometimes when new Pull Requests are merged in the development branch, some dependencies can be updated or removed, and that result in duplicate dependencies or missing one. This maybe not appear to others Jandig developers, since they already set their environments. 
+
+![env-file](./images/installation-guide-duplicate-dependency.png)
+
+In order to solve this problem we are going to check for duplicated or missing dependecies in the requirements.txt file. So, navigate so **Jandig\src** and open the mentioned file and we are going to look for the dependency that is presented in the error log in your terminal, in this case is the "markupsafe" that appear in two differents versions and we are going to delete the outdated one. If you are receiving this error please consider open a issue in our [repository](https://github.com/memeLab/Jandig) or notify one of the maintainers.
+
 ### Expected Result
 After this steps you should have Jandig ARte running in your localhost, by default the project use the **localhost:8000**. To access you can copy the instruction above and paste in your browser or click [here](http://localhost:8000/)
+
+![env-file](./images/installation-guide-terminal-expected.png)
+
+## Step 3 - Jandig ARte in the localhost
+
+### ERROR -
+### ERROR -
+### Expected Result
+
+Need more help? consult the issue "Problem to run Jandig ARte #436" [here](https://github.com/memeLab/Jandig/issues/436).
