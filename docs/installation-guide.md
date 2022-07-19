@@ -32,7 +32,7 @@ docker-compose -f docker/docker-compose.yml up
 
 If you receive an ERROR message saying it couldn't find env file, you probably didn't create the .env file yet. So navigate to **Jandig\src\\.envs\\** and create a file named **.env** and copy the content of **.example** and paste it in this file. Then run the above code again.
 
-### ERROR - System can't found CreateFile
+### ERROR - System could't find CreateFile
 If you are receiving the following ERROR, that means your Docker has problems to initiate. Try to initialize the Docker Desktop manually with admin privileges, you can check the Docker Desktop running in your toolbar. If your docker isn't open yet consult the [DockerDesktop](https://docs.microsoft.com/pt-br/windows/wsl/tutorials/wsl-containers) documentation.
 
 ![env-file](./images/installation-guide-createFile.png)
@@ -44,15 +44,32 @@ If you are receiving the following ERROR or a similar one, that means that there
 
 In order to solve this problem we are going to check for duplicated or missing dependecies in the requirements.txt file. So, navigate so **Jandig\src** and open the mentioned file and we are going to look for the dependency that is presented in the error log in your terminal, in this case it's the "markupsafe" that appear in two differents versions and we are going to delete the outdated one. If you are receiving this error, please consider opening an issue in our [repository](https://github.com/memeLab/Jandig) or notify one of the maintainers.
 
-### Expected Result
+### ERROR - Minio
+If you encounter a screen as the image below, or some error message related to Minio, it's very likely that the `USE_MINIO` in **.env** file is set to True. To correct this, set it to False (`USE_MINIO=False`).
+
+![env-file](./images/installation-guide-minio.png)
+
+### ERROR - Migration
+
+To solve the backend issue with migrations (image below)
+
+![env-file](./images/installation-guide-migration.png)
+
+do the following steps, as @GustavoAPS commented [here](https://github.com/memeLab/Jandig/issues/436#issuecomment-1034420328):
+1. Run the container.
+1. Open a new terminal and list the containers with "docker ps"
+1. Enter the project container with "docker exec -it docker_django_1 bash"
+1. Inside the container make the migrations with: `python3 src/ARte/manage.py migrate`
+1. After the migrations, the problem should be solved.
+
+## Step 3 - Jandig ARte in the localhost
 After these steps you should have Jandig ARte running in your localhost, by default the project uses the **localhost:8000**. To access it you can copy the instruction above and paste in your browser or click [here](http://localhost:8000/)
 
 ![env-file](./images/installation-guide-terminal-expected.png)
 
-## Step 3 - Jandig ARte in the localhost
+The expected web page is shown below
 
-### ERROR -
-### ERROR -
-### Expected Result
+![env-file](./images/installation-guide-expected-window.png)
+
 
 Need more help? consult the issue "Problem to run Jandig ARte #436" [here](https://github.com/memeLab/Jandig/issues/436).
