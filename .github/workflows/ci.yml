@@ -20,6 +20,25 @@ jobs:
       - name: Run flake8 linter
         run: |
           flake8 --max-line-length=200 src/
+
+  build:
+    name: run / build
+    runs-on: ubuntu-latest
+    needs: linter
+    steps:
+      - name: Check out code from Github
+        uses: actions/checkout@v3
+      - name: Build image
+        run: |
+          # docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
+          docker build . -f docker/Dockerfile -t jandigarte/django:$GITHUB_SHA
+          docker save -o docker_image_$GITHUB_SHA jandigarte/django:$GITHUB_SHA
+      - name: Caching image
+        uses: actions/cache@v3
+        with:
+          key: jandigarte
+          path: docker_image_${{ github.sha }}
+
   migrations:
     name: test / migrations
     runs-on: ubuntu-latest
