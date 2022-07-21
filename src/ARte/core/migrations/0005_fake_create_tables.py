@@ -30,9 +30,6 @@ class Migration(migrations.Migration):
                         ("description", models.TextField(blank=True, max_length=500)),
                         ("created_at", models.DateTimeField(auto_now=True)),
                     ],
-                    options={
-                        "db_table": "users_artwork",
-                    },
                 ),
                 migrations.CreateModel(
                     name="Object",
@@ -64,9 +61,6 @@ class Migration(migrations.Migration):
                             ),
                         ),
                     ],
-                    options={
-                        "db_table": "users_object",
-                    },
                 ),
                 migrations.CreateModel(
                     name="Marker",
@@ -93,9 +87,6 @@ class Migration(migrations.Migration):
                             ),
                         ),
                     ],
-                    options={
-                        "db_table": "users_marker",
-                    },
                 ),
                 migrations.AlterField(
                     model_name="exhibit",
