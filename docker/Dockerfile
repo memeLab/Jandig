@@ -9,4 +9,6 @@ COPY ./tasks.py /ARte/tasks.py
 COPY ./run.sh /ARte/run.sh
 COPY ./etc/ /ARte/etc/
 
+RUN pip install --upgrade pip
+
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
