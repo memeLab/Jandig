@@ -3,7 +3,8 @@
 |Version | description| Author(s) | date |
 |--------|------------|-----------|------|
 |1.0|Initial version|João Victor Valadão|15/07/2022| 
-|1.1|TODO|Marcelo Araújo dos Santos|18/07/2022| 
+|1.1|Migration problems|Marcelo Araújo dos Santos|18/07/2022| 
+|1.2|applying the requested changes|João Victor Valadão|22/07/2022| 
 
 
 # Installation Guide
@@ -30,19 +31,13 @@ docker-compose -f docker/docker-compose.yml up
 
 ### ERROR - Env file not found
 
-If you receive an ERROR message saying it couldn't find env file, you probably didn't create the .env file yet. So navigate to **Jandig\src\\.envs\\** and create a file named **.env** and copy the content of **.example** and paste it in this file. Then run the above code again.
+If you receive an error message saying it couldn't find env file, you probably didn't create the .env file yet. So navigate to **Jandig\src\\.envs\\** and create a file named **.env** and copy the content of **.example** and paste it in this file. Then run the above code again.
 
 ### ERROR - System could't find CreateFile
-If you are receiving the following ERROR, that means your Docker has problems to initiate. Try to initialize the Docker Desktop manually with admin privileges, you can check the Docker Desktop running in your toolbar. If your docker isn't open yet consult the [DockerDesktop](https://docs.microsoft.com/pt-br/windows/wsl/tutorials/wsl-containers) documentation.
+If you are receiving the following error using Windows and Docker, that means your Docker has problems to initiate. Try to initialize the Docker Desktop manually with admin privileges, you can check the Docker Desktop running in your toolbar. If your docker isn't open yet consult the [Docker Desktop](https://docs.microsoft.com/pt-br/windows/wsl/tutorials/wsl-containers) documentation.
 
 ![env-file](./images/installation-guide-createFile.png)
 
-### ERROR - Duplicated dependency
-If you are receiving the following ERROR or a similar one, that means that there are duplicated depencies. Sometimes when new Pull Requests are merged in the development branch, some dependencies can be updated or removed, and that results in duplicate dependencies or missing ones. This may not appear to other Jandig developers, since they already set their environments. 
-
-![env-file](./images/installation-guide-duplicate-dependency.png)
-
-In order to solve this problem we are going to check for duplicated or missing dependecies in the requirements.txt file. So, navigate so **Jandig\src** and open the mentioned file and we are going to look for the dependency that is presented in the error log in your terminal, in this case it's the "markupsafe" that appear in two differents versions and we are going to delete the outdated one. If you are receiving this error, please consider opening an issue in our [repository](https://github.com/memeLab/Jandig) or notify one of the maintainers.
 
 ### ERROR - Minio
 If you encounter a screen as the image below, or some error message related to Minio, it's very likely that the `USE_MINIO` in **.env** file is set to True. To correct this, set it to False (`USE_MINIO=False`).
@@ -51,16 +46,23 @@ If you encounter a screen as the image below, or some error message related to M
 
 ### ERROR - Migration
 
-To solve the backend issue with migrations (image below)
+
+Jandig implemented Invoke with some "recipes" to make our lives as developers easier. So in order to solve the backend issue with migrations (image below) try doing the following code to run the migrations on our containers:
+```
+cd docker/
+docker-compose run django inv db
+# or if you already have a django container running
+docker-compose exec django inv db
+```
 
 ![env-file](./images/installation-guide-migration.png)
 
-do the following steps, as @GustavoAPS commented [here](https://github.com/memeLab/Jandig/issues/436#issuecomment-1034420328):
+If the problem isn't fixed do the following steps, as @GustavoAPS commented [here](https://github.com/memeLab/Jandig/issues/436#issuecomment-1034420328):
 1. Run the container.
-1. Open a new terminal and list the containers with "docker ps"
-1. Enter the project container with "docker exec -it docker_django_1 bash"
-1. Inside the container make the migrations with: `python3 src/ARte/manage.py migrate`
-1. After the migrations, the problem should be solved.
+2. Open a new terminal and list the containers with "docker ps"
+3. Enter the project container with "docker exec -it docker_django_1 bash"
+4. Inside the container make the migrations with: `python3 src/ARte/manage.py migrate`
+5. After the migrations, the problem should be solved.
 
 ## Step 3 - Jandig ARte in the localhost
 After these steps you should have Jandig ARte running in your localhost, by default the project uses the **localhost:8000**. To access it you can copy the instruction above and paste in your browser or click [here](http://localhost:8000/)
