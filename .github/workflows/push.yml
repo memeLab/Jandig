@@ -4,6 +4,27 @@ on: pull_request
 
 # TODO: Change environment and login envs
 jobs:
+  dependencies:
+    name: push / dependencies
+    environment: testes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code from Github
+        uses: actions/checkout@v3
+      - name: Check diff
+        id: diff_dependencies
+        run: |
+          echo "::set-output name=dependencies::$(git diff --name-only | grep pyproject.toml -c)"
+      - name: Build requirements image
+        if: ${{ steps.diff_dependencies.outputs.dependencies != 0 }}
+        run: |
+          docker build . -f docker/base.Dockerfile -t jandigarte/requirements:latest
+      - name: Push requirements image
+        if: ${{ steps.diff_dependencies.outputs.dependencies != 0 }}
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+          docker push jandigarte/requirements:latest
+
   django:
     name: push / django 
     environment: testes
