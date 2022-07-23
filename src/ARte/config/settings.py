@@ -1,7 +1,7 @@
 import os
 import environ
 from .wait_db import start_services
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "users",
     "core",
-    "docs",
     # 'django_extensions',
 ]
 

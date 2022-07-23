@@ -7,7 +7,7 @@ from jinja2 import Environment
 
 
 def environment(**options):
-    options["extensions"] = ["jinja2.ext.i18n", "jinja2.ext.with_"]
+    options["extensions"] = ["jinja2.ext.i18n"]
     env = Environment(**options)
 
     env.globals.update(

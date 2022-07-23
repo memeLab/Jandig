@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile, File
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.forms.widgets import HiddenInput
 
 from .choices import COUNTRY_CHOICES
