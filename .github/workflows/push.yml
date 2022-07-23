@@ -1,6 +1,9 @@
 name: Docker pipeline
 
-on: pull_request
+on:
+  push:
+    branches:
+      - develop
 
 # TODO: Change environment and login envs
 jobs:
