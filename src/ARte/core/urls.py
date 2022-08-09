@@ -1,6 +1,8 @@
 from django.urls import path, include
-from .views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
-from .views_s.home import home, community, marker_generator, documentation, health_check
+
+from core.views.views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
+from core.views.static_views import home, community, marker_generator, documentation, health_check
+
 
 urlpatterns = [
     path('', home, name='home'),

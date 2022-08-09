@@ -5,10 +5,10 @@ from django.shortcuts import redirect
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
-from .helpers import handle_upload_image
-from .forms import UploadFileForm, ExhibitForm
+from core.helpers import handle_upload_image
+from core.forms import UploadFileForm, ExhibitForm
 
-from .models import Exhibit, Artwork, Marker, Object
+from core.models import Exhibit, Artwork, Marker, Object
 
 
 
