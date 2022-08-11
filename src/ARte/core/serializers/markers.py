@@ -7,4 +7,5 @@ class MarkerSerializer(ModelSerializer):
 
     class Meta:
         model = Marker
-        fields = ('owner', 'source', 'upload_at', 'author', 'title', 'patt')
+        fields = ('id', 'owner', 'source', 'uploaded_at', 'author', 'title', 'patt')
+        read_only_fields = ('id', 'uploaded_at',)

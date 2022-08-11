@@ -19,3 +19,9 @@ class MarkerListAPIView(ListAPIView):
             'seeall': True
         }
         return context
+
+
+class MarkerRetrieveUpdateAPIViewAPIView(RetrieveAPIView):
+    renderer_classes = [JSONRenderer]
+    queryset = Marker.objects.all()
+    serializer_class = MarkerSerializer

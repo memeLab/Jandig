@@ -1,12 +1,17 @@
 from django.urls import path, include
 
-from core.views.v1.markers import MarkerListAPIView
+from core.views.v1 import markers
 from core.views.views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
 from core.views.static_views import home, community, marker_generator, documentation, health_check
 
 
 urls_v1 = [
-    path('v1/markers', MarkerListAPIView.as_view(), name='marker-list'),
+    path('v1/markers/', include([
+        path('', markers.MarkerListAPIView.as_view(), name='marker-list'),
+        path(
+            '<slug:pk>/', markers.MarkerRetrieveUpdateAPIViewAPIView.as_view(),
+            name='marker-details'),
+    ])),
 ]
 
 
