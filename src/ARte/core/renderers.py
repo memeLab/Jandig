@@ -9,6 +9,11 @@ class JinjaBrowsableAPIRenderer(BrowsableAPIRenderer):
         self.accepted_media_type = accepted_media_type or ''
         self.renderer_context = renderer_context or {}
         
-        context = self.get_context(data, accepted_media_type, renderer_context)
+        request = self.renderer_context['request']
         view = self.renderer_context['view']
-        return render(context['request'], view.template_name, context)
+
+        response = renderer_context['response']
+        if response.status_code == status.HTTP_204_NO_CONTENT:
+            response.status_code = status.HTTP_200_OK
+
+        return render(request, view.template_name, self.renderer_context)
