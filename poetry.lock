@@ -111,7 +111,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "django"
-version = "4.0.6"
+version = "4.0.7"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
@@ -123,8 +123,8 @@ sqlparse = ">=0.2.2"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
-argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+argon2 = ["argon2-cffi (>=19.1.0)"]
 
 [[package]]
 name = "django-boogie"
@@ -180,9 +180,9 @@ optional = false
 python-versions = ">=3.4,<4"
 
 [package.extras]
-develop = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)", "furo (>=2021.8.17b43,<2021.9.0)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
-docs = ["furo (>=2021.8.17b43,<2021.9.0)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
-testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)"]
+testing = ["pytest (>=4.6.11)", "coverage[toml] (>=5.0a4)"]
+docs = ["sphinx-notfound-page", "sphinx (>=3.5.0)", "furo (>=2021.8.17b43,<2021.9.0)"]
+develop = ["sphinx-notfound-page", "sphinx (>=3.5.0)", "furo (>=2021.8.17b43,<2021.9.0)", "pytest (>=4.6.11)", "coverage[toml] (>=5.0a4)"]
 
 [[package]]
 name = "django-extensions"
@@ -416,7 +416,7 @@ optional = false
 python-versions = ">=3.6.8"
 
 [package.extras]
-diagrams = ["railroad-diagrams", "jinja2"]
+diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "python-dateutil"
@@ -452,8 +452,8 @@ idna = ">=2.5,<4"
 urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
-socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 
 [[package]]
 name = "s3transfer"
@@ -482,22 +482,22 @@ certifi = "*"
 urllib3 = ">=1.10.0"
 
 [package.extras]
-aiohttp = ["aiohttp (>=3.5)"]
-beam = ["apache-beam (>=2.12)"]
-bottle = ["bottle (>=0.12.13)"]
-celery = ["celery (>=3)"]
-chalice = ["chalice (>=1.16.0)"]
-django = ["django (>=1.8)"]
-falcon = ["falcon (>=1.4)"]
-flask = ["flask (>=0.11)", "blinker (>=1.1)"]
-httpx = ["httpx (>=0.16.0)"]
-pure_eval = ["pure-eval", "executing", "asttokens"]
-pyspark = ["pyspark (>=2.4.4)"]
-quart = ["quart (>=0.16.1)", "blinker (>=1.1)"]
-rq = ["rq (>=0.6)"]
-sanic = ["sanic (>=0.8)"]
-sqlalchemy = ["sqlalchemy (>=1.2)"]
 tornado = ["tornado (>=5)"]
+sqlalchemy = ["sqlalchemy (>=1.2)"]
+sanic = ["sanic (>=0.8)"]
+rq = ["rq (>=0.6)"]
+quart = ["blinker (>=1.1)", "quart (>=0.16.1)"]
+pyspark = ["pyspark (>=2.4.4)"]
+pure_eval = ["asttokens", "executing", "pure-eval"]
+httpx = ["httpx (>=0.16.0)"]
+flask = ["blinker (>=1.1)", "flask (>=0.11)"]
+falcon = ["falcon (>=1.4)"]
+django = ["django (>=1.8)"]
+chalice = ["chalice (>=1.16.0)"]
+celery = ["celery (>=3)"]
+bottle = ["bottle (>=0.12.13)"]
+beam = ["apache-beam (>=2.12)"]
+aiohttp = ["aiohttp (>=3.5)"]
 
 [[package]]
 name = "sidekick"
@@ -570,8 +570,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-devhelp"
@@ -582,8 +582,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
@@ -594,8 +594,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
-test = ["pytest", "html5lib"]
+test = ["html5lib", "pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -606,7 +606,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-test = ["pytest", "flake8", "mypy"]
+test = ["mypy", "flake8", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-qthelp"
@@ -617,8 +617,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-serializinghtml"
@@ -629,8 +629,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sqlparse"
@@ -689,8 +689,8 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-docs = ["sphinx"]
 test = ["zope.testrunner"]
+docs = ["sphinx"]
 
 [[package]]
 name = "zope.interface"
@@ -708,7 +708,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5fbb947f1abc2c07b95e83d1136c9c01abc60de5f0272c77e7d461565e18a24f"
+content-hash = "4b65d1b4fec37afa377e6ff017d68a8794f5d5786daa2c3ccb66fddfb4500256"
 
 [metadata.files]
 alabaster = [
@@ -814,8 +814,8 @@ colorama = [
     {file = "colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
 ]
 django = [
-    {file = "Django-4.0.6-py3-none-any.whl", hash = "sha256:ca54ebedfcbc60d191391efbf02ba68fb52165b8bf6ccd6fe71f098cac1fe59e"},
-    {file = "Django-4.0.6.tar.gz", hash = "sha256:a67a793ff6827fd373555537dca0da293a63a316fe34cb7f367f898ccca3c3ae"},
+    {file = "Django-4.0.7-py3-none-any.whl", hash = "sha256:41bd65a9e5f8a89cdbfa7a7bba45cd7431ae89e750af82dea8a35fd1a7ecbe66"},
+    {file = "Django-4.0.7.tar.gz", hash = "sha256:9c6d5ad36be798e562ddcaa6b17b1c3ff2d3c4f529a47432b69fb9a30f847461"},
 ]
 django-boogie = [
     {file = "django-boogie-0.13.3.tar.gz", hash = "sha256:657799ae308a04ab32ac153c4204c5f7b8d12c032e89146d9112e662baa08c3a"},
