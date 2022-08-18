@@ -6,6 +6,7 @@ from .services.encrypt_service import EncryptService
 from .services.user_service import UserService
 from .factory import UserFactory
 
+
 class UserTestCase(TestCase):
     def setUp(self):
         self.client_test = RequestFactory()
@@ -50,19 +51,19 @@ class UserTestCase(TestCase):
     @skip("demonstrating skipping")
     def test_recover_password_valid_username(self):
         request = self.client_test.post(
-            "/recover/", {"username_or_email": "Testador"}, follow=True
+          "/recover/", {"username_or_email": "Testador"}, follow=True
         )
         UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/users/recover-code/") 
+        self.assertEqual(response.url, "/users/recover-code/")
 
     @mock.patch("users.services.email_service.EmailService.build_multipart_message", return_value={"From": "jandig@memelab.com.br", "To": "testador@memelab.com"})
     def test_build_multipart_message(self, mock_mail):
         email = "testador@memelab.com"
         response = self.email_service.build_multipart_message(email)
         self.assertEqual(response["From"], "jandig@memelab.com.br")
-        self.assertEqual(response["To"], email) 
+        self.assertEqual(response["To"], email)
         mock_mail.assert_called_once()
 
     @mock.patch("users.services.email_service.EmailService.send_email_to_recover_password")
@@ -76,7 +77,7 @@ class UserTestCase(TestCase):
     def test_generate_verification_code(self, mock_hash):
         email = "testador@memelab.com"
         self.encrypt_service.generate_verification_code(email)
-        mock_hash.assert_called_once() 
+        mock_hash.assert_called_once()
 
     @mock.patch("users.services.user_service.UserService.check_if_username_or_email_exist")
     def test_check_if_username_or_email_exist(self, mock_check):
@@ -84,7 +85,7 @@ class UserTestCase(TestCase):
         UserFactory()
         response = self.user_service.check_if_username_or_email_exist(email)
         self.assertTrue(response)
-        mock_check.assert_called_once() 
+        mock_check.assert_called_once()
 
     @mock.patch("users.services.user_service.UserService.check_if_username_or_email_exist", return_value=False)
     def test_check_if_username_or_email_doesnt_exist(self, mock_check):
@@ -92,14 +93,14 @@ class UserTestCase(TestCase):
         UserFactory()
         response = self.user_service.check_if_username_or_email_exist(email)
         self.assertFalse(response)
-        mock_check.assert_called_once() 
- 
+        mock_check.assert_called_once()
+
     @mock.patch("users.services.user_service.UserService.get_user_email", return_value="testador@memelab.com")
     def test_get_user_email_by_email(self, mock_get_user):
         email = "testador@memelab.com"
         UserFactory()
         response = self.user_service.get_user_email(email)
-        self.assertEqual(response, email) 
+        self.assertEqual(response, email)
         mock_get_user.assert_called_once()
 
     @mock.patch("users.services.user_service.UserService.get_user_email", return_value="testador@memelab.com")
@@ -109,7 +110,8 @@ class UserTestCase(TestCase):
         response = self.user_service.get_user_email(username)
         self.assertEqual(response, "testador@memelab.com")
         mock_get_user.assert_called_once()
- 
+
+
 class EditObjectTestCase(TestCase):
     def setUp(self):
         self.client_test = RequestFactory()
