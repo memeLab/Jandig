@@ -5,8 +5,6 @@ from .services.email_service import EmailService
 from .services.encrypt_service import EncryptService
 from .services.user_service import UserService
 from .factory import UserFactory
-from django.shortcuts import redirect
-
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -17,12 +15,10 @@ class UserTestCase(TestCase):
 
         self.request = self.client_test.get("/recover/", follow=True)
 
-    
     def test_redirect_to_recover_password_page(self):
         response = recover_password(self.request)
         self.assertEqual(response.status_code, 200)
 
-    
     def test_recover_password_invalid_email(self):
         request = self.client_test.post(
             "/recover/",
@@ -33,7 +29,6 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/invalid-recovering-email")
 
-    
     def test_recover_password_invalid_username(self):
         request = self.client_test.post(
             "/recover/", {"username_or_email": "testadorinvalid"}, follow=True
@@ -41,7 +36,6 @@ class UserTestCase(TestCase):
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/invalid-recovering-email")
-
 
     @skip("demonstrating skipping")
     def test_recover_password_valid_email(self):
