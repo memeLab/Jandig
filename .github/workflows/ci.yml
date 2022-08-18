@@ -65,7 +65,7 @@ jobs:
             poetry run src/ARte/manage.py migrate"
 
   test:
-    name: test
+    name: test / unity
     runs-on: ubuntu-latest
     needs: build
     steps:
