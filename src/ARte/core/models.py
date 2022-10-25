@@ -38,7 +38,7 @@ class Marker(models.Model):
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default='')
     patt = models.FileField(upload_to='patts/')
-    
+
     def save(self, *args, **kwargs):
         # filestorage = PublicMediaStorage()
         # # Image Filename
@@ -68,7 +68,7 @@ class Marker(models.Model):
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(marker=self)
+        return Artwork.objects.filter(marker=self).order_by('-id')
 
     @property
     def exhibits_count(self):
@@ -104,7 +104,7 @@ class Object(models.Model):
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(augmented=self)
+        return Artwork.objects.filter(augmented=self).order_by('-id')
 
     @property
     def exhibits_count(self):
@@ -120,12 +120,12 @@ class Object(models.Model):
             return True
 
         return False
-    
+
     @property
     def xproportion(self):
         '''
         The 'xproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made 
+        to 1:[something], so that new calculations can be made
         when a new scale value is entered by the user.
         '''
         a = re.findall(r'[\d\.\d]+', self.scale)
@@ -143,7 +143,7 @@ class Object(models.Model):
     def yproportion(self):
         '''
         The 'yproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made 
+        to 1:[something], so that new calculations can be made
         when a new scale value is entered by the user.
         '''
         a = re.findall(r'[\d\.\d]+', self.scale)
@@ -218,7 +218,7 @@ class Artwork(models.Model):
     @property
     def exhibits_list(self):
         return list(Exhibit.objects.filter(artworks__in=[self]))
-    
+
     @property
     def in_use(self):
         if self.exhibits_count > 0:

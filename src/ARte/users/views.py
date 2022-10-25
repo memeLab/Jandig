@@ -101,7 +101,7 @@ def recover_code(request):
 
             return redirect('wrong-verification-code')
         return redirect('home')
-    
+
     form = RecoverPasswordCodeForm()
     return render(request, 'users/recover-password-code.jinja2', {'form': form})
 
@@ -130,9 +130,9 @@ def invalid_recovering_email_or_username(request):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-   
+
     user = request.GET.get('user')
-    
+
     if user:
         profile = Profile.objects.get(user=user)
     else:
@@ -149,7 +149,7 @@ def profile(request):
         'artworks': artworks,
         'markers':markers,
         'objects':objects,
-        'profile':True, 
+        'profile':True,
         'button_enable': False if user else True
     }
     return render(request, 'users/profile.jinja2', ctx)
@@ -229,7 +229,7 @@ def create_exhibit(request):
         form = ExhibitForm(request.POST)
         if form.is_valid():
             ids = form.cleaned_data['artworks'].split(',')
-            artworks = Artwork.objects.filter(id__in=ids)
+            artworks = Artwork.objects.filter(id__in=ids).order_by('-id')
             exhibit = Exhibit(
                             owner=request.user.profile,
                             name=form.cleaned_data['name'],
@@ -243,7 +243,7 @@ def create_exhibit(request):
     else:
         form = ExhibitForm()
 
-    artworks = Artwork.objects.all()
+    artworks = Artwork.objects.all().order_by('-id')
 
     return render(
         request,
@@ -378,7 +378,7 @@ def edit_elements(request, form_class, route, model, model_data):
         if form.is_valid():
             form.save()
             return redirect('profile')
-        
+
         log.warning(form.errors)
 
     return render(
@@ -424,7 +424,7 @@ def edit_marker(request):
 @login_required
 def edit_artwork(request):
     index = request.GET.get("id","-1")
-    model = Artwork.objects.filter(id=index)
+    model = Artwork.objects.filter(id=index).order_by('-id')
     if(not model or model.first().author != Profile.objects.get(user=request.user)):
         raise Http404
 
@@ -481,7 +481,7 @@ def edit_exhibit(request):
         form.full_clean()
         if form.is_valid():
             ids = form.cleaned_data['artworks'].split(',')
-            artworks = Artwork.objects.filter(id__in=ids)
+            artworks = Artwork.objects.filter(id__in=ids).order_by('-id')
 
             model_data={
                 "name":form.cleaned_data["name"],
@@ -506,7 +506,8 @@ def edit_exhibit(request):
         "artworks": model_artworks
     }
 
-    artworks = Artwork.objects.filter(author=request.user.profile)
+    artworks = Artwork.objects.filter(author=request.user.profile).order_by('-id')
+
     return render(
         request,
         'users/exhibit-edit.jinja2',
@@ -565,7 +566,7 @@ def edit_profile(request):
 @require_http_methods(["GET"])
 def delete(request):
     content_type = request.GET.get('content_type', None)
-   
+
     if content_type == 'marker':
         delete_content(Marker, request.user, request.GET.get('id', -1))
     elif content_type == 'object':
@@ -578,9 +579,9 @@ def delete(request):
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
-   
+
     if qs:
-        instance = qs[0] 
+        instance = qs[0]
         if user.has_perm('users.moderator'):
             delete_content_Moderator(instance,user)
         else:
@@ -589,11 +590,11 @@ def delete_content(model, user, instance_id):
                 hasPermission = (instance.author == user.profile)
             else:
                 hasPermission = (instance.owner == user.profile)
-        
+
             isInstanceSameTypeofModel = isinstance(instance, model)
             if isInstanceSameTypeofModel and hasPermission:
                 instance.delete()
-        
+
 
 def delete_content_Moderator(instance,user):
     isInstanceSameTypeofModel = isinstance(instance, model)
@@ -665,7 +666,7 @@ def mod(request):
     ctx = {
         "objects" : Object.objects.all(),
         "markers" : Marker.objects.all(),
-        "artworks": Artwork.objects.all(),
+        "artworks": Artwork.objects.all().order_by('-id'),
         "exhibits": Exhibit.objects.all(),
         "permission" : request.user.has_perm('users.moderator'),
     }
