@@ -9,6 +9,11 @@ RUN apt-get update && \
 COPY ./pyproject.toml /pyproject.toml
 COPY ./poetry.lock /poetry.lock
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-ENV PATH "${PATH}:/root/.poetry/bin"
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+ENV PATH="$PATH:/root/.local/bin" \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_CACHE_DIR='/var/cache/pypoetry'
+
 RUN poetry install
