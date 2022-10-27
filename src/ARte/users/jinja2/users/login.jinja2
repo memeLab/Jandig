@@ -31,7 +31,10 @@
                     {% endfor%}
                     <div class="form-options">
                         <p>
-                            <input type="checkbox" name="remember" value="1"> Remember me
+                            <input id="remember-me-chk" type="checkbox" name="remember" value="1">
+                            <label for="remember-me-chk">
+                                {{ _("Remember me") }}
+                            </label>
                         </p>
                     </div>
                     <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>

@@ -33,7 +33,9 @@
                     <div class="form-options">
                         <p>
                             <input id="marker-agreement-chk" type="checkbox" name="agreement">
-                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            <label for="marker-agreement-chk">
+                                {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            </label>
                         </p>
                     </div>
 
@@ -55,7 +57,9 @@
                     <div class="form-options">
                         <p>
                             <input id="object-agreement-chk" type="checkbox" name="agreement">
-                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            <label for="object-agreement-chk">
+                                {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            </label>
                         </p>
                     </div>
                     <button id="next-desc" type="button" class="select-btn next-btn">
@@ -77,9 +81,9 @@
             </form>
         </div>
         <script>
-            const MARKER_TAB = 0; 
-            const OBJECT_TAB = 1; 
-            const DESCRIPTION_TAB = 2; 
+            const MARKER_TAB = 0;
+            const OBJECT_TAB = 1;
+            const DESCRIPTION_TAB = 2;
 
             let currentTab = MARKER_TAB;
             function showTab(tabNumber){
