@@ -20,7 +20,17 @@
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Artworks (1/2)') }}</h4>
 
-                    <p class="gallery-title">{{ _('Choose from your repository') }}</p>
+                    {% if repository_list %}
+                        <p class="gallery-title">{{ _('Choose from your repository') }}</p>
+
+                    {% else %}
+                        <section id="repo-{{element_type}}" class="repository-list">
+                            <p>{{_("You have no Artworks. :c")}}</p>
+                            <a href="{{ url('create-artwork') }}" class="select-btn">
+                                {{ _('Create one') }}
+                            </a>
+                        </section>
+                    {% endif %}
 
                     {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
                         {% include "users/components/artworks-list.jinja2" %}
@@ -51,8 +61,8 @@
             </form>
         </div>
         <script>
-            const MARKER_TAB = 0; 
-            const ARTWORK_TAB = 1; 
+            const MARKER_TAB = 0;
+            const ARTWORK_TAB = 1;
 
             let currentTab = MARKER_TAB;
             function showTab(tabNumber){
@@ -83,7 +93,7 @@
                 let validate = /^[a-zA-Z0-9_]*$/
                 if (!slug.match(validate)) {
                     alert("{{ _("Urls can't contain spaces or special characters (i.e: .:, /)") }}")
-                }   
+                }
             }
 
             setInterval(activateNextButton, 100);
