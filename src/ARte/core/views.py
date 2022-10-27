@@ -65,7 +65,7 @@ def see_all(request):
     elif request_type == 'markers':
         ctx = {'markers':  Marker.objects.all(), "seeall": True, }
     elif request_type == 'artworks':
-        ctx = {'artworks': Artwork.objects.all(), "seeall": True, }
+        ctx = {'artworks': Artwork.objects.all().order_by('-id'), "seeall": True, }
     elif request_type == 'exhibits':
         ctx = {'exhibits': Exhibit.objects.all(), "seeall": True, }
 
@@ -112,7 +112,7 @@ def artwork_preview(request):
     artwork_id = request.GET.get("id")
 
     ctx = {
-        "artworks": Artwork.objects.filter(id=artwork_id)
+        "artworks": Artwork.objects.filter(id=artwork_id).order_by('-id'),
     }
     return render(request, 'core/exhibit.jinja2', ctx)
 
