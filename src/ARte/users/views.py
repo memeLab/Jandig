@@ -101,7 +101,7 @@ def recover_code(request):
 
             return redirect('wrong-verification-code')
         return redirect('home')
-    
+
     form = RecoverPasswordCodeForm()
     return render(request, 'users/recover-password-code.jinja2', {'form': form})
 
@@ -130,9 +130,9 @@ def invalid_recovering_email_or_username(request):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-   
+
     user = request.GET.get('user')
-    
+
     if user:
         profile = Profile.objects.get(user=user)
     else:
@@ -149,7 +149,7 @@ def profile(request):
         'artworks': artworks,
         'markers':markers,
         'objects':objects,
-        'profile':True, 
+        'profile':True,
         'button_enable': False if user else True
     }
     return render(request, 'users/profile.jinja2', ctx)
@@ -345,8 +345,8 @@ def upload_elements(request, form_class, form_type, route):
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
-            upload = form.save(owner=request.user.profile)
-            # upload.owner = request.user.profile
+            upload = form.save(commit=False)
+            upload.owner = request.user.profile
             upload.save()
             return redirect('home')
     else:
@@ -378,7 +378,7 @@ def edit_elements(request, form_class, route, model, model_data):
         if form.is_valid():
             form.save()
             return redirect('profile')
-        
+
         log.warning(form.errors)
 
     return render(
@@ -565,7 +565,7 @@ def edit_profile(request):
 @require_http_methods(["GET"])
 def delete(request):
     content_type = request.GET.get('content_type', None)
-   
+
     if content_type == 'marker':
         delete_content(Marker, request.user, request.GET.get('id', -1))
     elif content_type == 'object':
@@ -578,9 +578,9 @@ def delete(request):
 
 def delete_content(model, user, instance_id):
     qs = model.objects.filter(id=instance_id)
-   
+
     if qs:
-        instance = qs[0] 
+        instance = qs[0]
         if user.has_perm('users.moderator'):
             delete_content_Moderator(instance,user)
         else:
@@ -589,11 +589,11 @@ def delete_content(model, user, instance_id):
                 hasPermission = (instance.author == user.profile)
             else:
                 hasPermission = (instance.owner == user.profile)
-        
+
             isInstanceSameTypeofModel = isinstance(instance, model)
             if isInstanceSameTypeofModel and hasPermission:
                 instance.delete()
-        
+
 
 def delete_content_Moderator(instance,user):
     isInstanceSameTypeofModel = isinstance(instance, model)
