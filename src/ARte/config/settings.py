@@ -220,10 +220,11 @@ if USE_MINIO:
     AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
     AWS_S3_USE_SSL = False
     AWS_S3_SECURE_URLS = False
-    HTTP_PROTOCOL = "http"
+    AWS_S3_URL_PROTOCOL = "http:"
+
 else:
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    HTTP_PROTOCOL = "https"
+    AWS_S3_URL_PROTOCOL = "https:"
 
 # Static configuration
 # Add your own apps statics in this list
@@ -233,11 +234,10 @@ STATICFILES_DIRS = [
 ]
 COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
-STATIC_URL = f"{HTTP_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
 STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
-MEDIA_URL = f"{HTTP_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+# MEDIA_URL = f"{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
