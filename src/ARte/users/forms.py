@@ -192,20 +192,26 @@ class UploadMarkerForm(forms.ModelForm):
         exclude = ('owner', 'uploaded_at', 'patt')
 
     def save(self, *args, **kwargs):
+        commit = kwargs.get('commit', True)
+
         with Image.open(self.instance.source) as image:
             pil_image = generate_marker_from_image(image)
             blob = BytesIO()
             pil_image.save(blob, 'JPEG')
             filename = self.instance.source.name
-            self.instance.source.save(filename, File(blob),save=False)
+            self.instance.source.save(filename, File(blob), save=commit)
             patt_str = generate_patt_from_image(image)
-            self.instance.patt.save(filename + ".patt", ContentFile(patt_str.encode('utf-8')),save=False)
-            
+
+            self.instance.patt.save(
+                f"{filename}.patt",
+                ContentFile(patt_str.encode('utf-8')),
+                save=commit,
+            )
+
             if kwargs.get("owner"):
                 self.instance.owner = kwargs.get("owner")
                 del kwargs["owner"]
-            self.instance.save()
-        
+
             return super(UploadMarkerForm,self).save(*args, **kwargs)
 
 class UploadObjectForm(forms.ModelForm):
@@ -225,6 +231,13 @@ class UploadObjectForm(forms.ModelForm):
     class Meta:
         model = Object
         fields = ('source', 'author', 'title', 'scale', 'position', 'rotation')
+
+    def save(self, *args, **kwargs):
+        if owner := kwargs.get("owner", None):
+            self.instance.owner = owner
+            del kwargs["owner"]
+
+        return super(UploadObjectForm, self).save(*args, **kwargs)
 
 
 class ArtworkForm(forms.Form):
@@ -253,7 +266,7 @@ class ExhibitForm(forms.Form):
     name = forms.CharField(max_length=50, required=True)
     slug = forms.CharField(max_length=50, required=True)
 
-    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit 
+    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit
     artworks = forms.CharField(max_length=1000)
 
     def clean_slug(self):

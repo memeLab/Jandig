@@ -55,9 +55,9 @@
                         <input id="scale" class="trigger-change-value" value ="1">
 
                         <h2 id="positionTitle">{{_("Adjust position")}}</h2>
-                        <span 
+                        <span
                             id="tooltipText"
-                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left." 
+                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
                             class="tooltip"
                         >
                             ?
@@ -84,14 +84,13 @@
                         </div>
                     {% endif %}
                     <p class="form-options">
-
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         {% if form_type == 'marker' %}
-                            {{ _("I'm this Marker author") }}
+                            <label for="author-chk">{{ _("I'm this Marker author") }}</label>
                         {% elif form_type == 'object' %}
-                            {{ _("I'm this Object author") }}
-                        {% endif %}
 
+                            <label for="author-chk">{{ _("I'm this Object author") }}</label>
+                        {% endif %}
                     </p>
                     <p class="upload-field" id="author-field">
                         {{ form.visible_fields()[1] }}
@@ -100,7 +99,9 @@
                     <div class="form-options">
                         <p>
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
-                            {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
+                            <label for="agreement-chk">
+                                {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
+                            </label>
                         </p>
                     </div>
                     <input class="submit-btn" onclick="updateValues()" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
@@ -132,7 +133,7 @@
             $("#id_source").change(
                 function(e) {
 
-                    var previous_content_box = document.getElementById('content-box'); 
+                    var previous_content_box = document.getElementById('content-box');
                     if(previous_content_box){
                         previous_content_box.remove()
                     }
@@ -146,23 +147,23 @@
                     content_box.style.position = "relative"
 
                     var close_icon = document.createElement("div");
-                    close_icon.id = "close-icon"; 
-                    close_icon.style.position =  "absolute" 
+                    close_icon.id = "close-icon";
+                    close_icon.style.position =  "absolute"
                     close_icon.style.top =  "10px"
                     close_icon.style.right =  "10px"
-                    close_icon.style.padding =  "5px 10px" 
+                    close_icon.style.padding =  "5px 10px"
                     close_icon.style.borderRadius= "5px"
                     close_icon.style.cursor= "pointer"
                     close_icon.style.color =  "white"
                     close_icon.style.background =  "#ff6961"
                     close_icon.innerHTML = "x"
                     close_icon.onclick = function(){
-                        this.parentElement.remove(); 
+                        this.parentElement.remove();
                         document.querySelector('input[type="file"]').value = ""
                     }
 
                     content_box.appendChild(close_icon);
-                    
+
 
                     if (file.type === "video/mp4" || file.type === "video/webm") {
                         image_preview = document.createElement("video");
