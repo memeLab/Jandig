@@ -8,7 +8,6 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from socket import gethostbyname, gethostname
 
 ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
-APPS_DIR = ROOT_DIR.path('ARte')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -242,7 +241,6 @@ PRIVATE_FILE_STORAGE = "config.storage_backends.PrivateMediaStorage"
 AWS_PRIVATE_MEDIA_DIFFERENT_BUCKET_LOCATION = "media/private"
 AWS_PRIVATE_STORAGE_BUCKET_NAME = os.getenv("AWS_PRIVATE_STORAGE_BUCKET_NAME", "")
 PRIVATE_FILE_DIFFERENT_BUCKET_STORAGE = "config.storage_backends.PrivateMediaStorage"
-
 
 # LOGIN / LOGOUT
 LOGIN_URL = 'login'
