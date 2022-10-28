@@ -94,12 +94,6 @@ def debug(request):
     return env.bool('DEBUG_TOOLBAR', False)
 
 
-## Let whitenoise serve static files  -- DON'T USE IN PRODUCTION --
-if env.bool('DEV_STATIC', False):
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    print('\n ------- SERVING STATIC FILES USING WHITENOISE! -------\n')
-
 ROOT_URLCONF = 'config.urls'
 
 PAGE_SIZE = 20
