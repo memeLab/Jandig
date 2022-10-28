@@ -687,17 +687,6 @@ secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "cer
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
-name = "whitenoise"
-version = "6.2.0"
-description = "Radically simplified static file serving for WSGI applications"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-brotli = ["brotli"]
-
-[[package]]
 name = "zope.event"
 version = "4.5.0"
 description = "Very basic event publishing system"
@@ -725,7 +714,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "4114117ffa1457b2056a93372024dcc0935865c61d902adfdddfe9f58f5ecb5f"
+content-hash = "8a456725eead715c37323e82e0b0c7ee95e16d26715a2cb8711493ee6dfd7404"
 
 [metadata.files]
 alabaster = []
@@ -932,6 +921,5 @@ sqlparse = []
 toolz = []
 tzdata = []
 urllib3 = []
-whitenoise = []
 "zope.event" = []
 "zope.interface" = []
