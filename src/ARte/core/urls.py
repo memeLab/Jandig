@@ -1,6 +1,19 @@
 from django.urls import path, include
-from .views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
-from .views_s.home import home, community, marker_generator, documentation, health_check
+
+from core.views.v1 import markers
+from core.views.views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
+from core.views.static_views import home, community, marker_generator, documentation, health_check
+
+
+urls_v1 = [
+    path('v1/markers/', include([
+        path('', markers.MarkerListAPIView.as_view(), name='marker-list'),
+        path(
+            '<slug:pk>/', markers.MarkerRetrieveUpdateAPIViewAPIView.as_view(),
+            name='marker-details'),
+    ])),
+]
+
 
 urlpatterns = [
     path('', home, name='home'),
@@ -18,4 +31,4 @@ urlpatterns = [
     path('see_all/', see_all, name='see-all'),
     path('robots.txt/', robots_txt),
     path('status/', health_check),
-]
+] + urls_v1
