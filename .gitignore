@@ -25,4 +25,4 @@ docker/media/
 *.mo
 *.po~
 
-src/.envs/.env
+*/**/.env
