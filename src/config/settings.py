@@ -1,3 +1,4 @@
+import re
 import os
 import environ
 from .wait_db import start_services
@@ -7,7 +8,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from socket import gethostbyname, gethostname
 
-ROOT_DIR = environ.Path(__file__) - 2  # (ARte/config/settings.py - 2 = ARte/)
+ROOT_DIR = environ.Path(__file__) - 2  # (src/config/settings.py - 2 = src/)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,7 @@ DEBUG = env.bool('DJANGO_DEBUG', False)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='gw)48fp(ct67v4+0_tpxl=$vw=-x&y9(&0n6!n4mpw5m!4gaor')
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -35,29 +36,33 @@ ALLOWED_HOSTS = [
 CUSTOM_ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
-# Application definition
 
+
+# Sentry configuration
+ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
+HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
+DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
-    if "/status" in url:
+    is_health_check = url == f"/{HEALTH_CHECK_URL}"
+    is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None 
+    if  is_health_check or is_django_admin:
         return 0
-    elif "/static/" in url:
-        return 0
-    return 0.1
+    return SENTRY_TRACES_SAMPLE_RATE
 
-sentry_sdk.init(
-    dsn="https://081a2c3476b24a9f9a51d74bde539b62@o968990.ingest.sentry.io/5920229",
-    integrations=[DjangoIntegration()],
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
-    traces_sampler=traces_sampler,
-)
+if ENABLE_SENTRY:
+    SENTRY_DSN = env("SENTRY_DSN")
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        traces_sampler=traces_sampler,
+    )
 
-# Sentry configuration
-ENABLE_SENTRY_LOGS = env("ENABLE_SENTRY_LOGS", default=False)
-HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 
 
 INSTALLED_APPS = [
@@ -71,7 +76,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'core',
-    #'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'config.settings.debug'    
 }
@@ -230,7 +235,6 @@ STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
 STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
-# MEDIA_URL = f"{AWS_S3_URL_PROTOCOL}//{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
