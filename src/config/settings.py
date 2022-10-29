@@ -4,6 +4,8 @@ from .wait_db import start_services
 from django.utils.translation import gettext_lazy as _
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+import sys
+import logging
 
 from socket import gethostbyname, gethostname
 
@@ -133,7 +135,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-if env.bool('DEV_DB', False):
+if env.bool('DEV_DB', True):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -249,3 +251,4 @@ LOGOUT_REDIRECT_URL = 'home'
 
 # Sphinx docs
 DOCS_ROOT = os.path.join(BASE_DIR, '../../build/')
+
