@@ -3,10 +3,9 @@ from django.conf.urls.static import serve
 from django.contrib import admin
 from django.urls import path, re_path, include
 import debug_toolbar
-import os
 
 urlpatterns = [
-    path(os.getenv('DJANGO_ADMIN_URL', 'admin/'), admin.site.urls),
+    path(settings.DJANGO_ADMIN_URL, admin.site.urls),
     path('', include('core.urls')),
     path('', include('core.routes')),
     path('users/', include('users.urls')),

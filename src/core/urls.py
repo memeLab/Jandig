@@ -3,7 +3,7 @@ from django.urls import path, include
 from core.views.v1 import markers
 from core.views.views import artwork_preview, see_all, service_worker, upload_image, exhibit_select, collection, exhibit_detail, manifest, robots_txt
 from core.views.static_views import home, community, marker_generator, documentation, health_check
-
+from django.conf import settings
 
 urls_v1 = [
     path('v1/markers/', include([
@@ -30,5 +30,5 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('see_all/', see_all, name='see-all'),
     path('robots.txt/', robots_txt),
-    path('status/', health_check),
+    path(settings.HEALTH_CHECK_URL, health_check),
 ] + urls_v1
