@@ -1,0 +1,203 @@
+{% extends '/core/home.jinja2' %}
+
+
+{% block content %}
+    <section class="create-artwork container">
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+        <h1 class="titArt">{{ _('Edit Jandig Artwork') }}</h1>
+        <button id="select-marker" class="select-btn">
+            {{ _('Select Marker') }}
+        </button>
+        <button id="select-object" class="select-btn">
+            {{ _('Select Object') }}
+        </button>
+        <div id="form-modal" class="modal">
+            <form name="creation-form" action="" method="post" enctype="multipart/form-data">
+                {{ csrf_input }}
+                <div id="marker-modal" class="tab">
+                    <h4 class="modal-title">{{ _('Select Marker (1/3)') }}</h4>
+
+                    <p id="existent-marker">
+                        {{ form.visible_fields()[4].as_hidden() }}
+                        {{ form.visible_fields()[4].errors }}
+                    </p>
+
+                    {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
+                        {% include "users/components/repository-list.jinja2" %}
+                    {% endwith %}
+
+                    <div class="form-options">
+                        <p>
+                            <input id="marker-agreement-chk" type="checkbox" name="agreement">
+                            <label for="marker-agreement-chk">
+                                {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            </label>
+                        </p>
+                    </div>
+
+                    <button id="next-object" type="button" class="select-btn next-btn">
+                        {{ _('Next') }}
+                    </button>
+                </div>
+                <div id="object-modal" class="tab">
+                    <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
+                    <p id="existent-object">
+                        {{ form.visible_fields()[5].as_hidden() }}
+                        {{ form.visible_fields()[5].errors }}
+                    </p>
+
+                    {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
+                        {% include "users/components/repository-list.jinja2" %}
+                    {% endwith%}
+
+                    <div class="form-options">
+                        <p>
+                            <input id="object-agreement-chk" type="checkbox" name="agreement">
+                            <label for="object-agreement-chk">
+                                {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
+                            </label>
+                        </p>
+                    </div>
+                    <button id="next-desc" type="button" class="select-btn next-btn">
+                        {{ _('Next') }}
+                    </button>
+                </div>
+                <div id="description-modal" class="tab">
+                    <h4 class="modal-title">{{ _('About your artwork (3/3)') }}</h4>
+                    <p class="upload-field">
+                        {{ form.visible_fields()[6] }}
+                        {{ form.visible_fields()[6].errors }}
+                    </p>
+                    <p class="upload-field">
+                        {{ form.visible_fields()[7] }}
+                        {{ form.visible_fields()[7].errors }}
+                    </p>
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') }}" disabled="disabled" />
+                </div>
+            </form>
+        </div>
+        <script>
+            const MARKER_TAB = 0;
+            const OBJECT_TAB = 1;
+            const DESCRIPTION_TAB = 2;
+
+            let currentTab = 0;
+            function showTab(tabNumber){
+                let tabs = $('.tab');
+                tabs.hide();
+                $('#' + tabs[tabNumber].id).show();
+            }
+
+            function validateTab(tab){
+
+                if(tab == 'marker'){
+                    let fileUpload = $('#marker-source-field > input')[0];
+                    let existentMarker = $('#existent-marker > input')[0];
+                    let markerAuthor = $('#marker-author-field > input')[0];
+                    let agreement = $('#marker-agreement-chk')
+
+                    if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
+                        return true;
+                    }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if(tab == 'object'){
+                    let fileUpload = $('#object-source-field > input')[0];
+                    let existentMarker = $('#existent-object > input')[0];
+                    let markerAuthor = $('#object-author-field > input')[0];
+                    let agreement = $('#object-agreement-chk')
+
+                    if(fileUpload.files.length == 0 && existentMarker.value && agreement.prop('checked')){
+                        return true;
+                    }else if(fileUpload.files.length > 0 && markerAuthor.value && agreement.prop('checked')){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            function activateNextButton(){
+                if(validateTab('marker')){
+                    $('#next-object').prop('disabled', false);
+                }else{
+                    $('#next-object').prop('disabled', true);
+                }
+
+                if(validateTab('object')){
+                    $('#next-desc').prop('disabled', false);
+                }else{
+                    $('#next-desc').prop('disabled', true);
+                }
+            }
+            $('#select-marker').click(function(){
+                currentTab = MARKER_TAB;
+                $('#form-modal').modal({showClose: false});
+                showTab(currentTab);
+            })
+            $('#select-object').click(function(){
+                currentTab = OBJECT_TAB;
+                $('#form-modal').modal({showClose: false})
+                showTab(currentTab);
+            })
+            $('#next-object').click(function(){
+                currentTab = OBJECT_TAB;
+                showTab(currentTab);
+            })
+            $('#next-desc').click(function(){
+                currentTab = DESCRIPTION_TAB;
+                showTab(currentTab);
+            })
+            // checkboxes
+            $('#marker-agreement-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    $('input[type="submit"]').prop('disabled', false);
+                }else{
+                    $('input[type="submit"]').prop('disabled', true);
+                }
+            });
+            $('#marker-author-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    let user = $('div.welcome > p > a')[0].innerText;
+                    $('#marker-author-field > input').prop('value',user);
+                    $('#marker-author-field > input').prop('readonly', true);
+                }else{
+                    $('#marker-author-field > input').prop('readonly', false);
+                    $('#marker-author-field > input').prop('value', "");
+                }
+            })
+
+            $('#object-agreement-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    $('input[type="submit"]').prop('disabled', false);
+                }else{
+                    $('input[type="submit"]').prop('disabled', true);
+                }
+            });
+            $('#object-author-chk').click(function(){
+                if($(this).prop('checked') == true){
+                    let user = $('div.welcome > p > a')[0].innerText;
+                    $('#object-author-field > input').prop('value', user);
+                    $('#object-author-field > input').prop('readonly', true);
+                }else{
+                    $('#object-author-field > input').prop('readonly', false);
+                    $('#object-author-field > input').prop('value', "");
+                }
+            })
+
+            {% if selected_marker %}
+                $('#marker-agreement-chk').prop("checked", true);
+                $('input[type="submit"]').prop('disabled', false);
+            {% endif %}
+            {% if selected_object %}
+                $('input[type="submit"]').prop('disabled', false);
+                $('#object-agreement-chk').prop("checked", true);
+             {% endif %}
+        </script>
+    </section>
+{% endblock %}

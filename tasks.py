@@ -12,7 +12,7 @@ sys.path.append('src')
 def robust_manage(ctx, cmd, env=None, **kwargs):
     kwargs = {k.replace('_', '-'): v for k, v in kwargs.items() if v is not False}
     opts = ' '.join(f'--{k} {"" if v is True else v}' for k, v in kwargs.items())
-    cmd = f'{python} src/ARte/manage.py {cmd} {opts}'
+    cmd = f'{python} /src/manage.py {cmd} {opts}'
     env = {**os.environ, **(env or {})}
     path = env.get("PYTHONPATH", ":".join(sys.path))
     env.setdefault('PYTHONPATH', f'src:{path}')
@@ -20,27 +20,26 @@ def robust_manage(ctx, cmd, env=None, **kwargs):
     ctx.run(cmd, pty=True, env=env)
 
 
-def manage(ctx, cmd, postgres=False, whitenoise=False):
-    cmd = f'python3 src/ARte/manage.py {cmd}'
-    ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
+def manage(ctx, cmd, postgres=False):
+    cmd = f'python3 /src/manage.py {cmd}'
+    ctx.run(cmd, pty=True, env=default_env(postgres))
 
 
-def default_env(postgres, whitenoise):
+def default_env(postgres):
     os.environ['DEV_DB'] = 'True' if not postgres else 'False'
-    os.environ['DEV_STATIC'] = 'True' if whitenoise else 'False'
     e = os.environ
     return e
 
 
 @task
-def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
+def run(ctx, ssl=False, gunicorn=False, postgres=False):
     """
     Run development server
     """
     if gunicorn:
-        ctx.run('cd src/ARte && gunicorn --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi', env={"DEV_DB":"False"})
+        ctx.run('gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi', env={"DEV_DB":"False"})
     else:
-        manage(ctx, "runserver 0.0.0.0:8000", postgres, whitenoise)
+        manage(ctx, "runserver 0.0.0.0:8000", postgres)
     
 
 
