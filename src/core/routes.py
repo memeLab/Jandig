@@ -11,8 +11,5 @@ urlpatterns = Router(
 
 @urlpatterns.route("<model:exhibit>/")
 def exhibit(request, exhibit):
-    ctx = { 
-        'exhibit' : exhibit,
-        'artworks': exhibit.artworks.all()
-    }
+    ctx = {"exhibit": exhibit, "artworks": exhibit.artworks.all()}
     return ctx
