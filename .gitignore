@@ -2,9 +2,6 @@
 src/ARte/config/__pycache__/
 *.pyc
 
-##vscode
-\.vscode/
-
 ##sqlite
 *.sqlite3
 
