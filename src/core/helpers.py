@@ -1,6 +1,5 @@
-from django.templatetags.static import static
-
 from django.core.files.storage import default_storage
+from django.templatetags.static import static
 
 
 def handle_upload_image(image):

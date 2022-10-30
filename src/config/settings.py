@@ -1,14 +1,15 @@
-import re
-import os
-import environ
-from .wait_db import start_services
-from django.utils.translation import gettext_lazy as _
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-import sys
 import logging
-
+import os
+import re
+import sys
 from socket import gethostbyname, gethostname
+
+import environ
+import sentry_sdk
+from django.utils.translation import gettext_lazy as _
+from sentry_sdk.integrations.django import DjangoIntegration
+
+from .wait_db import start_services
 
 ROOT_DIR = environ.Path(__file__) - 2  # (src/config/settings.py - 2 = src/)
 
@@ -26,7 +27,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -46,13 +47,15 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 
+
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
     is_health_check = url == f"/{HEALTH_CHECK_URL}"
-    is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None 
-    if  is_health_check or is_django_admin:
+    is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None
+    if is_health_check or is_django_admin:
         return 0
     return SENTRY_TRACES_SAMPLE_RATE
+
 
 if ENABLE_SENTRY:
     SENTRY_DSN = env("SENTRY_DSN")
@@ -66,18 +69,17 @@ if ENABLE_SENTRY:
     )
 
 
-
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'debug_toolbar',
-    'corsheaders',
-    'users',
-    'core',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "debug_toolbar",
+    "corsheaders",
+    "users",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -98,17 +100,17 @@ def debug(request):
     return env.bool("DEBUG_TOOLBAR", False)
 
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 PAGE_SIZE = 20
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'core.renderers.JinjaBrowsableAPIRenderer',
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "core.renderers.JinjaBrowsableAPIRenderer",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': PAGE_SIZE
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": PAGE_SIZE,
 }
 
 TEMPLATES = [
@@ -138,7 +140,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-if env.bool('DEV_DB', True):
+if env.bool("DEV_DB", True):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -231,10 +233,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "users", "static"),
 ]
 COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
-STATIC_ROOT = os.path.join(COLLECT_DIR, 'collect')
+STATIC_ROOT = os.path.join(COLLECT_DIR, "collect")
 STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'users', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "users", "media")
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
@@ -252,7 +254,7 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 # Sphinx docs
-DOCS_ROOT = os.path.join(BASE_DIR, '../../build/')
+DOCS_ROOT = os.path.join(BASE_DIR, "../../build/")
 
 SMTP_SERVER = env("SMTP_SERVER", default="smtp.gmail.com")
 SMTP_PORT = env("SMTP_PORT", default=587)

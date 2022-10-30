@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
-
 import logging
+
+from django.contrib.auth.models import User
 
 log = logging.getLogger("ej")
 

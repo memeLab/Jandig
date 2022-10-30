@@ -1,5 +1,6 @@
 from django.contrib import admin
-from core.models import Exhibit, Artwork, Object, Marker
+
+from core.models import Artwork, Exhibit, Marker, Object
 
 admin.site.register(Exhibit)
 admin.site.register(Object)

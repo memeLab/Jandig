@@ -1,31 +1,36 @@
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import update_session_auth_hash, get_user_model
-from django.contrib.auth.forms import SetPasswordForm
+import json
+import logging
+
+from django.contrib.auth import (
+    authenticate,
+    get_user_model,
+    login,
+    update_session_auth_hash,
+)
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import SetPasswordForm
 from django.http import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
-from core.models import Exhibit, Marker, Object, Artwork
-from .models import Profile
-from .services.email_service import EmailService
-from .services.user_service import UserService
-from .services.encrypt_service import EncryptService
+from core.models import Artwork, Exhibit, Marker, Object
+
 from .forms import (
-    SignupForm,
-    RecoverPasswordCodeForm,
-    RecoverPasswordForm,
-    UploadMarkerForm,
-    UploadObjectForm,
     ArtworkForm,
     ExhibitForm,
-    ProfileForm,
     PasswordChangeForm,
+    ProfileForm,
+    RecoverPasswordCodeForm,
+    RecoverPasswordForm,
+    SignupForm,
+    UploadMarkerForm,
+    UploadObjectForm,
 )
-
-import json
-import logging
+from .models import Profile
+from .services.email_service import EmailService
+from .services.encrypt_service import EncryptService
+from .services.user_service import UserService
 
 log = logging.getLogger("ej")
 
@@ -259,8 +264,8 @@ def create_exhibit(request):
     if request.method == "POST":
         form = ExhibitForm(request.POST)
         if form.is_valid():
-            ids = form.cleaned_data['artworks'].split(',')
-            artworks = Artwork.objects.filter(id__in=ids).order_by('-id')
+            ids = form.cleaned_data["artworks"].split(",")
+            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
             exhibit = Exhibit(
                 owner=request.user.profile,
                 name=form.cleaned_data["name"],
@@ -274,7 +279,7 @@ def create_exhibit(request):
     else:
         form = ExhibitForm()
 
-    artworks = Artwork.objects.all().order_by('-id')
+    artworks = Artwork.objects.all().order_by("-id")
 
     return render(
         request,
@@ -474,9 +479,9 @@ def edit_marker(request):
 
 @login_required
 def edit_artwork(request):
-    index = request.GET.get("id","-1")
-    model = Artwork.objects.filter(id=index).order_by('-id')
-    if(not model or model.first().author != Profile.objects.get(user=request.user)):
+    index = request.GET.get("id", "-1")
+    model = Artwork.objects.filter(id=index).order_by("-id")
+    if not model or model.first().author != Profile.objects.get(user=request.user):
         raise Http404
 
     if request.method == "POST":
@@ -531,8 +536,8 @@ def edit_exhibit(request):
 
         form.full_clean()
         if form.is_valid():
-            ids = form.cleaned_data['artworks'].split(',')
-            artworks = Artwork.objects.filter(id__in=ids).order_by('-id')
+            ids = form.cleaned_data["artworks"].split(",")
+            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
 
             model_data = {
                 "name": form.cleaned_data["name"],
@@ -553,7 +558,7 @@ def edit_exhibit(request):
 
     model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
 
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by('-id')
+    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
 
     return render(
         request,
@@ -716,9 +721,9 @@ def mod_delete(request):
 
 def mod(request):
     ctx = {
-        "objects" : Object.objects.all(),
-        "markers" : Marker.objects.all(),
-        "artworks": Artwork.objects.all().order_by('-id'),
+        "objects": Object.objects.all(),
+        "markers": Marker.objects.all(),
+        "artworks": Artwork.objects.all().order_by("-id"),
         "exhibits": Exhibit.objects.all(),
         "permission": request.user.has_perm("users.moderator"),
     }

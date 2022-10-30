@@ -1,13 +1,14 @@
-from django.db import models
-from config.storage_backends import PublicMediaStorage
-from users.models import Profile
-from django.dispatch import receiver
-from django.db.models.signals import post_delete
 import re
 
 from django.core.files.base import ContentFile
+from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
+
+from config.storage_backends import PublicMediaStorage
+from users.models import Profile
 
 
 def create_patt(filename, original_filename):
@@ -70,7 +71,7 @@ class Marker(models.Model):
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(marker=self).order_by('-id')
+        return Artwork.objects.filter(marker=self).order_by("-id")
 
     @property
     def exhibits_count(self):
@@ -106,7 +107,7 @@ class Object(models.Model):
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(augmented=self).order_by('-id')
+        return Artwork.objects.filter(augmented=self).order_by("-id")
 
     @property
     def exhibits_count(self):

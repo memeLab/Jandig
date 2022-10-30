@@ -1,32 +1,32 @@
-from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import path
 
 from .forms import LoginForm
 from .views import (
-    download_exhibit,
-    edit_object,
-    edit_marker,
-    signup,
-    recover_password,
-    recover_edit_password,
-    invalid_recovering_email_or_username,
-    recover_code,
-    wrong_verification_code,
-    profile,
-    marker_upload,
-    object_upload,
     create_artwork,
     create_exhibit,
-    edit_artwork,
-    element_get,
-    edit_exhibit,
-    edit_profile,
-    edit_password,
     delete,
-    related_content,
-    mod_delete,
-    permission_denied,
+    download_exhibit,
+    edit_artwork,
+    edit_exhibit,
+    edit_marker,
+    edit_object,
+    edit_password,
+    edit_profile,
+    element_get,
+    invalid_recovering_email_or_username,
+    marker_upload,
     mod,
+    mod_delete,
+    object_upload,
+    permission_denied,
+    profile,
+    recover_code,
+    recover_edit_password,
+    recover_password,
+    related_content,
+    signup,
+    wrong_verification_code,
 )
 
 urlpatterns = [

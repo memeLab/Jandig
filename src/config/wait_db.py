@@ -1,7 +1,8 @@
 import importlib
+import logging
 import os
 import time
-import logging
+
 import psycopg2
 
 SERVICES_STARTED = False

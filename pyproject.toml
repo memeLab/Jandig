@@ -55,3 +55,4 @@ exclude = '''
 [tool.isort]
 profile = "black"
 src_paths = ["src"]
+skip_glob = "*/migrations/*.py"

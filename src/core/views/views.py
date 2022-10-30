@@ -1,14 +1,12 @@
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.shortcuts import redirect
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
+from core.forms import ExhibitForm, UploadFileForm
 from core.helpers import handle_upload_image
-from core.forms import UploadFileForm, ExhibitForm
-
-from core.models import Exhibit, Artwork, Marker, Object
+from core.models import Artwork, Exhibit, Marker, Object
 
 
 @cache_page(60 * 60)
@@ -68,7 +66,7 @@ def see_all(request):
         }
     elif request_type == "artworks":
         ctx = {
-            "artworks": Artwork.objects.all().order_by('-id'),
+            "artworks": Artwork.objects.all().order_by("-id"),
             "seeall": True,
         }
     elif request_type == "exhibits":
@@ -122,9 +120,9 @@ def artwork_preview(request):
     artwork_id = request.GET.get("id")
 
     ctx = {
-        "artworks": Artwork.objects.filter(id=artwork_id).order_by('-id'),
+        "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
     }
-    return render(request, 'core/exhibit.jinja2', ctx)
+    return render(request, "core/exhibit.jinja2", ctx)
 
 
 @require_http_methods(["GET"])

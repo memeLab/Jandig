@@ -1,21 +1,21 @@
+import logging
 import re
+from io import BytesIO
 
 from django import forms
-from django.core.files.base import ContentFile, File
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm
+from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput
-
-from .choices import COUNTRY_CHOICES
-from core.models import Marker, Object
-
-from io import BytesIO
+from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-import logging
+from core.models import Marker, Object
+
+from .choices import COUNTRY_CHOICES
 
 log = logging.getLogger("ej")
 
@@ -209,7 +209,7 @@ class UploadMarkerForm(forms.ModelForm):
         exclude = ("owner", "uploaded_at", "patt")
 
     def save(self, *args, **kwargs):
-        commit = kwargs.get('commit', True)
+        commit = kwargs.get("commit", True)
 
         with Image.open(self.instance.source) as image:
             pil_image = generate_marker_from_image(image)
@@ -221,7 +221,7 @@ class UploadMarkerForm(forms.ModelForm):
 
             self.instance.patt.save(
                 f"{filename}.patt",
-                ContentFile(patt_str.encode('utf-8')),
+                ContentFile(patt_str.encode("utf-8")),
                 save=commit,
             )
 
@@ -229,7 +229,8 @@ class UploadMarkerForm(forms.ModelForm):
                 self.instance.owner = kwargs.get("owner")
                 del kwargs["owner"]
 
-            return super(UploadMarkerForm,self).save(*args, **kwargs)
+            return super(UploadMarkerForm, self).save(*args, **kwargs)
+
 
 class UploadObjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

@@ -1,16 +1,17 @@
-import smtplib
 import os
+import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 from django.conf import settings
 
 
 class EmailService:
     def __init__(self, email_message):
-        self.smtp_server = settings.SMTP_SERVER 
-        self.smtp_port = settings.SMTP_PORT 
-        self.jandig_email = settings.JANDIG_EMAIL 
-        self.jandig_email_password = settings.JANDIG_EMAIL_PASSWORD 
+        self.smtp_server = settings.SMTP_SERVER
+        self.smtp_port = settings.SMTP_PORT
+        self.jandig_email = settings.JANDIG_EMAIL
+        self.jandig_email_password = settings.JANDIG_EMAIL_PASSWORD
         self.email_message = email_message
 
     def send_email_to_recover_password(self, multipart_message):
