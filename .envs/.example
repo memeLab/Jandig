@@ -1,0 +1,37 @@
+# Use this file to create a .env with filled variables
+# Django Variables
+DJANGO_DEBUG=True
+DJANGO_SETTINGS_MODULE=config.settings
+DJANGO_ADMIN_URL=admin/
+DEV_DB=False
+DEV_STATIC=True
+DEBUG_TOOLBAR=True
+DJANGO_SECRET_KEY=change_me
+USE_MINIO=True
+
+## Amazon AWS Variables
+AWS_ACCESS_KEY_ID=minio
+AWS_SECRET_ACCESS_KEY=minio123
+MINIO_ROOT_USER=minio
+MINIO_ROOT_PASSWORD=minio123
+AWS_STORAGE_BUCKET_NAME=jandig-cdn
+AWS_PRIVATE_STORAGE_BUCKET_NAME=jandig-private-cdn
+AWS_S3_REGION_NAME=us-east-2
+AWS_STATIC_LOCATION=static
+MINIO_S3_ENDPOINT_URL=http://storage:9000
+MINIO_SITE_REGION=us-east-2
+MINIO_USER_ACCESS_KEY=minio-access-key
+MINIO_USER_SECRET_KEY=minio-secret-key
+
+## Postgres variables
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=goldpenny
+POSTGRES_USER=goldpenny
+POSTGRES_PASSWORD=goldpenny123
+
+# Email server variables
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+JANDIG_EMAIL=local_jandig@memelab.com.br
+JANDIG_EMAIL_PASSWORD=local_password
