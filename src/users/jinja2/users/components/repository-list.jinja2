@@ -9,8 +9,8 @@
         <script>
             {%if selected %}
                 id = "#" + "{{element_type}}" + "-" + {{selected}}
-                $(this).css("border-bottom","3px solid #a6a6a6");
                 $('#existent-{{element_type}} > input').val({{selected}});
+                $(id).css("border-bottom","3px solid #a6a6a6");
             {% endif %}
             $('.repository-item').click(function(){
                 let elementId = $(this).attr('id');

@@ -192,7 +192,8 @@ button,
 input:disabled,
 input[type="submit" i]:disabled,
 input[type="submit"]:disabled,
-button.disabled {
+button.disabled,
+button:disabled {
   opacity: 0.4;
   pointer-events: none;
   color: #777;
