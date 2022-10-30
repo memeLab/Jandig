@@ -31,7 +31,7 @@ jobs:
       - name: Build image
         run: |
           # docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
-          docker build . -f docker/Dockerfile -t jandigarte/django:$GITHUB_SHA
+          docker build . -t jandigarte/django:$GITHUB_SHA
           docker save -o docker_image_$GITHUB_SHA jandigarte/django:$GITHUB_SHA
       - name: Caching image
         uses: actions/cache@v3
@@ -55,13 +55,13 @@ jobs:
         env:
           IMAGE_NAME: jandigarte/django:${{ github.sha }}
         run: |
-          cp src/.envs/.example src/.envs/.env
+          cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker/docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Test migrations
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
-            poetry run src/ARte/manage.py makemigrations --check --dry-run"
+            poetry run src/manage.py makemigrations --check --dry-run"
 
   test:
     name: test / unity
@@ -79,10 +79,10 @@ jobs:
         env:
           IMAGE_NAME: jandigarte/django:${{ github.sha }}
         run: |
-          cp src/.envs/.example src/.envs/.env
+          cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker/docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Running users tests
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
-            poetry run pytest src/ARte/"
+            poetry run src/manage.py test"

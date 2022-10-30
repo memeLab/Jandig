@@ -740,3 +740,19 @@ msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma 
 
 #~ msgid " author"
 #~ msgstr " autor"
+
+#: src/ARte/users/jinja2/users/edit-object.jinja2:39
+msgid "Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
+msgstr "A posição deve ser ajustada em relação ao tamanho do marcador na tela. Se a posição horizontal for 2, o centro do Objeto estará a uma distância de 2 vezes o tamanho do lado do seu Marcador à direita. Se for -1, será mostrado à esquerda."
+
+#: src/ARte/users/jinja2/users/edit-object.jinja2:15
+msgid "Choose Object's title"
+msgstr "Escolha o título do Objeto"
+
+#: src/ARte/users/jinja2/users/collection.jinja2:53
+msgid "We found no content on your Collection, try uploading an object."
+msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
+
+#: src/ARte/users/jinja2/users/upload-marker.jinja2:19
+msgid "Choose Marker's title"
+msgstr "Escolha o título do seu Marcador"

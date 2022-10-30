@@ -2,9 +2,6 @@
 src/ARte/config/__pycache__/
 *.pyc
 
-##vscode
-\.vscode/
-
 ##sqlite
 *.sqlite3
 
@@ -25,4 +22,4 @@ docker/media/
 *.mo
 *.po~
 
-src/.envs/.env
+*/**/.env
