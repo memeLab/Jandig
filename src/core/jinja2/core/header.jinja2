@@ -1,0 +1,36 @@
+<section class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="{{ url('home') }}">
+                <img src="{{ static ('images/icons/header_icon.png') }}">
+            </a>
+        </div>
+
+        <div class="aside">
+            <div class="icon-menu flex">
+                <div class="trigger-lang-modal">
+                    <a href="#" class="btnLang">{{request.LANGUAGE_CODE}}</a>
+                </div>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <div class="welcome">
+                    <p>
+                        {{_("Welcome, ")}}<a href="{{ url('profile') }}">{{ request.user.username }}</a>
+                    </p>
+                </div>
+
+            {% else %}
+                <div class="connect flex">
+                    <div class="signup-btn">
+                        <a href=" {{ url('signup') }}">{{ _('Sign up') }}</a>
+                    </div>
+                    <div class="login-btn">
+                        <a href="/users/login">{{ _('Log in') }}</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% include "core/language-select-modal.jinja2" %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,143 @@
+{# FIXME: maybe this can be improved #}
+<link rel="stylesheet" href="{{ static ('css/elements-modal.css') }}">
+
+
+{% if element_type == "exhibit"%}   
+    <section id="repo-{{element_type}}" class="exhibit-list flex">
+{% else %}
+    <section id="repo-{{element_type}}" class="repository-list flex">
+{% endif %} 
+    {% for element in repository_list %}
+        <div id="{{ element_type }}-{{ element.id }}" class="repository-item">
+            
+            {# Begin defining variables #}
+
+            {% if element_type =="marker" or element_type=="object" %}
+                {%set canEdit_object%}
+                    {% if editable == True and not element.in_use%}
+                        <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>                
+                    {% endif %}
+                {%endset%}
+
+                {%set canEdit_marker%}
+                    {% if editable == True and not element.in_use%}
+                        <a href="{{ url('edit-marker') }}?id={{element.id}}" class="edit">edit</a>                
+                    {% endif %}
+                {%endset%}
+                
+                {%set loadImage_object_or_marker%}
+                    <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height=50 width=50 >
+                {%endset%}
+
+                {%set load_object_video_or_image %}
+                    {% if element.source.url.split('.')[1] == "mp4" or element.source.url.split('.')[1] == "webm" %}
+                        <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}" muted autoplay></video>
+                    {% else %} 
+                        {{loadImage_object_or_marker}}
+                    {% endif %}
+                {%endset%}
+           
+            {% elif element_type == "artwork" %}
+                {%set loadArtwork_Marker %}
+                    {% if element.title %}
+                        <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    {% else %}
+                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
+                    {% endif %}
+                {%endset%}
+
+                {%set loadArtwork_Object%}
+                    {% if element.augmented.source.url.split('.')[1] == "mp4" or element.augmented.source.url.split('.')[1] == "webm" %}
+                        {% if element.title %}
+                            <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop></video>
+                        {% else %}
+                            <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop></video>
+                        {% endif %}
+                    {% else %}
+                        {% if element.title %}
+                            <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
+                        {% else %}
+                            <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
+                        {% endif %}
+                    {% endif %}
+                {%endset%}
+
+            {% elif element_type == "exhibit" %}
+                {% set ExhibitTitle %}
+                <a href="{{url('exhibit-detail')}}?id={{element.id}}">
+                    <h1 class="exhibit-name">{{element.name}}</h1>
+                </a>
+                {%endset%}   
+
+                {%set ExhibitInfo%}
+                    {#<p class="exhibit-name">{{element.name}}</p>#}
+                    {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
+                    <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
+                    <p class="exbDate">{{element.date}}</p>
+                    <p class="exhibit-about"><a href="{{url('exhibit-detail')}}?id={{element.id}}">{{element.artworks_count}} {{ _("Artwork(s)") }}</a></p>  
+                {%endset%}
+
+                {%set buttonSeeExhibition%}
+                    <a href="{{"/"+element.slug+"/"}}" class="gotoExb">{{ _("See this Exhibition") }}</a>
+                {%endset%}
+
+            {%endif%}
+
+            {%set canDelete_Entity%}
+                {% if deletable == True and not element.in_use %}
+                    <a href="{{ url('delete-content') }}?content_type={{element_type}}&id={{ element.id }}" onclick="return confirm('Are you sure you want to delete?')" class="delete">{{ _("Delete")}}</a>
+                {% endif %}
+            {%endset%}
+
+            {# End of defining variables #}
+
+            {% if element_type == "marker"%}
+                {{loadImage_object_or_marker}}
+                {{canDelete_Entity}}
+                {{canEdit_marker}}
+
+            {% elif element_type == "object" %}
+                {{load_object_video_or_image}}
+                {{canDelete_Entity}}
+                {{canEdit_object}}
+
+            {% elif element_type == "artwork" %}
+                <div class="artwork-elements flex">
+                    {{loadArtwork_Marker}}
+                    <div class="separator"></div>
+                    {{loadArtwork_Object}} 
+                    {% if editable == True %}
+                        <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
+                    {% endif %}
+                    {{canDelete_Entity}}
+                    {% if preview == True %}
+                        <a href="{{ url('artwork-preview') }}?id={{ element.id }}" class="preview">{{_("Preview Artwork")}}</a>
+                    {% endif %}
+                </div>
+
+            {% else %}
+                {{ExhibitTitle}}            
+                <div>
+                    <div class="exhibit-info flex">
+                        {{ExhibitInfo}}
+                        {{buttonSeeExhibition}}
+                        {% if editable == True %}
+                            <a href="{{ url('edit-exhibit') }}?id={{element.id}}" class="edit">{{ _("Edit")}}</a>
+                        {% endif %}
+                        {{canDelete_Entity}}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {# Importao axios (biblioteca para fazer request em api) #} 
+    <script>
+        $(".exhibit-slug").each(function(i,exhibit_slug){
+            highlight_part = "<b>" + exhibit_slug.innerHTML.split("<b>")[1]
+            site_url = window.location.protocol + "//" + window.location.host + "/"
+            exhibit_slug.innerHTML = site_url + highlight_part
+        }) 
+
+    </script>
+</section>

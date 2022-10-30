@@ -1,0 +1,123 @@
+
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+    <section class="upload container">
+        {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
+
+        <h2>{{_('Edit object')}}</h2>
+
+        <section class="upload-form">
+            <div class="container">
+                <form name="upload-form" method="post" enctype="multipart/form-data">
+                    {{ csrf_input }}
+                        <h3>{{_("Edit Object's title")}}</h3>
+                        {{ form.visible_fields()[2] }}
+                        {{ form.visible_fields()[2].errors }}
+                    <p class="upload-field" id="source-field">
+                        <h3>{{_("Choose Object")}}</h3>
+                        {{ form.visible_fields()[0] }}
+                        {{ form.visible_fields()[0].errors }}
+                    </p>
+
+                    <div id="edit_object_attributes">
+
+                        <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
+                        <span
+                            id="tooltipText"
+                            data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
+                        <input id="scale" class="trigger-change-value" value ="{{ model.fullscale }}">
+
+                        <h2 id="positionTitle">{{_("Adjust position")}}</h2>
+                        <span 
+                            id="tooltipText"
+                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left." 
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
+
+                        {% with xposition=model.xposition, yposition=model.yposition %}
+                            {% include "users/components/object-position.jinja2" %}
+                        {% endwith %}
+
+                        {{ form.hidden_fields()[0] }}
+                        {{ form.hidden_fields()[0].errors }}
+                        {{ form.hidden_fields()[1] }}
+                        {{ form.hidden_fields()[1].errors }}
+                        {{ form.hidden_fields()[2] }}
+                        {{ form.hidden_fields()[2].errors }}
+
+                    </div>
+
+                    <p class="upload-field" id="author-field" hidden>
+                        {{ form.visible_fields()[1] }}
+                        {{ form.visible_fields()[1].errors }}
+                    </p>
+                    </div>
+                    <input onclick="updateValues()" class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
+                </form>
+            </div>
+        </section>
+
+        <script>
+
+            $("#id_source").change(
+                function(e) {
+                    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+                        var file = e.originalEvent.srcElement.files[i];
+
+                        var image_preview = document.createElement("img");
+                        var reader = new FileReader();
+                        reader.onloadend = function() {
+                            image_preview.src = reader.result;
+                            image_preview.id = "img-preview";
+                            image_preview.hidden = "hidden";
+                        }
+                        reader.readAsDataURL(file);
+                        $("input").after(image_preview); //make preview image of the object/marker show
+                    }
+                }
+            );
+
+
+            function updateValues(){
+                var image_preview = document.querySelector('#img-preview');
+                if (image_preview){
+                    var high = image_preview.naturalHeight;
+                    var wide = image_preview.naturalWidth;
+
+                    if(high >= wide){
+                        var yprop = 1
+                        var xprop = (wide*1.0)/high;
+                    }else{
+                        var xprop = 1
+                        var yprop = (high*1.0)/wide;
+                    }
+                }
+                else{
+                    xprop = {{ model.xproportion }};
+                    yprop = {{ model.yproportion }};
+                }
+
+                var scal = document.getElementById('scale').value;
+                var xpos = document.getElementById('X-position').value;
+                var ypos = document.getElementById('Y-position').value;
+
+                var scl = scal*xprop + " " + scal*yprop;
+                var rot = "270 0 0";
+                var pos = xpos + " " + ypos + " 0"; //messing with the Z gives some really weird things
+
+                $('#id_scale').val(scl);
+                $('#id_rotation').val(rot);
+                $('#id_position').val(pos);
+            }
+
+        </script>
+    </section>
+{% endblock %}
