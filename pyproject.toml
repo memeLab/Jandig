@@ -43,4 +43,15 @@ build-backend = "poetry.core.masonry.api"
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 pythonpath = "src"
-addopts="-n1"
+addopts="-n8"
+
+[tool.black]
+exclude = '''
+/(
+    \.git
+  | migrations
+)/
+'''
+[tool.isort]
+profile = "black"
+src_paths = ["src"]
