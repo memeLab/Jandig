@@ -145,6 +145,18 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
 [[package]]
+name = "dj-inmemorystorage"
+version = "2.1.0"
+description = "A non-persistent in-memory data storage backend for Django."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">=1.11"
+six = ">=1.10"
+
+[[package]]
 name = "django"
 version = "4.1.2"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -893,7 +905,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "abc4ee26aa6952bbbebd443e9226c9b578f1c473a7a3d3ab200c2019ec3342a5"
+content-hash = "7cb06cecb114a18bafee414425f39500927cd6547796fecec1432e8dca16bb40"
 
 [metadata.files]
 alabaster = []
@@ -979,6 +991,7 @@ click = [
     {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
 ]
 colorama = []
+dj-inmemorystorage = []
 django = []
 django-boogie = []
 django-cors-headers = []

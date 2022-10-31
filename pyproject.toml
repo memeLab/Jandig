@@ -34,13 +34,14 @@ pytest-xdist = "^3.0.2"
 black = "^22.10.0"
 isort = "^5.10.1"
 pytest-django = "^4.5.2"
+dj-inmemorystorage = "^2.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
+DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 pythonpath = "src"
 addopts="-n8"
