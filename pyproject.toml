@@ -30,6 +30,7 @@ djangorestframework = "^3.13.1"
 pytest = "^7.2.0"
 pytest-xdist = "^3.0.2"
 drf-nested-routers = "^0.93.4"
+flake8 = "^5.0.4"
 
 [tool.poetry.dev-dependencies]
 black = "^22.10.0"

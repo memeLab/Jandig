@@ -1,13 +1,12 @@
 from unittest import mock
 
-import factory
-from django.test import Client, RequestFactory, TestCase
+from django.test import RequestFactory, TestCase
 
-from users.factory import ObjectFactory, UserFactory
+from users.factory import UserFactory
 from users.services.email_service import EmailService
 from users.services.encrypt_service import EncryptService
 from users.services.user_service import UserService
-from users.views import edit_object, recover_password
+from users.views import recover_password
 
 
 @mock.patch("smtplib.SMTP.quit")
@@ -47,7 +46,7 @@ class UserTestCase(TestCase):
         request = self.client_test.post(
             "/recover/", {"username_or_email": "testador@memelab.com"}, follow=True
         )
-        user_data = UserFactory()
+        UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/recover-code/")
@@ -56,7 +55,7 @@ class UserTestCase(TestCase):
         request = self.client_test.post(
             "/recover/", {"username_or_email": "Testador"}, follow=True
         )
-        user_data = UserFactory()
+        UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/recover-code/")
@@ -81,24 +80,24 @@ class UserTestCase(TestCase):
 
     def test_check_if_username_or_email_exist(self, *args, **kwargs):
         email = "testador@memelab.com"
-        user_data = UserFactory()
+        UserFactory()
         response = self.user_service.check_if_username_or_email_exist(email)
         self.assertTrue(response)
 
     def test_check_if_username_or_email_doesnt_exist(self, *args, **kwargs):
         email = "testadorinvalido@memelab.com"
-        user_data = UserFactory()
+        UserFactory()
         response = self.user_service.check_if_username_or_email_exist(email)
         self.assertFalse(response)
 
     def test_get_user_email_by_email(self, *args, **kwargs):
         email = "testador@memelab.com"
-        user_data = UserFactory()
+        UserFactory()
         response = self.user_service.get_user_email(email)
         self.assertEqual(response, email)
 
     def test_get_user_email_by_username(self, *args, **kwargs):
         username = "Testador"
-        user_data = UserFactory()
+        UserFactory()
         response = self.user_service.get_user_email(username)
         self.assertEqual(response, "testador@memelab.com")
