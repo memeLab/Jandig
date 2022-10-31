@@ -3,6 +3,7 @@ from django.urls import include, path
 from rest_framework_nested.routers import DefaultRouter
 
 from core.views.markers import MarkerViewset
+from core.views.objects import ObjectViewset
 from core.views.static_views import (
     community,
     documentation,
@@ -24,6 +25,7 @@ from core.views.views import (
 
 api_router = DefaultRouter()
 api_router.register("markers", MarkerViewset, basename="marker")
+api_router.register("objects", ObjectViewset, basename="object")
 
 urlpatterns = [
     path("", home, name="home"),
