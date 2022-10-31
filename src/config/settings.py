@@ -27,7 +27,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY")
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -107,7 +107,6 @@ PAGE_SIZE = 20
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
-        "core.renderers.JinjaBrowsableAPIRenderer",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": PAGE_SIZE,

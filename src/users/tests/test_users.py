@@ -64,8 +64,8 @@ class UserTestCase(TestCase):
     def test_build_multipart_message(self, *args, **kwargs):
         email = "testador@memelab.com"
         response = self.email_service.build_multipart_message(email)
-        self.assertEquals(response["From"], "Jandig <jandig@jandig.com>")
-        self.assertEquals(response["To"], email)
+        self.assertEqual(response["From"], "Jandig <jandig@jandig.com>")
+        self.assertEqual(response["To"], email)
 
     def test_send_email_to_recover_password(self, mock_quit, *args, **kwargs):
         email = "testador@memelab.com"
@@ -95,10 +95,10 @@ class UserTestCase(TestCase):
         email = "testador@memelab.com"
         user_data = UserFactory()
         response = self.user_service.get_user_email(email)
-        self.assertEquals(response, email)
+        self.assertEqual(response, email)
 
     def test_get_user_email_by_username(self, *args, **kwargs):
         username = "Testador"
         user_data = UserFactory()
         response = self.user_service.get_user_email(username)
-        self.assertEquals(response, "testador@memelab.com")
+        self.assertEqual(response, "testador@memelab.com")

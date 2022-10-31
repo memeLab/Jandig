@@ -1,5 +1,5 @@
 test:
-	poetry run python src/manage.py test
+	poetry run pytest src
 
 lint:
 	poetry run black src
