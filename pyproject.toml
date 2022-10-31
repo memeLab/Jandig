@@ -44,7 +44,7 @@ build-backend = "poetry.core.masonry.api"
 DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 pythonpath = "src"
-addopts="-n8"
+addopts="-n4"
 
 [tool.black]
 exclude = '''
