@@ -51,20 +51,21 @@ On Windows, you'll only need install [Docker Desktop](https://docs.docker.com/de
 ### Running
 
 #### Linux OS
+
 To run Jandig ARte all you need to do is:
 - Clone this repo
 - Navigate to the repository folder
-- Run docker-compose passing the docker-compose.yml
+- Run docker-compose
 - Voila!
 
-```
+```bash
 git clone https://github.com/memeLab/Jandig
 cd Jandig
-docker-compose -f docker/docker-compose.yml up
+docker-compose up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
-sudo docker-compose -f docker/docker-compose.yml up
+sudo docker-compose up
 ```
 
 Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [localhost:8000](localhost:8000). If you want to test on a mobile device, you will need a https connection, we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate a https link for you.
@@ -89,14 +90,14 @@ To run Jandig ARte all you need to do is:
 - Run docker-compose passing the docker-compose.yml
 - Voila!
 
-```
+```bash
 git clone https://github.com/memeLab/Jandig
 cd Jandig
-docker-compose -f docker/docker-compose.yml up
+docker-compose up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
-sudo docker-compose -f docker/docker-compose.yml up
+sudo docker-compose up
 ```
 
 Jandig ARte server will run at localhost, but by default WSL2 enables wsl localhost to accessible from windows, but no vice versa. To access you'll need to use windows system IP from wsl2.
