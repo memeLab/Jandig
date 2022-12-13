@@ -110,3 +110,6 @@ vim /etc/resolv.conf
 nameserver 172.21.176.1
 ```
 - Access the localhost using this IP (e.g.: 172.21.176.1:8000)
+
+
+# Prototipe
