@@ -111,7 +111,6 @@ nameserver 172.21.176.1
 ```
 - Access the localhost using this IP (e.g.: 172.21.176.1:8000)
 
-
-### Prototipe
+### Prototype
 
 The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation]().
