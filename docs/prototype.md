@@ -15,13 +15,13 @@ The prototype must be accessed using Figma platform, follow the steps below to a
 
 3 - Select the "import file" option on figma's main screen and select the previously downloaded file;
 
-![figma-home](./images/figma-home.PNG)
+![figma-home](./images/figma-home.png)
 
-![figma-upload-file](./images/figma-upload-file.PNG)
+![figma-upload-file](./images/figma-upload-file.png)
 
 5 - Access the prototype by clicking on the project.
 
-![open-prototype](./images/open-prototype.PNG)
+![open-prototype](./images/open-prototype.png)
 
 
 ## Contribuindo para o Prototipo
@@ -34,11 +34,11 @@ The prototype must be accessed using Figma platform, follow the steps below to a
 
 - 1 - Download the new version of the prototype onto your computer using your [Figma](https://www.figma.com/login);
 
-    ![project-figma](./images/project-figma.PNG)
+    ![project-figma](./images/project-figma.png)
 
-    ![figma-save-local](./images/figma-save-local.PNG)
+    ![figma-save-local](./images/figma-save-local.png)
 
-    ![save-file](./images/save-file.PNG)
+    ![save-file](./images/save-file.png)
 
 - 2 - Upload the file "jadig_prototype.fig" replacing the existing file with the updated version.
 
