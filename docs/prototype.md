@@ -1,20 +1,29 @@
 # Prototype
-O prototipo de alta fidelidade é (documento) que visa propor melhorias de realicionados a interface e experiencia do usuário para plataforma Jandig ARte, assim o mesmo é um prototipo desenvolvido na plataforma [Figma](), sendo uma versão da plataforma contendo melhorias propostas que poderão ser utilizadas administrar melhorias a plataforma.
+
+O prototipo da plataforma Jandig é uma representação grafica da plataforma desenvolvida utilizando a ferramenta [Figma](https://www.figma.com/downloads/), o mesmo tem o proposito de aprimorar os aspectos de interface e experiencia do usuário para plataforma Jandig ARte. Assim, o Prototipo de Alta Fidelidade é uma representação da plataformas que contendo melhorias de usabilidade geral, onde através do mesmo surgirão atividades de implementação da modificações sugeridas.
+
 
 ## Acessando o Prototipo
-O prototipo de alta fidelidade deve ser acessado através da plataforma [Figma]() em sua versão web ou desktop, para acessar o prototipo siga ps seguintes passos:
+O prototipo deve ser acessado utilizando a plataforma Figma, siga os seguintes passos para acessar o prototipo:
 
-1 - Baixe o seguite arquito do protipo (arquivo)
+1 - Realize o Login ou Cadastro na plataforma [Figma](https://www.figma.com/login);
 
-2 - Logue ou faça o cadastro
+![figma-login](./images/figma-login.PNG)
 
-(foto)
+2 - Baixe em seu computador o [arquito do protipo](./jandig_prototype.fig);
 
-3 - Selecione nz tela principal a opção de "import file"
+![prototype-file-downhold](./images/prototype-file-downhold.PNG)
 
-4 -  Selecione o arquivo baixado
+3 - Selecione na tela principal do figma a opção de "import file" e selecione o arquivo baixado anteriormente;
 
-5 - Acesse o prototipo
+![figma-home](./images/figma-home.PNG)
+
+![figma-upload-file](./images/figma-upload-file.PNG)
+
+5 - Acesse o prototipo;
+
+![open-prototype](./images/open-prototype.PNG)
+
 
 ## Contribuindo para o Prototipo
 
