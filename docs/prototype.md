@@ -1,39 +1,44 @@
 # Prototype
+The Jandig platform prototype is a graphical representation of the platform developed using Figma [Figma](https://www.figma.com/downloads/) tool, it has the purpose of improving Jandig ARte platform's interface and user experience aspects. Thus, the High Fidelity Prototype is a representation of the platforms containing general usability improvements, used to arise activities to implement the suggested modifications.
 
-O prototipo da plataforma Jandig é uma representação grafica da plataforma desenvolvida utilizando a ferramenta [Figma](https://www.figma.com/downloads/), o mesmo tem o proposito de aprimorar os aspectos de interface e experiencia do usuário para plataforma Jandig ARte. Assim, o Prototipo de Alta Fidelidade é uma representação da plataformas que contendo melhorias de usabilidade geral, onde através do mesmo surgirão atividades de implementação da modificações sugeridas.
 
+## Accessing the Prototype
+The prototype must be accessed using Figma platform, follow the steps below to access the prototype:
 
-## Acessando o Prototipo
-O prototipo deve ser acessado utilizando a plataforma Figma, siga os seguintes passos para acessar o prototipo:
-
-1 - Realize o Login ou Cadastro na plataforma [Figma](https://www.figma.com/login);
+1 - Login or Register on [Figma](https://www.figma.com/login) platform;
 
 ![figma-login](./images/figma-login.PNG)
 
-2 - Baixe em seu computador o [arquito do protipo](https://github.com/memeLab/Jandig/blob/develop/docs/jandig_prototype.fig);
+2 - Download the [prototype file](https://github.com/memeLab/Jandig/blob/develop/docs/jandig_prototype.fig) to your computer;
 
 ![prototype-file-downhold](./images/prototype-file-downhold.PNG)
 
-3 - Selecione na tela principal do figma a opção de "import file" e selecione o arquivo baixado anteriormente;
+3 - Select the "import file" option on figma's main screen and select the previously downloaded file;
 
 ![figma-home](./images/figma-home.PNG)
 
 ![figma-upload-file](./images/figma-upload-file.PNG)
 
-5 - Acesse o prototipo clicando no projeto.
+5 - Access the prototype by clicking on the project.
 
 ![open-prototype](./images/open-prototype.PNG)
 
 
 ## Contribuindo para o Prototipo
 
-1 - Acesse o prototipo utilizando a plataforma Figma conforme escrito no tutorial acima;
+1 - Access the prototype using Figma platform as written in the tutorial described in the previous section;
 
-2 - Abra uma Issue descrevendo as alterações a serem realizadas no prototpipomou selecione uma issue existente e contribua para a issue. Para o mesmo siga o [guia de contribuição](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md);
+2 - Open an Issue describing changes to be made to the prototype or select an existing issue and contribute to the issue. In order to do this follow the [contribution guide](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md);
 
-4 - Após realizar as modificações desejadas no prototipo seguindo as orientações da issue, realize o dawnhold do arquivo seguindo os passos a seguir:
+3 - After making changes to the prototype following the guidelines of the chosen or created issue, upload the file following the steps below:
 
-5 - Suba o arquivo 
+- 1 - Download the new version of the prototype onto your computer using your [Figma](https://www.figma.com/login);
 
-4 - Suba as imagens
+    ![project-figma](./images/project-figma.PNG)
+
+    ![figma-save-local](./images/figma-save-local.PNG)
+
+    ![save-file](./images/save-file.PNG)
+
+- 2 - Upload the file "jadig_prototype.fig" replacing the existing file with the updated version.
 
