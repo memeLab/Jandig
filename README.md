@@ -113,4 +113,4 @@ nameserver 172.21.176.1
 
 ### Prototype
 
-The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation]().
+The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation](/docs/prototype.md).

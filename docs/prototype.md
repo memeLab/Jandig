@@ -10,7 +10,7 @@ O prototipo deve ser acessado utilizando a plataforma Figma, siga os seguintes p
 
 ![figma-login](./images/figma-login.PNG)
 
-2 - Baixe em seu computador o [arquito do protipo](./jandig_prototype.fig);
+2 - Baixe em seu computador o [arquito do protipo](https://github.com/memeLab/Jandig/blob/develop/docs/jandig_prototype.fig);
 
 ![prototype-file-downhold](./images/prototype-file-downhold.PNG)
 
@@ -20,18 +20,20 @@ O prototipo deve ser acessado utilizando a plataforma Figma, siga os seguintes p
 
 ![figma-upload-file](./images/figma-upload-file.PNG)
 
-5 - Acesse o prototipo;
+5 - Acesse o prototipo clicando no projeto.
 
 ![open-prototype](./images/open-prototype.PNG)
 
 
 ## Contribuindo para o Prototipo
 
-1 - Abra uma Issue e Inicie a issue seguindo as guia de contribuição)
+1 - Acesse o prototipo utilizando a plataforma Figma conforme escrito no tutorial acima;
 
-3 - Realize o acesso ao prototipo seguindo o tutorial acima
+2 - Abra uma Issue descrevendo as alterações a serem realizadas no prototpipomou selecione uma issue existente e contribua para a issue. Para o mesmo siga o [guia de contribuição](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md);
 
-4 - tutorial de contribuição
+4 - Após as modificações desejadas no prototipo seguindo as orientações da issue, realize o dawnhold do arquivo seguindo os passos a seguir:
+
+
 
 5 - Suba o arquivo 
 
