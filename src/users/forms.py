@@ -52,10 +52,7 @@ class SignupForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         username = self.cleaned_data.get("username")
-        if (
-            email
-            and User.objects.filter(email=email).exclude(username=username).exists()
-        ):
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
             raise forms.ValidationError(_("E-mail taken"))
 
         return email
@@ -66,9 +63,7 @@ class PasswordChangeForm(OrigPasswordChangeForm):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.fields["old_password"].widget.attrs["placeholder"] = _("Old Password")
         self.fields["new_password1"].widget.attrs["placeholder"] = _("New Password")
-        self.fields["new_password2"].widget.attrs["placeholder"] = _(
-            "New Password Again"
-        )
+        self.fields["new_password2"].widget.attrs["placeholder"] = _("New Password Again")
 
 
 class ProfileForm(forms.ModelForm):
@@ -115,23 +110,13 @@ class ProfileForm(forms.ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if (
-            username
-            and User.objects.filter(username=username)
-            .exclude(username=self.instance.user.username)
-            .exists()
-        ):
+        if username and User.objects.filter(username=username).exclude(username=self.instance.user.username).exists():
             raise forms.ValidationError(_("Username already in use"))
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if (
-            email
-            and User.objects.filter(email=email)
-            .exclude(username=self.instance.user.username)
-            .exists()
-        ):
+        if email and User.objects.filter(email=email).exclude(username=self.instance.user.username).exists():
             raise forms.ValidationError(_("Email address must be unique"))
 
         return email
@@ -199,9 +184,7 @@ class UploadMarkerForm(forms.ModelForm):
         log.warning(self.fields)
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
-        self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
+        self.fields["author"].widget.attrs["placeholder"] = _("declare different author name")
         self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
 
     class Meta:
@@ -238,9 +221,7 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
-        self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
+        self.fields["author"].widget.attrs["placeholder"] = _("declare different author name")
         self.fields["scale"].widget = HiddenInput()
         self.fields["rotation"].widget = HiddenInput()
         self.fields["position"].widget = HiddenInput()
@@ -273,16 +254,10 @@ class ArtworkForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["marker_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
-        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
+        self.fields["marker_author"].widget.attrs["placeholder"] = _("declare different author name")
+        self.fields["augmented_author"].widget.attrs["placeholder"] = _("declare different author name")
         self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeholder"] = _(
-            "Artwork description"
-        )
+        self.fields["description"].widget.attrs["placeholder"] = _("Artwork description")
 
 
 class ExhibitForm(forms.Form):
@@ -296,15 +271,11 @@ class ExhibitForm(forms.Form):
     def clean_slug(self):
         data = self.cleaned_data["slug"]
         if not re.match("^[a-zA-Z0-9_]*$", data):
-            raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
+            raise forms.ValidationError(_("Url can't contain spaces or special characters"))
         return data
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
 
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _(
-            "Complete with your Exhibit URL here"
-        )
+        self.fields["slug"].widget.attrs["placeholder"] = _("Complete with your Exhibit URL here")

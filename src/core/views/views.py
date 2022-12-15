@@ -18,9 +18,7 @@ def service_worker(request):
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def manifest(request):
-    return render(
-        request, "core/manifest.json", content_type="application/x-javascript"
-    )
+    return render(request, "core/manifest.json", content_type="application/x-javascript")
 
 
 def index(request):
