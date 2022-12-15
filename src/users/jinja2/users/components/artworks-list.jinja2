@@ -16,7 +16,6 @@
                 })
             {% endif %}
 
-<<<<<<< HEAD:src/ARte/users/jinja2/users/components/artworks-list.jinja2
             function isArtworkSelected(artwork) {
                 return artwork.css('border-bottom-style') != "none";
             }
@@ -25,14 +24,6 @@
                 let artworkId = $(this).attr('id').split('-')[1];
 
                 if(isArtworkSelected($(this))){
-=======
-            $('.repository-item').click(function(){
-                let elementId = $(this).attr('id').split('-')[1];
-                let sectionId = $(this).parent().attr('id');
-
-                // reset background
-                if($(this).css('border-bottom-style') != "none"){
->>>>>>> origin/develop:src/users/jinja2/users/components/artworks-list.jinja2
                     $(this).css("border-bottom","none");
                     delete artworks[artworkId];
                 }else{
