@@ -31,9 +31,7 @@ O prototipo deve ser acessado utilizando a plataforma Figma, siga os seguintes p
 
 2 - Abra uma Issue descrevendo as alterações a serem realizadas no prototpipomou selecione uma issue existente e contribua para a issue. Para o mesmo siga o [guia de contribuição](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md);
 
-4 - Após as modificações desejadas no prototipo seguindo as orientações da issue, realize o dawnhold do arquivo seguindo os passos a seguir:
-
-
+4 - Após realizar as modificações desejadas no prototipo seguindo as orientações da issue, realize o dawnhold do arquivo seguindo os passos a seguir:
 
 5 - Suba o arquivo 
 
