@@ -5,6 +5,7 @@ services:
     image: jandigarte/django:latest
     build:
       dockerfile: Dockerfile
+      context: .
     ports:
       - 8000:8000
     volumes:

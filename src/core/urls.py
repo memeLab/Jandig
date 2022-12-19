@@ -2,10 +2,10 @@ from django.conf import settings
 from django.urls import include, path
 from rest_framework_nested.routers import DefaultRouter
 
-from core.views.markers import MarkerViewset
-from core.views.objects import ObjectViewset
 from core.views.artworks import ArtworkViewset
 from core.views.exhibits import ExhibitViewset
+from core.views.markers import MarkerViewset
+from core.views.objects import ObjectViewset
 from core.views.static_views import (
     community,
     documentation,
