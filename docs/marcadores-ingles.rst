@@ -12,14 +12,11 @@ be always taken into account in the production and application of the tags.
 
 We use by default 20% of width from the border in the Jandig tags, that is in a tag with 10 centimeters of width, we will have a border of 2 centimeters of width.
 
-A imagem central do marcador não deve tocar as bordas. A distância
-mínima dessa imagem para a margem interna da borda deve ser de 2% da
-largura total do marcador.
+The central image of the Tag should not touch the borders. The minimum distance of the imagen to the internal margin of the border should be 2% of the total width of 
+the Tag.
 
-Embora pequenas massas de texto (nome da exposição, url do app) possam
-ser aplicadas sobre a borda sem prejuízo ao reconhecimento da obra, é
-recomendado que a altura deste texto jamais ultrapasse ¼ da largura
-total da borda.
+Although little texts (exhibition name, app url)  can be applied over the border without prejudice in the recognition, is recomended the height of the text never 
+overtake the total porcentage of the border.
 
 .. image:: images/MarkerGuide.png
     :width: 320px
