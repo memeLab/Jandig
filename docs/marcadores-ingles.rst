@@ -6,7 +6,7 @@ This document contains tecnical, aesthetics and good practices guidelines to the
 Borders
 ------
 
-The borders are grafic elemnets that trigger the recognition of the object associated with each tag. For this reason, one should not cover them and them must always be 
+The borders are grafic elements that trigger the recognition of the object associated with each tag. For this reason, one should not cover them and them must always be 
 seen completely by the camera. Put the finger over the border or approach the camera too close to the tag will derail the recognition, for example. This feature should 
 be always taken into account in the production and application of the tags.
 
@@ -22,14 +22,11 @@ overtake the total porcentage of the border.
     :width: 320px
     :align: center
 
-Simetria
+Symmetry
 --------
 
-Considerando que a visualização do objeto depende da posição do marcador
-em relação à câmera, evitamos utilizar imagens com simetria tanto no
-eixo vertical quanto no horizontal. Esta prática visa evitar que o
-sistema de reconhecimento se confunda quanto à orientação em que deve
-exibir a imagem.
+Considering that the visualization of the object depends on the position of the Tag in relation of the camera, we avoid using images with symmetry vertical as well as 
+horizantal. This rule aim avoid that the recognition system get confused about which orientation it must show the image.
 
 Cores e gradientes
 ------------------
