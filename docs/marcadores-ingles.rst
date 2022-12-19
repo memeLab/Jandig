@@ -1,22 +1,16 @@
-Hints to produce BookMarks
+Hints to produce Tags
 ==============================
 
-This document contains tecnical, aesthetics and good practices guidelines to the production of bookmarks of augmented reality Jandig.
+This document contains tecnical, aesthetics and good practices guidelines to the production of Tags of augmented reality Jandig.
 
-Bordas
+Borders
 ------
 
-As bordas são os elementos gráficos que engatilham o reconhecimento do
-objeto associado a cada marcador. Por esse motivo, não se deve cobri-las
-e elas devem sempre ser vistas completamente pela câmera. Colocar o dedo
-sobre uma das bordas ou aproximar demais a câmera do marcador
-inviabiliza o reconhecimento, por exemplo. Essa característica deve
-sempre ser levada em consideração na produção e aplicação dos
-marcadores.
+The borders are grafic elemnets that trigger the recognition of the object associated with each tag. For this reason, one should not cover them and them must always be 
+seen completely by the camera. Put the finger over the border or approach the camera too close to the tag will derail the recognition, for example. This feature should 
+be always taken into account in the production and application of the tags.
 
-Utilizamos, por padrão, 20% de largura de borda nos marcadores Jandig.
-Ou seja, para um marcador com 10 centímetros de largura, teremos uma
-borda de 2 cm de largura.
+We use by default 20% of width from the border in the Jandig tags, that is in a tag with 10 centimeters of width, we will have a border of 2 centimeters of width.
 
 A imagem central do marcador não deve tocar as bordas. A distância
 mínima dessa imagem para a margem interna da borda deve ser de 2% da
