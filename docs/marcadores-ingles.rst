@@ -54,4 +54,5 @@ reflections and avoid using amber colored lighting.
 Stickers
 --------
 
-Although Tags can be recognized even in very small formats, we usually produce Jandig Tags stickers with 5 x 5 centimeters. This dimension associates good perfomance with good readability of all elements, including the text.
+Although Tags can be recognized even in very small formats, we usually produce Jandig Tags stickers with 5 x 5 centimeters. This dimension associates good perfomance 
+with good readability of all elements, including the text.
