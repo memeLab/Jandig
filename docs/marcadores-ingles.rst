@@ -6,7 +6,8 @@ This document contains tecnical, aesthetics and good practices guidelines to the
 Borders
 ------
 
-The borders are grafic elements that trigger the recognition of the object associated with each tag. For this reason, one should not cover them and them must always be 
+The borders are graphic elements that trigger the recognition of the object associated with each tag. For this reason, one should not cover them and them must always 
+be 
 seen completely by the camera. Put the finger over the border or approach the camera too close to the tag will derail the recognition, for example. This feature should 
 be always taken into account in the production and application of the tags.
 
