@@ -45,13 +45,11 @@ opaque paints and materials in them production.
 It's important that the external and internal margins of the border be always well delimited. In case of stickers or background application more dark, guarantee a 
 white margin around the black border. This reservation of space must be at least 3% of the total marker width.
 
-Iluminação
+Illumination
 ----------
 
-A qualidade e a cor da iluminação do ambiente podem influenciar na
-leitura dos marcadores. Para uma boa visualização, prefira uma
-iluminação distribuída, que não gere reflexos e evite utilizar
-iluminação de coloração muito âmbar.
+The quality and color of ambient lighting can influence the Tag reading. For a good visualization, prefer a well distributed illumination, that does not generate 
+reflections and avoid using amber colored lighting.
 
 Adesivos
 --------
