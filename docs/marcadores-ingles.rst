@@ -36,18 +36,14 @@ utilization of tones.
 
 This is not a limitation of the system. It is possible to use any image as a Tag, following other recomedations of this document.
 
-Impressão e afins
+Printing and about that
 -----------------
 
-Reflexos, inclusive sobre as bordas, podem impedir que os seus
-marcadores sejam reconhecidos como tal. Para que sejam mais facilmente
-identificados pelo sistema, devem-se utilizar tintas e materiais opacos
-na sua produção.
+Reflexes, including over the borders, can impede that your Tags be recognized as a Tag. So that thay are recognized more easily by the system, they should utilize 
+opaque paints and materials in them production. 
 
-É importante que as margens externas e internas da borda estejam sempre
-bem delimitadas. No caso de adesivos ou de aplicação em fundo mais
-escuros, garanta uma margem branca ao redor borda preta. Essa reserva de
-espaço deve ter, ao menos, 3% da largura total do marcador.
+It's important that the external and internal margins of the border be always well delimited. In case of stickers or background application more dark, guarantee a 
+white margin around the black border. This reservation of space must be at least 3% of the total marker width.
 
 Iluminação
 ----------
