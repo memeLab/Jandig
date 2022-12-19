@@ -28,15 +28,13 @@ Symmetry
 Considering that the visualization of the object depends on the position of the Tag in relation of the camera, we avoid using images with symmetry vertical as well as 
 horizantal. This rule aim avoid that the recognition system get confused about which orientation it must show the image.
 
-Cores e gradientes
+Colors and gradient
 ------------------
 
-Para garantir infinitas possibilidades de aplicação dos marcadores, não
-utilizamos cores ou gradientes nas imagens centrais. A única cor
-utilizada é preto 100%, sem a utilização de tons.
+To ensure endless possibilities of application of the Tags, we dont use colors or gradients in the central images. The only color used is 100% black, without 
+utilization of tones.
 
-Essa não é uma limitação do sistema. É possível utilizar qualquer imagem
-como marcador, seguindo as outras recomendações nesse documento.
+This is not a limitation of the system. It is possible to use any image as a Tag, following other recomedations of this document.
 
 Impressão e afins
 -----------------
