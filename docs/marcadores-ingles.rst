@@ -51,10 +51,7 @@ Illumination
 The quality and color of ambient lighting can influence the Tag reading. For a good visualization, prefer a well distributed illumination, that does not generate 
 reflections and avoid using amber colored lighting.
 
-Adesivos
+Stickers
 --------
 
-Embora marcadores consigam ser reconhecidos até em formatos muito
-pequenos, costumamos produzir adesivos de marcadores Jandig com 5 x 5
-cm. Essa dimensão associa bom rendimento com boa legibilidade de todos
-os elementos, inclusive texto.
+Although Tags can be recognized even in very small formats, we usually produce Jandig Tags stickers with 5 x 5 centimeters. This dimension associates good perfomance with good readability of all elements, including the text.
