@@ -1,8 +1,7 @@
-Dicas para produzir marcadores
+Hints to produce BookMarks
 ==============================
 
-Esse documento contém orientações técnicas, estéticas e boas práticas
-para a produção de marcadores de realidade aumentada Jandig.
+This document contains tecnical, aesthetics and good practices guidelines to the production of bookmarks of augmented reality Jandig.
 
 Bordas
 ------
