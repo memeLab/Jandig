@@ -1,46 +1,45 @@
-Dicas para produzir animações
+Tips for producing animation 
 =============================
+This document contains technical guidelines and best practices for
+production of augmented reality animations for Jandig. Lots of
+of these guidelines can be used to produce content for
+other platforms.
 
-Esse documento contém orientações técnicas e boas práticas para a
-produção de animações em realidade aumentada para o Jandig. Muitas
-dessas orientações podem ser utilizadas para produzir conteúdo para
-outras plataformas.
+In addition to producing a version considering the following limitations,
+it is recommended that an “ideal” version be produced, which can be
+used in controlled environments and/or in the future (as these
+limitations will decrease).
 
-Além de produzir uma versão considerando as limitações a seguir,
-recomendamos que seja produzida uma versão “ideal”, que pode ser
-utilizada em ambientes controlados e/ou no futuro (quanto essas
-limitações vão diminuir).
-
-Formato de arquivo
+File format
 ~~~~~~~~~~~~~~~~~~
 
-Atualmente, o único formato de arquivo suportado é GIF.
+Currently, the only supported format is GIF.
 
-Detalhes
+Details
 ~~~~~~~~
 
-Utilize o mínimo de detalhes e de elementos pequenos que for possível,
-pois eles podem não ser identificados pelo público.
+Use as few details and small elements as possible,
+as they may not be identifiable by the public.
 
-Uma maneira de testar aqui é salvar as imagens do storyboard em
-300x300px e ver se é possível identificar todos os elementos. É
-importante lembrar que o público pode ver a animação à distância, de
-modo que ela fique bem pequena na tela do telefone.
+One way to test here is to save the storyboard images to
+300x300px and see if you can identify all the elements. It's
+important to remember that the public can see the animation from a distance,
+so that it looks very small on the phone screen.
 
-Quantidade de cores
+Amount of colors
 ~~~~~~~~~~~~~~~~~~~
 
-A recomendação é diminuir o máximo possível, de maneira a não
-comprometer as cores originais.
+The recommendation is to reduce as much as possible, so it will not
+compromise the original colors.
 
-Para otimizar esses valores, recomendamos minimizar o uso de degradês e
-evitar transições em fade.
+To optimize these values, we recommend minimizing the use of color degradation and
+avoid fade transitions.
 
-Uma técnica para planejar esse uso antes de produzir a animação, é
-exportar as imagens do storyboard em GIF com diferentes quantidades de
-cores.
+A technique to plan this usage before producing the animation is
+export the storyboard images to GIF with different amounts of
+Colors.
 
-Resolução
+Resolution
 ~~~~~~~~~
 
 Para aumentar a compatibilidade de dispositivos, limitamos a resolução
@@ -48,65 +47,62 @@ do quadro de exibição (que aparece em tela cheia no smartphone) em
 640x480 pixels. Como a animação só vai aparecer em um trecho desse
 quadro, recomendamos a criação do conteúdo em 300x300px.
 
-Caso haja um problema na visualização de detalhes, pode-se chegar até a
-400x400px, mas atualmente o ganho de uma resolução maior é quase
-imperceptível (enquanto onera bastante o tamanho do arquivo).
+To increase device compatibility, we limit the resolution
+of the display frame (which appears in full screen on the smartphone) in
+640x480 pixels. As the animation will only appear in a part of this
+framework, we recommend creating the content at 300x300px.
 
 Framerate
 ~~~~~~~~~
 
-A taxa de frames (medida em frames por segundo, ou quadros por segundo)
-recomendada é de, no máximo, 12 fps.
+The frame rate (measured in frames per second)
+recommended is a maximum of 12 fps.
 
 Loop
 ~~~~
 
-Para criar a ilusão de continuidade, a animação deve estar em loop. Ou
-seja, a transição do último ao primeiro frame deve ser imperceptível.
+To create the illusion of continuity, the animation must be looped. In other words, the transition from the last to the first frame must be imperceptible.
 
-Tempo
+Time
 ~~~~~
 
-Quanto mais curta a animação, melhor. Isso vai permitir melhor qualidade
-de imagens e garantir que o público assista todo o material. Até o
-momento, a animação mais longa feita para o Jandig tem aproximadamente
-20 segundos. A recomendação é que tenha até 15 segundos.
+The shorter the animation, the better. This will allow for better quality
+of images and ensure that the public watches all the material. So far, the longest animation made for Jandig is approximately
+20 seconds. The recommendation is that it should have up to 15 seconds.
 
-Tamanho de arquivo
+File size
 ~~~~~~~~~~~~~~~~~~
 
-Enquanto os parâmetros a seguir têm flexibilidade quanto às orientações,
-esse é o mais rígido. Os arquivos devem ter idealmente até 500 kB e no
-máximo com 1 MB. Esse é um fator decisivo na escolha de obras a serem
-incluídas em uma exposição, quanto menor, melhor.
+While the following parameters have flexibility as to guidelines,
+this is the toughest. Files should ideally be up to 500 kB and should not exceed 1 MB. This is a decisive factor in the choice of works to be
+included in an exhibition, the smaller the better.
 
-Essa limitação existe principalmente pelas seguintes razões: - Não temos
-controle da velocidade de conexão do público quando acessar o conteúdo,
-o que pode fazer com que o download de todas as obras demore. - Não
-queremos onerar o plano de dados do público. - Arquivos menores são mais
-leves necessitam de menor quantidade de processamento, tornando a
-plataforma compatível com um maior número de telefones.
+This limitation exists mainly for the following reasons: - We do not have
+control of the public connection speed when accessing the content,
+which can cause the download of all works to take time. - Not
+we want to burden the public's data plan. - Smaller files are more
+lightweight require less processing, making the
+platform compatible with a greater number of phones.
 
-Conclusão
+Conclusion
 ~~~~~~~~~
 
-Para se chegar a um resultado ótimo o ideal é testar os parâmetros em
-conjunto.
+To reach an optimal result, the ideal is to test the parameters together.
 
-Um processo recomendado é exportar com limitando ao máximo os parâmetros
-(8 cores, 200x200px, 5 fps) e com também com as recomendações mínimas de
-limitação (256 cores, 300x300px, 12 fps) e comparar.
+A recommended process is exporting the parameters,  limiting them as much as possible.
+(8 colors, 200x200px, 5 fps) and also with the minimum recommendations of
+limitation (256 colors, 300x300px, 12 fps) and compare.
 
-A partir daí, modificar com parâmetro por vez a partir das limitações
-mínimas, reduzindo só o framerate/resolução/cores para ver qual o mínimo
-que funciona bem.
+From there, modify one parameter at a time from the minimum limitations, 
+reducing only the framerate/resolution/colors to see what is the minimum
+that works fine.
 
-Se, após reduzir os 3 ao mínimo que funciona bem o arquivo ainda estiver
-grande, continuar diminuindo os parâmetros em combinações diferentes
-para até chegar a um resultado ótimo. Lembre-se também de manter a
-versão em alta resolução. Aqui a recomendação é salvar com 1000x1000px e
-24 fps.
+If, after reducing the 3 to the minimum that works well, the file is still
+large, keep decreasing the parameters in different combinations
+to reach an optimal result. Also remember to keep the
+high resolution version. Here the recommendation is to save with 1000x1000px and
+24fps.
 
-Caso você use Adobe Media encoder, há um tutorial que foi desenvolvido
-pela UEMG para `download em
+In case you use Adobe Media encoder, there is a tutorial that was developed
+by UEMG for `download in
 PDF <https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf>`__.
