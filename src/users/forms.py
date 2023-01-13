@@ -160,7 +160,7 @@ class LoginForm(AuthenticationForm):
 
     def clean_password(self):
         password = self.cleaned_data.get("password")
-        username_or_email = self.data.get("username")
+        username_or_email = self.cleaned_data.get("username")
         user = None
         username_or_email_wrong = False
 
