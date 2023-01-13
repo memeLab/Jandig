@@ -30,6 +30,17 @@
                         {% include "users/components/repository-list.jinja2" %}
                     {% endwith %}
 
+                    <nav> 
+                        <ul class="pagination"> 
+                            {% for index in marker_list.paginator.page_range %} 
+                                {% if marker_list.number == index %} 
+                                    <li class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></li> 
+                                {% else %} 
+                                    <li class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></li> 
+                                {% endif %} 
+                            {% endfor %} 
+                        </ul> 
+                    </nav>
                     <div class="form-options">
                         <p>
                             <input id="marker-agreement-chk" type="checkbox" name="agreement">
@@ -49,8 +60,19 @@
                     </p>
 
                     {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
-                        {% include "users/components/repository-list.jinja2" %}
+                        {% include "users/components/repository-list.jinja2"%}
                     {% endwith%}
+                    <nav> 
+                        <ul class="pagination"> 
+                            {% for index in object_list.paginator.page_range %} 
+                                {% if object_list.number == index %} 
+                                    <li class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></li> 
+                                {% else %} 
+                                    <li class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></li> 
+                                {% endif %} 
+                            {% endfor %} 
+                        </ul> 
+                    </nav>
 
                     <div class="form-options">
                         <p>
