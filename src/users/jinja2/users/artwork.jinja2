@@ -31,15 +31,15 @@
                     {% endwith %}
 
                     <nav> 
-                        <ul class="pagination"> 
+                      <div class="flex">
                             {% for index in marker_list.paginator.page_range %} 
                                 {% if marker_list.number == index %} 
-                                    <li class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></li> 
+                                    <div class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></div> 
                                 {% else %} 
-                                    <li class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></li> 
+                                    <div class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></div> 
                                 {% endif %} 
                             {% endfor %} 
-                        </ul> 
+                      </div>
                     </nav>
                     <div class="form-options">
                         <p>
@@ -63,15 +63,15 @@
                         {% include "users/components/repository-list.jinja2"%}
                     {% endwith%}
                     <nav> 
-                        <ul class="pagination"> 
+                        <div class="flex"> 
                             {% for index in object_list.paginator.page_range %} 
                                 {% if object_list.number == index %} 
-                                    <li class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></li> 
+                                    <div class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></div> 
                                 {% else %} 
-                                    <li class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></li> 
+                                    <div class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></div> 
                                 {% endif %} 
                             {% endfor %} 
-                        </ul> 
+                        </div> 
                     </nav>
 
                     <div class="form-options">
