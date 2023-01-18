@@ -40,10 +40,10 @@ class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
 
-        self.fields["email"].widget.attrs["placeher"] = _("email")
-        self.fields["username"].widget.attrs["placeher"] = _("chosen username")
-        self.fields["password1"].widget.attrs["placeher"] = _("password")
-        self.fields["password2"].widget.attrs["placeher"] = _("confirm password")
+        self.fields["email"].widget.attrs["placeholder"] = _("email")
+        self.fields["username"].widget.attrs["placeholder"] = _("chosen username")
+        self.fields["password1"].widget.attrs["placeholder"] = _("password")
+        self.fields["password2"].widget.attrs["placeholder"] = _("confirm password")
 
     class Meta:
         model = User
@@ -64,9 +64,9 @@ class SignupForm(UserCreationForm):
 class PasswordChangeForm(OrigPasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
-        self.fields["_password"].widget.attrs["placeher"] = _(" Password")
-        self.fields["new_password1"].widget.attrs["placeher"] = _("New Password")
-        self.fields["new_password2"].widget.attrs["placeher"] = _(
+        self.fields["old_password"].widget.attrs["placeholder"] = _("Old Password")
+        self.fields["new_password1"].widget.attrs["placeholder"] = _("New Password")
+        self.fields["new_password2"].widget.attrs["placeholder"] = _(
             "New Password Again"
         )
 
@@ -88,10 +88,10 @@ class ProfileForm(forms.ModelForm):
         self.initial["bio"] = self.instance.bio
         self.initial["country"] = self.instance.country
         self.initial["personal_site"] = self.instance.personal_site
-        self.fields["email"].widget.attrs["placeher"] = _("E-mail")
-        self.fields["username"].widget.attrs["placeher"] = _("Username")
-        self.fields["bio"].widget.attrs["placeher"] = _("Personal Bio / Description")
-        self.fields["personal_site"].widget.attrs["placeher"] = _("Personal Website")
+        self.fields["email"].widget.attrs["placeholder"] = _("E-mail")
+        self.fields["username"].widget.attrs["placeholder"] = _("Username")
+        self.fields["bio"].widget.attrs["placeholder"] = _("Personal Bio / Description")
+        self.fields["personal_site"].widget.attrs["placeholder"] = _("Personal Website")
 
     email = forms.EmailField(
         max_length=254,
@@ -140,8 +140,8 @@ class ProfileForm(forms.ModelForm):
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
-        self.fields["username"].widget.attrs["placeher"] = _("username / email")
-        self.fields["password"].widget.attrs["placeher"] = _("password")
+        self.fields["username"].widget.attrs["placeholder"] = _("username / email")
+        self.fields["password"].widget.attrs["placeholder"] = _("password")
 
     def clean_username(self):
         username_or_email = self.cleaned_data.get("username")
@@ -197,12 +197,12 @@ class UploadMarkerForm(forms.ModelForm):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
         log.warning(self.fields)
-        self.fields["source"].widget.attrs["placeher"] = _("browse file")
+        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
-        self.fields["author"].widget.attrs["placeher"] = _(
+        self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
-        self.fields["title"].widget.attrs["placeher"] = _("Marker's title")
+        self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
 
     class Meta:
         model = Marker
@@ -236,15 +236,15 @@ class UploadObjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
-        self.fields["source"].widget.attrs["placeher"] = _("browse file")
+        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
-        self.fields["author"].widget.attrs["placeher"] = _(
+        self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
         self.fields["scale"].widget = HiddenInput()
         self.fields["rotation"].widget = HiddenInput()
         self.fields["position"].widget = HiddenInput()
-        self.fields["title"].widget.attrs["placeher"] = _("Object's title")
+        self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
         log.warning(self.fields)
 
     class Meta:
@@ -273,14 +273,14 @@ class ArtworkForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["marker_author"].widget.attrs["placeher"] = _(
+        self.fields["marker_author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
-        self.fields["augmented_author"].widget.attrs["placeher"] = _(
+        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
-        self.fields["title"].widget.attrs["placeher"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeher"] = _(
+        self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
+        self.fields["description"].widget.attrs["placeholder"] = _(
             "Artwork description"
         )
 
@@ -304,7 +304,7 @@ class ExhibitForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
 
-        self.fields["name"].widget.attrs["placeher"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeher"] = _(
+        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
+        self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
