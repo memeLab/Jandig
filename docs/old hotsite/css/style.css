@@ -41,7 +41,7 @@ h3 {
 	font-size: 18px;
 }
 
-.button:hover {
+button.button:hover {
 	background: #93e3e5;
 	cursor: pointer;
 }
@@ -84,11 +84,13 @@ h3 {
   }
 
 }
-}
+
 @media screen and (max-width: 600px) {
 	.footer {padding: 0 0% 0 0%;}
 .row  {padding: 0 0 0 0;
 }
+}
+
 /*.row {
 	display: flex;
 	justify-content: space-between;
