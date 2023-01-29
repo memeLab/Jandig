@@ -500,11 +500,8 @@ msgstr "Digite o código que você recebeu em seu e-mail."
 msgid "Type your username or e-mail"
 msgstr "Digite seu nome de usuário ou email"
 
-#: src/ARte/users/jinja2/users/signup.jinja2:29
-msgid "Remember me"
-msgstr "Lembre-se de mim"
-
 #: src/ARte/users/jinja2/users/login.jinja2:35
+#: src/ARte/users/jinja2/users/signup.jinja2:29
 msgid "Remember me"
 msgstr "Lembre-se de mim"
 
