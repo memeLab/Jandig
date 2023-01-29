@@ -500,11 +500,8 @@ msgstr "Digite o código que você recebeu em seu e-mail."
 msgid "Type your username or e-mail"
 msgstr "Digite seu nome de usuário ou email"
 
-#: src/ARte/users/jinja2/users/signup.jinja2:29
-msgid "Remember me"
-msgstr "Lembre-se de mim"
-
 #: src/ARte/users/jinja2/users/login.jinja2:35
+#: src/ARte/users/jinja2/users/signup.jinja2:29
 msgid "Remember me"
 msgstr "Lembre-se de mim"
 
@@ -760,3 +757,8 @@ msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
 #: src/ARte/users/jinja2/users/upload-marker.jinja2:19
 msgid "Choose Marker's title"
 msgstr "Escolha o título do seu Marcador"
+
+#: src/ARte/users/jinja2/users/upload-object.jinja2:138
+#: src/ARte/users/jinja2/users/edit-object.jinja2:88
+msgid "Invalid file type! Only image or video files are accepted."
+msgstr "Arquivo inválido! Apenas imagens ou videos são aceitos."
