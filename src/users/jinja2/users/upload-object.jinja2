@@ -114,6 +114,7 @@
                     var previewAndLoadFile = null;
                     var content_box = document.createElement("div");
                     content_box.id = "content-box";
+                    
                     if (file.type === "video/mp4" || file.type === "video/webm") {
                         image_preview = document.createElement("video");
                         previewAndLoadFile = function() {
@@ -125,7 +126,7 @@
                             document.getElementById("id_source").after(content_box);
                             document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
                         }
-                    } else {
+                    } else if(file.type.includes("image/")) {
                         image_preview = document.createElement("img");
                         previewAndLoadFile = function() {
                             image_preview.src = reader.result;
@@ -133,6 +134,13 @@
                             document.getElementById("id_source").after(content_box);
                             document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
                         }
+                    } else {
+                        alert("{{ _("Invalid file type! Only image or video files are accepted.") }}")
+                        
+                        document.getElementById("id_source").value = "";
+
+                        if (document.querySelector('#img-preview'))
+                            document.querySelector('#img-preview').remove();
                     }
 
                     var reader = new FileReader();
