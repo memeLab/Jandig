@@ -35,7 +35,20 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href= "/v1/markers/" class="seeall">{{_("All Markers")}}</a>
+                    <a href= "/api/v1/markers/" class="seeall">{{_("All Markers")}}</a>
+                    {% endif %}
+                    {% if seeall == True %}
+                    <nav> 
+                      <div class="flex">
+                            {% for index in markers.paginator.page_range %} 
+                                {% if markers.number == index %} 
+                                    <div class="page-item active"><span class="page-link">{{ index }}<span class="sr-only"></span></div> 
+                                {% else %} 
+                                    <div class="page-item"><a class="page-link" href="?page={{ index }}">{{ index }}</a></div> 
+                                {% endif %} 
+                            {% endfor %} 
+                      </div>
+                    </nav>
                     {% endif %}
                 {% endif %}
 
