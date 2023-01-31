@@ -64,7 +64,7 @@ def see_all(request):
         }
     elif request_type == "artworks":
         ctx = {
-            "artworks": Artwork.objects.all().order_by("-id"),
+            "artworks": Artwork.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "exhibits":
