@@ -69,7 +69,7 @@ def see_all(request):
         }
     elif request_type == "exhibits":
         ctx = {
-            "exhibits": Exhibit.objects.all(),
+            "exhibits": Exhibit.objects.all().order_by("-exbDate"),
             "seeall": True,
         }
 
