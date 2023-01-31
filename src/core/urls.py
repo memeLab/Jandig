@@ -26,15 +26,14 @@ from core.views.views import (
 )
 
 api_router = DefaultRouter()
-# api_router.register("markers", MarkerViewset, basename="marker")
-# api_router.register("objects", ObjectViewset, basename="object")
-# api_router.register("artworks", ArtworkViewset, basename="artwork")
-# api_router.register("exhibits", ExhibitViewset, basename="exhibit")
+api_router.register("markers", MarkerViewset, basename="marker")
+api_router.register("objects", ObjectViewset, basename="object")
+api_router.register("artworks", ArtworkViewset, basename="artwork")
+api_router.register("exhibits", ExhibitViewset, basename="exhibit")
 
 urlpatterns = [
     path("", home, name="home"),
-    # path("api/v1/", include(api_router.urls)),
-    path("api/v1/markers/", MarkerViewset.see_markers, name="markers-list"),
+    path("api/v1/", include(api_router.urls)),
     path("documentation/", documentation, name="documentation"),
     path("community/", community, name="community"),
     path("collection/", collection, name="collection"),

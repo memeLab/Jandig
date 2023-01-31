@@ -92,7 +92,7 @@
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             }
 
-            let elemUrl = {{url('markers-list')|tojson}};
+            let elemUrl = {{url('marker-list')|tojson}};
             elemUrl += element.attr('id');
 
             if(elemType != "artwork"){

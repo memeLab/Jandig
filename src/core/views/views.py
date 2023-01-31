@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -31,10 +32,10 @@ def index(request):
 @require_http_methods(["GET"])
 def collection(request):
 
-    exhibits = Exhibit.objects.all().order_by("-id")[:4]
-    artworks = Artwork.objects.all().order_by("-id")[:6]
-    markers = Marker.objects.all().order_by("-id")[:8]
-    objects = Object.objects.all().order_by("-id")[:8]
+    exhibits = Exhibit.objects.all().order_by("creation_date")[:4]
+    artworks =Artwork.objects.all().order_by("created_at")[:6]
+    markers = Marker.objects.all().order_by("uploaded_at")[:8]
+    objects = Object.objects.all().order_by("uploaded_at")[:8]
 
     ctx = {
         "artworks": artworks,
@@ -52,24 +53,22 @@ def collection(request):
 def see_all(request):
     request_type = request.GET.get("which")
     ctx = {}
-    if request_type == "objects":
+    per_page = 20
+    page = request.GET.get("page", 1)
+
+    data_types = {
+        "objects": Object.objects.all().order_by("uploaded_at"),
+        "markers": Marker.objects.all().order_by("uploaded_at"),
+        "artworks": Artwork.objects.all().order_by("created_at"),
+        "exhibits": Exhibit.objects.all().order_by("creation_date"),
+    }
+
+    data = data_types.get(request_type)
+    if data:
+        paginator = Paginator(data, per_page)
+        data = paginator.get_page(page)
         ctx = {
-            "objects": Object.objects.all(),
-            "seeall": True,
-        }
-    elif request_type == "markers":
-        ctx = {
-            "markers": Marker.objects.all(),
-            "seeall": True,
-        }
-    elif request_type == "artworks":
-        ctx = {
-            "artworks": Artwork.objects.all().order_by("-id"),
-            "seeall": True,
-        }
-    elif request_type == "exhibits":
-        ctx = {
-            "exhibits": Exhibit.objects.all(),
+            request_type: data,
             "seeall": True,
         }
 
