@@ -62,6 +62,16 @@ html_theme_options = {
     'logo': 'logo.png',
     'github_user': 'memeLab',
     'github_repo': 'Jandig',
+    'html_sidebars': {
+            '**': [
+                'search.html',
+                'navigation.html',
+            ]
+    },
+    'extra_nav_links': {
+        'Official Site': 'https://jandig.app',
+        'Github': 'https://github.com/memelab/Jandig'
+    },
 }
 
 def setup(app):
