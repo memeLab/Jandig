@@ -58,5 +58,11 @@ html_theme = 'alabaster'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_theme_options = {
+    'logo': 'logo.png',
+    'github_user': 'memeLab',
+    'github_repo': 'Jandig',
+}
+
 def setup(app):
     app.add_css_file('reset.css')
