@@ -59,7 +59,7 @@ def see_all(request):
         }
     elif request_type == "markers":
         ctx = {
-            "markers": Marker.objects.all(),
+            "markers": Marker.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "artworks":
