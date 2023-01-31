@@ -54,7 +54,7 @@ def see_all(request):
     ctx = {}
     if request_type == "objects":
         ctx = {
-            "objects": Object.objects.all(),
+            "objects": Object.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "markers":
