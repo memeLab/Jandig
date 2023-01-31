@@ -36,6 +36,37 @@ ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 # Application definition
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+import re
+
+# Sentry configuration
+ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
+HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
+DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
+
+
+def traces_sampler(sampling_context):
+    url = sampling_context["wsgi_environ"]["PATH_INFO"]
+    is_health_check = url == f"/{HEALTH_CHECK_URL}"
+    is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None
+    if is_health_check or is_django_admin:
+        return 0
+    return SENTRY_TRACES_SAMPLE_RATE
+
+
+if ENABLE_SENTRY:
+    SENTRY_DSN = env("SENTRY_DSN")
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        traces_sampler=traces_sampler,
+    )
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

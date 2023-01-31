@@ -1,5 +1,6 @@
 from django.shortcuts import render, Http404
 from django.urls import reverse
+from django.http import JsonResponse
 
 def home(request):
     return render(request, 'users/profile.jinja2',{})
@@ -15,3 +16,6 @@ def community(request):
 
 def marker_generator(request):
     return render(request,'core/generator.html',{})
+
+def health_check(request):
+    return JsonResponse({"status": "ok"}, status=200)
