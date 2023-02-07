@@ -45,7 +45,7 @@ urlpatterns = [
     path("manifest.json", manifest, name="manifest"),
     path("upload", upload_image, name="upload-image"),
     path("i18n/", include("django.conf.urls.i18n")),
-    path("see_all/", see_all, name="see-all"),
+    path("see_all/", see_all, name="see_all"),
     path("robots.txt/", robots_txt),
     path(settings.HEALTH_CHECK_URL, health_check),
 ]

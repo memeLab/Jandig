@@ -25,13 +25,22 @@
                     {% if seeall == True %}
                         <nav> 
                         <div class="flex">
-                                {% for index in repository_list.paginator.page_range %} 
-                                    {# TODO: improve to when have many items #}
-                                    {% if repository_list.number == index %} 
-                                        <div class="active useful-links"><span class="page-link">{{ index }}<span class="sr-only"></span></div> 
-                                    {% else %} 
-                                        <div class="useful-links"><a class="page-link" href="?which={{element_type}}s&page={{ index }}">{{ index }}</a></div> 
-                                    {% endif %} 
+                                {% for page_number in repository_list.adjusted_elided_pages %} 
+                                    {% if page_number == repository_list.paginator.ELLIPSIS %}
+                                    <div class="active useful-links">
+                                        <span class="page-link">
+                                        {{ page_number }}
+                                    <span class="sr-only"></span>
+                                    </div> 
+                                      
+                                    {% else %}
+                                        <div class="useful-links">
+                                            <a class="page-link" 
+                                                href="?which={{element_type}}s&page={{ page_number }}">
+                                                {{ page_number }}
+                                            </a>
+                                        </div> 
+                                    {% endif %}
                                 {% endfor %} 
                         </div>
                         </nav>
