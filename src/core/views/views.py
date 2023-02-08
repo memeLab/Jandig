@@ -54,22 +54,22 @@ def see_all(request):
     ctx = {}
     if request_type == "objects":
         ctx = {
-            "objects": Object.objects.all(),
+            "objects": Object.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "markers":
         ctx = {
-            "markers": Marker.objects.all(),
+            "markers": Marker.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "artworks":
         ctx = {
-            "artworks": Artwork.objects.all().order_by("-id"),
+            "artworks": Artwork.objects.all().order_by("-element-upload-info"),
             "seeall": True,
         }
     elif request_type == "exhibits":
         ctx = {
-            "exhibits": Exhibit.objects.all(),
+            "exhibits": Exhibit.objects.all().order_by("-exbDate"),
             "seeall": True,
         }
 
