@@ -26,13 +26,12 @@
                         <nav> 
                         <div class="flex">
                                 {% for page_number in repository_list.adjusted_elided_pages %} 
-                                    {% if page_number == repository_list.paginator.ELLIPSIS %}
+                                    {% if page_number == repository_list.number %}
                                     <div class="active useful-links">
-                                        <span class="page-link">
+                                        <span class="page-link" style="background-color: #05f7ae; color: #fff; padding: 5px;">
                                         {{ page_number }}
                                     <span class="sr-only"></span>
                                     </div> 
-                                      
                                     {% else %}
                                         <div class="useful-links">
                                             <a class="page-link" 
