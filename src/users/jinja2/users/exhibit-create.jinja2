@@ -104,6 +104,17 @@
                 }
             }
 
+            function checkMessage(innerText, messageList) {
+                var contain = false;
+
+                messageList.forEach((message) => {
+                    if(innerText.includes(message)) 
+                        contain = true;
+                });
+
+                return contain;
+            }
+
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
@@ -120,14 +131,15 @@
                 let exhibitNameError = $('#exhibit-name-error')[0].innerText;
                 let exhibitSlugError = $('#exhibit-slug-error')[0].innerText;
 
-                // 54 is the length when there is no problem
-                if (artworkError.length != 54) {
+                if (checkMessage(artworkError, ["Este campo é obrigatório", 
+                                                    "This field is required"])) {
                     $('#form-modal').modal('toggle');
                     currentTab = MARKER_TAB;
                     showTab(currentTab);
-                }
-                // 56 and 62 are the length when there is no problem
-                else if (exhibitNameError.length != 56 || exhibitSlugError.length != 62) {
+                } else if (checkMessage(exhibitNameError, ["This name is already being used", 
+                                                        "Este nome de exibição já está em uso"]) || 
+                        checkMessage(exhibitSlugError, ["That exhibit slug is already in use",
+                                                        "Este link de exibição já está sendo utilizado"])) {
                     $('#form-modal').modal('toggle');
                     currentTab = ARTWORK_TAB;
                     showTab(currentTab);
