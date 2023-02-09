@@ -42,11 +42,6 @@ Colors.
 Resolution
 ~~~~~~~~~
 
-Para aumentar a compatibilidade de dispositivos, limitamos a resolução
-do quadro de exibição (que aparece em tela cheia no smartphone) em
-640x480 pixels. Como a animação só vai aparecer em um trecho desse
-quadro, recomendamos a criação do conteúdo em 300x300px.
-
 To increase device compatibility, we limit the resolution
 of the display frame (which appears in full screen on the smartphone) in
 640x480 pixels. As the animation will only appear in a part of this
