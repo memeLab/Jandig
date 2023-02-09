@@ -12,13 +12,19 @@ COPY ./pyproject.toml /pyproject.toml
 COPY ./poetry.lock /poetry.lock
 
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
 
 ENV PATH="$PATH:/root/.local/bin" \
     POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
-    TINI_VERSION=v0.19.0
+    TINI_VERSION=v0.19.0 \
+    # poetry:
+    POETRY_VERSION=1.3.1
+
+# Installing `poetry` package manager:
+# https://github.com/python-poetry/poetry
+RUN curl -sSL https://install.python-poetry.org | python3 - \
+  && poetry --version
 
 RUN poetry install
 
