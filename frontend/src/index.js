@@ -1,4 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
-ReactDOM.render(<h1>Hello Jandig</h1>, document.getElementById('root'));
+import { ArViewer } from './ar_viewer/ArViewer';
+
+const root = createRoot(document.getElementById('root'));
+root.render(<ArViewer exhibitUrl="http://localhost:8000/api/v1/exhibits/1/"></ArViewer>);
