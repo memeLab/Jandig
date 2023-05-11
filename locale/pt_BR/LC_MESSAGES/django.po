@@ -757,3 +757,11 @@ msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
 #: src/ARte/users/jinja2/users/upload-marker.jinja2:19
 msgid "Choose Marker's title"
 msgstr "Escolha o título do seu Marcador"
+
+#: src/docs/animacoes-portugues.jinja2:1
+msgid "Tips for producing animations"
+msgstr "Dicas para produzir animações"
+
+#: src/docs/animacoes-portugues.jinja2:1
+msgid "Tips for making bookmarks"
+msgstr "Dicas para produzir marcadores"

@@ -492,3 +492,11 @@ msgstr ""
 #: src/ARte/users/jinja2/users/components/elements-modal.jinja2:84
 msgid "Create artwork with this "
 msgstr ""
+
+#: src/docs/animacoes-portugues.jinja2:1
+msgid "Tips for producing animations"
+msgstr ""
+
+#: src/docs/animacoes-portugues.jinja2:1
+msgid "Tips for making bookmarks"
+msgstr ""
