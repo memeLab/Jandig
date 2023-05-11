@@ -495,8 +495,8 @@ msgstr ""
 
 #: src/docs/animacoes-portugues.jinja2:1
 msgid "Tips for producing animations"
-msgstr ""
+msgstr "Dicas para produzir animações"
 
 #: src/docs/animacoes-portugues.jinja2:1
 msgid "Tips for making bookmarks"
-msgstr ""
+msgstr "Dicas para produzir marcadores"
