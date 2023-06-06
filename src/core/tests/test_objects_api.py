@@ -13,8 +13,6 @@ fake_file = SimpleUploadedFile(
     b"these are the file contents!"
 )
 
-test_server_url = f"http://testserver/api/v1/objects/?limit={settings.PAGE_SIZE}&offset=20"
-
 
 class TestObjectAPI(TestCase):
     def setUp(self):

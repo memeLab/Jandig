@@ -13,8 +13,6 @@ fake_file = SimpleUploadedFile(
     b"these are the file contents!"
 )
 
-test_server_url = f"http://testserver/api/v1/markers/?limit={settings.PAGE_SIZE}&offset=20"
-
 
 class TestMarkerAPI(TestCase):
     def setUp(self):
