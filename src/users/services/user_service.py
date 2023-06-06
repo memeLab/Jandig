@@ -13,7 +13,7 @@ class UserService:
         log.warning(user)
         return user.email
 
-    def check_if_username_or_email_exist(self, username_or_email):
+    def exists_username_email(self, username_or_email):
         if "@" in username_or_email:
             if not User.objects.filter(email=username_or_email).exists():
                 return False

@@ -8,4 +8,6 @@ class UploadFileForm(forms.Form):
 
 
 class ExhibitForm(forms.Form):
-    exhibit = forms.ModelChoiceField(queryset=Exhibit.objects.all().order_by("name"))
+    exhibit = forms.ModelChoiceField(
+        queryset=Exhibit.objects.all().order_by("name")
+    )

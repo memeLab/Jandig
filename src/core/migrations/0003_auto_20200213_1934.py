@@ -14,6 +14,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='exhibit',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='exhibits', to='users.Profile'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name='exhibits',
+                to='users.Profile'
+            ),
         ),
     ]

@@ -61,29 +61,43 @@ def recover_password(request):
         recover_password_form = RecoverPasswordForm(request.POST)
 
         if recover_password_form.is_valid():
-            username_or_email = recover_password_form.cleaned_data.get("username_or_email")
+            username_or_email = recover_password_form.cleaned_data.get(
+                "username_or_email"
+            )
             user_service = UserService()
-            username_or_email_is_valid = user_service.check_if_username_or_email_exist(username_or_email)
+            username_or_email_is_valid = user_service.exists_username_email(
+                username_or_email
+            )
             if not username_or_email_is_valid:
                 return redirect("invalid_recovering_email_or_username")
 
             global global_recovering_email
-            global_recovering_email = user_service.get_user_email(username_or_email)
+            global_recovering_email = user_service.get_user_email(
+                username_or_email
+            )
 
             global global_verification_code
             encrypt_service = EncryptService()
-            global_verification_code = encrypt_service.generate_verification_code(global_recovering_email)
+            global_verification_code = encrypt_service.create_verification_code(
+                global_recovering_email
+            )
 
             build_message_and_send_to_user(global_recovering_email)
 
         return redirect("recover-code")
 
     recover_password_form = RecoverPasswordForm()
-    return render(request, "users/recover-password.jinja2", {"form": recover_password_form})
+    return render(
+        request,
+        "users/recover-password.jinja2",
+        {"form": recover_password_form}
+    )
 
 
 def build_message_and_send_to_user(email):
-    message = f"You have requested a new password. This is your verification code: {global_verification_code}\nCopy it and put into the field."
+    verification_code_msg = "You have requested a new password. This is your verification code"
+    copy_message = "Copy it and put into the field."
+    message = f"{verification_code_msg} {global_recovering_email}\n{copy_message}"
     email_service = EmailService(message)
     multipart_message = email_service.build_multipart_message(email)
     email_service.send_email_to_recover_password(multipart_message)
@@ -101,14 +115,20 @@ def recover_code(request):
 
             if code == global_verification_code:
                 global recover_password_user
-                recover_password_user = User.objects.get(email=global_recovering_email)
+                recover_password_user = User.objects.get(
+                    email=global_recovering_email
+                )
                 return redirect("recover-edit-password")
 
             return redirect("wrong-verification-code")
         return redirect("home")
 
     form = RecoverPasswordCodeForm()
-    return render(request, "users/recover-password-code.jinja2", {"form": form})
+    return render(
+        request,
+        "users/recover-password-code.jinja2",
+        {"form": form}
+    )
 
 
 def recover_edit_password(request):
@@ -122,7 +142,11 @@ def recover_edit_password(request):
     else:
         form = SetPasswordForm(recover_password_user)
 
-    return render(request, "users/recover-edit-password.jinja2", {"form": form})
+    return render(
+        request,
+        "users/recover-edit-password.jinja2",
+        {"form": form}
+    )
 
 
 @require_http_methods(["GET"])
@@ -163,7 +187,14 @@ def profile(request):
 
 
 @cache_page(60 * 60)
-def get_element(request, form, form_class, form_type, source, author, existent_element):
+def get_element(
+        request,
+        form,
+        form_class,
+        form_type,
+        source, author,
+        existent_element):
+
     element = None
 
     if source and author:
@@ -380,24 +411,44 @@ def upload_elements(request, form_class, form_type, route):
         return render(
             request,
             "users/upload-marker.jinja2",
-            {"form_type": form_type, "form": form, "route": route, "edit": False},
+            {
+                "form_type": form_type,
+                "form": form,
+                "route": route,
+                "edit": False
+            },
         )
 
     return render(
         request,
         "users/upload-object.jinja2",
-        {"form_type": form_type, "form": form, "route": route, "edit": False},
+        {
+            "form_type": form_type,
+            "form": form,
+            "route": route,
+            "edit": False
+        },
     )
 
 
 @login_required
 def object_upload(request):
-    return upload_elements(request, UploadObjectForm, "object", "object-upload")
+    return upload_elements(
+        request,
+        UploadObjectForm,
+        "object",
+        "object-upload"
+    )
 
 
 @login_required
 def marker_upload(request):
-    return upload_elements(request, UploadMarkerForm, "marker", "marker-upload")
+    return upload_elements(
+        request,
+        UploadMarkerForm,
+        "marker",
+        "marker-upload"
+    )
 
 
 def edit_elements(request, form_class, route, model, model_data):
@@ -473,7 +524,9 @@ def edit_marker(request):
 def edit_artwork(request):
     index = request.GET.get("id", "-1")
     model = Artwork.objects.filter(id=index).order_by("-id")
-    if not model or model.first().author != Profile.objects.get(user=request.user):
+    if not model or model.first().author != Profile.objects.get(
+        user=request.user
+    ):
         raise Http404
 
     if request.method == "POST":
@@ -520,7 +573,9 @@ def edit_artwork(request):
 def edit_exhibit(request):
     index = request.GET.get("id", "-1")
     model = Exhibit.objects.filter(id=index)
-    if not model or model.first().owner != Profile.objects.get(user=request.user):
+    if not model or model.first().owner != Profile.objects.get(
+        user=request.user
+    ):
         raise Http404
 
     if request.method == "POST":
@@ -548,9 +603,15 @@ def edit_exhibit(request):
 
     model_artworks = model_artworks[:-1]
 
-    model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
+    model_data = {
+        "name": model.name,
+        "slug": model.slug,
+        "artworks": model_artworks
+    }
 
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
+    artworks = Artwork.objects.filter(
+        author=request.user.profile
+    ).order_by("-id")
 
     return render(
         request,
@@ -701,13 +762,31 @@ def related_content(request):
 def mod_delete(request):
     content_type = request.GET.get("content_type", None)
     if content_type == "marker":
-        delete_content(Marker, request.user, request.GET.get("instance_id", -1))
+        delete_content(
+            Marker,
+            request.user,
+            request.GET.get(
+                "instance_id", -1
+            ))
     elif content_type == "object":
-        delete_content(Object, request.user, request.GET.get("instance_id", -1))
+        delete_content(
+            Object,
+            request.user,
+            request.GET.get(
+                "instance_id", -1
+            ))
     elif content_type == "artwork":
-        delete_content(Artwork, request.user, request.GET.get("instance_id", -1))
+        delete_content(
+            Artwork,
+            request.user,
+            request.GET.get(
+                "instance_id", -1
+            ))
     elif content_type == "exhibit":
-        delete_content(Exhibit, request.user, request.GET.get("id", -1))
+        delete_content(
+            Exhibit,
+            request.user,
+            request.GET.get("id", -1))
     return redirect("moderator-page")
 
 

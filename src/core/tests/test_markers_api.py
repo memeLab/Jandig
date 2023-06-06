@@ -8,7 +8,12 @@ from core.models import Marker
 from core.serializers.markers import MarkerSerializer
 from users.models import User
 
-fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
+fake_file = SimpleUploadedFile(
+    "fake_file.png",
+    b"these are the file contents!"
+)
+
+test_server_url = f"http://testserver/api/v1/markers/?limit={settings.PAGE_SIZE}&offset=20"
 
 
 class TestMarkerAPI(TestCase):
@@ -35,7 +40,9 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["previous"], None)
         first_result = data["results"][0]
         serializer_data = MarkerSerializer(marker).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
+        serializer_data["source"] = "http://testserver" + serializer_data[
+            "source"
+        ]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(first_result, serializer_data)
 
@@ -58,7 +65,7 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["count"], settings.PAGE_SIZE + 1)
         self.assertEqual(
             data["next"],
-            f"http://testserver/api/v1/markers/?limit={settings.PAGE_SIZE}&offset=20",
+            test_server_url,
         )
         self.assertEqual(data["previous"], None)
         self.assertEqual(len(data["results"]), 20)
@@ -69,6 +76,8 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         serializer_data = MarkerSerializer(marker).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
+        serializer_data["source"] = "http://testserver" + serializer_data[
+            "source"
+        ]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(data, serializer_data)

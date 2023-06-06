@@ -35,20 +35,32 @@ class UserTestCase(TestCase):
         self.assertEqual(response.url, "/users/invalid-recovering-email")
 
     def test_recover_password_invalid_username(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "testadorinvalid"}, follow=True)
+        request = self.client_test.post(
+            "/recover/",
+            {"username_or_email": "testadorinvalid"},
+            follow=True
+        )
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/invalid-recovering-email")
 
     def test_recover_password_valid_email(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "testador@memelab.com"}, follow=True)
+        request = self.client_test.post(
+            "/recover/",
+            {"username_or_email": "testador@memelab.com"},
+            follow=True
+        )
         UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/recover-code/")
 
     def test_recover_password_valid_username(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "Testador"}, follow=True)
+        request = self.client_test.post(
+            "/recover/",
+            {"username_or_email": "Testador"},
+            follow=True
+        )
         UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
@@ -66,22 +78,24 @@ class UserTestCase(TestCase):
         self.email_service.send_email_to_recover_password(response)
         mock_quit.assert_called_once()
 
-    @mock.patch("users.services.encrypt_service.EncryptService.generate_hash_code")
-    def test_generate_verification_code(self, mock_hash, *args, **kwargs):
+    @mock.patch(
+        "users.services.encrypt_service.EncryptService.generate_hash_code"
+    )
+    def test_create_verification_code(self, mock_hash, *args, **kwargs):
         email = "testador@memelab.com"
-        self.encrypt_service.generate_verification_code(email)
+        self.encrypt_service.create_verification_code(email)
         mock_hash.assert_called_once()
 
-    def test_check_if_username_or_email_exist(self, *args, **kwargs):
+    def test_exists_username_email(self, *args, **kwargs):
         email = "testador@memelab.com"
         UserFactory()
-        response = self.user_service.check_if_username_or_email_exist(email)
+        response = self.user_service.exists_username_email(email)
         self.assertTrue(response)
 
     def test_check_if_username_or_email_doesnt_exist(self, *args, **kwargs):
         email = "testadorinvalido@memelab.com"
         UserFactory()
-        response = self.user_service.check_if_username_or_email_exist(email)
+        response = self.user_service.exists_username_email(email)
         self.assertFalse(response)
 
     def test_get_user_email_by_email(self, *args, **kwargs):
