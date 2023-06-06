@@ -13,14 +13,20 @@ from core.models import Artwork, Exhibit, Marker, Object
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def service_worker(request):
-    return render(request, "core/sw.js", content_type="application/x-javascript")
+    return render(
+        request,
+        "core/sw.js",
+        content_type="application/x-javascript"
+    )
 
 
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def manifest(request):
     return render(
-        request, "core/manifest.json", content_type="application/x-javascript"
+        request,
+        "core/manifest.json",
+        content_type="application/x-javascript"
     )
 
 

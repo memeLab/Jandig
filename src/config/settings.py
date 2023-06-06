@@ -49,10 +49,14 @@ SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
 
+
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
     is_health_check = url == f"/{HEALTH_CHECK_URL}"
-    is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None
+    is_django_admin = re.search(
+        f"^/{DJANGO_ADMIN_URL.strip('/')}/*",
+        url
+    ) is not None
     if is_health_check or is_django_admin:
         return 0
     return SENTRY_TRACES_SAMPLE_RATE
@@ -217,7 +221,10 @@ AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
 USE_MINIO = os.getenv("USE_MINIO", "false").lower() in ("true", "True", "1")
 if USE_MINIO:
-    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_S3_ENDPOINT_URL", "http://storage:9000")
+    AWS_S3_ENDPOINT_URL = os.getenv(
+        "MINIO_S3_ENDPOINT_URL",
+        "http://storage:9000"
+    )
     AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
     AWS_S3_USE_SSL = False
     AWS_S3_SECURE_URLS = False

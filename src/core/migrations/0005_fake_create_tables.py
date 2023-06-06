@@ -17,9 +17,17 @@ class Migration(migrations.Migration):
                 migrations.CreateModel(
                     name='Artwork',
                     fields=[
-                        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                        ('id', models.AutoField(
+                            auto_created=True,
+                            primary_key=True,
+                            serialize=False,
+                            verbose_name='ID'
+                        )),
                         ('title', models.CharField(max_length=50)),
-                        ('description', models.TextField(blank=True, max_length=500)),
+                        ('description', models.TextField(
+                            blank=True,
+                            max_length=500
+                        )),
                         ('created_at', models.DateTimeField(auto_now=True)),
                     ],
                     options={
@@ -29,15 +37,35 @@ class Migration(migrations.Migration):
                 migrations.CreateModel(
                     name='Object',
                     fields=[
-                        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                        ('id', models.AutoField(
+                            auto_created=True,
+                            primary_key=True,
+                            serialize=False,
+                            verbose_name='ID'
+                        )),
                         ('source', models.FileField(upload_to='objects/')),
                         ('uploaded_at', models.DateTimeField(auto_now=True)),
                         ('author', models.CharField(max_length=60)),
-                        ('title', models.CharField(default='', max_length=60)),
-                        ('scale', models.CharField(default='1 1', max_length=50)),
-                        ('position', models.CharField(default='0 0 0', max_length=50)),
-                        ('rotation', models.CharField(default='270 0 0', max_length=50)),
-                        ('owner', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile')),
+                        ('title', models.CharField(
+                            default='',
+                            max_length=60
+                        )),
+                        ('scale', models.CharField(
+                            default='1 1',
+                            max_length=50
+                        )),
+                        ('position', models.CharField(
+                            default='0 0 0',
+                            max_length=50
+                        )),
+                        ('rotation', models.CharField(
+                            default='270 0 0',
+                            max_length=50
+                        )),
+                        ('owner', models.ForeignKey(
+                            on_delete=django.db.models.deletion.DO_NOTHING,
+                            to='users.Profile'
+                        )),
                     ],
                     options={
                         'db_table': 'users_object',
@@ -46,13 +74,24 @@ class Migration(migrations.Migration):
                 migrations.CreateModel(
                     name='Marker',
                     fields=[
-                        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                        ('id', models.AutoField(
+                            auto_created=True,
+                            primary_key=True,
+                            serialize=False,
+                            verbose_name='ID'
+                        )),
                         ('source', models.ImageField(upload_to='markers/')),
                         ('uploaded_at', models.DateTimeField(auto_now=True)),
                         ('author', models.CharField(max_length=60)),
-                        ('title', models.CharField(default='', max_length=60)),
+                        ('title', models.CharField(
+                            default='',
+                            max_length=60
+                        )),
                         ('patt', models.FileField(upload_to='patts/')),
-                        ('owner', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile')),
+                        ('owner', models.ForeignKey(
+                            on_delete=django.db.models.deletion.DO_NOTHING,
+                            to='users.Profile'
+                        )),
                     ],
                     options={
                         'db_table': 'users_marker',
@@ -61,22 +100,34 @@ class Migration(migrations.Migration):
                 migrations.AlterField(
                     model_name='exhibit',
                     name='artworks',
-                    field=models.ManyToManyField(related_name='exhibits', to='core.Artwork'),
+                    field=models.ManyToManyField(
+                        related_name='exhibits',
+                        to='core.Artwork'
+                    ),
                 ),
                 migrations.AddField(
                     model_name='artwork',
                     name='augmented',
-                    field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.Object'),
+                    field=models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to='core.Object'
+                    ),
                 ),
                 migrations.AddField(
                     model_name='artwork',
                     name='author',
-                    field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile'),
+                    field=models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to='users.Profile'
+                    ),
                 ),
                 migrations.AddField(
                     model_name='artwork',
                     name='marker',
-                    field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='core.Marker'),
+                    field=models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to='core.Marker'
+                    ),
                 ),
             ],
             database_operations=[]

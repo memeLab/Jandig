@@ -30,7 +30,6 @@ def create_marker(filename, original_filename):
         marker_image = generate_marker_from_image(image)
         marker_image.name = original_filename
         marker_image.__commited = False
-        # marker = filestorage.save("markers/" + original_filename, marker_image)
         return marker_image
 
 
@@ -46,7 +45,10 @@ class Marker(models.Model):
         # filestorage = PublicMediaStorage()
         # # Image Filename
         # original_filename = self.source.name
-        # filename = filestorage.save(f"original_{original_filename}", self.source)
+        # filename = filestorage.save(
+        #   f"original_{original_filename}",
+        #   self.source
+        # )
         # # Complete Image URL on storage
         # print("aaaaa"*30)
         # with Image.open(self.source) as image:
@@ -54,8 +56,14 @@ class Marker(models.Model):
         # print("aaaaa"*30)
         # # fileurl = filestorage.url(filename)
         # print(filename)
-        # self.source = create_marker(filename, original_filename)
-        # self.patt = create_patt(filename, original_filename)
+        # self.source = create_marker(
+        #   filename,
+        #   original_filename
+        # )
+        # self.patt = create_patt(
+        #   filename,
+        #   original_filename
+        # )
         print("B" * 30)
         print(self.source)
         print(self.patt)
