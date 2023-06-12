@@ -50,6 +50,8 @@ class TestExhibitAPI(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_api_exhibit_lists_multiple_exhibits(self):
+        artworks = []
+        exhibits = []
         for i in range(0, settings.PAGE_SIZE + 1):
             marker = Marker.objects.create(
                 owner=self.profile,
@@ -64,11 +66,13 @@ class TestExhibitAPI(TestCase):
                 augmented=obj,
                 marker=marker
             )  # noqa F841
+            artworks.append(artwork)
             exhibit = Exhibit.objects.create(
                 owner=self.profile,
                 name=f"name_{i}",
                 slug=f"slug_{i}"
             )  # noqa F841
+            exhibits.append(exhibit)
         response = self.client.get("/api/v1/exhibits/")
         self.assertEqual(response.status_code, 200)
 

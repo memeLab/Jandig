@@ -63,7 +63,7 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["count"], settings.PAGE_SIZE + 1)
         self.assertEqual(
             data["next"],
-            test_server_url,
+            "test_server_url",
         )
         self.assertEqual(data["previous"], None)
         self.assertEqual(len(data["results"]), 20)
