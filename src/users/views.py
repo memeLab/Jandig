@@ -141,15 +141,15 @@ def profile(request):
 
     user = request.GET.get("user")
 
-    if user:
-        profile = Profile.objects.get(user=user)
-    else:
-        profile = Profile.objects.select_related().get(user=request.user)
+    if not user:
+        user = request.user
+
+    profile = Profile.objects.prefetch_related("exhibits", "markers", "ar_objects", "artworks").get(user=user)
 
     exhibits = profile.exhibits.all()
-    markers = profile.marker_set.all()
-    objects = profile.object_set.all()
-    artworks = profile.artwork_set.all()
+    markers = profile.markers.all()
+    objects = profile.ar_objects.all()
+    artworks = profile.artworks.all()
 
     ctx = {
         "exhibits": exhibits,

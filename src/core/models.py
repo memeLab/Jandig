@@ -37,7 +37,7 @@ def create_marker(filename, original_filename):
 
 
 class Marker(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="markers")
     source = models.ImageField(upload_to="markers/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -91,7 +91,7 @@ class Marker(models.Model):
 
 
 class Object(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="ar_objects")
     source = models.FileField(upload_to="objects/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -209,7 +209,7 @@ class Object(models.Model):
 
 
 class Artwork(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="artworks")
     marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
     augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=50, blank=False)
