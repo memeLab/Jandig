@@ -10,6 +10,8 @@ from pymarker.core import generate_marker_from_image, generate_patt_from_image
 from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
+import logging
+log = logging.getLogger()
 
 def create_patt(filename, original_filename):
     filestorage = PublicMediaStorage()
@@ -197,13 +199,13 @@ class Object(models.Model):
 
     @property
     def xposition(self):
-        a = re.findall(r"[\d\.\d]+", self.position)
-        return a[0]
+        x = self.position.split(" ")[0]
+        return float(x)
 
     @property
     def yposition(self):
-        a = re.findall(r"[\d\.\d]+", self.position)
-        return a[1]
+        y = self.position.split(" ")[1]
+        return float(y)
 
 
 class Artwork(models.Model):

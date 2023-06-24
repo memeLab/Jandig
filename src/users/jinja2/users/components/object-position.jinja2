@@ -7,14 +7,14 @@
         </div>
         <h3>Horizontal:</h3>
         <div class="slider-container"> 
-            <input id="X-position" type="range" min="-100" max="100" class="trigger-change-value slider" value="{{ xposition }}" oninput="updateXValue()">
+            <input id="X-position" type="range" min="-200" max="200" class="trigger-change-value slider" value="{{ xposition*100 }}" oninput="updateXValue()">
         </div>
         <p>
             <span id="X-position-value">{{ xposition }}</span>
         </p>
         <h3>Vertical:</h3>
         <div class="slider-container"> 
-            <input id="Y-position" type="range" min="-100" max="100" class="trigger-change-value slider" value="{{ yposition }}" oninput="updateYValue()">
+            <input id="Y-position" type="range" min="-200" max="200" class="trigger-change-value slider" value="{{ yposition*100 }}" oninput="updateYValue()">
         </div>
         <p>
             <span id="Y-position-value">{{ yposition }}</span>
@@ -28,7 +28,7 @@
             function updateXValue() {
                 var slider = document.getElementById("X-position");
                 var display_value = document.getElementById("X-position-value");
-                display_value.innerHTML = slider.value;
+                display_value.innerHTML = slider.value/100;
 
                 updateBoxShadow();
             }
@@ -36,7 +36,7 @@
             function updateYValue() {
                 var slider = document.getElementById("Y-position");
                 var display_value = document.getElementById("Y-position-value");
-                display_value.innerHTML = slider.value;
+                display_value.innerHTML = slider.value/100;
 
                 updateBoxShadow();
             }
