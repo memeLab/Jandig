@@ -150,6 +150,14 @@ msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 msgid "Jandig Exhibitions"
 msgstr "Exposições Jandig"
 
+#: src/ARte/users/forms.py:248
+msgid "That exhibit slug is already in use. Please choose another slug for your exhibit."
+msgstr "Este link de exibição já está sendo utilizado. Por favor escolha outro link para sua exibição."
+
+#: src/ARte/users/forms.py:250
+msgid "This name is already being used. Please choose another name for your exhibit."
+msgstr "Este nome de exibição já está em uso. Por favor, escolha outro nome."
+
 #: src/ARte/core/jinja2/core/collection.jinja2:18
 msgid "All Exhibits"
 msgstr "Todas Exposições"
