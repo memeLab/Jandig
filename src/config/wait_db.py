@@ -47,7 +47,12 @@ def start_postgres():
 
 def can_connect(dbname, user, password, host):
     try:
-        psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
+        psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host
+        )
     except psycopg2.OperationalError:
         return False
     return True

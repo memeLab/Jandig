@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class EncryptService:
-    def generate_verification_code(self, email):
+    def create_verification_code(self, email):
         datetime_now = datetime.now()
         _year = datetime_now.year
         _month = datetime_now.month
