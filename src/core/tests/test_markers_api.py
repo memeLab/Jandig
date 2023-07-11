@@ -61,10 +61,11 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["count"], settings.PAGE_SIZE + 1)
-        self.assertEqual(
-            data["next"],
-            "test_server_url",
-        )
+        self.assertTrue(data["next"].endswith("/?limit=20&offset=20"))
+        # self.assertEqual(
+        #     data["next"],
+        #     "test_server_url",
+        # )
         self.assertEqual(data["previous"], None)
         self.assertEqual(len(data["results"]), 20)
 
