@@ -221,7 +221,9 @@ def remove_source_file(sender, instance, **kwargs):
 
 
 class Exhibit(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="exhibits")
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
+    )
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork, related_name="exhibits")

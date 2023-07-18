@@ -25,7 +25,7 @@ if READ_DOT_ENV_FILE:
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-CSRF_TRUSTED_ORIGINS = ['https://*.jandig.app']
+CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
