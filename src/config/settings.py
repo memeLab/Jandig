@@ -49,6 +49,7 @@ SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
 
+
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
     is_health_check = url == f"/{HEALTH_CHECK_URL}"
