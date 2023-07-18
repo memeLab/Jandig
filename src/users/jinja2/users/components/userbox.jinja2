@@ -1,19 +1,19 @@
-{% set markers = request.user.profile.marker_set.all()|length %}
-{% set objects = request.user.profile.object_set.all()|length %}
-{% set exhibits = request.user.profile.exhibits.all()|length %}
-{% set artworks = request.user.profile.artwork_set.all()|length %}
+{% set markers_qty = markers|length %}
+{% set objects_qty = objects|length %}
+{% set exhibits_qty = exhibits|length %}
+{% set artworks_qty = artworks|length %}
 
 <section class="userbox flex">
     <div class="countMrk sm-half lg-one-third">
-        {%if markers %}
-            {{ markers }} {{ _(' marker(s)') }}
+        {%if markers_qty %}
+            {{ markers_qty }} {{ _(' marker(s)') }}
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
     </div>
     <div class="countObj sm-half lg-one-third">
-        {%if objects %}
-            {{ objects }} {{ _(' Object(s)') }}
+        {%if objects_qty %}
+            {{ objects_qty }} {{ _(' Object(s)') }}
         {% else %}
             {{ _('No uploads yet.')}}
         {% endif %}
@@ -22,13 +22,13 @@
         <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit profile') }}</a>
         <a class="option-link" href="{{ url('logout') }}">{{ _('Log out') }}</a>
     </div>
-        {%if artworks %}
+        {%if artworks_qty %}
             <div class="bdgArt half">
                 <b>
                 {{ _('Jandig Artist')}}
                 </b>
                 <br />
-                {{ artworks }} {{ _(' Artworks') }}
+                {{ artworks_qty }} {{ _(' Artworks') }}
         {% else %}
             <div class="bdgArt empty half">
                 <b>
@@ -40,13 +40,13 @@
                 </a>
         {% endif %}
             </div>
-        {%if exhibits %}
+        {%if exhibits_qty %}
             <div class="bdgCur half">
                 <b>
                 {{ _('Jandig Curator')}}
                 </b>
                 <br />
-                {{ exhibits }} {{ _(' Exhibits') }}
+                {{ exhibits_qty }} {{ _(' Exhibits') }}
         {% else %}
             <div class="bdgCur empty half">
                 <b>

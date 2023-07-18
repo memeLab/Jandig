@@ -15,7 +15,7 @@ services:
       - ./run.sh:/src/run.sh
       - ./tasks.py:/src/tasks.py
     env_file:
-      - .envs/.env
+      - .envs/.example
     depends_on:
       - postgres
       - storage

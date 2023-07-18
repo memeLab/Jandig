@@ -10,6 +10,8 @@ from pymarker.core import generate_marker_from_image, generate_patt_from_image
 from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
+import logging
+log = logging.getLogger()
 
 def create_patt(filename, original_filename):
     filestorage = PublicMediaStorage()
@@ -35,7 +37,7 @@ def create_marker(filename, original_filename):
 
 
 class Marker(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="markers")
     source = models.ImageField(upload_to="markers/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -89,7 +91,7 @@ class Marker(models.Model):
 
 
 class Object(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="ar_objects")
     source = models.FileField(upload_to="objects/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -197,17 +199,17 @@ class Object(models.Model):
 
     @property
     def xposition(self):
-        a = re.findall(r"[\d\.\d]+", self.position)
-        return a[0]
+        x = self.position.split(" ")[0]
+        return float(x)
 
     @property
     def yposition(self):
-        a = re.findall(r"[\d\.\d]+", self.position)
-        return a[1]
+        y = self.position.split(" ")[1]
+        return float(y)
 
 
 class Artwork(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="artworks")
     marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
     augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=50, blank=False)

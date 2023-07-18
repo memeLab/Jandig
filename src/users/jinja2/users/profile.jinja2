@@ -5,8 +5,9 @@
     {% endblock %}
     <section class="profile-options-flex">
         <div class="container">
-
-            {% include "users/components/userbox.jinja2" %}
+            {% with markers=markers, objects=objects, exhibits=exhibits, artworks=artworks%}
+                {% include "users/components/userbox.jinja2" %}
+            {% endwith %}
 
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
