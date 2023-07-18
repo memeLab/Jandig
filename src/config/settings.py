@@ -25,7 +25,7 @@ if READ_DOT_ENV_FILE:
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-CSRF_TRUSTED_ORIGINS = ['https://*.jandig.app']
+CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
@@ -48,6 +48,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
+
 
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]

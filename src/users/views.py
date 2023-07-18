@@ -61,9 +61,13 @@ def recover_password(request):
         recover_password_form = RecoverPasswordForm(request.POST)
 
         if recover_password_form.is_valid():
-            username_or_email = recover_password_form.cleaned_data.get("username_or_email")
+            username_or_email = recover_password_form.cleaned_data.get(
+                "username_or_email"
+            )
             user_service = UserService()
-            username_or_email_is_valid = user_service.check_if_username_or_email_exist(username_or_email)
+            username_or_email_is_valid = user_service.check_if_username_or_email_exist(
+                username_or_email
+            )
             if not username_or_email_is_valid:
                 return redirect("invalid_recovering_email_or_username")
 
@@ -72,14 +76,18 @@ def recover_password(request):
 
             global global_verification_code
             encrypt_service = EncryptService()
-            global_verification_code = encrypt_service.generate_verification_code(global_recovering_email)
+            global_verification_code = encrypt_service.generate_verification_code(
+                global_recovering_email
+            )
 
             build_message_and_send_to_user(global_recovering_email)
 
         return redirect("recover-code")
 
     recover_password_form = RecoverPasswordForm()
-    return render(request, "users/recover-password.jinja2", {"form": recover_password_form})
+    return render(
+        request, "users/recover-password.jinja2", {"form": recover_password_form}
+    )
 
 
 def build_message_and_send_to_user(email):
@@ -138,7 +146,6 @@ def invalid_recovering_email_or_username(request):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-
     user = request.GET.get("user")
 
     if not user:
@@ -219,7 +226,6 @@ def create_artwork(request):
         form = ArtworkForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             marker = get_marker(request, form)
             augmented = get_augmented(request, form)
 

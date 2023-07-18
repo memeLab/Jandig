@@ -35,20 +35,26 @@ class UserTestCase(TestCase):
         self.assertEqual(response.url, "/users/invalid-recovering-email")
 
     def test_recover_password_invalid_username(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "testadorinvalid"}, follow=True)
+        request = self.client_test.post(
+            "/recover/", {"username_or_email": "testadorinvalid"}, follow=True
+        )
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/invalid-recovering-email")
 
     def test_recover_password_valid_email(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "testador@memelab.com"}, follow=True)
+        request = self.client_test.post(
+            "/recover/", {"username_or_email": "testador@memelab.com"}, follow=True
+        )
         UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/users/recover-code/")
 
     def test_recover_password_valid_username(self, *args, **kwargs):
-        request = self.client_test.post("/recover/", {"username_or_email": "Testador"}, follow=True)
+        request = self.client_test.post(
+            "/recover/", {"username_or_email": "Testador"}, follow=True
+        )
         UserFactory()
         response = recover_password(request)
         self.assertEqual(response.status_code, 302)
