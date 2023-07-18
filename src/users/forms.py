@@ -155,13 +155,13 @@ class LoginForm(AuthenticationForm):
                 user = authenticate(username=username, password=password)
             else:
                 username_or_email_wrong = True
-                # raise forms.ValidationError(_('Email Wrong!'))
+                raise forms.ValidationError(_('Email Wrong!'))
         else:
             if User.objects.filter(username=username_or_email).exists():
                 user = authenticate(username=username_or_email, password=password)
             else:
                 username_or_email_wrong = True
-                # raise forms.ValidationError(_('Username Wrong!'))
+                raise forms.ValidationError(_('Username Wrong!'))
 
         if not user and not username_or_email_wrong:
             raise forms.ValidationError(_("Wrong password!"))
