@@ -165,7 +165,7 @@ msgstr ""
 
 #: src/ARte/core/jinja2/core/footer.jinja2:3
 msgid "About us"
-msgstr ""
+msgstr "Sobre nós"
 
 #: src/ARte/core/jinja2/core/footer.jinja2:4
 msgid "Jandig on Github"
@@ -215,12 +215,12 @@ msgstr ""
 #: src/ARte/users/jinja2/users/login.jinja2:10
 #: src/ARte/users/jinja2/users/signup.jinja2:8
 msgid "Sign up"
-msgstr ""
+msgstr "Cadastro"
 
 #: src/ARte/core/jinja2/core/header.jinja2:45
 #: src/ARte/users/jinja2/users/signup.jinja2:9
 msgid "Log in"
-msgstr ""
+msgstr "Acessar"
 
 #: src/ARte/core/jinja2/core/home.jinja2:33
 msgid "Authorize camera"
@@ -232,15 +232,15 @@ msgstr ""
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:9
 msgid "Collection"
-msgstr ""
+msgstr "Coleção"
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:12
 msgid "My Stuff"
-msgstr ""
+msgstr "Minhas Coisas"
 
 #: src/ARte/core/jinja2/core/useful_links.jinja2:15
 msgid "About Us"
-msgstr ""
+msgstr "Sobre nós"
 
 #: src/ARte/users/jinja2/users/artwork-create.jinja2:9
 #: src/ARte/users/jinja2/users/profile.jinja2:82
