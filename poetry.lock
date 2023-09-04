@@ -368,14 +368,14 @@ six = ">=1.10"
 
 [[package]]
 name = "django"
-version = "4.1.5"
+version = "4.1.9"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Django-4.1.5-py3-none-any.whl", hash = "sha256:4b214a05fe4c99476e99e2445c8b978c8369c18d4dea8e22ec412862715ad763"},
-    {file = "Django-4.1.5.tar.gz", hash = "sha256:ff56ebd7ead0fd5dbe06fe157b0024a7aaea2e0593bb3785fb594cf94dad58ef"},
+    {file = "Django-4.1.9-py3-none-any.whl", hash = "sha256:adae3a952fd86800094ae6f64aa558572e8b4ba8dfe21f0ed8175147e75a72a1"},
+    {file = "Django-4.1.9.tar.gz", hash = "sha256:e9f074a84930662104871bfcea55c3c180c50a0a47739db82435deae6cbaf032"},
 ]
 
 [package.dependencies]
@@ -1755,4 +1755,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "ac407a75c26c07e59c494b1b7f597ef8451c541138bb262207b4e1149efaaa2a"
+content-hash = "7cacc90adfa8a9b9ce7ef69e0f4adb0b61158e4e5a11b6071d4df605d610395a"
