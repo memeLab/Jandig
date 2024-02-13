@@ -1,6 +1,9 @@
 test:
 	poetry run pytest src
 
+test-ui:
+	poetry run pytest src/tests
+
 lint:
 	poetry run black --line-length=200 src
 	poetry run isort src
@@ -12,3 +15,6 @@ migrations:
 
 migrate:
 	poetry run python src/manage.py migrate
+
+gen:
+	poetry run playwright codegen -b chromium --target python-pytest localhost:8000
