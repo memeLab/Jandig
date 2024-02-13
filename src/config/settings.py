@@ -184,8 +184,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LOCALE_PATHS = (
-    # os.path.join(str(ROOT_DIR), 'locale'),
-    "/ARte/locale",
+    os.path.join(str(ROOT_DIR), 'locale'),
 )
 
 LANGUAGE_CODE = "en"
