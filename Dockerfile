@@ -26,22 +26,25 @@ ENV PATH="$PATH:/root/.local/bin" \
 RUN curl -sSL https://install.python-poetry.org | python3 - \
   && poetry --version
 
+RUN pip install --upgrade pip
 RUN poetry install
 
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
   && chmod +x /usr/local/bin/tini && tini --version
 
-RUN mkdir -p /src
-WORKDIR /src
-COPY ./src/ /src/
-COPY ./docs/ /src/docs/
-COPY ./locale/ /src/locale/
-COPY ./tasks.py /src/tasks.py
-COPY ./run.sh /src/run.sh
-COPY ./etc/ /src/etc/
 
-RUN pip install --upgrade pip
+RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/static /jandig/build
+
+WORKDIR /jandig
+
+COPY ./src/ /jandig/src/
+COPY ./docs/ /jandig/docs/
+COPY ./locale/ /jandig/locale/
+COPY ./tasks.py /jandig/tasks.py
+COPY ./run.sh /jandig/run.sh
+COPY ./etc/ /jandig/etc/
+
 
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 

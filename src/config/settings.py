@@ -11,10 +11,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from .wait_db import start_services
 
-ROOT_DIR = environ.Path(__file__) - 2  # (src/config/settings.py - 2 = src/)
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = environ.Path("/jandig/")
+BASE_DIR = "/jandig/src"
 
 env = environ.Env()
 
@@ -140,27 +138,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": env("POSTGRES_HOST"),
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+    },
+}
 
-if env.bool("DEV_DB", True):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "HOST": env("POSTGRES_HOST"),
-            "NAME": env("POSTGRES_DB"),
-            "USER": env("POSTGRES_USER"),
-            "PASSWORD": env("POSTGRES_PASSWORD"),
-        },
-    }
-
-    # STARTS SERVICES THAT DJANGO DEPENDS E.G. postgres
-    start_services()
+# STARTS SERVICES THAT DJANGO DEPENDS E.G. postgres
+start_services()
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -192,6 +181,8 @@ LANGUAGE_CODE = "en"
 LANGUAGES = (
     ("en-us", _("English")),
     ("pt-br", _("Brazilian Portuguese")),
+    ("es-ES", _("Spain Spanish")),
+    ("fr-FR", _("France French")),
 )
 
 TIME_ZONE = "UTC"
@@ -232,11 +223,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "core", "static"),
     os.path.join(BASE_DIR, "users", "static"),
 ]
-COLLECT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
-STATIC_ROOT = os.path.join(COLLECT_DIR, "collect")
+
+# STATIC_ROOT = "/jandig/static"
 STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "users", "media")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "users", "media")
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
@@ -254,7 +245,7 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 # Sphinx docs
-DOCS_ROOT = os.path.join(BASE_DIR, "../../build/")
+DOCS_ROOT = "/jandig/build/"
 
 SMTP_SERVER = env("SMTP_SERVER", default="smtp.gmail.com")
 SMTP_PORT = env("SMTP_PORT", default=587)
