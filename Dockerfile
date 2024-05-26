@@ -7,11 +7,8 @@ RUN apt-get update && \
     curl \
     wget
 
-
 COPY ./pyproject.toml /pyproject.toml
 COPY ./poetry.lock /poetry.lock
-
-
 
 ENV PATH="$PATH:/root/.local/bin" \
     POETRY_NO_INTERACTION=1 \

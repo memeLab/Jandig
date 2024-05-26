@@ -12,7 +12,7 @@ sys.path.append('jandig')
 def robust_manage(ctx, cmd, env=None, **kwargs):
     kwargs = {k.replace('_', '-'): v for k, v in kwargs.items() if v is not False}
     opts = ' '.join(f'--{k} {"" if v is True else v}' for k, v in kwargs.items())
-    cmd = f'{python} /jandig/src/manage.py {cmd} {opts}'
+    cmd = f'{python} ./src/manage.py {cmd} {opts}'
     env = {**os.environ, **(env or {})}
     path = env.get("PYTHONPATH", ":".join(sys.path))
     env.setdefault('PYTHONPATH', f'src:{path}')
@@ -21,7 +21,7 @@ def robust_manage(ctx, cmd, env=None, **kwargs):
 
 
 def manage(ctx, cmd):
-    cmd = f'python3 /jandig/src/manage.py {cmd}'
+    cmd = f'python3 ./src/manage.py {cmd}'
     ctx.run(cmd, pty=True, env=os.environ)
 
 

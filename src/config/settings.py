@@ -9,8 +9,6 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .wait_db import start_services
-
 ROOT_DIR = environ.Path("/jandig/")
 BASE_DIR = "/jandig/src"
 
@@ -141,16 +139,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": env("POSTGRES_HOST"),
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST", default="localhost"),
+        "NAME": env("POSTGRES_DB", default="jandig"),
+        "USER": env("POSTGRES_USER", default="jandig"),
+        "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
     },
 }
-
-# STARTS SERVICES THAT DJANGO DEPENDS E.G. postgres
-start_services()
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -188,8 +182,6 @@ LANGUAGES = (
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 

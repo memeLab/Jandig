@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.8'
 
 services:
   django:
@@ -8,30 +8,38 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./src/:/src/
-      - ./docs/:/src/docs/
-      - ./etc/:/src/etc/
-      - ./locale/:/src/locale/
-      - ./run.sh:/src/run.sh
-      - ./tasks.py:/src/tasks.py
+      - ./src/:/jandig/src/
+      - ./docs/:/jandig/docs/
+      - ./etc/:/jandig/etc/
+      - ./locale/:/jandig/locale/
+      - ./run.sh:/jandig/run.sh
+      - ./tasks.py:/jandig/tasks.py
     env_file:
       - .envs/.example
     depends_on:
-      - postgres
-      - storage
-      - createbuckets
+      storage:
+          condition: service_started
+      createbuckets:
+          condition: service_started
+      postgres:
+          condition: service_healthy
     command: /jandig/run.sh
 
   postgres:
     image: postgres:15.2
     env_file:
-      - .envs/.env
+      - .envs/.example
     command: postgres -c max_connections=10000
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "jandig"]
+      interval: 3s
+      timeout: 60s
+      retries: 20
+  
   storage:
     image: minio/minio:latest
     ports:
