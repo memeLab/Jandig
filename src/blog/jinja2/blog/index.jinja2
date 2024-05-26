@@ -1,0 +1,22 @@
+{% extends '/core/home.jinja2' %}
+
+
+{% block content %}
+    {% block page_title %}
+        <h2>Blog Posts</h2>
+    {% endblock page_title %}
+
+    {% for post in posts %}
+        <h3><a href="{{ url('blog_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
+        <small>
+            {{ post.created.date() }} | Categories:
+            {% for category in post.categories.all() %}
+                <a href="{{ url('blog_category', args=[category.name])}}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </small>
+        <p>{{ post.body[:PREVIEW_SIZE]}}...</p>
+    {% endfor %}
+
+{% endblock %}
