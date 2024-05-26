@@ -1,5 +1,11 @@
+RUNNING_CONTAINER := $(shell docker compose ps --services --filter "status=running" | grep django )
+
 test:
-	poetry run pytest src
+	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
+		docker compose exec django poetry run pytest src/core src/users; \
+	else \
+		docker compose run --rm django poetry run pytest src/core src/users;\
+	fi
 
 test-ui:
 	poetry run pytest src/tests
@@ -18,3 +24,6 @@ migrate:
 
 gen:
 	poetry run playwright codegen -b chromium --target python-pytest localhost:8000
+
+translate_es:
+	poetry run inv i18n -l es_ES
