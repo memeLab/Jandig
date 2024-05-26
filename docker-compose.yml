@@ -20,7 +20,7 @@ services:
       - postgres
       - storage
       - createbuckets
-    command: ./run.sh
+    command: /jandig/run.sh
 
   postgres:
     image: postgres:15.2
@@ -38,7 +38,7 @@ services:
       - 9000:9000
       - 9001:9001
     volumes:
-      - storage:/storage
+      - media_data:/storage
     env_file:
       - .envs/.env
     command: server /storage --console-address ":9001"
@@ -62,4 +62,4 @@ services:
 
 volumes:
   postgres_data:
-  storage:
+  media_data:
