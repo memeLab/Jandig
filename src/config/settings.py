@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [
 ]
 CUSTOM_ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
-print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 
 
 # Sentry configuration
@@ -74,6 +73,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django_extensions',
     "debug_toolbar",
     "corsheaders",
     "users",
