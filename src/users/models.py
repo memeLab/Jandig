@@ -9,7 +9,11 @@ from .choices import COUNTRY_CHOICES
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     bio = models.TextField(max_length=500, blank=True)
-    country = models.CharField(max_length=2, choices=COUNTRY_CHOICES, blank=True)
+    country = models.CharField(
+        max_length=2,
+        choices=COUNTRY_CHOICES,
+        blank=True
+    )
     personal_site = models.URLField()
 
     def __str__(self):

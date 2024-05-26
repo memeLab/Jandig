@@ -8,33 +8,51 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0005_object_source_20200130_1904'),
+        (
+            'users',
+            '0005_object_source_20200130_1904'
+        ),
     ]
 
     operations = [
         migrations.AddField(
             model_name='marker',
             name='title',
-            field=models.CharField(default='', max_length=60),
+            field=models.CharField(
+                default='',
+                max_length=60
+            ),
         ),
         migrations.AddField(
             model_name='object',
             name='title',
-            field=models.CharField(default='', max_length=60),
+            field=models.CharField(
+                default='',
+                max_length=60
+            ),
         ),
         migrations.AlterField(
             model_name='marker',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to='users.Profile'
+            ),
         ),
         migrations.AlterField(
             model_name='object',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='users.Profile'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to='users.Profile'
+            ),
         ),
         migrations.AlterField(
             model_name='profile',
             name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]
