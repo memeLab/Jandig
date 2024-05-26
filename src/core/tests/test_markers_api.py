@@ -65,7 +65,7 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
-        response = self.client.get("/api/v1/markers/1/")
+        response = self.client.get(f"/api/v1/markers/{marker.id}/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         serializer_data = MarkerSerializer(marker).data

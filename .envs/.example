@@ -1,7 +1,6 @@
 # Use this file to create a .env with filled variables
 # Django Variables
 DJANGO_DEBUG=True
-DEV_DB=False
 DEBUG_TOOLBAR=True
 DJANGO_SECRET_KEY=change_me
 USE_MINIO=True
@@ -30,12 +29,12 @@ MINIO_USER_SECRET_KEY=minio-secret-key
 ## Postgres variables
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
-POSTGRES_DB=goldpenny
-POSTGRES_USER=goldpenny
-POSTGRES_PASSWORD=goldpenny123
+POSTGRES_DB=jandig
+POSTGRES_USER=jandig
+POSTGRES_PASSWORD=secret
 
 # Email server variables
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
-JANDIG_EMAIL=local_jandig@memelab.com.br
+JANDIG_EMAIL=local_jandig@jandig.com
 JANDIG_EMAIL_PASSWORD=local_password
