@@ -67,7 +67,7 @@ class TestObjectAPI(TestCase):
 
     def test_retrieve_object(self):
         obj = Object.objects.create(owner=self.profile, source=fake_file)
-        response = self.client.get("/api/v1/objects/1/")
+        response = self.client.get(f"/api/v1/objects/{obj.id}/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         serializer_data = ObjectSerializer(obj).data

@@ -57,7 +57,7 @@ class UserTestCase(TestCase):
     def test_build_multipart_message(self, *args, **kwargs):
         email = "testador@memelab.com"
         response = self.email_service.build_multipart_message(email)
-        self.assertEqual(response["From"], "Jandig <jandig@jandig.com>")
+        self.assertEqual(response["From"], "Jandig <local_jandig@jandig.com>")
         self.assertEqual(response["To"], email)
 
     def test_send_email_to_recover_password(self, mock_quit, *args, **kwargs):
