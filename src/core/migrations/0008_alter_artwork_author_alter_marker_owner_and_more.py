@@ -7,7 +7,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("users", "0009_alter_profile_id"),
         ("core", "0007_alter_artwork_id_alter_exhibit_id_alter_marker_id_and_more"),
     ]
 
