@@ -8,6 +8,7 @@ test:
 	fi
 
 test-ui:
+	docker compose up -d
 	poetry run pytest src/tests
 
 lint:

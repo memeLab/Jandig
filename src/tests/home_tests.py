@@ -7,7 +7,7 @@ def test_home_loads_in_english(page: Page):
     page.get_by_role("heading", name="Welcome to Jandig").click()
 
 
-def test_example(page: Page) -> None:
+def test_changing_language_to_portuguese_and_back_to_english(page: Page) -> None:
     page.goto("http://localhost:8000/")
     page.locator(".trigger-lang-modal").click()
     page.get_by_label("pt-br").check()
