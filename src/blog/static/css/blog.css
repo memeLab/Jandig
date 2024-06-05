@@ -1,0 +1,29 @@
+/* General Blog Pages */
+#posts-area{
+    max-width: 600px;
+    margin: 0 auto;
+}
+.post{
+    margin-bottom: 30px;
+}
+.post a{
+
+    transition: all 0.2s ease-in;
+    background-image: linear-gradient( to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent );
+    background-position: 100% 0%;
+    background-size: 100% 200%;
+}
+.post a:hover{
+    color: #fff;
+    background-position: 0 100%;
+}
+
+
+/* Detail Page */
+#post{
+    max-width: 600px;
+    margin: 0 auto;
+}
+#post p{
+    text-align: justify;
+}
