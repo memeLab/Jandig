@@ -1,17 +1,26 @@
-{% extends '/core/home.jinja2' %}
-
+{% extends "blog/index.jinja2" %}
 
 {% block content %}
     {% block page_title %}
         <h2>{{ post.title }}</h2>
+        <br />
     {% endblock page_title %}
     <small>
-        {{ post.created }} | Categories:
-        {% for category in post.categories.all() %}
-            <a href="{{ url('blog_category',args=[category.name])}}">
-                {{ category.name }}
-            </a>
-        {% endfor %}
+        {{ post.created.date() }} 
+        {% if post.categories.count() > 0 %}
+        | {{ _("Categories:") }}
+            {% for category in post.categories.all() %}
+                <a href="{{ url('blog_category',args=[category.name])}}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        {% endif%}
     </small>
-    <p>{{ post.body }}</p>
+    <br />
+    <div id=post>
+        <p>{{ post.body }}</p>
+    </div>
+
+    <a href="#" id="back-to-top"> {{_("Back to Top")}}</a>
+
 {% endblock %}
