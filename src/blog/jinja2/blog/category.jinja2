@@ -3,3 +3,8 @@
 {% block page_title %}
     <h2>{{ category }}</h2>
 {% endblock page_title %}
+
+{%block button%}
+        <a id="back-button" href="{{ url('blog_index') }}">{{ _('< Back to Blog') }}</a>
+        <br />
+{%endblock%}

@@ -1,26 +1,30 @@
 {% extends "blog/index.jinja2" %}
 
 {% block content %}
-    {% block page_title %}
-        <h2>{{ post.title }}</h2>
+    <div id="post-area">
+        <a id="back-button" href="{{ url('blog_index') }}">{{ _('< Back to Blog') }}</a>
         <br />
-    {% endblock page_title %}
-    <small>
-        {{ post.created.date() }} 
-        {% if post.categories.count() > 0 %}
-        | {{ _("Categories:") }}
-            {% for category in post.categories.all() %}
-                <a href="{{ url('blog_category',args=[category.name])}}">
-                    {{ category.name }}
-                </a>
-            {% endfor %}
-        {% endif%}
-    </small>
-    <br />
-    <div id=post>
-        <p>{{ post.body }}</p>
-    </div>
+        {% block page_title %}
+            <h2>{{ post.title }}</h2>
+            <br />
+        {% endblock page_title %}
+        <small>
+            {{ post.created.date() }} 
+            {% if post.categories.count() > 0 %}
+            | {{ _("Categories:") }}
+                {% for category in post.categories.all() %}
+                    <a href="{{ url('blog_category',args=[category.name])}}">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+            {% endif%}
+        </small>
+        <br />
+        <div id=post>
+            <p>{{ post.body |safe }}</p>
+        </div>
 
+    </div>
     <a href="#" id="back-to-top"> {{_("Back to Top")}}</a>
 
 {% endblock %}

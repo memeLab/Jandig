@@ -1,11 +1,13 @@
 {% extends '/core/home.jinja2' %}
 
 {% block extra_css %}
-        <link rel="stylesheet" href="{{ static('css/blog.css') }}">
+    <link rel="stylesheet" href="{{ static('css/blog.css') }}">
 {% endblock %}
 
 {% block content %}
     <div id="blog-area">
+        {% block button %}
+        {% endblock %}
         {% block page_title %}
             <h2>{{ _("Blog Posts") }}</h2>
         {% endblock page_title %}
@@ -24,7 +26,7 @@
                         {% endfor %}
                     {% endif%}
                 </small>
-                <p>{{ post.body[:PREVIEW_SIZE]}}... <a href="{{ url('blog_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
+                <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('blog_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
                 
             </div>
         {% endfor %}
