@@ -14,26 +14,35 @@ def blog_index(request):
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
         "page_size": PAGE_SIZE,
+        "page_url": "/blog/"
     }
     if request.htmx:
         context["next_page_number"] += 1
         return render(request, "blog/post_preview.jinja2", context)
 
     return render(request, "blog/index.jinja2", context)
-    
+
 
 def blog_category(request, category):
-
+    actual_page_number = int(request.GET.get("page", "1"))
+    initial_post = 0 + (actual_page_number - 1) * PAGE_SIZE
+    last_post = PAGE_SIZE * actual_page_number
     posts = Post.objects.filter(
         categories__name__contains=category
-    ).order_by("-created")
+    ).order_by("-created")[initial_post:last_post]
 
     context = {
+        "next_page_number": actual_page_number + 1,
         "category": category,
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
+        "page_size": PAGE_SIZE,
+        "page_url": request.path,
     }
-
+    if request.htmx:
+        context["next_page_number"] += 1
+        return render(request, "blog/post_preview.jinja2", context)
+    
     return render(request, "blog/category.jinja2", context)
 
 def blog_detail(request, pk):

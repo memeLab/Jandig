@@ -17,5 +17,5 @@
     </div>
 {% endfor %}
 {% if posts.count() == page_size %}
-    <button hx-get="/blog/?page={{ next_page_number }}" hx-trigger="click" hx-swap="outerHTML"> {{_("See more")}}</button>
+    <button hx-get="{{ page_url }}?page={{ next_page_number }}" hx-trigger="click" hx-swap="outerHTML"> {{_("See more")}}</button>
 {% endif %}
