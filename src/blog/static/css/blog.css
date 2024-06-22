@@ -1,4 +1,5 @@
 /* General Blog Pages */
+#blog-area,
 #posts-area{
     max-width: 600px;
     margin: 0 auto;
@@ -20,10 +21,15 @@
 
 
 /* Detail Page */
-#post{
+
+#post,
+#post-area{
     max-width: 600px;
     margin: 0 auto;
 }
 #post p{
     text-align: justify;
+}
+#back-button{
+    float: left;
 }
