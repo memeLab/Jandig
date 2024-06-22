@@ -22,7 +22,7 @@ class Post(models.Model):
     body = models.TextField()
     created = models.DateTimeField(editable=True)
     updated = models.DateTimeField(auto_now=True, editable=True)
-    categories = models.ManyToManyField(Category, related_name='posts', null=True, blank=True)
+    categories = models.ManyToManyField(Category, related_name='posts', blank=True)
 
     def __str__(self):
         return self.title
