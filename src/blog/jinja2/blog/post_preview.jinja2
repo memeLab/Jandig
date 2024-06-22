@@ -1,0 +1,21 @@
+{% set count = 1 %}
+{% for post in posts %}
+    <div class="post">
+        <h3><a href="{{ url('blog_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
+        <small>
+            {{ post.created.date() }} 
+            {% if post.categories.count() > 0 %}
+            | {{ _("Categories:") }}
+                {% for category in post.categories.all() %}
+                    <a href="{{ url('blog_category', args=[category.name])}}">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+            {% endif%}
+        </small>
+        <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('blog_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
+    </div>
+{% endfor %}
+{% if posts.count() == page_size %}
+    <button hx-get="/blog/?page={{ next_page_number }}" hx-trigger="click" hx-swap="outerHTML"> {{_("See more")}}</button>
+{% endif %}

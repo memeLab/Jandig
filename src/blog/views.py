@@ -3,14 +3,24 @@ from django.shortcuts import render
 from blog.models import Post, PostStatus
 
 PREVIEW_SIZE=300
+PAGE_SIZE=5
 def blog_index(request):
-
-    posts = Post.objects.filter(status=PostStatus.PUBLISHED).all().order_by("-created")
+    actual_page_number = int(request.GET.get("page", "1"))
+    initial_post = 0 + (actual_page_number - 1) * PAGE_SIZE
+    last_post = PAGE_SIZE * actual_page_number
+    posts = Post.objects.filter(status=PostStatus.PUBLISHED).all().order_by("-created")[initial_post:last_post]
     context = {
+        "next_page_number": actual_page_number + 1,
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
+        "page_size": PAGE_SIZE,
     }
+    if request.htmx:
+        context["next_page_number"] += 1
+        return render(request, "blog/post_preview.jinja2", context)
+
     return render(request, "blog/index.jinja2", context)
+    
 
 def blog_category(request, category):
 
