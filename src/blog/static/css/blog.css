@@ -7,14 +7,16 @@
 .post{
     margin-bottom: 30px;
 }
-.post a{
+.post a,
+#category-header a{
 
     transition: all 0.2s ease-in;
     background-image: linear-gradient( to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent );
     background-position: 100% 0%;
     background-size: 100% 200%;
 }
-.post a:hover{
+.post a:hover,
+#category-header a:hover{
     color: #fff;
     background-position: 0 100%;
 }
@@ -27,9 +29,20 @@
     max-width: 600px;
     margin: 0 auto;
 }
+#post{
+    margin-top: 25px;
+}
 #post p{
     text-align: justify;
 }
 #back-button{
     float: left;
+}
+
+.post-image img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.post-image h5{
+    margin-top: 10px;
 }

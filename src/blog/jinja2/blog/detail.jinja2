@@ -6,7 +6,6 @@
         <br />
         {% block page_title %}
             <h2>{{ post.title }}</h2>
-            <br />
         {% endblock page_title %}
         <small>
             {{ post.created.date() }} 
@@ -19,12 +18,20 @@
                 {% endfor %}
             {% endif%}
         </small>
-        <br />
         <div id=post>
             <p>{{ post.body |safe }}</p>
+            {% for image in images %}
+                <div class="post-image">
+                    <img class="post-image" src="{{ image.file.url }}" />
+                    {% if image.description %}
+                        <h5>{{ image.description }}</h5>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
 
     </div>
+    <br />
     <a href="#" id="back-to-top"> {{_("Back to Top")}}</a>
 
 {% endblock %}
