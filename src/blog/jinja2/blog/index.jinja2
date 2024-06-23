@@ -1,0 +1,28 @@
+{% extends '/core/home.jinja2' %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static('css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div id="blog-area">
+        {% block button %}
+        {% endblock %}
+        {% block page_title %}
+            <h2>{{ _("Blog Posts") }}</h2>
+        {% endblock page_title %}
+        <div id="category-header">
+        <small>
+        {{_("Categories:")}}
+        {% for category in blog_categories %}
+            <a href="{{ url('blog_category',args=[category.name])}}">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+        </small>
+        </div>
+        <div id="posts-area">
+            {% include "/blog/post_preview.jinja2" %}
+        </div>
+    </div>
+{% endblock %}

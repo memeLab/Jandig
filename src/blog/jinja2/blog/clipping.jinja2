@@ -1,0 +1,26 @@
+{% extends '/core/home.jinja2' %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static('css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div id="blog-area">
+        {% block button %}
+        {% endblock %}
+        {% block page_title %}
+            <h2>{{ _("Clippings") }}</h2>
+        {% endblock page_title %}
+        {% for clipping in clippings %}
+            <div class="post">
+                <h3>{{ clipping.title }}</h3> 
+                <p>{{ clipping.created.date() }} </p>
+                <p>{{ clipping.description }}</p>
+                <a href="{{ clipping.link }}">{{ clipping.link }}</a>
+                <br />
+                <br />
+                <a href="{{ clipping.file.url }}">{{ _("Download File")}}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

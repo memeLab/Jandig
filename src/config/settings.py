@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [
 ]
 CUSTOM_ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
-print(f"ALLOWED_HOSTS:{ALLOWED_HOSTS}")
 
 
 # Sentry configuration
@@ -74,10 +73,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django_extensions',
     "debug_toolbar",
+    "django_htmx",
     "corsheaders",
     "users",
     "core",
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -90,6 +92,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 
@@ -214,6 +217,7 @@ else:
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "core", "static"),
     os.path.join(BASE_DIR, "users", "static"),
+    os.path.join(BASE_DIR, "blog", "static"),
 ]
 
 # STATIC_ROOT = "/jandig/static"
