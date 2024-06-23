@@ -1,4 +1,4 @@
-from blog.models import Category, Post, PostStatus
+from blog.models import Category, Clipping, Post, PostStatus
 from django.shortcuts import render
 
 PREVIEW_SIZE = 300
@@ -62,3 +62,9 @@ def blog_detail(request, pk):
     context = {"post": post, "images": post.images.all()}
 
     return render(request, "blog/detail.jinja2", context)
+
+
+def clipping(request):
+    clippings = Clipping.objects.all().order_by("-created")
+    context = {"clippings": clippings}
+    return render(request, "blog/clipping.jinja2", context)

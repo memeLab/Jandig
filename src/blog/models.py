@@ -28,6 +28,19 @@ class PostImage(models.Model):
         return self.file.name.lstrip(IMAGE_BASE_PATH)
 
 
+class Clipping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=500)
+    link = models.URLField()
+    file = models.FileField(upload_to="clipping_files/")
+    created = models.DateTimeField(auto_now_add=True, editable=True)
+    updated = models.DateTimeField(auto_now=True, editable=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Post(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)

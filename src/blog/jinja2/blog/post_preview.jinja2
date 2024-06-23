@@ -1,4 +1,3 @@
-{% set count = 1 %}
 {% for post in posts %}
     <div class="post">
         <h3><a href="{{ url('blog_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
