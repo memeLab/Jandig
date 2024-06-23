@@ -457,6 +457,21 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-htmx"
+version = "1.18.0"
+description = "Extensions for using Django with htmx."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_htmx-1.18.0-py3-none-any.whl", hash = "sha256:48f3b8a784467bfcc30562067b87ecbc4ad9b739cc269eec5f3789c16d2cb2ce"},
+    {file = "django_htmx-1.18.0.tar.gz", hash = "sha256:db8a0cc15bcd0f7ae929bcb9108d9e6be228843092aca7956d977c31c4d95aae"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+django = ">=3.2"
+
+[[package]]
 name = "django-storages"
 version = "1.13.2"
 description = "Support for many storage backends in Django"
@@ -1795,4 +1810,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3632952c7b03c3f286cb8187ac4d61550a465737fe3590942a7bb1fa51895a95"
+content-hash = "84bba7d5ee3576bad6107eb6dd0cbdf63b28e7ca290353eca27a4a1798a38043"

@@ -28,6 +28,7 @@ django-storages = "^1.12.3"
 sentry-sdk = "^1.7.0"
 djangorestframework = "^3.13.1"
 drf-nested-routers = "^0.93.4"
+django-htmx = "^1.18.0"
 
 [tool.poetry.dev-dependencies]
 playwright = "^1.41.2"
