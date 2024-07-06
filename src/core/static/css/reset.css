@@ -465,6 +465,7 @@ div.contCam:before {
 .useful-links .container {
   height: 50px;
   margin: auto;
+  column-gap: 1.5em;
 }
 
 .useful-links a,
@@ -745,7 +746,9 @@ a.sq-github {
     background-position: 100% 15%;
     background-size: 100% 200%;
   }
-
+  .useful-links .container {
+    column-gap: 0;
+  }
   .contCam {
     min-width: 250px;
   }
@@ -815,6 +818,7 @@ a.sq-github {
     height: 30px;
     max-width: 40px;
   }
+
 }
 
 /* Hover Elements */
