@@ -9,17 +9,22 @@
         {% block button %}
         {% endblock %}
         {% block page_title %}
-            <h2>{{ _("Clippings") }}</h2>
+            <h2>{{ _("Clipping") }}</h2>
         {% endblock page_title %}
+        <small id="warning">{{_( "The content below is in the original languages.")}}</small>
         {% for clipping in clippings %}
-            <div class="post">
+            <div class="clipping">
                 <h3>{{ clipping.title }}</h3> 
-                <p>{{ clipping.created.date() }} </p>
+                <small>{{ clipping.created.date().strftime('%d %B %Y') }}</small>
                 <p>{{ clipping.description }}</p>
-                <a href="{{ clipping.link }}">{{ clipping.link }}</a>
-                <br />
-                <br />
-                <a href="{{ clipping.file.url }}">{{ _("Download File")}}</a>
+                <small><a href="{{ clipping.link }}">{{ clipping.link }}</a></small>
+                {%if clipping.file.url[-3:] == "pdf" %}
+                    <a href="{{ clipping.file.url }}">{{ _("View as PDF")}}</a>
+                {% elif clipping.file.url[-3:] in ["png","jpg"] %}
+                    <a href="{{ clipping.file.url }}">{{ _("View as JPG")}}</a>
+                {% else %}
+                    <a href="{{ clipping.file.url }}">{{ _("View File")}}</a>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
