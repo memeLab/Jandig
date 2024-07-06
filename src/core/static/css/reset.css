@@ -560,7 +560,7 @@ a.license {
   text-align: left;
   white-space: nowrap;
   max-width: calc(100% - 160px);
-  overflow: hidden;
+  overflow: inherit;
   text-indent: -9999999px;
 }
 

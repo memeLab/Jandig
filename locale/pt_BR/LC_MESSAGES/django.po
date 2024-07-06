@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-06 15:23+0000\n"
+"POT-Creation-Date: 2024-07-06 15:42+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -153,7 +153,7 @@ msgstr "Clipping"
 
 #: src/blog/jinja2/blog/clipping.jinja2:14
 msgid "The content below is in the original languages."
-msgstr "Os conteúdos abaixo estão em suas linguas original"
+msgstr "Os conteúdos abaixo estão em suas linguas originais"
 
 #: src/blog/jinja2/blog/clipping.jinja2:22
 msgid "View as PDF"
@@ -395,7 +395,8 @@ msgid ""
 "You can't edit the marker patt and the png for now, but hopefully soon "
 "enough it will be possible!"
 msgstr ""
-"Você não pode editar o arquivo patt ou png de um marcador agora, mas devemos atualizar isto assim que possível."
+"Você não pode editar o arquivo patt ou png de um marcador agora, mas devemos "
+"atualizar isto assim que possível."
 
 #: src/users/jinja2/users/edit-object.jinja2:15
 #, fuzzy
