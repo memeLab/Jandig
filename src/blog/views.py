@@ -21,7 +21,7 @@ def blog_index(request):
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
         "page_size": PAGE_SIZE,
-        "page_url": "/blog/",
+        "page_url": "/memories/",
         "blog_categories": Category.objects.all(),
     }
     if request.htmx:

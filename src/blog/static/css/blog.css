@@ -1,15 +1,16 @@
 /* General Blog Pages */
 #blog-area,
+#clipping-area,
 #posts-area{
     max-width: 600px;
     margin: 0 auto;
 }
 .post{
-    margin-bottom: 30px;
+    margin: 0px 1.5em 3em 1.5em;
 }
 .post a,
 #category-header a{
-
+    
     transition: all 0.2s ease-in;
     background-image: linear-gradient( to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent );
     background-position: 100% 0%;
@@ -21,9 +22,13 @@
     background-position: 0 100%;
 }
 
+#blog-area p {
+    text-align: justify;
+    margin-left: 1.5em;
+}
 
-/* Detail Page */
 
+/* Post Detail Page */
 #post,
 #post-area{
     max-width: 600px;
@@ -34,6 +39,7 @@
 }
 #post p{
     text-align: justify;
+    margin: 1.5em 1.5em 0 1.5em;
 }
 #back-button{
     float: left;
@@ -45,4 +51,31 @@
 }
 .post-image h5{
     margin-top: 10px;
+}
+.post-image small{
+    display: block;
+}
+
+
+/* Clipping page */
+.clipping{
+    text-align: left;
+    margin: 1.5em 1.5em 0 1.5em;
+}
+.clipping p{
+    margin: 0;
+}
+.clipping h3{
+    margin: 0;
+}
+.clipping a{
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+
+@media all and (min-width: 800px) {
+    #blog-area p {
+        text-align: left;
+    }
 }

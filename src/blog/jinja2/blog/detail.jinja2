@@ -7,24 +7,13 @@
         {% block page_title %}
             <h2>{{ post.title }}</h2>
         {% endblock page_title %}
-        <small>
-            {{ post.created.date() }} 
-            {% if post.categories.count() > 0 %}
-            | {{ _("Categories:") }}
-                {% for category in post.categories.all() %}
-                    <a href="{{ url('blog_category',args=[category.name])}}">
-                        {{ category.name }}
-                    </a>
-                {% endfor %}
-            {% endif%}
-        </small>
         <div id=post>
             <p>{{ post.body |safe }}</p>
             {% for image in images %}
                 <div class="post-image">
                     <img class="post-image" src="{{ image.file.url }}" />
                     {% if image.description %}
-                        <h5>{{ image.description }}</h5>
+                        <small>{{ image.description }}</small>
                     {% endif %}
                 </div>
             {% endfor %}
