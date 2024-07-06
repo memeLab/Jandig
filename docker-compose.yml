@@ -27,6 +27,8 @@ services:
     image: postgres:15.4
     env_file:
       - .envs/.example
+    environment:
+      PGUSER: jandig
     command: postgres -c max_connections=10000
     ports:
       - "5432:5432"
@@ -34,9 +36,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "jandig"]
-      interval: 3s
+      interval: 5s
       timeout: 60s
       retries: 20
+      start_interval: 5s
   
   storage:
     image: minio/minio:latest
