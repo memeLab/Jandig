@@ -21,9 +21,12 @@
     background-position: 0 100%;
 }
 
+#blog-area p {
+    text-align: left;
+}
 
-/* Detail Page */
 
+/* Post Detail Page */
 #post,
 #post-area{
     max-width: 600px;
@@ -45,4 +48,24 @@
 }
 .post-image h5{
     margin-top: 10px;
+}
+.post-image small{
+    display: block;
+}
+
+
+/* Clipping page */
+.clipping{
+    text-align: left;
+    margin-top: 1.5em;
+}
+.clipping p{
+    margin: 0;
+}
+.clipping h3{
+    margin: 0;
+}
+.clipping a{
+    display: block;
+    margin-bottom: 8px;
 }
