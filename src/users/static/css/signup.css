@@ -1,0 +1,57 @@
+.modalMenu {
+    margin: 10px 0 20px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.modalMenu a, .modalMenu a:visited {
+    font-size: 0.85em;
+    color: #03b595;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+.modalMenu a:hover {
+    color: #06f7ae;
+}
+
+.signup-modal .logo, .connect-modal .logo {
+    width: 100%;
+    height: 90px;
+    float: none;
+}
+
+.signup-modal .logo img, .connect-modal .logo img {
+    max-height: 58px;
+    margin: 20px auto 0 0;
+}
+
+.exhibit-form {
+    width: 100%;
+}
+
+select#id_exhibit {
+    width: 100%;
+    padding: 10px;
+}
+
+.form-options{
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 5%;
+}
+
+.errorlist{
+    color: red  ;
+}
+
+.form-options input{
+    width: 20px;
+    height: 20px;
+}
+
+::placeholder{
+    color: black;
+    opacity: 1;
+}

@@ -4,7 +4,7 @@ import sys
 
 python = sys.executable
 directory = os.path.dirname(__file__)
-sys.path.append('src')
+sys.path.append('jandig')
 
 #
 # Call python manage.py in a more robust way
@@ -12,7 +12,7 @@ sys.path.append('src')
 def robust_manage(ctx, cmd, env=None, **kwargs):
     kwargs = {k.replace('_', '-'): v for k, v in kwargs.items() if v is not False}
     opts = ' '.join(f'--{k} {"" if v is True else v}' for k, v in kwargs.items())
-    cmd = f'{python} src/ARte/manage.py {cmd} {opts}'
+    cmd = f'{python} ./src/manage.py {cmd} {opts}'
     env = {**os.environ, **(env or {})}
     path = env.get("PYTHONPATH", ":".join(sys.path))
     env.setdefault('PYTHONPATH', f'src:{path}')
@@ -20,40 +20,32 @@ def robust_manage(ctx, cmd, env=None, **kwargs):
     ctx.run(cmd, pty=True, env=env)
 
 
-def manage(ctx, cmd, postgres=False, whitenoise=False):
-    cmd = f'python3 src/ARte/manage.py {cmd}'
-    ctx.run(cmd, pty=True, env=default_env(postgres, whitenoise))
-
-
-def default_env(postgres, whitenoise):
-    os.environ['DEV_DB'] = 'True' if not postgres else 'False'
-    os.environ['DEV_STATIC'] = 'True' if whitenoise else 'False'
-    e = os.environ
-    return e
+def manage(ctx, cmd):
+    cmd = f'python3 ./src/manage.py {cmd}'
+    ctx.run(cmd, pty=True, env=os.environ)
 
 
 @task
-def run(ctx, ssl=False, gunicorn=False, postgres=False, whitenoise=False):
+def run(ctx, ssl=False, gunicorn=False):
     """
     Run development server
     """
     if gunicorn:
-        ctx.run('cd src/ARte && gunicorn --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi', env={"DEV_DB":"False"})
+        ctx.run('cd src && gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi')
     else:
-        manage(ctx, "runserver 0.0.0.0:8000", postgres, whitenoise)
-    
+        manage(ctx, "runserver 0.0.0.0:8000")
 
 
 @task
-def db(ctx, make=False, postgres=False):
+def db(ctx, make=False):
     """
     Run migrations
     """
     if make:
-        manage(ctx, "makemigrations", postgres)
-        manage(ctx, "migrate", postgres)
+        manage(ctx, "makemigrations")
+        manage(ctx, "migrate")
     else:
-        manage(ctx, "migrate", postgres)
+        manage(ctx, "migrate")
 
 
 @task
@@ -62,46 +54,6 @@ def collect(ctx):
     Collect static files
     """
     manage(ctx, "collectstatic --no-input --clear")
-
-
-@task
-def install_deps(ctx):
-    """
-    Install all dependencies
-    """
-    ctx.run('pip3 install -r src/requirements.txt')
-
-
-@task
-def docker(ctx, build=False):
-    command = 'sudo docker-compose -f docker/docker-compose.yml up'
-
-    if build:
-        command += ' --build'
-
-    ctx.run(command)
-
-
-@task
-def build_base(ctx, publish=False):
-    """
-    Build base docker images
-    """
-    command = './src/etc/scripts/build-base.sh'
-    
-    if publish:
-        command += ' publish'
-    
-    ctx.run(command)
-
-
-@task
-def init_production(ctx):
-    """
-    Init production environment
-    """
-    command = './src/etc/scripts/init-production.sh'
-    ctx.run(command)
 
 
 #
@@ -139,8 +91,3 @@ def i18n(ctx, compile=False, edit=False, lang='pt_BR', keep_pot=False):
 @task
 def docs(ctx):
     ctx.run('sphinx-build docs/ build/')
-
-
-#@task
-#def populate(ctx):
- #   manage(ctx, 'populate_db')

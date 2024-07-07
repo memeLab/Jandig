@@ -1,0 +1,40 @@
+{# Receives a list of markers/objects to list #}
+
+{% block content %}
+
+        {% with repository_list = repository_list, element_type="artwork" %}
+            {% include "users/components/item-list.jinja2" %}
+        {% endwith%}
+
+        <script>
+            let artworks = {}
+
+            {% if selected %}
+                "{{selected}}".split(",").forEach(function(id){
+                    artworks[id] = id
+                    $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
+                })
+            {% endif %}
+
+            function isArtworkSelected(artwork) {
+                return artwork.css('border-bottom-style') != "none";
+            }
+
+            $('.repository-item').click(function(){
+                let artworkId = $(this).attr('id').split('-')[1];
+
+                if(isArtworkSelected($(this))){
+                    $(this).css("border-bottom","none");
+                    delete artworks[artworkId];
+                }else{
+                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    artworks[artworkId] = artworkId;
+                }
+
+                let selected_artworks = Object.values(artworks).join(',');
+                let artworks_input = $('#artworks-selected > input');
+
+                artworks_input.val(selected_artworks);
+            });
+        </script>
+{% endblock %}

@@ -1,0 +1,74 @@
+services:
+  django:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src/:/jandig/src/
+      - ./docs/:/jandig/docs/
+      - ./etc/:/jandig/etc/
+      - ./locale/:/jandig/locale/
+      - ./run.sh:/jandig/run.sh
+      - ./tasks.py:/jandig/tasks.py
+    env_file:
+      - .envs/.example
+    depends_on:
+      storage:
+          condition: service_started
+      createbuckets:
+          condition: service_started
+      postgres:
+          condition: service_healthy
+    command: /jandig/run.sh
+
+  postgres:
+    image: postgres:15.4
+    env_file:
+      - .envs/.example
+    environment:
+      PGUSER: jandig
+    command: postgres -c max_connections=10000
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "jandig"]
+      interval: 5s
+      timeout: 60s
+      retries: 20
+      start_interval: 5s
+  
+  storage:
+    image: minio/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - media_data:/storage
+    env_file:
+      - .envs/.env
+    command: server /storage --console-address ":9001"
+
+  createbuckets:
+    image: minio/mc:RELEASE.2022-09-16T09-16-47Z
+    depends_on:
+      - storage
+    env_file:
+      - .envs/.env
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio $${MINIO_S3_ENDPOINT_URL} $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/$${AWS_STORAGE_BUCKET_NAME};
+      /usr/bin/mc policy set download myminio/$${AWS_STORAGE_BUCKET_NAME};
+      /usr/bin/mc mb myminio/$${AWS_PRIVATE_STORAGE_BUCKET_NAME};
+      /usr/bin/mc admin user add myminio $${MINIO_USER_ACCESS_KEY} $${MINIO_USER_SECRET_KEY};
+      /usr/bin/mc admin policy set myminio readwrite user=$${MINIO_USER_ACCESS_KEY};
+      exit 0;
+      "
+
+volumes:
+  postgres_data:
+  media_data:

@@ -336,8 +336,44 @@ msgstr ""
 msgid "Your Exhibitions"
 msgstr ""
 
+#: src/ARte/core/jinja2/core/community.jinja2:7
+msgid "An art experimentation for digital exhibtions in physical spaces"
+msgstr "Uma experimentação de arte para exibições digitais em espaços físicos"
+
+#: src/ARte/core/jinja2/core/community.jinja2:9
+msgid "Cell phones and tablets are used to read markers and thus open “windows” where other art objects can be found. The public is invited to transcend the exhibition space, taking stickers with markers to be pasted in other places, creating Temporary Autonomous Zones (TAZes). The public becomes a co-author, and markers and digital works are reconfigured by spaces."
+msgstr "Celulares e tablets são usados para ler marcadores e assim abrir “janelas” onde se encontram outros objetos de arte. O público é convidado a transcender o espaço de exposição, levando adesivos com marcadores para serem colados em outros locais, criando Zonas Autônomas Temporárias (TAZes). O público se torna co-autor, e os marcadores e obras digitais são reconfigurados pelos espaços."
+
+#: src/ARte/core/jinja2/core/community.jinja2:12
+msgid "Know"
+msgstr "Entenda"
+
+#: src/ARte/core/jinja2/core/community.jinja2:14
+msgid "The Jandig project is an investigation into the intervention of markers for viewing works through augmented reality on urban space. It is a collaborative digital art project that proposes the creation of Temporary Autonomous Zones (TAZes) in each space where it is installed. These TAZes are formed through markers spread across a space by artists and the public – who thus become co-creators of that experience. Users interact with markers, using mobile devices to open real-world windows to view digital creations (Licensed under Creative Commons)."
+msgstr "O projeto Jandig é uma investigação a respeito da intervenção de marcadores para visualização de obras por meio de realidade aumentada sobre o espaço urbano. Trata-se de um projeto colaborativo de arte digital que propõe a criação de Zonas Autônomas Temporárias (TAZes) em cada espaço em que é instalado. Essas TAZes são formadas através de marcadores espalhados por um espaço por artistas e pelo público – que assim torna-se co-criador daquela experiência. Os usuários interagem com marcadores, utilizando dispositivos móveis para abrir janelas no mundo real para visualizar criações digitais (cedidas através de licença Creative Commons)."
+
+#: src/ARte/core/jinja2/core/community.jinja2:18
+msgid "Our goals"
+msgstr "Nossos objetivos"
+
+#: src/ARte/core/jinja2/core/community.jinja2:20
+msgid "The Jandig platform makes exhibitions possible using augmented reality."
+msgstr "A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada."
+
+#: src/ARte/core/jinja2/core/community.jinja2:22
+msgid "Each exhibition is made from the arrangement of several markers, which use adhesives, stencil images, stamps, or others, in different sizes as support. These supports are also delivered to the public that circulate through the space, so that they can make local interference and that it is possible to “viralize” the markers while the exhibition is available, leaving traces and providing interactions between participants/visitors."
+msgstr "Cada exposição é feita a partir da disposição de diversos marcadores, que utilizam como suporte adesivos, imagens de stencil, de carimbos, ou outras, em diferentes tamanhos. Esses suportes são também entregues ao público que circulam pelo espaço, de modo que possam fazer interferências locais e que seja possível “viralizar” os marcadores enquanto a exposição estiver disponível, deixando rastros e proporcionando interações entre os participantes/visitantes."
+
+#: src/ARte/core/jinja2/core/community.jinja2:24
+msgid "To see through the “windows” and see what the fabulous images reveal, the public must point their devices at the markers, so that the Jandig platform viewer can read them and show the content in augmented reality."
+msgstr "Para enxergar através das “janelas” e ver as imagens fabulosas o que elas revelam, o público deverá apontar seus dispositivos para os marcadores, para que o visualizador da plataforma Jandig ufaça a leitura dos mesmos e mostre o conteúdo em realidade aumentada."
+
+#: src/ARte/core/jinja2/core/community.jinja2:26
+msgid "Borders are the graphic elements that trigger the recognition of the object associated with each marker. For this reason, they should not be covered and they should always be seen completely by the camera. Placing your finger on one of the edges or bringing the camera too close to the marker makes recognition impossible, for example. This characteristic must always be taken into account in the production and application of markers."
+msgstr "As bordas são os elementos gráficos que engatilham o reconhecimento do objeto associado a cada marcador. Por esse motivo, não se deve cobri-las e elas devem sempre ser vistas completamente pela câmera. Colocar o dedo sobre uma das bordas ou aproximar demais a câmera do marcador inviabiliza o reconhecimento, por exemplo. Essa característica deve sempre ser levada em consideração na produção e aplicação dos marcadores."
+
 #: src/ARte/users/jinja2/users/profile.jinja2:21
-msgid "You have no exhibits :c"
+msgid "You have no Exhibitions. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:22
@@ -351,7 +387,7 @@ msgid "Your Artworks"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:32
-msgid "You have no artworks :c"
+msgid "You have no Artworks. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:36
@@ -359,7 +395,7 @@ msgid "Your Markers"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:43
-msgid "You have no markers :c"
+msgid "You have no Markers. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:47
@@ -367,7 +403,7 @@ msgid "Your Objects"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:54
-msgid "You have no objects :c"
+msgid "You have no Objects. :c"
 msgstr ""
 
 #: src/ARte/users/jinja2/users/profile.jinja2:55

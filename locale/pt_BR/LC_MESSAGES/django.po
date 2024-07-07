@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-17 21:09+0000\n"
+"POT-Creation-Date: 2024-07-06 15:42+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,312 +18,337 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: src/ARte/config/settings.py:146
+#: src/config/settings.py:179
 msgid "English"
 msgstr "Inglês"
 
-#: src/ARte/config/settings.py:147
+#: src/config/settings.py:180
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
 
-#: src/ARte/users/forms.py:24 src/ARte/users/forms.py:85
+#: src/users/forms.py:32 src/users/forms.py:93
 msgid "Your e-mail address"
 msgstr "Seu endereço de e-mail"
 
-#: src/ARte/users/forms.py:29 src/ARte/users/forms.py:89
+#: src/users/forms.py:37 src/users/forms.py:97
 msgid "Your username"
 msgstr "Seu nome de usuário"
 
-#: src/ARte/users/forms.py:35
+#: src/users/forms.py:43
 msgid "email"
 msgstr "email"
 
-#: src/ARte/users/forms.py:36
+#: src/users/forms.py:44
 msgid "chosen username"
 msgstr "nome de usuário escolhido"
 
-#: src/ARte/users/forms.py:37 src/ARte/users/forms.py:123
+#: src/users/forms.py:45 src/users/forms.py:129
 msgid "password"
 msgstr "senha"
 
-#: src/ARte/users/forms.py:38
+#: src/users/forms.py:46
 msgid "confirm password"
 msgstr "confirmar senha"
 
-#: src/ARte/users/forms.py:48
+#: src/users/forms.py:56
 msgid "E-mail taken"
 msgstr "E-mail já existente"
 
-#: src/ARte/users/forms.py:57
+#: src/users/forms.py:64
 msgid "Old Password"
 msgstr "Senha antiga"
 
-#: src/ARte/users/forms.py:58
+#: src/users/forms.py:65
 msgid "New Password"
 msgstr "Nova senha"
 
-#: src/ARte/users/forms.py:59
+#: src/users/forms.py:66
 msgid "New Password Again"
 msgstr "Nova senha novamente"
 
-#: src/ARte/users/forms.py:78
+#: src/users/forms.py:86
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/ARte/users/forms.py:79
+#: src/users/forms.py:87
 msgid "Username"
 msgstr "Usuário"
 
-#: src/ARte/users/forms.py:80 src/ARte/users/forms.py:99
+#: src/users/forms.py:88 src/users/forms.py:104
 msgid "Personal Bio / Description"
 msgstr "Biografia / Descrição"
 
-#: src/ARte/users/forms.py:81 src/ARte/users/forms.py:103
+#: src/users/forms.py:89 src/users/forms.py:108
 msgid "Personal Website"
 msgstr "Site pessoal"
 
-#: src/ARte/users/forms.py:109
+#: src/users/forms.py:114
 msgid "Username already in use"
 msgstr "Nome de usuário já em uso"
 
-#: src/ARte/users/forms.py:115
+#: src/users/forms.py:120
 msgid "Email address must be unique"
 msgstr "O endereço de e-mail deve ser único"
 
-#: src/ARte/users/forms.py:122
+#: src/users/forms.py:128
 msgid "username / email"
 msgstr "nome de usuário / email"
 
-#: src/ARte/users/forms.py:130 src/ARte/users/forms.py:136
+#: src/users/forms.py:135 src/users/forms.py:141
 msgid "Username/email not found"
 msgstr "Nome de usuário / email não encontrado"
 
-#: src/ARte/users/forms.py:152
-msgid "Wrong password"
+#: src/users/forms.py:167
+#, fuzzy
+msgid "Wrong password!"
 msgstr "Senha errada"
 
-#: src/ARte/users/forms.py:169 src/ARte/users/forms.py:171
-#: src/ARte/users/forms.py:187
+#: src/users/forms.py:185 src/users/forms.py:222
 msgid "browse file"
 msgstr "procurar arquivo"
 
-#: src/ARte/users/forms.py:173 src/ARte/users/forms.py:189
-#: src/ARte/users/forms.py:215 src/ARte/users/forms.py:216
+#: src/users/forms.py:187 src/users/forms.py:224 src/users/forms.py:257
+#: src/users/forms.py:258
 msgid "declare different author name"
 msgstr "declarar outro autor"
 
-#: src/ARte/users/forms.py:174
+#: src/users/forms.py:188
 msgid "Marker's title"
 msgstr "Título do Marcador"
 
-#: src/ARte/users/forms.py:193
+#: src/users/forms.py:228
 msgid "Object's title"
 msgstr "Título do Objeto"
 
-#: src/ARte/users/forms.py:217
+#: src/users/forms.py:259
 msgid "Artwork title"
 msgstr "Título da Obra"
 
-#: src/ARte/users/forms.py:218
+#: src/users/forms.py:260
 msgid "Artwork description"
 msgstr "Descrição da Obra"
 
-#: src/ARte/users/forms.py:239
+#: src/users/forms.py:274
+#, fuzzy
+msgid "Url can't contain spaces or special characters"
+msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+
+#: src/users/forms.py:280
 msgid "Exhibit Title"
 msgstr "Título da Exposição"
 
-#: src/ARte/users/forms.py:240
-msgid "Exhibit URL"
-msgstr "URL da exposição"
-
-#: src/ARte/users/forms.py:251
+#: src/users/forms.py:281
 msgid "Complete with your Exhibit URL here"
 msgstr "Complete sua URL de exibição aqui"
 
-#: src/ARte/core/jinja2/core/base.jinja2:44
+#: src/blog/jinja2/blog/category.jinja2:8 src/blog/jinja2/blog/detail.jinja2:5
+#, fuzzy
+msgid "< Back to Blog"
+msgstr "Página inicial"
+
+#: src/blog/jinja2/blog/clipping.jinja2:12
+#: src/core/jinja2/core/useful_links.jinja2:15
+msgid "Clipping"
+msgstr "Clipping"
+
+#: src/blog/jinja2/blog/clipping.jinja2:14
+msgid "The content below is in the original languages."
+msgstr "Os conteúdos abaixo estão em suas linguas originais"
+
+#: src/blog/jinja2/blog/clipping.jinja2:22
+msgid "View as PDF"
+msgstr "Ver como PDF"
+
+#: src/blog/jinja2/blog/clipping.jinja2:24
+msgid "View as JPG"
+msgstr "Ver como JPG"
+
+#: src/blog/jinja2/blog/clipping.jinja2:26
+msgid "View File"
+msgstr "Ver Arquivo"
+
+#: src/blog/jinja2/blog/detail.jinja2:13
+msgid "Categories:"
+msgstr "Categorias"
+
+#: src/blog/jinja2/blog/detail.jinja2:35
+#, fuzzy
+msgid "Back to Top"
+msgstr "Página inicial"
+
+#: src/blog/jinja2/blog/index.jinja2:12
+#: src/core/jinja2/core/useful_links.jinja2:12
+msgid "Memories"
+msgstr "Memórias"
+
+#: src/blog/jinja2/blog/post_preview.jinja2:4
+msgid "Read More"
+msgstr "Ler Mais"
+
+#: src/blog/jinja2/blog/post_preview.jinja2:8
+msgid "See more"
+msgstr "Ver mais"
+
+#: src/core/jinja2/core/base.jinja2:44
 #, fuzzy
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 
-#: src/ARte/core/jinja2/core/collection.jinja2:13
-#, fuzzy
-msgid "Jandig Exhibitions"
-msgstr "Exposições Jandig"
+#: src/core/jinja2/core/collection.jinja2:50
+msgid "We found no content on your Collection, try uploading an object."
+msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
 
-#: src/ARte/core/jinja2/core/collection.jinja2:18
-msgid "All Exhibits"
-msgstr "Todas Exposições"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:23
-#, fuzzy
-msgid "Jandig Artworks"
-msgstr "Obras Jandig"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:28
-msgid "All Artworks"
-msgstr "Todas as Obras"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:33
-#, fuzzy
-msgid "Jandig Markers"
-msgstr "Marcadores Jandig"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:38
-msgid "All Markers"
-msgstr "Todos os Marcadores"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:43
-#, fuzzy
-msgid "Jandig Objects"
-msgstr "Objetos Jandig"
-
-#: src/ARte/core/jinja2/core/collection.jinja2:48
-msgid "All Objects"
-msgstr "Todos os Objetos"
-
-#: src/ARte/core/jinja2/core/exhibit_detail.jinja2:11
-msgid "See this exhibition"
-msgstr "Ver essa exposição"
-
-#: src/ARte/core/jinja2/core/exhibit_detail.jinja2:12
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:60
+#: src/core/jinja2/core/exhibit_detail.jinja2:9
+#: src/users/jinja2/users/components/item-list.jinja2:75
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:31
 msgid "Created by "
 msgstr "Criado por "
 
-#: src/ARte/core/jinja2/core/exhibit_detail.jinja2:15
+#: src/core/jinja2/core/exhibit_detail.jinja2:10
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:34
+msgid "See this exhibition"
+msgstr "Ver essa exposição"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:12
 msgid "Exhibition Artworks"
 msgstr "Obras dessa Exposição"
 
-#: src/ARte/core/jinja2/core/exhibit_select.jinja2:14
+#: src/core/jinja2/core/exhibit_select.jinja2:16
 msgid "Choose the Exhibition you're seeing"
 msgstr "Escolha a Exposição que está vendo"
 
-#: src/ARte/core/jinja2/core/exhibit_select.jinja2:23
-#: src/ARte/users/jinja2/users/login.jinja2:37
-#: src/ARte/users/jinja2/users/password-change.jinja2:26
-#: src/ARte/users/jinja2/users/profile-edit.jinja2:31
-#: src/ARte/users/jinja2/users/recover-edit-password.jinja2:26
-#: src/ARte/users/jinja2/users/recover-password-code.jinja2:26
-#: src/ARte/users/jinja2/users/recover-password.jinja2:26
-#: src/ARte/users/jinja2/users/signup.jinja2:32
-#: src/ARte/users/jinja2/users/upload.jinja2:93
+#: src/core/jinja2/core/exhibit_select.jinja2:28
+#: src/users/jinja2/users/edit-marker.jinja2:26
+#: src/users/jinja2/users/edit-object.jinja2:63
+#: src/users/jinja2/users/login.jinja2:40
+#: src/users/jinja2/users/password-change.jinja2:26
+#: src/users/jinja2/users/profile-edit.jinja2:31
+#: src/users/jinja2/users/recover-edit-password.jinja2:26
+#: src/users/jinja2/users/recover-password-code.jinja2:26
+#: src/users/jinja2/users/recover-password.jinja2:26
+#: src/users/jinja2/users/signup.jinja2:32
+#: src/users/jinja2/users/upload-marker.jinja2:52
+#: src/users/jinja2/users/upload-object.jinja2:88
+#: src/users/jinja2/users/upload.jinja2:107
 msgid "Submit"
 msgstr "Enviar"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:3
+#: src/core/jinja2/core/footer.jinja2:3
 msgid "About Us"
 msgstr "Sobre Nós"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:4
-#: src/ARte/core/jinja2/core/footer.jinja2:9
-msgid "Jandig on Github"
-msgstr "Jandig no GitHub"
-
-#: src/ARte/core/jinja2/core/footer.jinja2:6
+#: src/core/jinja2/core/footer.jinja2:5
 msgid "Jandig on Instagram"
 msgstr "Jandig no Instagram"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:7
+#: src/core/jinja2/core/footer.jinja2:6
 msgid "Jandig on Twitter"
 msgstr "Jandig no Twitter"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:8
+#: src/core/jinja2/core/footer.jinja2:7
 msgid "Jandig on Facebook"
 msgstr "Jandig no Facebook"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:10
+#: src/core/jinja2/core/footer.jinja2:8
+msgid "Jandig on Github"
+msgstr "Jandig no GitHub"
+
+#: src/core/jinja2/core/footer.jinja2:9
 msgid "Jandig on Telegram"
 msgstr "Jandig no Telegram"
 
-#: src/ARte/core/jinja2/core/footer.jinja2:14
+#: src/core/jinja2/core/footer.jinja2:13
 msgid "Content under CC BY-SA 4.0 unless otherwise noted."
 msgstr ""
 "Conteúdo sob licenciamento CC BY-SA 4.0, a não ser quando explicitado o "
 "contrário."
 
-#: src/ARte/core/jinja2/core/header.jinja2:21
+#: src/core/jinja2/core/header.jinja2:19
 msgid "Welcome, "
 msgstr "Olá, "
 
-#: src/ARte/core/jinja2/core/header.jinja2:28
-#: src/ARte/users/jinja2/users/login.jinja2:21
-#: src/ARte/users/jinja2/users/signup.jinja2:14
+#: src/core/jinja2/core/header.jinja2:26 src/users/jinja2/users/login.jinja2:21
+#: src/users/jinja2/users/signup.jinja2:14
 msgid "Sign up"
 msgstr "Cadastro"
 
-#: src/ARte/core/jinja2/core/header.jinja2:31
-#: src/ARte/users/jinja2/users/signup.jinja2:15
+#: src/core/jinja2/core/header.jinja2:29
+#: src/users/jinja2/users/signup.jinja2:15
 msgid "Log in"
 msgstr "Entrar"
 
-#: src/ARte/core/jinja2/core/home.jinja2:37
+#: src/core/jinja2/core/home.jinja2:41
 msgid "Welcome to Jandig"
 msgstr "Bem vindo ao Jandig"
 
-#: src/ARte/core/jinja2/core/home.jinja2:38
+#: src/core/jinja2/core/home.jinja2:42
 #, fuzzy
 msgid "An Open Source Augmented Reality art community."
 msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
-#: src/ARte/core/jinja2/core/home.jinja2:39
+#: src/core/jinja2/core/home.jinja2:43
 msgid "To see the Artworks you need to grant camera access to the app."
 msgstr "Para ver as Obras você precisa dar acesso a câmera no aplicativo."
 
-#: src/ARte/core/jinja2/core/home.jinja2:41
+#: src/core/jinja2/core/home.jinja2:45
 msgid "Go to camera"
 msgstr "Ir para câmera"
 
-#: src/ARte/core/jinja2/core/language-select-modal.jinja2:3
+#: src/core/jinja2/core/language-select-modal.jinja2:3
 msgid "Select your language"
 msgstr "Selecione seu idioma"
 
-#: src/ARte/core/jinja2/core/language-select-modal.jinja2:16
+#: src/core/jinja2/core/language-select-modal.jinja2:16
 msgid "Ok"
 msgstr "Ok"
 
-#: src/ARte/core/jinja2/core/ui.jinja2:4
+#: src/core/jinja2/core/ui.jinja2:4
 msgid "Change exhibition"
 msgstr "Alterar exposição"
 
-#: src/ARte/core/jinja2/core/ui.jinja2:5
+#: src/core/jinja2/core/ui.jinja2:5
 msgid "Back to home"
 msgstr "Página inicial"
 
-#: src/ARte/core/jinja2/core/useful_links.jinja2:5
+#: src/core/jinja2/core/useful_links.jinja2:5
 msgid "AR Viewer"
 msgstr "Visualizador RA"
 
-#: src/ARte/core/jinja2/core/useful_links.jinja2:9
+#: src/core/jinja2/core/useful_links.jinja2:9
 msgid "Collection"
 msgstr "Coleção"
 
-#: src/ARte/core/jinja2/core/useful_links.jinja2:12
-msgid "My Stuff"
-msgstr "Minhas Coisas"
+#: src/core/jinja2/core/useful_links.jinja2:18
+msgid "My Creations"
+msgstr "Minhas Criações"
 
-#: src/ARte/core/jinja2/core/useful_links.jinja2:15
+#: src/core/jinja2/core/useful_links.jinja2:21
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:11
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:13
+#: src/users/jinja2/users/artwork.jinja2:11
+msgid "Edit Jandig Artwork"
+msgstr "Editar Obra Jandig"
+
+#: src/users/jinja2/users/artwork.jinja2:11
+#: src/users/jinja2/users/components/createbox.jinja2:13
 msgid "Create Jandig Artwork"
 msgstr "Criar Obra Jandig"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:13
+#: src/users/jinja2/users/artwork.jinja2:13
 msgid "Select Marker"
 msgstr "Escolher Marcador"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:16
+#: src/users/jinja2/users/artwork.jinja2:16
 msgid "Select Object"
 msgstr "Escolher Objeto"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:22
+#: src/users/jinja2/users/artwork.jinja2:22
 msgid "Select Marker (1/3)"
 msgstr "Escolher Marcador (1/3)"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:48
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:83
+#: src/users/jinja2/users/artwork.jinja2:36
+#: src/users/jinja2/users/artwork.jinja2:58
 msgid ""
 "I agree to share this content under CC BY-SA 4.0 and I'm aware that, once "
 "uploaded, I cannot remove it. "
@@ -331,206 +356,291 @@ msgstr ""
 "Concordo em publicar esse conteúdo sob CC BY-SA 4.0 e entendo que, uma vez "
 "publicado, não posso mais removê-lo. "
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:53
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:87
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:33
+#: src/users/jinja2/users/artwork.jinja2:41
+#: src/users/jinja2/users/artwork.jinja2:62
+#: src/users/jinja2/users/exhibit-create.jinja2:44
+#: src/users/jinja2/users/exhibit-edit.jinja2:34
 msgid "Next"
 msgstr "Próximo"
 
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:43
-msgid "Your exhibit URL will look like this"
-msgstr "Sua URL de exibição vai se parecer com isso."
-
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:57
+#: src/users/jinja2/users/artwork.jinja2:45
 msgid "Select Object (2/3)"
 msgstr "Selecione Objeto (2/3)"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:91
+#: src/users/jinja2/users/artwork.jinja2:66
 msgid "About your artwork (3/3)"
 msgstr "Sobre sua obra (3/3)"
 
-#: src/ARte/users/jinja2/users/artwork-create.jinja2:100
-msgid "Publish artwork"
-msgstr "Publicar obra"
-
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:11
-msgid "Create Jandig Exhibition"
-msgstr "Criar Exposição Jandig"
-
-#: src/ARte/users/jinja2/users/artwork-edit.jinja2:11
-msgid "Edit Jandig Artwork"
-msgstr "Editar Obra Jandig"
-
-#: src/ARte/users/jinja2/users/artwork-edit.jinja2:75
+#: src/users/jinja2/users/artwork.jinja2:75
 msgid "Edit Artwork"
 msgstr "Editar Obra"
 
-#: src/ARte/users/jinja2/users/exhibit-edit.jinja2:12
-msgid "Edit Jandig Exhibition"
-msgstr "Editar Exposição Jandig"
+#: src/users/jinja2/users/artwork.jinja2:75
+msgid "Publish artwork"
+msgstr "Publicar obra"
 
-#: src/ARte/users/jinja2/users/exhibit-edit.jinja2:49
-msgid "Edit Exhibit"
-msgstr "Editar Exposição"
+#: src/users/jinja2/users/edit-marker.jinja2:9
+#: src/users/jinja2/users/edit-object.jinja2:9
+#, fuzzy
+msgid "Edit object"
+msgstr "objeto"
 
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:13
-msgid "Select Artworks"
-msgstr "Escolher Obras"
+#: src/users/jinja2/users/edit-marker.jinja2:15
+#, fuzzy
+msgid "Edit Marker's title"
+msgstr "Título do Marcador"
 
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:20
-msgid "Select Artworks (1/2)"
-msgstr "Escolher Obras (1/2)"
+#: src/users/jinja2/users/edit-marker.jinja2:19
+msgid ""
+"You can't edit the marker patt and the png for now, but hopefully soon "
+"enough it will be possible!"
+msgstr ""
+"Você não pode editar o arquivo patt ou png de um marcador agora, mas devemos "
+"atualizar isto assim que possível."
 
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:22
-msgid "Choose from your repository"
-msgstr "Escolha de seu repositório"
+#: src/users/jinja2/users/edit-object.jinja2:15
+#, fuzzy
+msgid "Edit Object's title"
+msgstr "Título do Objeto"
 
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:37
-msgid "Exhibit Information (2/2)"
-msgstr "Informações da Exposição (2/2)"
-
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:46
-msgid "Publish Exhibit"
-msgstr "Publicar Exposição"
-
-#: src/ARte/users/jinja2/users/exhibit-create.jinja2:82
-msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
-msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
-
-#: src/ARte/users/jinja2/users/invalid-recovering-email.jinja2:14
-msgid "There is no user with this e-mail/username."
-msgstr "Não há usuário com esse e-mail/nome."
-
-#: src/ARte/users/jinja2/users/invalid-recovering-email.jinja2:18
-#: src/ARte/users/jinja2/users/wrong-verification-code.jinja2:18
-msgid "Click here to return"
-msgstr "Clique aqui para voltar"
-
-#: src/ARte/users/jinja2/users/login.jinja2:20
-msgid "Login to continue"
-msgstr "Faça login para continuar"
-
-#: src/ARte/users/jinja2/users/login.jinja2:40
-msgid "Recover password"
-msgstr "Recuperar senha"
-
-#: src/ARte/users/jinja2/users/password-change.jinja2:14
-msgid "Type your new password."
-msgstr "Digite sua nova senha."
-
-#: src/ARte/users/jinja2/users/profile-edit.jinja2:7
-msgid "Log out"
-msgstr "Sair"
-
-#: src/ARte/users/jinja2/users/profile-edit.jinja2:8
-msgid "Remove account"
-msgstr "Remover conta"
-
-#: src/ARte/users/jinja2/users/profile-edit.jinja2:19
-msgid "Change Password"
-msgstr "Trocar Senha"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:16
-msgid "Your Exhibitions"
-msgstr "Suas Exposições"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:23
-msgid "You have no Exhibitions. :("
-msgstr "Você não tem Exposições. :("
-
-#: src/ARte/users/jinja2/users/profile.jinja2:24
-#: src/ARte/users/jinja2/users/profile.jinja2:35
-msgid "Create one"
-msgstr "Criar"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:27
-msgid "Your Artworks"
-msgstr "Suas Obras"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:34
-msgid "You have no Artworks. :("
-msgstr "Você não tem Obras. :("
-
-#: src/ARte/users/jinja2/users/profile.jinja2:38
-msgid "Your Markers"
-msgstr "Seus Marcadores"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:45
-msgid "You have no markers. :("
-msgstr "Você não tem marcadores. :("
-
-#: src/ARte/users/jinja2/users/profile.jinja2:46
-#: src/ARte/users/jinja2/users/profile.jinja2:57
-msgid "Upload one"
-msgstr "Enviar"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:49
-msgid "Your Objects"
-msgstr "Seus Objetos"
-
-#: src/ARte/users/jinja2/users/profile.jinja2:56
-msgid "You have no objects. :("
-msgstr "Você não tem objetos. :("
-
-#: src/ARte/users/jinja2/users/recover-edit-password.jinja2:14
-msgid "Choose a new password and repeat it."
-msgstr "Escolha uma nova senha e repita."
-
-#: src/ARte/users/jinja2/users/recover-password-code.jinja2:14
-msgid "Insert the code you have received on e-mail."
-msgstr "Digite o código que você recebeu em seu e-mail."
-
-#: src/ARte/users/jinja2/users/recover-password.jinja2:14
-msgid "Type your username or e-mail"
-msgstr "Digite seu nome de usuário ou email"
-
-#: src/ARte/users/jinja2/users/signup.jinja2:29
-msgid "Remember me"
-msgstr "Lembre-se de mim"
-
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:5
-#: src/ARte/users/jinja2/users/upload.jinja2:10
-msgid "Upload Marker"
-msgstr "Enviar Marcador"
-
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:8
-#: src/ARte/users/jinja2/users/upload.jinja2:12
-msgid "Upload Object"
-msgstr "Enviar Objeto"
-
-#: src/ARte/users/jinja2/users/upload.jinja2:20
+#: src/users/jinja2/users/edit-object.jinja2:19
+#: src/users/jinja2/users/upload-object.jinja2:27
+#: src/users/jinja2/users/upload.jinja2:29
 msgid "Choose Object"
 msgstr "Escolher Objeto"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:26
-msgid "Choose Marker image"
-msgstr "Selecione uma imagem de Marcador"
-
-#: src/ARte/users/jinja2/users/upload.jinja2:40
+#: src/users/jinja2/users/edit-object.jinja2:26
+#: src/users/jinja2/users/upload-object.jinja2:36
+#: src/users/jinja2/users/upload.jinja2:47
 msgid "Adjust scale"
 msgstr "Ajustar escala"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:45
+#: src/users/jinja2/users/edit-object.jinja2:29
+#: src/users/jinja2/users/upload-object.jinja2:39
+#: src/users/jinja2/users/upload.jinja2:50
+msgid ""
+"Scale should be adjusted relative to Marker size on the screen. A scale of 2 "
+"will render an Object twice the size of the Marker."
+msgstr ""
+"A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma "
+"escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
+
+#: src/users/jinja2/users/edit-object.jinja2:36
+#: src/users/jinja2/users/upload-object.jinja2:46
+#: src/users/jinja2/users/upload.jinja2:57
 msgid "Adjust position"
 msgstr "Ajustar posição"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:53
-msgid "Adjust rotation"
-msgstr "Ajustar rotação"
+#: src/users/jinja2/users/exhibit-create.jinja2:12
+msgid "Create Jandig Exhibition"
+msgstr "Criar Exposição Jandig"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:65
-msgid "Choose .patt file"
-msgstr "Selecione um arquivo .patt"
+#: src/users/jinja2/users/exhibit-create.jinja2:14
+#: src/users/jinja2/users/exhibit-edit.jinja2:14
+msgid "Select Artworks"
+msgstr "Escolher Obras"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:77
+#: src/users/jinja2/users/exhibit-create.jinja2:21
+#: src/users/jinja2/users/exhibit-edit.jinja2:21
+msgid "Select Artworks (1/2)"
+msgstr "Escolher Obras (1/2)"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:24
+#: src/users/jinja2/users/exhibit-edit.jinja2:23
+msgid "Choose from your repository"
+msgstr "Escolha de seu repositório"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:28
+#: src/users/jinja2/users/profile.jinja2:43
+msgid "You have no Artworks. :c"
+msgstr "Você não tem Obras. :c"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:30
+#: src/users/jinja2/users/profile.jinja2:29
+#: src/users/jinja2/users/profile.jinja2:44
+msgid "Create one"
+msgstr "Criar"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:48
+#: src/users/jinja2/users/exhibit-edit.jinja2:38
+msgid "Exhibit Information (2/2)"
+msgstr "Informações da Exposição (2/2)"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:53
+#: src/users/jinja2/users/exhibit-edit.jinja2:43
+msgid "Your exhibit URL will look like this"
+msgstr "Sua URL de exibição vai se parecer com isso."
+
+#: src/users/jinja2/users/exhibit-create.jinja2:59
+msgid "Publish Exhibit"
+msgstr "Publicar Exposição"
+
+#: src/users/jinja2/users/exhibit-create.jinja2:95
+#, fuzzy
+msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
+msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+
+#: src/users/jinja2/users/exhibit-edit.jinja2:12
+msgid "Edit Jandig Exhibition"
+msgstr "Editar Exposição Jandig"
+
+#: src/users/jinja2/users/exhibit-edit.jinja2:49
+msgid "Edit Exhibit"
+msgstr "Editar Exposição"
+
+#: src/users/jinja2/users/invalid-recovering-email.jinja2:14
+msgid "There is no user with this e-mail/username."
+msgstr "Não há usuário com esse e-mail/nome."
+
+#: src/users/jinja2/users/invalid-recovering-email.jinja2:18
+#: src/users/jinja2/users/wrong-verification-code.jinja2:18
+msgid "Click here to return"
+msgstr "Clique aqui para voltar"
+
+#: src/users/jinja2/users/login.jinja2:20
+msgid "Login to continue"
+msgstr "Faça login para continuar"
+
+#: src/users/jinja2/users/login.jinja2:36
+#: src/users/jinja2/users/signup.jinja2:29
+msgid "Remember me"
+msgstr "Lembre-se de mim"
+
+#: src/users/jinja2/users/login.jinja2:43
+msgid "Recover password"
+msgstr "Recuperar senha"
+
+#: src/users/jinja2/users/moderator-page.jinja2:12
+#, fuzzy
+msgid "Jandig Exhibits"
+msgstr "Exposições Jandig"
+
+#: src/users/jinja2/users/moderator-page.jinja2:18
+#, fuzzy
+msgid "Jandig Artworks"
+msgstr "Obras Jandig"
+
+#: src/users/jinja2/users/moderator-page.jinja2:24
+#, fuzzy
+msgid "Jandig Markers"
+msgstr "Marcadores Jandig"
+
+#: src/users/jinja2/users/moderator-page.jinja2:30
+#, fuzzy
+msgid "Jandig Objects"
+msgstr "Objetos Jandig"
+
+#: src/users/jinja2/users/password-change.jinja2:14
+msgid "Type your new password."
+msgstr "Digite sua nova senha."
+
+#: src/users/jinja2/users/permission-denied.jinja2:4
+msgid ""
+"You dont have permission to be here, please click on the button to go back."
+msgstr ""
+
+#: src/users/jinja2/users/permission-denied.jinja2:5
+msgid "Take me back to where I belong!"
+msgstr ""
+
+#: src/users/jinja2/users/components/userbox.jinja2:23
+#: src/users/jinja2/users/profile-edit.jinja2:7
+msgid "Log out"
+msgstr "Sair"
+
+#: src/users/jinja2/users/profile-edit.jinja2:8
+msgid "Remove account"
+msgstr "Remover conta"
+
+#: src/users/jinja2/users/profile-edit.jinja2:19
+msgid "Change Password"
+msgstr "Trocar Senha"
+
+#: src/users/jinja2/users/profile.jinja2:18
+msgid "Your Exhibitions"
+msgstr "Suas Exposições"
+
+#: src/users/jinja2/users/profile.jinja2:20
+msgid "Exhibitions"
+msgstr "Exposições"
+
+#: src/users/jinja2/users/profile.jinja2:28
+msgid "You have no Exhibitions. :c"
+msgstr "Você não tem Exposições. :c"
+
+#: src/users/jinja2/users/profile.jinja2:33
+msgid "Your Artworks"
+msgstr "Suas Obras"
+
+#: src/users/jinja2/users/profile.jinja2:35
+msgid "Artworks"
+msgstr "Obras"
+
+#: src/users/jinja2/users/profile.jinja2:48
+msgid "Your Markers"
+msgstr "Seus Marcadores"
+
+#: src/users/jinja2/users/profile.jinja2:50
+msgid "Markers"
+msgstr "Marcadores"
+
+#: src/users/jinja2/users/profile.jinja2:58
+msgid "You have no Markers. :c"
+msgstr "Você não tem Marcadores. :c"
+
+#: src/users/jinja2/users/profile.jinja2:59
+#: src/users/jinja2/users/profile.jinja2:74
+msgid "Upload one"
+msgstr "Enviar"
+
+#: src/users/jinja2/users/profile.jinja2:63
+msgid "Your Objects"
+msgstr "Seus Objetos"
+
+#: src/users/jinja2/users/profile.jinja2:65
+msgid "Objects"
+msgstr "Objetos"
+
+#: src/users/jinja2/users/profile.jinja2:73
+msgid "You have no Objects. :c"
+msgstr "Você não tem Objetos. :c"
+
+#: src/users/jinja2/users/recover-edit-password.jinja2:14
+msgid "Choose a new password and repeat it."
+msgstr "Escolha uma nova senha e repita."
+
+#: src/users/jinja2/users/recover-password-code.jinja2:14
+msgid "Insert the code you have received on e-mail."
+msgstr "Digite o código que você recebeu em seu e-mail."
+
+#: src/users/jinja2/users/recover-password.jinja2:14
+msgid "Type your username or e-mail"
+msgstr "Digite seu nome de usuário ou email"
+
+#: src/users/jinja2/users/components/createbox.jinja2:5
+#: src/users/jinja2/users/upload-marker.jinja2:11
+#: src/users/jinja2/users/upload.jinja2:10
+msgid "Upload Marker"
+msgstr "Enviar Marcador"
+
+#: src/users/jinja2/users/upload-marker.jinja2:19
+#: src/users/jinja2/users/upload.jinja2:36
+msgid "Choose Marker's title"
+msgstr "Escolha o título do seu Marcador"
+
+#: src/users/jinja2/users/upload-marker.jinja2:23
+#: src/users/jinja2/users/upload.jinja2:40
+msgid "Choose Marker image"
+msgstr "Selecione uma imagem de Marcador"
+
+#: src/users/jinja2/users/upload-marker.jinja2:35
+#: src/users/jinja2/users/upload.jinja2:89
 msgid "I'm this Marker author"
 msgstr "Sou autor/a desse Marcador"
 
-#: src/ARte/users/jinja2/users/upload.jinja2:79
-msgid "I'm this Object author"
-msgstr "Sou autor/a desse Objeto"
-
-#: src/ARte/users/jinja2/users/upload.jinja2:90
+#: src/users/jinja2/users/upload-marker.jinja2:48
+#: src/users/jinja2/users/upload-object.jinja2:84
+#: src/users/jinja2/users/upload.jinja2:103
 msgid ""
 "I agree to have this content under <a target=\"_blank\" href=\"https://"
 "creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> and I'm "
@@ -540,127 +650,177 @@ msgstr ""
 "creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> e estou "
 "ciente que não posso removê-lo depois que outras pessoas o estiverem usando."
 
-#: src/ARte/users/jinja2/users/wrong-verification-code.jinja2:14
+#: src/users/jinja2/users/components/createbox.jinja2:8
+#: src/users/jinja2/users/upload-object.jinja2:10
+#: src/users/jinja2/users/upload.jinja2:12
+msgid "Upload Object"
+msgstr "Enviar Objeto"
+
+#: src/users/jinja2/users/upload-object.jinja2:12
+#: src/users/jinja2/users/upload.jinja2:14
+#, fuzzy
+msgid "Edit_object"
+msgstr "objeto"
+
+#: src/users/jinja2/users/upload-object.jinja2:20
+#: src/users/jinja2/users/upload.jinja2:22
+msgid "Choose Object's title"
+msgstr "Escolha o título do Objeto"
+
+#: src/users/jinja2/users/upload-object.jinja2:72
+#: src/users/jinja2/users/upload.jinja2:92
+msgid "I'm this Object author"
+msgstr "Sou autor/a desse Objeto"
+
+#: src/users/jinja2/users/upload.jinja2:80
+msgid "Choose .patt file"
+msgstr "Selecione um arquivo .patt"
+
+#: src/users/jinja2/users/wrong-verification-code.jinja2:14
 msgid "Your verification code is invalid."
 msgstr "Seu código de verificação é inválido."
 
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:2
+#: src/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
 msgstr "Vem cá! Crie conteúdo agora!"
 
-#: src/ARte/users/jinja2/users/components/createbox.jinja2:16
+#: src/users/jinja2/users/components/createbox.jinja2:16
 msgid "Create Exhibition"
 msgstr "Criar Exposição"
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:20
+#: src/users/jinja2/users/components/elements-modal.jinja2:18
 msgid "by "
 msgstr "por "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:25
+#: src/users/jinja2/users/components/elements-modal.jinja2:24
 msgid "Uploaded by "
 msgstr "Publicado por "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:27
+#: src/users/jinja2/users/components/elements-modal.jinja2:26
 msgid "in "
 msgstr "em "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:34
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:51
+#: src/users/jinja2/users/components/elements-modal.jinja2:33
+#: src/users/jinja2/users/components/elements-modal.jinja2:50
 msgid " Used in "
 msgstr " Usado em "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:35
+#: src/users/jinja2/users/components/elements-modal.jinja2:34
 msgid " artworks"
 msgstr " Obras"
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:36
+#: src/users/jinja2/users/components/elements-modal.jinja2:35
 msgid " and in "
 msgstr " e em "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:37
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:53
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:48
+#: src/users/jinja2/users/components/elements-modal.jinja2:36
+#: src/users/jinja2/users/components/elements-modal.jinja2:52
+#: src/users/jinja2/users/components/userbox.jinja2:49
 msgid " Exhibits"
 msgstr " Exposições"
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:88
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:92
+#: src/users/jinja2/users/components/elements-modal.jinja2:88
+#: src/users/jinja2/users/components/elements-modal.jinja2:92
 msgid "This is a Jandig "
 msgstr "Isso é um "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:100
+#: src/users/jinja2/users/components/elements-modal.jinja2:100
 msgid "Share this "
 msgstr "Compartilhe "
 
-#: src/ARte/users/jinja2/users/components/elements-modal.jinja2:103
+#: src/users/jinja2/users/components/elements-modal.jinja2:103
 msgid "Create artwork with this "
 msgstr "Criar obra com "
 
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:18
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:21
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:49
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:68
-msgid "Delete"
-msgstr "Excluir"
-
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:62
+#: src/users/jinja2/users/components/item-list.jinja2:77
 #, fuzzy
 msgid "Artwork(s)"
 msgstr "Obra(s)"
 
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:63
+#: src/users/jinja2/users/components/item-list.jinja2:81
 msgid "See this Exhibition"
 msgstr "Ver essa Exposição"
 
-#: src/ARte/users/jinja2/users/components/item-list.jinja2:65
+#: src/users/jinja2/users/components/item-list.jinja2:88
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:13
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:22
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:36
+msgid "Delete"
+msgstr "Excluir"
+
+#: src/users/jinja2/users/components/item-list.jinja2:114
+#, fuzzy
+msgid "Preview Artwork"
+msgstr "Editar Obra"
+
+#: src/users/jinja2/users/components/item-list.jinja2:125
 msgid "Edit"
 msgstr "Editar"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:9
+#: src/users/jinja2/users/components/moderator-item-list.jinja2:33
+#, fuzzy
+msgid "artwork(s)"
+msgstr "Obra(s)"
+
+#: src/users/jinja2/users/components/userbox.jinja2:9
 msgid " marker(s)"
 msgstr " marcador(es)"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:11
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:18
+#: src/users/jinja2/users/components/userbox.jinja2:11
+#: src/users/jinja2/users/components/userbox.jinja2:18
 msgid "No uploads yet."
-msgstr "Ainda sem conteúdo."
+msgstr "Sem conteúdo."
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:16
+#: src/users/jinja2/users/components/userbox.jinja2:16
 msgid " Object(s)"
 msgstr " Objeto(s)"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:22
+#: src/users/jinja2/users/components/userbox.jinja2:22
 msgid "Edit profile"
 msgstr "Editar perfil"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:27
+#: src/users/jinja2/users/components/userbox.jinja2:28
 msgid "Jandig Artist"
 msgstr "Artista Jandig"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:30
+#: src/users/jinja2/users/components/userbox.jinja2:31
 msgid " Artworks"
 msgstr " Obras"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:34
+#: src/users/jinja2/users/components/userbox.jinja2:35
 msgid "No Artworks yet."
-msgstr "Sem Obras ainda."
+msgstr "Sem Obras."
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:38
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:56
+#: src/users/jinja2/users/components/userbox.jinja2:39
+#: src/users/jinja2/users/components/userbox.jinja2:57
 msgid "Create your first!"
 msgstr "Crie sua primeira!"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:45
+#: src/users/jinja2/users/components/userbox.jinja2:46
 msgid "Jandig Curator"
 msgstr "Curador Jandig"
 
-#: src/ARte/users/jinja2/users/components/userbox.jinja2:52
+#: src/users/jinja2/users/components/userbox.jinja2:53
 msgid "No Exhibitions yet."
-msgstr "Sem Exposições ainda."
+msgstr "Sem Exposições."
 
-#: src/ARte/users/jinja2/users/edit-object.jinja2:31
-msgid "Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker."
-msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
+#~ msgid "Exhibit URL"
+#~ msgstr "URL da exposição"
+
+#~ msgid "All Exhibits"
+#~ msgstr "Todas Exposições"
+
+#~ msgid "All Artworks"
+#~ msgstr "Todas as Obras"
+
+#~ msgid "All Markers"
+#~ msgstr "Todos os Marcadores"
+
+#~ msgid "All Objects"
+#~ msgstr "Todos os Objetos"
+
+#~ msgid "Adjust rotation"
+#~ msgstr "Ajustar rotação"
 
 #~ msgid " exhibits"
 #~ msgstr " exposições"
@@ -689,9 +849,6 @@ msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma 
 #~ msgid "Authorize camera"
 #~ msgstr "Autorizar câmera"
 
-#~ msgid "object"
-#~ msgstr "objeto"
-
 #~ msgid "Footer links"
 #~ msgstr "Links do rodapé"
 
@@ -702,13 +859,13 @@ msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma 
 #~ msgstr "Atrubuição-CompartilhaIgual 4.0 Internacional (CC BY-SA 4.0)"
 
 #~ msgid "No objects yet."
-#~ msgstr "Ainda sem objetos."
+#~ msgstr "Sem objetos."
 
 #~ msgid "No markers yet."
-#~ msgstr "Ainda sem marcadores."
+#~ msgstr "Sem marcadores."
 
 #~ msgid "No exhibits yet."
-#~ msgstr "Ainda sem exposições."
+#~ msgstr "Sem exposições."
 
 #~ msgid "Create exhibit"
 #~ msgstr "Criar exposição"
@@ -724,3 +881,14 @@ msgstr "A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma 
 
 #~ msgid " author"
 #~ msgstr " autor"
+
+#~ msgid ""
+#~ "Position should be adjusted relative to the Marker's size on the screen. "
+#~ "If horizontal position is 2, the center of the Object will be in a "
+#~ "distance 2 times the size of its Marker's side to the right. If it's -1, "
+#~ "it will be shown to the left."
+#~ msgstr ""
+#~ "A posição deve ser ajustada em relação ao tamanho do marcador na tela. Se "
+#~ "a posição horizontal for 2, o centro do Objeto estará a uma distância de "
+#~ "2 vezes o tamanho do lado do seu Marcador à direita. Se for -1, será "
+#~ "mostrado à esquerda."
