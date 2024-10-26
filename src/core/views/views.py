@@ -124,15 +124,6 @@ def artwork_preview(request):
 
 
 @require_http_methods(["GET"])
-def robots_txt(request):
-    lines = [
-        "User-Agent: *",
-        "Disallow: ",
-    ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
-
-
-@require_http_methods(["GET"])
 def exhibit(request, slug):
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
     ctx = {"exhibit": exhibit, "artworks": exhibit.artworks.all()}

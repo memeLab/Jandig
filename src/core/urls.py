@@ -5,9 +5,11 @@ from core.views.objects import ObjectViewset
 from core.views.static_views import (
     community,
     documentation,
+    favicon,
     health_check,
     home,
     marker_generator,
+    robots_txt,
 )
 from core.views.views import (
     artwork_preview,
@@ -16,7 +18,6 @@ from core.views.views import (
     exhibit_detail,
     exhibit_select,
     manifest,
-    robots_txt,
     see_all,
     service_worker,
     upload_image,
@@ -46,7 +47,8 @@ urlpatterns = [
     path("upload", upload_image, name="upload-image"),
     path("i18n/", include("django.conf.urls.i18n")),
     path("see_all/", see_all, name="see_all"),
-    path("robots.txt/", robots_txt),
+    path("robots.txt", robots_txt),
+    path("favicon.ico", favicon),
     path(settings.HEALTH_CHECK_URL, health_check),
     path("<slug:slug>/", exhibit, name="exhibit"),
 ]
