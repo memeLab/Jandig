@@ -1,7 +1,3 @@
-from django.conf import settings
-from django.urls import include, path
-from rest_framework_nested.routers import DefaultRouter
-
 from core.views.artworks import ArtworkViewset
 from core.views.exhibits import ExhibitViewset
 from core.views.markers import MarkerViewset
@@ -16,6 +12,7 @@ from core.views.static_views import (
 from core.views.views import (
     artwork_preview,
     collection,
+    exhibit,
     exhibit_detail,
     exhibit_select,
     manifest,
@@ -24,6 +21,9 @@ from core.views.views import (
     service_worker,
     upload_image,
 )
+from django.conf import settings
+from django.urls import include, path
+from rest_framework_nested.routers import DefaultRouter
 
 api_router = DefaultRouter()
 api_router.register("markers", MarkerViewset, basename="marker")
@@ -48,4 +48,5 @@ urlpatterns = [
     path("see_all/", see_all, name="see_all"),
     path("robots.txt/", robots_txt),
     path(settings.HEALTH_CHECK_URL, health_check),
+    path("<slug:slug>/", exhibit, name="exhibit"),
 ]

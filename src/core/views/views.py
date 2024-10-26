@@ -1,13 +1,12 @@
-from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.views.decorators.cache import cache_page
-from django.views.decorators.http import require_http_methods
-
 from core.forms import ExhibitForm, UploadFileForm
 from core.helpers import handle_upload_image
 from core.models import Artwork, Exhibit, Marker, Object
+from django.core.paginator import Paginator
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_http_methods
 
 
 @cache_page(60 * 60)
@@ -131,3 +130,10 @@ def robots_txt(request):
         "Disallow: ",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+@require_http_methods(["GET"])
+def exhibit(request, slug):
+    exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
+    ctx = {"exhibit": exhibit, "artworks": exhibit.artworks.all()}
+    return render(request, "core/exhibit.jinja2", ctx)
