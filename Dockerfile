@@ -1,10 +1,12 @@
-FROM python:3.10-slim-bullseye
+
+FROM python:3.13.0-slim-bookworm
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gettext \
     docutils-common \
     curl \
+    pipx \
     wget
 
 COPY ./pyproject.toml /pyproject.toml
@@ -16,15 +18,14 @@ ENV PATH="$PATH:/root/.local/bin" \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     TINI_VERSION=v0.19.0 \
     # poetry:
-    POETRY_VERSION=1.3.1
+    POETRY_VERSION=1.8.4
 
 # Installing `poetry` package manager:
 # https://github.com/python-poetry/poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-  && poetry --version
-
 RUN pip install --upgrade pip
+RUN pipx install --python python3 poetry==${POETRY_VERSION}
 RUN poetry install
+
 
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \

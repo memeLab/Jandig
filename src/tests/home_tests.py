@@ -1,5 +1,5 @@
-import re
 from playwright.sync_api import Page, expect
+
 
 def test_home_loads_in_english(page: Page):
     page.goto("http://localhost:8000/")

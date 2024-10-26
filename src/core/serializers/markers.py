@@ -1,6 +1,5 @@
-from rest_framework.serializers import ModelSerializer
-
 from core.models import Marker
+from rest_framework.serializers import ModelSerializer
 
 
 class MarkerSerializer(ModelSerializer):

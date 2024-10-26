@@ -1,11 +1,10 @@
 """Test using the object API for Jandig Objects"""
 
+from core.models import Object
+from core.serializers.objects import ObjectSerializer
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-
-from core.models import Object
-from core.serializers.objects import ObjectSerializer
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -35,7 +34,6 @@ class TestObjectAPI(TestCase):
         self.assertEqual(data["previous"], None)
         first_result = data["results"][0]
         serializer_data = ObjectSerializer(obj).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(first_result, serializer_data)
 
@@ -71,6 +69,5 @@ class TestObjectAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         serializer_data = ObjectSerializer(obj).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(data, serializer_data)

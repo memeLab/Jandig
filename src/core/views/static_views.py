@@ -1,5 +1,6 @@
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.templatetags.static import static
 
 
 def home(request):
@@ -24,3 +25,15 @@ def marker_generator(request):
 
 def health_check(request):
     return JsonResponse({"status": "ok"}, status=200)
+
+
+def favicon(request):
+    return redirect(static("images/icons/favicon.ico"))
+
+
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: ",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

@@ -12,6 +12,8 @@ services:
       - ./locale/:/jandig/locale/
       - ./run.sh:/jandig/run.sh
       - ./tasks.py:/jandig/tasks.py
+      - ./poetry.lock:/poetry.lock
+      - ./pyproject.toml:/pyproject.toml
     env_file:
       - .envs/.example
     depends_on:
@@ -65,7 +67,6 @@ services:
       until (/usr/bin/mc config host add myminio $${MINIO_S3_ENDPOINT_URL} $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
       /usr/bin/mc mb myminio/$${AWS_STORAGE_BUCKET_NAME};
       /usr/bin/mc policy set download myminio/$${AWS_STORAGE_BUCKET_NAME};
-      /usr/bin/mc mb myminio/$${AWS_PRIVATE_STORAGE_BUCKET_NAME};
       /usr/bin/mc admin user add myminio $${MINIO_USER_ACCESS_KEY} $${MINIO_USER_SECRET_KEY};
       /usr/bin/mc admin policy set myminio readwrite user=$${MINIO_USER_ACCESS_KEY};
       exit 0;

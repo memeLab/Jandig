@@ -1,10 +1,9 @@
 """Test using the artwork API for Jandig Artwork"""
 
+from core.models import Artwork, Marker, Object
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-
-from core.models import Artwork, Marker, Object
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -27,7 +26,9 @@ class TestArtworkAPI(TestCase):
     def test_api_artworks_lists_one_artwork(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
         obj = Object.objects.create(owner=self.profile, source=fake_file)
-        artwork = Artwork.objects.create(author=self.profile, augmented=obj, marker=marker)
+        artwork = Artwork.objects.create(
+            author=self.profile, augmented=obj, marker=marker
+        )
         self.assertEqual(artwork.author, self.profile)
         response = self.client.get("/api/v1/artworks/")
         self.assertEqual(response.status_code, 200)
@@ -44,7 +45,9 @@ class TestArtworkAPI(TestCase):
     def test_retrieve_artwork(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
         obj = Object.objects.create(owner=self.profile, source=fake_file)
-        artwork = Artwork.objects.create(author=self.profile, augmented=obj, marker=marker)  # noqa F841
+        artwork = Artwork.objects.create(
+            author=self.profile, augmented=obj, marker=marker
+        )  # noqa F841
         self.assertEqual(artwork.author, self.profile)
 
         response = self.client.get("/api/v1/artworks/1/")

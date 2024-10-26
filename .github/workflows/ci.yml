@@ -9,10 +9,10 @@ jobs:
     steps:
       - name: Check out code from Github
         uses: actions/checkout@v3
-      - name: Set up Python 3.10
+      - name: Set up Python 3.13
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.13"
       - name: Installing flake8
         run: |
           python -m pip install --upgrade pip
@@ -57,7 +57,7 @@ jobs:
         run: |
           cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Test migrations
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
@@ -81,7 +81,7 @@ jobs:
         run: |
           cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Running users tests
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
