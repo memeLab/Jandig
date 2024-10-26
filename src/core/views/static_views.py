@@ -1,6 +1,7 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.templatetags.static import static
+
 
 def home(request):
     return render(request, "users/profile.jinja2", {})

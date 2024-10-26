@@ -1,8 +1,7 @@
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from rest_framework.viewsets import GenericViewSet
-
 from core.models import Object
 from core.serializers.objects import ObjectSerializer
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.viewsets import GenericViewSet
 
 
 class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):

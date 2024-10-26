@@ -1,6 +1,5 @@
-from rest_framework.serializers import ModelSerializer
-
 from core.models import Exhibit
+from rest_framework.serializers import ModelSerializer
 
 
 class ExhibitSerializer(ModelSerializer):
