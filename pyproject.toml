@@ -1,5 +1,8 @@
 [tool.poetry]
-package-mode = false
+name="Jandig"
+version="1.5.0"
+description="AR Platform"
+authors=["Check Github"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -27,7 +30,7 @@ djangorestframework = "^3.13.1"
 drf-nested-routers = "^0.93.4"
 django-htmx = "^1.18.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 playwright = "^1.41.2"
 pytest = "^7.2.0"
 pytest-xdist = "^3.0.2"

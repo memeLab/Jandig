@@ -34,7 +34,7 @@ POSTGRES_USER=jandig
 POSTGRES_PASSWORD=secret
 
 # Email server variables
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
+SMTP_SERVER=mailpit
+SMTP_PORT=1025
 JANDIG_EMAIL=local_jandig@jandig.com
 JANDIG_EMAIL_PASSWORD=local_password
