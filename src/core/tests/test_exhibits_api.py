@@ -38,12 +38,10 @@ class TestExhibitAPI(TestCase):
         for i in range(0, settings.PAGE_SIZE + 1):
             marker = Marker.objects.create(owner=self.profile, source=fake_file)
             obj = Object.objects.create(owner=self.profile, source=fake_file)
-            artwork = Artwork.objects.create(
-                author=self.profile, augmented=obj, marker=marker
-            )  # noqa F841
-            exhibit = Exhibit.objects.create(
+            Artwork.objects.create(author=self.profile, augmented=obj, marker=marker)
+            Exhibit.objects.create(
                 owner=self.profile, name=f"name_{i}", slug=f"slug_{i}"
-            )  # noqa F841
+            )
         response = self.client.get("/api/v1/exhibits/")
         self.assertEqual(response.status_code, 200)
 
