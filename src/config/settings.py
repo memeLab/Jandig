@@ -21,7 +21,7 @@ if READ_DOT_ENV_FILE:
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-CSRF_TRUSTED_ORIGINS = ['https://*.jandig.app']
+CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
@@ -43,6 +43,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
+
 
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
@@ -73,7 +74,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django_extensions',
+    "django_extensions",
     "debug_toolbar",
     "django_htmx",
     "corsheaders",
@@ -166,12 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-
-LOCALE_PATHS = (
-    os.path.join(str(ROOT_DIR), 'locale'),
-)
+LOCALE_PATHS = (os.path.join(str(ROOT_DIR), "locale"),)
 
 LANGUAGE_CODE = "en"
 
@@ -218,21 +214,17 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog", "static"),
 ]
 
-# STATIC_ROOT = "/jandig/static"
-STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, "users", "media")
-
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
-DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
 
-AWS_PRIVATE_MEDIA_LOCATION = "media/private"
-PRIVATE_FILE_STORAGE = "config.storage_backends.PrivateMediaStorage"
-
-AWS_PRIVATE_MEDIA_DIFFERENT_BUCKET_LOCATION = "media/private"
-AWS_PRIVATE_STORAGE_BUCKET_NAME = os.getenv("AWS_PRIVATE_STORAGE_BUCKET_NAME", "")
-PRIVATE_FILE_DIFFERENT_BUCKET_STORAGE = "config.storage_backends.PrivateMediaStorage"
-
+# Storages
+STORAGES = {
+    "default": {
+        "BACKEND": "config.storage_backends.PublicMediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "config.storage_backends.StaticStorage",
+    },
+}
 # LOGIN / LOGOUT
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
