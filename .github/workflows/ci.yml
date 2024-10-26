@@ -57,7 +57,7 @@ jobs:
         run: |
           cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Test migrations
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
@@ -81,7 +81,7 @@ jobs:
         run: |
           cp .envs/.example .envs/.env
           docker load -i docker_image_$GITHUB_SHA
-          docker-compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
+          docker compose -f docker-compose.ci.yml -p jandigarte_$GITHUB_SHA up --no-build -d
       - name: Running users tests
         run: |
           docker exec jandigarte_${{ github.sha }}_django_1 sh -c "\
