@@ -126,5 +126,8 @@ def artwork_preview(request):
 @require_http_methods(["GET"])
 def exhibit(request, slug):
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
-    ctx = {"exhibit": exhibit, "artworks": exhibit.artworks.all()}
+    ctx = {
+        "exhibit": exhibit,
+        "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
+    }
     return render(request, "core/exhibit.jinja2", ctx)
