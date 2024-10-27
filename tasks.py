@@ -6,6 +6,7 @@ python = sys.executable
 directory = os.path.dirname(__file__)
 sys.path.append("jandig")
 
+
 #
 # Call python manage.py in a more robust way
 #

@@ -31,6 +31,7 @@ playwright = "^1.41.2"
 pytest = "^7.2.0"
 pytest-xdist = "^3.0.2"
 flake8 = "^7.1.1"
+Flake8-pyproject = "^1.2.3"
 black = "^22.10.0"
 isort = "^5.10.1"
 pytest-django = "^4.5.2"
@@ -58,3 +59,7 @@ exclude = '''
 profile = "black"
 src_paths = ["src"]
 skip_glob = "*/migrations/*.py"
+
+[tool.flake8]
+max-line-length = 200
+exclude="**/migrations/"

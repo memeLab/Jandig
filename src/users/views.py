@@ -166,7 +166,7 @@ def profile(request):
         "markers": markers,
         "objects": objects,
         "profile": True,
-        "button_enable": False if user else True,
+        "button_enable": True if user else False,
     }
     return render(request, "users/profile.jinja2", ctx)
 
