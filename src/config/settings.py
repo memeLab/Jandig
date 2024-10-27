@@ -37,12 +37,13 @@ CUSTOM_ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 
 
+DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 # Sentry configuration
 ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
-DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.0")
 
 
 def traces_sampler(sampling_context):
@@ -64,6 +65,7 @@ if ENABLE_SENTRY:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         traces_sampler=traces_sampler,
+        release=SENTRY_RELEASE,
     )
 
 
