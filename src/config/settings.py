@@ -233,10 +233,10 @@ LOGOUT_REDIRECT_URL = "home"
 # Sphinx docs
 DOCS_ROOT = "/jandig/build/"
 
-SMTP_SERVER = env("SMTP_SERVER", default="smtp.gmail.com")
-SMTP_PORT = env("SMTP_PORT", default=587)
-JANDIG_EMAIL = env("JANDIG_EMAIL", default="jandig@jandig.com")
-JANDIG_EMAIL_PASSWORD = env("JANDIG_EMAIL_PASSWORD", default="password")
+SMTP_SERVER = env("SMTP_SERVER", default="mailpit")
+SMTP_PORT = env("SMTP_PORT", default=1025)
+SMTP_EMAIL = env("SMTP_EMAIL", default="jandig@jandig.com")
+SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)
