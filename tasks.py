@@ -39,38 +39,16 @@ def run(ctx, ssl=False, gunicorn=False):
         manage(ctx, "runserver 0.0.0.0:8000")
 
 
-@task
-def db(ctx, make=False):
-    """
-    Run migrations
-    """
-    if make:
-        manage(ctx, "makemigrations")
-        manage(ctx, "migrate")
-    else:
-        manage(ctx, "migrate")
-
-
-@task
-def collect(ctx):
-    """
-    Collect static files
-    """
-    manage(ctx, "collectstatic --no-input --clear")
-
-
 #
 # Translations
 #
 @task
-def i18n(ctx, compile=False, edit=False, lang="pt_BR", keep_pot=False):
+def i18n(ctx, edit=False, lang="pt_BR", keep_pot=False):
     """
     Extract messages for translation.
     """
     if edit:
         ctx.run(f"poedit locale/{lang}/LC_MESSAGES/django.po")
-    elif compile:
-        ctx.run(f"{python} etc/scripts/compilemessages.py")
     else:
         print("Collecting messages")
         robust_manage(ctx, "makemessages", keep_pot=True, locale=lang)
@@ -91,8 +69,3 @@ def i18n(ctx, compile=False, edit=False, lang="pt_BR", keep_pot=False):
         if not keep_pot:
             print("Cleaning up")
             ctx.run("rm ./locale/*.pot")
-
-
-@task
-def docs(ctx):
-    ctx.run("sphinx-build docs/ build/")
