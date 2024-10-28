@@ -241,7 +241,7 @@ DOCS_ROOT = "/jandig/build/"
 
 SMTP_SERVER = env("SMTP_SERVER", default="mailpit")
 SMTP_PORT = env("SMTP_PORT", default=1025)
-SMTP_EMAIL = env("SMTP_EMAIL", default="jandig@jandig.com")
+SMTP_USER = env("SMTP_USER", default="jandig@jandig.com")
 SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
