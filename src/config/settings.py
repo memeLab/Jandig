@@ -216,6 +216,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog", "static"),
 ]
 
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 
 # Storages
