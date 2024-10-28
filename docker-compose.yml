@@ -6,14 +6,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./src/:/jandig/src/
-      - ./docs/:/jandig/docs/
-      - ./etc/:/jandig/etc/
-      - ./locale/:/jandig/locale/
-      - ./run.sh:/jandig/run.sh
-      - ./tasks.py:/jandig/tasks.py
-      - ./poetry.lock:/poetry.lock
-      - ./pyproject.toml:/pyproject.toml
+      - ./:/jandig
+      - poetry_cache:/var/cache/pypoetry
     env_file:
       - .envs/.example
     depends_on:
@@ -91,3 +85,4 @@ volumes:
   postgres_data:
   media_data:
   mailpit_data:
+  poetry_cache:
