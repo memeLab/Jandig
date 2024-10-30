@@ -36,5 +36,6 @@ POSTGRES_PASSWORD=secret
 # Email server variables
 SMTP_SERVER=mailpit
 SMTP_PORT=1025
-SMTP_EMAIL=local_jandig@jandig.com
-SMTP_PASSWORD=local_password
+SMTP_USER=
+SMTP_PASSWORD=
+SMTP_SENDER_MAIL="jandig@memelab.com.br"
