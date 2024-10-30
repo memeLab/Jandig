@@ -216,6 +216,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog", "static"),
 ]
 
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 
 # Storages
@@ -237,8 +241,9 @@ DOCS_ROOT = "/jandig/build/"
 
 SMTP_SERVER = env("SMTP_SERVER", default="mailpit")
 SMTP_PORT = env("SMTP_PORT", default=1025)
-SMTP_EMAIL = env("SMTP_EMAIL", default="jandig@jandig.com")
+SMTP_USER = env("SMTP_USER", default="jandig@jandig.com")
 SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
+SMTP_SENDER_MAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)

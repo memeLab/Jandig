@@ -9,14 +9,15 @@ class EmailService:
     def __init__(self, email_message):
         self.smtp_server = settings.SMTP_SERVER
         self.smtp_port = settings.SMTP_PORT
-        self.jandig_email = settings.SMTP_EMAIL
-        self.jandig_email_password = settings.SMTP_PASSWORD
+        self.smtp_user = settings.SMTP_USER
+        self.smtp_password = settings.SMTP_PASSWORD
+        self.jandig_email = settings.SMTP_SENDER_MAIL
         self.email_message = email_message
 
     def send_email_to_recover_password(self, multipart_message):
         email_server = smtplib.SMTP(self.smtp_server, self.smtp_port)
         email_server.starttls()
-        email_server.login(self.jandig_email, self.jandig_email_password)
+        email_server.login(self.smtp_user, self.smtp_password)
         email_server.sendmail(
             multipart_message["From"],
             multipart_message["To"],

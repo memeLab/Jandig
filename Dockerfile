@@ -1,31 +1,26 @@
 
-FROM python:3.13.0-slim-bookworm
+FROM python:3.13.0-slim-bookworm as base-image
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gettext \
-    docutils-common \
-    curl \
-    pipx \
-    wget
+      gettext \
+      docutils-common \
+      curl \
+      wget
 
-COPY ./pyproject.toml /pyproject.toml
-COPY ./poetry.lock /poetry.lock
-
+      
 ENV PATH="$PATH:/root/.local/bin" \
-    POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=false \
-    POETRY_CACHE_DIR='/var/cache/pypoetry' \
     TINI_VERSION=v0.19.0 \
     # poetry:
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=true \
+    POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_VERSION=1.8.4
+      
 
 # Installing `poetry` package manager:
 # https://github.com/python-poetry/poetry
-RUN pip install --upgrade pip
-RUN pipx install --python python3 poetry==${POETRY_VERSION}
-RUN poetry install
-
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
@@ -35,6 +30,9 @@ RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
 RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/static /jandig/build
 
 WORKDIR /jandig
+
+COPY ./pyproject.toml /jandig/pyproject.toml
+COPY ./poetry.lock /jandig/poetry.lock
 
 COPY ./src/ /jandig/src/
 COPY ./docs/ /jandig/docs/
