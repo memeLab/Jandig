@@ -245,5 +245,12 @@ SMTP_USER = env("SMTP_USER", default="jandig@jandig.com")
 SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
 SMTP_SENDER_MAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
 
+# Recaptcha
+RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
+RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default="")
+RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
+RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
+
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)

@@ -1,6 +1,7 @@
 from unittest import mock
 
 from django.test import RequestFactory, TestCase
+
 from users.factory import UserFactory
 from users.services.email_service import EmailService
 from users.services.encrypt_service import EncryptService

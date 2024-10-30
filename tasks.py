@@ -1,6 +1,7 @@
-from invoke import task
 import os
 import sys
+
+from invoke import task
 
 python = sys.executable
 directory = os.path.dirname(__file__)

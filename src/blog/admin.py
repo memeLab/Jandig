@@ -1,5 +1,6 @@
-from blog.models import Category, Clipping, Post, PostImage
 from django.contrib import admin
+
+from blog.models import Category, Clipping, Post, PostImage
 
 admin.site.register(Category)
 admin.site.register(PostImage)

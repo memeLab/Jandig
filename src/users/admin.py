@@ -8,6 +8,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.html import format_html
+
 from users.models import Profile
 
 admin.site.unregister(User)
