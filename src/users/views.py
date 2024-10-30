@@ -1,7 +1,7 @@
 import json
 import logging
 
-from core.models import Artwork, Exhibit, Marker, Object
+from django.conf import settings
 from django.contrib.auth import (
     authenticate,
     get_user_model,
@@ -14,6 +14,8 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
+
+from core.models import Artwork, Exhibit, Marker, Object
 
 from .forms import (
     ArtworkForm,
@@ -29,13 +31,23 @@ from .forms import (
 from .models import Profile
 from .services.email_service import EmailService
 from .services.encrypt_service import EncryptService
+from .services.recaptcha_service import BOT_SCORE, create_assessment
 from .services.user_service import UserService
 
-log = logging.getLogger("ej")
+log = logging.getLogger(__file__)
 
 
 def signup(request):
     if request.method == "POST":
+        if settings.RECAPTCHA_ENABLED:
+            recaptcha_token = request.POST.get("g-recaptcha-response")
+            assessment = create_assessment(
+                token=recaptcha_token, recaptcha_action="sign_up"
+            )
+            score = assessment.get("riskAnalysis", {}).get("score", -1)
+            if score <= BOT_SCORE:
+                return redirect("home")
+
         form = SignupForm(request.POST)
 
         if form.is_valid():
@@ -49,7 +61,15 @@ def signup(request):
     else:
         form = SignupForm()
 
-    return render(request, "users/signup.jinja2", {"form": form})
+    return render(
+        request,
+        "users/signup.jinja2",
+        {
+            "form": form,
+            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
+            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+        },
+    )
 
 
 User = get_user_model()
@@ -57,6 +77,15 @@ User = get_user_model()
 
 def recover_password(request):
     if request.method == "POST":
+        if settings.RECAPTCHA_ENABLED:
+            recaptcha_token = request.POST.get("g-recaptcha-response")
+            assessment = create_assessment(
+                token=recaptcha_token, recaptcha_action="recover_password"
+            )
+            score = assessment.get("riskAnalysis", {}).get("score", -1)
+            if score <= BOT_SCORE:
+                return redirect("home")
+
         recover_password_form = RecoverPasswordForm(request.POST)
 
         if recover_password_form.is_valid():
@@ -85,7 +114,13 @@ def recover_password(request):
 
     recover_password_form = RecoverPasswordForm()
     return render(
-        request, "users/recover-password.jinja2", {"form": recover_password_form}
+        request,
+        "users/recover-password.jinja2",
+        {
+            "form": recover_password_form,
+            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
+            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+        },
     )
 
 
