@@ -63,4 +63,4 @@ skip_glob = "*/migrations/*.py,.venv/*"
 
 [tool.flake8]
 max-line-length = 200
-exclude="**/migrations/"
+exclude="**/migrations/, .venv/*"

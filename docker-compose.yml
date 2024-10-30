@@ -14,7 +14,6 @@ services:
     environment:
       - USE_GUNICORN=True
       - INSTALL_DEV=True
-    # command: sleep infinity
     depends_on:
       storage:
           condition: service_started
