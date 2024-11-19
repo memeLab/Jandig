@@ -142,45 +142,32 @@ class LoginForm(AuthenticationForm):
         self.fields["username"].widget.attrs["placeholder"] = _("username / email")
         self.fields["password"].widget.attrs["placeholder"] = _("password")
 
-    def clean_username(self):
-        username_or_email = self.cleaned_data.get("username")
-        if "@" in username_or_email:
-            if not User.objects.filter(email=username_or_email).exists():
-                raise forms.ValidationError(_("Username/email not found"))
-            user = User.objects.get(email=username_or_email)
-            if user:
-                return user.username
-        else:
-            if not User.objects.filter(username=username_or_email).exists():
-                raise forms.ValidationError(_("Username/email not found"))
+    def clean(self):
+        cleaned_data = super(LoginForm, self).clean()
 
-        # Already is a valid username
-        return username_or_email
-
-    def clean_password(self):
-        password = self.cleaned_data.get("password")
-        username_or_email = self.cleaned_data.get("username")
-        user = None
-        username_or_email_wrong = False
+        username_or_email = cleaned_data.get("username", "")
+        search_by = {}
 
         if "@" in username_or_email:
-            if User.objects.filter(email=username_or_email).exists():
-                username = User.objects.get(email=username_or_email).username
-                user = authenticate(username=username, password=password)
-            else:
-                username_or_email_wrong = True
-                # raise forms.ValidationError(_('Email Wrong!'))
+            search_by["email"] = username_or_email
         else:
-            if User.objects.filter(username=username_or_email).exists():
-                user = authenticate(username=username_or_email, password=password)
-            else:
-                username_or_email_wrong = True
-                # raise forms.ValidationError(_('Username Wrong!'))
+            search_by["username"] = username_or_email
 
-        if not user and not username_or_email_wrong:
+        user = User.objects.get(**search_by)
+        if not user:
+            raise forms.ValidationError(_("Username/email not found"))
+
+        cleaned_data["username"] = user.username
+
+        password = cleaned_data.get("password")
+
+        logged_user = authenticate(username=user.username, password=password)
+        if not logged_user:
             raise forms.ValidationError(_("Wrong password!"))
 
-        return password
+        self.confirm_login_allowed(logged_user)
+
+        return cleaned_data
 
 
 class RecoverPasswordForm(forms.Form):
