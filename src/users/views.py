@@ -8,6 +8,8 @@ from django.contrib.auth import (
     login,
     update_session_auth_hash,
 )
+
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.http import Http404, JsonResponse
@@ -22,14 +24,12 @@ from .forms import (
     ExhibitForm,
     PasswordChangeForm,
     ProfileForm,
-    RecoverPasswordCodeForm,
-    RecoverPasswordForm,
     SignupForm,
     UploadMarkerForm,
     UploadObjectForm,
 )
 from .models import Profile
-from .services import ( EmailService,EncryptService ,BOT_SCORE, create_assessment, UserService)
+from .services import (BOT_SCORE, create_assessment)
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -83,107 +83,6 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
                       " If you don't receive an email, " \
                       "please make sure you've entered the address you registered with, and check your spam folder.")
     success_url = reverse_lazy('home')
-
-def recover_password(request):
-    if request.method == "POST":
-        if settings.RECAPTCHA_ENABLED:
-            recaptcha_token = request.POST.get("g-recaptcha-response")
-            assessment = create_assessment(
-                token=recaptcha_token, recaptcha_action="recover_password"
-            )
-            score = assessment.get("riskAnalysis", {}).get("score", -1)
-            if score <= BOT_SCORE:
-                return redirect("home")
-
-        recover_password_form = RecoverPasswordForm(request.POST)
-
-        if recover_password_form.is_valid():
-            username_or_email = recover_password_form.cleaned_data.get(
-                "username_or_email"
-            )
-            user_service = UserService()
-            username_or_email_is_valid = user_service.check_if_username_or_email_exist(
-                username_or_email
-            )
-            if not username_or_email_is_valid:
-                return redirect("invalid_recovering_email_or_username")
-
-            global global_recovering_email
-            global_recovering_email = user_service.get_user_email(username_or_email)
-
-            global global_verification_code
-            encrypt_service = EncryptService()
-            global_verification_code = encrypt_service.generate_verification_code(
-                global_recovering_email
-            )
-
-            build_message_and_send_to_user(global_recovering_email)
-
-        return redirect("recover-code")
-
-    recover_password_form = RecoverPasswordForm()
-    return render(
-        request,
-        "users/recover-password.jinja2",
-        {
-            "form": recover_password_form,
-            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
-            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
-        },
-    )
-
-
-def build_message_and_send_to_user(email):
-    message = f"You have requested a new password. This is your verification code: {global_verification_code}\nCopy it and put into the field."
-    email_service = EmailService(message)
-    multipart_message = email_service.build_multipart_message(email)
-    email_service.send_email_to_recover_password(multipart_message)
-
-
-def recover_code(request):
-    if request.method == "POST":
-        form = RecoverPasswordCodeForm(request.POST)
-
-        if form.is_valid():
-            code = form.cleaned_data.get("verification_code")
-
-            log.warning("Inserido: %s", code)
-            log.warning("Correto: %s", global_verification_code)
-
-            if code == global_verification_code:
-                global recover_password_user
-                recover_password_user = User.objects.get(email=global_recovering_email)
-                return redirect("recover-edit-password")
-
-            return redirect("wrong-verification-code")
-        return redirect("home")
-
-    form = RecoverPasswordCodeForm()
-    return render(request, "users/recover-password-code.jinja2", {"form": form})
-
-
-def recover_edit_password(request):
-    if request.method == "POST":
-        form = SetPasswordForm(recover_password_user, data=request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect("login")
-    else:
-        form = SetPasswordForm(recover_password_user)
-
-    return render(request, "users/recover-edit-password.jinja2", {"form": form})
-
-
-@require_http_methods(["GET"])
-def wrong_verification_code(request):
-    return render(request, "users/wrong-verification-code.jinja2")
-
-
-@require_http_methods(["GET"])
-def invalid_recovering_email_or_username(request):
-    return render(request, "users/invalid-recovering-email.jinja2")
 
 
 @login_required
