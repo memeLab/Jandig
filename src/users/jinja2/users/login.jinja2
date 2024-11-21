@@ -27,8 +27,14 @@
                         <p class="login-field {{field.name}}">
                             {{ field }}
                         </p>
-                        <h4 style="color:red">{{ field.errors }}</h4>
                     {% endfor%}
+					{% if form.non_field_errors() %}
+        				<ul class="errorlist">
+            			{% for error in form.non_field_errors() %}
+                			<li>{{ error }}</li>
+            			{% endfor %}
+        				</ul>
+    				{% endif %}
                     <div class="form-options">
                         <p>
                             <input id="remember-me-chk" type="checkbox" name="remember" value="1">
