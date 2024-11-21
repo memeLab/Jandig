@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework_nested.routers import DefaultRouter
 
 from core.views.artworks import ArtworkViewset
@@ -47,7 +47,11 @@ urlpatterns = [
     path("manifest.json", manifest, name="manifest"),
     path("upload", upload_image, name="upload-image"),
     path("i18n/", include("django.conf.urls.i18n")),
-    path("see_all/", see_all, name="see_all"),
+    re_path(
+        r"^see_all(?:/(?P<which>[a-zA-Z]+))?(?:/(?P<page>\d+))?/$",
+        see_all,
+        name="see_all",
+    ),
     path("robots.txt", robots_txt),
     path("favicon.ico", favicon),
     path(settings.HEALTH_CHECK_URL, health_check),

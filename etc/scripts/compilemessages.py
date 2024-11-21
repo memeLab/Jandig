@@ -15,7 +15,7 @@ def main():
     """
     # Walk entire tree, looking for locale directories
     basedirs = ["locale"]
-    for dirpath, dirnames, filenames in os.walk(".", topdown=True):
+    for dirpath, dirnames, filenames in os.walk("/jandig/locale", topdown=True):
         for dirname in dirnames:
             if dirname == "locale":
                 basedirs.append(os.path.join(dirpath, dirname))

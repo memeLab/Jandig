@@ -51,11 +51,20 @@ def collection(request):
 
 @cache_page(60 * 2)
 @require_http_methods(["GET"])
-def see_all(request):
-    request_type = request.GET.get("which")
+def see_all(request, which="", page=1):
+    request_type = request.GET.get("which", which)
+    if request_type not in ["objects", "markers", "artworks", "exhibits"]:
+        # Invalid request type, return to collection
+        return redirect("collection")
     ctx = {}
-    per_page = 20
+    per_page = 3
     page = request.GET.get("page", 1)
+
+    try:
+        # Bots insert random strings in the page parameter
+        page = int(page)
+    except ValueError:
+        page = 1
 
     data_types = {
         "objects": Object.objects.all().order_by("uploaded_at"),
@@ -67,10 +76,12 @@ def see_all(request):
     data = data_types.get(request_type)
     if data:
         paginator = Paginator(data, per_page)
-        data = paginator.get_page(page)
-        data.adjusted_elided_pages = paginator.get_elided_page_range(page)
+        if page > paginator.num_pages:
+            return redirect("see_all", request_type, paginator.num_pages)
+        paginated_data = paginator.get_page(page)
+        paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
         ctx = {
-            request_type: data,
+            request_type: paginated_data,
             "seeall": True,
         }
 

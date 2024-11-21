@@ -171,14 +171,6 @@ class LoginForm(AuthenticationForm):
         return cleaned_data
 
 
-class RecoverPasswordForm(forms.Form):
-    username_or_email = forms.CharField(label="username / email", max_length="50")
-
-
-class RecoverPasswordCodeForm(forms.Form):
-    verification_code = forms.CharField(label="Verification code", max_length="200")
-
-
 class UploadMarkerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)

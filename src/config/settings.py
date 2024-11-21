@@ -9,7 +9,7 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .storage_settings import * # noqa F403 F401
+from .storage_settings import *  # noqa F403 F401
 
 ROOT_DIR = environ.Path("/jandig/")
 BASE_DIR = "/jandig/src"
@@ -194,11 +194,15 @@ LOGOUT_REDIRECT_URL = "home"
 # Sphinx docs
 DOCS_ROOT = "/jandig/build/"
 
-SMTP_SERVER = env("SMTP_SERVER", default="mailpit")
-SMTP_PORT = env("SMTP_PORT", default=1025)
-SMTP_USER = env("SMTP_USER", default="jandig@jandig.com")
-SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
-SMTP_SENDER_MAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
+
+DEFAULT_FROM_EMAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("SMTP_SERVER", default="mailpit")
+EMAIL_USE_TLS = env("SMTP_USE_TLS", default=False)
+EMAIL_PORT = env("SMTP_PORT", default=1025)
+EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
+EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="password")
+EMAIL_USE_SSL = False
 
 # Recaptcha
 RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
