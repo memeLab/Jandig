@@ -77,7 +77,7 @@ def see_all(request, which="", page=1):
     if data:
         paginator = Paginator(data, per_page)
         if page > paginator.num_pages:
-            return redirect("see_all", request_type,paginator.num_pages)
+            return redirect("see_all", request_type, paginator.num_pages)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
         ctx = {

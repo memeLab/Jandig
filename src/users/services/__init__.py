@@ -1,1 +1,1 @@
-from .recaptcha_service import *
+from .recaptcha_service import * # noqa

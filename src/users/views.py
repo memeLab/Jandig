@@ -8,12 +8,13 @@ from django.contrib.auth import (
     login,
     update_session_auth_hash,
 )
-
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
@@ -29,10 +30,7 @@ from .forms import (
     UploadObjectForm,
 )
 from .models import Profile
-from .services import (BOT_SCORE, create_assessment)
-from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView
-from django.contrib.messages.views import SuccessMessageMixin
+from .services import BOT_SCORE, create_assessment
 
 log = logging.getLogger(__file__)
 
@@ -75,14 +73,16 @@ def signup(request):
 
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'users/reset-password/password_reset.jinja2'
-    email_template_name = 'users/reset-password/password_reset_email.html'
-    subject_template_name = 'users/reset-password/password_reset_subject.txt'
-    success_message = _("We've emailed you instructions for setting your password, " \
-                      "if an account exists with the email you entered. You should receive them shortly." \
-                      " If you don't receive an email, " \
-                      "please make sure you've entered the address you registered with, and check your spam folder.")
-    success_url = reverse_lazy('home')
+    template_name = "users/reset-password/password_reset.jinja2"
+    email_template_name = "users/reset-password/password_reset_email.html"
+    subject_template_name = "users/reset-password/password_reset_subject.txt"
+    success_message = _(
+        "We've emailed you instructions for setting your password, "
+        "if an account exists with the email you entered. You should receive them shortly."
+        " If you don't receive an email, "
+        "please make sure you've entered the address you registered with, and check your spam folder."
+    )
+    success_url = reverse_lazy("home")
 
 
 @login_required
