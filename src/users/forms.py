@@ -144,9 +144,7 @@ class LoginForm(AuthenticationForm):
         self.fields["password"].widget.attrs["placeholder"] = _("password")
 
     def clean(self):
-        cleaned_data = super(LoginForm, self).clean()
-
-        username_or_email = cleaned_data.get("username", "")
+        username_or_email = self.cleaned_data.get("username", "")
         search_by = {}
 
         if "@" in username_or_email:
@@ -154,21 +152,25 @@ class LoginForm(AuthenticationForm):
         else:
             search_by["username"] = username_or_email
 
-        user = User.objects.get(**search_by)
-        if not user:
-            raise forms.ValidationError(_("Username/email not found"))
+        try:
+            user = User.objects.get(**search_by)
+        except User.DoesNotExist as e:
+            raise forms.ValidationError(_("Username/email not found")) from e
 
-        cleaned_data["username"] = user.username
+        self.cleaned_data["username"] = user.username
 
-        password = cleaned_data.get("password")
+        password = self.cleaned_data.get("password")
 
-        logged_user = authenticate(username=user.username, password=password)
-        if not logged_user:
+        logged_user = authenticate(self.request, username=user.username, password=password)
+        if logged_user is None:
             raise forms.ValidationError(_("Wrong password!"))
 
-        self.confirm_login_allowed(logged_user)
+        self.user = logged_user
 
-        return cleaned_data
+        return self.cleaned_data
+
+    def get_user(self):
+        return getattr(self, "user", None)
 
 
 class UploadMarkerForm(forms.ModelForm):
