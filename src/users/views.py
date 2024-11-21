@@ -29,12 +29,14 @@ from .forms import (
     UploadObjectForm,
 )
 from .models import Profile
-from .services.email_service import EmailService
-from .services.encrypt_service import EncryptService
-from .services.recaptcha_service import BOT_SCORE, create_assessment
-from .services.user_service import UserService
+from .services import ( EmailService,EncryptService ,BOT_SCORE, create_assessment, UserService)
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 log = logging.getLogger(__file__)
+
+User = get_user_model()
 
 
 def signup(request):
@@ -72,8 +74,15 @@ def signup(request):
     )
 
 
-User = get_user_model()
-
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/html/password_reset.jinja2'
+    email_template_name = 'users/html/password_reset_email.html'
+    subject_template_name = 'users/html/password_reset_subject.txt'
+    success_message = _("We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder.")
+    success_url = reverse_lazy('home')
 
 def recover_password(request):
     if request.method == "POST":
