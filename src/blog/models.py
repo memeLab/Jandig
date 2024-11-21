@@ -1,5 +1,6 @@
 from django.core.files.storage import default_storage
 from django.db import models
+
 from users.models import Profile
 
 IMAGE_BASE_PATH = "post_images/"

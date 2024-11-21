@@ -9,6 +9,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from .storage_settings import * # noqa F403 F401
+
 ROOT_DIR = environ.Path("/jandig/")
 BASE_DIR = "/jandig/src"
 
@@ -43,7 +45,7 @@ ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.0")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.1")
 
 
 def traces_sampler(sampling_context):
@@ -184,53 +186,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# AWS credentials
-AWS_S3_OBJECT_PARAMETERS = {
-    "CacheControl": "max-age=86400",
-}
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
-AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
-AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
-AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
-USE_MINIO = os.getenv("USE_MINIO", "false").lower() in ("true", "True", "1")
-if USE_MINIO:
-    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_S3_ENDPOINT_URL", "http://storage:9000")
-    AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
-    AWS_S3_USE_SSL = False
-    AWS_S3_SECURE_URLS = False
-    AWS_S3_URL_PROTOCOL = "http:"
-
-else:
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_S3_URL_PROTOCOL = "https:"
-
-# Static configuration
-# Add your own apps statics in this list
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "core", "static"),
-    os.path.join(BASE_DIR, "users", "static"),
-    os.path.join(BASE_DIR, "blog", "static"),
-]
-
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-
-AWS_PUBLIC_MEDIA_LOCATION = "media/public"
-
-# Storages
-STORAGES = {
-    "default": {
-        "BACKEND": "config.storage_backends.PublicMediaStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "config.storage_backends.StaticStorage",
-    },
-}
 # LOGIN / LOGOUT
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
@@ -245,10 +200,12 @@ SMTP_USER = env("SMTP_USER", default="jandig@jandig.com")
 SMTP_PASSWORD = env("SMTP_PASSWORD", default="password")
 SMTP_SENDER_MAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
 
-
-# RECAPTCHA
+# Recaptcha
 RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
-RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="fake-key")
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
+RECAPTCHA_SECRET_KEY = env("RECAPTCHA_SECRET_KEY", default="")
+RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
+RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)

@@ -1,6 +1,7 @@
-from core.models import Object
 from django.contrib.auth.models import User
 from factory.django import DjangoModelFactory
+
+from core.models import Object
 
 
 class UserFactory(DjangoModelFactory):

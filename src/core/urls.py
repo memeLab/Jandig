@@ -1,3 +1,7 @@
+from django.conf import settings
+from django.urls import include, path
+from rest_framework_nested.routers import DefaultRouter
+
 from core.views.artworks import ArtworkViewset
 from core.views.exhibits import ExhibitViewset
 from core.views.markers import MarkerViewset
@@ -22,9 +26,6 @@ from core.views.views import (
     service_worker,
     upload_image,
 )
-from django.conf import settings
-from django.urls import include, path
-from rest_framework_nested.routers import DefaultRouter
 
 api_router = DefaultRouter()
 api_router.register("markers", MarkerViewset, basename="marker")

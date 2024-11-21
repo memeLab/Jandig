@@ -3,13 +3,17 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    user: jandig
     ports:
-      - 8000:8000
+      - 80:8000
     volumes:
       - ./:/jandig
-      - poetry_cache:/var/cache/pypoetry
+      - poetry_cache:/home/jandig/cache/pypoetry
     env_file:
       - .envs/.example
+    environment:
+      - USE_GUNICORN=True
+      - INSTALL_DEV=True
     depends_on:
       storage:
           condition: service_started
@@ -19,7 +23,6 @@ services:
           condition: service_started
       postgres:
           condition: service_healthy
-    command: /jandig/run.sh
 
   postgres:
     image: postgres:15.4

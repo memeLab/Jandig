@@ -1,13 +1,14 @@
 import logging
 import re
 
-from config.storage_backends import PublicMediaStorage
 from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
+
+from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
 log = logging.getLogger()
