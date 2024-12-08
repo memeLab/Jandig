@@ -23,7 +23,7 @@
                     '<p id="element-upload-info">' +
                     {{ _("Uploaded by ")|tojson }} +
                     owner  + ', ' +
-                    {{ _("in ")|tojson }} + date + '</p>'
+                    {{ _("in ")|tojson }} + new Date(date).toLocaleDateString() + '</p>'
                 )
         }
         function usedIn(artworks_count, exhibits_count, element_src, element_id, elemType){
