@@ -7,16 +7,15 @@
 {% endblock %}
 
 {% block content %}
-    <a id="element-author" href="#"></a>
+    <p id="element-author"></p>
     <p id="element-upload-info"></p>
     <p id="element-analytics"></p>
     <p id="download"> Download file:</p>
     <p id="element-download"></p>
 
     <script>
-        function elementAuthor(author, owner_id){
+        function elementAuthor(author){
             $('#element-author').text({{ _("by ")|tojson }} + author);
-            $('#element-author').attr("href", "{{ url('profile') }}?user=" + owner_id);
         }
         function uploadedBy(owner, date){
             $('#element-upload-info').replaceWith(
