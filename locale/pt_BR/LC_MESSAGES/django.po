@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-06 15:42+0000\n"
+"POT-Creation-Date: 2024-12-08 16:02+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -26,11 +26,11 @@ msgstr "Inglês"
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
 
-#: src/users/forms.py:32 src/users/forms.py:93
+#: src/users/forms.py:32 src/users/forms.py:98
 msgid "Your e-mail address"
 msgstr "Seu endereço de e-mail"
 
-#: src/users/forms.py:37 src/users/forms.py:97
+#: src/users/forms.py:37 src/users/forms.py:102
 msgid "Your username"
 msgstr "Seu nome de usuário"
 
@@ -42,7 +42,7 @@ msgstr "email"
 msgid "chosen username"
 msgstr "nome de usuário escolhido"
 
-#: src/users/forms.py:45 src/users/forms.py:129
+#: src/users/forms.py:45 src/users/forms.py:144
 msgid "password"
 msgstr "senha"
 
@@ -50,69 +50,69 @@ msgstr "senha"
 msgid "confirm password"
 msgstr "confirmar senha"
 
-#: src/users/forms.py:56
+#: src/users/forms.py:59
 msgid "E-mail taken"
 msgstr "E-mail já existente"
 
-#: src/users/forms.py:64
+#: src/users/forms.py:67
 msgid "Old Password"
 msgstr "Senha antiga"
 
-#: src/users/forms.py:65
+#: src/users/forms.py:68
 msgid "New Password"
 msgstr "Nova senha"
 
-#: src/users/forms.py:66
+#: src/users/forms.py:70
 msgid "New Password Again"
 msgstr "Nova senha novamente"
 
-#: src/users/forms.py:86
+#: src/users/forms.py:91
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/users/forms.py:87
+#: src/users/forms.py:92
 msgid "Username"
 msgstr "Usuário"
 
-#: src/users/forms.py:88 src/users/forms.py:104
+#: src/users/forms.py:93 src/users/forms.py:109
 msgid "Personal Bio / Description"
 msgstr "Biografia / Descrição"
 
-#: src/users/forms.py:89 src/users/forms.py:108
+#: src/users/forms.py:94 src/users/forms.py:113
 msgid "Personal Website"
 msgstr "Site pessoal"
 
-#: src/users/forms.py:114
+#: src/users/forms.py:124
 msgid "Username already in use"
 msgstr "Nome de usuário já em uso"
 
-#: src/users/forms.py:120
+#: src/users/forms.py:135
 msgid "Email address must be unique"
 msgstr "O endereço de e-mail deve ser único"
 
-#: src/users/forms.py:128
+#: src/users/forms.py:143
 msgid "username / email"
 msgstr "nome de usuário / email"
 
-#: src/users/forms.py:135 src/users/forms.py:141
+#: src/users/forms.py:158
 msgid "Username/email not found"
 msgstr "Nome de usuário / email não encontrado"
 
-#: src/users/forms.py:167
+#: src/users/forms.py:166
 #, fuzzy
 msgid "Wrong password!"
 msgstr "Senha errada"
 
-#: src/users/forms.py:185 src/users/forms.py:222
+#: src/users/forms.py:181 src/users/forms.py:220
 msgid "browse file"
 msgstr "procurar arquivo"
 
-#: src/users/forms.py:187 src/users/forms.py:224 src/users/forms.py:257
-#: src/users/forms.py:258
+#: src/users/forms.py:184 src/users/forms.py:223 src/users/forms.py:258
+#: src/users/forms.py:261
 msgid "declare different author name"
 msgstr "declarar outro autor"
 
-#: src/users/forms.py:188
+#: src/users/forms.py:186
 msgid "Marker's title"
 msgstr "Título do Marcador"
 
@@ -120,26 +120,38 @@ msgstr "Título do Marcador"
 msgid "Object's title"
 msgstr "Título do Objeto"
 
-#: src/users/forms.py:259
+#: src/users/forms.py:263
 msgid "Artwork title"
 msgstr "Título da Obra"
 
-#: src/users/forms.py:260
+#: src/users/forms.py:265
 msgid "Artwork description"
 msgstr "Descrição da Obra"
 
-#: src/users/forms.py:274
+#: src/users/forms.py:281
 #, fuzzy
 msgid "Url can't contain spaces or special characters"
 msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
 
-#: src/users/forms.py:280
+#: src/users/forms.py:288
 msgid "Exhibit Title"
 msgstr "Título da Exposição"
 
-#: src/users/forms.py:281
+#: src/users/forms.py:290
 msgid "Complete with your Exhibit URL here"
 msgstr "Complete sua URL de exibição aqui"
+
+#: src/users/views.py:80
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly. If you "
+"don't receive an email, please make sure you've entered the address you "
+"registered with, and check your spam folder."
+msgstr ""
+"Enviamos a você por e-mail instruções para redefinir sua senha, se existir uma conta "
+"com o e-mail que você digitou. Você deverá recebê-lo em breve. Se você "
+"não receber um e-mail, certifique-se de inserir o endereço que você "
+"tem registrado e verifique sua pasta de spam."
 
 #: src/blog/jinja2/blog/category.jinja2:8 src/blog/jinja2/blog/detail.jinja2:5
 #, fuzzy
@@ -167,11 +179,7 @@ msgstr "Ver como JPG"
 msgid "View File"
 msgstr "Ver Arquivo"
 
-#: src/blog/jinja2/blog/detail.jinja2:13
-msgid "Categories:"
-msgstr "Categorias"
-
-#: src/blog/jinja2/blog/detail.jinja2:35
+#: src/blog/jinja2/blog/detail.jinja2:24
 #, fuzzy
 msgid "Back to Top"
 msgstr "Página inicial"
@@ -198,6 +206,81 @@ msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 msgid "We found no content on your Collection, try uploading an object."
 msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
 
+#: src/core/jinja2/core/community.jinja2:7
+msgid "An art experiment for digital exhibitions in physical spaces."
+msgstr "Uma experimentação de arte para exibições digitais em espaços físicos."
+
+
+#: src/core/jinja2/core/community.jinja2:9
+msgid ""
+"Cell phones and tablets are used to read markers and thus open “windows” "
+"where other art objects can be found. The public is invited to transcend the "
+"exhibition space, taking stickers with markers to be used in other "
+"locations, creating Temporary Autonomous Zones (TAZes). The public becomes "
+"co-authors, and markers and digital works are reconfigured across spaces."
+msgstr ""
+"Celulares e tablets são usados para ler marcadores e assim abrir “janelas”" 
+"onde se encontram outros objetos de arte. O público é convidado a transcender o "
+"espaço de exposição, levando adesivos com marcadores para serem colados em outros "
+"locais, criando Zonas Autônomas Temporárias (TAZes). O público se torna "
+"co-autor, e os marcadores e obras digitais são reconfigurados pelos espaços."
+
+
+
+
+#: src/core/jinja2/core/community.jinja2:12
+msgid "Know More"
+msgstr "Entenda"
+
+#: src/core/jinja2/core/community.jinja2:14
+msgid ""
+"The Jandig project is an investigation into the intervention of markers to "
+"visualize works through augmented reality in urban space. This is a "
+"collaborative digital art project that proposes the creation of Temporary "
+"Autonomous Zones (TAZes) in each space in which it is installed. These TAZes "
+"are formed through markers spread across a space by artists and the public – "
+"who thus become co-creators of that experience. Users interact with markers, "
+"using mobile devices to open windows in the real world to view digital "
+"creations (provided under a Creative Commons license)"
+msgstr "O projeto Jandig é uma investigação a respeito da intervenção de marcadores para visualização de obras por meio de realidade aumentada sobre o espaço urbano. Trata-se de um projeto colaborativo de arte digital que propõe a criação de Zonas Autônomas Temporárias (TAZes) em cada espaço em que é instalado. Essas TAZes são formadas através de marcadores espalhados por um espaço por artistas e pelo público – que assim torna-se co-criador daquela experiência. Os usuários interagem com marcadores, utilizando dispositivos móveis para abrir janelas no mundo real para visualizar criações digitais (cedidas através de licença Creative Commons)."
+
+#: src/core/jinja2/core/community.jinja2:18
+msgid "Our Goals"
+msgstr "Nossos objetivos"
+
+#: src/core/jinja2/core/community.jinja2:20
+msgid ""
+"The Jandig platform makes it possible to hold exhibitions using augmented "
+"reality."
+msgstr "A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada."
+
+#: src/core/jinja2/core/community.jinja2:22
+msgid ""
+"Each exhibition is made from the arrangement of different markers, which use "
+"stickers, stencil images, stamps, or others as support, in different sizes. "
+"These supports are also given to the public who circulate through the space, "
+"so that they can make local interference and make it possible to “go viral” "
+"with the markers while the exhibition is available, leaving traces and "
+"providing interactions between participants/visitors."
+msgstr "Cada exposição é feita a partir da disposição de diversos marcadores, que utilizam como suporte adesivos, imagens de stencil, de carimbos, ou outras, em diferentes tamanhos. Esses suportes são também entregues ao público que circulam pelo espaço, de modo que possam fazer interferências locais e que seja possível “viralizar” os marcadores enquanto a exposição estiver disponível, deixando rastros e proporcionando interações entre os participantes/visitantes."
+
+#: src/core/jinja2/core/community.jinja2:24
+msgid ""
+"To see through the “windows” and see what the fabulous images reveal, the "
+"public must point their devices at the markers, so that the Jandig platform "
+"viewer can read them and show the content in augmented reality."
+msgstr "Para enxergar através das “janelas” e ver as imagens fabulosas o que elas revelam, o público deverá apontar seus dispositivos para os marcadores, para que o visualizador da plataforma Jandig ufaça a leitura dos mesmos e mostre o conteúdo em realidade aumentada."
+
+#: src/core/jinja2/core/community.jinja2:26
+msgid ""
+"The edges are the graphic elements that trigger the recognition of the "
+"object associated with each marker. For this reason, you should not cover "
+"them and they should always be seen completely by the camera. Placing your "
+"finger on one of the edges or bringing the camera too close to the marker "
+"makes recognition impossible, for example. This characteristic must always "
+"be taken into consideration when producing and applying markers."
+msgstr "As bordas são os elementos gráficos que engatilham o reconhecimento do objeto associado a cada marcador. Por esse motivo, não se deve cobri-las e elas devem sempre ser vistas completamente pela câmera. Colocar o dedo sobre uma das bordas ou aproximar demais a câmera do marcador inviabiliza o reconhecimento, por exemplo. Essa característica deve sempre ser levada em consideração na produção e aplicação dos marcadores."
+
 #: src/core/jinja2/core/exhibit_detail.jinja2:9
 #: src/users/jinja2/users/components/item-list.jinja2:75
 #: src/users/jinja2/users/components/moderator-item-list.jinja2:31
@@ -220,13 +303,10 @@ msgstr "Escolha a Exposição que está vendo"
 #: src/core/jinja2/core/exhibit_select.jinja2:28
 #: src/users/jinja2/users/edit-marker.jinja2:26
 #: src/users/jinja2/users/edit-object.jinja2:63
-#: src/users/jinja2/users/login.jinja2:40
+#: src/users/jinja2/users/login.jinja2:46
 #: src/users/jinja2/users/password-change.jinja2:26
-#: src/users/jinja2/users/profile-edit.jinja2:31
-#: src/users/jinja2/users/recover-edit-password.jinja2:26
-#: src/users/jinja2/users/recover-password-code.jinja2:26
-#: src/users/jinja2/users/recover-password.jinja2:26
-#: src/users/jinja2/users/signup.jinja2:32
+#: src/users/jinja2/users/profile-edit.jinja2:36
+#: src/users/jinja2/users/signup.jinja2:47
 #: src/users/jinja2/users/upload-marker.jinja2:52
 #: src/users/jinja2/users/upload-object.jinja2:88
 #: src/users/jinja2/users/upload.jinja2:107
@@ -268,12 +348,12 @@ msgid "Welcome, "
 msgstr "Olá, "
 
 #: src/core/jinja2/core/header.jinja2:26 src/users/jinja2/users/login.jinja2:21
-#: src/users/jinja2/users/signup.jinja2:14
+#: src/users/jinja2/users/signup.jinja2:29
 msgid "Sign up"
 msgstr "Cadastro"
 
 #: src/core/jinja2/core/header.jinja2:29
-#: src/users/jinja2/users/signup.jinja2:15
+#: src/users/jinja2/users/signup.jinja2:30
 msgid "Log in"
 msgstr "Entrar"
 
@@ -488,25 +568,16 @@ msgstr "Editar Exposição Jandig"
 msgid "Edit Exhibit"
 msgstr "Editar Exposição"
 
-#: src/users/jinja2/users/invalid-recovering-email.jinja2:14
-msgid "There is no user with this e-mail/username."
-msgstr "Não há usuário com esse e-mail/nome."
-
-#: src/users/jinja2/users/invalid-recovering-email.jinja2:18
-#: src/users/jinja2/users/wrong-verification-code.jinja2:18
-msgid "Click here to return"
-msgstr "Clique aqui para voltar"
-
 #: src/users/jinja2/users/login.jinja2:20
 msgid "Login to continue"
 msgstr "Faça login para continuar"
 
-#: src/users/jinja2/users/login.jinja2:36
-#: src/users/jinja2/users/signup.jinja2:29
+#: src/users/jinja2/users/login.jinja2:42
+#: src/users/jinja2/users/signup.jinja2:44
 msgid "Remember me"
 msgstr "Lembre-se de mim"
 
-#: src/users/jinja2/users/login.jinja2:43
+#: src/users/jinja2/users/login.jinja2:49
 msgid "Recover password"
 msgstr "Recuperar senha"
 
@@ -537,22 +608,22 @@ msgstr "Digite sua nova senha."
 #: src/users/jinja2/users/permission-denied.jinja2:4
 msgid ""
 "You dont have permission to be here, please click on the button to go back."
-msgstr ""
+msgstr "Você não tem permissões para estar aqui, por favor clique no botão para voltar."
 
 #: src/users/jinja2/users/permission-denied.jinja2:5
 msgid "Take me back to where I belong!"
-msgstr ""
+msgstr "Me leve de volta!"
 
-#: src/users/jinja2/users/components/userbox.jinja2:23
-#: src/users/jinja2/users/profile-edit.jinja2:7
+#: src/users/jinja2/users/components/userbox.jinja2:27
+#: src/users/jinja2/users/profile-edit.jinja2:11
 msgid "Log out"
 msgstr "Sair"
 
-#: src/users/jinja2/users/profile-edit.jinja2:8
+#: src/users/jinja2/users/profile-edit.jinja2:13
 msgid "Remove account"
 msgstr "Remover conta"
 
-#: src/users/jinja2/users/profile-edit.jinja2:19
+#: src/users/jinja2/users/profile-edit.jinja2:24
 msgid "Change Password"
 msgstr "Trocar Senha"
 
@@ -604,18 +675,6 @@ msgstr "Objetos"
 #: src/users/jinja2/users/profile.jinja2:73
 msgid "You have no Objects. :c"
 msgstr "Você não tem Objetos. :c"
-
-#: src/users/jinja2/users/recover-edit-password.jinja2:14
-msgid "Choose a new password and repeat it."
-msgstr "Escolha uma nova senha e repita."
-
-#: src/users/jinja2/users/recover-password-code.jinja2:14
-msgid "Insert the code you have received on e-mail."
-msgstr "Digite o código que você recebeu em seu e-mail."
-
-#: src/users/jinja2/users/recover-password.jinja2:14
-msgid "Type your username or e-mail"
-msgstr "Digite seu nome de usuário ou email"
 
 #: src/users/jinja2/users/components/createbox.jinja2:5
 #: src/users/jinja2/users/upload-marker.jinja2:11
@@ -676,10 +735,6 @@ msgstr "Sou autor/a desse Objeto"
 msgid "Choose .patt file"
 msgstr "Selecione um arquivo .patt"
 
-#: src/users/jinja2/users/wrong-verification-code.jinja2:14
-msgid "Your verification code is invalid."
-msgstr "Seu código de verificação é inválido."
-
 #: src/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
 msgstr "Vem cá! Crie conteúdo agora!"
@@ -715,14 +770,14 @@ msgstr " e em "
 
 #: src/users/jinja2/users/components/elements-modal.jinja2:36
 #: src/users/jinja2/users/components/elements-modal.jinja2:52
-#: src/users/jinja2/users/components/userbox.jinja2:49
+#: src/users/jinja2/users/components/userbox.jinja2:54
 msgid " Exhibits"
 msgstr " Exposições"
 
 #: src/users/jinja2/users/components/elements-modal.jinja2:88
 #: src/users/jinja2/users/components/elements-modal.jinja2:92
 msgid "This is a Jandig "
-msgstr "Isso é um "
+msgstr "Isso é um Jandig "
 
 #: src/users/jinja2/users/components/elements-modal.jinja2:100
 msgid "Share this "
@@ -779,30 +834,51 @@ msgstr " Objeto(s)"
 msgid "Edit profile"
 msgstr "Editar perfil"
 
-#: src/users/jinja2/users/components/userbox.jinja2:28
+#: src/users/jinja2/users/components/userbox.jinja2:33
 msgid "Jandig Artist"
 msgstr "Artista Jandig"
 
-#: src/users/jinja2/users/components/userbox.jinja2:31
+#: src/users/jinja2/users/components/userbox.jinja2:36
 msgid " Artworks"
 msgstr " Obras"
 
-#: src/users/jinja2/users/components/userbox.jinja2:35
+#: src/users/jinja2/users/components/userbox.jinja2:40
 msgid "No Artworks yet."
 msgstr "Sem Obras."
 
-#: src/users/jinja2/users/components/userbox.jinja2:39
-#: src/users/jinja2/users/components/userbox.jinja2:57
+#: src/users/jinja2/users/components/userbox.jinja2:44
+#: src/users/jinja2/users/components/userbox.jinja2:62
 msgid "Create your first!"
 msgstr "Crie sua primeira!"
 
-#: src/users/jinja2/users/components/userbox.jinja2:46
+#: src/users/jinja2/users/components/userbox.jinja2:51
 msgid "Jandig Curator"
 msgstr "Curador Jandig"
 
-#: src/users/jinja2/users/components/userbox.jinja2:53
+#: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
 msgstr "Sem Exposições."
+
+#~ msgid "Categories:"
+#~ msgstr "Categorias"
+
+#~ msgid "There is no user with this e-mail/username."
+#~ msgstr "Não há usuário com esse e-mail/nome."
+
+#~ msgid "Click here to return"
+#~ msgstr "Clique aqui para voltar"
+
+#~ msgid "Choose a new password and repeat it."
+#~ msgstr "Escolha uma nova senha e repita."
+
+#~ msgid "Insert the code you have received on e-mail."
+#~ msgstr "Digite o código que você recebeu em seu e-mail."
+
+#~ msgid "Type your username or e-mail"
+#~ msgstr "Digite seu nome de usuário ou email"
+
+#~ msgid "Your verification code is invalid."
+#~ msgstr "Seu código de verificação é inválido."
 
 #~ msgid "Exhibit URL"
 #~ msgstr "URL da exposição"

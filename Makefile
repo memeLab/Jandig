@@ -28,3 +28,6 @@ gen:
 
 translate_es:
 	poetry run inv i18n -l es_ES
+
+translate_pt:
+	poetry run inv i18n -l pt_BR
