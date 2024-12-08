@@ -84,7 +84,6 @@ def see_all(request, which="", page=1):
             request_type: paginated_data,
             "seeall": True,
         }
-
     return render(request, "core/collection.jinja2", ctx)
 
 

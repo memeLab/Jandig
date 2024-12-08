@@ -161,7 +161,9 @@ class LoginForm(AuthenticationForm):
 
         password = self.cleaned_data.get("password")
 
-        logged_user = authenticate(self.request, username=user.username, password=password)
+        logged_user = authenticate(
+            self.request, username=user.username, password=password
+        )
         if logged_user is None:
             raise forms.ValidationError(_("Wrong password!"))
 
