@@ -92,7 +92,19 @@
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             }
 
-            let elemUrl = {{url('marker-list')|tojson}};
+            // Select the API endpoint based on the element type /api/v1/<>/id/ 
+            let elemUrl;
+            if (elemType == "marker") {
+                elemUrl = {{ url('marker-list')|tojson }};
+            } else if (elemType == "object") {
+                elemUrl = {{ url('object-list')|tojson }};
+            } else if (elemType == "artwork") {
+                elemUrl = {{ url('artwork-list')|tojson }};
+            } else if (elemType == "exhibit") {
+                elemUrl = {{ url('exhibit-list')|tojson }};
+            } else {
+                console.log("Element type not recognized");
+            }
             elemUrl += element.attr('id');
 
             if(elemType != "artwork"){
