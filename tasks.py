@@ -3,7 +3,6 @@ import sys
 
 from invoke import task
 
-python = sys.executable
 directory = os.path.dirname(__file__)
 sys.path.append("jandig")
 
@@ -14,7 +13,7 @@ sys.path.append("jandig")
 def robust_manage(ctx, cmd, env=None, **kwargs):
     kwargs = {k.replace("_", "-"): v for k, v in kwargs.items() if v is not False}
     opts = " ".join(f'--{k} {"" if v is True else v}' for k, v in kwargs.items())
-    cmd = f"{python} ./src/manage.py {cmd} {opts}"
+    cmd = f"python3 ./src/manage.py {cmd} {opts}"
     env = {**os.environ, **(env or {})}
     path = env.get("PYTHONPATH", ":".join(sys.path))
     env.setdefault("PYTHONPATH", f"src:{path}")
@@ -25,20 +24,6 @@ def robust_manage(ctx, cmd, env=None, **kwargs):
 def manage(ctx, cmd):
     cmd = f"python3 ./src/manage.py {cmd}"
     ctx.run(cmd, pty=True, env=os.environ)
-
-
-@task
-def run(ctx, ssl=False, gunicorn=False):
-    """
-    Run development server
-    """
-    if gunicorn:
-        ctx.run(
-            "cd src && gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
-        )
-    else:
-        manage(ctx, "runserver 0.0.0.0:8000")
-
 
 #
 # Translations
