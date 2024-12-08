@@ -270,53 +270,6 @@ def download_exhibit(request):
     return JsonResponse(all_data)
 
 
-@cache_page(60 * 2)
-@require_http_methods(["GET"])
-def element_get(request):
-    if request.GET.get("marker_id", None):
-        element_type = "marker"
-        element = get_object_or_404(Marker, pk=request.GET["marker_id"])
-    elif request.GET.get("object_id", None):
-        element_type = "object"
-        element = get_object_or_404(Object, pk=request.GET["object_id"])
-    elif request.GET.get("artwork_id", None):
-        element_type = "artwork"
-        element = get_object_or_404(Artwork, pk=request.GET["artwork_id"])
-
-    if element_type == "artwork":
-        data = {
-            "id_marker": element.marker.id,
-            "id_object": element.augmented.id,
-            "type": element_type,
-            "author": element.author.user.username,
-            "owner_id": element.author.user.id,
-            "exhibits": element.exhibits_count,
-            "created_at": element.created_at.strftime("%d %b, %Y"),
-            "marker": element.marker.source.url,
-            "augmented": element.augmented.source.url,
-            "augmented_size": element.augmented.source.size,
-            "title": element.title,
-            "description": element.description,
-        }
-    else:
-        data = {
-            "id": element.id,
-            "type": element_type,
-            "author": element.author,
-            "owner": element.owner.user.username,
-            "owner_id": element.owner_id,
-            "artworks": element.artworks_count,
-            "exhibits": element.exhibits_count,
-            "source": element.source.url,
-            "size": element.source.size,
-            "uploaded_at": element.uploaded_at.strftime("%d %b, %Y"),
-        }
-
-    serialized = json.dumps(data)
-
-    return JsonResponse(serialized)
-
-
 def upload_elements(request, form_class, form_type, route):
     if request.method == "POST":
         form = form_class(request.POST, request.FILES)
@@ -644,7 +597,6 @@ def related_content(request):
         exhibits = element.exhibits_list
 
         ctx = {"exhibits": exhibits, "seeall:": False}
-
     return render(request, "core/collection.jinja2", ctx)
 
 
