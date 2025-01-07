@@ -16,7 +16,7 @@
             <h2>{{_("Choose the Exhibition you're seeing")}}</h2>
             <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post" autocomplete="off">
                 {{ csrf_input }}
-                {{form}}
+                {{ form }}
                 <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
             </form>
         </div>
