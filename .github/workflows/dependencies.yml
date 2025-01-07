@@ -1,0 +1,21 @@
+name: Dependencies pipeline
+
+on:
+  push:
+    paths:
+      - 'pyproject.toml'
+
+jobs:
+  dependencies:
+    name: test / dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code from Github
+        uses: actions/checkout@v3
+      - name: Check diff
+        id: diff_lock
+        run: |
+          echo "::set-output name=dependencies::$(git diff --name-only | grep poetry.lock -c)"
+      - name: Check poetry lock
+        if: ${{ steps.diff_lock.outputs.dependencies == 0 }}
+        run: exit 1

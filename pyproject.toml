@@ -1,0 +1,66 @@
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+MarkupSafe = "^2.1.1"
+Django = "^5.1.2"
+Jinja2 = "^3.1.5"
+gunicorn = "^20.1.0"
+Pillow = "^11.0.0"
+django-cors-headers = "^3.13.0"
+django-environ = "^0.9.0"
+psycopg2-binary = "^2.9.3"
+Sphinx = "^8.1.3"
+Babel = "^2.10.3"
+django-debug-toolbar = "^4.4.6"
+gevent = "^24.10.3"
+pymarker = "^0.3.1"
+django-extensions = "^3.1.5"
+factory-boy = "^3.2.1"
+boto3 = "^1.24.27"
+django-storages = "^1.12.3"
+sentry-sdk = "^2.8.0"
+djangorestframework = "^3.13.1"
+drf-nested-routers = "^0.93.4"
+django-htmx = "^1.18.0"
+
+[tool.poetry.group.dev.dependencies]
+invoke = "^2.2.0"
+playwright = "^1.41.2"
+pytest = "^7.2.0"
+pytest-xdist = "^3.0.2"
+flake8 = "^7.1.1"
+Flake8-pyproject = "^1.2.3"
+black = "^22.10.0"
+isort = "^5.10.1"
+pytest-django = "^4.5.2"
+dj-inmemorystorage = "^2.1.0"
+pytest-playwright = "^0.4.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.test_settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+pythonpath = "src"
+addopts="-n4"
+
+[tool.black]
+exclude = '''
+/(
+    \.git
+  | migrations
+  | .venv
+)/
+'''
+[tool.isort]
+profile = "black"
+src_paths = ["src"]
+skip_glob = "*/migrations/*.py,.venv/*"
+
+[tool.flake8]
+max-line-length = 200
+exclude="**/migrations/, .venv/*"

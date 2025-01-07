@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37240876-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37240876-2');
+        </script>
+        <link id="manifest" rel="manifest" href="/manifest.json">
+        <link rel="stylesheet" href="{{ static('css/reset.css') }}">
+        <title>Jandig</title>
+        <meta name="Description" content="Augmented reality art!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap" rel="stylesheet">
+
+        <link rel="shortcut icon" href="{{ static('images/icons/favicon.ico') }}" type="image/x-icon" />
+        {% block extra_css %}
+        {% endblock %}
+        {% block extra_js %}
+        {% endblock %}
+    </head>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+
+    <script src="{{ static('js/bowser.js') }}"></script>
+    <script src="{{ static('js/detect.js') }}"></script>
+    <script src="{{ static('js/main.js') }}"></script>
+
+    <body class="colorful">
+        {% if content is defined %}
+            <section>
+                {{ content }}
+            <section>
+        {% else %}
+            {% block content %}
+                {% if content_html %}
+                    <div class="container">
+                        {{ content_html|safe }}
+                    </div>
+                {% endif %}
+            {% endblock %}
+        {% endif %}
+    </body>
+</html>

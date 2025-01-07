@@ -1,14 +1,14 @@
 # Jandig ARte
 ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
 
-You can see galleries with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
+You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
 
 ## How it works
 Jandig ARte uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
 
 ![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
 
-Jandig ARte is a Progressive Web App, which means you can open in every device with a browser and a camera. Also you can add Jandig ARte to your homescreen and it will run like a native app on your device.
+Jandig ARte is a Progressive Web App, which means you can open in any device with a browser and a camera. You can also add Jandig ARte to your homescreen and it will run like a native app on your device.
 
 ### People
 We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ). Here's a list of some of the contributors for the development:
@@ -38,7 +38,7 @@ We are looking for artists (both illustrators and animators) to create great con
 You can find interviews and references to Jandig in the press [here](http://memelab.com.br/jandig/clipping/).
 
 ## Get Started
-To contribute to Jandig ARte it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
+To contribute to Jandig ARte, it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
 We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless as possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/). 
@@ -51,20 +51,21 @@ On Windows, you'll only need install [Docker Desktop](https://docs.docker.com/de
 ### Running
 
 #### Linux OS
+
 To run Jandig ARte all you need to do is:
 - Clone this repo
 - Navigate to the repository folder
-- Run docker-compose passing the docker-compose.yml
+- Run docker-compose
 - Voila!
 
-```
+```bash
 git clone https://github.com/memeLab/Jandig
 cd Jandig
-docker-compose -f docker/docker-compose.yml up
+docker-compose up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
-sudo docker-compose -f docker/docker-compose.yml up
+sudo docker-compose up
 ```
 
 Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [localhost:8000](localhost:8000). If you want to test on a mobile device, you will need a https connection, we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate a https link for you.
@@ -89,14 +90,14 @@ To run Jandig ARte all you need to do is:
 - Run docker-compose passing the docker-compose.yml
 - Voila!
 
-```
+```bash
 git clone https://github.com/memeLab/Jandig
 cd Jandig
-docker-compose -f docker/docker-compose.yml up
+docker-compose up
 ```
 If you get any error saying ``permission denied`` try run the command with sudo.
 ```
-sudo docker-compose -f docker/docker-compose.yml up
+sudo docker-compose up
 ```
 
 Jandig ARte server will run at localhost, but by default WSL2 enables wsl localhost to accessible from windows, but no vice versa. To access you'll need to use windows system IP from wsl2.
@@ -110,3 +111,7 @@ vim /etc/resolv.conf
 nameserver 172.21.176.1
 ```
 - Access the localhost using this IP (e.g.: 172.21.176.1:8000)
+
+### Prototype
+
+The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation](/docs/prototype.md).

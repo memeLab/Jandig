@@ -2,13 +2,12 @@
 src/ARte/config/__pycache__/
 *.pyc
 
-##vscode
-\.vscode/
-
 ##sqlite
 *.sqlite3
 
 build/
+static/
+media/
 src/data/certbot/
 docker/node_modules/
 node_modules/
@@ -25,4 +24,4 @@ docker/media/
 *.mo
 *.po~
 
-src/.envs/.env
+*/**/.env

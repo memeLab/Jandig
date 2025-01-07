@@ -9,7 +9,9 @@ Ajuda
 .. toctree::
    :maxdepth: 2
 
-   animacoes
-   marcadores
-   publicando-obras-ingles
+   animacoes-portugues
+   marcadores-portugues
    publicando-obras-portugues
+   animacoes-ingles
+   marcadores-ingles
+   publicando-obras-ingles

@@ -1,0 +1,40 @@
+{% extends '/core/home.jinja2' %}
+
+{% block content %}
+<div class="container">
+
+    <section class="account-options flex">
+        <form id="logout-form" method="post" action="{{ url('logout') }}" style="display: none;">
+             {{ csrf_input }}
+        </form>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            {{ _('Log out') }}
+        </a>
+        <a href="#"  onclick="return confirm('Are you sure you want to remove your account?')">{{ _('Remove account') }}</a>
+    </section>
+    <div class="password-form">
+        <form name="password-form" action="{{url('edit-password')}}" method="post" enctype="multipart/form-data">
+            {{ csrf_input }}
+            {% for field in form_password.visible_fields() %}
+                <p class="password-field {{field.name}}">
+                    {{ field }}
+                    {{ field.errors }}
+                </p>
+            {% endfor%}
+            <input class="submit-btn" type="submit" value="{{ _('Change Password') }}"/>
+        </form>
+    </div>
+    <div class="profile-form">
+        <form name="profile-form" action="{{url('edit-profile')}}" method="post" enctype="multipart/form-data">
+            {{ csrf_input }}
+            {% for field in form_profile.visible_fields() %}
+                <p class="profile-field {{field.name}}">
+                    {{ field }}
+                    {{ field.errors }}
+                </p>
+            {% endfor%}
+            <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

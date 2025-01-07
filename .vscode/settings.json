@@ -1,0 +1,8 @@
+{
+    "python.testing.pytestArgs": [
+        "src",
+        "--ds=config.test_settings",
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
