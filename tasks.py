@@ -25,6 +25,7 @@ def manage(ctx, cmd):
     cmd = f"python3 ./src/manage.py {cmd}"
     ctx.run(cmd, pty=True, env=os.environ)
 
+
 #
 # Translations
 #

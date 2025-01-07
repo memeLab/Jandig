@@ -2,10 +2,6 @@ from django.conf import settings
 from django.urls import include, path, re_path
 from rest_framework_nested.routers import DefaultRouter
 
-from core.views.artworks import ArtworkViewset
-from core.views.exhibits import ExhibitViewset
-from core.views.markers import MarkerViewset
-from core.views.objects import ObjectViewset
 from core.views.static_views import (
     community,
     documentation,
@@ -25,6 +21,12 @@ from core.views.views import (
     see_all,
     service_worker,
     upload_image,
+)
+from core.views.viewsets import (
+    ArtworkViewset,
+    ExhibitViewset,
+    MarkerViewset,
+    ObjectViewset,
 )
 
 api_router = DefaultRouter()

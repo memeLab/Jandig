@@ -7,23 +7,22 @@
 {% endblock %}
 
 {% block content %}
-    <a id="element-author" href="#"></a>
+    <p id="element-author"></p>
     <p id="element-upload-info"></p>
     <p id="element-analytics"></p>
     <p id="download"> Download file:</p>
     <p id="element-download"></p>
 
     <script>
-        function elementAuthor(author, owner_id){
+        function elementAuthor(author){
             $('#element-author').text({{ _("by ")|tojson }} + author);
-            $('#element-author').attr("href", "{{ url('profile') }}?user=" + owner_id);
         }
         function uploadedBy(owner, date){
             $('#element-upload-info').replaceWith(
                     '<p id="element-upload-info">' +
                     {{ _("Uploaded by ")|tojson }} +
-                    owner  + ', ' +
-                    {{ _("in ")|tojson }} + date + '</p>'
+                    owner.username + ', ' +
+                    {{ _("in ")|tojson }} + new Date(date).toLocaleDateString() + '</p>'
                 )
         }
         function usedIn(artworks_count, exhibits_count, element_src, element_id, elemType){
@@ -37,11 +36,12 @@
                 '<img id="element-src" src="' + element_src + '"/></p>'
             )
         }
-        function usedInExhibit(marker_id, object_id, exhibits_count, marker_src, augmented_src, element_id){
+        function usedInExhibit(marker_id, object_id, exhibits_count, marker, augmented, element_id){
             let object_tag = ''
+            let augmented_src = augmented.source 
             if(augmented_src.split('.')[1] == 'mp4' || augmented_src.split('.')[1] == 'webm'){
                 object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
-            }else{
+            } else {
                 object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
             }
 
@@ -50,7 +50,7 @@
                 {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=artwork">' +
                 exhibits_count +
                 {{ _(" Exhibits")|tojson }} + '</a>' +
-                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker_src + '"/>' +
+                '<img id="' + marker_id + '" class="trigger-erase artwork-content" data-elem-type="marker" src="' + marker.source + '"/>' +
                 object_tag
             )
             $('.trigger-erase').click(eraseModal);
@@ -66,7 +66,7 @@
             }else{
                 $('#element-download').replaceWith(
                     '<p id="element-download">' +
-                    '<a id="gif-download" href="'+ element_src +'">Download .gif (' + file_size + ' kb)</a></p>'
+                    '<a id="gif-download" href="'+ element_src +'" download>Download .gif (' + file_size + ' kb)</a></p>'
                 )
             }
         }
@@ -92,7 +92,19 @@
                 $('#modal-title').text({{ _("This is a Jandig ")|tojson }} + elemType);
             }
 
-            let elemUrl = {{url('marker-list')|tojson}};
+            // Select the API endpoint based on the element type /api/v1/<>/id/ 
+            let elemUrl;
+            if (elemType == "marker") {
+                elemUrl = {{ url('marker-list')|tojson }};
+            } else if (elemType == "object") {
+                elemUrl = {{ url('object-list')|tojson }};
+            } else if (elemType == "artwork") {
+                elemUrl = {{ url('artwork-list')|tojson }};
+            } else if (elemType == "exhibit") {
+                elemUrl = {{ url('exhibit-list')|tojson }};
+            } else {
+                console.log("Element type not recognized");
+            }
             elemUrl += element.attr('id');
 
             if(elemType != "artwork"){
@@ -102,14 +114,13 @@
                 $('#create-artwork').text(
                      {{ _('Create artwork with this ')|tojson }} + elemType
                 );
-
                 $.ajax({
                     url: elemUrl,
                     success: function(data){
-                        elementAuthor(data['author'], data['owner_id']);
+                        elementAuthor(data['author']);
                         uploadedBy(data['owner'], data['uploaded_at']);
-                        usedIn(data['artworks'], data['exhibits'], data['source'], element_id, elemType);
-                        downloadElement(data['type'], data['size']/1000, data['source']);
+                        usedIn(data['artworks_count'], data['exhibits_count'], data['source'], element_id, elemType);
+                        downloadElement(data['type'], data["source_size"]/1000, data['source']);
                     }
                 });
             }else{
@@ -117,10 +128,10 @@
                 $.ajax({
                     url: elemUrl,
                     success: function(data){
-                        elementAuthor(data['author'], data['owner_id']);
-                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits'], data['marker'], data['augmented'], element_id);
+                        elementAuthor(data['author'].username);
+                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits_count'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
-                        downloadElement(data['type'], data['augmented_size']/1000, data['augmented']);
+                        downloadElement(data['type'], data['augmented'].source_size/1000, data['augmented'].source);
                     }
                 });
             }
