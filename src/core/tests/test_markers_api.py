@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from core.models import Marker
-from core.serializers.markers import MarkerSerializer
+from core.serializers import MarkerSerializer
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")

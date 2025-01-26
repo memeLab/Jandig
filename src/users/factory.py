@@ -24,5 +24,4 @@ class ObjectFactory(DjangoModelFactory):
     rotation = "270 0 0"
 
     class Meta:
-
         model = Object

@@ -2,9 +2,9 @@ RUNNING_CONTAINER := $(shell docker compose ps --services --filter "status=runni
 
 test:
 	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
-		docker compose exec django poetry run pytest src/core src/users; \
+		docker compose exec django poetry run pytest src/core src/users src/blog; \
 	else \
-		docker compose run --rm django poetry run pytest src/core src/users;\
+		docker compose run --rm django poetry run pytest src/core src/users src/blog;\
 	fi
 
 test-ui:
@@ -12,10 +12,11 @@ test-ui:
 	poetry run pytest src/tests
 
 lint:
-	poetry run black --line-length=200 src
-	poetry run isort src
-flake8:
-	poetry run flake8 --max-line-length=200 --exclude=*/migrations src
+	poetry run ruff format src
+	poetry run ruff check --fix src
+
+check: 
+	poetry run ruff check
 
 migrations:
 	poetry run python src/manage.py makemigrations
