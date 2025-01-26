@@ -1,16 +1,10 @@
 
-FROM python:3.13.0-slim-bookworm
+FROM python:3.13.1-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:0.5.24 /uv /uvx /bin/
 
 ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
     TINI_VERSION=v0.19.0 \
-    # poetry:
-    POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=true \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_VIRTUALENVS_OPTIONS_ALWAYS_COPY=true \
-    POETRY_VIRTUALENV_PATH="/jandig/.venv" \
-    POETRY_CACHE_DIR='/home/jandig/cache/pypoetry' \
-    POETRY_VERSION=1.8.4
+    UV_CACHE_DIR=/home/jandig/jandig/cache/uv
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -19,17 +13,18 @@ RUN apt-get update && \
       curl \
       wget
 
+
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
   && chmod +x /usr/local/bin/tini && tini --version
 
 
-RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/static /jandig/build /home/jandig/cache/pypoetry
+RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/static /jandig/build /home/jandig/jandig/cache/uv
 
 WORKDIR /jandig
 
 COPY ./pyproject.toml /jandig/pyproject.toml
-COPY ./poetry.lock /jandig/poetry.lock
+COPY ./uv.lock /jandig/uv.lock
 
 COPY ./src/ /jandig/src/
 COPY ./docs/ /jandig/docs/
@@ -49,12 +44,9 @@ RUN chmod 2775 /jandig /home/jandig
 # Switch to the new user
 USER jandig
 
-# Installing `poetry` package manager:
-# https://github.com/python-poetry/poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
-
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
+RUN uv sync --frozen --no-dev
 ENTRYPOINT ["tini", "--"]
 
 CMD [ "/jandig/run.sh" ]

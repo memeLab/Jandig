@@ -8,22 +8,22 @@ USE_GUNICORN=${USE_GUNICORN:-true}
 INSTALL_DEV=$(echo "$INSTALL_DEV" | tr '[:upper:]' '[:lower:]')
 USE_GUNICORN=$(echo "$USE_GUNICORN" | tr '[:upper:]' '[:lower:]')
 
-poetry install --without dev
+uv sync --frozen --no-dev
 
 if [ "$INSTALL_DEV" = "true" ]; then
-  poetry install --only dev
+  uv sync --frozen
 fi
 
-poetry show
-poetry run python src/manage.py collectstatic --no-input
-poetry run python src/manage.py migrate
-poetry run sphinx-build docs/ build/
-poetry run python etc/scripts/compilemessages.py
+uv pip list
+uv run python src/manage.py collectstatic --no-input
+uv run python src/manage.py migrate
+uv run sphinx-build docs/ build/
+uv run python etc/scripts/compilemessages.py
 
 if [ "$USE_GUNICORN" = "true" ]; then
   echo "Running Gunicorn Server"
-  bash -c "cd src && poetry run gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
+  bash -c "cd src && uv run gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
 else
   echo "Running Django development server"
-  poetry run python src/manage.py runserver 0.0.0.0:8000
+  uv run python src/manage.py runserver 0.0.0.0:8000
 fi
