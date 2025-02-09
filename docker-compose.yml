@@ -43,7 +43,7 @@ services:
       start_interval: 5s
   
   storage:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2022-09-17T00-09-45Z.hotfix.acb000d3a
     ports:
       - 9000:9000
       - 9001:9001
