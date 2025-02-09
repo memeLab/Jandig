@@ -87,7 +87,6 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-
     user = request.GET.get("user")
 
     if not user:
@@ -170,7 +169,6 @@ def create_artwork(request):
         form = ArtworkForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             marker = get_marker(request, form)
             augmented = get_augmented(request, form)
 

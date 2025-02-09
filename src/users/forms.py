@@ -111,6 +111,7 @@ class ProfileForm(forms.ModelForm):
     personal_site = forms.URLField(
         required=False,
         help_text=_("Personal Website"),
+        assume_scheme=True,
     )
 
     def clean_username(self):
@@ -243,7 +244,6 @@ class UploadObjectForm(forms.ModelForm):
 
 
 class ArtworkForm(forms.Form):
-
     marker = forms.ImageField(required=False)
     marker_author = forms.CharField(max_length=12, required=False)
     augmented = forms.ImageField(required=False)
@@ -269,7 +269,6 @@ class ArtworkForm(forms.Form):
 
 
 class ExhibitForm(forms.Form):
-
     name = forms.CharField(max_length=50, required=True)
     slug = forms.CharField(max_length=50, required=True)
 
