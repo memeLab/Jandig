@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from core.models import Marker, Object
+from core.models import Marker, Object, Exhibit
 
 from .choices import COUNTRY_CHOICES
 
@@ -275,13 +275,21 @@ class ExhibitForm(forms.Form):
     # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit
     artworks = forms.CharField(max_length=1000)
 
-    def clean_slug(self):
-        data = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_]*$", data):
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if Exhibit.objects.filter(slug=name).exists():
             raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
-        return data
+                _("This name is already being used. Please choose another name for your exhibit."))
+        return name
+
+    def clean_slug(self):
+        slug = self.cleaned_data["slug"]
+        if not re.match("^[a-zA-Z0-9_]*$", slug):
+            raise forms.ValidationError(_("Url can't contain spaces or special characters"))
+        if Exhibit.objects.filter(slug=slug).exists():
+            raise forms.ValidationError(
+                _("That exhibit slug is already in use. Please choose another slug for your exhibit."))
+        return slug
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)

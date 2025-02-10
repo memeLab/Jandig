@@ -20,7 +20,6 @@ from core.views.views import (
     manifest,
     see_all,
     service_worker,
-    upload_image,
 )
 from core.views.viewsets import (
     ArtworkViewset,
@@ -47,7 +46,6 @@ urlpatterns = [
     path("generator/", marker_generator, name="marker-generator"),
     path("sw.js", service_worker, name="sw"),
     path("manifest.json", manifest, name="manifest"),
-    path("upload", upload_image, name="upload-image"),
     path("i18n/", include("django.conf.urls.i18n")),
     re_path(
         r"^see_all(?:/(?P<which>[a-zA-Z]+))?(?:/(?P<page>\d+))?/$",
