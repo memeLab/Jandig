@@ -28,7 +28,7 @@ gen:
 	uv run playwright codegen -b chromium --target python-pytest localhost:8000
 
 translate_es:
-	uv run inv i18n -l es_ES
+	docker compose exec django uv run inv i18n -l es_ES
 
 translate_pt:
-	uv run inv i18n -l pt_BR
+	docker compose exec django uv run inv i18n -l pt_BR
