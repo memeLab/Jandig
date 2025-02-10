@@ -1,6 +1,6 @@
-import json
 import logging
 
+from django.conf import settings
 from django.contrib.auth import (
     authenticate,
     get_user_model,
@@ -8,9 +8,12 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
@@ -21,22 +24,29 @@ from .forms import (
     ExhibitForm,
     PasswordChangeForm,
     ProfileForm,
-    RecoverPasswordCodeForm,
-    RecoverPasswordForm,
     SignupForm,
     UploadMarkerForm,
     UploadObjectForm,
 )
 from .models import Profile
-from .services.email_service import EmailService
-from .services.encrypt_service import EncryptService
-from .services.user_service import UserService
+from .services import BOT_SCORE, create_assessment
 
-log = logging.getLogger("ej")
+log = logging.getLogger(__file__)
+
+User = get_user_model()
 
 
 def signup(request):
     if request.method == "POST":
+        if settings.RECAPTCHA_ENABLED:
+            recaptcha_token = request.POST.get("g-recaptcha-response")
+            assessment = create_assessment(
+                token=recaptcha_token, recaptcha_action="sign_up"
+            )
+            score = assessment.get("riskAnalysis", {}).get("score", -1)
+            if score <= BOT_SCORE:
+                return redirect("home")
+
         form = SignupForm(request.POST)
 
         if form.is_valid():
@@ -50,106 +60,46 @@ def signup(request):
     else:
         form = SignupForm()
 
-    return render(request, "users/signup.jinja2", {"form": form})
+    return render(
+        request,
+        "users/signup.jinja2",
+        {
+            "form": form,
+            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
+            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+        },
+    )
 
 
-User = get_user_model()
-
-
-def recover_password(request):
-    if request.method == "POST":
-        recover_password_form = RecoverPasswordForm(request.POST)
-
-        if recover_password_form.is_valid():
-            username_or_email = recover_password_form.cleaned_data.get("username_or_email")
-            user_service = UserService()
-            username_or_email_is_valid = user_service.check_if_username_or_email_exist(username_or_email)
-            if not username_or_email_is_valid:
-                return redirect("invalid_recovering_email_or_username")
-
-            global global_recovering_email
-            global_recovering_email = user_service.get_user_email(username_or_email)
-
-            global global_verification_code
-            encrypt_service = EncryptService()
-            global_verification_code = encrypt_service.generate_verification_code(global_recovering_email)
-
-            build_message_and_send_to_user(global_recovering_email)
-
-        return redirect("recover-code")
-
-    recover_password_form = RecoverPasswordForm()
-    return render(request, "users/recover-password.jinja2", {"form": recover_password_form})
-
-
-def build_message_and_send_to_user(email):
-    message = f"You have requested a new password. This is your verification code: {global_verification_code}\nCopy it and put into the field."
-    email_service = EmailService(message)
-    multipart_message = email_service.build_multipart_message(email)
-    email_service.send_email_to_recover_password(multipart_message)
-
-
-def recover_code(request):
-    if request.method == "POST":
-        form = RecoverPasswordCodeForm(request.POST)
-
-        if form.is_valid():
-            code = form.cleaned_data.get("verification_code")
-
-            log.warning("Inserido: %s", code)
-            log.warning("Correto: %s", global_verification_code)
-
-            if code == global_verification_code:
-                global recover_password_user
-                recover_password_user = User.objects.get(email=global_recovering_email)
-                return redirect("recover-edit-password")
-
-            return redirect("wrong-verification-code")
-        return redirect("home")
-
-    form = RecoverPasswordCodeForm()
-    return render(request, "users/recover-password-code.jinja2", {"form": form})
-
-
-def recover_edit_password(request):
-    if request.method == "POST":
-        form = SetPasswordForm(recover_password_user, data=request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect("login")
-    else:
-        form = SetPasswordForm(recover_password_user)
-
-    return render(request, "users/recover-edit-password.jinja2", {"form": form})
-
-
-@require_http_methods(["GET"])
-def wrong_verification_code(request):
-    return render(request, "users/wrong-verification-code.jinja2")
-
-
-@require_http_methods(["GET"])
-def invalid_recovering_email_or_username(request):
-    return render(request, "users/invalid-recovering-email.jinja2")
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = "users/reset-password/password_reset.jinja2"
+    email_template_name = "users/reset-password/password_reset_email.html"
+    subject_template_name = "users/reset-password/password_reset_subject.txt"
+    success_message = _(
+        "We've emailed you instructions for setting your password, "
+        "if an account exists with the email you entered. You should receive them shortly."
+        " If you don't receive an email, "
+        "please make sure you've entered the address you registered with, and check your spam folder."
+    )
+    success_url = reverse_lazy("home")
 
 
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-
     user = request.GET.get("user")
 
-    if user:
-        profile = Profile.objects.get(user=user)
-    else:
-        profile = Profile.objects.select_related().get(user=request.user)
+    if not user:
+        user = request.user
+
+    profile = Profile.objects.prefetch_related(
+        "exhibits", "markers", "ar_objects", "artworks"
+    ).get(user=user)
 
     exhibits = profile.exhibits.all()
-    markers = profile.marker_set.all()
-    objects = profile.object_set.all()
-    artworks = profile.artwork_set.all()
+    markers = profile.markers.all()
+    objects = profile.ar_objects.all()
+    artworks = profile.artworks.all()
 
     ctx = {
         "exhibits": exhibits,
@@ -157,7 +107,7 @@ def profile(request):
         "markers": markers,
         "objects": objects,
         "profile": True,
-        "button_enable": False if user else True,
+        "button_enable": True if user else False,
     }
     return render(request, "users/profile.jinja2", ctx)
 
@@ -219,7 +169,6 @@ def create_artwork(request):
         form = ArtworkForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             marker = get_marker(request, form)
             augmented = get_augmented(request, form)
 
@@ -316,53 +265,6 @@ def download_exhibit(request):
         all_data.append(data)
 
     return JsonResponse(all_data)
-
-
-@cache_page(60 * 2)
-@require_http_methods(["GET"])
-def element_get(request):
-    if request.GET.get("marker_id", None):
-        element_type = "marker"
-        element = get_object_or_404(Marker, pk=request.GET["marker_id"])
-    elif request.GET.get("object_id", None):
-        element_type = "object"
-        element = get_object_or_404(Object, pk=request.GET["object_id"])
-    elif request.GET.get("artwork_id", None):
-        element_type = "artwork"
-        element = get_object_or_404(Artwork, pk=request.GET["artwork_id"])
-
-    if element_type == "artwork":
-        data = {
-            "id_marker": element.marker.id,
-            "id_object": element.augmented.id,
-            "type": element_type,
-            "author": element.author.user.username,
-            "owner_id": element.author.user.id,
-            "exhibits": element.exhibits_count,
-            "created_at": element.created_at.strftime("%d %b, %Y"),
-            "marker": element.marker.source.url,
-            "augmented": element.augmented.source.url,
-            "augmented_size": element.augmented.source.size,
-            "title": element.title,
-            "description": element.description,
-        }
-    else:
-        data = {
-            "id": element.id,
-            "type": element_type,
-            "author": element.author,
-            "owner": element.owner.user.username,
-            "owner_id": element.owner_id,
-            "artworks": element.artworks_count,
-            "exhibits": element.exhibits_count,
-            "source": element.source.url,
-            "size": element.source.size,
-            "uploaded_at": element.uploaded_at.strftime("%d %b, %Y"),
-        }
-
-    serialized = json.dumps(data)
-
-    return JsonResponse(serialized)
 
 
 def upload_elements(request, form_class, form_type, route):
@@ -692,7 +594,6 @@ def related_content(request):
         exhibits = element.exhibits_list
 
         ctx = {"exhibits": exhibits, "seeall:": False}
-
     return render(request, "core/collection.jinja2", ctx)
 
 

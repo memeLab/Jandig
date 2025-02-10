@@ -7,8 +7,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("users", "0008_rename_model_tables"),
+        ("core", "0008_alter_artwork_author_alter_marker_owner_and_more"),
     ]
-
     operations = [
         migrations.AlterField(
             model_name="profile",

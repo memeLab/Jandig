@@ -52,7 +52,10 @@ class SignupForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         username = self.cleaned_data.get("username")
-        if email and User.objects.filter(email=email).exclude(username=username).exists():
+        if (
+            email
+            and User.objects.filter(email=email).exclude(username=username).exists()
+        ):
             raise forms.ValidationError(_("E-mail taken"))
 
         return email
@@ -63,7 +66,9 @@ class PasswordChangeForm(OrigPasswordChangeForm):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.fields["old_password"].widget.attrs["placeholder"] = _("Old Password")
         self.fields["new_password1"].widget.attrs["placeholder"] = _("New Password")
-        self.fields["new_password2"].widget.attrs["placeholder"] = _("New Password Again")
+        self.fields["new_password2"].widget.attrs["placeholder"] = _(
+            "New Password Again"
+        )
 
 
 class ProfileForm(forms.ModelForm):
@@ -106,17 +111,28 @@ class ProfileForm(forms.ModelForm):
     personal_site = forms.URLField(
         required=False,
         help_text=_("Personal Website"),
+        assume_scheme=True,
     )
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if username and User.objects.filter(username=username).exclude(username=self.instance.user.username).exists():
+        if (
+            username
+            and User.objects.filter(username=username)
+            .exclude(username=self.instance.user.username)
+            .exists()
+        ):
             raise forms.ValidationError(_("Username already in use"))
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if email and User.objects.filter(email=email).exclude(username=self.instance.user.username).exists():
+        if (
+            email
+            and User.objects.filter(email=email)
+            .exclude(username=self.instance.user.username)
+            .exists()
+        ):
             raise forms.ValidationError(_("Email address must be unique"))
 
         return email
@@ -128,53 +144,36 @@ class LoginForm(AuthenticationForm):
         self.fields["username"].widget.attrs["placeholder"] = _("username / email")
         self.fields["password"].widget.attrs["placeholder"] = _("password")
 
-    def clean_username(self):
-        username_or_email = self.cleaned_data.get("username")
+    def clean(self):
+        username_or_email = self.cleaned_data.get("username", "")
+        search_by = {}
+
         if "@" in username_or_email:
-            if not User.objects.filter(email=username_or_email).exists():
-                raise forms.ValidationError(_("Username/email not found"))
-            user = User.objects.get(email=username_or_email)
-            if user:
-                return user.username
+            search_by["email"] = username_or_email
         else:
-            if not User.objects.filter(username=username_or_email).exists():
-                raise forms.ValidationError(_("Username/email not found"))
+            search_by["username"] = username_or_email
 
-        # Already is a valid username
-        return username_or_email
+        try:
+            user = User.objects.get(**search_by)
+        except User.DoesNotExist as e:
+            raise forms.ValidationError(_("Username/email not found")) from e
 
-    def clean_password(self):
+        self.cleaned_data["username"] = user.username
+
         password = self.cleaned_data.get("password")
-        username_or_email = self.cleaned_data.get("username")
-        user = None
-        username_or_email_wrong = False
 
-        if "@" in username_or_email:
-            if User.objects.filter(email=username_or_email).exists():
-                username = User.objects.get(email=username_or_email).username
-                user = authenticate(username=username, password=password)
-            else:
-                username_or_email_wrong = True
-                # raise forms.ValidationError(_('Email Wrong!'))
-        else:
-            if User.objects.filter(username=username_or_email).exists():
-                user = authenticate(username=username_or_email, password=password)
-            else:
-                username_or_email_wrong = True
-                # raise forms.ValidationError(_('Username Wrong!'))
-
-        if not user and not username_or_email_wrong:
+        logged_user = authenticate(
+            self.request, username=user.username, password=password
+        )
+        if logged_user is None:
             raise forms.ValidationError(_("Wrong password!"))
 
-        return password
+        self.user = logged_user
 
+        return self.cleaned_data
 
-class RecoverPasswordForm(forms.Form):
-    username_or_email = forms.CharField(label="username / email", max_length="50")
-
-
-class RecoverPasswordCodeForm(forms.Form):
-    verification_code = forms.CharField(label="Verification code", max_length="200")
+    def get_user(self):
+        return getattr(self, "user", None)
 
 
 class UploadMarkerForm(forms.ModelForm):
@@ -184,7 +183,9 @@ class UploadMarkerForm(forms.ModelForm):
         log.warning(self.fields)
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
-        self.fields["author"].widget.attrs["placeholder"] = _("declare different author name")
+        self.fields["author"].widget.attrs["placeholder"] = _(
+            "declare different author name"
+        )
         self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
 
     class Meta:
@@ -221,7 +222,9 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
-        self.fields["author"].widget.attrs["placeholder"] = _("declare different author name")
+        self.fields["author"].widget.attrs["placeholder"] = _(
+            "declare different author name"
+        )
         self.fields["scale"].widget = HiddenInput()
         self.fields["rotation"].widget = HiddenInput()
         self.fields["position"].widget = HiddenInput()
@@ -241,7 +244,6 @@ class UploadObjectForm(forms.ModelForm):
 
 
 class ArtworkForm(forms.Form):
-
     marker = forms.ImageField(required=False)
     marker_author = forms.CharField(max_length=12, required=False)
     augmented = forms.ImageField(required=False)
@@ -254,14 +256,19 @@ class ArtworkForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["marker_author"].widget.attrs["placeholder"] = _("declare different author name")
-        self.fields["augmented_author"].widget.attrs["placeholder"] = _("declare different author name")
+        self.fields["marker_author"].widget.attrs["placeholder"] = _(
+            "declare different author name"
+        )
+        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
+            "declare different author name"
+        )
         self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeholder"] = _("Artwork description")
+        self.fields["description"].widget.attrs["placeholder"] = _(
+            "Artwork description"
+        )
 
 
 class ExhibitForm(forms.Form):
-
     name = forms.CharField(max_length=50, required=True)
     slug = forms.CharField(max_length=50, required=True)
 
@@ -288,4 +295,6 @@ class ExhibitForm(forms.Form):
         super(ExhibitForm, self).__init__(*args, **kwargs)
 
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _("Complete with your Exhibit URL here")
+        self.fields["slug"].widget.attrs["placeholder"] = _(
+            "Complete with your Exhibit URL here"
+        )

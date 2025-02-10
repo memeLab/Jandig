@@ -4,7 +4,12 @@
 <div class="container">
 
     <section class="account-options flex">
-        <a href="{{ url('logout') }}">{{ _('Log out') }}</a>
+        <form id="logout-form" method="post" action="{{ url('logout') }}" style="display: none;">
+             {{ csrf_input }}
+        </form>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            {{ _('Log out') }}
+        </a>
         <a href="#"  onclick="return confirm('Are you sure you want to remove your account?')">{{ _('Remove account') }}</a>
     </section>
     <div class="password-form">
