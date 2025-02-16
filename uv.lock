@@ -383,7 +383,7 @@ wheels = [
 
 [[package]]
 name = "jandig"
-version = "0.1.0"
+version = "1.4.1"
 source = { virtual = "." }
 dependencies = [
     { name = "babel" },
