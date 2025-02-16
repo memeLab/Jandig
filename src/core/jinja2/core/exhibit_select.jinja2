@@ -14,9 +14,17 @@
 
         <div class="exhibit-form">
             <h2>{{_("Choose the Exhibition you're seeing")}}</h2>
-            <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post" autocomplete="off">
+            <div class="search-area">
+                <input type="text" id="search-box" name="search" onkeyup="findExhibit()" autocomplete="off" />
+            </div>
+            <form name="exhibit-form" action="{{url('exhibit_select')}}" method="post">
                 {{ csrf_input }}
-                {{ form }}
+                {% for field in form.visible_fields() %}
+                    <p class="exhibit-field {{field.name}}">
+                        {{ field }}
+                        {{ field.errors }}
+                    </p>
+                {% endfor %}
                 <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
             </form>
         </div>
@@ -24,6 +32,22 @@
     <script>
         let field = document.getElementById('id_exhibit');
         field.style="padding: 0";
+
+        function findExhibit() {
+            let field = document.getElementById('id_exhibit').options;
+            let searchValue = document.getElementById("search-box").value;
+            for (keys in field) {
+                if (field[keys].innerHTML !== undefined) {
+                    let valueField = field[keys].innerHTML
+                    if (valueField.toUpperCase().indexOf(searchValue.toUpperCase()) > -1 && searchValue != "") {
+                        field[keys].selected = "selected";
+                    } else {
+                        field[keys].selected = "";
+                    }
+                }
+            }
+        }
+
         $('#id_exhibit').on('change',function(e){
             if($(this).prop('value') != ''){
                 $('input[type="submit"]').prop('disabled', false);
