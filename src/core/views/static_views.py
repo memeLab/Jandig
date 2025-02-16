@@ -37,3 +37,10 @@ def robots_txt(request):
         "Disallow: ",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+def ar_js(request):
+    return render(request, "core/ar-js.jinja2")
+
+
+def mind_ar(request):
+    return render(request, "core/mind-ar-js.jinja2")

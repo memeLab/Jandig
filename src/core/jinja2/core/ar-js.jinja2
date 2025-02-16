@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <!-- we import arjs version without NFT but with marker + location based support -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.7/aframe/build/aframe-ar.js"></script>
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <video id="gif-video" src="http://localhost:9000/jandig-cdn/media/public/objects/temaki.webm" autoplay loop="true" crossorigin="anonymous"></video>
+      </a-assets>
+      <a-marker type='pattern' url='http://localhost:9000/jandig-cdn/media/public/patts/IMG_20250209_173553.jpg.patt'>
+        <a-plane
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="1"
+          height="1"
+          material="src: #gif-video; transparent: true;"
+        ></a-plane>
+        <a-entity
+          position="0 0 0"
+          scale="0.05 0.05 0.05"
+          gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+        ></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>

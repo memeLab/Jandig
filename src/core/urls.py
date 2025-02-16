@@ -10,6 +10,8 @@ from core.views.static_views import (
     home,
     marker_generator,
     robots_txt,
+    ar_js,
+    mind_ar,
 )
 from core.views.views import (
     artwork_preview,
@@ -47,6 +49,8 @@ urlpatterns = [
     path("sw.js", service_worker, name="sw"),
     path("manifest.json", manifest, name="manifest"),
     path("i18n/", include("django.conf.urls.i18n")),
+    path("ar-js/", ar_js, name="ar-js"),
+    path("mind-ar/", mind_ar, name="mind-ar"),
     re_path(
         r"^see_all(?:/(?P<which>[a-zA-Z]+))?(?:/(?P<page>\d+))?/$",
         see_all,
