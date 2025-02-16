@@ -1,3 +1,4 @@
+import logging
 import re
 
 from django.core.files.base import ContentFile
@@ -10,15 +11,13 @@ from pymarker.core import generate_marker_from_image, generate_patt_from_image
 from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
-import logging
 log = logging.getLogger()
+
 
 def create_patt(filename, original_filename):
     filestorage = PublicMediaStorage()
     with Image.open(filestorage.open(filename)) as image:
         patt_str = generate_patt_from_image(image)
-        # string_file = StringIO(patt_str.encode('UTF-8'))
-        # string_file.name = original_filename
         patt_file = filestorage.save(
             "patts/" + original_filename + ".patt",
             ContentFile(patt_str.encode("utf-8")),
@@ -32,12 +31,13 @@ def create_marker(filename, original_filename):
         marker_image = generate_marker_from_image(image)
         marker_image.name = original_filename
         marker_image.__commited = False
-        # marker = filestorage.save("markers/" + original_filename, marker_image)
         return marker_image
 
 
 class Marker(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="markers")
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="markers"
+    )
     source = models.ImageField(upload_to="markers/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -45,23 +45,6 @@ class Marker(models.Model):
     patt = models.FileField(upload_to="patts/")
 
     def save(self, *args, **kwargs):
-        # filestorage = PublicMediaStorage()
-        # # Image Filename
-        # original_filename = self.source.name
-        # filename = filestorage.save(f"original_{original_filename}", self.source)
-        # # Complete Image URL on storage
-        # print("aaaaa"*30)
-        # with Image.open(self.source) as image:
-        #     print(image)
-        # print("aaaaa"*30)
-        # # fileurl = filestorage.url(filename)
-        # print(filename)
-        # self.source = create_marker(filename, original_filename)
-        # self.patt = create_patt(filename, original_filename)
-        print("B" * 30)
-        print(self.source)
-        print(self.patt)
-        print("B" * 30)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -91,7 +74,9 @@ class Marker(models.Model):
 
 
 class Object(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="ar_objects")
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
+    )
     source = models.FileField(upload_to="objects/")
     uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
@@ -209,7 +194,9 @@ class Object(models.Model):
 
 
 class Artwork(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="artworks")
+    author = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="artworks"
+    )
     marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
     augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=50, blank=False)
@@ -239,7 +226,9 @@ def remove_source_file(sender, instance, **kwargs):
 
 
 class Exhibit(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, related_name="exhibits")
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
+    )
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork, related_name="exhibits")

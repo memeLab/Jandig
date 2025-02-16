@@ -3,25 +3,26 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    user: jandig
     ports:
-      - 8000:8000
+      - 80:8000
     volumes:
-      - ./src/:/jandig/src/
-      - ./docs/:/jandig/docs/
-      - ./etc/:/jandig/etc/
-      - ./locale/:/jandig/locale/
-      - ./run.sh:/jandig/run.sh
-      - ./tasks.py:/jandig/tasks.py
+      - ./:/jandig
+      - uv_cache:/home/jandig/cache/uv
     env_file:
       - .envs/.example
+    environment:
+      - USE_GUNICORN=True
+      - INSTALL_DEV=True
     depends_on:
       storage:
           condition: service_started
       createbuckets:
           condition: service_started
+      mailpit:
+          condition: service_started
       postgres:
           condition: service_healthy
-    command: /jandig/run.sh
 
   postgres:
     image: postgres:15.4
@@ -42,14 +43,14 @@ services:
       start_interval: 5s
   
   storage:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2022-09-17T00-09-45Z.hotfix.acb000d3a
     ports:
       - 9000:9000
       - 9001:9001
     volumes:
       - media_data:/storage
     env_file:
-      - .envs/.env
+      - .envs/.example
     command: server /storage --console-address ":9001"
 
   createbuckets:
@@ -57,18 +58,34 @@ services:
     depends_on:
       - storage
     env_file:
-      - .envs/.env
+      - .envs/.example
     entrypoint: >
       /bin/sh -c "
       until (/usr/bin/mc config host add myminio $${MINIO_S3_ENDPOINT_URL} $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
       /usr/bin/mc mb myminio/$${AWS_STORAGE_BUCKET_NAME};
       /usr/bin/mc policy set download myminio/$${AWS_STORAGE_BUCKET_NAME};
-      /usr/bin/mc mb myminio/$${AWS_PRIVATE_STORAGE_BUCKET_NAME};
       /usr/bin/mc admin user add myminio $${MINIO_USER_ACCESS_KEY} $${MINIO_USER_SECRET_KEY};
       /usr/bin/mc admin policy set myminio readwrite user=$${MINIO_USER_ACCESS_KEY};
       exit 0;
       "
+  mailpit:
+    image: axllent/mailpit
+    volumes:
+      - mailpit_data:/data
+      - ./etc/mailpit/:/self_signed/
+    ports:
+      - 8025:8025
+      - 1025:1025 
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SMTP_TLS_CERT: /self_signed/mailpit_cert.pem
+      MP_SMTP_TLS_KEY: /self_signed/mailpit_key.pem
 
 volumes:
   postgres_data:
   media_data:
+  mailpit_data:
+  uv_cache:

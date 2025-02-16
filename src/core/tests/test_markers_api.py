@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from core.models import Marker
-from core.serializers.markers import MarkerSerializer
+from core.serializers import MarkerSerializer
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -35,7 +35,6 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["previous"], None)
         first_result = data["results"][0]
         serializer_data = MarkerSerializer(marker).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(first_result, serializer_data)
 
@@ -69,6 +68,5 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         serializer_data = MarkerSerializer(marker).data
-        serializer_data["source"] = "http://testserver" + serializer_data["source"]
         # Asserts the serializer is being used by the endpoint
         self.assertDictEqual(data, serializer_data)

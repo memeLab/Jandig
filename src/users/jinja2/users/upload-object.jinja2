@@ -1,4 +1,3 @@
-
 {% extends '/core/home.jinja2' %}
 
 {% block content %}
@@ -30,7 +29,8 @@
                         {{ form.visible_fields()[0].errors }}
                     </p>
 
-
+                    <div id="content-box"></div>
+                    
                     {% if form_type == 'object' %}
                      <div id="edit_object_attributes">
                         <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
@@ -93,9 +93,9 @@
         <script>
 
             $('#agreement-chk').click(function(){
-                if($(this).prop('checked') == true){
+                if($(this).prop('checked') == true) {
                     $('input[type="submit"]').prop('disabled', false);
-                }else{
+                } else {
                     $('input[type="submit"]').prop('disabled', true);
                 }
             });
@@ -117,27 +117,33 @@
                     var file = e.originalEvent.srcElement.files[0];
                     var image_preview = null;
                     var previewAndLoadFile = null;
-                    var content_box = document.createElement("div");
-                    content_box.id = "content-box";
+                    
                     if (file.type === "video/mp4" || file.type === "video/webm") {
                         image_preview = document.createElement("video");
+                        document.getElementById("content-box").innerHTML = "";
                         previewAndLoadFile = function() {
                             image_preview.src = reader.result;
                             image_preview.id = "img-preview";
                             image_preview.controls = "controls";
                             image_preview.autoplay = "autoplay";
                             image_preview.muted = "muted";
-                            document.getElementById("id_source").after(content_box);
-                            document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
+                            document.getElementById("content-box").appendChild(image_preview);
                         }
-                    } else {
+                    } else if(file.type.includes("image/")) {
+                        document.getElementById("content-box").innerHTML = "";
                         image_preview = document.createElement("img");
                         previewAndLoadFile = function() {
                             image_preview.src = reader.result;
                             image_preview.id = "img-preview";
-                            document.getElementById("id_source").after(content_box);
-                            document.getElementById("content-box").appendChild(image_preview); //make preview image of the object/marker show
+                            document.getElementById("content-box").appendChild(image_preview);
                         }
+                    } else {
+                        alert("{{ _("Invalid file type! Only image or video files are accepted.") }}")
+                        
+                        document.getElementById("id_source").value = "";
+
+                        if (document.querySelector('#img-preview'))
+                            document.querySelector('#img-preview').remove();
                     }
 
                     var reader = new FileReader();

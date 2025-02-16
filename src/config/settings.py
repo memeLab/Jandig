@@ -9,6 +9,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from .storage_settings import *  # noqa F403 F401
+
 ROOT_DIR = environ.Path("/jandig/")
 BASE_DIR = "/jandig/src"
 
@@ -21,7 +23,7 @@ if READ_DOT_ENV_FILE:
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-CSRF_TRUSTED_ORIGINS = ['https://*.jandig.app']
+CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
@@ -37,12 +39,14 @@ CUSTOM_ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 
 
+DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 # Sentry configuration
 ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
-DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.1")
+
 
 def traces_sampler(sampling_context):
     url = sampling_context["wsgi_environ"]["PATH_INFO"]
@@ -63,6 +67,7 @@ if ENABLE_SENTRY:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         traces_sampler=traces_sampler,
+        release=SENTRY_RELEASE,
     )
 
 
@@ -73,7 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django_extensions',
+    "django_extensions",
     "debug_toolbar",
     "django_htmx",
     "corsheaders",
@@ -166,12 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-
-LOCALE_PATHS = (
-    os.path.join(str(ROOT_DIR), 'locale'),
-)
+LOCALE_PATHS = (os.path.join(str(ROOT_DIR), "locale"),)
 
 LANGUAGE_CODE = "en"
 
@@ -186,53 +186,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# AWS credentials
-AWS_S3_OBJECT_PARAMETERS = {
-    "CacheControl": "max-age=86400",
-}
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
-AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
-AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
-AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
-USE_MINIO = os.getenv("USE_MINIO", "false").lower() in ("true", "True", "1")
-if USE_MINIO:
-    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_S3_ENDPOINT_URL", "http://storage:9000")
-    AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
-    AWS_S3_USE_SSL = False
-    AWS_S3_SECURE_URLS = False
-    AWS_S3_URL_PROTOCOL = "http:"
-
-else:
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_S3_URL_PROTOCOL = "https:"
-
-# Static configuration
-# Add your own apps statics in this list
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "core", "static"),
-    os.path.join(BASE_DIR, "users", "static"),
-    os.path.join(BASE_DIR, "blog", "static"),
-]
-
-# STATIC_ROOT = "/jandig/static"
-STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, "users", "media")
-
-AWS_PUBLIC_MEDIA_LOCATION = "media/public"
-DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
-
-AWS_PRIVATE_MEDIA_LOCATION = "media/private"
-PRIVATE_FILE_STORAGE = "config.storage_backends.PrivateMediaStorage"
-
-AWS_PRIVATE_MEDIA_DIFFERENT_BUCKET_LOCATION = "media/private"
-AWS_PRIVATE_STORAGE_BUCKET_NAME = os.getenv("AWS_PRIVATE_STORAGE_BUCKET_NAME", "")
-PRIVATE_FILE_DIFFERENT_BUCKET_STORAGE = "config.storage_backends.PrivateMediaStorage"
-
 # LOGIN / LOGOUT
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
@@ -241,10 +194,21 @@ LOGOUT_REDIRECT_URL = "home"
 # Sphinx docs
 DOCS_ROOT = "/jandig/build/"
 
-SMTP_SERVER = env("SMTP_SERVER", default="smtp.gmail.com")
-SMTP_PORT = env("SMTP_PORT", default=587)
-JANDIG_EMAIL = env("JANDIG_EMAIL", default="jandig@jandig.com")
-JANDIG_EMAIL_PASSWORD = env("JANDIG_EMAIL_PASSWORD", default="password")
+
+DEFAULT_FROM_EMAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("SMTP_SERVER", default="mailpit")
+EMAIL_USE_TLS = env("SMTP_USE_TLS", default=False)
+EMAIL_PORT = env("SMTP_PORT", default=1025)
+EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
+EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="password")
+EMAIL_USE_SSL = False
+
+# Recaptcha
+RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
+RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
+RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
+RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)

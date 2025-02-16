@@ -1,5 +1,6 @@
-from blog.models import Category, Clipping, Post, PostStatus
 from django.shortcuts import render
+
+from blog.models import Category, Clipping, Post, PostStatus
 
 PREVIEW_SIZE = 300
 PAGE_SIZE = 4

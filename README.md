@@ -1,14 +1,14 @@
 # Jandig ARte
 ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
 
-You can see galleries with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
+You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
 
 ## How it works
 Jandig ARte uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
 
 ![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
 
-Jandig ARte is a Progressive Web App, which means you can open in every device with a browser and a camera. Also you can add Jandig ARte to your homescreen and it will run like a native app on your device.
+Jandig ARte is a Progressive Web App, which means you can open in any device with a browser and a camera. You can also add Jandig ARte to your homescreen and it will run like a native app on your device.
 
 ### People
 We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ). Here's a list of some of the contributors for the development:
@@ -38,7 +38,7 @@ We are looking for artists (both illustrators and animators) to create great con
 You can find interviews and references to Jandig in the press [here](http://memelab.com.br/jandig/clipping/).
 
 ## Get Started
-To contribute to Jandig ARte it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
+To contribute to Jandig ARte, it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
 We use docker and docker-compose to ensure a consistent development environment and to make the deploy process as painless as possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/overview/). 
@@ -111,3 +111,7 @@ vim /etc/resolv.conf
 nameserver 172.21.176.1
 ```
 - Access the localhost using this IP (e.g.: 172.21.176.1:8000)
+
+### Prototype
+
+The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation](/docs/prototype.md).
