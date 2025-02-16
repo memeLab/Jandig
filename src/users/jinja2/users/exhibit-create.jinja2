@@ -38,7 +38,9 @@
 
                     <p id="artworks-selected">
                         {{ form.visible_fields()[2].as_hidden() }}
-                        {{ form.visible_fields()[2].errors }}
+                        <div id="artwork-error">
+                            {{ form.visible_fields()[2].errors }}
+                        </div>
                     </p>
                     <button type="button" id="next-info" class="select-btn next-btn">
                         {{ _('Next') }}
@@ -46,15 +48,19 @@
                 </div>
                 <div id="artwork-modal" class="tab">
                     <h4 class="modal-title">{{ _('Exhibit Information (2/2)') }}</h4>
-                      <p class="upload-field" id="info-name-field">
+                      <p id="exhibit-name-field" class="upload-field">
                           {{ form.visible_fields()[0] }}
-                          {{ form.visible_fields()[0].errors }}
+                          <div id="exhibit-name-error">
+                            {{ form.visible_fields()[0].errors }}
+                          </div>
                       </p>
                     <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
                       <label class="url-helper">https://jandig.app/</label>
-                        <p style="float: right; width: 65%">
+                        <p id="exhibit-slug-field" style="float: right; width: 65%">
                             {{ form.visible_fields()[1] }}
-                            {{ form.visible_fields()[1].errors }}
+                            <div id="exhibit-slug-error">
+                                {{ form.visible_fields()[1].errors }}
+                            </div>
                         </p>
                     <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
                 </div>
@@ -65,6 +71,7 @@
             const ARTWORK_TAB = 1;
 
             let currentTab = MARKER_TAB;
+
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
@@ -80,6 +87,7 @@
                     }
                 }
             }
+
             function activateNextButton(){
                 if(validateTab('artworks')){
                     $('#next-info').prop('disabled', false);
@@ -96,6 +104,17 @@
                 }
             }
 
+            function checkMessage(innerText, messageList) {
+                var contain = false;
+
+                messageList.forEach((message) => {
+                    if(innerText.includes(message)) 
+                        contain = true;
+                });
+
+                return contain;
+            }
+
             setInterval(activateNextButton, 100);
             // modal events
             $('#select-artworks').click(function(){
@@ -107,6 +126,26 @@
                 currentTab = ARTWORK_TAB;
                 showTab(currentTab);
             })
+            $('#create-exhibit').ready(function () {
+                let artworkError = $('#artwork-error')[0].innerText;
+                let exhibitNameError = $('#exhibit-name-error')[0].innerText;
+                let exhibitSlugError = $('#exhibit-slug-error')[0].innerText;
+
+                if (checkMessage(artworkError, ["Este campo é obrigatório", 
+                                                    "This field is required"])) {
+                    $('#form-modal').modal('toggle');
+                    currentTab = MARKER_TAB;
+                    showTab(currentTab);
+                } else if (checkMessage(exhibitNameError, ["This name is already being used", 
+                                                        "Este nome de exibição já está em uso"]) || 
+                        checkMessage(exhibitSlugError, ["That exhibit slug is already in use",
+                                                        "Este link de exibição já está sendo utilizado"])) {
+                    $('#form-modal').modal('toggle');
+                    currentTab = ARTWORK_TAB;
+                    showTab(currentTab);
+                }
+            })
+
         </script>
     </section>
 {% endblock %}

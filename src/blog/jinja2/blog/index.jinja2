@@ -1,0 +1,18 @@
+{% extends '/core/home.jinja2' %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static('css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div id="blog-area">
+        {% block button %}
+        {% endblock %}
+        {% block page_title %}
+            <h2>{{ _("Memories") }}</h2>
+        {% endblock page_title %}
+        <div id="posts-area">
+            {% include "/blog/post_preview.jinja2" %}
+        </div>
+    </div>
+{% endblock %}

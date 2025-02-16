@@ -8,6 +8,7 @@
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
+    padding:0px
 }
 
 .slider::-webkit-slider-thumb {
@@ -39,7 +40,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin: 20px;
 }
 
 #box-shadow {

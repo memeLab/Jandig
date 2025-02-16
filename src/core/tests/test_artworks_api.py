@@ -27,7 +27,9 @@ class TestArtworkAPI(TestCase):
     def test_api_artworks_lists_one_artwork(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
         obj = Object.objects.create(owner=self.profile, source=fake_file)
-        artwork = Artwork.objects.create(author=self.profile, augmented=obj, marker=marker)
+        artwork = Artwork.objects.create(
+            author=self.profile, augmented=obj, marker=marker
+        )
         self.assertEqual(artwork.author, self.profile)
         response = self.client.get("/api/v1/artworks/")
         self.assertEqual(response.status_code, 200)
@@ -44,7 +46,9 @@ class TestArtworkAPI(TestCase):
     def test_retrieve_artwork(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
         obj = Object.objects.create(owner=self.profile, source=fake_file)
-        artwork = Artwork.objects.create(author=self.profile, augmented=obj, marker=marker)  # noqa F841
+        artwork = Artwork.objects.create(
+            author=self.profile, augmented=obj, marker=marker
+        )  # noqa F841
         self.assertEqual(artwork.author, self.profile)
 
         response = self.client.get("/api/v1/artworks/1/")

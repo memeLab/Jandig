@@ -4,7 +4,7 @@
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/upload.css">
+        <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
         {% if form_type == 'object' and edit == False %}
             <h2>{{ _('Upload Object') }}</h2>
@@ -30,26 +30,31 @@
                         {{ form.visible_fields()[0].errors }}
                     </p>
 
-                    {# TO BE IMPLEMENTED - SLIDERS TO CHOOSE OBJECT SCALE AND POSITION #}
-                    {# <input ... type = 'range'... #}
 
                     {% if form_type == 'object' %}
-                    <div id="edit_object_attributes">
-
-                        <h2 id="scaleTitle" class="tipTrigger">{{_("Adjust scale")}}</h2>
-                        <div id="tip1">
-                            {{_("Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.")}}
-                        </div>
+                     <div id="edit_object_attributes">
+                        <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
+                        <span
+                            id="tooltipText"
+                            data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
                         <input id="scale" class="trigger-change-value" value ="1">
 
-                        <h2 id="positionTitle" class="tipTrigger">{{_("Adjust position")}}</h2>
-                        <div id="tip2">
-                            {{_("Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left.")}}
-                        </div>
-                        <h3>Horizontal:</h3>
-                        <input id="X-position" class="trigger-change-value" value ="0">
-                        <h3>Vertical:</h3>
-                        <input id="Y-position" class="trigger-change-value" value ="0">
+                        <h2 id="positionTitle">{{_("Adjust position")}}</h2>
+                        <span 
+                            id="tooltipText"
+                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left." 
+                            class="tooltip"
+                        >
+                            ?
+                        </span>
+
+                        {% with xposition=0, yposition=0 %}
+                            {% include "users/components/object-position.jinja2" %}
+                        {% endwith %}
 
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
@@ -174,7 +179,7 @@
                 var ypos = document.getElementById('Y-position').value;
                 var scl = scal*xprop + " " + scal*yprop;
                 var rot = "270 0 0";
-                var pos = xpos + " " + ypos + " 0"; //messing with the Z gives some really weird things
+                var pos = xpos/100 + " " + ypos/100 + " 0"; //messing with the Z gives some really weird things
 
                 $('#id_scale').val(scl);
                 $('#id_rotation').val(rot);

@@ -3,6 +3,7 @@ from django.urls import path
 
 from .forms import LoginForm
 from .views import (
+    ResetPasswordView,
     create_artwork,
     create_exhibit,
     delete,
@@ -13,20 +14,14 @@ from .views import (
     edit_object,
     edit_password,
     edit_profile,
-    element_get,
-    invalid_recovering_email_or_username,
     marker_upload,
     mod,
     mod_delete,
     object_upload,
     permission_denied,
     profile,
-    recover_code,
-    recover_edit_password,
-    recover_password,
     related_content,
     signup,
-    wrong_verification_code,
 )
 
 urlpatterns = [
@@ -40,25 +35,26 @@ urlpatterns = [
         name="login",
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("recover/", recover_password, name="recover"),
-    path("recover-code/", recover_code, name="recover-code"),
+    path("reset-password/", ResetPasswordView.as_view(), name="reset-password"),
+    path(
+        "password-reset-confirm/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="users/reset-password/password_reset_confirm.jinja2"
+        ),
+        name="password_reset_confirm",
+    ),
+    path(
+        "password-reset-complete/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="users/reset-password/password_reset_complete.jinja2"
+        ),
+        name="password_reset_complete",
+    ),
     path("profile/", profile, name="profile"),
     path("profile/edit/", edit_profile, name="edit-profile"),
     path("profile/edit-password/", edit_password, name="edit-password"),
-    path(
-        "wrong-verification-code",
-        wrong_verification_code,
-        name="wrong-verification-code",
-    ),
-    path(
-        "invalid-recovering-email",
-        invalid_recovering_email_or_username,
-        name="invalid_recovering_email_or_username",
-    ),
-    path("recover-edit-password", recover_edit_password, name="recover-edit-password"),
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/upload/", object_upload, name="object-upload"),
-    path("element/get/", element_get, name="element-get"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("markers/edit/", edit_marker, name="edit-marker"),
     path("artworks/create/", create_artwork, name="create-artwork"),
