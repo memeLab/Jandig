@@ -100,11 +100,11 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit_detail(request):
     index = request.GET.get("id")
-    exhibit = Exhibit.objects.get(id=index)
+    exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), id=index)
     ctx = {
         "exhibit": exhibit,
         "exhibitImage": "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
-        "artworks": exhibit.artworks.all(),
+        "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
 
