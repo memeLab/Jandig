@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "1.4.1"
+version = "1.4.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -45,6 +45,7 @@ dev = [
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
+testpaths = ["src/core", "src/users", "src/blog"]
 pythonpath = "src"
 addopts="-n4"
 

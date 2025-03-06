@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
+from django.http import Http404
 from django.views.decorators.http import require_http_methods
 
 from core.forms import ExhibitForm
@@ -100,6 +101,11 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit_detail(request):
     index = request.GET.get("id")
+    # Bots insert random strings in the id parameter, index should be an integer
+    try:
+        index = int(index)
+    except ValueError:
+        raise Http404
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), id=index)
     ctx = {
         "exhibit": exhibit,
