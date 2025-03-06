@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from core.forms import ExhibitForm
 from core.models import Artwork, Exhibit, Marker, Object
 
+from django.conf import settings
 
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
@@ -55,7 +56,8 @@ def see_all(request, which="", page=1):
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
-    per_page = 3
+    
+    per_page = settings.PAGE_SIZE
     page = request.GET.get("page", 1)
 
     try:
