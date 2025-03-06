@@ -53,5 +53,5 @@ class TestExhibitAPI(TestCase):
         )
         exhibit = Exhibit.objects.create(owner=self.profile, name="test")
         exhibit.artworks.add(artwork)
-        response = self.client.get("/api/v1/exhibits/1/")
+        response = self.client.get(f"/api/v1/exhibits/{str(exhibit.id)}/")
         self.assertEqual(response.status_code, 200)

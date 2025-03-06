@@ -1,0 +1,37 @@
+"""Test common bot attacks on user pages"""
+
+from django.test import TestCase, override_settings
+from django.urls import reverse
+from unittest.mock import patch, Mock
+
+
+class TestInvalidSignup(TestCase):
+    @override_settings(RECAPTCHA_ENABLED=True)
+    def test_invalid_signup(self):
+        # Test invalid signup without recaptcha enabled but without token should return 400
+        response = self.client.post(
+            reverse("signup"),
+            {"username": "test", "password1": "test", "password2": "test"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+        # Signup with an invalid g-recaptcha-response token should return 400
+        with patch("requests.post") as mock_create_assessment:
+            mock_create_assessment.return_value = Mock()
+            mock_create_assessment.return_value.json.return_value = {
+                "tokenProperties": {
+                    "valid": False,
+                    "invalidReason": "invalid token sent",
+                }
+            }
+
+            response = self.client.post(
+                reverse("signup"),
+                {
+                    "username": "test",
+                    "password1": "test",
+                    "password2": "test",
+                    "g-recaptcha-response": "DFwmgvoqhXuFGd",
+                },
+            )
+            self.assertEqual(response.status_code, 400)
