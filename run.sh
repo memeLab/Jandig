@@ -22,7 +22,7 @@ uv run python etc/scripts/compilemessages.py
 
 if [ "$USE_GUNICORN" = "true" ]; then
   echo "Running Gunicorn Server"
-  bash -c "cd src && uv run gunicorn --reload --worker-connections=10000 --workers=4 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
+  bash -c "cd src && uv run hypercorn --config=hypercorn.toml config.asgi:application --keyfile certs/ssl_key.pem --ca-cert certs/pycacerts.pem --certfile certs/ssl_cert.pem"
 else
   echo "Running Django development server"
   uv run python src/manage.py runserver 0.0.0.0:8000

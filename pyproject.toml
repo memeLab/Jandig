@@ -18,7 +18,6 @@ dependencies = [
   "drf-nested-routers~=0.94",
   "factory-boy~=3.3",
   "gevent~=24.11",
-  "gunicorn~=23.0",
   "jinja2~=3.1",
   "markupsafe~=2.1",
   "pillow~=11.1",
@@ -26,6 +25,7 @@ dependencies = [
   "pymarker~=0.3",
   "sentry-sdk~=2.20",
   "Sphinx~=8.1",
+  "hypercorn[h3]>=0.17.3",
 ]
 
 [dependency-groups]

@@ -1,0 +1,6 @@
+alt_svc_headers = ['h3=":443"; ma=2592000,h3-29=":443"; ma=2592000']
+insecure_bind = "0.0.0.0:80"
+bind = "0.0.0.0:443"
+quic_bind = "0.0.0.0:443"
+# alpn_protocols = ["h3","h2", "http/1.1"]
+# ciphers="ECDHE+AESGCM"

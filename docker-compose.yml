@@ -5,7 +5,9 @@ services:
       context: .
     user: jandig
     ports:
-      - 80:8000
+      - 80:80
+      - 443:443
+      - 443:443/udp
     volumes:
       - ./:/jandig
       - uv_cache:/home/jandig/cache/uv
