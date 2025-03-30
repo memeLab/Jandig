@@ -5,7 +5,7 @@ services:
       context: .
     user: jandig
     ports:
-      - 80:8000
+      - 8000:8000
     volumes:
       - ./:/jandig
       - uv_cache:/home/jandig/cache/uv
@@ -14,6 +14,12 @@ services:
     environment:
       - USE_GUNICORN=True
       - INSTALL_DEV=True
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/status || exit 1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
     depends_on:
       storage:
           condition: service_started
@@ -52,6 +58,12 @@ services:
     env_file:
       - .envs/.example
     command: server /storage --console-address ":9001"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   createbuckets:
     image: minio/mc:RELEASE.2022-09-16T09-16-47Z
@@ -83,6 +95,19 @@ services:
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
       MP_SMTP_TLS_CERT: /self_signed/mailpit_cert.pem
       MP_SMTP_TLS_KEY: /self_signed/mailpit_key.pem
+
+  haproxy:
+    image: haproxy:3.1
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./etc/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      django:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
 
 volumes:
   postgres_data:

@@ -279,16 +279,24 @@ class ExhibitForm(forms.Form):
         name = self.cleaned_data["name"]
         if Exhibit.objects.filter(slug=name).exists():
             raise forms.ValidationError(
-                _("This name is already being used. Please choose another name for your exhibit."))
+                _(
+                    "This name is already being used. Please choose another name for your exhibit."
+                )
+            )
         return name
 
     def clean_slug(self):
         slug = self.cleaned_data["slug"]
         if not re.match("^[a-zA-Z0-9_]*$", slug):
-            raise forms.ValidationError(_("Url can't contain spaces or special characters"))
+            raise forms.ValidationError(
+                _("Url can't contain spaces or special characters")
+            )
         if Exhibit.objects.filter(slug=slug).exists():
             raise forms.ValidationError(
-                _("That exhibit slug is already in use. Please choose another slug for your exhibit."))
+                _(
+                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
+                )
+            )
         return slug
 
     def __init__(self, *args, **kwargs):

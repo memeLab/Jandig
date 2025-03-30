@@ -51,5 +51,5 @@ class TestArtworkAPI(TestCase):
         )  # noqa F841
         self.assertEqual(artwork.author, self.profile)
 
-        response = self.client.get("/api/v1/artworks/1/")
+        response = self.client.get(f"/api/v1/artworks/{str(artwork.id)}/")
         self.assertEqual(response.status_code, 200)

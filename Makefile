@@ -9,7 +9,13 @@ test:
 
 test-ui:
 	docker compose up -d
-	uv run pytest src/tests
+	docker compose exec django playwright install
+	docker compose exec -u root django playwright install-deps
+	docker compose exec django uv run pytest src/ui_tests
+
+test-all:
+	docker compose up -d
+	docker compose exec django uv run pytest
 
 lint:
 	uv run ruff format src

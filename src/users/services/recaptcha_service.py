@@ -4,7 +4,7 @@ import requests
 from django.conf import settings
 
 # The minimum score threshold to consider the action as legitimate.
-BOT_SCORE = 0.5
+BOT_SCORE = 0.6
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ def create_assessment(token: str, recaptcha_action: str):
             + "invalid for the following reasons: "
             + str(response_data["tokenProperties"]["invalidReason"])
         )
-        return
+        return {}
 
     # Check if the expected action was executed.
     if response_data["tokenProperties"]["action"] != recaptcha_action:

@@ -1,10 +1,13 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
+from django.http import Http404
 from django.views.decorators.http import require_http_methods
 
 from core.forms import ExhibitForm
 from core.models import Artwork, Exhibit, Marker, Object
+
+from django.conf import settings
 
 
 @cache_page(60 * 60)
@@ -54,7 +57,8 @@ def see_all(request, which="", page=1):
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
-    per_page = 3
+
+    per_page = settings.PAGE_SIZE
     page = request.GET.get("page", 1)
 
     try:
@@ -100,11 +104,16 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit_detail(request):
     index = request.GET.get("id")
-    exhibit = Exhibit.objects.get(id=index)
+    # Bots insert random strings in the id parameter, index should be an integer
+    try:
+        index = int(index)
+    except ValueError:
+        raise Http404
+    exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), id=index)
     ctx = {
         "exhibit": exhibit,
         "exhibitImage": "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
-        "artworks": exhibit.artworks.all(),
+        "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
 

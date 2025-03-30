@@ -40,12 +40,14 @@ def signup(request):
     if request.method == "POST":
         if settings.RECAPTCHA_ENABLED:
             recaptcha_token = request.POST.get("g-recaptcha-response")
+            if not recaptcha_token:
+                return JsonResponse({"error": "Invalid Request"}, status=400)
             assessment = create_assessment(
                 token=recaptcha_token, recaptcha_action="sign_up"
             )
             score = assessment.get("riskAnalysis", {}).get("score", -1)
             if score <= BOT_SCORE:
-                return redirect("home")
+                return JsonResponse({"error": "Invalid Request"}, status=400)
 
         form = SignupForm(request.POST)
 
@@ -230,41 +232,6 @@ def create_exhibit(request):
             "artworks": artworks,
         },
     )
-
-
-@require_http_methods(["GET"])
-def download_exhibit(request):
-    exhibit_id = request.GET.get("id")
-    exhibit = Exhibit.objects.get(id=exhibit_id)
-    artworks = list(exhibit.artworks.all())
-
-    marker_names = []
-    object_names = []
-    patt_names = []
-
-    all_data = []
-
-    for artwork in artworks:
-        marker_names.append(artwork.marker.source.name)
-        object_names.append(artwork.augmented.source.name)
-        patt_names.append(str(artwork.marker.patt))
-
-    for marker_name in marker_names:
-        data = {"link": marker_name}
-
-        all_data.append(data)
-
-    for object_name in object_names:
-        data = {"link": object_name}
-
-        all_data.append(data)
-
-    for patt_name in patt_names:
-        data = {"link": patt_name}
-
-        all_data.append(data)
-
-    return JsonResponse(all_data)
 
 
 def upload_elements(request, form_class, form_type, route):
