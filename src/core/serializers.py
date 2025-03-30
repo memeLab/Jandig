@@ -85,6 +85,7 @@ class ArtworkSerializer(ModelSerializer):
 
 
 class ExhibitSerializer(ModelSerializer):
+    artworks = ArtworkSerializer(many=True, read_only=True)
     class Meta:
         model = Exhibit
         fields = ("id", "owner", "name", "slug", "artworks", "creation_date")
