@@ -33,7 +33,9 @@
                 artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
                 {{ _(" and in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' + exhibits_count +
                 {{ _(" Exhibits")|tojson }} + '</a>' +
-                '<img id="element-src" src="' + element_src + '"/></p>'
+                ( element_src.endsWith('.mp4') || element_src.endsWith('.webm') ? 
+                    '<video muted autoplay loop id="element-src" class="preview-content" src="' + element_src + '"></video>' : 
+                    '<img id="element-src" class="preview-content" src="' + element_src + '"/>')
             )
         }
         function usedInExhibit(marker_id, object_id, exhibits_count, marker, augmented, element_id){
