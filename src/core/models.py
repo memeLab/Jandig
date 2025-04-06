@@ -43,7 +43,10 @@ class Marker(models.Model):
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     patt = models.FileField(upload_to="patts/")
+    
+    # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -85,7 +88,8 @@ class Object(models.Model):
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
-    # file_size = models.IntegerField(default=0, blank=True, null=True)
+    # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0, blank=True, null=True)
 
     def __str__(self):
         return self.source.name
