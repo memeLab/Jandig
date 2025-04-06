@@ -113,7 +113,6 @@ class Object(models.Model):
     def in_use(self):
         if self.artworks_count > 0 or self.exhibits_count > 0:
             return True
-
         return False
 
     @property
@@ -196,6 +195,15 @@ class Object(models.Model):
     def yposition(self):
         y = self.position.split(" ")[1]
         return float(y)
+
+    @property
+    def is_video(self):
+        """
+        checks if the Object is a video by checking the file extension.
+        """
+        if self.source.name.endswith(".mp4") or self.source.name.endswith(".webm"):
+            return True
+        return False
 
 
 class Artwork(models.Model):

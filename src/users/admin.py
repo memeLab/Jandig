@@ -85,9 +85,6 @@ class ProfileAdmin(admin.ModelAdmin):
         )
         return queryset
 
-    def username(self, obj):
-        return obj.user.username
-
     def created(self, obj):
         return obj.user.date_joined
 
