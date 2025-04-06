@@ -55,11 +55,11 @@ class Marker(models.Model):
 
     @property
     def artworks_count(self):
-        return Artwork.objects.filter(marker=self).count()
+        return self.artworks.count()
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(marker=self).order_by("-id")
+        return self.artworks.order_by("-id")
 
     @property
     def exhibits_count(self):
@@ -95,11 +95,11 @@ class Object(models.Model):
 
     @property
     def artworks_count(self):
-        return Artwork.objects.filter(augmented=self).count()
+        return self.artworks.count()
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(augmented=self).order_by("-id")
+        return self.artworks.order_by("-id")
 
     @property
     def exhibits_count(self):
@@ -202,8 +202,12 @@ class Artwork(models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
-    marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
-    augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
+    marker = models.ForeignKey(
+        Marker, on_delete=models.DO_NOTHING, related_name="artworks"
+    )
+    augmented = models.ForeignKey(
+        Object, on_delete=models.DO_NOTHING, related_name="artworks"
+    )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
