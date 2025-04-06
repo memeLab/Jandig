@@ -180,7 +180,6 @@ class UploadMarkerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
-        log.warning(self.fields)
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
@@ -190,7 +189,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ("owner", "uploaded_at", "patt")
+        exclude = ("owner", "uploaded_at", "patt", "file_size")
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
@@ -200,6 +199,7 @@ class UploadMarkerForm(forms.ModelForm):
             blob = BytesIO()
             pil_image.save(blob, "JPEG")
             filename = self.instance.source.name
+            self.instance.file_size = self.instance.source.size
             self.instance.source.save(filename, File(blob), save=commit)
             patt_str = generate_patt_from_image(image)
 
@@ -239,6 +239,8 @@ class UploadObjectForm(forms.ModelForm):
         if owner := kwargs.get("owner", None):
             self.instance.owner = owner
             del kwargs["owner"]
+
+        self.instance.file_size = self.instance.source.size
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
 

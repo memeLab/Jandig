@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer
 
 from core.models import Artwork, Exhibit, Marker, Object
 from users.serializers import ProfileSerializer
@@ -6,8 +6,6 @@ from users.serializers import ProfileSerializer
 
 class MarkerSerializer(ModelSerializer):
     owner = ProfileSerializer(read_only=True)
-
-    source_size = SerializerMethodField()
 
     class Meta:
         model = Marker
@@ -19,7 +17,7 @@ class MarkerSerializer(ModelSerializer):
             "author",
             "title",
             "patt",
-            "source_size",
+            "file_size",
             "artworks_count",
             "exhibits_count",
         )
@@ -28,13 +26,9 @@ class MarkerSerializer(ModelSerializer):
             "uploaded_at",
         )
 
-    def get_source_size(self, obj):
-        return obj.source.size
-
 
 class ObjectSerializer(ModelSerializer):
     owner = ProfileSerializer(read_only=True)
-    source_size = SerializerMethodField()
 
     class Meta:
         model = Object
@@ -42,7 +36,7 @@ class ObjectSerializer(ModelSerializer):
             "id",
             "owner",
             "source",
-            "source_size",
+            "file_size",
             "uploaded_at",
             "author",
             "title",
@@ -56,9 +50,6 @@ class ObjectSerializer(ModelSerializer):
             "id",
             "uploaded_at",
         )
-
-    def get_source_size(self, obj):
-        return obj.source.size
 
 
 class ArtworkSerializer(ModelSerializer):

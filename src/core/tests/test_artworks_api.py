@@ -48,7 +48,7 @@ class TestArtworkAPI(TestCase):
         obj = Object.objects.create(owner=self.profile, source=fake_file)
         artwork = Artwork.objects.create(
             author=self.profile, augmented=obj, marker=marker
-        )  # noqa F841
+        )
         self.assertEqual(artwork.author, self.profile)
 
         response = self.client.get(f"/api/v1/artworks/{str(artwork.id)}/")

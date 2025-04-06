@@ -24,7 +24,7 @@ dependencies = [
   "pillow~=11.1",
   "psycopg2-binary~=2.9",
   "pymarker~=0.3",
-  "sentry-sdk~=2.20",
+  "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
 ]
 

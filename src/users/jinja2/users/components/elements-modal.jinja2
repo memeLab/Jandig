@@ -120,7 +120,7 @@
                         elementAuthor(data['author']);
                         uploadedBy(data['owner'], data['uploaded_at']);
                         usedIn(data['artworks_count'], data['exhibits_count'], data['source'], element_id, elemType);
-                        downloadElement(data['type'], data["source_size"]/1000, data['source']);
+                        downloadElement(data['type'], data["file_size"]/1000, data['source']);
                     }
                 });
             }else{
@@ -131,7 +131,7 @@
                         elementAuthor(data['author'].username);
                         usedInExhibit(data['id_marker'], data['id_object'], data['exhibits_count'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
-                        downloadElement(data['type'], data['augmented'].source_size/1000, data['augmented'].source);
+                        downloadElement(data['type'], data['augmented'].file_size/1000, data['augmented'].source);
                     }
                 });
             }

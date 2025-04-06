@@ -44,6 +44,9 @@ class Marker(models.Model):
     title = models.CharField(max_length=60, default="")
     patt = models.FileField(upload_to="patts/")
 
+    # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0, blank=True, null=True)
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
@@ -52,11 +55,11 @@ class Marker(models.Model):
 
     @property
     def artworks_count(self):
-        return Artwork.objects.filter(marker=self).count()
+        return self.artworks.count()
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(marker=self).order_by("-id")
+        return self.artworks.order_by("-id")
 
     @property
     def exhibits_count(self):
@@ -84,17 +87,19 @@ class Object(models.Model):
     scale = models.CharField(default="1 1", max_length=50)
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
+    # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0, blank=True, null=True)
 
     def __str__(self):
         return self.source.name
 
     @property
     def artworks_count(self):
-        return Artwork.objects.filter(augmented=self).count()
+        return self.artworks.count()
 
     @property
     def artworks_list(self):
-        return Artwork.objects.filter(augmented=self).order_by("-id")
+        return self.artworks.order_by("-id")
 
     @property
     def exhibits_count(self):
@@ -197,8 +202,12 @@ class Artwork(models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
-    marker = models.ForeignKey(Marker, on_delete=models.DO_NOTHING)
-    augmented = models.ForeignKey(Object, on_delete=models.DO_NOTHING)
+    marker = models.ForeignKey(
+        Marker, on_delete=models.DO_NOTHING, related_name="artworks"
+    )
+    augmented = models.ForeignKey(
+        Object, on_delete=models.DO_NOTHING, related_name="artworks"
+    )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now=True)
