@@ -189,7 +189,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ("owner", "uploaded_at", "patt")
+        exclude = ("owner", "uploaded_at", "patt", "file_size")
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
@@ -199,6 +199,7 @@ class UploadMarkerForm(forms.ModelForm):
             blob = BytesIO()
             pil_image.save(blob, "JPEG")
             filename = self.instance.source.name
+            self.instance.file_size = self.instance.source.size
             self.instance.source.save(filename, File(blob), save=commit)
             patt_str = generate_patt_from_image(image)
 
