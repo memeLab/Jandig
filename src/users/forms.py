@@ -180,7 +180,6 @@ class UploadMarkerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
-        log.warning(self.fields)
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
