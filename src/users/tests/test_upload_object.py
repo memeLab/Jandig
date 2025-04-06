@@ -6,7 +6,8 @@ from core.models import Object
 from users.models import User
 
 EXAMPLE_OBJECT_PATH = "src/users/tests/test_files/example_object.gif"
-EXAMPLE_OBJECT_SIZE = 70122 # Size in bytes of the example marker image
+EXAMPLE_OBJECT_SIZE = 70122  # Size in bytes of the example object gif
+
 
 class TestObjectUpload(TestCase):
     def setUp(self):
@@ -45,7 +46,7 @@ class TestObjectUpload(TestCase):
                 "position": "0,0,0",  # Default position
                 "rotation": "0,0,0",  # Default rotation
             }
-            
+
             self.client.login(username=self.username, password=self.password)
             response = self.client.post(url, data)
         assert response.status_code == status.HTTP_302_FOUND  # Redirect to home page

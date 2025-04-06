@@ -239,7 +239,7 @@ class UploadObjectForm(forms.ModelForm):
         if owner := kwargs.get("owner", None):
             self.instance.owner = owner
             del kwargs["owner"]
-        
+
         self.instance.file_size = self.instance.source.size
 
         return super(UploadObjectForm, self).save(*args, **kwargs)

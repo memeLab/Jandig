@@ -6,7 +6,8 @@ from core.models import Marker
 from users.models import User
 
 EXAMPLE_MARKER_PATH = "src/users/tests/test_files/example_marker_500x500.jpg"
-EXAMPLE_MARKER_SIZE = 18403 # Size in bytes of the example marker image
+EXAMPLE_MARKER_SIZE = 18403  # Size in bytes of the example marker image
+
 
 class TestMarkerUpload(TestCase):
     def setUp(self):
@@ -35,7 +36,7 @@ class TestMarkerUpload(TestCase):
                 "title": "Test Marker",
                 "author": "Test Author",
             }
-            
+
             self.client.login(username=self.username, password=self.password)
             response = self.client.post(url, data)
         assert response.status_code == status.HTTP_302_FOUND  # Redirect to home page
