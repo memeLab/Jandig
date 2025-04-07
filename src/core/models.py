@@ -235,6 +235,9 @@ class Artwork(models.Model):
 
         return False
 
+    def __str__(self):
+        return self.title
+
 
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)

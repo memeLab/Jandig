@@ -33,8 +33,14 @@ def index(request):
 @cache_page(60 * 2)
 @require_http_methods(["GET"])
 def collection(request):
-    exhibits = Exhibit.objects.all().order_by("creation_date")[:4]
-    artworks = Artwork.objects.all().order_by("created_at")[:6]
+    exhibits = (
+        Exhibit.objects.prefetch_related("artworks").all().order_by("creation_date")[:4]
+    )
+    artworks = (
+        Artwork.objects.prefetch_related("marker", "augmented")
+        .all()
+        .order_by("created_at")[:6]
+    )
     markers = Marker.objects.all().order_by("uploaded_at")[:8]
     objects = Object.objects.all().order_by("uploaded_at")[:8]
 
@@ -70,8 +76,12 @@ def see_all(request, which="", page=1):
     data_types = {
         "objects": Object.objects.all().order_by("uploaded_at"),
         "markers": Marker.objects.all().order_by("uploaded_at"),
-        "artworks": Artwork.objects.all().order_by("created_at"),
-        "exhibits": Exhibit.objects.all().order_by("creation_date"),
+        "artworks": Artwork.objects.prefetch_related("marker", "augmented")
+        .all()
+        .order_by("created_at"),
+        "exhibits": Exhibit.objects.prefetch_related("artworks")
+        .all()
+        .order_by("creation_date"),
     }
 
     data = data_types.get(request_type)
@@ -103,7 +113,7 @@ def exhibit_select(request):
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def exhibit_detail(request):
-    index = request.GET.get("id")
+    index = request.GET.get("id", -1)
     # Bots insert random strings in the id parameter, index should be an integer
     try:
         index = int(index)
