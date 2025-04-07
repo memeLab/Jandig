@@ -143,3 +143,32 @@ class ArtworkAdmin(admin.ModelAdmin):
     augmented_preview.allow_tags = True
 
 
+@admin.register(Exhibit)
+class ExhibitAdmin(admin.ModelAdmin):
+    list_display = [
+        "name",
+        "slug",
+        "owner",
+        "artworks_count",
+        "creation_date",
+    ]
+    search_fields = ["name", "slug"]
+    ordering = ["-creation_date"]
+
+    def get_queryset(self, request):
+        queryset = (
+            super()
+            .get_queryset(request)
+            .select_related("owner")
+            .prefetch_related("artworks")
+        )
+        queryset = queryset.annotate(
+            _artworks_count=Count("artworks", distinct=True),
+        )
+        return queryset
+
+    def artworks_count(self, obj):
+        return create_link_to_related_artworks(obj, obj.artworks.all())
+    artworks_count.short_description = "Artworks Count"
+    artworks_count.admin_order_field = "_artworks_count"
+    artworks_count.allow_tags = True
