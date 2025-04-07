@@ -184,7 +184,7 @@ def create_artwork(request):
                     title=artwork_title,
                     description=artwork_desc,
                 ).save()
-            return redirect("home")
+            return redirect("profile")
     else:
         form = ArtworkForm()
 
@@ -218,7 +218,7 @@ def create_exhibit(request):
             exhibit.save()
             exhibit.artworks.set(artworks)
 
-            return redirect("home")
+            return redirect("profile")
     else:
         form = ExhibitForm()
 
@@ -241,7 +241,7 @@ def upload_elements(request, form_class, form_type, route):
             upload = form.save(commit=False)
             upload.owner = request.user.profile
             upload.save()
-            return redirect("home")
+            return redirect("profile")
     else:
         form = form_class()
 
