@@ -103,7 +103,7 @@ def exhibit_select(request):
 @cache_page(60 * 60)
 @require_http_methods(["GET"])
 def exhibit_detail(request):
-    index = request.GET.get("id")
+    index = request.GET.get("id", -1)
     # Bots insert random strings in the id parameter, index should be an integer
     try:
         index = int(index)
