@@ -27,7 +27,6 @@ class TestInvalidIndex(TestCase):
         response = self.client.get("/exhibit/")
         self.assertEqual(response.status_code, 404)
 
-
     def test_invalid_exhibit_slug(self):
         # Test invalid exhibit
         response = self.client.get("/invalid")

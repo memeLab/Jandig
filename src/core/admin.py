@@ -6,19 +6,22 @@ from core.models import Artwork, Exhibit, Marker, Object
 
 from django.utils.html import format_html
 
+
 def create_link_to_related_artworks(obj, artworks_list):
     """Link to related Artworks"""
-    if obj.artworks_count == 0:
+    if obj._artworks_count == 0:
         return obj._artworks_count
     artworks_list = ",".join([str(artwork.id) for artwork in artworks_list])
 
     link = reverse("admin:index") + "core/artwork/?id__in=" + str(artworks_list)
     return format_html('<a href="{}">{}</a>', link, obj._artworks_count)
 
+
 def format_marker_as_html(obj):
     return format_html(
-            '<img src="{}" style="height:200px; width:200px;"/>', obj.source.url
-        )
+        '<img src="{}" style="height:200px; width:200px;"/>', obj.source.url
+    )
+
 
 def format_object_as_html(obj):
     """Image preview with proportions"""
@@ -60,7 +63,7 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
         queryset = (
             super()
             .get_queryset(request)
-            .select_related("owner")
+            .select_related("owner", "owner__user")
             .prefetch_related("artworks", "artworks__exhibits")
         )
         queryset = queryset.annotate(
@@ -71,9 +74,10 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
 
     def artworks_count(self, obj):
         return create_link_to_related_artworks(obj, obj.artworks.all())
+
     artworks_count.short_description = "Artworks Count"
     artworks_count.allow_tags = True
-    
+
     def exhibits_count(self, obj):
         return obj._exhibits_count
 
@@ -100,6 +104,7 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
     def image_preview(self, obj):
         return format_object_as_html(obj)
 
+
 @admin.register(Artwork)
 class ArtworkAdmin(admin.ModelAdmin):
     list_display = [
@@ -118,7 +123,7 @@ class ArtworkAdmin(admin.ModelAdmin):
         queryset = (
             super()
             .get_queryset(request)
-            .select_related("author", "marker", "augmented")
+            .select_related("author", "author__user", "marker", "augmented")
             .prefetch_related("exhibits")
         )
         queryset = queryset.annotate(
@@ -127,18 +132,26 @@ class ArtworkAdmin(admin.ModelAdmin):
         return queryset
 
     def exhibits_count(self, obj):
-        return obj._exhibits_count
-    
+        """Link to related Artworks"""
+        if obj._exhibits_count == 0:
+            return obj._exhibits_count
+        exhibit_list = ",".join([str(exhibit.id) for exhibit in obj.exhibits.all()])
+
+        link = reverse("admin:index") + "core/exhibit/?id__in=" + str(exhibit_list)
+        return format_html('<a href="{}">{}</a>', link, obj._exhibits_count)
+
     exhibits_count.admin_order_field = "_exhibits_count"
     exhibits_count.short_description = "Exhibits Count"
 
     def marker_preview(self, obj):
         return format_marker_as_html(obj.marker)
+
     marker_preview.short_description = "Marker"
     marker_preview.allow_tags = True
 
     def augmented_preview(self, obj):
         return format_object_as_html(obj.augmented)
+
     augmented_preview.short_description = "Augmented Object"
     augmented_preview.allow_tags = True
 
@@ -159,7 +172,7 @@ class ExhibitAdmin(admin.ModelAdmin):
         queryset = (
             super()
             .get_queryset(request)
-            .select_related("owner")
+            .select_related("owner", "owner__user")
             .prefetch_related("artworks")
         )
         queryset = queryset.annotate(
@@ -169,6 +182,7 @@ class ExhibitAdmin(admin.ModelAdmin):
 
     def artworks_count(self, obj):
         return create_link_to_related_artworks(obj, obj.artworks.all())
+
     artworks_count.short_description = "Artworks Count"
     artworks_count.admin_order_field = "_artworks_count"
     artworks_count.allow_tags = True

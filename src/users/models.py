@@ -13,7 +13,7 @@ class Profile(models.Model):
     personal_site = models.URLField()
 
     def __str__(self):
-        return str(self.user)
+        return self.user.username
 
     class Meta:
         permissions = [

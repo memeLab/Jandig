@@ -238,6 +238,7 @@ class Artwork(models.Model):
     def __str__(self):
         return self.title
 
+
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
 def remove_source_file(sender, instance, **kwargs):
