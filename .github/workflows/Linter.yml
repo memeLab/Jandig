@@ -1,0 +1,40 @@
+name: CI pipeline
+
+on: push
+
+jobs:
+  linter:
+    name: Check code style with Ruff
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          # Install a specific version of uv.
+          version: "0.6.13"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install Ruff
+        run: |
+          export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
+          uv sync --only-dev
+
+      - name: Check Ruff Linter
+      
+        run: |
+          export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
+          uv run ruff check --output-format=github
+      
+      - name: Check Ruff Formatting
+        run : |
+          export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
+          uv run ruff format --diff src/
