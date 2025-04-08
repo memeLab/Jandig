@@ -1,0 +1,47 @@
+name: Pipeline RC
+
+on:
+  push:
+    branches:
+      - create-deploy-actions
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    environment: develop
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASS }}
+
+      - name: Build and push for develop/master branches
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: jandigarte/django:dev
+          cache-from: type=registry,ref=jandigarte/django:dev
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Update ECS service
+        run: |
+          echo "Deploying to Develoment environment"
+          echo "ECS Cluster: ${{ env.ECS_CLUSTER }}"
+          echo "ECS Service: ${{ env.ECS_SERVICE }}"
+          aws ecs update-service --cluster ${{ vars.ECS_CLUSTER }} --service ${{ vars.ECS_SERVICE }} --force-new-deployment
