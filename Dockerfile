@@ -1,5 +1,5 @@
 
-FROM python:3.13.1-slim-bookworm
+FROM python:3.13.2-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:0.5.24 /uv /uvx /bin/
 
 ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
