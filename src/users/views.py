@@ -95,13 +95,18 @@ def profile(request):
         user = request.user
 
     profile = Profile.objects.prefetch_related(
-        "exhibits", "markers", "ar_objects", "artworks"
+        "exhibits__artworks",
+        "artworks__exhibits",
+        "artworks__marker",
+        "artworks__augmented",
+        "markers__artworks",
+        "ar_objects__artworks",
     ).get(user=user)
 
     exhibits = profile.exhibits.all()
+    artworks = profile.artworks.all()
     markers = profile.markers.all()
     objects = profile.ar_objects.all()
-    artworks = profile.artworks.all()
 
     ctx = {
         "exhibits": exhibits,

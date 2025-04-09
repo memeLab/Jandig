@@ -45,7 +45,7 @@ ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.2")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.3")
 
 
 def traces_sampler(sampling_context):
@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "rest_framework",
     "debug_toolbar",
     "django_htmx",
     "corsheaders",
@@ -113,6 +114,7 @@ PAGE_SIZE = 20
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": PAGE_SIZE,

@@ -62,16 +62,8 @@ class Marker(models.Model):
         return self.artworks.order_by("-id")
 
     @property
-    def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__marker=self).count()
-
-    @property
-    def exhibits_list(self):
-        return Exhibit.objects.filter(artworks__marker=self)
-
-    @property
     def in_use(self):
-        if self.artworks_count > 0 or self.exhibits_count > 0:
+        if self.artworks_count > 0:
             return True
         return False
 
@@ -102,16 +94,8 @@ class Object(models.Model):
         return self.artworks.order_by("-id")
 
     @property
-    def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__augmented=self).count()
-
-    @property
-    def exhibits_list(self):
-        return Exhibit.objects.filter(artworks__augmented=self)
-
-    @property
     def in_use(self):
-        if self.artworks_count > 0 or self.exhibits_count > 0:
+        if self.artworks_count > 0:
             return True
         return False
 
@@ -222,11 +206,11 @@ class Artwork(models.Model):
 
     @property
     def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__in=[self]).count()
+        return self.exhibits.count()
 
     @property
     def exhibits_list(self):
-        return list(Exhibit.objects.filter(artworks__in=[self]))
+        return list(self.exhibits)
 
     @property
     def in_use(self):

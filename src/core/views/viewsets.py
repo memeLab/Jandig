@@ -1,5 +1,7 @@
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
+from django.db.models import Count
+
 
 from core.models import Artwork, Exhibit, Marker, Object
 from core.serializers import (
@@ -13,22 +15,52 @@ from core.serializers import (
 class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ArtworkSerializer
     queryset = (
-        Artwork.objects.all()
-        .select_related("marker", "augmented", "author")
+        Artwork.objects.prefetch_related(
+            "exhibits", "marker__artworks", "augmented__artworks"
+        )
+        .select_related(
+            "author__user",
+            "marker__owner__user",
+            "augmented__owner__user",
+        )
+        .all()
         .order_by("id")
     )
 
 
 class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ExhibitSerializer
-    queryset = Exhibit.objects.all().order_by("id")
+    queryset = (
+        Exhibit.objects.prefetch_related(
+            "artworks__exhibits",
+            "artworks__author__user",
+            "artworks__marker__artworks",
+            "artworks__marker__owner__user",
+            "artworks__augmented__artworks",
+            "artworks__augmented__owner__user",
+        )
+        .all()
+        .order_by("id")
+    )
 
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = MarkerSerializer
-    queryset = Marker.objects.all().order_by("id")
+    queryset = (
+        Marker.objects.select_related("owner__user")
+        .prefetch_related("artworks__exhibits")
+        .annotate(exhibits_count=Count("artworks__exhibits", distinct=True))
+        .all()
+        .order_by("id")
+    )
 
 
 class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ObjectSerializer
-    queryset = Object.objects.all().order_by("id")
+    queryset = (
+        Object.objects.select_related("owner__user")
+        .prefetch_related("artworks__exhibits")
+        .annotate(exhibits_count=Count("artworks__exhibits", distinct=True))
+        .all()
+        .order_by("id")
+    )
