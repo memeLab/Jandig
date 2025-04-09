@@ -13,8 +13,15 @@ from core.serializers import (
 class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ArtworkSerializer
     queryset = (
-        Artwork.objects.all()
-        .select_related("marker", "augmented", "author")
+        Artwork.objects.prefetch_related(
+            "exhibits", "marker__artworks", "augmented__artworks"
+        )
+        .select_related(
+            "author__user",
+            "marker__owner__user",
+            "augmented__owner__user",
+        )
+        .all()
         .order_by("id")
     )
 
