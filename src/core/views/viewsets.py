@@ -28,7 +28,18 @@ class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ExhibitSerializer
-    queryset = Exhibit.objects.all().order_by("id")
+    queryset = (
+        Exhibit.objects.prefetch_related(
+            "artworks__exhibits",
+            "artworks__author__user",
+            "artworks__marker__artworks",
+            "artworks__marker__owner__user",
+            "artworks__augmented__artworks",
+            "artworks__augmented__owner__user",
+        )
+        .all()
+        .order_by("id")
+    )
 
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
