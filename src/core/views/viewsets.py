@@ -1,5 +1,7 @@
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
+from django.db.models import Count
+
 
 from core.models import Artwork, Exhibit, Marker, Object
 from core.serializers import (
@@ -47,6 +49,7 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = (
         Marker.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
+        .annotate(exhibits_count=Count("artworks__exhibits", distinct=True))
         .all()
         .order_by("id")
     )
@@ -57,6 +60,7 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = (
         Object.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
+        .annotate(exhibits_count=Count("artworks__exhibits", distinct=True))
         .all()
         .order_by("id")
     )

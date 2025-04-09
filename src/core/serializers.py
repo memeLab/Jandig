@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 
 from core.models import Artwork, Exhibit, Marker, Object
 from users.serializers import ProfileSerializer
@@ -6,6 +6,7 @@ from users.serializers import ProfileSerializer
 
 class MarkerSerializer(ModelSerializer):
     owner = ProfileSerializer(read_only=True)
+    exhibits_count = IntegerField(read_only=True)
 
     class Meta:
         model = Marker
@@ -29,6 +30,7 @@ class MarkerSerializer(ModelSerializer):
 
 class ObjectSerializer(ModelSerializer):
     owner = ProfileSerializer(read_only=True)
+    exhibits_count = IntegerField(read_only=True)
 
     class Meta:
         model = Object

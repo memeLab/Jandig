@@ -14,8 +14,6 @@ class "Object (models.Model)" as C {
   {method} + __str__(self) 
   {method} + artworks_count(self)
   {method} + artworks_list(self)
-  {method} + exhibits_count(self)
-  {method} + exhibits_list(self)
   {method} + in_use(self) 
   {method} + xproportion(self)
   {method} + yproportion(self)

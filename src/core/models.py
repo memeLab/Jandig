@@ -62,16 +62,9 @@ class Marker(models.Model):
         return self.artworks.order_by("-id")
 
     @property
-    def exhibits_count(self):
-        return self.artworks.exhibits.count()
-
-    @property
-    def exhibits_list(self):
-        return self.artworks.exhibits
-
-    @property
     def in_use(self):
-        if self.artworks_count > 0 or self.exhibits_count > 0:
+        exhibit_count = self.artworks.values("exhibits").distinct().count()
+        if self.artworks_count > 0 or exhibit_count > 0:
             return True
         return False
 
@@ -102,16 +95,9 @@ class Object(models.Model):
         return self.artworks.order_by("-id")
 
     @property
-    def exhibits_count(self):
-        return self.artworks.exhibits.count()
-
-    @property
-    def exhibits_list(self):
-        return self.artworks.exhibits
-
-    @property
     def in_use(self):
-        if self.artworks_count > 0 or self.exhibits_count > 0:
+        exhibit_count = self.artworks.values("exhibits").distinct().count()
+        if self.artworks_count > 0 or exhibit_count > 0:
             return True
         return False
 
