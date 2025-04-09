@@ -63,8 +63,7 @@ class Marker(models.Model):
 
     @property
     def in_use(self):
-        exhibit_count = self.artworks.values("exhibits").distinct().count()
-        if self.artworks_count > 0 or exhibit_count > 0:
+        if self.artworks_count > 0:
             return True
         return False
 
@@ -96,8 +95,7 @@ class Object(models.Model):
 
     @property
     def in_use(self):
-        exhibit_count = self.artworks.values("exhibits").distinct().count()
-        if self.artworks_count > 0 or exhibit_count > 0:
+        if self.artworks_count > 0:
             return True
         return False
 
