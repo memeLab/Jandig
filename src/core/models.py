@@ -63,11 +63,11 @@ class Marker(models.Model):
 
     @property
     def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__marker=self).count()
+        return self.artworks.exhibits.count()
 
     @property
     def exhibits_list(self):
-        return Exhibit.objects.filter(artworks__marker=self)
+        return self.artworks.exhibits
 
     @property
     def in_use(self):
@@ -103,11 +103,11 @@ class Object(models.Model):
 
     @property
     def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__augmented=self).count()
+        return self.artworks.exhibits.count()
 
     @property
     def exhibits_list(self):
-        return Exhibit.objects.filter(artworks__augmented=self)
+        return self.artworks.exhibits
 
     @property
     def in_use(self):
@@ -222,11 +222,11 @@ class Artwork(models.Model):
 
     @property
     def exhibits_count(self):
-        return Exhibit.objects.filter(artworks__in=[self]).count()
+        return self.exhibits.count()
 
     @property
     def exhibits_list(self):
-        return list(Exhibit.objects.filter(artworks__in=[self]))
+        return list(self.exhibits)
 
     @property
     def in_use(self):
