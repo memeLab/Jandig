@@ -82,7 +82,8 @@ def see_all(request, which="", page=1):
         "artworks": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
         .order_by("created_at"),
-        "exhibits": Exhibit.objects.prefetch_related("artworks")
+        "exhibits": Exhibit.objects.select_related("owner", "owner__user")
+        .prefetch_related("artworks")
         .all()
         .order_by("creation_date"),
     }
