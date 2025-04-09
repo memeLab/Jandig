@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-
+from django.db.models import Count
 from core.models import Marker
 from core.serializers import MarkerSerializer
 from users.models import User
@@ -26,7 +26,13 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["results"], [])
 
     def test_api_markers_lists_one_marker(self):
+        # Create a marker
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
+        # Annotate the marker to include the exhibit count
+        annotated_marker = Marker.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=marker.id)
+
         response = self.client.get("/api/v1/markers/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -34,9 +40,9 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(data["next"], None)
         self.assertEqual(data["previous"], None)
         first_result = data["results"][0]
-        serializer_data = MarkerSerializer(marker).data
+        serializer_data = MarkerSerializer(annotated_marker).data
         # Asserts the serializer is being used by the endpoint
-        self.assertDictEqual(first_result, serializer_data)
+        assert first_result == serializer_data
 
         # Asserts the serializer uses all the needed fields
         self.assertIn("id", first_result)
@@ -63,10 +69,16 @@ class TestMarkerAPI(TestCase):
         self.assertEqual(len(data["results"]), 20)
 
     def test_retrieve_marker(self):
+        # Create a marker
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
+        # Annotate the marker to include the exhibit count
+        annotated_marker = Marker.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=marker.id)
+
         response = self.client.get(f"/api/v1/markers/{marker.id}/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        serializer_data = MarkerSerializer(marker).data
+        serializer_data = MarkerSerializer(annotated_marker).data
         # Asserts the serializer is being used by the endpoint
-        self.assertDictEqual(data, serializer_data)
+        assert data == serializer_data
