@@ -1,13 +1,12 @@
+from django.conf import settings
 from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
-from django.http import Http404
 from django.views.decorators.http import require_http_methods
 
 from core.forms import ExhibitForm
 from core.models import Artwork, Exhibit, Marker, Object
-
-from django.conf import settings
 
 
 @cache_page(60 * 60)

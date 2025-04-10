@@ -2,8 +2,9 @@
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
 from django.db.models import Count
+from django.test import TestCase
+
 from core.models import Object
 from core.serializers import ObjectSerializer
 from users.models import User

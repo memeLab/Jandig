@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+
 from core.models import Artwork, Exhibit, Marker, Object
 from users.models import User
 

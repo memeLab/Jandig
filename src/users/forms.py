@@ -4,16 +4,15 @@ from io import BytesIO
 
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
-from django.contrib.auth.forms import UserCreationForm
 from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from core.models import Marker, Object, Exhibit
+from core.models import Exhibit, Marker, Object
 
 from .choices import COUNTRY_CHOICES
 
