@@ -1,7 +1,9 @@
+import random
+
 from django.core.management.base import BaseCommand
+
 from core.tests.factory import ArtworkFactory, MarkerFactory, ObjectFactory
 from users.tests.factory import ProfileFactory
-import random
 
 
 class Command(BaseCommand):

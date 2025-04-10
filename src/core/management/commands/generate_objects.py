@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+
 from core.tests.factory import ObjectFactory
 from users.tests.factory import ProfileFactory
 

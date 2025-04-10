@@ -1,12 +1,13 @@
 import os
 import random
-from factory import LazyAttribute, SubFactory, Faker, post_generation
-from factory.django import DjangoModelFactory
-from django.core.files.base import ContentFile
-from core.models import Object, Marker, Artwork, Exhibit
-from users.tests.factory import ProfileFactory
 
 from django.conf import settings
+from django.core.files.base import ContentFile
+from factory import Faker, LazyAttribute, SubFactory, post_generation
+from factory.django import DjangoModelFactory
+
+from core.models import Artwork, Exhibit, Marker, Object
+from users.tests.factory import ProfileFactory
 
 BASE_COLLECTION_DIR = settings.ROOT_DIR + "collection/"
 

@@ -19,7 +19,7 @@ test-all:
 
 lint:
 	uv run ruff format src
-	uv run ruff check --fix src
+	uv run ruff check --select I --fix src
 
 check: 
 	uv run ruff check

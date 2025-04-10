@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
-from users.models import Profile
-from factory import SubFactory, Faker, django
-from factory.django import DjangoModelFactory
 from django.db.models.signals import post_save
+from factory import Faker, SubFactory, django
+from factory.django import DjangoModelFactory
+
+from users.models import Profile
 
 
 @django.mute_signals(post_save)

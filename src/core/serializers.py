@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, IntegerField
+from rest_framework.serializers import IntegerField, ModelSerializer
 
 from core.models import Artwork, Exhibit, Marker, Object
 from users.serializers import ProfileSerializer
