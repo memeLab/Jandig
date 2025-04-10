@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - add-tests-to-ci
 
 jobs:
   # Job 1: Run Tests
@@ -63,43 +64,3 @@ jobs:
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.coverage.reportPaths=coverage.xml
-
-  # Job 3: Build and Deploy
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    needs: [run-tests, sonar-analysis]
-    environment: develop
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USER }}
-          password: ${{ secrets.DOCKER_HUB_PASS }}
-
-      - name: Build and push for develop branch
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: jandigarte/django:dev
-          cache-from: type=registry,ref=jandigarte/django:dev
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
-
-      - name: Update ECS service
-        run: |
-          echo "Deploying to Development environment"
-          echo "ECS Cluster: ${{ env.ECS_CLUSTER }}"
-          echo "ECS Service: ${{ env.ECS_SERVICE }}"
-          aws ecs update-service --cluster ${{ vars.ECS_CLUSTER }} --service ${{ vars.ECS_SERVICE }} --force-new-deployment
