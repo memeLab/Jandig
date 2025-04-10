@@ -1,9 +1,9 @@
 import os
 import random
-from factory import LazyAttribute, SubFactory, Faker
+from factory import LazyAttribute, SubFactory, Faker, post_generation
 from factory.django import DjangoModelFactory
 from django.core.files.base import ContentFile
-from core.models import Object, Marker, Artwork
+from core.models import Object, Marker, Artwork, Exhibit
 from users.tests.factory import ProfileFactory
 
 from django.conf import settings
@@ -118,3 +118,36 @@ class ArtworkFactory(DjangoModelFactory):
 
     title = Faker("sentence", nb_words=3)  # Generate a random title
     description = Faker("text", max_nb_chars=200)  # Generate a random description
+
+
+class ExhibitFactory(DjangoModelFactory):
+    class Meta:
+        model = Exhibit
+
+    owner = SubFactory(ProfileFactory)  # Use ProfileFactory for the owner
+    name = Faker("sentence", nb_words=3)  # Generate a random unique name
+    slug = LazyAttribute(
+        lambda obj: obj.name.lower().replace(" ", "-")
+    )  # Generate a slug based on the name
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        artworks_data = kwargs.pop("artworks", [])
+        instance = super()._create(model_class, *args, **kwargs)
+        if artworks_data:
+            instance.artworks.set(artworks_data)
+        return instance
+
+    @post_generation
+    def artworks(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            self.artworks.set(extracted)
+        else:
+            self.artworks.set(
+                [
+                    ArtworkFactory(author=self.owner)
+                    for _ in range(random.randint(1, 15))
+                ]
+            )
