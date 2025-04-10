@@ -42,6 +42,7 @@ jobs:
   sonar-analysis:
     runs-on: ubuntu-latest
     needs: run-tests
+    environment: develop
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
