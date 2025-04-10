@@ -50,10 +50,8 @@ testpaths = ["src/core", "src/users", "src/blog", "src/ui_tests"]
 pythonpath = "src"
 addopts="-n4"
 
-# Ignore deprecation warnings from botocore until https://github.com/boto/botocore/pull/3239 is merged
-filterwarnings =  [ 
-    "ignore::DeprecationWarning:botocore.*:"
-]
+[tool.coverage.run]
+relative_files=true
 
 [tool.ruff]
 exclude = [

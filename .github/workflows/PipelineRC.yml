@@ -67,6 +67,8 @@ jobs:
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py
+            -Dsonar.cpd.exclusions=**/migrations/**
 
   # Job 3: Build and Deploy
   build-and-deploy:
@@ -96,7 +98,7 @@ jobs:
           cache-from: type=registry,ref=jandigarte/django:dev
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
