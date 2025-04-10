@@ -124,6 +124,7 @@ class ArtworkFactory(DjangoModelFactory):
 class ExhibitFactory(DjangoModelFactory):
     class Meta:
         model = Exhibit
+        skip_postgeneration_save = True
 
     owner = SubFactory(ProfileFactory)  # Use ProfileFactory for the owner
     name = Faker("sentence", nb_words=3)  # Generate a random unique name
