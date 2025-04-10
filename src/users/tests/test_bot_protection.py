@@ -1,8 +1,9 @@
 """Test common bot attacks on user pages"""
 
+from unittest.mock import Mock, patch
+
 from django.test import TestCase, override_settings
 from django.urls import reverse
-from unittest.mock import patch, Mock
 
 
 class TestInvalidSignup(TestCase):

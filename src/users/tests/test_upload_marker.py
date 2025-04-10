@@ -1,6 +1,6 @@
+from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from django.test import TestCase
 
 from core.models import Marker
 from users.models import User

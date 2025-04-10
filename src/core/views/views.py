@@ -1,13 +1,12 @@
+from django.conf import settings
 from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
-from django.http import Http404
 from django.views.decorators.http import require_http_methods
 
 from core.forms import ExhibitForm
 from core.models import Artwork, Exhibit, Marker, Object
-
-from django.conf import settings
 
 
 @cache_page(60 * 60)
@@ -37,15 +36,15 @@ def collection(request):
         Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .all()
-        .order_by("creation_date")[:4]
+        .order_by("-creation_date")[:4]
     )
     artworks = (
         Artwork.objects.select_related("author", "author__user", "marker", "augmented")
         .all()
-        .order_by("created_at")[:6]
+        .order_by("-created_at")[:6]
     )
-    markers = Marker.objects.all().order_by("uploaded_at")[:8]
-    objects = Object.objects.all().order_by("uploaded_at")[:8]
+    markers = Marker.objects.all().order_by("-uploaded_at")[:8]
+    objects = Object.objects.all().order_by("-uploaded_at")[:8]
 
     ctx = {
         "artworks": artworks,

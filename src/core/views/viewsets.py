@@ -1,7 +1,6 @@
+from django.db.models import Count
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
-from django.db.models import Count
-
 
 from core.models import Artwork, Exhibit, Marker, Object
 from core.serializers import (

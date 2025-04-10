@@ -397,7 +397,6 @@ dependencies = [
     { name = "django-storages" },
     { name = "djangorestframework" },
     { name = "drf-nested-routers" },
-    { name = "factory-boy" },
     { name = "gevent" },
     { name = "gunicorn" },
     { name = "jinja2" },
@@ -413,6 +412,7 @@ dependencies = [
 dev = [
     { name = "dj-inmemorystorage" },
     { name = "django-debug-toolbar" },
+    { name = "factory-boy" },
     { name = "invoke" },
     { name = "playwright" },
     { name = "pytest" },
@@ -434,7 +434,6 @@ requires-dist = [
     { name = "django-storages", specifier = "~=1.14" },
     { name = "djangorestframework", specifier = "~=3.15" },
     { name = "drf-nested-routers", specifier = "~=0.94" },
-    { name = "factory-boy", specifier = "~=3.3" },
     { name = "gevent", specifier = "~=24.11" },
     { name = "gunicorn", specifier = "~=23.0" },
     { name = "jinja2", specifier = "~=3.1" },
@@ -450,6 +449,7 @@ requires-dist = [
 dev = [
     { name = "dj-inmemorystorage", specifier = "~=2.1" },
     { name = "django-debug-toolbar", specifier = "~=5.1" },
+    { name = "factory-boy", specifier = "~=3.3" },
     { name = "invoke", specifier = "~=2.2" },
     { name = "playwright", specifier = "~=1.49" },
     { name = "pytest", specifier = "~=8.3" },

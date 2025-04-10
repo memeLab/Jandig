@@ -16,7 +16,6 @@ dependencies = [
   "django~=5.1",
   "djangorestframework~=3.15",
   "drf-nested-routers~=0.94",
-  "factory-boy~=3.3",
   "gevent~=24.11",
   "gunicorn~=23.0",
   "jinja2~=3.1",
@@ -39,6 +38,7 @@ dev = [
   "pytest-xdist~=3.6",
   "pytest~=8.3",
   "ruff>=0.11.4",
+  "factory-boy~=3.3",
 ]
 
 

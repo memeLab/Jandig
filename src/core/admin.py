@@ -1,10 +1,9 @@
 from django.contrib import admin
-
-from django.urls import reverse
 from django.db.models import Count
-from core.models import Artwork, Exhibit, Marker, Object
-
+from django.urls import reverse
 from django.utils.html import format_html
+
+from core.models import Artwork, Exhibit, Marker, Object
 
 
 def create_link_to_related_artworks(obj, artworks_list):
