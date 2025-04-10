@@ -3,7 +3,7 @@ import random
 from factory import LazyAttribute, SubFactory, Faker
 from factory.django import DjangoModelFactory
 from django.core.files.base import ContentFile
-from core.models import Object
+from core.models import Object, Marker
 from users.tests.factory import ProfileFactory
 
 from django.conf import settings
@@ -13,7 +13,7 @@ BASE_COLLECTION_DIR = settings.ROOT_DIR + "collection/"
 
 def choose_random_object_file(_):
     """
-    Randomly selects a file from the test_files folder.
+    Randomly selects a file from the collection/objects folder.
     """
     objects_dir = os.path.join(BASE_COLLECTION_DIR, "objects/")
     files = [
@@ -24,7 +24,45 @@ def choose_random_object_file(_):
     file = random.choice(files)
     return ContentFile(
         open(
-            os.path.join(BASE_COLLECTION_DIR + "objects/", file),
+            os.path.join(objects_dir, file),
+            "rb",
+        ).read(),
+        name=file,
+    )
+
+
+def choose_random_marker_file(_):
+    """
+    Randomly selects a file from the collection/markers folder.
+    """
+    markers_dir = os.path.join(BASE_COLLECTION_DIR, "markers/")
+    files = [
+        f
+        for f in os.listdir(markers_dir)
+        if os.path.isfile(os.path.join(markers_dir, f))
+    ]
+    file = random.choice(files)
+    return ContentFile(
+        open(
+            os.path.join(markers_dir, file),
+            "rb",
+        ).read(),
+        name=file,
+    )
+
+
+def chose_random_patt_file(_):
+    """
+    Randomly selects a file from the collection/patts folder.
+    """
+    patts_dir = os.path.join(BASE_COLLECTION_DIR, "patts/")
+    files = [
+        f for f in os.listdir(patts_dir) if os.path.isfile(os.path.join(patts_dir, f))
+    ]
+    file = random.choice(files)
+    return ContentFile(
+        open(
+            os.path.join(patts_dir, file),
             "rb",
         ).read(),
         name=file,
@@ -40,6 +78,7 @@ class ObjectFactory(DjangoModelFactory):
     # Randomly select a file from the test_files folder for the source field
     source = LazyAttribute(choose_random_object_file)
 
+    author = Faker("name")
     title = Faker("sentence", nb_words=3)
     # Scale is a string of 2 floats from 0 to 2, separated by a space
     scale = LazyAttribute(
@@ -48,5 +87,22 @@ class ObjectFactory(DjangoModelFactory):
     position = LazyAttribute(
         lambda _: f"{round(random.uniform(-1, 1), 3)} {round(random.uniform(-1, 1), 3)} 0"
     )
+
     rotation = "270 0 0"
+    file_size = Faker("random_int", min=1000, max=1_000_000)
+
+
+class MarkerFactory(DjangoModelFactory):
+    class Meta:
+        model = Marker
+
+    owner = SubFactory(ProfileFactory)
+
+    # Randomly select a file from the test_files folder for the source field
+    source = LazyAttribute(choose_random_marker_file)
+    patt = LazyAttribute(chose_random_patt_file)
+
+    title = Faker("sentence", nb_words=3)
+    author = Faker("name")
+
     file_size = Faker("random_int", min=1000, max=1_000_000)
