@@ -3,7 +3,7 @@ import random
 from factory import LazyAttribute, SubFactory, Faker
 from factory.django import DjangoModelFactory
 from django.core.files.base import ContentFile
-from core.models import Object, Marker
+from core.models import Object, Marker, Artwork
 from users.tests.factory import ProfileFactory
 
 from django.conf import settings
@@ -106,3 +106,15 @@ class MarkerFactory(DjangoModelFactory):
     author = Faker("name")
 
     file_size = Faker("random_int", min=1000, max=1_000_000)
+
+
+class ArtworkFactory(DjangoModelFactory):
+    class Meta:
+        model = Artwork
+
+    author = SubFactory(ProfileFactory)  # Use ProfileFactory for the author
+    marker = SubFactory(MarkerFactory)  # Use MarkerFactory for the marker
+    augmented = SubFactory(ObjectFactory)  # Use ObjectFactory for the augmented object
+
+    title = Faker("sentence", nb_words=3)  # Generate a random title
+    description = Faker("text", max_nb_chars=200)  # Generate a random description
