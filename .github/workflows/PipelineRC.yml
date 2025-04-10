@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   # Job 1: Run Tests
@@ -41,6 +44,7 @@ jobs:
   sonar-analysis:
     runs-on: ubuntu-latest
     needs: run-tests
+    if: github.event_name == 'push'  # Only run on pushes
     environment: develop
     steps:
       - name: Checkout code
@@ -68,6 +72,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     needs: [run-tests, sonar-analysis]
+    if: github.event_name == 'push'  # Only run on pushes
     environment: develop
     steps:
       - name: Checkout code
