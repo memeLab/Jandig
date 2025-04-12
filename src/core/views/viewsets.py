@@ -66,7 +66,9 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
             .order_by("id")
         )
         owner_id = self.request.query_params.get("owner")
-
+        search = self.request.query_params.get("search")
+        if search:
+            queryset = queryset.filter(name__icontains=search)
         if owner_id is not None:
             try:
                 owner_id = int(owner_id)
