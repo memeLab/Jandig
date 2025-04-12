@@ -20,3 +20,5 @@ DATABASES = {
         "NAME": ":memory:",
     }
 }
+
+ROOT_DIR = env("ROOT_DIR", default="/jandig/")
