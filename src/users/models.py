@@ -20,6 +20,26 @@ class Profile(models.Model):
             ("moderator", "Can moderate content"),
         ]
 
+    @property
+    def artworks_count(self):
+        """Count of artworks by the user"""
+        return self.artworks.count()
+
+    @property
+    def markers_count(self):
+        """Count of markers by the user"""
+        return self.markers.count()
+
+    @property
+    def ar_objects_count(self):
+        """Count of AR objects by the user"""
+        return self.ar_objects.count()
+
+    @property
+    def exhibits_count(self):
+        """Count of exhibits by the user"""
+        return self.exhibits.count()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
