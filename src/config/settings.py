@@ -70,7 +70,6 @@ if ENABLE_SENTRY:
         release=SENTRY_RELEASE,
     )
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -79,7 +78,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "dj_rest_auth",
     "rest_framework",
+    "rest_framework.authtoken",
     "debug_toolbar",
     "django_htmx",
     "corsheaders",
@@ -118,6 +119,14 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": PAGE_SIZE,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
+}
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "jandig-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "jandig-refresh-token",
 }
 
 TEMPLATES = [
