@@ -14,11 +14,14 @@ from core.views.viewsets import (
     MarkerViewset,
     ObjectViewset,
 )
+from users.viewsets import ProfileViewset
+
 api_router = DefaultRouter()
 api_router.register("markers", MarkerViewset, basename="marker")
 api_router.register("objects", ObjectViewset, basename="object")
 api_router.register("artworks", ArtworkViewset, basename="artwork")
 api_router.register("exhibits", ExhibitViewset, basename="exhibit")
+api_router.register("profiles", ProfileViewset, basename="profile")
 
 urlpatterns = [
     path(settings.DJANGO_ADMIN_URL, admin.site.urls),
