@@ -1,7 +1,6 @@
 """Tests for the Jandig Profiles API"""
 
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from users.serializers import ProfileSerializer
@@ -71,19 +70,19 @@ class TestProfileAPI(TestCase):
 
     def test_search_by_invalid_ids(self):
         """API doens't fail with invalid user ids"""
-        response = self.client.get(f"/api/v1/profiles/?user=99999")
+        response = self.client.get("/api/v1/profiles/?user=99999")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
         assert data["results"] == []
 
-        response = self.client.get(f"/api/v1/profiles/?user=invalid")
+        response = self.client.get("/api/v1/profiles/?user=invalid")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
         assert data["results"] == []
 
-        response = self.client.get(f"/api/v1/profiles/?user=")
+        response = self.client.get("/api/v1/profiles/?user=")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0

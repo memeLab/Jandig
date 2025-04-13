@@ -19,9 +19,9 @@ test-all:
 
 lint:
 	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
-		docker compose exec django bash -c "uv run ruff format src && uv run ruff check --select I --fix src"; \
+		docker compose exec django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
 	else \
-		docker compose run django bash -c "uv run ruff format src && uv run ruff check --select I --fix src"; \
+		docker compose run django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
 	fi
 
 

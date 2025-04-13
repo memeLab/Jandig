@@ -1,5 +1,8 @@
 from config.settings import *  # noqa F403 F401
 
+import environ
+
+env = environ.Env()
 
 STORAGES = {
     "default": {
