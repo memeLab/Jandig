@@ -45,6 +45,7 @@ DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
+SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
 SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.0")
 
@@ -68,6 +69,7 @@ if ENABLE_SENTRY:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         traces_sampler=traces_sampler,
+        profiles_sample_rate=SENTRY_PROFILES_SAMPLE_RATE,
         release=SENTRY_RELEASE,
     )
 
