@@ -31,7 +31,7 @@ services:
           condition: service_healthy
 
   postgres:
-    image: postgres:15.4
+    image: postgres:16.8
     env_file:
       - .envs/.example
     environment:
