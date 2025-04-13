@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import sys
+from datetime import timedelta
 from socket import gethostbyname, gethostname
 
 import environ
@@ -45,7 +46,7 @@ ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.4.4")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.0")
 
 
 def traces_sampler(sampling_context):
@@ -78,9 +79,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
-    "dj_rest_auth",
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_framework_simplejwt",
     "debug_toolbar",
     "django_htmx",
     "corsheaders",
@@ -120,15 +121,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": PAGE_SIZE,
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
-REST_AUTH = {
-    "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "jandig-auth",
-    "JWT_AUTH_REFRESH_COOKIE": "jandig-refresh-token",
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "users.serializers.JandigJWTSerializer",
 }
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",

@@ -1,8 +1,8 @@
-from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
+import base64
+import json
+
 from django.test import TestCase
 
-from users.serializers import ProfileSerializer
 from users.tests.factory import ProfileFactory, UserFactory
 
 
@@ -20,11 +20,20 @@ class TestAuthAPI(TestCase):
             {"username": self.user.username, "password": "password"},
         )
         data = response.json()
-        print(data)
         assert response.status_code == 200
         assert data["access"] is not None
-        assert data["user"]["pk"] == self.user.id
-        assert data["user"]["username"] == self.user.username
+        assert data["refresh"] is not None
+        print(data)
+        # Access JWT token payload
+        payload = data["access"].split(".")[1]
+        # Decode the base 64 payload
+        decoded_payload = base64.b64decode(payload + "==").decode("utf-8")
+        json_payload = json.loads(decoded_payload)
+
+        # Check the payload contains the user id
+        assert int(json_payload["user_profile_id"]) == self.user.profile.id
+        assert int(json_payload["user_id"]) == self.user.id
+        assert json_payload["username"] == self.user.username
 
     def test_verify_token_success(self):
         """Test that the verify token endpoint works"""
@@ -43,3 +52,28 @@ class TestAuthAPI(TestCase):
 
         response = self.client.post("/api/v1/auth/verify/", {"token": "invalid-token"})
         self.assertEqual(response.status_code, 401)
+
+    def test_refresh_token_success(self):
+        """Test that the refresh token endpoint works"""
+        response = self.client.post(
+            "/api/v1/auth/login/", {"username": "user", "password": "password"}
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        assert data["refresh"] is not None
+        assert data["access"] is not None
+        old_access_token = data["access"]
+        refresh_token = data["refresh"]
+
+        response = self.client.post("/api/v1/auth/verify/", {"token": old_access_token})
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post("/api/v1/auth/refresh/", {"refresh": refresh_token})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        assert data["access"] is not None
+        access_token = data["access"]
+        assert access_token != old_access_token
+
+        response = self.client.post("/api/v1/auth/verify/", {"token": access_token})
+        self.assertEqual(response.status_code, 200)
