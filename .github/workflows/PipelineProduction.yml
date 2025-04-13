@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - '*'
 
 jobs:
   build-and-deploy:
@@ -33,17 +31,9 @@ jobs:
           push: true
           tags: jandigarte/django:latest
           cache-from: type=registry,ref=jandigarte/django:latest
-
-      - name: Build and push for tags
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: jandigarte/django:${GITHUB_REF#refs/tags/}
       
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
