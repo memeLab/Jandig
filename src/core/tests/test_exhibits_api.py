@@ -4,10 +4,8 @@ from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from core.models import Artwork, Exhibit, Marker, Object
 from core.serializers import ArtworkSerializer
 from core.tests.factory import ExhibitFactory
-from users.models import User
 from users.tests.factory import ProfileFactory, UserFactory
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -95,19 +93,19 @@ class TestExhibitAPI(TestCase):
     def test_searching_exhibits_by_invalid_owner(self):
         """Test that the exhibit cannot be searched using invalid owner id"""
 
-        response = self.client.get(f"/api/v1/exhibits/?owner=99999")
+        response = self.client.get("/api/v1/exhibits/?owner=99999")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
         assert data["results"] == []
 
-        response = self.client.get(f"/api/v1/exhibits/?owner=invalid")
+        response = self.client.get("/api/v1/exhibits/?owner=invalid")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
         assert data["results"] == []
 
-        response = self.client.get(f"/api/v1/exhibits/?owner=")
+        response = self.client.get("/api/v1/exhibits/?owner=")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
@@ -116,7 +114,7 @@ class TestExhibitAPI(TestCase):
     def test_searching_exhibits_by_name(self):
         """Test that the exhibit can be searched using name"""
         exhibit = ExhibitFactory(owner=self.profile, name="test")
-        response = self.client.get(f"/api/v1/exhibits/?search=test")
+        response = self.client.get("/api/v1/exhibits/?search=test")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 1
@@ -130,7 +128,7 @@ class TestExhibitAPI(TestCase):
         exhibit = ExhibitFactory(owner=self.profile, name="test")
         ExhibitFactory(owner=self.profile, name="not similar 2")
         ExhibitFactory(owner=self.profile, name="not similar 3")
-        response = self.client.get(f"/api/v1/exhibits/?search=test")
+        response = self.client.get("/api/v1/exhibits/?search=test")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 1
@@ -145,7 +143,7 @@ class TestExhibitAPI(TestCase):
             owner=self.profile, name="test@#$%^&*() ação pátio câmara índio"
         )
 
-        response = self.client.get(f"/api/v1/exhibits/?search=test@")
+        response = self.client.get("/api/v1/exhibits/?search=test@")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 1
@@ -154,7 +152,7 @@ class TestExhibitAPI(TestCase):
         assert data["results"][0]["slug"] == exhibit.slug
         assert data["results"][0]["owner"] == self.profile.id
 
-        response = self.client.get(f"/api/v1/exhibits/?search=() a")
+        response = self.client.get("/api/v1/exhibits/?search=() a")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 1
@@ -163,7 +161,7 @@ class TestExhibitAPI(TestCase):
         assert data["results"][0]["slug"] == exhibit.slug
         assert data["results"][0]["owner"] == self.profile.id
 
-        response = self.client.get(f"/api/v1/exhibits/?search=ação pátio")
+        response = self.client.get("/api/v1/exhibits/?search=ação pátio")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 1
@@ -175,7 +173,7 @@ class TestExhibitAPI(TestCase):
     def test_searching_exhibits_by_invalid_name(self):
         """Test that the exhibit cannot be searched using invalid name"""
         _ = ExhibitFactory(owner=self.profile, name="test")
-        response = self.client.get(f"/api/v1/exhibits/?search=invalid")
+        response = self.client.get("/api/v1/exhibits/?search=invalid")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         assert data["count"] == 0
