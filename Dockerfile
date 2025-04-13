@@ -1,5 +1,5 @@
 
-FROM python:3.13.3-slim-bookworm
+FROM python:3.13.3-slim-bookworm AS base
 COPY --from=ghcr.io/astral-sh/uv:0.6.13 /uv /uvx /bin/
 
 ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
@@ -23,8 +23,6 @@ RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/stati
 
 WORKDIR /jandig
 
-COPY ./pyproject.toml /jandig/pyproject.toml
-COPY ./uv.lock /jandig/uv.lock
 
 COPY ./src/ /jandig/src/
 COPY ./docs/ /jandig/docs/
@@ -32,6 +30,9 @@ COPY ./locale/ /jandig/locale/
 COPY ./tasks.py /jandig/tasks.py
 COPY ./run.sh /jandig/run.sh
 COPY ./etc/ /jandig/etc/
+
+COPY ./pyproject.toml /jandig/pyproject.toml
+COPY ./uv.lock /jandig/uv.lock
 
 
 # Create group and user
@@ -50,3 +51,11 @@ RUN uv sync --frozen --no-dev
 ENTRYPOINT ["tini", "--"]
 
 CMD [ "/jandig/run.sh" ]
+
+FROM base AS local_dev
+
+RUN uv sync --frozen
+RUN playwright install
+USER root
+RUN playwright install-deps
+USER jandig

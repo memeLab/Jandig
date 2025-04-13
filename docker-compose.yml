@@ -5,6 +5,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+      target: local_dev
     user: jandig
     ports:
       - 8000:8000
@@ -15,7 +16,6 @@ services:
       - .envs/.example
     environment:
       - USE_GUNICORN=True
-      - INSTALL_DEV=True
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/status || exit 1"]
       interval: 1m30s
