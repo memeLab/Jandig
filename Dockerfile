@@ -4,7 +4,7 @@ COPY --from=ghcr.io/astral-sh/uv:0.6.13 /uv /uvx /bin/
 
 ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
     TINI_VERSION=v0.19.0 \
-    UV_CACHE_DIR=/home/jandig/jandig/cache/uv
+    UV_CACHE_DIR=/home/jandig/cache/uv
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -19,7 +19,7 @@ RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && chmod +x /usr/local/bin/tini && tini --version
 
 
-RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/static /jandig/build /home/jandig/jandig/cache/uv
+RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/static /jandig/build /home/jandig/cache/uv
 
 WORKDIR /jandig
 
