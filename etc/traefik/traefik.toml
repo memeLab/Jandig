@@ -10,32 +10,17 @@
 ################################################################
 [global]
   checkNewVersion = true
-  sendAnonymousUsage = true
+  sendAnonymousUsage = false
 
 ################################################################
 # Entrypoints configuration
 ################################################################
 
 # Entrypoints definition
-#
-# Enable HTTP/3 by specifying the protocol as udp on the secure entrypoint
 
 [entryPoints]
   [entryPoints.web]
     address = ":80"
-
-  [entryPoints.websecure]
-    address = ":443/udp"  # Specify UDP for HTTP/3 support
-    [entryPoints.websecure.http3]
-      advertisedPort = 443
-################################################################
-# TLS Configuration
-################################################################
-
-[tls]
-  [[tls.certificates]]
-    certFile = "/path/to/your/cert.crt"
-    keyFile = "/path/to/your/key.key"
 
 ################################################################
 # Providers configuration
@@ -46,4 +31,13 @@
   watch = true
   endpoint = "unix:///var/run/docker.sock"
   exposedByDefault = false
+  # Add provider refresh settings
+  network = "jandig_default"
+  useBindPortIP = false
+
+[api]
+  dashboard = true
+
+[log]
+  level = "DEBUG"
 
