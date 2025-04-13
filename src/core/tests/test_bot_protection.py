@@ -18,6 +18,15 @@ class TestInvalidIndex(TestCase):
         response = self.client.get("/exhibit/?id='999'")
         self.assertEqual(response.status_code, 404)
 
+    def test_empty_exhibit_id(self):
+        # Test empty exhibit id should not raise exception and return 404
+        response = self.client.get("/exhibit/?id=''")
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get("/exhibit/?id=")
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get("/exhibit/")
+        self.assertEqual(response.status_code, 404)
+
     def test_invalid_exhibit_slug(self):
         # Test invalid exhibit
         response = self.client.get("/invalid")

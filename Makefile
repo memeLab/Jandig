@@ -18,8 +18,12 @@ test-all:
 	docker compose exec django uv run pytest
 
 lint:
-	uv run ruff format src
-	uv run ruff check --fix src
+	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
+		docker compose exec django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
+	else \
+		docker compose run django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
+	fi
+
 
 check: 
 	uv run ruff check

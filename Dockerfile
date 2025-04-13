@@ -1,6 +1,6 @@
 
-FROM python:3.13.1-slim-bookworm
-COPY --from=ghcr.io/astral-sh/uv:0.5.24 /uv /uvx /bin/
+FROM python:3.13.3-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:0.6.13 /uv /uvx /bin/
 
 ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
     TINI_VERSION=v0.19.0 \

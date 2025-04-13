@@ -95,13 +95,18 @@ def profile(request):
         user = request.user
 
     profile = Profile.objects.prefetch_related(
-        "exhibits", "markers", "ar_objects", "artworks"
+        "exhibits__artworks",
+        "artworks__exhibits",
+        "artworks__marker",
+        "artworks__augmented",
+        "markers__artworks",
+        "ar_objects__artworks",
     ).get(user=user)
 
     exhibits = profile.exhibits.all()
+    artworks = profile.artworks.all()
     markers = profile.markers.all()
     objects = profile.ar_objects.all()
-    artworks = profile.artworks.all()
 
     ctx = {
         "exhibits": exhibits,
@@ -184,7 +189,7 @@ def create_artwork(request):
                     title=artwork_title,
                     description=artwork_desc,
                 ).save()
-            return redirect("home")
+            return redirect("profile")
     else:
         form = ArtworkForm()
 
@@ -218,7 +223,7 @@ def create_exhibit(request):
             exhibit.save()
             exhibit.artworks.set(artworks)
 
-            return redirect("home")
+            return redirect("profile")
     else:
         form = ExhibitForm()
 
@@ -241,7 +246,7 @@ def upload_elements(request, form_class, form_type, route):
             upload = form.save(commit=False)
             upload.owner = request.user.profile
             upload.save()
-            return redirect("home")
+            return redirect("profile")
     else:
         form = form_class()
 
