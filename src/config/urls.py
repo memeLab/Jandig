@@ -29,7 +29,7 @@ urlpatterns = [
     path("api/v1/auth/login/", LoginView.as_view(), name="login"),
     path("api/v1/auth/logout/", LogoutView.as_view(), name="logout"),
     path("api/v1/auth/verify/", TokenVerifyView.as_view(), name="verify"),
-    path("api/v1/auth/refresh/", get_refresh_view(), name="refresh"),
+    path("api/v1/auth/refresh/", get_refresh_view().as_view(), name="refresh"),
     path("users/", include("users.urls")),
     path("memories/", include("blog.urls")),
     re_path("^docs/(?P<path>.*)$", serve, {"document_root": settings.DOCS_ROOT}),
