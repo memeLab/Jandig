@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "1.4.2"
+version = "1.5.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -8,37 +8,39 @@ requires-python = ">=3.13"
 dependencies = [
   "babel~=2.16",
   "boto3~=1.36",
-  "django-cors-headers~=3.14",
+  "django-cors-headers~=4.7",
   "django-environ~=0.12",
-  "django-extensions~=3.2",
+  "django-extensions~=4.0",
   "django-htmx~=1.21",
   "django-storages~=1.14",
   "django~=5.1",
   "djangorestframework~=3.15",
   "drf-nested-routers~=0.94",
-  "factory-boy~=3.3",
   "gevent~=24.11",
   "gunicorn~=23.0",
   "jinja2~=3.1",
-  "markupsafe~=2.1",
+  "markupsafe~=3.0",
   "pillow~=11.1",
   "psycopg2-binary~=2.9",
   "pymarker~=0.3",
-  "sentry-sdk~=2.20",
+  "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
+  "djangorestframework-simplejwt>=5.5.0",
 ]
 
 [dependency-groups]
 dev = [
   "dj-inmemorystorage~=2.1",
-  "django-debug-toolbar~=4.4",
+  "django-debug-toolbar~=5.1",
   "invoke~=2.2",
   "playwright~=1.49",
   "pytest-django~=4.9",
   "pytest-playwright~=0.4",
   "pytest-xdist~=3.6",
-  "pytest~=7.4",
-  "ruff~=0.9",
+  "pytest~=8.3",
+  "ruff>=0.11.4",
+  "factory-boy~=3.3",
+  "pytest-cov>=6.1.1",
 ]
 
 
@@ -49,10 +51,8 @@ testpaths = ["src/core", "src/users", "src/blog", "src/ui_tests"]
 pythonpath = "src"
 addopts="-n4"
 
-# Ignore deprecation warnings from botocore until https://github.com/boto/botocore/pull/3239 is merged
-filterwarnings =  [ 
-    "ignore::DeprecationWarning:botocore.*:"
-]
+[tool.coverage.run]
+relative_files=true
 
 [tool.ruff]
 exclude = [

@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models import Count
 from django.test import TestCase
 
 from core.models import Object
@@ -26,7 +27,14 @@ class TestObjectAPI(TestCase):
         self.assertEqual(data["results"], [])
 
     def test_api_objects_lists_one_object(self):
+        # Create an object
         obj = Object.objects.create(owner=self.profile, source=fake_file)
+
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=obj.id)
+
         response = self.client.get("/api/v1/objects/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
@@ -34,9 +42,9 @@ class TestObjectAPI(TestCase):
         self.assertEqual(data["next"], None)
         self.assertEqual(data["previous"], None)
         first_result = data["results"][0]
-        serializer_data = ObjectSerializer(obj).data
+        serializer_data = ObjectSerializer(annotated_obj).data
         # Asserts the serializer is being used by the endpoint
-        self.assertDictEqual(first_result, serializer_data)
+        assert first_result == serializer_data
 
         # Asserts the serializer uses all the needed fields
         self.assertIn("id", first_result)
@@ -48,6 +56,8 @@ class TestObjectAPI(TestCase):
         self.assertIn("scale", first_result)
         self.assertIn("position", first_result)
         self.assertIn("rotation", first_result)
+        self.assertIn("artworks_count", first_result)
+        self.assertIn("exhibits_count", first_result)
 
     def test_api_objects_lists_multiple_objects(self):
         for _ in range(0, settings.PAGE_SIZE + 1):
@@ -59,16 +69,23 @@ class TestObjectAPI(TestCase):
         self.assertEqual(data["count"], settings.PAGE_SIZE + 1)
         self.assertEqual(
             data["next"],
-            f"http://testserver/api/v1/objects/?limit={settings.PAGE_SIZE}&offset=20",
+            f"http://testserver/api/v1/objects/?limit={settings.PAGE_SIZE}&offset={settings.PAGE_SIZE}",
         )
         self.assertEqual(data["previous"], None)
         self.assertEqual(len(data["results"]), 20)
 
     def test_retrieve_object(self):
+        # Create an object
         obj = Object.objects.create(owner=self.profile, source=fake_file)
+
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=obj.id)
+
         response = self.client.get(f"/api/v1/objects/{obj.id}/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        serializer_data = ObjectSerializer(obj).data
+        serializer_data = ObjectSerializer(annotated_obj).data
         # Asserts the serializer is being used by the endpoint
-        self.assertDictEqual(data, serializer_data)
+        assert data == serializer_data

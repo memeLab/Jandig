@@ -3,7 +3,7 @@ from typing import Any
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.db.models import Count, Q
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.urls import reverse
@@ -77,16 +77,7 @@ class ProfileAdmin(admin.ModelAdmin):
             .select_related("user")
             .prefetch_related("artworks", "markers", "exhibits", "ar_objects")
         )
-        queryset = queryset.annotate(
-            _markers_count=Count("markers", distinct=True),
-            _artworks_count=Count("artworks", distinct=True),
-            _ar_objects_count=Count("ar_objects", distinct=True),
-            _exhibits_count=Count("exhibits", distinct=True),
-        )
         return queryset
-
-    def username(self, obj):
-        return obj.user.username
 
     def created(self, obj):
         return obj.user.date_joined
@@ -98,23 +89,6 @@ class ProfileAdmin(admin.ModelAdmin):
         """Link to related User"""
         link = reverse("admin:index") + "auth/user/?id=" + str(obj.user.id)
         return format_html('<a href="{}">{}</a>', link, obj.user.username)
-
-    def artworks_count(self, obj):
-        return obj._artworks_count
-
-    def markers_count(self, obj):
-        return obj._markers_count
-
-    def ar_objects_count(self, obj):
-        return obj._ar_objects_count
-
-    def exhibits_count(self, obj):
-        return obj._exhibits_count
-
-    artworks_count.admin_order_field = "_artworks_count"
-    markers_count.admin_order_field = "_markers_count"
-    ar_objects_count.admin_order_field = "_ar_objects_count"
-    exhibits_count.admin_order_field = "_exhibits_count"
 
 
 @admin.register(User)

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.urls import include, path, re_path
-from rest_framework_nested.routers import DefaultRouter
 
 from core.views.static_views import (
     community,
@@ -21,22 +20,9 @@ from core.views.views import (
     see_all,
     service_worker,
 )
-from core.views.viewsets import (
-    ArtworkViewset,
-    ExhibitViewset,
-    MarkerViewset,
-    ObjectViewset,
-)
-
-api_router = DefaultRouter()
-api_router.register("markers", MarkerViewset, basename="marker")
-api_router.register("objects", ObjectViewset, basename="object")
-api_router.register("artworks", ArtworkViewset, basename="artwork")
-api_router.register("exhibits", ExhibitViewset, basename="exhibit")
 
 urlpatterns = [
     path("", home, name="home"),
-    path("api/v1/", include(api_router.urls)),
     path("documentation/", documentation, name="documentation"),
     path("community/", community, name="community"),
     path("collection/", collection, name="collection"),
