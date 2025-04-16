@@ -68,22 +68,27 @@ def related_content(request):
         element = Object.objects.get(id=element_id)
 
         artworks = element.artworks_list
-        exhibits = element.exhibits_list
+        exhibits = Exhibit.objects.filter(
+            artworks__id__in=element.artworks.values_list("id")
+        ).distinct()
 
         ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
     elif element_type == "marker":
         element = Marker.objects.get(id=element_id)
 
         artworks = element.artworks_list
-        exhibits = element.exhibits_list
+        exhibits = Exhibit.objects.filter(
+            artworks__id__in=element.artworks.values_list("id")
+        ).distinct()
 
         ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
     elif element_type == "artwork":
         element = Artwork.objects.get(id=element_id)
 
-        exhibits = element.exhibits_list
+        exhibits = element.exhibits.all()
 
         ctx = {"exhibits": exhibits, "seeall:": False}
+
     return render(request, "core/collection.jinja2", ctx)
 
 
