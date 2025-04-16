@@ -14,8 +14,25 @@ class TestRelatedContentView(TestCase):
         response = self.client.get(
             reverse("related-content"), {"id": 1, "type": "invalid"}
         )
-        assert "artworks" not in response.context
-        assert "exhibits" not in response.context
+        assert response.status_code == 404
+        response = self.client.get(
+            reverse("related-content"), {"id": "aaaa", "type": "object"}
+        )
+        assert response.status_code == 404
+        response = self.client.get(reverse("related-content"), {"id": 1, "type": ""})
+        assert response.status_code == 404
+        response = self.client.get(reverse("related-content"), {"id": 1})
+        assert response.status_code == 404
+        response = self.client.get(reverse("related-content"), {"type": "object"})
+        assert response.status_code == 404
+        response = self.client.get(reverse("related-content"), {})
+        assert response.status_code == 404
+        response = self.client.get(
+            reverse("related-content"), {"id": "", "type": "object"}
+        )
+        assert response.status_code == 404
+        response = self.client.get(reverse("related-content"), {"id": 1, "type": 1})
+        assert response.status_code == 404
 
     def test_object_related_content(self):
         # Create object first

@@ -61,9 +61,18 @@ def collection(request):
 def related_content(request):
     element_id = request.GET.get("id")
     element_type = request.GET.get("type")
+    if element_id is None or element_type is None:
+        raise Http404
+    if element_type not in ["object", "marker", "artwork"]:
+        raise Http404
+    # Bots insert random strings in the id parameter, element_id should be an integer
+    try:
+        element_id = int(element_id)
+    except ValueError:
+        raise Http404
+
     element = None
     ctx = {}
-
     if element_type in ["object", "marker"]:
         if element_type == "object":
             element = (
