@@ -131,7 +131,7 @@
                     url: elemUrl,
                     success: function(data){
                         elementAuthor(data['author'].username);
-                        usedInExhibit(data['id_marker'], data['id_object'], data['exhibits_count'], data['marker'], data['augmented'], element_id);
+                        usedInExhibit(data['marker']['id'], data['augmented']['id'], data['exhibits_count'], data['marker'], data['augmented'], element_id);
                         replaceButtons(data['title'], data['description']);
                         downloadElement(data['type'], data['augmented'].file_size/1000, data['augmented'].source);
                     }

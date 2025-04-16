@@ -53,3 +53,10 @@ class TestArtworkAPI(TestCase):
 
         response = self.client.get(f"/api/v1/artworks/{str(artwork.id)}/")
         self.assertEqual(response.status_code, 200)
+        data = response.json()
+        assert data["id"] == artwork.id
+        assert data["title"] == artwork.title
+        assert data["description"] == artwork.description
+        assert data["author"]["id"] == self.profile.id
+        assert data["marker"]["id"] == marker.id
+        assert data["augmented"]["id"] == obj.id
