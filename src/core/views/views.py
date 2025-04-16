@@ -57,6 +57,61 @@ def collection(request):
     return render(request, "core/collection.jinja2", ctx)
 
 
+@require_http_methods(["GET"])
+def related_content(request):
+    element_id = request.GET.get("id")
+    element_type = request.GET.get("type")
+    if element_id is None or element_type is None:
+        raise Http404
+    if element_type not in ["object", "marker", "artwork"]:
+        raise Http404
+    # Bots insert random strings in the id parameter, element_id should be an integer
+    try:
+        element_id = int(element_id)
+    except ValueError:
+        raise Http404
+
+    element = None
+    ctx = {}
+    if element_type in ["object", "marker"]:
+        if element_type == "object":
+            element = (
+                Object.objects.select_related("owner")
+                .prefetch_related("artworks__marker")
+                .get(id=element_id)
+            )
+        else:
+            element = (
+                Marker.objects.select_related("owner")
+                .prefetch_related("artworks__augmented")
+                .get(id=element_id)
+            )
+
+        artworks = element.artworks.all()
+        # Get all exhibits that have artworks related to the object or marker
+        # Use values_list to get a list of artwork IDs
+        # Use distinct to avoid duplicates exhibits
+        exhibits = (
+            Exhibit.objects.filter(artworks__id__in=element.artworks.values_list("id"))
+            .select_related("owner", "owner__user")
+            .prefetch_related("artworks")
+            .distinct()
+        )
+
+        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
+
+    elif element_type == "artwork":
+        element = Artwork.objects.prefetch_related(
+            "exhibits__artworks", "exhibits__owner__user"
+        ).get(id=element_id)
+
+        exhibits = element.exhibits.all()
+
+        ctx = {"exhibits": exhibits, "seeall:": False}
+
+    return render(request, "core/collection.jinja2", ctx)
+
+
 @cache_page(60 * 2)
 @require_http_methods(["GET"])
 def see_all(request, which="", page=1):

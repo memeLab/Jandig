@@ -30,6 +30,7 @@ jobs:
           context: .
           push: true
           tags: jandigarte/django:latest
+          target: base
           cache-from: type=registry,ref=jandigarte/django:latest
       
       - name: Configure AWS credentials

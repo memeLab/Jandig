@@ -97,6 +97,7 @@ jobs:
           context: .
           push: true
           tags: jandigarte/django:dev
+          target: base
           cache-from: type=registry,ref=jandigarte/django:dev
       
       - name: Build and push for tags

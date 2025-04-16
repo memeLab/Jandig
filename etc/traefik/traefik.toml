@@ -1,0 +1,43 @@
+################################################################
+# Configuration sample for Traefik v2.5+
+#
+# For more information on Traefik with HTTP/3: https://doc.traefik.io/traefik/
+#
+################################################################
+
+################################################################
+# Global configuration
+################################################################
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
+
+################################################################
+# Entrypoints configuration
+################################################################
+
+# Entrypoints definition
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+################################################################
+# Providers configuration
+################################################################
+
+# Docker provider configuration
+[providers.docker]
+  watch = true
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false
+  # Add provider refresh settings
+  network = "jandig_default"
+  useBindPortIP = false
+
+[api]
+  dashboard = true
+
+[log]
+  level = "DEBUG"
+

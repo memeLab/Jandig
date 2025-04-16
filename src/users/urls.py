@@ -19,7 +19,6 @@ from .views import (
     object_upload,
     permission_denied,
     profile,
-    related_content,
     signup,
 )
 
@@ -64,5 +63,4 @@ urlpatterns = [
     path("moderator-page/", mod, name="moderator-page"),
     path("permission-denied/", permission_denied, name="permission-denied"),
     path("content/mod-delete/", mod_delete, name="mod-delete-content"),
-    path("related-content", related_content, name="related-content"),
 ]
