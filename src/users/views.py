@@ -539,36 +539,6 @@ def delete_content_Moderator(instance, user, model):
             instance.delete()
 
 
-@require_http_methods(["GET"])
-def related_content(request):
-    element_id = request.GET.get("id")
-    element_type = request.GET.get("type")
-    element = None
-    ctx = {}
-
-    if element_type == "object":
-        element = Object.objects.get(id=element_id)
-
-        artworks = element.artworks_list
-        exhibits = element.exhibits_list
-
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
-    elif element_type == "marker":
-        element = Marker.objects.get(id=element_id)
-
-        artworks = element.artworks_list
-        exhibits = element.exhibits_list
-
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
-    elif element_type == "artwork":
-        element = Artwork.objects.get(id=element_id)
-
-        exhibits = element.exhibits_list
-
-        ctx = {"exhibits": exhibits, "seeall:": False}
-    return render(request, "core/collection.jinja2", ctx)
-
-
 @login_required
 @require_http_methods(["GET"])
 def mod_delete(request):

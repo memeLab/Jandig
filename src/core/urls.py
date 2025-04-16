@@ -17,6 +17,7 @@ from core.views.views import (
     exhibit_detail,
     exhibit_select,
     manifest,
+    related_content,
     see_all,
     service_worker,
 )
@@ -30,6 +31,7 @@ urlpatterns = [
     path("exhibit/", exhibit_detail, name="exhibit-detail"),
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("generator/", marker_generator, name="marker-generator"),
+    path("related-content", related_content, name="related-content"),
     path("sw.js", service_worker, name="sw"),
     path("manifest.json", manifest, name="manifest"),
     path("i18n/", include("django.conf.urls.i18n")),
