@@ -97,6 +97,7 @@ jobs:
           context: .
           push: true
           tags: jandigarte/django:dev
+          target: base
           cache-from: type=registry,ref=jandigarte/django:dev
       
       - name: Build and push for tags
@@ -106,6 +107,7 @@ jobs:
           context: .
           push: true
           tags: jandigarte/django:${GITHUB_REF#refs/tags/}
+          target: base
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

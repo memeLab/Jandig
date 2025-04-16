@@ -1,7 +1,7 @@
 RUNNING_CONTAINER := $(shell docker compose ps --services --filter "status=running" | grep django )
 
 test:
-	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
+	@if [ -n "${RUNNING_CONTAINER}" ]; then \
 		docker compose exec django uv run pytest src/core src/users src/blog; \
 	else \
 		docker compose run --rm django uv run pytest src/core src/users src/blog;\
@@ -9,8 +9,6 @@ test:
 
 test-ui:
 	docker compose up -d
-	docker compose exec django playwright install
-	docker compose exec -u root django playwright install-deps
 	docker compose exec django uv run pytest src/ui_tests
 
 test-all:
@@ -18,12 +16,11 @@ test-all:
 	docker compose exec django uv run pytest
 
 lint:
-	@if [[ -n "${RUNNING_CONTAINER}" ]]; then \
+	@if [ -n "${RUNNING_CONTAINER}" ]; then \
 		docker compose exec django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
 	else \
-		docker compose run django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
+		docker compose run --rm django bash -c "uv run ruff format src && uv run ruff check --extend-select I --fix src"; \
 	fi
-
 
 check: 
 	uv run ruff check

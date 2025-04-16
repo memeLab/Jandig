@@ -1,8 +1,11 @@
+name: jandig
+
 services:
   django:
     build:
       dockerfile: Dockerfile
       context: .
+      target: local_dev
     user: jandig
     ports:
       - 8000:8000
@@ -13,7 +16,6 @@ services:
       - .envs/.example
     environment:
       - USE_GUNICORN=True
-      - INSTALL_DEV=True
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/status || exit 1"]
       interval: 1m30s
@@ -29,6 +31,13 @@ services:
           condition: service_started
       postgres:
           condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.rule=PathPrefix(`/`) && !PathPrefix(`/static`) && !PathPrefix(`/media`)"
+      - "traefik.http.services.django.loadbalancer.server.port=8000"
+      - "traefik.http.middlewares.django-retry.retry.attempts=5"
+      - "traefik.http.middlewares.django-retry.retry.initialInterval=100ms"
+      - "traefik.http.routers.django.middlewares=django-retry@docker"
 
   postgres:
     image: postgres:16.8
@@ -64,6 +73,12 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storage.rule=PathPrefix(`/static`) || PathPrefix(`/media`)"
+      - "traefik.http.services.storage.loadbalancer.server.port=9000"
+      - "traefik.http.middlewares.storage-stripprefix.stripprefix.prefixes=/static,/media"
+      - "traefik.http.routers.storage.middlewares=storage-stripprefix"
 
   createbuckets:
     image: minio/mc:RELEASE.2022-09-16T09-16-47Z
@@ -96,18 +111,16 @@ services:
       MP_SMTP_TLS_CERT: /self_signed/mailpit_cert.pem
       MP_SMTP_TLS_KEY: /self_signed/mailpit_key.pem
 
-  haproxy:
-    image: haproxy:3.1
+  traefik:
+    image: traefik:v3.3.5
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
     volumes:
-      - ./etc/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/traefik:/etc/traefik
     depends_on:
-      django:
-        condition: service_healthy
-      storage:
-        condition: service_healthy
+      - django
+      - storage
 
 volumes:
   postgres_data:
