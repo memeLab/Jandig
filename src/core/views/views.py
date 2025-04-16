@@ -64,26 +64,37 @@ def related_content(request):
     element = None
     ctx = {}
 
-    if element_type == "object":
-        element = Object.objects.get(id=element_id)
+    if element_type in ["object", "marker"]:
+        if element_type == "object":
+            element = (
+                Object.objects.select_related("owner")
+                .prefetch_related("artworks__marker")
+                .get(id=element_id)
+            )
+        else:
+            element = (
+                Marker.objects.select_related("owner")
+                .prefetch_related("artworks__augmented")
+                .get(id=element_id)
+            )
 
-        artworks = element.artworks_list
-        exhibits = Exhibit.objects.filter(
-            artworks__id__in=element.artworks.values_list("id")
-        ).distinct()
+        artworks = element.artworks.all()
+        # Get all exhibits that have artworks related to the object or marker
+        # Use values_list to get a list of artwork IDs
+        # Use distinct to avoid duplicates exhibits
+        exhibits = (
+            Exhibit.objects.filter(artworks__id__in=element.artworks.values_list("id"))
+            .select_related("owner", "owner__user")
+            .prefetch_related("artworks")
+            .distinct()
+        )
 
         ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
-    elif element_type == "marker":
-        element = Marker.objects.get(id=element_id)
 
-        artworks = element.artworks_list
-        exhibits = Exhibit.objects.filter(
-            artworks__id__in=element.artworks.values_list("id")
-        ).distinct()
-
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
     elif element_type == "artwork":
-        element = Artwork.objects.get(id=element_id)
+        element = Artwork.objects.prefetch_related(
+            "exhibits__artworks", "exhibits__owner__user"
+        ).get(id=element_id)
 
         exhibits = element.exhibits.all()
 
