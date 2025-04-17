@@ -41,7 +41,7 @@
         function usedInExhibit(marker_id, object_id, exhibits_count, marker, augmented, element_id){
             let object_tag = ''
             let augmented_src = augmented.source 
-            if(augmented_src.split('.')[1] == 'mp4' || augmented_src.split('.')[1] == 'webm'){
+            if(augmented_src.endsWith('.mp4') || augmented_src.endsWith('.webm')){
                 object_tag = '<video muted autoplay loop id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
             } else {
                 object_tag = '<img id="' + object_id + '" class="trigger-erase artwork-content" data-elem-type="object" src="' + augmented_src + '"/></p>'
