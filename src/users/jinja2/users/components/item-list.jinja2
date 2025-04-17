@@ -14,51 +14,14 @@
 
             {% if element_type =="marker" or element_type=="object" %}
                 {%set canEdit_object%}
-                    {% if editable == True and not element.in_use%}
+                    {% if editable == True and not element.in_use %}
                         <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>                
                     {% endif %}
                 {%endset%}
 
                 {%set canEdit_marker%}
-                    {% if editable == True and not element.in_use%}
+                    {% if editable == True and not element.in_use %}
                         <a href="{{ url('edit-marker') }}?id={{element.id}}" class="edit">edit</a>                
-                    {% endif %}
-                {%endset%}
-                
-                {%set loadImage_object_or_marker%}
-                    <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height=50 width=50 >
-                {%endset%}
-
-                {%set load_object_video_or_image %}
-                    {% if element.is_video() %}
-                        <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.source.url }}" height="{{ element.yproportion * 50 }}" width="{{ element.xproportion * 50 }}" muted autoplay loop></video>
-                    {% else %} 
-                        {{loadImage_object_or_marker}}
-                    {% endif %}
-                {%endset%}
-           
-            {% elif element_type == "artwork" %}
-                {%set loadArtwork_Marker %}
-                    {% if element.title %}
-                        <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
-                    {% else %}
-                        <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.marker.source.url }}" height="50" width="50">
-                    {% endif %}
-                {%endset%}
-
-                {%set loadArtwork_Object%}
-                    {% if element.augmented.source.url.endswith('.mp4') or element.augmented.source.url.endswith('.webm') %}
-                        {% if element.title %}
-                            <video id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop></video>
-                        {% else %}
-                            <video id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}" muted autoplay loop></video>
-                        {% endif %}
-                    {% else %}
-                        {% if element.title %}
-                            <img id="{{ element.id }}" title="{{ element.title }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
-                        {% else %}
-                            <img id="{{ element.id }}" class="trigger-modal" data-elem-type="{{element_type}}" src="{{ element.augmented.source.url }}" height="{{ element.augmented.yproportion * 50 }}" width="{{ element.augmented.xproportion * 50 }}">
-                        {% endif %}
                     {% endif %}
                 {%endset%}
 
@@ -92,20 +55,20 @@
             {# End of defining variables #}
 
             {% if element_type == "marker"%}
-                {{loadImage_object_or_marker}}
+                {{ element.as_html_thumbnail() | safe }}
                 {{canDelete_Entity}}
                 {{canEdit_marker}}
 
             {% elif element_type == "object" %}
-                {{load_object_video_or_image}}
+                {{ element.as_html_thumbnail() | safe }}
                 {{canDelete_Entity}}
                 {{canEdit_object}}
 
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
-                    {{loadArtwork_Marker}}
+                    {{ element.marker.as_html_thumbnail() | safe }}
                     <div class="separator"></div>
-                    {{loadArtwork_Object}} 
+                    {{ element.augmented.as_html_thumbnail() | safe }} 
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                     {% endif %}

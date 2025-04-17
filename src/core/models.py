@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from fast_html import img, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -66,6 +67,29 @@ class Marker(models.Model):
         if self.artworks_count > 0:
             return True
         return False
+
+    def as_html(self, height: int = None, width: int = None):
+        if not height:
+            height = self.height
+        if not width:
+            width = self.width
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "class_": "trigger-modal",
+            "data_elem_type": "marker",
+            "src": self.source.url,
+        }
+        return render(
+            img(
+                **attributes,
+                height=height,
+                width=width,
+            )
+        )
+
+    def as_html_thumbnail(self):
+        return self.as_html(height=50, width=50)
 
 
 class Object(models.Model):
@@ -188,6 +212,39 @@ class Object(models.Model):
         if self.source.name.endswith(".mp4") or self.source.name.endswith(".webm"):
             return True
         return False
+
+    def as_html(self, height: int = None, width: int = None):
+        if not height:
+            height = self.height
+        if not width:
+            width = self.width
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "class_": "trigger-modal",
+            "data_elem_type": "object",
+            "src": self.source.url,
+            "height": height,
+            "width": width,
+        }
+        if self.is_video:
+            return render(
+                video(
+                    autoplay=True,
+                    loop=True,
+                    muted=True,
+                    **attributes,
+                )
+            )
+        else:
+            return render(img(**attributes))
+
+    def as_html_thumbnail(self):
+        default_thumbnail_height = 50
+        default_thumbnail_width = 50
+        height = default_thumbnail_height * self.yproportion
+        width = default_thumbnail_width * self.xproportion
+        return self.as_html(height=height, width=width)
 
 
 class Artwork(models.Model):
