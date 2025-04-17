@@ -34,6 +34,7 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
           uv sync --only-dev
           export ROOT_DIR=${GITHUB_WORKSPACE}/
+          export DJANGO_SECRET_KEY="test_key"
           uv run pytest src/core src/users/ src/blog --cov=src --cov-report=xml
 
       - name: Upload coverage report

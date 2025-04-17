@@ -4,7 +4,6 @@ import environ
 
 env = environ.Env()
 
-SECRET_KEY = "TEST_KEY"
 
 STORAGES = {
     "default": {
