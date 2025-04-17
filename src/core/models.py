@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from fast_html import a, div, img, render, video
+from fast_html import a, b, div, h1, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -328,14 +328,40 @@ class Artwork(models.Model):
     def __str__(self):
         return self.title
 
-    def as_html_thumbnail(self):
-        return render(
-            [
-                self.marker.as_html_thumbnail(),
-                div(class_="separator"),
-                self.augmented.as_html_thumbnail(),
-            ]
-        )
+    def as_html_thumbnail(self, editable=False):
+        elements = [
+            self.marker.as_html_thumbnail(),
+            div(class_="separator"),
+            self.augmented.as_html_thumbnail(),
+        ]
+        if editable and not self.in_use:
+            elements.append(
+                a(
+                    _("edit"),
+                    href=reverse("edit-artwork", query={"id": self.id}),
+                    class_="edit",
+                )
+            )
+            elements.append(
+                a(
+                    _("delete"),
+                    href=reverse(
+                        "delete-content",
+                        query={"content_type": "artwork", "id": self.id},
+                    ),
+                    onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+                    class_="delete",
+                )
+            )
+            elements.append(
+                a(
+                    _("preview"),
+                    href=reverse("artwork-preview", query={"id": self.id}),
+                    class_="preview",
+                )
+            )
+
+        return render(div(elements, class_="artwork-elements flex"))
 
 
 @receiver(post_delete, sender=Object)
@@ -363,3 +389,51 @@ class Exhibit(models.Model):
     @property
     def date(self):
         return self.creation_date.strftime("%d/%m/%Y")
+
+    def as_html_thumbnail(self, editable=False):
+        link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
+        exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
+        exhibit_info = [
+            p([f"{_('Created by ')}", b(self.owner.user.username)], class_="by"),
+            p(self.date, class_="exbDate"),
+            p(
+                a(f"{self.artworks_count} {_('Artwork(s)')}", href=link_to_exhibit),
+                class_="exhibit-about",
+            ),
+        ]
+
+        button_see_this_exhibit = a(
+            _("See this Exhibition"),
+            href=f"/{self.slug}/",
+            class_="gotoExb",
+        )
+
+        exhibit_card_elements = [
+            exhibit_info,
+            button_see_this_exhibit,
+        ]
+        if editable:
+            exhibit_card_elements.append(
+                a(
+                    _("edit"),
+                    href=reverse("edit-exhibit", query={"id": self.id}),
+                    class_="edit",
+                )
+            )
+            exhibit_card_elements.append(
+                a(
+                    _("delete"),
+                    href=reverse(
+                        "delete-content",
+                        query={"content_type": "exhibit", "id": self.id},
+                    ),
+                    onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+                    class_="delete",
+                )
+            )
+        exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
+        elements = [
+            exhibit_title,
+            exhibit_card,
+        ]
+        return render(elements)
