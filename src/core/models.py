@@ -42,7 +42,29 @@ def create_marker(filename, original_filename):
         return marker_image
 
 
-class Marker(models.Model):
+class ContentMixin:
+    def _get_edit_button(self):
+        content_type = self.__class__.__name__.lower()
+        return a(
+            _("edit"),
+            href=reverse(f"edit-{content_type}", query={"id": self.id}),
+            class_="edit",
+        )
+
+    def _get_delete_button(self):
+        content_type = self.__class__.__name__.lower()
+        return a(
+            _("delete"),
+            href=reverse(
+                "delete-content",
+                query={"content_type": content_type, "id": self.id},
+            ),
+            onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+            class_="delete",
+        )
+
+
+class Marker(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
@@ -102,26 +124,14 @@ class Marker(models.Model):
             return render(
                 [
                     self.as_html(height, width),
-                    a(
-                        _("edit"),
-                        href=reverse("edit-marker", query={"id": self.id}),
-                        class_="edit",
-                    ),
-                    a(
-                        _("delete"),
-                        href=reverse(
-                            "delete-content",
-                            query={"content_type": "marker", "id": self.id},
-                        ),
-                        onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-                        class_="delete",
-                    ),
+                    self._get_edit_button(),
+                    self._get_delete_button(),
                 ]
             )
         return self.as_html(height=height, width=width)
 
 
-class Object(models.Model):
+class Object(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
@@ -277,26 +287,14 @@ class Object(models.Model):
             return render(
                 [
                     self.as_html(height, width),
-                    a(
-                        _("edit"),
-                        href=reverse("edit-object", query={"id": self.id}),
-                        class_="edit",
-                    ),
-                    a(
-                        _("delete"),
-                        href=reverse(
-                            "delete-content",
-                            query={"content_type": "object", "id": self.id},
-                        ),
-                        onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-                        class_="delete",
-                    ),
+                    self._get_edit_button(),
+                    self._get_delete_button(),
                 ]
             )
         return self.as_html(height=height, width=width)
 
 
-class Artwork(models.Model):
+class Artwork(ContentMixin, models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -335,32 +333,17 @@ class Artwork(models.Model):
             self.augmented.as_html_thumbnail(),
         ]
         if editable and not self.in_use:
-            elements.append(
-                a(
-                    _("edit"),
-                    href=reverse("edit-artwork", query={"id": self.id}),
-                    class_="edit",
-                )
-            )
-            elements.append(
-                a(
-                    _("delete"),
-                    href=reverse(
-                        "delete-content",
-                        query={"content_type": "artwork", "id": self.id},
+            elements.extend(
+                [
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                    a(
+                        _("preview"),
+                        href=reverse("artwork-preview", query={"id": self.id}),
+                        class_="preview",
                     ),
-                    onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-                    class_="delete",
-                )
+                ]
             )
-            elements.append(
-                a(
-                    _("preview"),
-                    href=reverse("artwork-preview", query={"id": self.id}),
-                    class_="preview",
-                )
-            )
-
         return render(div(elements, class_="artwork-elements flex"))
 
 
@@ -370,7 +353,7 @@ def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
 
 
-class Exhibit(models.Model):
+class Exhibit(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
@@ -413,23 +396,11 @@ class Exhibit(models.Model):
             button_see_this_exhibit,
         ]
         if editable:
-            exhibit_card_elements.append(
-                a(
-                    _("edit"),
-                    href=reverse("edit-exhibit", query={"id": self.id}),
-                    class_="edit",
-                )
-            )
-            exhibit_card_elements.append(
-                a(
-                    _("delete"),
-                    href=reverse(
-                        "delete-content",
-                        query={"content_type": "exhibit", "id": self.id},
-                    ),
-                    onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-                    class_="delete",
-                )
+            exhibit_card_elements.extend(
+                [
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                ]
             )
         exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
         elements = [
