@@ -14,10 +14,7 @@ from .views import (
     edit_password,
     edit_profile,
     marker_upload,
-    mod,
-    mod_delete,
     object_upload,
-    permission_denied,
     profile,
     signup,
 )
@@ -60,7 +57,4 @@ urlpatterns = [
     path("exhibits/create/", create_exhibit, name="create-exhibit"),
     path("exhibits/edit/", edit_exhibit, name="edit-exhibit"),
     path("content/delete/", delete, name="delete-content"),
-    path("moderator-page/", mod, name="moderator-page"),
-    path("permission-denied/", permission_denied, name="permission-denied"),
-    path("content/mod-delete/", mod_delete, name="mod-delete-content"),
 ]

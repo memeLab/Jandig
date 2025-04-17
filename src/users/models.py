@@ -17,11 +17,6 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.id)
 
-    class Meta:
-        permissions = [
-            ("moderator", "Can moderate content"),
-        ]
-
     @property
     def artworks_count(self):
         """Count of artworks by the user"""

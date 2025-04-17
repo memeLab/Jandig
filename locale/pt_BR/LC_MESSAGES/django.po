@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 16:17+0000\n"
+"POT-Creation-Date: 2025-04-17 16:32+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -42,11 +42,11 @@ msgstr ""
 msgid "Created by "
 msgstr "Criado por "
 
-#: src/core/models.py:384
+#: src/core/models.py:385
 msgid "Artwork(s)"
 msgstr "Obra(s)"
 
-#: src/core/models.py:390
+#: src/core/models.py:393
 msgid "See this Exhibition"
 msgstr "Ver essa Exposição"
 
@@ -635,36 +635,9 @@ msgstr "Lembre-se de mim"
 msgid "Recover password"
 msgstr "Recuperar senha"
 
-#: src/users/jinja2/users/moderator-page.jinja2:12
-msgid "Jandig Exhibits"
-msgstr "Exposições Jandig"
-
-#: src/users/jinja2/users/moderator-page.jinja2:18
-msgid "Jandig Artworks"
-msgstr "Obras Jandig"
-
-#: src/users/jinja2/users/moderator-page.jinja2:24
-msgid "Jandig Markers"
-msgstr "Marcadores Jandig"
-
-#: src/users/jinja2/users/moderator-page.jinja2:30
-msgid "Jandig Objects"
-msgstr "Objetos Jandig"
-
 #: src/users/jinja2/users/password-change.jinja2:14
 msgid "Type your new password."
 msgstr "Digite sua nova senha."
-
-#: src/users/jinja2/users/permission-denied.jinja2:4
-msgid ""
-"You dont have permission to be here, please click on the button to go back."
-msgstr ""
-"Você não tem permissões para estar aqui, por favor clique no botão para "
-"voltar."
-
-#: src/users/jinja2/users/permission-denied.jinja2:5
-msgid "Take me back to where I belong!"
-msgstr "Me leve de volta!"
 
 #: src/users/jinja2/users/components/userbox.jinja2:27
 #: src/users/jinja2/users/profile-edit.jinja2:11
