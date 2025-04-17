@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 15:08+0000\n"
+"POT-Creation-Date: 2025-04-17 15:51+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -31,7 +31,6 @@ msgid "edit"
 msgstr ""
 
 #: src/core/models.py:57
-#, fuzzy
 msgid "delete"
 msgstr "Excluir"
 
@@ -116,7 +115,6 @@ msgid "Username/email not found"
 msgstr "Nome de usuário / email não encontrado"
 
 #: src/users/forms.py:168
-#, fuzzy
 msgid "Wrong password!"
 msgstr "Senha errada"
 
@@ -151,7 +149,6 @@ msgid ""
 msgstr "Este nome de exibição já está em uso. Por favor, escolha outro nome."
 
 #: src/users/forms.py:293
-#, fuzzy
 msgid "Url can't contain spaces or special characters"
 msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
 
@@ -184,7 +181,6 @@ msgstr ""
 "registrado e verifique sua pasta de spam."
 
 #: src/blog/jinja2/blog/category.jinja2:8 src/blog/jinja2/blog/detail.jinja2:5
-#, fuzzy
 msgid "< Back to Blog"
 msgstr "Página inicial"
 
@@ -206,12 +202,10 @@ msgid "View as JPG"
 msgstr "Ver como JPG"
 
 #: src/blog/jinja2/blog/clipping.jinja2:26
-#, fuzzy
 msgid "View File"
 msgstr "Ver Arquivo"
 
 #: src/blog/jinja2/blog/detail.jinja2:24
-#, fuzzy
 msgid "Back to Top"
 msgstr "Página inicial"
 
@@ -229,7 +223,6 @@ msgid "See more"
 msgstr "Ver mais"
 
 #: src/core/jinja2/core/base.jinja2:44
-#, fuzzy
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 
@@ -417,13 +410,14 @@ msgid "Welcome to Jandig"
 msgstr "Bem vindo ao Jandig"
 
 #: src/core/jinja2/core/home.jinja2:42
-#, fuzzy
 msgid "An Open Source Augmented Reality art community."
 msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
 #: src/core/jinja2/core/home.jinja2:43
-msgid "To see the Artworks you need to grant camera access to the app."
-msgstr "Para ver as Obras você precisa dar acesso a câmera no aplicativo."
+msgid ""
+"To see theeeee Artworksssssss you need to grant camera access to the app."
+msgstr ""
+"Para ver asssss Obrasssss você precisa dar acesso a câmera no aplicativo."
 
 #: src/core/jinja2/core/home.jinja2:45
 msgid "Go to camera"
@@ -516,12 +510,10 @@ msgstr "Publicar obra"
 
 #: src/users/jinja2/users/edit-marker.jinja2:9
 #: src/users/jinja2/users/edit-object.jinja2:9
-#, fuzzy
 msgid "Edit object"
 msgstr "objeto"
 
 #: src/users/jinja2/users/edit-marker.jinja2:15
-#, fuzzy
 msgid "Edit Marker's title"
 msgstr "Título do Marcador"
 
@@ -534,7 +526,6 @@ msgstr ""
 "atualizar isto assim que possível."
 
 #: src/users/jinja2/users/edit-object.jinja2:15
-#, fuzzy
 msgid "Edit Object's title"
 msgstr "Título do Objeto"
 
@@ -569,7 +560,8 @@ msgstr "Ajustar posição"
 #: src/users/jinja2/users/edit-object.jinja2:98
 #: src/users/jinja2/users/upload-object.jinja2:141
 msgid "Invalid file type! Only image or video files are accepted."
-msgstr "Tipo inválido de arquivo! Somente arquivos de imagem ou vídeo são aceitos."
+msgstr ""
+"Tipo inválido de arquivo! Somente arquivos de imagem ou vídeo são aceitos."
 
 #: src/users/jinja2/users/exhibit-create.jinja2:12
 msgid "Create Jandig Exhibition"
@@ -616,7 +608,6 @@ msgid "Publish Exhibit"
 msgstr "Publicar Exposição"
 
 #: src/users/jinja2/users/exhibit-create.jinja2:102
-#, fuzzy
 msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
 msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
 
@@ -634,7 +625,6 @@ msgstr "Faça login para continuar"
 
 #: src/users/jinja2/users/login.jinja2:42
 #: src/users/jinja2/users/signup.jinja2:44
-#, fuzzy
 msgid "Remember me"
 msgstr "Lembre-se de mim"
 
@@ -643,22 +633,18 @@ msgid "Recover password"
 msgstr "Recuperar senha"
 
 #: src/users/jinja2/users/moderator-page.jinja2:12
-#, fuzzy
 msgid "Jandig Exhibits"
 msgstr "Exposições Jandig"
 
 #: src/users/jinja2/users/moderator-page.jinja2:18
-#, fuzzy
 msgid "Jandig Artworks"
 msgstr "Obras Jandig"
 
 #: src/users/jinja2/users/moderator-page.jinja2:24
-#, fuzzy
 msgid "Jandig Markers"
 msgstr "Marcadores Jandig"
 
 #: src/users/jinja2/users/moderator-page.jinja2:30
-#, fuzzy
 msgid "Jandig Objects"
 msgstr "Objetos Jandig"
 
@@ -780,9 +766,8 @@ msgstr "Enviar Objeto"
 
 #: src/users/jinja2/users/upload-object.jinja2:11
 #: src/users/jinja2/users/upload.jinja2:14
-#, fuzzy
 msgid "Edit_object"
-msgstr "objeto"
+msgstr "Editar objeto"
 
 #: src/users/jinja2/users/upload-object.jinja2:19
 #: src/users/jinja2/users/upload.jinja2:22
@@ -857,7 +842,6 @@ msgid "Delete"
 msgstr "Excluir"
 
 #: src/users/jinja2/users/components/moderator-item-list.jinja2:33
-#, fuzzy
 msgid "artwork(s)"
 msgstr "Obra(s)"
 
@@ -902,4 +886,3 @@ msgstr "Curador Jandig"
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
 msgstr "Sem Exposições."
-
