@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 16:32+0000\n"
+"POT-Creation-Date: 2025-04-17 17:11+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,6 +25,10 @@ msgstr "Inglês"
 #: src/config/settings.py:193
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
+
+#: src/config/settings.py:194
+msgid "European Spanish"
+msgstr "Espanhol Europeu"
 
 #: src/core/models.py:49
 msgid "edit"
@@ -176,7 +180,7 @@ msgstr "Título da Exposição"
 msgid "Complete with your Exhibit URL here"
 msgstr "Complete sua URL de exibição aqui"
 
-#: src/users/views.py:81
+#: src/users/views.py:80
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly. If you "
@@ -417,10 +421,9 @@ msgid "An Open Source Augmented Reality art community."
 msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
 #: src/core/jinja2/core/home.jinja2:43
-msgid ""
-"To see theeeee Artworksssssss you need to grant camera access to the app."
+msgid "To see the Artworks you need to grant camera access to the app."
 msgstr ""
-"Para ver asssss Obrasssss você precisa dar acesso a câmera no aplicativo."
+"Para ver as Obras você precisa dar acesso a câmera no aplicativo."
 
 #: src/core/jinja2/core/home.jinja2:45
 msgid "Go to camera"
@@ -430,7 +433,7 @@ msgstr "Ir para câmera"
 msgid "Select your language"
 msgstr "Selecione seu idioma"
 
-#: src/core/jinja2/core/language-select-modal.jinja2:16
+#: src/core/jinja2/core/language-select-modal.jinja2:18
 msgid "Ok"
 msgstr "Ok"
 
