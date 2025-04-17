@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 15:51+0000\n"
+"POT-Creation-Date: 2025-04-17 16:17+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -38,7 +38,15 @@ msgstr "Excluir"
 msgid "preview"
 msgstr ""
 
-#: src/core/models.py:389
+#: src/core/models.py:381
+msgid "Created by "
+msgstr "Criado por "
+
+#: src/core/models.py:384
+msgid "Artwork(s)"
+msgstr "Obra(s)"
+
+#: src/core/models.py:390
 msgid "See this Exhibition"
 msgstr "Ver essa Exposição"
 
@@ -329,11 +337,6 @@ msgstr ""
 "uma das bordas ou aproximar demais a câmera do marcador inviabiliza o "
 "reconhecimento, por exemplo. Essa característica deve sempre ser levada em "
 "consideração na produção e aplicação dos marcadores."
-
-#: src/core/jinja2/core/exhibit_detail.jinja2:9
-#: src/users/jinja2/users/components/moderator-item-list.jinja2:31
-msgid "Created by "
-msgstr "Criado por "
 
 #: src/core/jinja2/core/exhibit_detail.jinja2:10
 #: src/users/jinja2/users/components/moderator-item-list.jinja2:34
