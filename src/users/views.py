@@ -119,7 +119,6 @@ def profile(request):
     return render(request, "users/profile.jinja2", ctx)
 
 
-@cache_page(60 * 60)
 def get_element(request, form, form_class, form_type, source, author, existent_element):
     element = None
 
@@ -136,7 +135,6 @@ def get_element(request, form, form_class, form_type, source, author, existent_e
     return element
 
 
-@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data["marker"]
     marker_author = form.cleaned_data["marker_author"]
@@ -153,7 +151,6 @@ def get_marker(request, form):
     )
 
 
-@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data["augmented"]
     object_author = form.cleaned_data["augmented_author"]
