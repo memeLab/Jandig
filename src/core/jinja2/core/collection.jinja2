@@ -20,7 +20,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
+                    <a href = "/see_all/?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
                     {% endif %}
                     {% if seeall == True %}
                         <nav> 
