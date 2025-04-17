@@ -5,7 +5,9 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from fast_html import div, img, render, video
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from fast_html import a, div, img, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -13,6 +15,11 @@ from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
 log = logging.getLogger()
+
+DEFAULT_MARKER_THUMBNAIL_HEIGHT = 50
+DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
+DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
+DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 
 
 def create_patt(filename, original_filename):
@@ -88,8 +95,30 @@ class Marker(models.Model):
             )
         )
 
-    def as_html_thumbnail(self):
-        return self.as_html(height=50, width=50)
+    def as_html_thumbnail(self, editable: bool = False):
+        height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
+        width = DEFAULT_MARKER_THUMBNAIL_WIDTH
+        if editable and not self.in_use:
+            return render(
+                [
+                    self.as_html(height, width),
+                    a(
+                        _("edit"),
+                        href=reverse("edit-marker", query={"id": self.id}),
+                        class_="edit",
+                    ),
+                    a(
+                        _("delete"),
+                        href=reverse(
+                            "delete-content",
+                            query={"content_type": "marker", "id": self.id},
+                        ),
+                        onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+                        class_="delete",
+                    ),
+                ]
+            )
+        return self.as_html(height=height, width=width)
 
 
 class Object(models.Model):
@@ -239,11 +268,31 @@ class Object(models.Model):
         else:
             return render(img(**attributes))
 
-    def as_html_thumbnail(self):
-        default_thumbnail_height = 50
-        default_thumbnail_width = 50
-        height = default_thumbnail_height * self.yproportion
-        width = default_thumbnail_width * self.xproportion
+    def as_html_thumbnail(self, editable=False):
+        thumbnail_height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
+        thumbnail_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
+        height = thumbnail_height * self.yproportion
+        width = thumbnail_width * self.xproportion
+        if editable and not self.in_use:
+            return render(
+                [
+                    self.as_html(height, width),
+                    a(
+                        _("edit"),
+                        href=reverse("edit-object", query={"id": self.id}),
+                        class_="edit",
+                    ),
+                    a(
+                        _("delete"),
+                        href=reverse(
+                            "delete-content",
+                            query={"content_type": "object", "id": self.id},
+                        ),
+                        onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+                        class_="delete",
+                    ),
+                ]
+            )
         return self.as_html(height=height, width=width)
 
 

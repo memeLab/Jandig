@@ -12,20 +12,7 @@
             
             {# Begin defining variables #}
 
-            {% if element_type =="marker" or element_type=="object" %}
-                {%set canEdit_object%}
-                    {% if editable == True and not element.in_use %}
-                        <a href="{{ url('edit-object') }}?id={{element.id}}" class="edit">edit</a>                
-                    {% endif %}
-                {%endset%}
-
-                {%set canEdit_marker%}
-                    {% if editable == True and not element.in_use %}
-                        <a href="{{ url('edit-marker') }}?id={{element.id}}" class="edit">edit</a>                
-                    {% endif %}
-                {%endset%}
-
-            {% elif element_type == "exhibit" %}
+            {% if element_type == "exhibit" %}
                 {% set ExhibitTitle %}
                 <a href="{{url('exhibit-detail')}}?id={{element.id}}">
                     <h1 class="exhibit-name">{{element.name}}</h1>
@@ -53,14 +40,10 @@
             {# End of defining variables #}
 
             {% if element_type == "marker"%}
-                {{ element.as_html_thumbnail() | safe }}
-                {{canDelete_Entity}}
-                {{canEdit_marker}}
+                {{ element.as_html_thumbnail(editable=editable) | safe }}
 
             {% elif element_type == "object" %}
-                {{ element.as_html_thumbnail() | safe }}
-                {{canDelete_Entity}}
-                {{canEdit_object}}
+                {{ element.as_html_thumbnail(editable=editable) | safe }}
 
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
