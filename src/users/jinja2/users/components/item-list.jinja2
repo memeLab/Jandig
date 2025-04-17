@@ -33,8 +33,6 @@
                 {%endset%}   
 
                 {%set ExhibitInfo%}
-                    {#<p class="exhibit-name">{{element.name}}</p>#}
-                    {#<p class="exhibit-slug">TO_BE_FILLED_ON_SCRIPT<b>{{element.slug}}</b></p>#}
                     <p class="by">{{_("Created by ")}} <b>{{element.owner.user.username}}</b></p>
                     <p class="exbDate">{{element.date}}</p>
                     <p class="exhibit-about"><a href="{{url('exhibit-detail')}}?id={{element.id}}">{{element.artworks_count}} {{ _("Artwork(s)") }}</a></p>  
@@ -91,14 +89,5 @@
             {% endif %}
         </div>
     {% endfor %}
-    
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {# Importao axios (biblioteca para fazer request em api) #} 
-    <script>
-        $(".exhibit-slug").each(function(i,exhibit_slug){
-            highlight_part = "<b>" + exhibit_slug.innerHTML.split("<b>")[1]
-            site_url = window.location.protocol + "//" + window.location.host + "/"
-            exhibit_slug.innerHTML = site_url + highlight_part
-        }) 
 
-    </script>
 </section>
