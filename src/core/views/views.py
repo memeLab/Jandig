@@ -117,11 +117,11 @@ def see_all(request, which="", page=1):
     ctx = {}
 
     per_page = settings.PAGE_SIZE
-    page = request.GET.get("page", 1)
+    page_parameter = request.GET.get("page", 1)
 
     try:
         # Bots insert random strings in the page parameter
-        page = int(page)
+        page = int(page_parameter)
     except ValueError:
         page = 1
 

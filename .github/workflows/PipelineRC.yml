@@ -65,6 +65,9 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.sources=src/
+            -Dsonar.tests=src/core/tests/,src/users/tests/,src/blog/tests/
+            -Dsonar.exclusions=**/migrations/**
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}

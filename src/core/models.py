@@ -313,10 +313,6 @@ class Artwork(ContentMixin, models.Model):
         return self.exhibits.count()
 
     @property
-    def exhibits_list(self):
-        return list(self.exhibits)
-
-    @property
     def in_use(self):
         if self.exhibits_count > 0:
             return True
