@@ -106,7 +106,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: jandigarte/django:${GITHUB_REF#refs/tags/}
+          tags: jandigarte/django:${{ github.ref_name }}
           target: base
       
       - name: Configure AWS credentials
