@@ -227,7 +227,7 @@ def create_exhibit(request):
     else:
         form = ExhibitForm()
 
-    artworks = Artwork.objects.all().order_by("-id")
+    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
 
     return render(
         request,
