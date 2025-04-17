@@ -66,9 +66,7 @@
 
             {% elif element_type == "artwork" %}
                 <div class="artwork-elements flex">
-                    {{ element.marker.as_html_thumbnail() | safe }}
-                    <div class="separator"></div>
-                    {{ element.augmented.as_html_thumbnail() | safe }} 
+                    {{ element.as_html_thumbnail() | safe }}
                     {% if editable == True %}
                         <a href="{{ url('edit-artwork') }}?id={{element.id}}" class="edit">edit</a>
                     {% endif %}

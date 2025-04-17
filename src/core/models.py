@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from fast_html import img, render, video
+from fast_html import div, img, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -278,6 +278,15 @@ class Artwork(models.Model):
 
     def __str__(self):
         return self.title
+
+    def as_html_thumbnail(self):
+        return render(
+            [
+                self.marker.as_html_thumbnail(),
+                div(class_="separator"),
+                self.augmented.as_html_thumbnail(),
+            ]
+        )
 
 
 @receiver(post_delete, sender=Object)
