@@ -191,6 +191,7 @@ LANGUAGE_CODE = "en"
 LANGUAGES = (
     ("en-us", _("English")),
     ("pt-br", _("Brazilian Portuguese")),
+    ("es-es", _("European Spanish")),
 )
 
 TIME_ZONE = "UTC"
