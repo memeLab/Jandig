@@ -5,6 +5,9 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from fast_html import a, b, div, h1, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -12,6 +15,11 @@ from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
 log = logging.getLogger()
+
+DEFAULT_MARKER_THUMBNAIL_HEIGHT = 50
+DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
+DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
+DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 
 
 def create_patt(filename, original_filename):
@@ -34,7 +42,29 @@ def create_marker(filename, original_filename):
         return marker_image
 
 
-class Marker(models.Model):
+class ContentMixin:
+    def _get_edit_button(self):
+        content_type = self.__class__.__name__.lower()
+        return a(
+            _("edit"),
+            href=reverse(f"edit-{content_type}", query={"id": self.id}),
+            class_="edit",
+        )
+
+    def _get_delete_button(self):
+        content_type = self.__class__.__name__.lower()
+        return a(
+            _("delete"),
+            href=reverse(
+                "delete-content",
+                query={"content_type": content_type, "id": self.id},
+            ),
+            onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
+            class_="delete",
+        )
+
+
+class Marker(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
@@ -67,8 +97,41 @@ class Marker(models.Model):
             return True
         return False
 
+    def as_html(self, height: int = None, width: int = None):
+        if not height:
+            height = self.height
+        if not width:
+            width = self.width
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "class_": "trigger-modal",
+            "data_elem_type": "marker",
+            "src": self.source.url,
+        }
+        return render(
+            img(
+                **attributes,
+                height=height,
+                width=width,
+            )
+        )
 
-class Object(models.Model):
+    def as_html_thumbnail(self, editable: bool = False):
+        height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
+        width = DEFAULT_MARKER_THUMBNAIL_WIDTH
+        if editable and not self.in_use:
+            return render(
+                [
+                    self.as_html(height, width),
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                ]
+            )
+        return self.as_html(height=height, width=width)
+
+
+class Object(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
@@ -189,8 +252,49 @@ class Object(models.Model):
             return True
         return False
 
+    def as_html(self, height: int = None, width: int = None):
+        if not height:
+            height = self.height
+        if not width:
+            width = self.width
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "class_": "trigger-modal",
+            "data_elem_type": "object",
+            "src": self.source.url,
+            "height": height,
+            "width": width,
+        }
+        if self.is_video:
+            return render(
+                video(
+                    autoplay=True,
+                    loop=True,
+                    muted=True,
+                    **attributes,
+                )
+            )
+        else:
+            return render(img(**attributes))
 
-class Artwork(models.Model):
+    def as_html_thumbnail(self, editable=False):
+        thumbnail_height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
+        thumbnail_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
+        height = thumbnail_height * self.yproportion
+        width = thumbnail_width * self.xproportion
+        if editable and not self.in_use:
+            return render(
+                [
+                    self.as_html(height, width),
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                ]
+            )
+        return self.as_html(height=height, width=width)
+
+
+class Artwork(ContentMixin, models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -222,6 +326,26 @@ class Artwork(models.Model):
     def __str__(self):
         return self.title
 
+    def as_html_thumbnail(self, editable=False):
+        elements = [
+            self.marker.as_html_thumbnail(),
+            div(class_="separator"),
+            self.augmented.as_html_thumbnail(),
+        ]
+        if editable and not self.in_use:
+            elements.extend(
+                [
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                    a(
+                        _("preview"),
+                        href=reverse("artwork-preview", query={"id": self.id}),
+                        class_="preview",
+                    ),
+                ]
+            )
+        return render(div(elements, class_="artwork-elements flex"))
+
 
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
@@ -229,7 +353,7 @@ def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
 
 
-class Exhibit(models.Model):
+class Exhibit(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
@@ -248,3 +372,39 @@ class Exhibit(models.Model):
     @property
     def date(self):
         return self.creation_date.strftime("%d/%m/%Y")
+
+    def as_html_thumbnail(self, editable=False):
+        link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
+        exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
+        exhibit_info = [
+            p([f"{_('Created by ')}", b(self.owner.user.username)], class_="by"),
+            p(self.date, class_="exbDate"),
+            p(
+                a(f"{self.artworks_count} {_('Artwork(s)')}", href=link_to_exhibit),
+                class_="exhibit-about",
+            ),
+        ]
+
+        button_see_this_exhibit = a(
+            _("See this Exhibition"),
+            href=f"/{self.slug}/",
+            class_="gotoExb",
+        )
+
+        exhibit_card_elements = [
+            exhibit_info,
+            button_see_this_exhibit,
+        ]
+        if editable:
+            exhibit_card_elements.extend(
+                [
+                    self._get_edit_button(),
+                    self._get_delete_button(),
+                ]
+            )
+        exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
+        elements = [
+            exhibit_title,
+            exhibit_card,
+        ]
+        return render(elements)

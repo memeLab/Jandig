@@ -26,6 +26,7 @@ dependencies = [
   "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
   "djangorestframework-simplejwt>=5.5.0",
+  "fast-html>=1.0.11",
 ]
 
 [dependency-groups]

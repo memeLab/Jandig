@@ -332,6 +332,15 @@ wheels = [
 ]
 
 [[package]]
+name = "fast-html"
+version = "1.0.11"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/2b/9cc1c386fdf55d04c1f1346ec869eda28bd2da4e10f5514948b892b5f22a/fast_html-1.0.11.tar.gz", hash = "sha256:6eb8ed1f569f8e08b8af68e9dcef27a3a3e6593ac01cb3bad5647dfa9e274586", size = 8128 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/10/3c/7059f6357f34ef95dff955f0f14b6eba10346cbb137186e4ff3f2069ecbc/fast_html-1.0.11-py3-none-any.whl", hash = "sha256:3804fa9166ac4b1b9d7ad1e8831430efd082d1657a967c2c1baa4e58cfeb53e3", size = 8991 },
+]
+
+[[package]]
 name = "gevent"
 version = "24.11.1"
 source = { registry = "https://pypi.org/simple" }
@@ -427,7 +436,7 @@ wheels = [
 
 [[package]]
 name = "jandig"
-version = "1.5.0"
+version = "1.5.1"
 source = { virtual = "." }
 dependencies = [
     { name = "babel" },
@@ -441,6 +450,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
     { name = "drf-nested-routers" },
+    { name = "fast-html" },
     { name = "gevent" },
     { name = "gunicorn" },
     { name = "jinja2" },
@@ -480,6 +490,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = "~=3.15" },
     { name = "djangorestframework-simplejwt", specifier = ">=5.5.0" },
     { name = "drf-nested-routers", specifier = "~=0.94" },
+    { name = "fast-html", specifier = ">=1.0.11" },
     { name = "gevent", specifier = "~=24.11" },
     { name = "gunicorn", specifier = "~=23.0" },
     { name = "jinja2", specifier = "~=3.1" },
