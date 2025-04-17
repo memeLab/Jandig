@@ -33,7 +33,6 @@ dependencies = [
 dev = [
   "dj-inmemorystorage~=2.1",
   "django-debug-toolbar~=5.1",
-  "invoke~=2.2",
   "playwright~=1.49",
   "pytest-django~=4.9",
   "pytest-playwright~=0.4",

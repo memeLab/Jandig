@@ -313,10 +313,6 @@ class Artwork(ContentMixin, models.Model):
         return self.exhibits.count()
 
     @property
-    def exhibits_list(self):
-        return list(self.exhibits)
-
-    @property
     def in_use(self):
         if self.exhibits_count > 0:
             return True
@@ -376,11 +372,15 @@ class Exhibit(ContentMixin, models.Model):
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
         exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
+
         exhibit_info = [
-            p([f"{_('Created by ')}", b(self.owner.user.username)], class_="by"),
+            p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
             p(self.date, class_="exbDate"),
             p(
-                a(f"{self.artworks_count} {_('Artwork(s)')}", href=link_to_exhibit),
+                a(
+                    "{} {}".format(self.artworks_count, _("Artwork(s)")),
+                    href=link_to_exhibit,
+                ),
                 class_="exhibit-about",
             ),
         ]

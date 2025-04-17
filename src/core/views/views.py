@@ -2,20 +2,17 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
 from core.forms import ExhibitForm
 from core.models import Artwork, Exhibit, Marker, Object
 
 
-@cache_page(60 * 60)
 @require_http_methods(["GET"])
 def service_worker(request):
     return render(request, "core/sw.js", content_type="application/x-javascript")
 
 
-@cache_page(60 * 60)
 @require_http_methods(["GET"])
 def manifest(request):
     return render(
@@ -29,7 +26,6 @@ def index(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
-@cache_page(60 * 2)
 @require_http_methods(["GET"])
 def collection(request):
     exhibits = (
@@ -112,7 +108,6 @@ def related_content(request):
     return render(request, "core/collection.jinja2", ctx)
 
 
-@cache_page(60 * 2)
 @require_http_methods(["GET"])
 def see_all(request, which="", page=1):
     request_type = request.GET.get("which", which)
@@ -122,11 +117,11 @@ def see_all(request, which="", page=1):
     ctx = {}
 
     per_page = settings.PAGE_SIZE
-    page = request.GET.get("page", 1)
+    page_parameter = request.GET.get("page", 1)
 
     try:
         # Bots insert random strings in the page parameter
-        page = int(page)
+        page = int(page_parameter)
     except ValueError:
         page = 1
 
@@ -168,7 +163,6 @@ def exhibit_select(request):
     return render(request, "core/exhibit_select.jinja2", {"form": form})
 
 
-@cache_page(60 * 60)
 @require_http_methods(["GET"])
 def exhibit_detail(request):
     index = request.GET.get("id", -1)

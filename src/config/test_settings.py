@@ -4,6 +4,7 @@ import environ
 
 env = environ.Env()
 
+
 STORAGES = {
     "default": {
         "BACKEND": "inmemorystorage.InMemoryStorage",
@@ -12,6 +13,7 @@ STORAGES = {
         "BACKEND": "inmemorystorage.InMemoryStorage",
     },
 }
+
 
 # Set MEDIA_URL to include the test server URL
 MEDIA_URL = "http://testserver"
