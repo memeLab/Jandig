@@ -34,8 +34,21 @@ migrate:
 gen:
 	uv run playwright codegen -b chromium --target python-pytest localhost:8000
 
-translate_es:
-	docker compose exec django uv run inv i18n -l es_ES
+translate_%:
+	echo "Extracting Django strings..."
+	docker compose exec django uv run python3 ./src/manage.py makemessages --ignore .venv --ignore cache --keep-pot --locale $*
+	echo "Extracting Jinja2 strings..."
+	docker compose exec django pybabel extract -F ./etc/babel.cfg -o ./locale/jinja2.pot .
+	echo "Merging Django + Jinja2 strings..."
+	docker compose exec django msgcat ./locale/django.pot ./locale/jinja2.pot --use-first -o ./locale/join.pot
+	echo "Removing unwanted language header..."
+	docker compose exec django sed -i '/"Language: \\n"/d' ./locale/join.pot
+	echo "Merge translations into language..."
+	docker compose exec django msgmerge ./locale/$*/LC_MESSAGES/django.po ./locale/join.pot -U
+	docker compose exec django rm ./locale/*.pot
 
+# Aliases for backward compatibility
+translate_es: 
+	@$(MAKE) translate_es_ES
 translate_pt:
-	docker compose exec django uv run inv i18n -l pt_BR
+	@$(MAKE) translate_pt_BR

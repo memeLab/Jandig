@@ -10,7 +10,7 @@ uv pip list
 uv run python src/manage.py collectstatic --no-input
 uv run python src/manage.py migrate
 uv run sphinx-build docs/ build/
-uv run python etc/scripts/compilemessages.py
+uv run python src/manage.py compilemessages --ignore .venv --ignore cache
 
 if [ "$USE_GUNICORN" = "true" ]; then
   echo "Running Gunicorn Server"
