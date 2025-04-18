@@ -27,7 +27,6 @@ WORKDIR /jandig
 COPY ./src/ /jandig/src/
 COPY ./docs/ /jandig/docs/
 COPY ./locale/ /jandig/locale/
-COPY ./tasks.py /jandig/tasks.py
 COPY ./run.sh /jandig/run.sh
 COPY ./etc/ /jandig/etc/
 
