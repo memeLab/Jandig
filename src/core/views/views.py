@@ -226,7 +226,7 @@ def create_exhibit(request):
 
     return render(
         request,
-        "users/exhibit-create.jinja2",
+        "core/exhibit_create.jinja2",
         {
             "form": form,
             "artworks": artworks,
@@ -269,13 +269,13 @@ def edit_exhibit(request):
     model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
 
     artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-
     return render(
         request,
-        "users/exhibit-edit.jinja2",
+        "core/exhibit_create.jinja2",
         {
             "form": ExhibitForm(initial=model_data),
             "artworks": artworks,
             "selected_artworks": model_artworks,
+            "edit": True,
         },
     )

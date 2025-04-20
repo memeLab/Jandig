@@ -9,7 +9,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
-            <h1 class="titExb">{{ _('Create Jandig Exhibition') }}</h1>
+            {% if edit %}
+                <h1 class="titExb">{{ _('Edit Jandig Exhibition') }}</h1>
+            {% else %}
+                <h1 class="titExb">{{ _('Create Jandig Exhibition') }}</h1>
+            {% endif %}
             <button id="select-artworks" class="select-btn">
                 {{ _('Select Artworks') }}
             </button>
@@ -61,7 +65,11 @@
                                 {{ form.visible_fields()[1].errors }}
                             </div>
                         </p>
-                    <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    {% if edit %}
+                        <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Edit Exhibit') }}"/>
+                    {% else %}
+                        <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    {% endif %}
                 </div>
             </form>
         </div>
