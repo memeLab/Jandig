@@ -5,7 +5,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 
-from core.forms import ExhibitSelectForm, ExhibitForm
+from core.forms import ExhibitForm, ExhibitSelectForm
 from core.models import Artwork, Exhibit, Marker, Object
 from users.models import Profile
 

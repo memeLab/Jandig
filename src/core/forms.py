@@ -1,12 +1,14 @@
+import re
+
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Exhibit
-from django.utils.translation import gettext_lazy as _
-import re
-from django.core.exceptions import ValidationError
+
 
 class ExhibitSelectForm(forms.Form):
     exhibit = forms.ModelChoiceField(queryset=Exhibit.objects.all().order_by("name"))
+
 
 class ExhibitForm(forms.Form):
     name = forms.CharField(max_length=50, required=True)
@@ -17,7 +19,7 @@ class ExhibitForm(forms.Form):
 
     def clean_name(self):
         name = self.cleaned_data["name"]
-        if Exhibit.objects.filter(slug=name).exists():
+        if Exhibit.objects.filter(name=name).exists():
             raise forms.ValidationError(
                 _(
                     "This name is already being used. Please choose another name for your exhibit."
@@ -27,7 +29,7 @@ class ExhibitForm(forms.Form):
 
     def clean_slug(self):
         slug = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_]*$", slug):
+        if not re.match("^[a-zA-Z0-9_-]*$", slug):
             raise forms.ValidationError(
                 _("Url can't contain spaces or special characters")
             )

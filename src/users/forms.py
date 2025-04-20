@@ -1,5 +1,4 @@
 import logging
-import re
 from io import BytesIO
 
 from django import forms
@@ -12,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from core.models import Exhibit, Marker, Object
+from core.models import Marker, Object
 
 from .choices import COUNTRY_CHOICES
 
@@ -267,5 +266,3 @@ class ArtworkForm(forms.Form):
         self.fields["description"].widget.attrs["placeholder"] = _(
             "Artwork description"
         )
-
-
