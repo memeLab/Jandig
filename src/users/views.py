@@ -20,7 +20,6 @@ from core.models import Artwork, Exhibit, Marker, Object
 
 from .forms import (
     ArtworkForm,
-    ExhibitForm,
     PasswordChangeForm,
     ProfileForm,
     SignupForm,
@@ -203,38 +202,6 @@ def create_artwork(request):
     )
 
 
-@login_required
-def create_exhibit(request):
-    if request.method == "POST":
-        form = ExhibitForm(request.POST)
-        if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
-            exhibit = Exhibit(
-                owner=request.user.profile,
-                name=form.cleaned_data["name"],
-                slug=form.cleaned_data["slug"],
-            )
-
-            exhibit.save()
-            exhibit.artworks.set(artworks)
-
-            return redirect("profile")
-    else:
-        form = ExhibitForm()
-
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-
-    return render(
-        request,
-        "users/exhibit-create.jinja2",
-        {
-            "form": form,
-            "artworks": artworks,
-        },
-    )
-
-
 def upload_elements(request, form_class, form_type, route):
     if request.method == "POST":
         form = form_class(request.POST, request.FILES)
@@ -382,53 +349,6 @@ def edit_artwork(request):
             "object_list": Object.objects.all(),
             "selected_marker": model.marker.id,
             "selected_object": model.augmented.id,
-        },
-    )
-
-
-@login_required
-def edit_exhibit(request):
-    index = request.GET.get("id", "-1")
-    model = Exhibit.objects.filter(id=index)
-    if not model or model.first().owner != Profile.objects.get(user=request.user):
-        raise Http404
-
-    if request.method == "POST":
-        form = ExhibitForm(request.POST)
-
-        form.full_clean()
-        if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
-
-            model_data = {
-                "name": form.cleaned_data["name"],
-                "slug": form.cleaned_data["slug"],
-            }
-            model.update(**model_data)
-            model = model.first()
-            model.artworks.set(artworks)
-
-            return redirect("profile")
-
-    model = model.first()
-    model_artworks = ""
-    for artwork in model.artworks.all():
-        model_artworks += str(artwork.id) + ","
-
-    model_artworks = model_artworks[:-1]
-
-    model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
-
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-
-    return render(
-        request,
-        "users/exhibit-edit.jinja2",
-        {
-            "form": ExhibitForm(initial=model_data),
-            "artworks": artworks,
-            "selected_artworks": model_artworks,
         },
     )
 

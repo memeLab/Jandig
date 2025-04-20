@@ -5,10 +5,8 @@ from .forms import LoginForm
 from .views import (
     ResetPasswordView,
     create_artwork,
-    create_exhibit,
     delete,
     edit_artwork,
-    edit_exhibit,
     edit_marker,
     edit_object,
     edit_password,
@@ -54,7 +52,5 @@ urlpatterns = [
     path("markers/edit/", edit_marker, name="edit-marker"),
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),
-    path("exhibits/create/", create_exhibit, name="create-exhibit"),
-    path("exhibits/edit/", edit_exhibit, name="edit-exhibit"),
     path("content/delete/", delete, name="delete-content"),
 ]
