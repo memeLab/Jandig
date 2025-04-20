@@ -27,16 +27,25 @@
         }
         function usedIn(artworks_count, exhibits_count, element_src, element_id, elemType){
 
-            $('#element-analytics').replaceWith(
-                '<p id="element-analytics">'+
-                {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' +
-                artworks_count +  {{ _(" artworks")|tojson }} + '</a>' +
-                {{ _(" and in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' + exhibits_count +
-                {{ _(" Exhibits")|tojson }} + '</a>' +
-                ( element_src.endsWith('.mp4') || element_src.endsWith('.webm') ? 
-                    '<video muted autoplay loop id="element-src" class="preview-content" src="' + element_src + '"></video>' : 
-                    '<img id="element-src" class="preview-content" src="' + element_src + '"/>')
-            )
+            let analyticsContent = '<p id="element-analytics">';
+            if (artworks_count > 0) {
+                analyticsContent += {{ _(" Used in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' +
+                artworks_count + {{ _(" artworks")|tojson }} + '</a>';
+            } else {
+                analyticsContent += '0 ' + {{ _("artworks")|tojson }};
+            }
+            if (exhibits_count > 0) {
+                analyticsContent += {{ _(" and in ")|tojson }} + '<a href="{{ url('related-content') }}?id=' + element_id + '&type=' + elemType + '">' +
+                exhibits_count + {{ _(" Exhibits")|tojson }} + '</a>';
+            } else {
+                analyticsContent += ' 0 ' + {{ _("Exhibits")|tojson }};
+            }
+            analyticsContent += (element_src.endsWith('.mp4') || element_src.endsWith('.webm') ? 
+                '<video muted autoplay loop id="element-src" class="preview-content" src="' + element_src + '"></video>' : 
+                '<img id="element-src" class="preview-content" src="' + element_src + '"/>');
+            analyticsContent += '</p>';
+            $('#element-analytics').replaceWith(analyticsContent);
+            
         }
         function usedInExhibit(marker_id, object_id, exhibits_count, marker, augmented, element_id){
             let object_tag = ''
