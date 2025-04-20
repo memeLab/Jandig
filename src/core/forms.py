@@ -17,9 +17,20 @@ class ExhibitForm(forms.Form):
     # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit
     artworks = forms.CharField(max_length=1000)
 
+    def __init__(self, *args, **kwargs):
+        self.exhibit_id = kwargs.pop("exhibit_id", None)
+        super(ExhibitForm, self).__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
+        self.fields["slug"].widget.attrs["placeholder"] = _(
+            "Complete with your Exhibit URL here"
+        )
+
     def clean_name(self):
         name = self.cleaned_data["name"]
-        if Exhibit.objects.filter(name=name).exists():
+        qs = Exhibit.objects.filter(name=name)
+        if self.exhibit_id:
+            qs = qs.exclude(id=self.exhibit_id)
+        if qs.exists():
             raise forms.ValidationError(
                 _(
                     "This name is already being used. Please choose another name for your exhibit."
@@ -33,18 +44,13 @@ class ExhibitForm(forms.Form):
             raise forms.ValidationError(
                 _("Url can't contain spaces or special characters")
             )
-        if Exhibit.objects.filter(slug=slug).exists():
+        qs = Exhibit.objects.filter(slug=slug)
+        if self.exhibit_id:
+            qs = qs.exclude(id=self.exhibit_id)
+        if qs.exists():
             raise forms.ValidationError(
                 _(
                     "That exhibit slug is already in use. Please choose another slug for your exhibit."
                 )
             )
         return slug
-
-    def __init__(self, *args, **kwargs):
-        super(ExhibitForm, self).__init__(*args, **kwargs)
-
-        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _(
-            "Complete with your Exhibit URL here"
-        )

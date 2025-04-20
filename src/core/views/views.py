@@ -242,7 +242,7 @@ def edit_exhibit(request):
         raise Http404
 
     if request.method == "POST":
-        form = ExhibitForm(request.POST)
+        form = ExhibitForm(request.POST, exhibit_id=index)
 
         form.full_clean()
         if form.is_valid():
@@ -273,7 +273,7 @@ def edit_exhibit(request):
         request,
         "core/exhibit_create.jinja2",
         {
-            "form": ExhibitForm(initial=model_data),
+            "form": ExhibitForm(initial=model_data, exhibit_id=index),
             "artworks": artworks,
             "selected_artworks": model_artworks,
             "edit": True,
