@@ -1,5 +1,11 @@
 from django.db.models import Count
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.renderers import (
+    BrowsableAPIRenderer,
+    JSONRenderer,
+    StaticHTMLRenderer,
+)
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from core.models import Artwork, Exhibit, Marker, Object
@@ -13,6 +19,7 @@ from core.serializers import (
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = MarkerSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, StaticHTMLRenderer]
     queryset = (
         Marker.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -21,9 +28,16 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .order_by("id")
     )
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "html":
+            return Response(instance.as_modal(), content_type="text/html")
+        return super().retrieve(request, *args, **kwargs)
+
 
 class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ObjectSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, StaticHTMLRenderer]
     queryset = (
         Object.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -31,6 +45,12 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .all()
         .order_by("id")
     )
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "html":
+            return Response(instance.as_html(), content_type="text/html")
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):

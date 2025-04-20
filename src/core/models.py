@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from fast_html import a, b, div, h1, img, p, render, video
+from fast_html import a, b, button, div, h1, h2, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -99,9 +99,9 @@ class Marker(ContentMixin, models.Model):
 
     def as_html(self, height: int = None, width: int = None):
         if not height:
-            height = self.height
+            height = self.source.height
         if not width:
-            width = self.width
+            width = self.source.width
         attributes = {
             "id": self.id,
             "title": self.title,
@@ -114,6 +114,31 @@ class Marker(ContentMixin, models.Model):
                 **attributes,
                 height=height,
                 width=width,
+            )
+        )
+
+    def as_modal(self):
+        return render(
+            div(
+                div(
+                    [
+                        div(
+                            h2(self.title, class_="modal-title"), class_="modal-header"
+                        ),
+                        div(self.as_html(), class_="modal-body"),
+                        div(
+                            button(
+                                _("Close"),
+                                type_="button",
+                                class_="btn btn-secondary",
+                                data_bs_dismiss="modal",
+                            ),
+                            class_="modal-footer",
+                        ),
+                    ],
+                    class_="modal-content",
+                ),
+                class_="modal-dialog modal-dialog-centered",
             )
         )
 
