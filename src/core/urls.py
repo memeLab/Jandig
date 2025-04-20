@@ -13,6 +13,8 @@ from core.views.static_views import (
 from core.views.views import (
     artwork_preview,
     collection,
+    create_exhibit,
+    edit_exhibit,
     exhibit,
     exhibit_detail,
     exhibit_select,
@@ -29,6 +31,8 @@ urlpatterns = [
     path("collection/", collection, name="collection"),
     path("exhibit_select/", exhibit_select, name="exhibit_select"),
     path("exhibit/", exhibit_detail, name="exhibit-detail"),
+    path("exhibits/create/", create_exhibit, name="create-exhibit"),
+    path("exhibits/edit/", edit_exhibit, name="edit-exhibit"),
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("generator/", marker_generator, name="marker-generator"),
     path("related-content", related_content, name="related-content"),
