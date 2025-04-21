@@ -107,7 +107,7 @@ MIDDLEWARE = [
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 
 
-def debug(request):
+def debug(_):
     return env.bool("DEBUG_TOOLBAR", False)
 
 

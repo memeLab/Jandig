@@ -21,6 +21,8 @@ DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
 DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
 DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 
+SCALE_REGEX = r"[\d\.\d]+"
+
 
 def create_patt(filename, original_filename):
     filestorage = PublicMediaStorage()
@@ -169,7 +171,7 @@ class Object(ContentMixin, models.Model):
         to 1:[something], so that new calculations can be made
         when a new scale value is entered by the user.
         """
-        a = re.findall(r"[\d\.\d]+", self.scale)
+        a = re.findall(SCALE_REGEX, self.scale)
         width = float(a[0])
         height = float(a[1])
         if width > height:
@@ -187,7 +189,7 @@ class Object(ContentMixin, models.Model):
         to 1:[something], so that new calculations can be made
         when a new scale value is entered by the user.
         """
-        a = re.findall(r"[\d\.\d]+", self.scale)
+        a = re.findall(SCALE_REGEX, self.scale)
         width = float(a[0])
         height = float(a[1])
         if width > height:
@@ -206,7 +208,7 @@ class Object(ContentMixin, models.Model):
         by the user, and thus the Object appears resized in
         augmented reality.
         """
-        a = re.findall(r"[\d\.\d]+", self.scale)
+        a = re.findall(SCALE_REGEX, self.scale)
         return a[0]
 
     @property
@@ -217,7 +219,7 @@ class Object(ContentMixin, models.Model):
         by the user, and thus the Object appears resized in
         augmented reality.
         """
-        a = re.findall(r"[\d\.\d]+", self.scale)
+        a = re.findall(SCALE_REGEX, self.scale)
         return a[1]
 
     @property

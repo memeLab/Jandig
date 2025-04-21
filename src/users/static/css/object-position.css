@@ -29,7 +29,7 @@
     cursor: pointer;
 }
 
-#Y-position-value, #X-position-value {
+.slider-label {
     color: #03b595;
     font-weight: bold;
 }
