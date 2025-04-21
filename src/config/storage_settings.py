@@ -33,10 +33,11 @@ else:
 
 # Static configuration
 # Add your own apps statics in this list
+BASE_SRC_PATH = "/jandig/src"
 STATICFILES_DIRS = [
-    os.path.join("/jandig/src", "core", "static"),
-    os.path.join("/jandig/src", "users", "static"),
-    os.path.join("/jandig/src", "blog", "static"),
+    os.path.join(BASE_SRC_PATH, "core", "static"),
+    os.path.join(BASE_SRC_PATH, "users", "static"),
+    os.path.join(BASE_SRC_PATH, "blog", "static"),
 ]
 
 STATICFILES_FINDERS = [

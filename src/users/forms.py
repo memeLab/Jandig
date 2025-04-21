@@ -18,6 +18,8 @@ log = logging.getLogger(__file__)
 
 User = get_user_model()
 
+DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
+
 
 class SignupForm(UserCreationForm):
     """
@@ -78,9 +80,6 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.initial["username"] = self.instance.user.username
-
-        # FIXME: user.email come as a string of a tuple, no idea why. "('email@bla.com',)"
-        # email = self.instance.user.email.replace("('", "").replace("',)", "")
         self.initial["email"] = self.instance.user.email
         self.initial["bio"] = self.instance.bio
         self.initial["country"] = self.instance.country
@@ -180,7 +179,7 @@ class UploadMarkerForm(forms.ModelForm):
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
 
@@ -227,10 +226,10 @@ class ArtworkForm(forms.Form):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
         self.fields["marker_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["augmented_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
         self.fields["description"].widget.attrs["placeholder"] = _(

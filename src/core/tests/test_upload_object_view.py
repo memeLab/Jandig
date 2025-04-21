@@ -55,15 +55,15 @@ class TestObjectUpload(TestCase):
 
         # Verify that a Object instance was created
         assert Object.objects.count() == 1
-        object = Object.objects.first()
-        assert object.title == "Test Marker"
-        assert object.author == "Test Author"
-        assert object.file_size == EXAMPLE_OBJECT_SIZE
-        assert object.source.name == "objects/example_object.gif"
+        ar_object = Object.objects.first()
+        assert ar_object.title == "Test Marker"
+        assert ar_object.author == "Test Author"
+        assert ar_object.file_size == EXAMPLE_OBJECT_SIZE
+        assert ar_object.source.name == "objects/example_object.gif"
 
-        assert object.scale == "3.00 3.00"
-        assert object.position == "0 0 0"
-        assert object.rotation == "270 0 0"
+        assert ar_object.scale == "3.00 3.00"
+        assert ar_object.position == "0 0 0"
+        assert ar_object.rotation == "270 0 0"
 
     def test_upload_object_get_authenticated(self):
         self.client.login(username=self.username, password=self.password)

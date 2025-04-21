@@ -19,7 +19,6 @@ class ExhibitForm(forms.Form):
     name = forms.CharField(max_length=50, required=True)
     slug = forms.CharField(max_length=50, required=True)
 
-    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit
     artworks = forms.CharField(max_length=1000)
 
     def __init__(self, *args, **kwargs):

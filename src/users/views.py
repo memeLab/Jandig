@@ -117,7 +117,7 @@ def profile(request):
     return render(request, "users/profile.jinja2", ctx)
 
 
-def get_element(request, form, form_class, form_type, source, author, existent_element):
+def get_element(request, form_class, form_type, source, author, existent_element):
     element = None
 
     if source and author:
@@ -140,7 +140,6 @@ def get_marker(request, form):
 
     return get_element(
         request,
-        form,
         UploadMarkerForm,
         Marker,
         source=marker_src,
@@ -156,7 +155,6 @@ def get_augmented(request, form):
 
     return get_element(
         request,
-        form,
         UploadObjectForm,
         Object,
         source=object_src,
@@ -393,12 +391,12 @@ def delete_content(model, user, instance_id):
     if qs:
         instance = qs[0]
 
-        isArtwork = isinstance(instance, Artwork)
-        if isArtwork:
-            hasPermission = instance.author == user.profile
+        is_artwork = isinstance(instance, Artwork)
+        if is_artwork:
+            has_permission = instance.author == user.profile
         else:
-            hasPermission = instance.owner == user.profile
+            has_permission = instance.owner == user.profile
 
-        isInstanceSameTypeofModel = isinstance(instance, model)
-        if isInstanceSameTypeofModel and hasPermission:
+        is_instance_same_type_of_model = isinstance(instance, model)
+        if is_instance_same_type_of_model and has_permission:
             instance.delete()
