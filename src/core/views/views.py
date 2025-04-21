@@ -112,7 +112,7 @@ def related_content(request):
 
 
 @require_http_methods(["GET"])
-def see_all(request, which="", page=1):
+def see_all(request, which=""):
     request_type = request.GET.get("which", which)
     if request_type not in ["objects", "markers", "artworks", "exhibits"]:
         # Invalid request type, return to collection

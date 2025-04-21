@@ -44,7 +44,7 @@ urlpatterns = [
     path("manifest.json", manifest, name="manifest"),
     path("i18n/", include("django.conf.urls.i18n")),
     re_path(
-        r"^see_all(?:/(?P<which>[a-zA-Z]+))?(?:/(?P<page>\d+))?/$",
+        r"^see_all(?:/(?P<which>[a-zA-Z]+))?/$",
         see_all,
         name="see_all",
     ),
