@@ -6,12 +6,11 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.core.files.base import ContentFile, File
-from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from core.models import Marker, Object
+from core.models import Marker
 
 from .choices import COUNTRY_CHOICES
 
@@ -212,35 +211,6 @@ class UploadMarkerForm(forms.ModelForm):
                 del kwargs["owner"]
 
             return super(UploadMarkerForm, self).save(*args, **kwargs)
-
-
-class UploadObjectForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(UploadObjectForm, self).__init__(*args, **kwargs)
-
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
-        self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
-        self.fields["scale"].widget = HiddenInput()
-        self.fields["rotation"].widget = HiddenInput()
-        self.fields["position"].widget = HiddenInput()
-        self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
-        log.warning(self.fields)
-
-    class Meta:
-        model = Object
-        fields = ("source", "author", "title", "scale", "position", "rotation")
-
-    def save(self, *args, **kwargs):
-        if owner := kwargs.get("owner", None):
-            self.instance.owner = owner
-            del kwargs["owner"]
-
-        self.instance.file_size = self.instance.source.size
-
-        return super(UploadObjectForm, self).save(*args, **kwargs)
 
 
 class ArtworkForm(forms.Form):

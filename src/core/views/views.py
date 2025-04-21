@@ -5,9 +5,10 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 
-from core.forms import ExhibitForm, ExhibitSelectForm
+from core.forms import ExhibitForm, ExhibitSelectForm, UploadObjectForm
 from core.models import Artwork, Exhibit, Marker, Object
 from users.models import Profile
+from users.views import edit_elements, upload_elements
 
 
 @require_http_methods(["GET"])
@@ -278,4 +279,32 @@ def edit_exhibit(request):
             "selected_artworks": model_artworks,
             "edit": True,
         },
+    )
+
+
+@login_required
+def object_upload(request):
+    return upload_elements(request, UploadObjectForm, "object", "object-upload")
+
+
+@login_required
+def edit_object(request):
+    index = request.GET.get("id", "-1")
+    model = Object.objects.get(id=index)
+
+    model_data = {
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "scale": model.scale,
+        "position": model.position,
+        "rotation": model.rotation,
+        "title": model.title,
+    }
+    return edit_elements(
+        request,
+        UploadObjectForm,
+        route="users/edit-object.jinja2",
+        model=model,
+        model_data=model_data,
     )

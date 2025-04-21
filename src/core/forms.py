@@ -1,9 +1,10 @@
 import re
 
 from django import forms
+from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 
-from .models import Exhibit
+from .models import Exhibit, Object
 
 
 class ExhibitSelectForm(forms.Form):
@@ -54,3 +55,31 @@ class ExhibitForm(forms.Form):
                 )
             )
         return slug
+
+
+class UploadObjectForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UploadObjectForm, self).__init__(*args, **kwargs)
+
+        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
+        self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
+        self.fields["author"].widget.attrs["placeholder"] = _(
+            "declare different author name"
+        )
+        self.fields["scale"].widget = HiddenInput()
+        self.fields["rotation"].widget = HiddenInput()
+        self.fields["position"].widget = HiddenInput()
+        self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
+
+    class Meta:
+        model = Object
+        fields = ("source", "author", "title", "scale", "position", "rotation")
+
+    def save(self, *args, **kwargs):
+        if owner := kwargs.get("owner", None):
+            self.instance.owner = owner
+            del kwargs["owner"]
+
+        self.instance.file_size = self.instance.source.size
+
+        return super(UploadObjectForm, self).save(*args, **kwargs)
