@@ -223,7 +223,7 @@ def upload_elements(request, form_class, form_type, route):
     return render(
         request,
         "users/upload-object.jinja2",
-        {"form_type": form_type, "form": form, "route": route, "edit": False},
+        {"form": form, "route": route, "edit": False},
     )
 
 

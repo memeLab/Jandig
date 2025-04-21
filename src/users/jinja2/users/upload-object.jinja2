@@ -5,22 +5,20 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
-        {% if form_type == 'object' and edit == False %}
-            <h2>{{ _('Upload Object') }}</h2>
-        {% else %}
+        {% if edit %}
             <h2>{{_('Edit_object')}}</h2>
+        {% else %}
+            <h2>{{ _('Upload Object') }}</h2>
         {% endif %}
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
-                    {% if form_type == 'object' %}
-                        <p class="title-field"  id="title-field">
-                            <h3>{{_("Choose Object's title")}}
-                            {{ form.visible_fields()[2] }}
-                            {{ form.visible_fields()[2].errors }}
-                        </p>
-                    {% endif %}
+                    <p class="title-field"  id="title-field">
+                        <h3>{{_("Choose Object's title")}}
+                        {{ form.visible_fields()[2] }}
+                        {{ form.visible_fields()[2].errors }}
+                    </p>
                     <p class="upload-field" id="source-field">
                     {%if route == 'object-upload' %}
                         <h3>{{_("Choose Object")}}</h3>
@@ -31,9 +29,9 @@
 
                     <div id="content-box"></div>
                     
-                    {% if form_type == 'object' %}
                      <div id="edit_object_attributes">
                         <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
+
                         <span
                             id="tooltipText"
                             data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
@@ -41,8 +39,11 @@
                         >
                             ?
                         </span>
-                        <input id="scale" class="trigger-change-value" value ="1">
-
+                            {{ form.visible_fields()[3] }}
+                            {{ form.visible_fields()[3].errors }}
+                            <p>
+                                <span class="slider-label" id="scale-value">{{ scale }}</span>
+                            </p>
                         <h2 id="positionTitle">{{_("Adjust position")}}</h2>
                         <span 
                             id="tooltipText"
@@ -55,23 +56,14 @@
                         {% with xposition=0, yposition=0 %}
                             {% include "users/components/object-position.jinja2" %}
                         {% endwith %}
-
+                        
                         {{ form.hidden_fields()[0] }}
                         {{ form.hidden_fields()[0].errors }}
-                        {{ form.hidden_fields()[1] }}
-                        {{ form.hidden_fields()[1].errors }}
-                        {{ form.hidden_fields()[2] }}
-                        {{ form.hidden_fields()[2].errors }}
 
                     </div>
-                    {% endif %}
                     <p class="form-options">
-
                         <input id="author-chk" type="checkbox" name="author" value="1">
-                        {% if form_type == 'object' %}
-                            <label for="author-chk">{{ _("I'm this Object author") }}</label>
-                        {% endif %}
-
+                        <label for="author-chk">{{ _("I'm this Object author") }}</label>
                     </p>
                     <p class="upload-field" id="author-field">
                         {{ form.visible_fields()[1] }}
@@ -91,7 +83,13 @@
         </section>
 
         <script>
+            var scale = document.getElementById("id_scale");
+            var output = document.getElementById("scale-value");
+            output.innerHTML = scale.value; // Display the default slider value
 
+            scale.oninput = function() {
+                output.innerHTML = this.value;
+            } 
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
                     $('input[type="submit"]').prop('disabled', false);
@@ -172,14 +170,12 @@
                     var yprop = (high*1.0)/wide;
                 }
 
-                var scal = document.getElementById('scale').value;
                 var xpos = document.getElementById('X-position').value;
                 var ypos = document.getElementById('Y-position').value;
                 var scl = scal*xprop + " " + scal*yprop;
                 var rot = "270 0 0";
                 var pos = xpos/100 + " " + ypos/100 + " 0"; //messing with the Z gives some really weird things
 
-                $('#id_scale').val(scl);
                 $('#id_rotation').val(rot);
                 $('#id_position').val(pos);
             }
