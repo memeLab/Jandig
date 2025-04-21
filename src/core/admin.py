@@ -100,6 +100,8 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
 
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
+    list_display = BaseMarkerObjectAdmin.list_display + ["scale", "position"]
+    
     def image_preview(self, obj):
         return format_object_as_html(obj)
 
