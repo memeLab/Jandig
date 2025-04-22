@@ -3,7 +3,7 @@
     <div class="modal-content">
         <p id="element-author">{{ "{} {}".format(_("Author:"),ar_object.author)}}</p>
         <p id="element-upload-info">
-                    {{ "{} {}, in {}".format(_("Uploaded by"), ar_object.owner.user.username, ar_object.uploaded_at.strftime("%d/%m/%Y")) }}
+                    {{ "{} {}{} {}".format(_("Uploaded by"), ar_object.owner.user.username,_(", in"), ar_object.uploaded_at.strftime("%d/%m/%Y")) }}
         <p id="element-analytics">
             {{ ar_object.used_in_html_string() | safe }}
         </p>

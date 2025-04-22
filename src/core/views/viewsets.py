@@ -60,6 +60,7 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ArtworkSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Artwork.objects.prefetch_related(
             "exhibits", "marker__artworks", "augmented__artworks"
@@ -72,6 +73,15 @@ class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .all()
         .order_by("id")
     )
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "modal":
+            return Response(
+                {"artwork": instance},
+                template_name="core/templates/artwork_modal.jinja2",
+            )
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):

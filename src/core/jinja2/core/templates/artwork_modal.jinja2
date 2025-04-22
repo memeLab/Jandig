@@ -1,0 +1,14 @@
+<div class="modal-container">
+    <h1 id="modal-title">{{ artwork.title }}</h1>
+    <div class="modal-content">
+        <p id="element-upload-info">
+                    {{ "{} {}{} {}".format(_("Created by"), artwork.author.user.username,_(", in"), artwork.created_at.strftime("%d/%m/%Y")) }}
+        <p id="element-analytics">
+            {{ artwork.used_in_html_string() | safe }}
+        </p>
+            <h5>{{artwork.marker.title}}</h5>
+            {{ artwork.marker.as_html()| safe }}
+            <h5>{{artwork.augmented.title}}</h5>
+            {{ artwork.augmented.as_html()| safe }}
+    </div>
+</div>

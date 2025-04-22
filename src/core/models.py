@@ -344,6 +344,24 @@ class Artwork(ContentMixin, models.Model):
     def __str__(self):
         return self.title
 
+    def used_in_html_string(self):
+        used_in = "{} {} {}".format(
+            _("Used in"),
+            self.exhibits_count,
+            _("Exhibits"),
+        )
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
+
     def as_html_thumbnail(self, editable=False):
         elements = [
             self.marker.as_html_thumbnail(),
