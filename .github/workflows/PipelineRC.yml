@@ -70,7 +70,7 @@ jobs:
             -Dsonar.exclusions=**/migrations/**
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py
             -Dsonar.cpd.exclusions=**/migrations/**

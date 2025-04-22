@@ -10,14 +10,14 @@
             <input id="X-position" type="range" min="-200" max="200" class="trigger-change-value slider" value="{{ xposition*100 }}" oninput="updateXValue()">
         </div>
         <p>
-            <span id="X-position-value">{{ xposition }}</span>
+            <span class="slider-label" id="X-position-value">{{ xposition }}</span>
         </p>
         <h3>Vertical:</h3>
         <div class="slider-container"> 
             <input id="Y-position" type="range" min="-200" max="200" class="trigger-change-value slider" value="{{ yposition*100 }}" oninput="updateYValue()">
         </div>
         <p>
-            <span id="Y-position-value">{{ yposition }}</span>
+            <span class="slider-label" id="Y-position-value">{{ yposition }}</span>
         </p>
 
         <script>

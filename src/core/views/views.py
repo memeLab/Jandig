@@ -1,11 +1,14 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 
-from core.forms import ExhibitForm
+from core.forms import ExhibitForm, ExhibitSelectForm, UploadObjectForm
 from core.models import Artwork, Exhibit, Marker, Object
+from users.models import Profile
+from users.views import edit_elements, upload_elements
 
 
 @require_http_methods(["GET"])
@@ -109,7 +112,7 @@ def related_content(request):
 
 
 @require_http_methods(["GET"])
-def see_all(request, which="", page=1):
+def see_all(request, which=""):
     request_type = request.GET.get("which", which)
     if request_type not in ["objects", "markers", "artworks", "exhibits"]:
         # Invalid request type, return to collection
@@ -141,7 +144,7 @@ def see_all(request, which="", page=1):
     if data:
         paginator = Paginator(data, per_page)
         if page > paginator.num_pages:
-            return redirect("see_all", request_type, paginator.num_pages)
+            return redirect("see_all", request_type)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
         ctx = {
@@ -153,12 +156,12 @@ def see_all(request, which="", page=1):
 
 def exhibit_select(request):
     if request.method == "POST":
-        form = ExhibitForm(request.POST)
+        form = ExhibitSelectForm(request.POST)
         if form.is_valid():
             exhibit = form.cleaned_data.get("exhibit")
             return redirect("/" + exhibit.slug)
     else:
-        form = ExhibitForm()
+        form = ExhibitSelectForm()
 
     return render(request, "core/exhibit_select.jinja2", {"form": form})
 
@@ -198,3 +201,110 @@ def exhibit(request, slug):
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
     }
     return render(request, "core/exhibit.jinja2", ctx)
+
+
+@login_required
+def create_exhibit(request):
+    if request.method == "POST":
+        form = ExhibitForm(request.POST)
+        if form.is_valid():
+            ids = form.cleaned_data["artworks"].split(",")
+            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
+            exhibit = Exhibit(
+                owner=request.user.profile,
+                name=form.cleaned_data["name"],
+                slug=form.cleaned_data["slug"],
+            )
+
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+
+            return redirect("profile")
+    else:
+        form = ExhibitForm()
+
+    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
+
+    return render(
+        request,
+        "core/exhibit_create.jinja2",
+        {
+            "form": form,
+            "artworks": artworks,
+        },
+    )
+
+
+@login_required
+def edit_exhibit(request):
+    index = request.GET.get("id", "-1")
+    model = Exhibit.objects.filter(id=index)
+    if not model or model.first().owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = ExhibitForm(request.POST, exhibit_id=index)
+
+        form.full_clean()
+        if form.is_valid():
+            ids = form.cleaned_data["artworks"].split(",")
+            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
+
+            model_data = {
+                "name": form.cleaned_data["name"],
+                "slug": form.cleaned_data["slug"],
+            }
+            model.update(**model_data)
+            model = model.first()
+            model.artworks.set(artworks)
+
+            return redirect("profile")
+
+    model = model.first()
+    model_artworks = ""
+    for artwork in model.artworks.all():
+        model_artworks += str(artwork.id) + ","
+
+    model_artworks = model_artworks[:-1]
+
+    model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
+
+    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
+    return render(
+        request,
+        "core/exhibit_create.jinja2",
+        {
+            "form": ExhibitForm(initial=model_data, exhibit_id=index),
+            "artworks": artworks,
+            "selected_artworks": model_artworks,
+            "edit": True,
+        },
+    )
+
+
+@login_required
+def object_upload(request):
+    return upload_elements(request, UploadObjectForm, "object", "object-upload")
+
+
+@login_required
+def edit_object(request):
+    index = request.GET.get("id", "-1")
+    model = Object.objects.get(id=index)
+
+    model_data = {
+        "source": model.source,
+        "uploaded_at": model.uploaded_at,
+        "author": model.author,
+        "scale": model.scale,
+        "position": model.position,
+        "rotation": model.rotation,
+        "title": model.title,
+    }
+    return edit_elements(
+        request,
+        UploadObjectForm,
+        route="users/edit-object.jinja2",
+        model=model,
+        model_data=model_data,
+    )

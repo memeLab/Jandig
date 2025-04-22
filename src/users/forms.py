@@ -1,5 +1,4 @@
 import logging
-import re
 from io import BytesIO
 
 from django import forms
@@ -7,18 +6,19 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm as OrigPasswordChangeForm
 from django.core.files.base import ContentFile, File
-from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from core.models import Exhibit, Marker, Object
+from core.models import Marker
 
 from .choices import COUNTRY_CHOICES
 
-log = logging.getLogger("ej")
+log = logging.getLogger(__file__)
 
 User = get_user_model()
+
+DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
 
 class SignupForm(UserCreationForm):
@@ -80,9 +80,6 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.initial["username"] = self.instance.user.username
-
-        # FIXME: user.email come as a string of a tuple, no idea why. "('email@bla.com',)"
-        # email = self.instance.user.email.replace("('", "").replace("',)", "")
         self.initial["email"] = self.instance.user.email
         self.initial["bio"] = self.instance.bio
         self.initial["country"] = self.instance.country
@@ -182,7 +179,7 @@ class UploadMarkerForm(forms.ModelForm):
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
 
@@ -215,35 +212,6 @@ class UploadMarkerForm(forms.ModelForm):
             return super(UploadMarkerForm, self).save(*args, **kwargs)
 
 
-class UploadObjectForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(UploadObjectForm, self).__init__(*args, **kwargs)
-
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = "image/*, .mp4, .webm"
-        self.fields["author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
-        )
-        self.fields["scale"].widget = HiddenInput()
-        self.fields["rotation"].widget = HiddenInput()
-        self.fields["position"].widget = HiddenInput()
-        self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
-        log.warning(self.fields)
-
-    class Meta:
-        model = Object
-        fields = ("source", "author", "title", "scale", "position", "rotation")
-
-    def save(self, *args, **kwargs):
-        if owner := kwargs.get("owner", None):
-            self.instance.owner = owner
-            del kwargs["owner"]
-
-        self.instance.file_size = self.instance.source.size
-
-        return super(UploadObjectForm, self).save(*args, **kwargs)
-
-
 class ArtworkForm(forms.Form):
     marker = forms.ImageField(required=False)
     marker_author = forms.CharField(max_length=12, required=False)
@@ -258,52 +226,12 @@ class ArtworkForm(forms.Form):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
         self.fields["marker_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["augmented_author"].widget.attrs["placeholder"] = _(
-            "declare different author name"
+            DEFAULT_AUTHOR_PLACEHOLDER
         )
         self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
         self.fields["description"].widget.attrs["placeholder"] = _(
             "Artwork description"
-        )
-
-
-class ExhibitForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    slug = forms.CharField(max_length=50, required=True)
-
-    # FIXME: maybe this can be improved. Possible bug on max artworks per exhibit
-    artworks = forms.CharField(max_length=1000)
-
-    def clean_name(self):
-        name = self.cleaned_data["name"]
-        if Exhibit.objects.filter(slug=name).exists():
-            raise forms.ValidationError(
-                _(
-                    "This name is already being used. Please choose another name for your exhibit."
-                )
-            )
-        return name
-
-    def clean_slug(self):
-        slug = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_]*$", slug):
-            raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
-        if Exhibit.objects.filter(slug=slug).exists():
-            raise forms.ValidationError(
-                _(
-                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
-                )
-            )
-        return slug
-
-    def __init__(self, *args, **kwargs):
-        super(ExhibitForm, self).__init__(*args, **kwargs)
-
-        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _(
-            "Complete with your Exhibit URL here"
         )

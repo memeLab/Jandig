@@ -47,7 +47,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.2")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.3")
 
 
 def traces_sampler(sampling_context):
@@ -107,7 +107,7 @@ MIDDLEWARE = [
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 
 
-def debug(request):
+def debug(_):
     return env.bool("DEBUG_TOOLBAR", False)
 
 
