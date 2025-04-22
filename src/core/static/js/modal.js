@@ -4,7 +4,11 @@ $(function() {
     var triggers = $(".trigger-modal");
 
     function toggleModal() {
-        modal.classList.toggle("show-modal");
+        var toggle_result = modal.classList.toggle("show-modal");
+        // Remove the content when the modal is closed
+        if (!toggle_result) {
+            modal.innerHTML = "";
+        }
     }
 
     function windowOnClick(event) {

@@ -3,7 +3,6 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.renderers import (
     BrowsableAPIRenderer,
     JSONRenderer,
-    StaticHTMLRenderer,
 )
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -40,7 +39,7 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ObjectSerializer
-    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, StaticHTMLRenderer]
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Object.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -51,8 +50,11 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if request.accepted_renderer.format == "html":
-            return Response(instance.as_html(), content_type="text/html")
+        if request.accepted_renderer.format == "modal":
+            return Response(
+                {"ar_object": instance},
+                template_name="core/templates/object_modal.jinja2",
+            )
         return super().retrieve(request, *args, **kwargs)
 
 

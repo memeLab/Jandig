@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <h1 id="modal-title">{{ ar_object.title }}</h1>
+    <div class="modal-content">
+        <p id="element-author">{{ "{} {}".format(_("Author:"),ar_object.author)}}</p>
+        <p id="element-upload-info">
+                    {{ "{} {}, in {}".format(_("Uploaded by"), ar_object.owner.user.username, ar_object.uploaded_at.strftime("%d/%m/%Y")) }}
+        <p id="element-analytics">
+            {{ ar_object.used_in_html_string() | safe }}
+        </p>
+            {{ ar_object.as_html()| safe }}
+        <p id="download"> Download file:</p>
+        <p id="element-download">
+            <a id="png-download" href="{{ ar_object.source.url }}">Download .png ( {{ ar_object.file_size }}KB)</a>
+        </p>
+    </div>
+</div>

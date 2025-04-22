@@ -11,12 +11,13 @@
             <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
             <script src="{{ static('js/modal.js') }}"></script>
             
-            
-            {% for element_type, repository_list, class_type in [("exhibit",exhibits, "titExb"),
-                                                    ("artwork",artworks, "titArt"),
-                                                    ("marker",markers, "titMrk"),
-                                                    ("object",objects, "titObj")
-                                                    ]%}
+            {% for element_type, repository_list, class_type in [
+                                                        ("exhibit",exhibits, "titExb"),
+                                                        ("artwork",artworks, "titArt"),
+                                                        ("marker",markers, "titMrk"),
+                                                        ("object",objects, "titObj")
+                                                    ] 
+            %}
                                  
                 {% if repository_list %}
                     <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>

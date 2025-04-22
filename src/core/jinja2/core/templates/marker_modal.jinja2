@@ -1,7 +1,7 @@
 <div class="modal-container">
     <h1 id="modal-title">{{ marker.title }}</h1>
     <div class="modal-content">
-        <p id="element-author">{{marker.author}}</p>
+        <p id="element-author">{{ "{} {}".format(_("Author:"),marker.author)}}</p>
         <p id="element-upload-info">
                     {{ "{} {}, in {}".format(_("Uploaded by"), marker.owner.user.username, marker.uploaded_at.strftime("%d/%m/%Y")) }}
         <p id="element-analytics">

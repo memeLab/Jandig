@@ -9,9 +9,11 @@
 {% endif %} 
     {% for element in repository_list %}
         <div 
-            hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
-            hx-target="#modal" 
-            hx-trigger="click"
+            {% if element_type != "exhibit" %} 
+                hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
+                hx-target="#modal" 
+                hx-trigger="click"
+            {% endif %}
             id="{{ element_type }}-{{ element.id }}" class="repository-item">
                 {{ element.as_html_thumbnail(editable=editable) | safe }}
         </div>
