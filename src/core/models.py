@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from fast_html import a, b, button, div, h1, h2, img, p, render, video
+from fast_html import a, b, div, h1, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -108,7 +108,6 @@ class Marker(ContentMixin, models.Model):
             "id": self.id,
             "title": self.title,
             "class_": "trigger-modal",
-            "data_elem_type": "marker",
             "src": self.source.url,
         }
         return render(
@@ -119,30 +118,24 @@ class Marker(ContentMixin, models.Model):
             )
         )
 
-    def as_modal(self):
-        return render(
-            div(
-                div(
-                    [
-                        div(
-                            h2(self.title, class_="modal-title"), class_="modal-header"
-                        ),
-                        div(self.as_html(), class_="modal-body"),
-                        div(
-                            button(
-                                _("Close"),
-                                type_="button",
-                                class_="btn btn-secondary",
-                                data_bs_dismiss="modal",
-                            ),
-                            class_="modal-footer",
-                        ),
-                    ],
-                    class_="modal-content",
-                ),
-                class_="modal-dialog modal-dialog-centered",
-            )
+    def used_in_html_string(self):
+        used_in = "{} {} {} {} {}".format(
+            _("Used in"),
+            self.artworks_count,
+            _("artworks"),
+            _("and in "),
+            self.exhibits_count,
         )
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content", query={"id": self.id, "type": "marker"}
+                    ),
+                )
+            )
+        return used_in
 
     def as_html_thumbnail(self, editable: bool = False):
         height = DEFAULT_MARKER_THUMBNAIL_HEIGHT

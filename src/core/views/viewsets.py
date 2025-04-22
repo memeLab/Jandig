@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from core.models import Artwork, Exhibit, Marker, Object
+from core.renderers import ModalHTMLRenderer
 from core.serializers import (
     ArtworkSerializer,
     ExhibitSerializer,
@@ -19,7 +20,7 @@ from core.serializers import (
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = MarkerSerializer
-    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, StaticHTMLRenderer]
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Marker.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -30,8 +31,10 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if request.accepted_renderer.format == "html":
-            return Response(instance.as_modal(), content_type="text/html")
+        if request.accepted_renderer.format == "modal":
+            return Response(
+                {"marker": instance}, template_name="core/templates/marker_modal.jinja2"
+            )
         return super().retrieve(request, *args, **kwargs)
 
 

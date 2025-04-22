@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <h1 id="modal-title">{{ marker.title }}</h1>
+    <div class="modal-content">
+        <p id="element-author">{{marker.author}}</p>
+        <p id="element-upload-info">
+                    {{ "{} {}, in {}".format(_("Uploaded by"), marker.owner.user.username, marker.uploaded_at.strftime("%d/%m/%Y")) }}
+        <p id="element-analytics">
+            {{ marker.used_in_html_string() | safe }}
+        </p>
+            {{ marker.as_html()| safe }}
+        <p id="download"> Download file:</p>
+        <p id="element-download">
+            <a id="png-download" href="{{ marker.source.url }}">Download .png ( {{ marker.file_size }}KB)</a>
+        </p>
+    </div>
+</div>

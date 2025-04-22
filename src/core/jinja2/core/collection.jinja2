@@ -1,5 +1,6 @@
 {% extends '/core/home.jinja2' %}
 
+
 {% block content %}
     {% block subcontent %}
     {% endblock %}
@@ -7,9 +8,10 @@
         <div class="container">
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-
+            <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+            <script src="{{ static('js/modal.js') }}"></script>
+            
+            
             {% for element_type, repository_list, class_type in [("exhibit",exhibits, "titExb"),
                                                     ("artwork",artworks, "titArt"),
                                                     ("marker",markers, "titMrk"),
@@ -52,16 +54,7 @@
                     <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
             {% endif %}
 
-            <div id="jandig-modal"
-                class="modal modal-blur fade"
-                style="display: none"
-                aria-hidden="false"
-                tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content"></div>
-                </div>
-            </div>
-            {# {% include "users/components/elements-modal.jinja2" %} #}
+            <section id="modal" class="modal"></section>
         </div>
     </section>
 {% endblock %}
