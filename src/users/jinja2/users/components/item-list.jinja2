@@ -10,7 +10,7 @@
                 hx-target="#modal" 
                 hx-trigger="click"
             {% endif %}
-            id="{{ element_type }}-{{ element.id }}" class="repository-item">
+            id="{{ element_type }}-{{ element.id }}" class="repository-item trigger-modal">
                 {{ element.as_html_thumbnail(editable=editable) | safe }}
         </div>
     {% endfor %}

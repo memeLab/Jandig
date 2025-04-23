@@ -2,7 +2,9 @@
     <h1 id="modal-title">{{ marker.title }}</h1>
     <div class="modal-content">
         {% if go_back_url %}
-            <p id="back" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click">{{ _("< Go back") }}</p>
+            <div class="back-header">
+                <a id="back" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click">{{ _("< Go back") }}</a>
+            </div>
         {% endif %}
         <p id="element-author">{{ "{} {}".format(_("Author:"),marker.author)}}</p>
         <p id="element-upload-info">
@@ -16,4 +18,7 @@
             <a id="png-download" href="{{ marker.source.url }}">{{ "{} ({}KB)".format(_("Download File"), marker.file_size)}}</a>
         </p>
     </div>
+    <button onclick="document.querySelector('#modal').classList.toggle('show-modal');">
+        {{ _("Close") }}
+    </button>
 </div>

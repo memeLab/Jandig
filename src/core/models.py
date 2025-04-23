@@ -126,7 +126,6 @@ class Marker(ContentMixin, models.Model):
         attributes = {
             "id": self.id,
             "title": self.title,
-            "class_": "trigger-modal",
             "src": self.source.url,
         }
         return render(
@@ -276,7 +275,6 @@ class Object(ContentMixin, models.Model):
         attributes = {
             "id": self.id,
             "title": self.title,
-            "class_": "trigger-modal",
             "src": self.source.url,
         }
         if height:
