@@ -13,24 +13,22 @@
 }
 
 .modal-container {
+    max-width: 600px;
     width: 80%;
-    margin: 10% auto;
+    margin: 25px auto;
+    height: inherit;
 }
 
 #modal-title {
     margin: 0;
-    line-height: 50px;
-    height: 50px;
     color: white;
     text-align: center;
+    background-image: linear-gradient( to top, #7776, #7776 50%, transparent )
 }
 
 .modal-content {
-    position: absolute;
-    margin-bottom: 10%;
     background-color: white;
-    max-height: calc(85%);
-    max-width: calc(80%);
+    max-height: 85%;
     overflow-y: scroll;
 }
 
@@ -51,7 +49,10 @@
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-.artwork-content > img {
+.modal-content > img,
+.modal-content > video
+.modal-content > div > img,
+.modal-content > div > video {
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -59,31 +60,8 @@
 }
 
 .artwork-content{
-    height: 35%;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
     display: block;
-}
-
-/********* Media Queries ***********/
-@media all and (min-width: 800px) {
-    .modal-container {
-        width: 80%;
-        max-width: 600px;
-        margin: 25px auto;
-    }
-
-    .modal-content {
-        padding: 20px;
-        width: 560px;
-    }
-
-    img#element-src {
-        height: 200px;
-        width: 200px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-    }
 }
