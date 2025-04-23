@@ -7,7 +7,7 @@
             {{ artwork.used_in_html_string() | safe }}
         </p>
             <h5>{{artwork.marker.title}}</h5>
-            {{ artwork.marker.as_html()| safe }}
+            {{ artwork.marker.as_html(height=300, width=300)| safe }}
             <h5>{{artwork.augmented.title}}</h5>
             {{ artwork.augmented.as_html()| safe }}
     </div>
