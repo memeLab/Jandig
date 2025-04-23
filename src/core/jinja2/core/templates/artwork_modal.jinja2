@@ -1,6 +1,7 @@
 <div class="modal-container">
     <h1 id="modal-title">{{ artwork.title }}</h1>
     <div class="modal-content">
+        <p>{{ artwork.description }}</p>
         <p id="element-upload-info">
                     {{ "{} {}{} {}".format(_("Created by"), artwork.author.user.username,_(", in"), artwork.created_at.strftime("%d/%m/%Y")) }}
         <p id="element-analytics">

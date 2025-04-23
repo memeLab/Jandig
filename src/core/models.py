@@ -281,7 +281,6 @@ class Object(ContentMixin, models.Model):
             "id": self.id,
             "title": self.title,
             "class_": "trigger-modal",
-            "data_elem_type": "object",
             "src": self.source.url,
         }
         if height:

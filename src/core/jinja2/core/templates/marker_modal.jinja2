@@ -10,7 +10,7 @@
             {{ marker.as_html()| safe }}
         <p id="download"> Download file:</p>
         <p id="element-download">
-            <a id="png-download" href="{{ marker.source.url }}">Download .png ( {{ marker.file_size }}KB)</a>
+            <a id="png-download" href="{{ marker.source.url }}">{{ "{} ({}KB)".format(_("Download File"), marker.file_size)}}</a>
         </p>
     </div>
 </div>

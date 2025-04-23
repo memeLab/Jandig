@@ -10,7 +10,7 @@
             {{ ar_object.as_html()| safe }}
         <p id="download"> Download file:</p>
         <p id="element-download">
-            <a id="png-download" href="{{ ar_object.source.url }}">Download .png ( {{ ar_object.file_size }}KB)</a>
+            <a id="png-download" href="{{ ar_object.source.url }}">{{ "{} ({}KB)".format(_("Download File"), ar_object.file_size)}}</a>
         </p>
     </div>
 </div>
