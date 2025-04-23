@@ -7,9 +7,13 @@
         <p id="element-analytics">
             {{ artwork.used_in_html_string() | safe }}
         </p>
+        <div class="artwork-content">
             <h5>{{artwork.marker.title}}</h5>
-            {{ artwork.marker.as_html(height=300, width=300)| safe }}
+            {{ artwork.marker.as_html() | safe }}
+        </div>
+        <div class="artwork-content">
             <h5>{{artwork.augmented.title}}</h5>
             {{ artwork.augmented.as_html()| safe }}
+        </div>
     </div>
 </div>

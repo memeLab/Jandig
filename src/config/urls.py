@@ -39,10 +39,9 @@ urlpatterns = [
     path("", include("core.urls")),
 ]
 
-if settings.DEBUG:
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
+urlpatterns += [
+    path("__debug__/", include(debug_toolbar.urls)),
+]
 
 if os.getenv("USE_GUNICORN", "true").lower() in ("false", "0"):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

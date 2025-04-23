@@ -71,7 +71,7 @@ class TestArtworkAPI(TestCase):
         assert artwork.title in html
         assert artwork.description in html
         assert artwork.marker.title in html
-        assert artwork.marker.as_html(height=300, width=300) in html
+        assert artwork.marker.as_html() in html
         assert artwork.augmented.title in html
         assert artwork.augmented.as_html() in html
         assert artwork.author.user.username in html

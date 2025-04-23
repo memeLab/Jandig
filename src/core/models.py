@@ -123,10 +123,6 @@ class Marker(ContentMixin, models.Model):
         return False
 
     def as_html(self, height: int = None, width: int = None):
-        if not height:
-            height = self.source.height
-        if not width:
-            width = self.source.width
         attributes = {
             "id": self.id,
             "title": self.title,

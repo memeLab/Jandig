@@ -13,7 +13,6 @@
 }
 
 .modal-container {
-    height: 90%;
     width: 80%;
     margin: 10% auto;
 }
@@ -30,9 +29,8 @@
     position: absolute;
     margin-bottom: 10%;
     background-color: white;
-    padding: 20px;
-    width: calc(80% - 40px);
-    height: calc(90% - 90px);
+    max-height: calc(85%);
+    max-width: calc(80%);
     overflow-y: scroll;
 }
 
@@ -53,17 +51,16 @@
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-img#element-src{
-    height: 70%;
-    width: 80%;
+.artwork-content > img {
+    max-width: 80%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-img.artwork-content{
+.artwork-content{
     height: 35%;
-    width: 40%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -72,8 +69,6 @@ img.artwork-content{
 /********* Media Queries ***********/
 @media all and (min-width: 800px) {
     .modal-container {
-        height: calc(100vh - 50px);
-        position: relative;
         width: 80%;
         max-width: 600px;
         margin: 25px auto;
@@ -82,7 +77,6 @@ img.artwork-content{
     .modal-content {
         padding: 20px;
         width: 560px;
-        height: calc(100vh - 140px);
     }
 
     img#element-src {
