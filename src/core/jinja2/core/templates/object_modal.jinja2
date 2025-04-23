@@ -1,6 +1,9 @@
 <div class="modal-container">
     <h1 id="modal-title">{{ ar_object.title }}</h1>
     <div class="modal-content">
+        {% if go_back_url %}
+            <p id="back" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click">{{ _("< Go back") }}</p>
+        {% endif %}
         <p id="element-author">{{ "{} {}".format(_("Author:"),ar_object.author)}}</p>
         <p id="element-upload-info">
                     {{ "{} {}{} {}".format(_("Uploaded by"), ar_object.owner.user.username,_(", in"), ar_object.uploaded_at.strftime("%d/%m/%Y")) }}

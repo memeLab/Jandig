@@ -31,9 +31,10 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         if request.accepted_renderer.format == "modal":
-            return Response(
-                {"marker": instance}, template_name="core/templates/marker_modal.jinja2"
-            )
+            ctx = {"marker": instance}
+            if request.GET.get("go_back_url"):
+                ctx["go_back_url"] = request.GET.get("go_back_url")
+            return Response(ctx, template_name="core/templates/marker_modal.jinja2")
         return super().retrieve(request, *args, **kwargs)
 
 
@@ -51,8 +52,11 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         if request.accepted_renderer.format == "modal":
+            ctx = {"ar_object": instance}
+            if request.GET.get("go_back_url"):
+                ctx["go_back_url"] = request.GET.get("go_back_url")
             return Response(
-                {"ar_object": instance},
+                ctx,
                 template_name="core/templates/object_modal.jinja2",
             )
         return super().retrieve(request, *args, **kwargs)

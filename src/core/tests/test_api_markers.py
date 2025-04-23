@@ -103,3 +103,27 @@ class TestMarkerAPI(TestCase):
         assert annotated_marker.owner.user.username in html
         assert str(annotated_marker.file_size) in html
         assert annotated_marker.used_in_html_string() in html
+
+    def test_retrieve_marker_as_modal_with_go_back_button(self):
+        # Create a marker
+        marker = MarkerFactory.create(owner=self.profile, source=fake_file)
+        # Annotate the marker to include the exhibit count
+        annotated_marker = Marker.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=marker.id)
+
+        go_back_url = "/api/v1/artworks/1/?format=modal"
+        response = self.client.get(
+            f"/api/v1/markers/{marker.id}/?format=modal&go_back_url={go_back_url}"
+        )
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+
+        assert annotated_marker.title in html
+        assert annotated_marker.source.url in html
+        assert annotated_marker.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_marker.author in html
+        assert annotated_marker.owner.user.username in html
+        assert str(annotated_marker.file_size) in html
+        assert annotated_marker.used_in_html_string() in html
+        assert go_back_url in html

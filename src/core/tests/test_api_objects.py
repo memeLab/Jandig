@@ -132,3 +132,25 @@ class TestObjectAPI(TestCase):
         assert annotated_obj.used_in_html_string() in html
         assert "<video" in html
         assert "<img" not in html
+
+    def test_retrieve_object_as_modal_with_go_back_button(self):
+        # Create an object
+        obj = ObjectFactory.create(owner=self.profile, source=fake_file)
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=obj.id)
+        go_back_url = "/api/v1/artworks/1/?format=modal"
+        response = self.client.get(
+            f"/api/v1/objects/{obj.id}/?format=modal&go_back_url={go_back_url}"
+        )
+
+        assert response.status_code == 200
+        html = response.content.decode("utf-8")
+        assert annotated_obj.title in html
+        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.author in html
+        assert annotated_obj.owner.user.username in html
+        assert str(annotated_obj.file_size) in html
+        assert annotated_obj.used_in_html_string() in html
+        assert go_back_url in html

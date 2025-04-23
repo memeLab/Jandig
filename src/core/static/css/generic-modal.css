@@ -50,7 +50,7 @@
 }
 
 .modal-content > img,
-.modal-content > video
+.modal-content > video,
 .modal-content > div > img,
 .modal-content > div > video {
     max-width: 80%;
@@ -58,10 +58,6 @@
     margin-right: auto;
     display: block;
 }
-
-.artwork-content{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+.modal-content > div > h5 {
+    margin: 0.8em;
 }
