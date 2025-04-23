@@ -53,6 +53,21 @@
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
+img#element-src{
+    height: 70%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+img.artwork-content{
+    height: 35%;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
 
 /********* Media Queries ***********/
 @media all and (min-width: 800px) {
