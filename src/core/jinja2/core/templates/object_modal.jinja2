@@ -1,11 +1,12 @@
 <div class="modal-container">
     <h1 id="modal-title">{{ ar_object.title }}</h1>
     <div class="modal-content">
-        {% if go_back_url %}
-            <div class="back-header">
-                <a id="back" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click">{{ _("< Go back") }}</a>
-            </div>
-        {% endif %}
+        <div id="modal-header">
+            <button id="close-modal" onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
+            {% if go_back_url %}
+                    <button id="back-modal" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click"><</button>
+            {% endif %}
+        </div>
         <p id="element-author">{{ "{} {}".format(_("Author:"),ar_object.author)}}</p>
         <p id="element-upload-info">
                     {{ "{} {}{} {}".format(_("Uploaded by"), ar_object.owner.user.username,_(", in"), ar_object.uploaded_at.strftime("%d/%m/%Y")) }}
@@ -18,7 +19,4 @@
             <a id="png-download" href="{{ ar_object.source.url }}">{{ "{} ({}KB)".format(_("Download File"), ar_object.file_size)}}</a>
         </p>
     </div>
-    <button onclick="document.querySelector('#modal').classList.toggle('show-modal');">
-        {{ _("Close") }}
-    </button>
 </div>

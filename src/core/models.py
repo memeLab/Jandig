@@ -69,12 +69,13 @@ class ContentMixin:
         )
 
     def used_in_html_string(self):
-        used_in = "{} {} {} {} {}".format(
+        used_in = "{} {} {} {} {} {}".format(
             _("Used in"),
             self.artworks_count,
             _("artworks"),
             _("and in "),
             self.exhibits_count,
+            _("exhibits"),
         )
         if self.in_use:
             return render(

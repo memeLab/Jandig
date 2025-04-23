@@ -72,12 +72,24 @@
 .modal-content > a {
     cursor: pointer;
 }
-.back-header {
+
+#modal-header {
     display:flex;
+    flex-direction: row-reverse;
+    padding: 10px;
+    justify-content: space-between;
 }
-#back{
-    margin: 1.5em;
+
+#back-modal{
     font-size: larger;
+    margin: 0;
+    width: 2.5em;
+}
+
+#close-modal{
+    font-size: larger;
+    width: 2.5em;
+    margin: 0;
 }
 
 #artwork-description{

@@ -9,8 +9,11 @@
                 hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
                 hx-target="#modal" 
                 hx-trigger="click"
+                class="repository-item trigger-modal"
+            {% else %}
+                class="repository-item"
             {% endif %}
-            id="{{ element_type }}-{{ element.id }}" class="repository-item trigger-modal">
+            id="{{ element_type }}-{{ element.id }}" >
                 {{ element.as_html_thumbnail(editable=editable) | safe }}
         </div>
     {% endfor %}
