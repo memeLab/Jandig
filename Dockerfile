@@ -1,60 +1,60 @@
 
-FROM python:3.13.3-slim-bookworm AS base
-COPY --from=ghcr.io/astral-sh/uv:0.6.13 /uv /uvx /bin/
+FROM debian:bookworm-slim AS base
 
-ENV PATH="$PATH:/home/jandig/.local/bin:/jandig/.venv/bin" \
+ENV UV_VERSION=0.6.16 \
+    UV_PYTHON_VERSION=3.13.3 \
     TINI_VERSION=v0.19.0 \
-    UV_CACHE_DIR=/home/jandig/cache/uv
+    UV_COMPILE_BYTECODE=1 \ 
+    # Copy from the cache instead of linking since it's a mounted volume
+    UV_LINK_MODE=copy \ 
+    UV_PYTHON_INSTALL_DIR=/python \
+    UV_PYTHON_PREFERENCE=only-managed
+
+COPY --from=ghcr.io/astral-sh/uv:0.6.16 /uv /uvx /bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+      ca-certificates \
       gettext \
       docutils-common \
       curl \
-      wget
-
-
-RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+      wget \ 
+  && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
-  && chmod +x /usr/local/bin/tini && tini --version
+  && chmod +x /usr/local/bin/tini && tini --version \ 
+  && uv python install $UV_PYTHON_VERSION \
+  && apt-get clean \
+  && apt-get autoclean
 
+# Install the project's dependencies using the lockfile and settings
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/.venv /jandig/static /jandig/build /home/jandig/cache/uv
-
+  # Place executables in the environment at the front of the path
+ENV PATH="/jandig/.venv/bin:$PATH"
+RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/static /jandig/build
+# Then, add the rest of the project source code and install it
+# Installing separately from its dependencies allows optimal layer caching
 WORKDIR /jandig
-
 
 COPY ./src/ /jandig/src/
 COPY ./docs/ /jandig/docs/
 COPY ./locale/ /jandig/locale/
 COPY ./run.sh /jandig/run.sh
 COPY ./etc/ /jandig/etc/
-
 COPY ./pyproject.toml /jandig/pyproject.toml
 COPY ./uv.lock /jandig/uv.lock
 
-
-# Create group and user
-RUN groupadd -g 1000 jandig && useradd -u 1000 -g 1000 -r -m -d /home/jandig jandig
-
-# Change ownership of the directories to the new user and group
-RUN chown -R jandig:jandig /jandig /home/jandig
-RUN chmod 2775 /jandig /home/jandig
-
-# Switch to the new user
-USER jandig
-
-RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
-
-RUN uv sync --frozen --no-dev
 ENTRYPOINT ["tini", "--"]
 
 CMD [ "/jandig/run.sh" ]
 
 FROM base AS local_dev
 
+COPY ./collection/ /jandig/collection/
+
+RUN echo $UV_PROJECT_ENVIRONMENT
 RUN uv sync --frozen
-RUN playwright install
-USER root
-RUN playwright install-deps
-USER jandig
+RUN playwright install chromium --with-deps

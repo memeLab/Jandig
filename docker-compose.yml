@@ -6,12 +6,32 @@ services:
       dockerfile: Dockerfile
       context: .
       target: local_dev
-    user: jandig
     ports:
       - 8000:8000
-    volumes:
-      - ./:/jandig
-      - uv_cache:/home/jandig/cache/uv
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /jandig/src/
+
+        - action: sync
+          path: ./locale
+          target: /jandig/locale/
+
+        - action: sync
+          path: ./collection
+          target: /jandig/collection/
+
+        - action: rebuild
+          path: ./uv.lock
+
+        - action: rebuild
+          path: ./run.sh
+
+        - action: rebuild
+          path: ./docs
+          target: /jandig/docs/
+
     env_file:
       - .envs/.example
     environment:
