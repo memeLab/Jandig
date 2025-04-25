@@ -1,4 +1,3 @@
-
 FROM debian:bookworm-slim AS base
 
 ENV UV_VERSION=0.6.16 \
@@ -32,29 +31,36 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project --no-dev
 
-  # Place executables in the environment at the front of the path
+# Place executables in the virtual environment at the front of the path
 ENV PATH="/jandig/.venv/bin:$PATH"
-RUN mkdir -p /jandig/src /jandig/locale /jandig/docs /jandig/static /jandig/build
-# Then, add the rest of the project source code and install it
-# Installing separately from its dependencies allows optimal layer caching
+
+# Create folders for running Jandig without Gunicorn or MinIO
+RUN mkdir -p /jandig/static /jandig/build
+
 WORKDIR /jandig
 
-COPY ./src/ /jandig/src/
+COPY ./run.sh /jandig/run.sh
 COPY ./docs/ /jandig/docs/
 COPY ./locale/ /jandig/locale/
-COPY ./run.sh /jandig/run.sh
-COPY ./etc/ /jandig/etc/
 COPY ./pyproject.toml /jandig/pyproject.toml
 COPY ./uv.lock /jandig/uv.lock
+COPY ./src/ /jandig/src/
 
 ENTRYPOINT ["tini", "--"]
 
 CMD [ "/jandig/run.sh" ]
 
+
 FROM base AS local_dev
 
-COPY ./collection/ /jandig/collection/
+ENV PATH="$PATH:/jandig/minio-binaries/"
 
-RUN echo $UV_PROJECT_ENVIRONMENT
-RUN uv sync --frozen
-RUN playwright install chromium --with-deps
+# Install MinIO client
+COPY --from=minio/mc:RELEASE.2025-04-16T18-13-26Z /usr/bin/mc /jandig/minio-binaries/mc
+
+COPY ./collection/ /jandig/collection/
+COPY ./etc/create_buckets.sh /jandig/create_buckets.sh
+
+RUN uv sync --frozen && playwright install chromium --with-deps
+
+CMD ["/bin/bash", "-c", "/jandig/create_buckets.sh && /jandig/run.sh"]
