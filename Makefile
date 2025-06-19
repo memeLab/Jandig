@@ -35,12 +35,16 @@ gen:
 translate_%:
 	echo "Extracting Django strings..."
 	DJANGO_SECRET_KEY=change_me uv run python3 ./src/manage.py makemessages --ignore .venv --ignore cache --keep-pot --locale $*
+	
 	echo "Extracting Jinja2 strings..."
 	pybabel extract -F ./etc/babel.cfg -o ./locale/jinja2.pot .
+	
 	echo "Merging Django + Jinja2 strings..."
 	msgcat ./locale/django.pot ./locale/jinja2.pot --use-first -o ./locale/join.pot
+	
 	echo "Removing unwanted language header..."
 	sed -i '/"Language: \\n"/d' ./locale/join.pot
+	
 	echo "Merge translations into language..."
 	msgmerge ./locale/$*/LC_MESSAGES/django.po ./locale/join.pot -U
 	rm ./locale/*.pot

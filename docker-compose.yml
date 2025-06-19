@@ -9,8 +9,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - media_data: /jandig/media
-      - static_data: /jandig/static
+      - media_data:/jandig/media
+      - static_data:/jandig/static
     develop:
       watch:
         - action: sync

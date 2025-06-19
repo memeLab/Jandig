@@ -1,6 +1,6 @@
 import debug_toolbar
 from django.conf import settings
-from django.conf.urls.static import serve
+from django.conf.urls.static import serve, static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework_nested.routers import DefaultRouter
@@ -36,6 +36,10 @@ urlpatterns = [
     re_path("^docs/(?P<path>.*)$", serve, {"document_root": settings.DOCS_ROOT}),
     path("", include("core.urls")),
 ]
+
+if not settings.USE_GUNICORN:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     path("__debug__/", include(debug_toolbar.urls)),
