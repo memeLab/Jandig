@@ -6,12 +6,35 @@ services:
       dockerfile: Dockerfile
       context: .
       target: local_dev
-    user: jandig
     ports:
       - 8000:8000
     volumes:
-      - ./:/jandig
-      - uv_cache:/home/jandig/cache/uv
+      - media_data:/jandig/media
+      - static_data:/jandig/static
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /jandig/src/
+
+        - action: sync
+          path: ./locale
+          target: /jandig/locale/
+
+        - action: sync
+          path: ./collection
+          target: /jandig/collection/
+
+        - action: rebuild
+          path: ./uv.lock
+
+        - action: rebuild
+          path: ./run.sh
+
+        - action: rebuild
+          path: ./docs
+          target: /jandig/docs/
+
     env_file:
       - .envs/.example
     environment:
@@ -24,8 +47,6 @@ services:
       start_period: 10s
     depends_on:
       storage:
-          condition: service_started
-      createbuckets:
           condition: service_started
       mailpit:
           condition: service_started
@@ -58,7 +79,7 @@ services:
       start_interval: 5s
   
   storage:
-    image: minio/minio:RELEASE.2022-09-17T00-09-45Z.hotfix.acb000d3a
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
     ports:
       - 9000:9000
       - 9001:9001
@@ -80,21 +101,6 @@ services:
       - "traefik.http.middlewares.storage-stripprefix.stripprefix.prefixes=/static,/media"
       - "traefik.http.routers.storage.middlewares=storage-stripprefix"
 
-  createbuckets:
-    image: minio/mc:RELEASE.2022-09-16T09-16-47Z
-    depends_on:
-      - storage
-    env_file:
-      - .envs/.example
-    entrypoint: >
-      /bin/sh -c "
-      until (/usr/bin/mc config host add myminio $${MINIO_S3_ENDPOINT_URL} $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
-      /usr/bin/mc mb myminio/$${AWS_STORAGE_BUCKET_NAME};
-      /usr/bin/mc policy set download myminio/$${AWS_STORAGE_BUCKET_NAME};
-      /usr/bin/mc admin user add myminio $${MINIO_USER_ACCESS_KEY} $${MINIO_USER_SECRET_KEY};
-      /usr/bin/mc admin policy set myminio readwrite user=$${MINIO_USER_ACCESS_KEY};
-      exit 0;
-      "
   mailpit:
     image: axllent/mailpit
     volumes:
@@ -125,5 +131,5 @@ services:
 volumes:
   postgres_data:
   media_data:
+  static_data:
   mailpit_data:
-  uv_cache:

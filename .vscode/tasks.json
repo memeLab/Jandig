@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Enter Django Shell Plus outside container",
+            "type": "shell",
+            "command": "docker compose exec django uv run python src/manage.py shell_plus"
+        },
+        {
+            "label": "Start Jandig Django Server using UV without docker",
+            "type": "shell",
+            "command": "DJANGO_READ_DOT_ENV_FILE=True uv run python src/manage.py runserver"
+        }
+    ]
+}
