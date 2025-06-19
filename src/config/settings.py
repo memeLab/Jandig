@@ -10,11 +10,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
-# ROOT_DIR = environ.Path("/jandig/")
-# BASE_DIR = "/jandig/src"
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
 BASE_DIR = ROOT_DIR.path("src")
-
 
 env = environ.Env()
 
@@ -48,7 +45,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.3")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.4")
 
 
 def traces_sampler(sampling_context):
@@ -162,12 +159,15 @@ USE_POSTGRES = env.bool("USE_POSTGRES", default=True)
 if USE_POSTGRES:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "ENGINE": "django.db.backends.postgresql",
             "HOST": env("POSTGRES_HOST", default="localhost"),
             "NAME": env("POSTGRES_DB", default="jandig"),
             "USER": env("POSTGRES_USER", default="jandig"),
             "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
-        }
+        },
+        "OPTIONS": {
+            "pool": True,
+        },
     }
 else:
     DATABASES = {

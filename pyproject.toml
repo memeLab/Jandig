@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "1.5.3"
+version = "1.5.4"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -21,12 +21,12 @@ dependencies = [
   "jinja2~=3.1",
   "markupsafe~=3.0",
   "pillow~=11.1",
-  "psycopg2-binary~=2.9",
   "pymarker~=0.3",
   "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
   "djangorestframework-simplejwt>=5.5.0",
   "fast-html>=1.0.11",
+  "psycopg[binary,pool]>=3.2.9",
 ]
 
 [dependency-groups]
