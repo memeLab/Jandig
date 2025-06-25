@@ -2,7 +2,7 @@
 
 ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
 
-You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig.
+You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig. 
 
 ## How it works
 
