@@ -3,7 +3,7 @@ from typing import Any
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.urls import reverse
@@ -34,21 +34,18 @@ class NoArtFilter(admin.SimpleListFilter):
         if not self.value():
             return queryset
         query = self.value().split(",")
-        if "no_artwork" in query:
+        if "no_artwork" in query or "no_art" in query:
+            queryset = queryset.annotate(_artworks_count=Count("artworks"))
             conditions &= Q(_artworks_count=0)
-        if "no_marker" in query:
+        if "no_marker" in query or "no_art" in query:
+            queryset = queryset.annotate(_markers_count=Count("markers"))
             conditions &= Q(_markers_count=0)
-        if "no_objects" in query:
+        if "no_objects" in query or "no_art" in query:
+            queryset = queryset.annotate(_ar_objects_count=Count("ar_objects"))
             conditions &= Q(_ar_objects_count=0)
-        if "no_exhibits" in query:
+        if "no_exhibits" in query or "no_art" in query:
+            queryset = queryset.annotate(_exhibits_count=Count("exhibits"))
             conditions &= Q(_exhibits_count=0)
-        if "no_art" in query:
-            return queryset.filter(
-                Q(_artworks_count=0)
-                & Q(_ar_objects_count=0)
-                & Q(_exhibits_count=0)
-                & Q(_markers_count=0)
-            )
 
         # Apply the filter
         filtered_queryset = queryset.filter(conditions)
@@ -76,8 +73,60 @@ class ProfileAdmin(admin.ModelAdmin):
             .get_queryset(request)
             .select_related("user")
             .prefetch_related("artworks", "markers", "exhibits", "ar_objects")
+            .annotate(
+                _artworks_count=Count("artworks", distinct=True),
+                _markers_count=Count("markers", distinct=True),
+                _ar_objects_count=Count("ar_objects", distinct=True),
+                _exhibits_count=Count("exhibits", distinct=True),
+            )
         )
         return queryset
+
+    def artworks_count(self, obj):
+        """Link to related Artworks"""
+        if obj.artworks_count == 0:
+            return obj.artworks_count
+        artworks_list = ",".join([str(artwork.id) for artwork in obj.artworks.all()])
+
+        link = reverse("admin:index") + "core/artwork/?id__in=" + str(artworks_list)
+        return format_html('<a href="{}">{}</a>', link, obj.artworks_count)
+
+    artworks_count.admin_order_field = "_artworks_count"
+
+    def markers_count(self, obj):
+        """Link to related Markers"""
+        if obj.markers_count == 0:
+            return obj.markers_count
+        markers_list = ",".join([str(marker.id) for marker in obj.markers.all()])
+
+        link = reverse("admin:index") + "core/marker/?id__in=" + str(markers_list)
+        return format_html('<a href="{}">{}</a>', link, obj.markers_count)
+
+    markers_count.admin_order_field = "_markers_count"
+
+    def ar_objects_count(self, obj):
+        """Link to related AR Objects"""
+        if obj.ar_objects_count == 0:
+            return obj.ar_objects_count
+        ar_objects_list = ",".join(
+            [str(ar_object.id) for ar_object in obj.ar_objects.all()]
+        )
+
+        link = reverse("admin:index") + "core/object/?id__in=" + str(ar_objects_list)
+        return format_html('<a href="{}">{}</a>', link, obj.ar_objects_count)
+
+    ar_objects_count.admin_order_field = "_ar_objects_count"
+
+    def exhibits_count(self, obj):
+        """Link to related Exhibits"""
+        if obj.exhibits_count == 0:
+            return obj.exhibits_count
+        exhibits_list = ",".join([str(exhibit.id) for exhibit in obj.exhibits.all()])
+
+        link = reverse("admin:index") + "core/exhibit/?id__in=" + str(exhibits_list)
+        return format_html('<a href="{}">{}</a>', link, obj.exhibits_count)
+
+    exhibits_count.admin_order_field = "_exhibits_count"
 
     def created(self, obj):
         return obj.user.date_joined
