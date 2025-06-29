@@ -131,8 +131,12 @@ class ProfileAdmin(admin.ModelAdmin):
     def created(self, obj):
         return obj.user.date_joined
 
+    created.admin_order_field = "user__date_joined"
+
     def last_login(self, obj):
         return obj.user.last_login
+
+    last_login.admin_order_field = "user__last_login"
 
     def user_link(self, obj):
         """Link to related User"""
