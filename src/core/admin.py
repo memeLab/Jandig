@@ -48,7 +48,7 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
         "title",
         "image_preview",
         "id",
-        "owner",
+        "_owner",
         "author",
         "artworks_count",
         "exhibits_count",
@@ -76,9 +76,12 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
 
     artworks_count.short_description = "Artworks Count"
     artworks_count.allow_tags = True
+    artworks_count.admin_order_field = "_artworks_count"
 
     def exhibits_count(self, obj):
         return obj._exhibits_count
+
+    exhibits_count.admin_order_field = "_exhibits_count"
 
     def filesize(self, obj):
         """File size in MB"""
@@ -88,8 +91,11 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
 
     filesize.short_description = "File Size"
     filesize.admin_order_field = "file_size"
-    artworks_count.admin_order_field = "_artworks_count"
-    exhibits_count.admin_order_field = "_exhibits_count"
+
+    def _owner(self, obj):
+        """Display the owner of the object"""
+        link = reverse("admin:index") + "users/profile/?id=" + str(obj.owner.id)
+        return format_html('<a href="{}">{}</a>', link, obj.owner.user.username)
 
 
 @admin.register(Marker)
@@ -111,7 +117,7 @@ class ArtworkAdmin(admin.ModelAdmin):
     list_display = [
         "title",
         "id",
-        "author",
+        "_author",
         "marker_preview",
         "augmented_preview",
         "exhibits_count",
@@ -156,13 +162,18 @@ class ArtworkAdmin(admin.ModelAdmin):
     augmented_preview.short_description = "Augmented Object"
     augmented_preview.allow_tags = True
 
+    def _author(self, obj):
+        """Display the author of the Artwork"""
+        link = reverse("admin:index") + "users/profile/?id=" + str(obj.author.id)
+        return format_html('<a href="{}">{}</a>', link, obj.author.user.username)
+
 
 @admin.register(Exhibit)
 class ExhibitAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "slug",
-        "owner",
+        "_owner",
         "artworks_count",
         "creation_date",
     ]
@@ -187,3 +198,8 @@ class ExhibitAdmin(admin.ModelAdmin):
     artworks_count.short_description = "Artworks Count"
     artworks_count.admin_order_field = "_artworks_count"
     artworks_count.allow_tags = True
+
+    def _owner(self, obj):
+        """Display the owner of the object"""
+        link = reverse("admin:index") + "users/profile/?id=" + str(obj.owner.id)
+        return format_html('<a href="{}">{}</a>', link, obj.owner.user.username)
