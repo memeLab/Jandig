@@ -67,6 +67,13 @@ class ProfileAdmin(admin.ModelAdmin):
     ordering = ["-id"]
     list_filter = [NoArtFilter]
 
+    def delete_queryset(self, request, queryset):
+        """Delete queryset and related users"""
+        for profile in queryset:
+            user = profile.user
+            profile.delete()
+            user.delete()
+
     def get_queryset(self, request):
         queryset = (
             super()
