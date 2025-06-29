@@ -10,7 +10,7 @@ In this manual we will guide you, step-by-step, on how to create your own Augmen
 Let's get right to it, for this is a quick and essential read for those who want to use Jandig as their main AR art creator.
 
 Quickstart tutorial
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
 1) Go to "https://jandig.app/generator". Upload the image to be used in the Marker without the black border (it will be added by the application). Download the Marker (Download .PATT Marker) and the image (Download image Marker) and store the files in a safe place. If you want, download PDFs with Markers for printing. 
 Important: set the Patern Ratio to 0.60.
@@ -29,7 +29,7 @@ Access the final URL you just created, point the camera at the Marker and watch 
 
 
 Tutorial - Learn the basics
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before anything else, an account need to be created, so that artists can deploy their pieces. It is not needed for those who only desire to appreciate an Artwork, but for those who want to actively work with art, it is essential.
 
