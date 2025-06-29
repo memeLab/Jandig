@@ -45,8 +45,11 @@ def create_marker(filename, original_filename):
 
 
 class ContentMixin:
+    def content_type(self):
+        return self.__class__.__name__.lower()
+
     def _get_edit_button(self):
-        content_type = self.__class__.__name__.lower()
+        content_type = self.content_type()
         return a(
             _("edit"),
             href=reverse(f"edit-{content_type}", query={"id": self.id}),
@@ -54,7 +57,7 @@ class ContentMixin:
         )
 
     def _get_delete_button(self):
-        content_type = self.__class__.__name__.lower()
+        content_type = self.content_type()
         return a(
             _("delete"),
             href=reverse(
@@ -64,6 +67,27 @@ class ContentMixin:
             onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
             class_="delete",
         )
+
+    def used_in_html_string(self):
+        used_in = "{} {} {} {} {} {}".format(
+            _("Used in"),
+            self.artworks_count,
+            _("artworks"),
+            _("and in "),
+            self.exhibits_count,
+            _("exhibits"),
+        )
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
 
 
 class Marker(ContentMixin, models.Model):
@@ -100,15 +124,9 @@ class Marker(ContentMixin, models.Model):
         return False
 
     def as_html(self, height: int = None, width: int = None):
-        if not height:
-            height = self.height
-        if not width:
-            width = self.width
         attributes = {
             "id": self.id,
             "title": self.title,
-            "class_": "trigger-modal",
-            "data_elem_type": "marker",
             "src": self.source.url,
         }
         return render(
@@ -255,19 +273,15 @@ class Object(ContentMixin, models.Model):
         return False
 
     def as_html(self, height: int = None, width: int = None):
-        if not height:
-            height = self.height
-        if not width:
-            width = self.width
         attributes = {
             "id": self.id,
             "title": self.title,
-            "class_": "trigger-modal",
-            "data_elem_type": "object",
             "src": self.source.url,
-            "height": height,
-            "width": width,
         }
+        if height:
+            attributes["height"] = height
+        if width:
+            attributes["width"] = width
         if self.is_video:
             return render(
                 video(
@@ -323,6 +337,24 @@ class Artwork(ContentMixin, models.Model):
 
     def __str__(self):
         return self.title
+
+    def used_in_html_string(self):
+        used_in = "{} {} {}".format(
+            _("Used in"),
+            self.exhibits_count,
+            _("Exhibits"),
+        )
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
 
     def as_html_thumbnail(self, editable=False):
         elements = [

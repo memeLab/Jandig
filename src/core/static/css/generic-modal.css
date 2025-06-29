@@ -1,0 +1,98 @@
+.trigger-modal {
+    cursor: pointer;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    z-index: 100;
+}
+
+.modal-container {
+    max-width: 600px;
+    width: 80%;
+    margin: 25px auto;
+    height: inherit;
+}
+
+#modal-title {
+    margin: 0;
+    color: white;
+    text-align: center;
+    background-image: linear-gradient( to top, #7776, #7776 50%, transparent )
+}
+
+.modal-content {
+    background-color: white;
+    max-height: 85%;
+    overflow-y: scroll;
+    padding-bottom: 1em;
+}
+
+.modalMenu {
+    margin: 5px 0 15px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.modalMenu a, .modalMenu a:visited {
+    color: #06f7ae;
+}
+
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal-content > img,
+.modal-content > video,
+.modal-content > div > a > img,
+.modal-content > div > a > video {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.modal-content > div > h5 {
+    margin: 0.8em;
+}
+
+.modal-content > div > a, 
+.modal-content > a {
+    cursor: pointer;
+}
+
+#modal-header {
+    display:flex;
+    flex-direction: row-reverse;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+#back-modal{
+    font-size: larger;
+    margin: 0;
+    width: 2.5em;
+}
+
+#close-modal{
+    font-size: larger;
+    width: 2.5em;
+    margin: 0;
+}
+
+#artwork-description{
+    margin: 1em;
+    font-size: large;
+}

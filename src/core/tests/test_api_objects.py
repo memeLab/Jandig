@@ -7,6 +7,7 @@ from django.test import TestCase
 
 from core.models import Object
 from core.serializers import ObjectSerializer
+from core.tests.factory import ObjectFactory
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -89,3 +90,67 @@ class TestObjectAPI(TestCase):
         serializer_data = ObjectSerializer(annotated_obj).data
         # Asserts the serializer is being used by the endpoint
         assert data == serializer_data
+
+    def test_retrieve_gif_object_as_modal(self):
+        # Create an object
+        image_object = ObjectFactory(
+            title="Test Image", source="objects/test.gif", scale="2 1", position="0 1 0"
+        )
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=image_object.id)
+
+        response = self.client.get(f"/api/v1/objects/{image_object.id}/?format=modal")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+        assert annotated_obj.title in html
+        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.author in html
+        assert annotated_obj.owner.user.username in html
+        assert str(annotated_obj.file_size) in html
+        assert annotated_obj.used_in_html_string() in html
+        assert "<img" in html
+        assert "<video" not in html
+
+    def test_retrieve_video_object_as_modal(self):
+        video_object = ObjectFactory(
+            title="Test Video", source="objects/test.mp4", scale="1 1", position="1 0 0"
+        )
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=video_object.id)
+        response = self.client.get(f"/api/v1/objects/{video_object.id}/?format=modal")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+        assert annotated_obj.title in html
+        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.author in html
+        assert annotated_obj.owner.user.username in html
+        assert str(annotated_obj.file_size) in html
+        assert annotated_obj.used_in_html_string() in html
+        assert "<video" in html
+        assert "<img" not in html
+
+    def test_retrieve_object_as_modal_with_go_back_button(self):
+        # Create an object
+        obj = ObjectFactory.create(owner=self.profile, source=fake_file)
+        # Annotate the object to include the exhibit count
+        annotated_obj = Object.objects.annotate(
+            exhibits_count=Count("artworks__exhibits", distinct=True)
+        ).get(id=obj.id)
+        go_back_url = "/api/v1/artworks/1/?format=modal"
+        response = self.client.get(
+            f"/api/v1/objects/{obj.id}/?format=modal&go_back_url={go_back_url}"
+        )
+
+        assert response.status_code == 200
+        html = response.content.decode("utf-8")
+        assert annotated_obj.title in html
+        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.author in html
+        assert annotated_obj.owner.user.username in html
+        assert str(annotated_obj.file_size) in html
+        assert annotated_obj.used_in_html_string() in html
+        assert go_back_url in html

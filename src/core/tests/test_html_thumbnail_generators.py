@@ -27,8 +27,6 @@ class TestMarkerThumbnailGenerators(TestCase):
         assert 'width="200"' in html
         assert f'id="{self.marker.id}"' in html
         assert f'title="{self.marker.title}"' in html
-        assert 'class="trigger-modal"' in html
-        assert 'data-elem-type="marker"' in html
         assert self.marker.source.url in html
         assert "<img" in html
 
@@ -74,8 +72,6 @@ class TestObjectThumbnailGenerators(TestCase):
         assert 'width="200"' in html
         assert f'id="{self.image_object.id}"' in html
         assert f'title="{self.image_object.title}"' in html
-        assert 'class="trigger-modal"' in html
-        assert 'data-elem-type="object"' in html
         assert self.image_object.source.url in html
         assert "<img" in html
 
@@ -86,8 +82,6 @@ class TestObjectThumbnailGenerators(TestCase):
         assert f'id="{self.video_object.id}"' in html
         assert "autoplay" in html
         assert "loop" in html
-        assert 'data-elem-type="object"' in html
-        assert 'class="trigger-modal"' in html
         assert "muted" in html
         assert "<video" in html
 
