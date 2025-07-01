@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project --no-dev
 
 # Place executables in the virtual environment at the front of the path
-ENV PATH="/jandig/.venv/bin:$PATH"
+ENV PATH="/.venv/bin:$PATH"
 
 # Create folders for running Jandig without Gunicorn or MinIO
 RUN mkdir -p /jandig/static /jandig/build

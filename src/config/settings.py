@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
-    "debug_toolbar",
     "django_htmx",
     "corsheaders",
     "users",
@@ -90,8 +89,21 @@ INSTALLED_APPS = [
     "blog",
 ]
 
-MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
+TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
+
+
+def debug(_):
+    return TOOLBAR_ENABLED
+
+
+MIDDLEWARE = []
+
+if TOOLBAR_ENABLED:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+MIDDLEWARE += [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -102,12 +114,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
 ]
-DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
-
-
-def debug(_):
-    return env.bool("DEBUG_TOOLBAR", False)
-
 
 ROOT_URLCONF = "config.urls"
 

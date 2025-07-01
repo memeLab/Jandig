@@ -37,6 +37,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(update_object_scale),
+        migrations.RunPython(update_object_scale, reverse_code=migrations.RunPython.noop),
     ]
+
 
