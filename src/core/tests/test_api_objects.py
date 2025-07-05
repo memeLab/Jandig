@@ -51,7 +51,7 @@ class TestObjectAPI(TestCase):
         self.assertIn("id", first_result)
         self.assertIn("owner", first_result)
         self.assertIn("source", first_result)
-        self.assertIn("uploaded_at", first_result)
+        self.assertIn("created", first_result)
         self.assertIn("author", first_result)
         self.assertIn("title", first_result)
         self.assertIn("scale", first_result)
@@ -105,7 +105,7 @@ class TestObjectAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         html = response.content.decode("utf-8")
         assert annotated_obj.title in html
-        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
         assert str(annotated_obj.file_size) in html
@@ -125,7 +125,7 @@ class TestObjectAPI(TestCase):
         self.assertEqual(response.status_code, 200)
         html = response.content.decode("utf-8")
         assert annotated_obj.title in html
-        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
         assert str(annotated_obj.file_size) in html
@@ -148,7 +148,7 @@ class TestObjectAPI(TestCase):
         assert response.status_code == 200
         html = response.content.decode("utf-8")
         assert annotated_obj.title in html
-        assert annotated_obj.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
         assert str(annotated_obj.file_size) in html

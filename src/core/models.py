@@ -7,6 +7,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django_extensions.db.models import TimeStampedModel
 from fast_html import a, b, div, h1, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
@@ -90,12 +91,11 @@ class ContentMixin:
         return used_in
 
 
-class Marker(ContentMixin, models.Model):
+class Marker(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
     source = models.ImageField(upload_to="markers/")
-    uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     patt = models.FileField(upload_to="patts/")
@@ -151,12 +151,11 @@ class Marker(ContentMixin, models.Model):
         return self.as_html(height=height, width=width)
 
 
-class Object(ContentMixin, models.Model):
+class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
     source = models.FileField(upload_to="objects/")
-    uploaded_at = models.DateTimeField(auto_now=True)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     scale = models.CharField(default="1 1", max_length=50)
@@ -310,7 +309,7 @@ class Object(ContentMixin, models.Model):
         return self.as_html(height=height, width=width)
 
 
-class Artwork(ContentMixin, models.Model):
+class Artwork(TimeStampedModel, ContentMixin):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -322,7 +321,6 @@ class Artwork(ContentMixin, models.Model):
     )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
-    created_at = models.DateTimeField(auto_now=True)
 
     @property
     def exhibits_count(self):
@@ -383,14 +381,13 @@ def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
 
 
-class Exhibit(ContentMixin, models.Model):
+class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork, related_name="exhibits")
-    creation_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -401,7 +398,7 @@ class Exhibit(ContentMixin, models.Model):
 
     @property
     def date(self):
-        return self.creation_date.strftime("%d/%m/%Y")
+        return self.created.strftime("%d/%m/%Y")
 
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})

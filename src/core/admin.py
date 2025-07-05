@@ -52,11 +52,12 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
         "author",
         "artworks_count",
         "exhibits_count",
-        "uploaded_at",
+        "created",
+        "modified",
         "filesize",
     ]
     search_fields = ["title", "id"]
-    ordering = ["-uploaded_at"]
+    ordering = ["-created"]
 
     def get_queryset(self, request):
         queryset = (
@@ -121,10 +122,11 @@ class ArtworkAdmin(admin.ModelAdmin):
         "marker_preview",
         "augmented_preview",
         "exhibits_count",
-        "created_at",
+        "created",
+        "modified",
     ]
     search_fields = ["title", "id"]
-    ordering = ["-created_at"]
+    ordering = ["-created"]
 
     def get_queryset(self, request):
         queryset = (
@@ -175,10 +177,11 @@ class ExhibitAdmin(admin.ModelAdmin):
         "slug",
         "_owner",
         "artworks_count",
-        "creation_date",
+        "created",
+        "modified",
     ]
     search_fields = ["name", "slug"]
-    ordering = ["-creation_date"]
+    ordering = ["-created"]
 
     def get_queryset(self, request):
         queryset = (
