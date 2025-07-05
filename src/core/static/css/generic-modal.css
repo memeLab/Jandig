@@ -25,9 +25,8 @@
 
 #modal-title {
     margin: 0;
-    color: white;
     text-align: center;
-    background-image: linear-gradient( to top, #7776, #7776 50%, transparent )
+    background: #FFFFFF00;
 }
 
 .modal-content {

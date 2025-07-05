@@ -1,5 +1,4 @@
 <div class="modal-container">
-    <h1 id="modal-title">{{ marker.title }}</h1>
     <div class="modal-content">
         <div id="modal-header">
             <button id="close-modal" onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
@@ -7,6 +6,7 @@
                     <button id="back-modal" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click"><</button>
             {% endif %}
         </div>
+        <h1 id="modal-title">{{ marker.title }}</h1>
         <p id="element-author">{{ "{} {}".format(_("Author:"),marker.author)}}</p>
         <p id="element-upload-info">
                     {{ "{} {}{} {}".format(_("Uploaded by"), marker.owner.user.username,_(", in"), marker.created.strftime("%d/%m/%Y")) }}

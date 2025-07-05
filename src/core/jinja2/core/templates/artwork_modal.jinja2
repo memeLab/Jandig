@@ -1,9 +1,9 @@
 <div class="modal-container">
-    <h1 id="modal-title">{{ artwork.title }}</h1>
     <div class="modal-content">
         <div id="modal-header">
             <button id="close-modal" onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
         </div>
+        <h1 id="modal-title">{{ artwork.title }}</h1>
         <p id="artwork-description">{{ artwork.description }}</p>
         <p id="element-upload-info">
                     {{ "{} {}{} {}".format(_("Created by"), artwork.author.user.username,_(", in"), artwork.created.strftime("%d/%m/%Y")) }}
