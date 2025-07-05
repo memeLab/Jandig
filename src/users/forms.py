@@ -185,7 +185,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ("owner", "uploaded_at", "patt", "file_size")
+        exclude = ("owner", "created", "patt", "file_size")
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)

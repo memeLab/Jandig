@@ -72,6 +72,7 @@ if ENABLE_SENTRY:
     )
 
 INSTALLED_APPS = [
+    "pghistory.admin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -82,6 +83,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "pghistory",
+    "pgtrigger",
     "django_htmx",
     "corsheaders",
     "users",

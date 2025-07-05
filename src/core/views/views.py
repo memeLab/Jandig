@@ -35,15 +35,15 @@ def collection(request):
         Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .all()
-        .order_by("-creation_date")[:4]
+        .order_by("-created")[:4]
     )
     artworks = (
         Artwork.objects.select_related("author", "author__user", "marker", "augmented")
         .all()
-        .order_by("-created_at")[:6]
+        .order_by("-created")[:6]
     )
-    markers = Marker.objects.all().order_by("-uploaded_at")[:8]
-    objects = Object.objects.all().order_by("-uploaded_at")[:8]
+    markers = Marker.objects.all().order_by("-created")[:8]
+    objects = Object.objects.all().order_by("-created")[:8]
 
     ctx = {
         "artworks": artworks,
@@ -129,15 +129,15 @@ def see_all(request, which=""):
         page = 1
 
     data_types = {
-        "objects": Object.objects.all().order_by("uploaded_at"),
-        "markers": Marker.objects.all().order_by("uploaded_at"),
+        "objects": Object.objects.all().order_by("created"),
+        "markers": Marker.objects.all().order_by("created"),
         "artworks": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
-        .order_by("created_at"),
+        .order_by("created"),
         "exhibits": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .all()
-        .order_by("creation_date"),
+        .order_by("created"),
     }
 
     data = data_types.get(request_type)
@@ -294,7 +294,7 @@ def edit_object(request):
 
     model_data = {
         "source": model.source,
-        "uploaded_at": model.uploaded_at,
+        "created": model.created,
         "author": model.author,
         "scale": model.scale,
         "position": model.position,

@@ -10,10 +10,7 @@ class ProfileSerializer(ModelSerializer):
     class Meta:
         model = Profile
         fields = ("id", "username", "user_id")
-        read_only_fields = (
-            "id",
-            "uploaded_at",
-        )
+        read_only_fields = ("id",)
 
     def get_username(self, obj):
         return obj.user.username

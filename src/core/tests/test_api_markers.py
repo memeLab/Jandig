@@ -50,7 +50,7 @@ class TestMarkerAPI(TestCase):
         self.assertIn("id", first_result)
         self.assertIn("owner", first_result)
         self.assertIn("source", first_result)
-        self.assertIn("uploaded_at", first_result)
+        self.assertIn("created", first_result)
         self.assertIn("author", first_result)
         self.assertIn("title", first_result)
         self.assertIn("patt", first_result)
@@ -98,7 +98,7 @@ class TestMarkerAPI(TestCase):
 
         assert annotated_marker.title in html
         assert annotated_marker.source.url in html
-        assert annotated_marker.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html
         assert str(annotated_marker.file_size) in html
@@ -121,7 +121,7 @@ class TestMarkerAPI(TestCase):
 
         assert annotated_marker.title in html
         assert annotated_marker.source.url in html
-        assert annotated_marker.uploaded_at.strftime("%d/%m/%Y") in html
+        assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html
         assert str(annotated_marker.file_size) in html

@@ -75,4 +75,4 @@ class TestArtworkAPI(TestCase):
         assert artwork.augmented.title in html
         assert artwork.augmented.as_html() in html
         assert artwork.author.user.username in html
-        assert artwork.created_at.strftime("%d/%m/%Y") in html
+        assert artwork.created.strftime("%d/%m/%Y") in html

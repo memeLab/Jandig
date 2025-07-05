@@ -27,6 +27,7 @@ dependencies = [
   "djangorestframework-simplejwt>=5.5.0",
   "fast-html>=1.0.11",
   "psycopg[binary,pool]>=3.2.9",
+  "django-pghistory>=3.7.0",
 ]
 
 [dependency-groups]

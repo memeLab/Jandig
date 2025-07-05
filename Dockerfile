@@ -52,7 +52,6 @@ CMD [ "/jandig/run.sh" ]
 
 
 FROM base AS local_dev
-
 ENV PATH="$PATH:/jandig/minio-binaries/"
 
 # Install MinIO client
@@ -61,6 +60,13 @@ COPY --from=minio/mc:RELEASE.2025-04-16T18-13-26Z /usr/bin/mc /jandig/minio-bina
 COPY ./collection/ /jandig/collection/
 COPY ./etc/create_buckets.sh /jandig/create_buckets.sh
 
-RUN uv sync --frozen && playwright install chromium --with-deps
+WORKDIR /
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync
+
+RUN uv run playwright install chromium --with-deps
+WORKDIR /jandig
 
 CMD ["/bin/bash", "-c", "/jandig/create_buckets.sh && /jandig/run.sh"]

@@ -261,7 +261,7 @@ def edit_marker(request):
 
     model_data = {
         "source": model.source,
-        "uploaded_at": model.uploaded_at,
+        "created": model.created,
         "author": model.author,
         "patt": model.patt,
         "title": model.title,
