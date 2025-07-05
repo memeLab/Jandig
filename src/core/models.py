@@ -1,6 +1,7 @@
 import logging
 import re
 
+import pghistory
 from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
@@ -91,6 +92,7 @@ class ContentMixin:
         return used_in
 
 
+@pghistory.track()
 class Marker(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
@@ -151,6 +153,7 @@ class Marker(TimeStampedModel, ContentMixin):
         return self.as_html(height=height, width=width)
 
 
+@pghistory.track()
 class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
@@ -309,6 +312,7 @@ class Object(TimeStampedModel, ContentMixin):
         return self.as_html(height=height, width=width)
 
 
+@pghistory.track()
 class Artwork(TimeStampedModel, ContentMixin):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
@@ -381,6 +385,7 @@ def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
 
 
+@pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
