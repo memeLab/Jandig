@@ -14,19 +14,17 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 
+from core.forms import UploadObjectForm
 from core.models import Artwork, Exhibit, Marker, Object
 
 from .forms import (
     ArtworkForm,
-    ExhibitForm,
     PasswordChangeForm,
     ProfileForm,
     SignupForm,
     UploadMarkerForm,
-    UploadObjectForm,
 )
 from .models import Profile
 from .services import BOT_SCORE, create_assessment
@@ -119,8 +117,7 @@ def profile(request):
     return render(request, "users/profile.jinja2", ctx)
 
 
-@cache_page(60 * 60)
-def get_element(request, form, form_class, form_type, source, author, existent_element):
+def get_element(request, form_class, form_type, source, author, existent_element):
     element = None
 
     if source and author:
@@ -136,7 +133,6 @@ def get_element(request, form, form_class, form_type, source, author, existent_e
     return element
 
 
-@cache_page(60 * 60)
 def get_marker(request, form):
     marker_src = form.cleaned_data["marker"]
     marker_author = form.cleaned_data["marker_author"]
@@ -144,7 +140,6 @@ def get_marker(request, form):
 
     return get_element(
         request,
-        form,
         UploadMarkerForm,
         Marker,
         source=marker_src,
@@ -153,7 +148,6 @@ def get_marker(request, form):
     )
 
 
-@cache_page(60 * 60)
 def get_augmented(request, form):
     object_src = form.cleaned_data["augmented"]
     object_author = form.cleaned_data["augmented_author"]
@@ -161,7 +155,6 @@ def get_augmented(request, form):
 
     return get_element(
         request,
-        form,
         UploadObjectForm,
         Object,
         source=object_src,
@@ -207,38 +200,6 @@ def create_artwork(request):
     )
 
 
-@login_required
-def create_exhibit(request):
-    if request.method == "POST":
-        form = ExhibitForm(request.POST)
-        if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
-            exhibit = Exhibit(
-                owner=request.user.profile,
-                name=form.cleaned_data["name"],
-                slug=form.cleaned_data["slug"],
-            )
-
-            exhibit.save()
-            exhibit.artworks.set(artworks)
-
-            return redirect("profile")
-    else:
-        form = ExhibitForm()
-
-    artworks = Artwork.objects.all().order_by("-id")
-
-    return render(
-        request,
-        "users/exhibit-create.jinja2",
-        {
-            "form": form,
-            "artworks": artworks,
-        },
-    )
-
-
 def upload_elements(request, form_class, form_type, route):
     if request.method == "POST":
         form = form_class(request.POST, request.FILES)
@@ -260,13 +221,8 @@ def upload_elements(request, form_class, form_type, route):
     return render(
         request,
         "users/upload-object.jinja2",
-        {"form_type": form_type, "form": form, "route": route, "edit": False},
+        {"form": form, "route": route, "edit": False},
     )
-
-
-@login_required
-def object_upload(request):
-    return upload_elements(request, UploadObjectForm, "object", "object-upload")
 
 
 @login_required
@@ -299,36 +255,13 @@ def edit_elements(request, form_class, route, model, model_data):
 
 
 @login_required
-def edit_object(request):
-    index = request.GET.get("id", "-1")
-    model = Object.objects.get(id=index)
-
-    model_data = {
-        "source": model.source,
-        "uploaded_at": model.uploaded_at,
-        "author": model.author,
-        "scale": model.scale,
-        "position": model.position,
-        "rotation": model.rotation,
-        "title": model.title,
-    }
-    return edit_elements(
-        request,
-        UploadObjectForm,
-        route="users/edit-object.jinja2",
-        model=model,
-        model_data=model_data,
-    )
-
-
-@login_required
 def edit_marker(request):
     index = request.GET.get("id", "-1")
     model = Marker.objects.get(id=index)
 
     model_data = {
         "source": model.source,
-        "uploaded_at": model.uploaded_at,
+        "created": model.created,
         "author": model.author,
         "patt": model.patt,
         "title": model.title,
@@ -386,53 +319,6 @@ def edit_artwork(request):
             "object_list": Object.objects.all(),
             "selected_marker": model.marker.id,
             "selected_object": model.augmented.id,
-        },
-    )
-
-
-@login_required
-def edit_exhibit(request):
-    index = request.GET.get("id", "-1")
-    model = Exhibit.objects.filter(id=index)
-    if not model or model.first().owner != Profile.objects.get(user=request.user):
-        raise Http404
-
-    if request.method == "POST":
-        form = ExhibitForm(request.POST)
-
-        form.full_clean()
-        if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
-
-            model_data = {
-                "name": form.cleaned_data["name"],
-                "slug": form.cleaned_data["slug"],
-            }
-            model.update(**model_data)
-            model = model.first()
-            model.artworks.set(artworks)
-
-            return redirect("profile")
-
-    model = model.first()
-    model_artworks = ""
-    for artwork in model.artworks.all():
-        model_artworks += str(artwork.id) + ","
-
-    model_artworks = model_artworks[:-1]
-
-    model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
-
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-
-    return render(
-        request,
-        "users/exhibit-edit.jinja2",
-        {
-            "form": ExhibitForm(initial=model_data),
-            "artworks": artworks,
-            "selected_artworks": model_artworks,
         },
     )
 
@@ -504,66 +390,13 @@ def delete_content(model, user, instance_id):
 
     if qs:
         instance = qs[0]
-        if user.has_perm("users.moderator"):
-            delete_content_Moderator(instance, user, model)
+
+        is_artwork = isinstance(instance, Artwork)
+        if is_artwork:
+            has_permission = instance.author == user.profile
         else:
-            isArtwork = isinstance(instance, Artwork)
-            if isArtwork:
-                hasPermission = instance.author == user.profile
-            else:
-                hasPermission = instance.owner == user.profile
+            has_permission = instance.owner == user.profile
 
-            isInstanceSameTypeofModel = isinstance(instance, model)
-            if isInstanceSameTypeofModel and hasPermission:
-                instance.delete()
-
-
-def delete_content_Moderator(instance, user, model):
-    isInstanceSameTypeofModel = isinstance(instance, model)
-    isObject = isinstance(instance, Object)
-    isMarker = isinstance(instance, Marker)
-    isArtwork = isinstance(instance, Artwork)
-
-    if isInstanceSameTypeofModel or not instance.in_use:
-        instance.delete()
-    elif instance.in_use:
-        if isObject:
-            artworkIn = Artwork.objects.filter(augmented=instance)
-            artworkIn.delete()
+        is_instance_same_type_of_model = isinstance(instance, model)
+        if is_instance_same_type_of_model and has_permission:
             instance.delete()
-        elif isMarker:
-            artworkIn = Artwork.objects.filter(marker=instance)
-            artworkIn.delete()
-            instance.delete()
-        elif isArtwork:
-            instance.delete()
-
-
-@login_required
-@require_http_methods(["GET"])
-def mod_delete(request):
-    content_type = request.GET.get("content_type", None)
-    if content_type == "marker":
-        delete_content(Marker, request.user, request.GET.get("instance_id", -1))
-    elif content_type == "object":
-        delete_content(Object, request.user, request.GET.get("instance_id", -1))
-    elif content_type == "artwork":
-        delete_content(Artwork, request.user, request.GET.get("instance_id", -1))
-    elif content_type == "exhibit":
-        delete_content(Exhibit, request.user, request.GET.get("id", -1))
-    return redirect("moderator-page")
-
-
-def mod(request):
-    ctx = {
-        "objects": Object.objects.all(),
-        "markers": Marker.objects.all(),
-        "artworks": Artwork.objects.all().order_by("-id"),
-        "exhibits": Exhibit.objects.all(),
-        "permission": request.user.has_perm("users.moderator"),
-    }
-    return render(request, "users/moderator-page.jinja2", ctx)
-
-
-def permission_denied(request):
-    return render(request, "users/permission-denied.jinja2")

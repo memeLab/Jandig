@@ -1,5 +1,6 @@
 {% extends '/core/home.jinja2' %}
 
+
 {% block content %}
     {% block subcontent %}
     {% endblock %}
@@ -7,12 +8,16 @@
         <div class="container">
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
-
-            {% for element_type, repository_list, class_type in [("exhibit",exhibits, "titExb"),
-                                                    ("artwork",artworks, "titArt"),
-                                                    ("marker",markers, "titMrk"),
-                                                    ("object",objects, "titObj")
-                                                    ]%}
+            <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+            <script src="{{ static('js/modal.js') }}"></script>
+            
+            {% for element_type, repository_list, class_type in [
+                                                        ("exhibit",exhibits, "titExb"),
+                                                        ("artwork",artworks, "titArt"),
+                                                        ("marker",markers, "titMrk"),
+                                                        ("object",objects, "titObj")
+                                                    ] 
+            %}
                                  
                 {% if repository_list %}
                     <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>
@@ -20,7 +25,7 @@
                         {% include "users/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
+                    <a href = "/see_all/?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
                     {% endif %}
                     {% if seeall == True %}
                         <nav> 
@@ -50,8 +55,7 @@
                     <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
             {% endif %}
 
-
-            {% include "users/components/elements-modal.jinja2" %}
+            <section id="modal" class="modal"></section>
         </div>
     </section>
 {% endblock %}

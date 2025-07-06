@@ -34,6 +34,8 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
           uv sync --only-dev
           export ROOT_DIR=${GITHUB_WORKSPACE}/
+          export DJANGO_SECRET_KEY="test_key"
+          export DEBUG_TOOLBAR="True"
           uv run pytest src/core src/users/ src/blog --cov=src --cov-report=xml
 
       - name: Upload coverage report
@@ -60,17 +62,20 @@ jobs:
           name: coverage-report
 
       - name: Run SonarQube Scanner
-        uses: sonarsource/sonarqube-scan-action@v2
+        uses: sonarsource/sonarqube-scan-action@v5
         with:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.sources=src/
+            -Dsonar.exclusions=**/migrations/**
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py
             -Dsonar.cpd.exclusions=**/migrations/**
+            -Dsonar.python.version=3.13
 
   # Job 3: Build and Deploy
   build-and-deploy:
@@ -106,7 +111,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: jandigarte/django:${GITHUB_REF#refs/tags/}
+          tags: jandigarte/django:${{ github.ref_name }}
+          target: base
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

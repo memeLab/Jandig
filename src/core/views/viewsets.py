@@ -1,8 +1,14 @@
 from django.db.models import Count
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.renderers import (
+    BrowsableAPIRenderer,
+    JSONRenderer,
+)
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from core.models import Artwork, Exhibit, Marker, Object
+from core.renderers import ModalHTMLRenderer
 from core.serializers import (
     ArtworkSerializer,
     ExhibitSerializer,
@@ -13,6 +19,7 @@ from core.serializers import (
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = MarkerSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Marker.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -21,9 +28,19 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .order_by("id")
     )
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "modal":
+            ctx = {"marker": instance}
+            if request.GET.get("go_back_url"):
+                ctx["go_back_url"] = request.GET.get("go_back_url")
+            return Response(ctx, template_name="core/templates/marker_modal.jinja2")
+        return super().retrieve(request, *args, **kwargs)
+
 
 class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ObjectSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Object.objects.select_related("owner__user")
         .prefetch_related("artworks__exhibits")
@@ -32,9 +49,22 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .order_by("id")
     )
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "modal":
+            ctx = {"ar_object": instance}
+            if request.GET.get("go_back_url"):
+                ctx["go_back_url"] = request.GET.get("go_back_url")
+            return Response(
+                ctx,
+                template_name="core/templates/object_modal.jinja2",
+            )
+        return super().retrieve(request, *args, **kwargs)
+
 
 class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ArtworkSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
         Artwork.objects.prefetch_related(
             "exhibits", "marker__artworks", "augmented__artworks"
@@ -47,6 +77,15 @@ class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         .all()
         .order_by("id")
     )
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "modal":
+            return Response(
+                {"artwork": instance},
+                template_name="core/templates/artwork_modal.jinja2",
+            )
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):

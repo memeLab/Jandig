@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(update_object_file_size),
-        migrations.RunPython(update_marker_file_size),
+        migrations.RunPython(update_object_file_size, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(update_marker_file_size, reverse_code=migrations.RunPython.noop),
     ]
 

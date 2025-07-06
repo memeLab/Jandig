@@ -23,15 +23,15 @@ def marker_generator(request):
     return render(request, "core/generator.html", {})
 
 
-def health_check(request):
+def health_check(_):
     return JsonResponse({"status": "ok"}, status=200)
 
 
-def favicon(request):
+def favicon(_):
     return redirect(static("images/icons/favicon.ico"))
 
 
-def robots_txt(request):
+def robots_txt(_):
     lines = [
         "User-Agent: *",
         "Disallow: ",

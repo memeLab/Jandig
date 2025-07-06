@@ -10,10 +10,8 @@ import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .storage_settings import *  # noqa F403 F401
-
-ROOT_DIR = environ.Path("/jandig/")
-BASE_DIR = "/jandig/src"
+ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
+BASE_DIR = ROOT_DIR.path("src")
 
 env = environ.Env()
 
@@ -26,8 +24,8 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY", default="change_me")
+
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -47,7 +45,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.1")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="1.5.5")
 
 
 def traces_sampler(sampling_context):
@@ -74,6 +72,7 @@ if ENABLE_SENTRY:
     )
 
 INSTALLED_APPS = [
+    "pghistory.admin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -84,7 +83,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
-    "debug_toolbar",
+    "pghistory",
+    "pgtrigger",
     "django_htmx",
     "corsheaders",
     "users",
@@ -92,8 +92,21 @@ INSTALLED_APPS = [
     "blog",
 ]
 
-MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
+TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
+
+
+def debug(_):
+    return TOOLBAR_ENABLED
+
+
+MIDDLEWARE = []
+
+if TOOLBAR_ENABLED:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+MIDDLEWARE += [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -104,12 +117,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
 ]
-DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
-
-
-def debug(request):
-    return env.bool("DEBUG_TOOLBAR", False)
-
 
 ROOT_URLCONF = "config.urls"
 
@@ -157,15 +164,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": env("POSTGRES_HOST", default="localhost"),
-        "NAME": env("POSTGRES_DB", default="jandig"),
-        "USER": env("POSTGRES_USER", default="jandig"),
-        "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
-    },
-}
+USE_POSTGRES = env.bool("USE_POSTGRES", default=True)
+if USE_POSTGRES:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": env("POSTGRES_HOST", default="localhost"),
+            "NAME": env("POSTGRES_DB", default="jandig"),
+            "USER": env("POSTGRES_USER", default="jandig"),
+            "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
+        },
+        "OPTIONS": {
+            "pool": True,
+        },
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(ROOT_DIR, "db.sqlite3"),
+        }
+    }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -191,6 +211,7 @@ LANGUAGE_CODE = "en"
 LANGUAGES = (
     ("en-us", _("English")),
     ("pt-br", _("Brazilian Portuguese")),
+    ("es-es", _("European Spanish")),
 )
 
 TIME_ZONE = "UTC"
@@ -222,6 +243,68 @@ RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
 RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
 RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
 RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
+
+###########################
+#### Storage settings  ####
+###########################
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "")
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-2")
+AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
+AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
+AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
+
+USE_GUNICORN = os.getenv("USE_GUNICORN", "true").lower() in ("true", "1")
+
+if not USE_GUNICORN:
+    USE_MINIO = False
+    STATIC_URL = "/static/"
+    MEDIA_URL = "/media/"
+    STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+    MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
+else:
+    USE_MINIO = os.getenv("USE_MINIO", False)
+
+if USE_MINIO:
+    AWS_S3_ENDPOINT_URL = os.getenv("MINIO_S3_ENDPOINT_URL", "http://storage:9000")
+    AWS_S3_CUSTOM_DOMAIN = f"localhost:9000/{AWS_STORAGE_BUCKET_NAME}"
+    AWS_S3_USE_SSL = False
+    AWS_S3_SECURE_URLS = False
+    AWS_S3_URL_PROTOCOL = "http:"
+
+else:
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_URL_PROTOCOL = "https:"
+
+# Static configuration
+# Add your own apps statics in this list
+BASE_SRC_PATH = "/jandig/src"
+STATICFILES_DIRS = [
+    os.path.join(BASE_SRC_PATH, "core", "static"),
+    os.path.join(BASE_SRC_PATH, "users", "static"),
+    os.path.join(BASE_SRC_PATH, "blog", "static"),
+]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
+AWS_PUBLIC_MEDIA_LOCATION = "media/public"
+
+if USE_GUNICORN:
+    STORAGES = {
+        "default": {
+            "BACKEND": "config.storage_backends.PublicMediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "config.storage_backends.StaticStorage",
+        },
+    }
+
 
 if len(sys.argv) > 1 and sys.argv[1] == "test":
     logging.disable(logging.CRITICAL)

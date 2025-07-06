@@ -14,7 +14,7 @@ class MarkerSerializer(ModelSerializer):
             "id",
             "owner",
             "source",
-            "uploaded_at",
+            "created",
             "author",
             "title",
             "patt",
@@ -24,7 +24,7 @@ class MarkerSerializer(ModelSerializer):
         )
         read_only_fields = (
             "id",
-            "uploaded_at",
+            "created",
         )
 
 
@@ -39,7 +39,7 @@ class ObjectSerializer(ModelSerializer):
             "owner",
             "source",
             "file_size",
-            "uploaded_at",
+            "created",
             "author",
             "title",
             "scale",
@@ -50,7 +50,7 @@ class ObjectSerializer(ModelSerializer):
         )
         read_only_fields = (
             "id",
-            "uploaded_at",
+            "created",
         )
 
 
@@ -68,12 +68,12 @@ class ArtworkSerializer(ModelSerializer):
             "augmented",
             "title",
             "description",
-            "created_at",
+            "created",
             "exhibits_count",
         )
         read_only_fields = (
             "id",
-            "uploaded_at",
+            "created",
         )
 
 
@@ -82,8 +82,8 @@ class ExhibitSerializer(ModelSerializer):
 
     class Meta:
         model = Exhibit
-        fields = ("id", "owner", "name", "slug", "artworks", "creation_date")
+        fields = ("id", "owner", "name", "slug", "artworks", "created")
         read_only_fields = (
             "id",
-            "creation_date",
+            "created",
         )

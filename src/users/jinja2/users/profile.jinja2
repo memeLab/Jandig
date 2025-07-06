@@ -12,7 +12,8 @@
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
             <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
-
+            <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+            <script src="{{ static('js/modal.js') }}"></script>
             {% if profile %}
                 {% if button_enable == True %}
                     <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
@@ -74,11 +75,10 @@
                             <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
-                {% include "users/components/elements-modal.jinja2" %}
             {% endif %}
 
             {% include "users/components/createbox.jinja2" %}
-
+            <section id="modal" class="modal"></section>
         </div>
     </section>
 {% endblock %}

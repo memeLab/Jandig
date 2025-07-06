@@ -129,7 +129,7 @@ class ExhibitFactory(DjangoModelFactory):
     owner = SubFactory(ProfileFactory)  # Use ProfileFactory for the owner
     name = Faker("sentence", nb_words=3)  # Generate a random unique name
     slug = LazyAttribute(
-        lambda obj: obj.name.lower().replace(" ", "-")
+        lambda obj: obj.name.lower().replace(" ", "-").replace(".", "")
     )  # Generate a slug based on the name
 
     @classmethod

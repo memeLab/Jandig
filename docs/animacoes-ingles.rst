@@ -40,7 +40,7 @@ export the storyboard images to GIF with different amounts of
 Colors.
 
 Resolution
-~~~~~~~~~
+~~~~~~~~~~
 
 To increase device compatibility, we limit the resolution
 of the display frame (which appears in full screen on the smartphone) in
@@ -80,7 +80,7 @@ lightweight require less processing, making the
 platform compatible with a greater number of phones.
 
 Conclusion
-~~~~~~~~~
+~~~~~~~~~~
 
 To reach an optimal result, the ideal is to test the parameters together.
 

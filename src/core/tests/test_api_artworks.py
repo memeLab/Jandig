@@ -5,6 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from core.models import Artwork, Marker, Object
+from core.tests.factory import ArtworkFactory
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -60,3 +61,18 @@ class TestArtworkAPI(TestCase):
         assert data["author"]["id"] == self.profile.id
         assert data["marker"]["id"] == marker.id
         assert data["augmented"]["id"] == obj.id
+
+    def test_retrieve_artwork_as_modal(self):
+        artwork = ArtworkFactory()
+        response = self.client.get(f"/api/v1/artworks/{str(artwork.id)}/?format=modal")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+
+        assert artwork.title in html
+        assert artwork.description in html
+        assert artwork.marker.title in html
+        assert artwork.marker.as_html() in html
+        assert artwork.augmented.title in html
+        assert artwork.augmented.as_html() in html
+        assert artwork.author.user.username in html
+        assert artwork.created.strftime("%d/%m/%Y") in html
