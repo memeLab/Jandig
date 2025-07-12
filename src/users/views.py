@@ -16,15 +16,13 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
-from core.forms import UploadObjectForm
+from core.forms import ArtworkForm, UploadMarkerForm, UploadObjectForm
 from core.models import Artwork, Exhibit, Marker, Object
 
 from .forms import (
-    ArtworkForm,
     PasswordChangeForm,
     ProfileForm,
     SignupForm,
-    UploadMarkerForm,
 )
 from .models import Profile
 from .services import BOT_SCORE, create_assessment
@@ -191,7 +189,7 @@ def create_artwork(request):
 
     return render(
         request,
-        "users/artwork.jinja2",
+        "core/upload-artwork.jinja2",
         {
             "form": form,
             "marker_list": marker_list,
@@ -214,13 +212,13 @@ def upload_elements(request, form_class, form_type, route):
     if form_type == "marker":
         return render(
             request,
-            "users/upload-marker.jinja2",
+            "core/upload-marker.jinja2",
             {"form_type": form_type, "form": form, "route": route, "edit": False},
         )
 
     return render(
         request,
-        "users/upload-object.jinja2",
+        "core/upload-object.jinja2",
         {"form": form, "route": route, "edit": False},
     )
 
@@ -312,7 +310,7 @@ def edit_artwork(request):
 
     return render(
         request,
-        "users/artwork.jinja2",
+        "core/upload-artwork.jinja2",
         {
             "form": ArtworkForm(initial=model_data),
             "marker_list": Marker.objects.all(),

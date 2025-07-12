@@ -1,10 +1,18 @@
 import re
+from io import BytesIO
 
 from django import forms
+from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput, NumberInput
 from django.utils.translation import gettext_lazy as _
+from PIL import Image
+from pymarker.core import generate_marker_from_image, generate_patt_from_image
+
+from core.models import Marker
 
 from .models import Exhibit, Object
+
+DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
 
 class RangeInput(NumberInput):
@@ -122,3 +130,68 @@ class UploadObjectForm(forms.ModelForm):
         self.instance.file_size = self.instance.source.size
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
+
+
+class UploadMarkerForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UploadMarkerForm, self).__init__(*args, **kwargs)
+
+        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
+        self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
+        self.fields["author"].widget.attrs["placeholder"] = _(
+            DEFAULT_AUTHOR_PLACEHOLDER
+        )
+        self.fields["title"].widget.attrs["placeholder"] = _("Marker's title")
+
+    class Meta:
+        model = Marker
+        exclude = ("owner", "created", "patt", "file_size")
+
+    def save(self, *args, **kwargs):
+        commit = kwargs.get("commit", True)
+
+        with Image.open(self.instance.source) as image:
+            pil_image = generate_marker_from_image(image)
+            blob = BytesIO()
+            pil_image.save(blob, "JPEG")
+            filename = self.instance.source.name
+            self.instance.file_size = self.instance.source.size
+            self.instance.source.save(filename, File(blob), save=commit)
+            patt_str = generate_patt_from_image(image)
+
+            self.instance.patt.save(
+                f"{filename}.patt",
+                ContentFile(patt_str.encode("utf-8")),
+                save=commit,
+            )
+
+            if kwargs.get("owner"):
+                self.instance.owner = kwargs.get("owner")
+                del kwargs["owner"]
+
+            return super(UploadMarkerForm, self).save(*args, **kwargs)
+
+
+class ArtworkForm(forms.Form):
+    marker = forms.ImageField(required=False)
+    marker_author = forms.CharField(max_length=12, required=False)
+    augmented = forms.ImageField(required=False)
+    augmented_author = forms.CharField(max_length=12, required=False)
+    existent_marker = forms.IntegerField(min_value=1, required=False)
+    existent_object = forms.IntegerField(min_value=1, required=False)
+    title = forms.CharField(max_length=50)
+    description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(ArtworkForm, self).__init__(*args, **kwargs)
+
+        self.fields["marker_author"].widget.attrs["placeholder"] = _(
+            DEFAULT_AUTHOR_PLACEHOLDER
+        )
+        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
+            DEFAULT_AUTHOR_PLACEHOLDER
+        )
+        self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
+        self.fields["description"].widget.attrs["placeholder"] = _(
+            "Artwork description"
+        )
