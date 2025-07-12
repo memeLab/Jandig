@@ -78,18 +78,28 @@ video{
 }
 
 div#imageContainer {
-    max-width: 320px;
+    width: 320px;
     height: 320px;
-    margin: 25px auto;
+    margin: auto;
     background: url(../images/icons/icoEptG.png) no-repeat center center;
     background-size: cover;
 }
 
 div#imageContainer img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
 }
 
+div#shadow-background {
+    background-color: #EFEFEF;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    max-width: 350px;
+    height: 350px;
+    display:flex;
+    align-items: center;
+    margin:auto;
+}
 @media only screen and (max-width: 600px){
     #content-box {
         height: 60%;

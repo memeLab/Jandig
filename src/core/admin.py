@@ -1,9 +1,16 @@
+from io import BytesIO
+
 from django.contrib import admin
+from django.core.files import File
+from django.core.files.base import ContentFile
 from django.db.models import Count
 from django.urls import reverse
 from django.utils.html import format_html
+from PIL import Image
+from pymarker import generate_patt_from_image, remove_borders_from_image
 
 from core.models import Artwork, Exhibit, Marker, Object
+from core.views.api_views import MarkerGeneratorAPIView
 
 
 def create_link_to_related_artworks(obj, artworks_list):
@@ -99,8 +106,82 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
         return format_html('<a href="{}">{}</a>', link, obj.owner.user.username)
 
 
+@admin.action(description="Regenerate Marker With Inner Border")
+def regenerate_marker_white_border(modeladmin, request, queryset):
+    """
+    Regenerate markers with white inner border.
+    This action will regenerate the marker images with a white inner border.
+    """
+    regenerate_marker(queryset, inner_border=True)
+
+
+@admin.action(description="Regenerate Marker Without Inner Border")
+def regenerate_marker_no_inner_border(modeladmin, request, queryset):
+    """Regenerate markers without inner border.
+    This action will regenerate the marker images without a white inner border.
+    """
+    regenerate_marker(queryset, inner_border=False)
+
+
+def generate_uuid_name():
+    """Generate a UUID4 name for the marker."""
+    import uuid
+
+    return str(uuid.uuid4())  # Use uuid4 for a random unique identifier
+
+
+@admin.action(description="Remove Border")
+def remove_border(modeladmin, request, queryset):
+    """Remove border from markers.
+    This action will regenerate the marker images without any borders.
+    """
+    for marker in queryset:
+        with Image.open(marker.source) as image:
+            pil_image = remove_borders_from_image(image)
+            blob = BytesIO()
+            pil_image.save(blob, "JPEG")
+            uuid = generate_uuid_name()
+            filename = f"{uuid}.jpg"
+            marker.file_size = marker.source.size
+            marker.source.save(filename, File(blob), save=True)
+            patt_str = generate_patt_from_image(pil_image)
+            marker.patt.save(
+                f"{uuid}.patt",
+                ContentFile(patt_str.encode("utf-8")),
+                save=True,
+            )
+        marker.save()
+
+
+def regenerate_marker(queryset, inner_border=False):
+    for marker in queryset:
+        with Image.open(marker.source) as image:
+            pil_image = MarkerGeneratorAPIView.generate_marker(
+                image, inner_border=inner_border
+            )
+            blob = BytesIO()
+            pil_image.save(blob, "JPEG")
+            uuid = generate_uuid_name()
+            filename = f"{uuid}.jpg"
+            marker.file_size = marker.source.size
+            marker.source.save(filename, File(blob), save=True)
+            patt_str = generate_patt_from_image(image)
+            marker.patt.save(
+                f"{uuid}.patt",
+                ContentFile(patt_str.encode("utf-8")),
+                save=True,
+            )
+        marker.save()
+
+
 @admin.register(Marker)
 class MarkerAdmin(BaseMarkerObjectAdmin):
+    actions = [
+        regenerate_marker_white_border,
+        regenerate_marker_no_inner_border,
+        remove_border,
+    ]
+
     def image_preview(self, obj):
         return format_marker_as_html(obj)
 

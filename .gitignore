@@ -6,7 +6,7 @@ src/ARte/config/__pycache__/
 *.sqlite3
 
 build/
-static/
+./static/
 media/
 src/data/certbot/
 docker/node_modules/
@@ -16,9 +16,6 @@ package-lock.json
 ## pycharm
 .idea
 
-# media files
-src/ARte/users/media/
-docker/media/
 
 # translations
 *.mo
