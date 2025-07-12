@@ -6,9 +6,10 @@ from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput, NumberInput
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
-from pymarker.core import generate_marker_from_image, generate_patt_from_image
+from pymarker.core import generate_patt_from_image
 
 from core.models import Marker
+from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, Object
 
@@ -151,7 +152,9 @@ class UploadMarkerForm(forms.ModelForm):
         commit = kwargs.get("commit", True)
 
         with Image.open(self.instance.source) as image:
-            pil_image = generate_marker_from_image(image)
+            pil_image = MarkerGeneratorAPIView.generate_marker(
+                image, inner_border=False
+            )
             blob = BytesIO()
             pil_image.save(blob, "JPEG")
             filename = self.instance.source.name
