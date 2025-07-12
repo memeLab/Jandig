@@ -516,7 +516,7 @@ requires-dist = [
     { name = "markupsafe", specifier = "~=3.0" },
     { name = "pillow", specifier = "~=11.1" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.2.9" },
-    { name = "pymarker", specifier = "~=0.3" },
+    { name = "pymarker", specifier = "~=1.1" },
     { name = "sentry-sdk", extras = ["django"], specifier = "~=2.20" },
     { name = "sphinx", specifier = "~=8.1" },
 ]
@@ -767,15 +767,15 @@ wheels = [
 
 [[package]]
 name = "pymarker"
-version = "0.3.2"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "pillow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/83/d8/2f308b5e241ef54ba963beaa905aff3aa0dfac8ca6263c37c8817b601723/pymarker-0.3.2.tar.gz", hash = "sha256:750f236dfeb718a163a6b5a03665f75a55e7f4b4e1f5547433e97ddad72743f4", size = 17274 }
+sdist = { url = "https://files.pythonhosted.org/packages/55/50/c98e2b43250533608e3ad2dd93cd56a1edf2d8f1e2247e688e37bae43546/pymarker-1.1.0.tar.gz", hash = "sha256:1ea201db90722aafa68ce6634039b5fda9ee9c55600f4c80d5689972be26d13f", size = 18242 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/37/f9/7036a60dd63e3df0458c3cceba2c682eb8ef3f1fdca01f9187535c84edda/pymarker-0.3.2-py3-none-any.whl", hash = "sha256:2bb82f8db6340b78e636ea7e38e5ad0d8857259c1eeca7f51da9e7a7fb03179f", size = 18973 },
+    { url = "https://files.pythonhosted.org/packages/a9/fd/a4a41398d63090c55660a3eb89949377cb4e610dc27d8644fab2045e209e/pymarker-1.1.0-py3-none-any.whl", hash = "sha256:943d25708ae0dc5ea6327993d76cdfff33cb7ec4087c46a19fd09863d5b6fb77", size = 19802 },
 ]
 
 [[package]]
