@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+from core.views.api_views import MarkerGeneratorAPIView
 from core.views.viewsets import (
     ArtworkViewset,
     ExhibitViewset,
@@ -29,6 +30,11 @@ api_router.register("profiles", ProfileViewset, basename="profile")
 urlpatterns = [
     path(settings.DJANGO_ADMIN_URL, admin.site.urls),
     path("api/v1/", include(api_router.urls)),
+    path(
+        "api/v1/markergenerator/",
+        MarkerGeneratorAPIView.as_view(),
+        name="markergenerator",
+    ),
     path("api/v1/auth/login/", TokenObtainPairView.as_view(), name="login"),
     path("api/v1/auth/verify/", TokenVerifyView.as_view(), name="verify"),
     path("api/v1/auth/refresh/", TokenRefreshView().as_view(), name="refresh"),
