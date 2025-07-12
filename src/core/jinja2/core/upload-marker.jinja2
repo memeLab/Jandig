@@ -28,15 +28,11 @@
                     </div>
 
                     <p class="form-options">
-                        {# 
-                            This allows for the user to add an inner border to the marker image.
-                            It is useful for the marker to be more visible in the AR view.
-                            But might explode the marker detection since the pattern doesn't have the inner border.
 
                             <input id="inner_border" type="checkbox" name="inner_border" id="inner-border-chk" onchange="if(document.getElementById('id_source').files.length > 0){document.getElementById('id_source').dispatchEvent(new Event('change', { bubbles: true }));}">
                             
                             <label for="inner-border-chk">{{ _("Add inner border") }}</label> 
-                        #}
+                        
                         <br />
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         {% if form_type == 'marker' %}

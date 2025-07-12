@@ -134,6 +134,11 @@ class UploadObjectForm(forms.ModelForm):
 
 
 class UploadMarkerForm(forms.ModelForm):
+    inner_border = forms.BooleanField(
+        required=False,
+        label=_("Add inner border"),
+    )
+
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
 
@@ -153,7 +158,7 @@ class UploadMarkerForm(forms.ModelForm):
 
         with Image.open(self.instance.source) as image:
             pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=False
+                image, inner_border=self.cleaned_data.get("inner_border", False)
             )
             blob = BytesIO()
             pil_image.save(blob, "JPEG")
