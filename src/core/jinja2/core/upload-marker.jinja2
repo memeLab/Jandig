@@ -1,4 +1,3 @@
-
 {% extends '/core/home.jinja2' %}
 
 {% block content %}
@@ -21,14 +20,20 @@
                             {{ form.visible_fields()[2].errors }}
                         </p>
                         <h3>{{ _("Choose Marker image") }}</h3>
-                            {{ form.visible_fields()[0] }}
-                            {{ form.visible_fields()[0].errors }}
+                        <input type="file" name="source" accept="image/png, image/jpg" hx-encoding='multipart/form-data' hx-post="/api/v1/markergenerator/" hx-target="#imageContainer" hx-swap="innerHTML" hx-vals='js:{inner_border: get_inner_border()}' placeholder="browse file" required="" id="id_source">
+                        {{ form.visible_fields()[0].errors }}
                     </p>
-
-                    <div id="imageContainer"></div>
+                    <div id="shadow-background">
+                        <div id="imageContainer"></div>
+                    </div>
 
                     <p class="form-options">
 
+                            <input id="inner_border" type="checkbox" name="inner_border" id="inner-border-chk" onchange="if(document.getElementById('id_source').files.length > 0){document.getElementById('id_source').dispatchEvent(new Event('change', { bubbles: true }));}">
+                            
+                            <label for="inner-border-chk">{{ _("Add inner border") }}</label> 
+                        
+                        <br />
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         {% if form_type == 'marker' %}
                             <label for="author-chk">
@@ -55,6 +60,14 @@
         </section>
 
         <script>
+            function get_inner_border() {
+                element = document.getElementById("inner_border");
+                if (element === null) {
+                    return "false";
+                }else{
+                return document.getElementById("inner_border").checked ? "true" : "false";
+                }
+            }
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true){
                     $('input[type="submit"]').prop('disabled', false);
@@ -74,37 +87,6 @@
                     $('#author-field > input').val("");
                 }
             });
-
-            var innerImageURL = null;
-            var fullMarkerURL = null;
-
-            $("#id_source").change(
-                function(e) {
-                    var file = e.originalEvent.srcElement.files[0];
-                    var reader = new FileReader();
-                    reader.onload = function(event) {
-                        innerImageURL = event.target.result;
-                        uploadFullMarkerImage(e);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            );
-
-            function uploadFullMarkerImage(e) {
-                var patternRatio = 0.6;
-
-                THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl) {
-                    fullMarkerURL = markerUrl
-
-                    var fullMarkerImage = document.createElement('img')
-                    fullMarkerImage.src = fullMarkerURL
-
-                    // put fullMarkerImage into #imageContainer
-                    var container = document.querySelector('#imageContainer')
-                    while (container.firstChild) container.removeChild(container.firstChild);
-                    container.appendChild(fullMarkerImage)
-                })
-            }
         </script>
     </section>
 {% endblock %}
