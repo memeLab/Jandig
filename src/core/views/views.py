@@ -207,7 +207,7 @@ def edit_object(request):
         "source": model.source,
         "created": model.created,
         "author": model.author,
-        "scale": model.scale,
+        "scale": model.scale.split(" ")[0],
         "position": model.position,
         "rotation": model.rotation,
         "title": model.title,
@@ -215,7 +215,7 @@ def edit_object(request):
     return edit_elements(
         request,
         UploadObjectForm,
-        route="core/edit-object.jinja2",
+        route="core/upload-object.jinja2",
         model=model,
         model_data=model_data,
     )

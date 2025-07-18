@@ -1,0 +1,19 @@
+{# Template for a file widget to edit an object, this allows visualizing the file correctly #}
+{% if widget.is_initial %}
+    {% if widget.value.url.endswith(".mp4") or widget.value.url.endswith(".webm") %}
+        <video controls>
+            <source src="{{ widget.value.url }}" type="video/{{ widget.value.url.split('.')[-1] }}">
+        </video>
+    {% else %}
+        <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
+    {% endif %}
+    <br>
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"
+    {% for name, value in widget.attrs.items() %}
+        {% if value %} {{ name }}
+            {% if not value %}="{{ value }}"
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+>

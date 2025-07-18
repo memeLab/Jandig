@@ -4,6 +4,8 @@ from io import BytesIO
 from django import forms
 from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput, NumberInput
+from django.template import loader
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
@@ -69,6 +71,15 @@ class ExhibitForm(forms.Form):
         return slug
 
 
+class ObjectWidget(forms.ClearableFileInput):
+    template_name = "core/templates/object_edit_template.jinja2"
+
+    def render(self, name, value, attrs=None, renderer=None):
+        context = self.get_context(name, value, attrs)
+        template = loader.get_template(self.template_name).render(context)
+        return mark_safe(template)
+
+
 class UploadObjectForm(forms.ModelForm):
     scale = forms.FloatField(
         min_value=0.1,
@@ -87,6 +98,7 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/gif, .gif, .mp4, .webm"
+        self.fields["source"].widget = ObjectWidget()
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
@@ -103,7 +115,7 @@ class UploadObjectForm(forms.ModelForm):
     def clean_source(self):
         file = self.cleaned_data.get("source")
         if not file:
-            return file
+            raise forms.ValidationError(_("This field is required."))
         allowed_mimetypes = ["image/gif", "video/mp4", "video/webm"]
         allowed_extensions = [".gif", ".mp4", ".webm"]
         content_type = getattr(file, "content_type", None)

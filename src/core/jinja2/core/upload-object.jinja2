@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
         {% if edit %}
-            <h2>{{_('Edit_object')}}</h2>
+            <h2>{{_('Edit object')}}</h2>
         {% else %}
             <h2>{{ _('Upload Object') }}</h2>
         {% endif %}
@@ -20,10 +20,10 @@
                         {{ form.visible_fields()[2].errors }}
                     </p>
                     <p class="upload-field" id="source-field">
-                    {%if route == 'object-upload' %}
+                
                         <h3>{{_("Choose Object")}}</h3>
-                    {% endif %}
-                        {{ form.visible_fields()[0] }}
+                    
+                        {{ form.visible_fields()[0] | safe}}
                         {{ form.visible_fields()[0].errors }}
                     </p>
 
