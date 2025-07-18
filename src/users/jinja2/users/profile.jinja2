@@ -22,7 +22,7 @@
                 {% endif %}
                     {% if exhibits %}
                         {% with deletable=button_enable, editable=button_enable, repository_list = exhibits, element_type="exhibit"%}
-                            {% include "users/components/item-list.jinja2" %}
+                            {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
@@ -37,7 +37,7 @@
                 {% endif %}
                     {% if artworks %}
                         {% with preview=True, deletable=button_enable, editable=button_enable, repository_list = artworks, element_type="artwork" %}
-                            {% include "users/components/item-list.jinja2" %}
+                            {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
@@ -52,7 +52,7 @@
                 {% endif %}
                     {% if markers %}
                         {% with deletable=button_enable, editable=button_enable, repository_list = markers, element_type="marker"%}
-                            {% include "users/components/item-list.jinja2" %}
+                            {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
@@ -67,7 +67,7 @@
                 {% endif %}
                     {% if objects %}
                         {% with deletable=button_enable, editable=button_enable, repository_list = objects, element_type="object" %}
-                            {% include "users/components/item-list.jinja2" %}
+                            {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">

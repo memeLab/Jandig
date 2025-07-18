@@ -27,7 +27,7 @@
                     </p>
 
                     {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
-                        {% include "users/components/repository-list.jinja2" %}
+                        {% include "core/components/repository-list.jinja2" %}
                     {% endwith %}
 
                     <div class="form-options">
@@ -49,7 +49,7 @@
                     </p>
 
                     {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
-                        {% include "users/components/repository-list.jinja2" %}
+                        {% include "core/components/repository-list.jinja2" %}
                     {% endwith%}
 
                     <div class="form-options">

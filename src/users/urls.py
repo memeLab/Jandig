@@ -4,13 +4,8 @@ from django.urls import path
 from .forms import LoginForm
 from .views import (
     ResetPasswordView,
-    create_artwork,
-    delete,
-    edit_artwork,
-    edit_marker,
     edit_password,
     edit_profile,
-    marker_upload,
     profile,
     signup,
 )
@@ -44,9 +39,4 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("profile/edit/", edit_profile, name="edit-profile"),
     path("profile/edit-password/", edit_password, name="edit-password"),
-    path("markers/upload/", marker_upload, name="marker-upload"),
-    path("markers/edit/", edit_marker, name="edit-marker"),
-    path("artworks/create/", create_artwork, name="create-artwork"),
-    path("artworks/edit/", edit_artwork, name="edit-artwork"),
-    path("content/delete/", delete, name="delete-content"),
 ]

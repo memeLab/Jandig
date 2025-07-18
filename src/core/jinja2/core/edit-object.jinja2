@@ -43,7 +43,7 @@
                         </span>
 
                         {% with xposition=model.xposition, yposition=model.yposition %}
-                            {% include "users/components/object-position.jinja2" %}
+                            {% include "core/components/object-position.jinja2" %}
                         {% endwith %}
 
                         {{ form.hidden_fields()[0] }}
