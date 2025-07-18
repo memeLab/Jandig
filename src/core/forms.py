@@ -96,9 +96,9 @@ class UploadObjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
+        self.fields["source"].widget = ObjectWidget()
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/gif, .gif, .mp4, .webm"
-        self.fields["source"].widget = ObjectWidget()
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
@@ -116,13 +116,10 @@ class UploadObjectForm(forms.ModelForm):
         file = self.cleaned_data.get("source")
         if not file:
             raise forms.ValidationError(_("This field is required."))
-        allowed_mimetypes = ["image/gif", "video/mp4", "video/webm"]
-        allowed_extensions = [".gif", ".mp4", ".webm"]
-        content_type = getattr(file, "content_type", None)
-        name = getattr(file, "name", "").lower()
-        if content_type not in allowed_mimetypes or not any(
-            name.endswith(ext) for ext in allowed_extensions
-        ):
+
+        allowed_extensions = ["gif", "mp4", "webm"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
             raise forms.ValidationError(
                 _("Only GIF images, MP4, and WebM videos are allowed.")
             )

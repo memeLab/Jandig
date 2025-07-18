@@ -165,13 +165,15 @@ def edit_elements(request, form_class, route, model, model_data):
         if form.is_valid():
             form.save()
             return redirect("profile")
-
+    else:
+        form = form_class(initial=model_data)
     return render(
         request,
         route,
         {
-            "form": form_class(initial=model_data),
+            "form": form,
             "model": model,
+            "edit": True,
         },
     )
 

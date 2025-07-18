@@ -12,7 +12,7 @@
 <input type="{{ widget.type }}" name="{{ widget.name }}"
     {% for name, value in widget.attrs.items() %}
         {% if value %} {{ name }}
-            {% if not value %}="{{ value }}"
+            {% if value != "False" %}="{{ value }}"
             {% endif %}
         {% endif %}
     {% endfor %}
