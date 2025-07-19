@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-19 16:07+0000\n"
+"POT-Creation-Date: 2025-07-19 19:49+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -55,59 +55,66 @@ msgstr ""
 "Este link de exibição já está sendo utilizado. Por favor escolha outro link "
 "para sua exibição."
 
-#: src/core/forms.py:89
+#: src/core/forms.py:90
 msgid "Scale (0.1 to 5.0)"
 msgstr "Escala (0.1 a 5.0)"
 
-#: src/core/forms.py:91
+#: src/core/forms.py:92
 #, python-format
 msgid ""
 "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase "
 "object to 500%% its size)"
-msgstr "Digite um valor de 0.1 (reduzir objeto para 10%% do seu tamanho) a 5.0 (aumentar "
-"objeto para 500%% do seu tamanho)"
+msgstr ""
+"Digite um valor de 0.1 (reduzir objeto para 10%% do seu tamanho) a 5.0 "
+"(aumentar objeto para 500%% do seu tamanho)"
 
-#: src/core/forms.py:101 src/core/forms.py:155
+#: src/core/forms.py:102 src/core/forms.py:172
 msgid "browse file"
 msgstr "procurar arquivo"
 
-#: src/core/forms.py:104
+#: src/core/forms.py:105
 msgid "declare different author name"
 msgstr "declarar outro autor"
 
-#: src/core/forms.py:107
+#: src/core/forms.py:108
 msgid "Object's title"
 msgstr "Título do Objeto"
 
-#: src/core/forms.py:108
+#: src/core/forms.py:109
 msgid "0.1 ~ 5.0"
 msgstr "0.1 ~ 5.0"
 
-#: src/core/forms.py:119
+#: src/core/forms.py:120
 msgid "This field is required."
 msgstr "Este campo é obrigatório."
 
-#: src/core/forms.py:125
+#: src/core/forms.py:126
 msgid "Only GIF images, MP4, and WebM videos are allowed."
 msgstr "Apenas imagens GIF, vídeos MP4 e WebM são permitidos."
 
-#: src/core/forms.py:132
+#: src/core/forms.py:140
+msgid ""
+"This object is being used by another user. You cannot change the source file."
+msgstr ""
+"Este objeto está sendo usado por outro usuário. Você não pode alterar o arquivo principal."
+
+#: src/core/forms.py:149
 msgid "Scale must be between 0.1 and 5.0"
 msgstr "Escala deve estar entre 0.1 e 5.0"
 
-#: src/core/forms.py:149
+#: src/core/forms.py:166
 msgid "Add inner border"
 msgstr "Adicionar borda interna"
 
-#: src/core/forms.py:160
+#: src/core/forms.py:177
 msgid "Marker's title"
 msgstr "Título do Marcador"
 
-#: src/core/forms.py:212
+#: src/core/forms.py:229
 msgid "Artwork title"
 msgstr "Título da Obra"
 
-#: src/core/forms.py:214
+#: src/core/forms.py:231
 msgid "Artwork description"
 msgstr "Descrição da Obra"
 
@@ -119,7 +126,7 @@ msgstr "editar"
 msgid "delete"
 msgstr "excluir"
 
-#: src/core/models.py:75 src/core/models.py:345
+#: src/core/models.py:75 src/core/models.py:360
 msgid "Used in"
 msgstr " Usado em "
 
@@ -135,23 +142,23 @@ msgstr "e em "
 msgid "exhibits"
 msgstr "exposições"
 
-#: src/core/models.py:347
+#: src/core/models.py:362
 msgid "Exhibits"
 msgstr "Exposições"
 
-#: src/core/models.py:373
+#: src/core/models.py:394
 msgid "preview"
 msgstr "visualizar"
 
-#: src/core/models.py:413
+#: src/core/models.py:433
 msgid "Created by "
 msgstr "Criado por "
 
-#: src/core/models.py:417
+#: src/core/models.py:437
 msgid "Artwork(s)"
 msgstr "Obra(s)"
 
-#: src/core/models.py:425
+#: src/core/models.py:445
 msgid "See this Exhibition"
 msgstr "Ver essa Exposição"
 
@@ -534,19 +541,19 @@ msgstr "Cadastro"
 msgid "Log in"
 msgstr "Entrar"
 
-#: src/core/jinja2/core/home.jinja2:41
+#: src/core/jinja2/core/home.jinja2:39
 msgid "Welcome to Jandig"
 msgstr "Bem vindo ao Jandig"
 
-#: src/core/jinja2/core/home.jinja2:42
+#: src/core/jinja2/core/home.jinja2:40
 msgid "An Open Source Augmented Reality art community."
 msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
-#: src/core/jinja2/core/home.jinja2:43
+#: src/core/jinja2/core/home.jinja2:41
 msgid "To see the Artworks you need to grant camera access to the app."
 msgstr "Para ver as Obras você precisa dar acesso a câmera no aplicativo."
 
-#: src/core/jinja2/core/home.jinja2:45
+#: src/core/jinja2/core/home.jinja2:43
 msgid "Go to camera"
 msgstr "Ir para câmera"
 
@@ -851,4 +858,3 @@ msgstr " Exposições"
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
 msgstr "Sem Exposições."
-
