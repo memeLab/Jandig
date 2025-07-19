@@ -22,7 +22,7 @@
                 {% if repository_list %}
                     <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>
                     {% with repository_list = repository_list, element_type=element_type %}
-                        {% include "users/components/item-list.jinja2" %}
+                        {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
                     <a href = "/see_all/?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>

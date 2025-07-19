@@ -4,6 +4,8 @@ from io import BytesIO
 from django import forms
 from django.core.files.base import ContentFile, File
 from django.forms.widgets import HiddenInput, NumberInput
+from django.template import loader
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
@@ -69,6 +71,17 @@ class ExhibitForm(forms.Form):
         return slug
 
 
+class ObjectWidget(forms.ClearableFileInput):
+    """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
+
+    template_name = "core/templates/object_edit_template.jinja2"
+
+    def render(self, name, value, attrs=None, renderer=None):
+        context = self.get_context(name, value, attrs)
+        template = loader.get_template(self.template_name).render(context)
+        return mark_safe(template)
+
+
 class UploadObjectForm(forms.ModelForm):
     scale = forms.FloatField(
         min_value=0.1,
@@ -85,6 +98,7 @@ class UploadObjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
+        self.fields["source"].widget = ObjectWidget()
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = "image/gif, .gif, .mp4, .webm"
         self.fields["author"].widget.attrs["placeholder"] = _(
@@ -103,17 +117,30 @@ class UploadObjectForm(forms.ModelForm):
     def clean_source(self):
         file = self.cleaned_data.get("source")
         if not file:
-            return file
-        allowed_mimetypes = ["image/gif", "video/mp4", "video/webm"]
-        allowed_extensions = [".gif", ".mp4", ".webm"]
-        content_type = getattr(file, "content_type", None)
-        name = getattr(file, "name", "").lower()
-        if content_type not in allowed_mimetypes or not any(
-            name.endswith(ext) for ext in allowed_extensions
-        ):
+            raise forms.ValidationError(_("This field is required."))
+
+        allowed_extensions = ["gif", "mp4", "webm"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
             raise forms.ValidationError(
                 _("Only GIF images, MP4, and WebM videos are allowed.")
             )
+        # Object already exists, we need to check if it's being used by another user
+        if self.instance.pk:
+            # Compare if the file changed
+            file_content = file.read()
+            file.seek(0)  # Reset file pointer
+            instance_content = self.instance.source.read()
+            self.instance.source.seek(0)  # Reset instance file pointer
+
+            if instance_content != file_content:
+                if self.instance.is_used_by_other_user():
+                    raise forms.ValidationError(
+                        _(
+                            "This object is being used by another user. You cannot change the source file."
+                        )
+                    )
+
         return file
 
     def clean_scale(self):

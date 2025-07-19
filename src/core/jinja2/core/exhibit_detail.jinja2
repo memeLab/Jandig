@@ -13,7 +13,7 @@
         </div>
         <h1 class="titArt">{{_("Exhibition Artworks")}}</h1>
         {% with repository_list = artworks, element_type="artwork" %}
-            {% include "users/components/item-list.jinja2" %}
+            {% include "core/components/item-list.jinja2" %}
 
         {% endwith %}
 
