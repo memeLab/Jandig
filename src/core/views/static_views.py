@@ -24,7 +24,7 @@ def health_check(_):
 
 
 def home(request):
-    return render(request, "users/profile.jinja2", {})
+    return render(request, "core/home.jinja2", {})
 
 
 def manifest(request):
