@@ -73,6 +73,7 @@ class ExhibitForm(forms.Form):
 
 class ObjectWidget(forms.ClearableFileInput):
     """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
+
     template_name = "core/templates/object_edit_template.jinja2"
 
     def render(self, name, value, attrs=None, renderer=None):
@@ -124,6 +125,22 @@ class UploadObjectForm(forms.ModelForm):
             raise forms.ValidationError(
                 _("Only GIF images, MP4, and WebM videos are allowed.")
             )
+        # Object already exists, we need to check if it's being used by another user
+        if self.instance.pk:
+            # Compare if the file changed
+            file_content = file.read()
+            file.seek(0)  # Reset file pointer
+            instance_content = self.instance.source.read()
+            self.instance.source.seek(0)  # Reset instance file pointer
+
+            if instance_content != file_content:
+                if self.instance.is_used_by_other_user():
+                    raise forms.ValidationError(
+                        _(
+                            "This object is being used by another user. You cannot change the source file."
+                        )
+                    )
+
         return file
 
     def clean_scale(self):
