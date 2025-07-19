@@ -72,6 +72,7 @@ class ExhibitForm(forms.Form):
 
 
 class ObjectWidget(forms.ClearableFileInput):
+    """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
     template_name = "core/templates/object_edit_template.jinja2"
 
     def render(self, name, value, attrs=None, renderer=None):
