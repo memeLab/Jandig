@@ -292,8 +292,8 @@ def create_artwork(request):
     else:
         form = ArtworkForm()
 
-    marker_list = Marker.objects.all()
-    object_list = Object.objects.all()
+    marker_list = Marker.objects.all().order_by("-created")
+    object_list = Object.objects.all().order_by("-created")
 
     return render(
         request,
