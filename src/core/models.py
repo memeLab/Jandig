@@ -125,6 +125,14 @@ class Marker(TimeStampedModel, ContentMixin):
             return True
         return False
 
+    def is_used_by_other_user(self):
+        """
+        Check if the Marker is used by another user.
+        This is done by checking if there are artworks that reference this object
+        and if the owner of those artworks is not the current user.
+        """
+        return self.artworks.exclude(author=self.owner).exists()
+
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
@@ -142,15 +150,15 @@ class Marker(TimeStampedModel, ContentMixin):
     def as_html_thumbnail(self, editable: bool = False):
         height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
         width = DEFAULT_MARKER_THUMBNAIL_WIDTH
+        to_render = [self.as_html(height=height, width=width)]
+        # Disabled edit button for now:
+        # it only allows to edit the title
+        # and it's generating recursive borders on the existing marker.
+        # if editable and not self.is_used_by_other_user():
+        #     to_render.append(self._get_edit_button())
         if editable and not self.in_use:
-            return render(
-                [
-                    self.as_html(height, width),
-                    self._get_edit_button(),
-                    self._get_delete_button(),
-                ]
-            )
-        return self.as_html(height=height, width=width)
+            to_render.append(self._get_delete_button())
+        return render(to_render)
 
 
 @pghistory.track()
@@ -183,6 +191,14 @@ class Object(TimeStampedModel, ContentMixin):
         if self.artworks_count > 0:
             return True
         return False
+
+    def is_used_by_other_user(self):
+        """
+        Check if the object is used by another user.
+        This is done by checking if there are artworks that reference this object
+        and if the owner of those artworks is not the current user.
+        """
+        return self.artworks.exclude(author=self.owner).exists()
 
     @property
     def xproportion(self):
@@ -301,15 +317,14 @@ class Object(TimeStampedModel, ContentMixin):
         thumbnail_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
         height = thumbnail_height * self.yproportion
         width = thumbnail_width * self.xproportion
+        to_render = [self.as_html(height, width)]
+        if editable and not self.is_used_by_other_user():
+            to_render.append(self._get_edit_button())
+
         if editable and not self.in_use:
-            return render(
-                [
-                    self.as_html(height, width),
-                    self._get_edit_button(),
-                    self._get_delete_button(),
-                ]
-            )
-        return self.as_html(height=height, width=width)
+            to_render.append(self._get_delete_button())
+
+        return render(to_render)
 
 
 @pghistory.track()
@@ -364,17 +379,22 @@ class Artwork(TimeStampedModel, ContentMixin):
             div(class_="separator"),
             self.augmented.as_html_thumbnail(),
         ]
-        if editable and not self.in_use:
+        if editable:
             elements.extend(
                 [
                     self._get_edit_button(),
-                    self._get_delete_button(),
-                    a(
-                        _("preview"),
-                        href=reverse("artwork-preview", query={"id": self.id}),
-                        class_="preview",
-                    ),
                 ]
+            )
+            if not self.in_use:
+                elements.append(self._get_delete_button())
+
+        if editable:
+            elements.extend(
+                a(
+                    _("preview"),
+                    href=reverse("artwork-preview", query={"id": self.id}),
+                    class_="preview",
+                )
             )
         return render(div(elements, class_="artwork-elements flex"))
 
