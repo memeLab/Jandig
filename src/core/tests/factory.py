@@ -92,7 +92,7 @@ class ObjectFactory(DjangoModelFactory):
     rotation = "270 0 0"
     file_size = Faker("random_int", min=1000, max=1_000_000)
     file_name_original = Faker("slug")
-    file_extension = LazyAttribute(lambda obj: obj.source.name.split(".")[-1])
+    file_extension = LazyAttribute(lambda obj: str(obj.source).split(".")[-1])
 
 
 class MarkerFactory(DjangoModelFactory):

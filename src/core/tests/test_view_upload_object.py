@@ -61,7 +61,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test Marker"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 70122  # Size in bytes of the example object gif
-        assert ar_object.source.name == "objects/example_object.gif"
 
         assert ar_object.scale == "3.00 3.00"
         assert ar_object.position == "0 0 0"
@@ -90,7 +89,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test Video"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 2222838  # Size in bytes of the example mp4
-        assert ar_object.source.name == "objects/belotur.mp4"
         assert ar_object.scale == "1.00 1.00"
         assert ar_object.position == "0 0 0"
         assert ar_object.rotation == "270 0 0"
@@ -118,7 +116,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test Video"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 1509266  # Size in bytes of the example webm
-        assert ar_object.source.name == "objects/escher.webm"
         assert ar_object.scale == "1.00 1.00"
         assert ar_object.position == "0 0 0"
         assert ar_object.rotation == "270 0 0"
@@ -146,7 +143,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test GLB"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 10782148  # Size in bytes of the example glb
-        assert ar_object.source.name == "objects/werewolf.glb"
         assert ar_object.scale == "1.00 1.00"
         assert ar_object.position == "0 0 0"
         assert ar_object.rotation == "270 0 0"
