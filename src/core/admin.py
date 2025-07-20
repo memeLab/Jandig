@@ -23,33 +23,6 @@ def create_link_to_related_artworks(obj, artworks_list):
     return format_html('<a href="{}">{}</a>', link, obj._artworks_count)
 
 
-def format_marker_as_html(obj):
-    return format_html(
-        '<img src="{}" style="height:200px; width:200px;"/>', obj.source.url
-    )
-
-
-def format_object_as_html(obj):
-    """Image preview with proportions"""
-    max_height = 200
-    max_width = 200
-    height = max_height * obj.yproportion
-    width = max_width * obj.xproportion
-    if obj.is_video:
-        return format_html(
-            '<video width="{}" height="{}" controls><source src="{}" type="video/mp4"></video>',
-            width,
-            height,
-            obj.source.url,
-        )
-    return format_html(
-        '<img src="{}" style="height:{}px; width:{}px;"/>',
-        obj.source.url,
-        height,
-        width,
-    )
-
-
 class BaseMarkerObjectAdmin(admin.ModelAdmin):
     list_display = [
         "title",
@@ -183,7 +156,7 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
     ]
 
     def image_preview(self, obj):
-        return format_marker_as_html(obj)
+        return format_html(obj.as_html_thumbnail())
 
 
 @admin.register(Object)
@@ -191,7 +164,7 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + ["scale", "position"]
 
     def image_preview(self, obj):
-        return format_object_as_html(obj)
+        return format_html(obj.as_html_thumbnail())
 
 
 @admin.register(Artwork)
@@ -234,13 +207,13 @@ class ArtworkAdmin(admin.ModelAdmin):
     exhibits_count.short_description = "Exhibits Count"
 
     def marker_preview(self, obj):
-        return format_marker_as_html(obj.marker)
+        return format_html(obj.marker.as_html_thumbnail())
 
     marker_preview.short_description = "Marker"
     marker_preview.allow_tags = True
 
     def augmented_preview(self, obj):
-        return format_object_as_html(obj.augmented)
+        return format_html(obj.augmented.as_html_thumbnail())
 
     augmented_preview.short_description = "Augmented Object"
     augmented_preview.allow_tags = True
