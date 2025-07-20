@@ -3,11 +3,13 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 
-from core.models import Object
+from core.models import Object, ObjectExtensions
 from users.models import Profile, User
 
-EXAMPLE_OBJECT_PATH = "src/users/tests/test_files/example_object.gif"
-EXAMPLE_OBJECT_SIZE = 70122  # Size in bytes of the example object gif
+EXAMPLE_OBJECT_PATH = "src/core/tests/test_files/example_object.gif"
+EXAMPLE_MP4_OBJECT_PATH = "collection/objects/belotur.mp4"
+EXAMPLE_WEBM_OBJECT_PATH = "collection/objects/escher.webm"
+EXAMPLE_GLB_OBJECT_PATH = "collection/objects/werewolf.glb"
 
 
 class TestObjectUpload(TestCase):
@@ -37,7 +39,7 @@ class TestObjectUpload(TestCase):
         assert response.status_code == status.HTTP_302_FOUND  # Redirect to login page
         assert "/users/login" in response.url
 
-    def test_upload_object_authenticated(self):
+    def test_upload_object_gif_authenticated(self):
         with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
             data = {
                 "source": image_file,
@@ -58,7 +60,7 @@ class TestObjectUpload(TestCase):
         ar_object = Object.objects.first()
         assert ar_object.title == "Test Marker"
         assert ar_object.author == "Test Author"
-        assert ar_object.file_size == EXAMPLE_OBJECT_SIZE
+        assert ar_object.file_size == 70122  # Size in bytes of the example object gif
         assert ar_object.source.name == "objects/example_object.gif"
 
         assert ar_object.scale == "3.00 3.00"
@@ -66,6 +68,90 @@ class TestObjectUpload(TestCase):
         assert ar_object.rotation == "270 0 0"
         assert ar_object.file_name_original == "example_object.gif"
         assert ar_object.file_extension == ObjectExtensions.GIF
+
+    def test_upload_object_mp4_authenticated(self):
+        with open(EXAMPLE_MP4_OBJECT_PATH, "rb") as video_file:
+            data = {
+                "source": video_file,
+                "author": "Test Author",
+                "title": "Test Video",
+                "scale": "1",
+                "position": "0 0 0",  # Default position
+            }
+
+            self.client.login(username=self.username, password=self.password)
+            response = self.client.post(reverse("object-upload"), data)
+            assert (
+                response.status_code == status.HTTP_302_FOUND
+            )  # Redirect to home page
+        # Verify that a Object instance was created
+        assert Object.objects.count() == 1
+        ar_object = Object.objects.first()
+        assert ar_object.title == "Test Video"
+        assert ar_object.author == "Test Author"
+        assert ar_object.file_size == 2222838  # Size in bytes of the example mp4
+        assert ar_object.source.name == "objects/belotur.mp4"
+        assert ar_object.scale == "1.00 1.00"
+        assert ar_object.position == "0 0 0"
+        assert ar_object.rotation == "270 0 0"
+        assert ar_object.file_name_original == "belotur.mp4"
+        assert ar_object.file_extension == ObjectExtensions.MP4
+
+    def test_upload_object_webm_authenticated(self):
+        with open(EXAMPLE_WEBM_OBJECT_PATH, "rb") as video_file:
+            data = {
+                "source": video_file,
+                "author": "Test Author",
+                "title": "Test Video",
+                "scale": "1",
+                "position": "0 0 0",  # Default position
+            }
+
+            self.client.login(username=self.username, password=self.password)
+            response = self.client.post(reverse("object-upload"), data)
+            assert (
+                response.status_code == status.HTTP_302_FOUND
+            )  # Redirect to home page
+        # Verify that a Object instance was created
+        assert Object.objects.count() == 1
+        ar_object = Object.objects.first()
+        assert ar_object.title == "Test Video"
+        assert ar_object.author == "Test Author"
+        assert ar_object.file_size == 1509266  # Size in bytes of the example webm
+        assert ar_object.source.name == "objects/escher.webm"
+        assert ar_object.scale == "1.00 1.00"
+        assert ar_object.position == "0 0 0"
+        assert ar_object.rotation == "270 0 0"
+        assert ar_object.file_name_original == "escher.webm"
+        assert ar_object.file_extension == ObjectExtensions.WEBM
+
+    def test_upload_object_glb_authenticated(self):
+        with open(EXAMPLE_GLB_OBJECT_PATH, "rb") as glb_file:
+            data = {
+                "source": glb_file,
+                "author": "Test Author",
+                "title": "Test GLB",
+                "scale": "1",
+                "position": "0 0 0",  # Default position
+            }
+
+            self.client.login(username=self.username, password=self.password)
+            response = self.client.post(reverse("object-upload"), data)
+            assert (
+                response.status_code == status.HTTP_302_FOUND
+            )  # Redirect to home page
+        # Verify that a Object instance was created
+        assert Object.objects.count() == 1
+        ar_object = Object.objects.first()
+        assert ar_object.title == "Test GLB"
+        assert ar_object.author == "Test Author"
+        assert ar_object.file_size == 10782148  # Size in bytes of the example glb
+        assert ar_object.source.name == "objects/werewolf.glb"
+        assert ar_object.scale == "1.00 1.00"
+        assert ar_object.position == "0 0 0"
+        assert ar_object.rotation == "270 0 0"
+        assert ar_object.file_name_original == "werewolf.glb"
+        assert ar_object.file_extension == ObjectExtensions.GLB
 
     def test_upload_object_get_authenticated(self):
         self.client.login(username=self.username, password=self.password)
