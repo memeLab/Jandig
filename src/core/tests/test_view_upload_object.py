@@ -64,6 +64,8 @@ class TestObjectUpload(TestCase):
         assert ar_object.scale == "3.00 3.00"
         assert ar_object.position == "0 0 0"
         assert ar_object.rotation == "270 0 0"
+        assert ar_object.file_name_original == "example_object.gif"
+        assert ar_object.file_extension == ObjectExtensions.GIF
 
     def test_upload_object_get_authenticated(self):
         self.client.login(username=self.username, password=self.password)

@@ -161,6 +161,13 @@ class Marker(TimeStampedModel, ContentMixin):
         return render(to_render)
 
 
+class ObjectExtensions(models.TextChoices):
+    GIF = "gif", "GIF"
+    MP4 = "mp4", "MP4"
+    WEBM = "webm", "WEBM"
+    GLB = "glb", "GLB"
+
+
 @pghistory.track()
 class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
@@ -173,7 +180,11 @@ class Object(TimeStampedModel, ContentMixin):
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
-    file_size = models.IntegerField(default=0, blank=True, null=True)
+    file_size = models.IntegerField(default=0)
+    file_name_original = models.CharField(max_length=255)
+    file_extension = models.CharField(
+        max_length=10, db_index=True, choices=ObjectExtensions.choices
+    )
 
     def __str__(self):
         return self.source.name

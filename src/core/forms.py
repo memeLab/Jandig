@@ -158,6 +158,8 @@ class UploadObjectForm(forms.ModelForm):
             del kwargs["owner"]
 
         self.instance.file_size = self.instance.source.size
+        self.instance.file_name_original = self.instance.source.name.split("/")[-1]
+        self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
 

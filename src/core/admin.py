@@ -161,7 +161,13 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
 
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
-    list_display = BaseMarkerObjectAdmin.list_display + ["scale", "position"]
+    list_display = BaseMarkerObjectAdmin.list_display + [
+        "scale",
+        "position",
+        "file_extension",
+    ]
+    search_fields = ["title", "id"]
+    list_filter = ["file_extension"]
 
     def image_preview(self, obj):
         return format_html(obj.as_html_thumbnail())
