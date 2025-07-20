@@ -85,6 +85,19 @@ class TestObjectUpload(TestCase):
         assert b"This field is required" in response.content
         assert Object.objects.count() == 0
 
+        data = {
+            "source": SimpleUploadedFile("test.gif", b"test content"),
+            # missing 'title'
+            "author": "Test Author",
+            "scale": "1",
+            "position": "0,0,0",
+        }
+
+        response = self.client.post(reverse("object-upload"), data)
+        assert response.status_code == 200
+        assert b"This field is required" in response.content
+        assert Object.objects.count() == 0
+
     def test_upload_object_post_invalid_file_type(self):
         self.client.login(username=self.username, password=self.password)
         fake_file = SimpleUploadedFile(
@@ -100,7 +113,10 @@ class TestObjectUpload(TestCase):
         response = self.client.post(reverse("object-upload"), data)
         # Should fail validation or be rejected by the form
         assert response.status_code == 200
-        assert b"Only GIF images, MP4, and WebM videos are allowed" in response.content
+        assert (
+            b"Only GIF images, MP4, WebM videos, and GLB files are allowed."
+            in response.content
+        )
         assert Object.objects.count() == 0
 
     def test_upload_object_post_invalid_scale(self):
