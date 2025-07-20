@@ -37,16 +37,17 @@ class TestMarkerThumbnailGenerators(TestCase):
         assert reverse("edit-marker") not in html
         assert reverse("delete-content") not in html
 
-    def test_marker_thumbnail_editable(self):
-        html = self.marker.as_html_thumbnail(editable=True)
+    # Editing markers is being disabled for now, since they only allow to edit the title and its generating a bug after editing the file.
+    # def test_marker_thumbnail_editable(self):
+    #     html = self.marker.as_html_thumbnail(editable=True)
 
-        edit_url = reverse("edit-marker", query={"id": self.marker.id})
-        delete_url = reverse(
-            "delete-content", query={"content_type": "marker", "id": self.marker.id}
-        )
+    #     edit_url = reverse("edit-marker", query={"id": self.marker.id})
+    #     delete_url = reverse(
+    #         "delete-content", query={"content_type": "marker", "id": self.marker.id}
+    #     )
 
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
+    #     assert f'href="{edit_url}"' in html
+    #     assert f'href="{delete_url}"' in html
 
     def test_marker_in_use_cant_be_edited(self):
         # Create an artwork using this marker to mark it as "in use"
@@ -109,12 +110,22 @@ class TestObjectThumbnailGenerators(TestCase):
         assert f'href="{edit_url}"' in html
         assert f'href="{delete_url}"' in html
 
-    def test_object_in_use_cant_be_edited(self):
+    def test_object_in_use_by_others_cant_be_edited(self):
         # Create an artwork using this object to mark it as "in use"
         ArtworkFactory(augmented=self.image_object)
 
         html = self.image_object.as_html_thumbnail(editable=True)
         assert reverse("edit-object") not in html
+        assert reverse("delete-content") not in html
+
+    def test_object_in_use_by_self_can_be_edited(self):
+        # Create an artwork using this object to mark it as "in use"
+        ArtworkFactory(augmented=self.image_object, author=self.image_object.owner)
+
+        html = self.image_object.as_html_thumbnail(editable=True)
+        # In use only by self, so should allow editing
+        assert reverse("edit-object") in html
+        # Can still not delete it
         assert reverse("delete-content") not in html
 
 
@@ -160,17 +171,17 @@ class TestArtworkThumbnailGenerators(TestCase):
         assert f'href="{delete_url}"' in html
         assert f'href="{preview_url}"' in html
 
-    def test_artwork_in_use_cant_be_edited(self):
+    def test_artwork_in_use_can_be_edited(self):
         # Create an exhibit using this artwork to mark it as "in use"
         exhibit = ExhibitFactory()
         exhibit.artworks.add(self.artwork)
 
         html = self.artwork.as_html_thumbnail(editable=True)
 
-        # Should not contain edit/delete/preview buttons
-        assert reverse("edit-artwork") not in html
+        # Should not contain delete since it's in use
+        assert reverse("edit-artwork") in html
         assert reverse("delete-content") not in html
-        assert reverse("artwork-preview") not in html
+        assert reverse("artwork-preview") in html
 
 
 class TestExhibitThumbnailGenerators(TestCase):

@@ -41,12 +41,8 @@ class SignupForm(UserCreationForm):
         fields = ["email", "username", "password1", "password2"]
 
     def clean_email(self):
-        email = self.cleaned_data.get("email")
-        username = self.cleaned_data.get("username")
-        if (
-            email
-            and User.objects.filter(email=email).exclude(username=username).exists()
-        ):
+        email = self.cleaned_data.get("email", None)
+        if email and User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError(_("E-mail taken"))
 
         return email
@@ -134,17 +130,14 @@ class LoginForm(AuthenticationForm):
 
     def clean(self):
         username_or_email = self.cleaned_data.get("username", "")
-        search_by = {}
-
-        if "@" in username_or_email:
-            search_by["email"] = username_or_email
-        else:
-            search_by["username"] = username_or_email
 
         try:
-            user = User.objects.get(**search_by)
-        except User.DoesNotExist as e:
-            raise forms.ValidationError(_("Username/email not found")) from e
+            if "@" in username_or_email:
+                user = User.objects.get(email__iexact=username_or_email.lower())
+            else:
+                user = User.objects.get(username__iexact=username_or_email.lower())
+        except User.DoesNotExist:
+            raise forms.ValidationError(_("Username/email not found"))
 
         self.cleaned_data["username"] = user.username
 

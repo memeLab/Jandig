@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
         {% if edit %}
-            <h2>{{_('Edit_object')}}</h2>
+            <h2>{{_('Edit object')}}</h2>
         {% else %}
             <h2>{{ _('Upload Object') }}</h2>
         {% endif %}
@@ -20,10 +20,10 @@
                         {{ form.visible_fields()[2].errors }}
                     </p>
                     <p class="upload-field" id="source-field">
-                    {%if route == 'object-upload' %}
+                
                         <h3>{{_("Choose Object")}}</h3>
-                    {% endif %}
-                        {{ form.visible_fields()[0] }}
+                    
+                        {{ form.visible_fields()[0] | safe}}
                         {{ form.visible_fields()[0].errors }}
                     </p>
 
@@ -54,7 +54,7 @@
                         </span>
 
                         {% with xposition=0, yposition=0 %}
-                            {% include "users/components/object-position.jinja2" %}
+                            {% include "core/components/object-position.jinja2" %}
                         {% endwith %}
                         
                         {{ form.hidden_fields()[0] }}
@@ -152,35 +152,27 @@
 
             function updateValues(){
                 var image_preview = document.querySelector('#img-preview');
-                var high = null;
-                var wide = null;
-                if (image_preview.tagName == "IMG") {
-                    high = image_preview.naturalHeight;
-                    wide = image_preview.naturalWidth;
-                } else {
-                    high = image_preview.videoHeight;
-                    wide = image_preview.videoWidth;
-                }
-
-                if(high >= wide){
-                    var yprop = 1
-                    var xprop = (wide*1.0)/high;
-                }else{
-                    var xprop = 1
-                    var yprop = (high*1.0)/wide;
-                }
 
                 var xpos = document.getElementById('X-position').value;
                 var ypos = document.getElementById('Y-position').value;
-                var scl = scal*xprop + " " + scal*yprop;
-                var rot = "270 0 0";
-                var pos = xpos/100 + " " + ypos/100 + " 0"; //messing with the Z gives some really weird things
+                // "x y z"
+                var pos = xpos/100 + " " + ypos/100 + " 0"; 
 
-                $('#id_rotation').val(rot);
                 $('#id_position').val(pos);
             }
 
+            var string_position = document.getElementById('id_position').value;
+            var position_x = string_position.split(" ")[0] * 100; 
+            var position_y = string_position.split(" ")[1] * 100;
+            var slider_X = document.getElementById("X-position");
+            var display_value_X = document.getElementById("X-position-value");
+            var slider_Y = document.getElementById("Y-position");
+            var display_value_Y = document.getElementById("Y-position-value");
 
+            slider_X.value = position_x;
+            display_value_X.innerHTML = position_x/100;
+            slider_Y.value = position_y;
+            display_value_Y.innerHTML = position_y/100;
         </script>
     </section>
 {% endblock %}

@@ -32,11 +32,9 @@
         {% include "core/header.jinja2" %}
 
         {% include "core/useful_links.jinja2" %}
-        {% if (request.path == '/community/') %}
-            {% block community %}
-            {% endblock %}
-        {% elif (request.path == "/") %}
-            <section class="use-guide">
+  
+        {% block content %}
+                <section class="use-guide">
                 <div class="container">
                     <h2 id="main_title">{{_("Welcome to Jandig")}}</h2>
                     <blockquote>{{_("An Open Source Augmented Reality art community.")}}</blockquote>
@@ -46,10 +44,8 @@
                     </div>
                 </div>
             </section>
-        {% else %}
-            {% block content %}
-            {% endblock %}
-        {% endif %}
+        {% endblock %}
+        
         {% include "core/footer.jinja2" %}
     </body>
 </html>
