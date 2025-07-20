@@ -3,6 +3,7 @@
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="{{ static('css/warning.css') }}">
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
         {% if edit %}
@@ -138,6 +139,19 @@
                     } else if(file.name.endsWith(".glb")) {
                         // file.type for GLB files is none
                         document.getElementById("content-box").innerHTML = "";
+
+                        blockquote = document.createElement("div");
+                        blockquote.className = "warning-box";
+                        blockquote_title = document.createElement("span");
+                        blockquote_title.className = "warning-icon";
+                        blockquote_title.innerHTML = "⚠";
+                        blockquote_text = document.createElement("p");
+                        blockquote_text.className = "warning-text";
+                        blockquote_text.innerHTML = "{{ _("GLB files are only supported in MR (Meta Quest 3) exhibits. They cannot be used in AR exhibits or Artworks.") }}";
+                        blockquote.appendChild(blockquote_title);
+                        blockquote.appendChild(blockquote_text);
+                        document.getElementById("content-box").appendChild(blockquote);
+                        
                         // #TODO: 3D model preview
                         //image_preview = document.createElement("model-viewer");
                         //document.getElementById("content-box").appendChild(image_preview);
