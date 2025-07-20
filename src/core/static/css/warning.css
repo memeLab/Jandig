@@ -1,0 +1,24 @@
+.warning-box {
+  display: flex;
+  align-items: center;
+  background-color: #fffbea; /* tom amarelo claro */
+  border-left: 4px solid #facc15; /* amarelo */
+  padding: 16px 24px;
+  margin-top: 10px;
+  color: #111;
+  max-width: 600px;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.warning-icon {
+  color: #facc15; /* amarelo */
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.warning-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}

@@ -5,7 +5,7 @@ from rest_framework import status
 from core.models import Marker
 from users.models import User
 
-EXAMPLE_MARKER_PATH = "src/users/tests/test_files/example_marker_500x500.jpg"
+EXAMPLE_MARKER_PATH = "src/core/tests/test_files/example_marker_500x500.jpg"
 EXAMPLE_MARKER_SIZE = 18403  # Size in bytes of the example marker image
 
 

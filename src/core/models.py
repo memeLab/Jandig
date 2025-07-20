@@ -161,6 +161,13 @@ class Marker(TimeStampedModel, ContentMixin):
         return render(to_render)
 
 
+class ObjectExtensions(models.TextChoices):
+    GIF = "gif", "GIF"
+    MP4 = "mp4", "MP4"
+    WEBM = "webm", "WEBM"
+    GLB = "glb", "GLB"
+
+
 @pghistory.track()
 class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
@@ -173,7 +180,11 @@ class Object(TimeStampedModel, ContentMixin):
     position = models.CharField(default="0 0 0", max_length=50)
     rotation = models.CharField(default="270 0 0", max_length=50)
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
-    file_size = models.IntegerField(default=0, blank=True, null=True)
+    file_size = models.IntegerField(default=0)
+    file_name_original = models.CharField(max_length=255)
+    file_extension = models.CharField(
+        max_length=10, db_index=True, choices=ObjectExtensions.choices
+    )
 
     def __str__(self):
         return self.source.name
@@ -290,6 +301,15 @@ class Object(TimeStampedModel, ContentMixin):
             return True
         return False
 
+    @property
+    def is_3d(self):
+        """
+        checks if the Object is a 3D model by checking the file extension.
+        """
+        if self.source.name.endswith(".glb"):
+            return True
+        return False
+
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
@@ -306,6 +326,17 @@ class Object(TimeStampedModel, ContentMixin):
                     autoplay=True,
                     loop=True,
                     muted=True,
+                    **attributes,
+                )
+            )
+        elif self.is_3d:
+            # TODO: 3D model preview
+            # no 3d render, return an placeholder svg with a red square
+            attributes["src"] = (
+                "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
+            )
+            return render(
+                img(
                     **attributes,
                 )
             )

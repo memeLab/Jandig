@@ -12,7 +12,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
 from users.models import Profile
 
 
@@ -293,7 +293,11 @@ def create_artwork(request):
         form = ArtworkForm()
 
     marker_list = Marker.objects.all().order_by("-created")
-    object_list = Object.objects.all().order_by("-created")
+    object_list = (
+        Object.objects.exclude(file_extension=ObjectExtensions.GLB)
+        .all()
+        .order_by("-created")
+    )
 
     return render(
         request,
