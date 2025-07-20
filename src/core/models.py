@@ -290,6 +290,15 @@ class Object(TimeStampedModel, ContentMixin):
             return True
         return False
 
+    @property
+    def is_3d(self):
+        """
+        checks if the Object is a 3D model by checking the file extension.
+        """
+        if self.source.name.endswith(".glb"):
+            return True
+        return False
+
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
@@ -306,6 +315,17 @@ class Object(TimeStampedModel, ContentMixin):
                     autoplay=True,
                     loop=True,
                     muted=True,
+                    **attributes,
+                )
+            )
+        elif self.is_3d:
+            # TODO: 3D model preview
+            # no 3d render, return an placeholder svg with a red square
+            attributes["src"] = (
+                "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
+            )
+            return render(
+                img(
                     **attributes,
                 )
             )

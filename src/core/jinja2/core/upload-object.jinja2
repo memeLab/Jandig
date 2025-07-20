@@ -135,8 +135,15 @@
                             image_preview.id = "img-preview";
                             document.getElementById("content-box").appendChild(image_preview);
                         }
+                    } else if(file.name.endsWith(".glb")) {
+                        // file.type for GLB files is none
+                        document.getElementById("content-box").innerHTML = "";
+                        // #TODO: 3D model preview
+                        //image_preview = document.createElement("model-viewer");
+                        //document.getElementById("content-box").appendChild(image_preview);
                     } else {
-                        alert("{{ _("Invalid file type! Only image or video files are accepted.") }}")
+                        console.log("Invalid file type: " + file.type);
+                        alert("{{ _("Invalid file type! Only image, video or GLB files are accepted.") }}")
                         
                         document.getElementById("id_source").value = "";
 
