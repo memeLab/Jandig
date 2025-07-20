@@ -85,7 +85,6 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "pghistory",
     "pgtrigger",
-    "django_htmx",
     "corsheaders",
     "users",
     "core",
@@ -115,7 +114,6 @@ MIDDLEWARE += [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

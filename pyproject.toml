@@ -11,7 +11,6 @@ dependencies = [
   "django-cors-headers~=4.7",
   "django-environ~=0.12",
   "django-extensions~=4.0",
-  "django-htmx~=1.21",
   "django-storages~=1.14",
   "django~=5.1",
   "djangorestframework~=3.15",
