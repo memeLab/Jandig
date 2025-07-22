@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitologia Estendida</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* White background */
+            color: #333333; /* Dark text for light background */
+        }
+        .section {
+            display: none; /* Hidden by default */
+        }
+        .section.active {
+            display: block; /* Shown when active */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0; /* Light gray track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c0c0c0; /* Medium gray thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0; /* Darker gray on hover */
+        }
+
+        /* Diagonal stripes for sections */
+        .striped-bg {
+            background-color: #f8f8f8; /* Fallback for older browsers */
+            /* Adjusted lighter gray (#f5f5f5) and increased spacing (30px 30px) */
+            background-image: linear-gradient(45deg, #f8f8f8 25%, #f5f5f5 25%, #f5f5f5 50%, #f8f8f8 50%, #f8f8f8 75%, #f5f5f5 75%, #f5f5f5 100%);
+            background-size: 30px 30px; /* Adjust size of stripes for more spacing */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white p-4 shadow-lg sticky top-0 z-50 border-b border-gray-200">
+        <div class="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <!-- The title now acts as the Home link -->
+                <a href="#" class="text-2xl font-bold text-[#08B59F] hover:text-[#05E2D6] transition-colors duration-300" onclick="showSection('home')">Mitologia Estendida</a>
+                
+                <!-- Mobile menu button -->
+                <button id="menu-button" class="text-gray-800 md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
+            <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
+            <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:space-x-4 md:mt-0 md:w-auto">
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao')">Exposição</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('historias')">Histórias</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('materiais-educativos')">Materiais educativos</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')">Making of</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos')">Quem somos</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('ajuda')">Ajuda</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto p-6">
+        <!-- Home Section -->
+        <section id="home" class="section active striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200 relative overflow-hidden">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Bem-vindo à Mitologia Estendida</h1>
+            
+            <!-- Banner Section - Now an Image -->
+            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/01JANDIGME_Hotsite_ABERTURA.png') }}"
+                     alt="Banner: Descubra um mundo de lendas em Realidade Virtual!" 
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Erro+ao+Carregar+Imagem';"
+                >
+            </div>
+            <!-- End Banner Section -->
+
+            <p class="text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed text-gray-700">
+                Mitologia Estendida é uma experiência imersiva em realidade virtual que o transporta para o coração das lendas e mitos. Explore narrativas ancestrais como nunca antes, combinando a riqueza do folclore com a tecnologia de ponta. Prepare-se para uma jornada inesquecível através de mundos fantásticos e personagens lendários.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Materiais Educativos Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Materiais Educativos</h2>
+                    <img src="{{ static('images/icons/me/05JANDIGME_Hotsite_,ateriaiseducativos.png') }}"
+                         alt="Materiais Educativos" 
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Erro+ao+Carregar+Imagem';"
+                    >
+                    <p class="text-gray-700 mb-6">
+                        Descubra recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas. Perfeito para estudantes e entusiastas!
+                    </p>
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('materiais-educativos')">
+                        Explorar Materiais
+                    </button>
+                </div>
+
+                <!-- Histórias Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Nossas Histórias</h2>
+                    <img src="{{ static('images/icons/me/06JANDIGME_Hotsite_nossashistorias.png') }}"
+                         alt="Nossas Histórias" 
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Erro+ao+Carregar+Imagem';"
+                    >
+                    <p class="text-gray-700 mb-6">
+                        Mergulhe nas três principais narrativas que inspiram nossa exposição. Cada história é uma jornada única através de mitos e lendas.
+                    </p>
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('historias')">
+                        Conhecer Histórias
+                    </button>
+                </div>
+
+                <!-- Último Post Making Of Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Último do Making Of</h2>
+                    <img src="{{ static('images/icons/me/01JANDIGME_mkof.png') }}" alt="Cena de Desenvolvimento" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-6">
+                        Confira os bastidores do nosso progresso! Recentemente, finalizamos a modelagem 3D dos personagens principais e estamos otimizando as texturas para a experiência VR. A imersão será incrível!
+                    </p>
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('making-of')">
+                        Ver Mais do Making Of
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quem Somos Section -->
+        <section id="quem-somos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Quem Somos</h1>
+            <div class="flex flex-col md:flex-row items-center md:space-x-8">
+                <img src="{{ static('images/icons/me/JANDIGME_Hotsite_equipe.png') }}" alt="Nossa Equipe" class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg mb-6 md:mb-0 border-4 border-[#08B59F]">
+                <div class="text-lg leading-relaxed text-gray-700">
+                    <p class="mb-4">
+                        Somos um coletivo apaixonado por tecnologia e narrativas, dedicado a explorar novas formas de contar histórias através da realidade virtual. Nosso grupo é composto por desenvolvedores, artistas 3D, roteiristas e pesquisadores de mitologia, todos unidos pelo objetivo de trazer as lendas ancestrais para o século XXI de uma maneira inovadora e imersiva.
+                    </p>
+                    <p class="mb-4">
+                        Acreditamos que a VR tem o poder de conectar as pessoas com o conhecimento e a cultura de uma forma profunda e significativa. Com "Mitologia Estendida", buscamos não apenas entreter, mas também educar e inspirar, convidando o público a mergulhar em universos ricos em simbolismo e sabedoria.
+                    </p>
+                    <p>
+                        Nosso compromisso é com a excelência e a inovação, garantindo que cada detalhe da experiência seja cuidadosamente elaborado para proporcionar uma jornada inesquecível.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Histórias Section -->
+        <section id="historias" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Nossas Histórias</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- História 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">A Lenda do Curupira</h2>
+                    <img src="{{ static('images/icons/me/JANDIGME_Hotsite_curupira.png') }}" alt="Curupira" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 leading-relaxed">
+                        Mergulhe na floresta amazônica e conheça o Curupira, o guardião das matas com pés virados para trás. Uma aventura que ensina sobre respeito à natureza e suas criaturas.
+                    </p>
+                </div>
+                <!-- História 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">anhanga</h2>
+                    <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Anhanga" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 leading-relaxed">
+                        Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.
+                    </p>
+                </div>
+                <!-- História 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Boitata</h2>
+                    <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boitata" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 leading-relaxed">
+                        Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Materiais Educativos Section -->
+        <section id="materiais-educativos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Materiais Educativos</h1>
+            <div class="text-lg leading-relaxed mb-8 text-gray-700">
+                <p class="mb-4">
+                    Desenvolvemos uma série de materiais educativos para complementar a experiência da "Mitologia Estendida" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
+                </p>
+                <p>
+                    Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.
+                </p>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#08B59F]">Guia de Uso</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200">
+                <p class="text-gray-700 leading-relaxed">
+                    Nossos materiais foram criados para serem flexíveis e adaptáveis. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem. Os cartazes são ótimos para decorar ambientes educativos ou para serem usados como apoio visual em apresentações. Incentive a criatividade e a exploração!
+                </p>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#08B59F]">Downloads</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Álbum de Figurinhas -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Álbum de Figurinhas</h3>
+                    <img src="{{ static('images/icons/me/02JANDIGME_Hotsite_Album.png') }}" alt="Álbum de Figurinhas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4">Colecione e aprenda sobre todos os personagens!</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
+                        Download Álbum (PDF)
+                    </a>
+                </div>
+                <!-- Figurinhas Avulsas -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Figurinhas Avulsas</h3>
+                    <img src="{{ static('images/icons/me/03JANDIGME_Hotsite_Figurinhas.png') }}" alt="Figurinhas Avulsas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4">Imprima e use em suas atividades!</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
+                        Download Figurinhas (ZIP)
+                    </a>
+                </div>
+                <!-- Cartazes -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Cartazes</h3>
+                    <img src="{{ static('images/icons/me/04JANDIGME_Hotsite_Cartazes.png') }}" alt="Cartazes Educativos" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4">Decore e aprenda com nossos cartazes!</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
+                        Download Cartazes (PDF)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Making Of Section -->
+        <section id="making-of" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Making Of: Diário de Desenvolvimento</h1>
+            <div class="space-y-12">
+                <!-- Post 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col md:flex-row items-center md:space-x-6">
+                    <img src="https://placehold.co/400x250/e0e0e0/333333?text=Modelagem+3D" alt="Modelagem 3D" class="w-full md:w-1/3 h-48 object-cover rounded-lg mb-4 md:mb-0 shadow-md">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Primeiros Passos: Modelagem de Personagens</h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            Nesta fase inicial, concentramos nossos esforços na criação dos modelos 3D dos personagens principais. Foi um desafio dar vida às descrições mitológicas, garantindo que cada detalhe refletisse a essência de suas lendas. Utilizamos softwares avançados para esculpir e texturizar, buscando um equilíbrio entre realismo e o estilo artístico que definirá a experiência.
+                        </p>
+                        <span class="text-sm text-gray-500 mt-2 block">Postado em: 10 de Julho de 2025</span>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col md:flex-row items-center md:space-x-6">
+                    <img src="https://placehold.co/400x250/e0e0e0/333333?text=Cenários+VR" alt="Cenários VR" class="w-full md:w-1/3 h-48 object-cover rounded-lg mb-4 md:mb-0 shadow-md">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Construindo Mundos: Design de Cenários VR</h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            A imersão em VR depende muito da qualidade dos ambientes. Dedicamos semanas ao design e otimização dos cenários, garantindo que cada paisagem, floresta ou rio transmitisse a atmosfera da lenda. A performance é crucial em VR, então trabalhamos para manter a fidelidade visual sem comprometer a fluidez da experiência.
+                        </p>
+                        <span class="text-sm text-gray-500 mt-2 block">Postado em: 25 de Junho de 2025</span>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col md:flex-row items-center md:space-x-6">
+                    <img src="https://placehold.co/400x250/e0e0e0/333333?text=Testes+Iniciais" alt="Testes Iniciais" class="w-full md:w-1/3 h-48 object-cover rounded-lg mb-4 md:mb-0 shadow-md">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Testes e Otimização: Primeiras Impressões</h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            Os testes iniciais são vitais para identificar e corrigir problemas. Realizamos sessões de teste com protótipos para avaliar a interatividade, o conforto na VR e a resposta dos controles. O feedback nos ajudou a refinar a experiência, tornando-a mais intuitiva e agradável para o usuário final.
+                        </p>
+                        <span class="text-sm text-gray-500 mt-2 block">Postado em: 10 de Junho de 2025</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exposição Section -->
+        <section id="exposicao" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 items-center justify-center min-h-[50vh] border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Exposição</h1>
+
+            <!-- Banner Section - Now an Image -->
+            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/01JANDIGME_Hotsite_Exposicao.png') }}"
+                     alt="Banner: Exposição" 
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Erro+ao+Carregar+Imagem';"
+                >
+            </div>
+            <!-- End Banner Section -->
+            
+            <p class="text-2xl text-center text-gray-700">
+                Estamos trabalhando duro para trazer a você uma experiência de exposição incrível!
+            </p>
+            <p class="text-3xl font-bold text-center text-[#08B59F] mt-4 animate-pulse">
+                Em construção...
+            </p>
+        </section>
+
+        <!-- Ajuda Section (FAQ) -->
+        <section id="ajuda" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Ajuda e Perguntas Frequentes (FAQ)</h1>
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">O que é Mitologia Estendida?</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Mitologia Estendida é uma exposição cultural em realidade virtual que permite aos usuários explorar e interagir com lendas e mitos de diversas culturas, de uma forma imersiva e educativa.
+                    </p>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Quais equipamentos de VR são compatíveis?</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Estamos trabalhando para garantir a compatibilidade com os principais headsets de realidade virtual do mercado, como Oculus Quest, HTC Vive e Valve Index. Mais detalhes sobre a compatibilidade serão divulgados em breve.
+                    </p>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Haverá versões para outras plataformas (PC, console)?</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Nosso foco principal é a experiência em realidade virtual, mas estamos explorando a possibilidade de desenvolver versões adaptadas para PC e consoles no futuro, para que mais pessoas possam desfrutar do conteúdo.
+                    </p>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]">Como posso apoiar o projeto?</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Agradecemos muito o seu interesse! Você pode apoiar o projeto divulgando-o para seus amigos, acompanhando nossas atualizações no blog (seção Making Of) e, em breve, teremos informações sobre como contribuir financeiramente ou através de outras formas de parceria.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contato Section -->
+        <section id="contato" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Contato</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Informações de Contato -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Informações de Contato</h2>
+                    <p class="text-gray-700 mb-2"><strong>Email:</strong> contato@mitologiaestendida.com</p>
+                    <p class="text-gray-700 mb-2"><strong>Telefone:</strong> +55 (11) 98765-4321</p>
+                    <p class="text-gray-700 mb-2"><strong>Endereço:</strong> Rua da Inovação, 123 - São Paulo, SP - Brasil</p>
+                    <div class="mt-6 flex flex-col md:flex-row md:space-x-4 items-center w-full">
+                        <h3 class="text-xl font-semibold mb-2 md:mb-0 text-[#08B59F] w-full md:w-auto text-center md:text-left">Redes Sociais:</h3>
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto items-center">
+                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Facebook</a>
+                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Instagram</a>
+                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Twitter</a>
+                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário de Contato -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Envie-nos uma Mensagem</h2>
+                    <form onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso! (Este é um formulário de demonstração)'); this.reset();">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
+                            <input type="text" id="name" name="name" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" placeholder="Seu nome" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                            <input type="email" id="email" name="email" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" placeholder="seu.email@exemplo.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Mensagem:</label>
+                            <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" placeholder="Sua mensagem..." required></textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <button type="submit" class="bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition-colors duration-300 transform hover:scale-105">
+                                Enviar Mensagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white p-6 text-center text-gray-600 mt-auto shadow-inner border-t border-gray-200">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2025 Mitologia Estendida. Todos os direitos reservados.</p>
+            <p class="mt-2 text-sm md:mt-0">Desenvolvido com paixão por lendas e tecnologia.</p>
+            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0" onclick="showSection('contato')">Contato</a>
+        </div>
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-12"> <!-- Increased space-x for desktop -->
+            <div class="flex flex-col items-center">
+                <p class="font-semibold text-gray-700 mb-2">Fomento:</p>
+                <img src="{{ static('images/icons/me/logos_proac/proac-texture.png') }}" alt="Logo PROAC" class="h-28 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
+            </div>
+            <div class="flex flex-col items-center">
+                <p class="font-semibold text-gray-700 mb-2">Realização:</p>
+                <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-28 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
+                    <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria da Cultura, Economia e Indústria Criativa" class="h-32 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to show a specific section and hide others
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            // Scroll to top of the page when changing sections
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Hide mobile menu after selection
+            const navLinks = document.getElementById('nav-links');
+            if (navLinks.classList.contains('flex')) {
+                navLinks.classList.remove('flex');
+                navLinks.classList.add('hidden');
+            }
+        }
+
+        // Toggle mobile menu
+        document.getElementById('menu-button').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            // For mobile, ensure it's a column layout
+            navLinks.classList.toggle('hidden');
+            // Add flex-col when showing, remove when hiding (for mobile)
+            if (navLinks.classList.contains('hidden')) {
+                navLinks.classList.remove('flex');
+                navLinks.classList.remove('flex-col'); // Ensure flex-col is removed when hidden
+            } else {
+                navLinks.classList.add('flex');
+                navLinks.classList.add('flex-col'); // Add flex-col when shown
+            }
+        });
+
+        // Initialize the home section on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+        });
+    </script>
+</body>
+</html>
