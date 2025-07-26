@@ -186,6 +186,12 @@ class Object(TimeStampedModel, ContentMixin):
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
 
+    thumbnail = models.ImageField(
+        upload_to="objects/thumbnails/",
+        blank=True,
+        null=True,
+    )
+
     def __str__(self):
         return self.source.name
 
@@ -306,7 +312,7 @@ class Object(TimeStampedModel, ContentMixin):
         """
         checks if the Object is a 3D model by checking the file extension.
         """
-        if self.source.name.endswith(".glb"):
+        if self.file_extension in [ObjectExtensions.GLB]:
             return True
         return False
 
@@ -330,11 +336,13 @@ class Object(TimeStampedModel, ContentMixin):
                 )
             )
         elif self.is_3d:
-            # TODO: 3D model preview
-            # no 3d render, return an placeholder svg with a red square
-            attributes["src"] = (
-                "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
-            )
+            if self.thumbnail:
+                attributes["src"] = self.thumbnail.url
+            else:
+                # Fallback to a placeholder if no thumbnail is available
+                attributes["src"] = (
+                    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
+                )
             return render(
                 img(
                     **attributes,
