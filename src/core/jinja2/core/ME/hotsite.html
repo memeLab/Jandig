@@ -127,7 +127,7 @@
                 <!-- Último Post Making Of Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Último do Making Of</h2>
-                    <img src="https://placehold.co/600x300/e0e0e0/333333?text=Cena+de+Desenvolvimento" alt="Cena de Desenvolvimento" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <img src="{{ static('images/icons/me/01JANDIGME_mkof.png') }}" alt="Cena de Desenvolvimento" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 mb-6">
                         Confira os bastidores do nosso progresso! Recentemente, finalizamos a modelagem 3D dos personagens principais e estamos otimizando as texturas para a experiência VR. A imersão será incrível!
                     </p>
@@ -142,7 +142,7 @@
         <section id="quem-somos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Quem Somos</h1>
             <div class="flex flex-col md:flex-row items-center md:space-x-8">
-                <img src="https://placehold.co/400x400/e0e0e0/333333?text=Nossa+Equipe" alt="Nossa Equipe" class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg mb-6 md:mb-0 border-4 border-[#08B59F]">
+                <img src="{{ static('images/icons/me/JANDIGME_Hotsite_equipe.png') }}" alt="Nossa Equipe" class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg mb-6 md:mb-0 border-4 border-[#08B59F]">
                 <div class="text-lg leading-relaxed text-gray-700">
                     <p class="mb-4">
                         Somos um coletivo apaixonado por tecnologia e narrativas, dedicado a explorar novas formas de contar histórias através da realidade virtual. Nosso grupo é composto por desenvolvedores, artistas 3D, roteiristas e pesquisadores de mitologia, todos unidos pelo objetivo de trazer as lendas ancestrais para o século XXI de uma maneira inovadora e imersiva.
@@ -164,7 +164,7 @@
                 <!-- História 1 -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">A Lenda do Curupira</h2>
-                    <img src="{{ static('images/icons/me/JANDIGME_Hotsite_curupira.png') }}" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <img src="{{ static('images/icons/me/JANDIGME_Hotsite_curupira.png') }}" alt="Curupira" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 leading-relaxed">
                         Mergulhe na floresta amazônica e conheça o Curupira, o guardião das matas com pés virados para trás. Uma aventura que ensina sobre respeito à natureza e suas criaturas.
                     </p>
@@ -172,7 +172,7 @@
                 <!-- História 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">anhanga</h2>
-                    <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Iara" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Anhanga" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 leading-relaxed">
                         Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.
                     </p>
@@ -180,7 +180,7 @@
                 <!-- História 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Boitata</h2>
-                    <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boto" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boitata" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 leading-relaxed">
                         Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.
                     </p>
@@ -282,8 +282,19 @@
         </section>
 
         <!-- Exposição Section -->
-        <section id="exposicao" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 flex flex-col items-center justify-center min-h-[50vh] border border-gray-200">
+        <section id="exposicao" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 items-center justify-center min-h-[50vh] border border-gray-200">
             <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Exposição</h1>
+
+            <!-- Banner Section - Now an Image -->
+            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/01JANDIGME_Hotsite_Exposicao.png') }}"
+                     alt="Banner: Exposição" 
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Erro+ao+Carregar+Imagem';"
+                >
+            </div>
+            <!-- End Banner Section -->
+            
             <p class="text-2xl text-center text-gray-700">
                 Estamos trabalhando duro para trazer a você uma experiência de exposição incrível!
             </p>
