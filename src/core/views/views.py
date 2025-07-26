@@ -124,31 +124,6 @@ def delete(request):
     return redirect("profile")
 
 
-def upload_elements(request, form_class, form_type, route):
-    if request.method == "POST":
-        form = form_class(request.POST, request.FILES)
-        if form.is_valid():
-            upload = form.save(commit=False)
-            upload.owner = request.user.profile
-            upload.save()
-            return redirect("profile")
-    else:
-        form = form_class()
-
-    if form_type == "marker":
-        return render(
-            request,
-            "core/upload-marker.jinja2",
-            {"form_type": form_type, "form": form, "route": route, "edit": False},
-        )
-
-    return render(
-        request,
-        "core/upload-object.jinja2",
-        {"form": form, "route": route, "edit": False},
-    )
-
-
 @login_required
 def object_upload(request):
     """Upload an object file and generate a thumbnail if it's a GLB file."""
@@ -174,13 +149,27 @@ def object_upload(request):
     return render(
         request,
         "core/upload-object.jinja2",
-        {"form": form, "route": "object-upload", "edit": False},
+        {"form": form, "edit": False},
     )
 
 
 @login_required
 def marker_upload(request):
-    return upload_elements(request, UploadMarkerForm, "marker", "marker-upload")
+    if request.method == "POST":
+        form = UploadMarkerForm(request.POST, request.FILES)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.owner = request.user.profile
+            upload.save()
+            return redirect("profile")
+    else:
+        form = UploadMarkerForm()
+
+    return render(
+        request,
+        "core/upload-marker.jinja2",
+        {"form_type": "marker", "form": form, "route": "marker-upload", "edit": False},
+    )
 
 
 def edit_elements(request, form_class, route, model, model_data):
