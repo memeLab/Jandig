@@ -1,5 +1,8 @@
+from io import BytesIO
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import File
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -12,7 +15,9 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
+from core.glb_thumbnail_generator import generate_thumbnail
 from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
+from core.utils import generate_uuid_name
 from users.models import Profile
 
 
@@ -146,7 +151,31 @@ def upload_elements(request, form_class, form_type, route):
 
 @login_required
 def object_upload(request):
-    return upload_elements(request, UploadObjectForm, "object", "object-upload")
+    """Upload an object file and generate a thumbnail if it's a GLB file."""
+    if request.method == "POST":
+        form = UploadObjectForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.owner = request.user.profile
+            obj.save()
+
+            # Generate thumbnail if the file is a GLB
+            if obj.file_extension == ObjectExtensions.GLB:
+                image = generate_thumbnail(obj)
+                # Save the thumbnail image to the object
+                thumbnail_name = generate_uuid_name() + ".png"
+                blob = BytesIO()
+                image.save(blob, format="PNG")
+                obj.thumbnail.save(thumbnail_name, File(blob), save=True)
+            return redirect("profile")
+    else:
+        form = UploadObjectForm()
+
+    return render(
+        request,
+        "core/upload-object.jinja2",
+        {"form": form, "route": "object-upload", "edit": False},
+    )
 
 
 @login_required
