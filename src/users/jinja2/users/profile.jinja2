@@ -14,14 +14,9 @@
             <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
             <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
             <script src="{{ static('js/modal.js') }}"></script>
-            {% if profile %}
-                {% if button_enable == True %}
                     <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
-                {% else %}
-                    <h1 class="titExb">{{_("Exhibitions")}}</h1>
-                {% endif %}
                     {% if exhibits %}
-                        {% with deletable=button_enable, editable=button_enable, repository_list = exhibits, element_type="exhibit"%}
+                        {% with deletable=true, editable=true, repository_list = exhibits, element_type="exhibit"%}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -30,13 +25,10 @@
                             <a href="{{ url('create-exhibit') }}">{{ _('Create one') }}</a>
                         </section>
                     {% endif %}
-                {% if button_enable == True %}
+
                     <h1 class="titArt">{{_("Your Artworks")}}</h1>
-                {% else %}
-                    <h1 class="titExb">{{_("Artworks")}}</h1>
-                {% endif %}
                     {% if artworks %}
-                        {% with preview=True, deletable=button_enable, editable=button_enable, repository_list = artworks, element_type="artwork" %}
+                        {% with preview=True, deletable=true, editable=true, repository_list = artworks, element_type="artwork" %}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -45,13 +37,10 @@
                             <a href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
                         </section>
                     {% endif %}
-                {% if button_enable == True %}
+            
                     <h1 class="titArt">{{_("Your Markers")}}</h1>
-                {% else %}
-                    <h1 class="titExb">{{_("Markers")}}</h1>
-                {% endif %}
                     {% if markers %}
-                        {% with deletable=button_enable, editable=button_enable, repository_list = markers, element_type="marker"%}
+                        {% with deletable=true, editable=true, repository_list = markers, element_type="marker"%}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -60,13 +49,11 @@
                             <a href="{{ url('marker-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
-                {% if button_enable == True %}
+
                     <h1 class="titArt">{{_("Your Objects")}}</h1>
-                {% else %}
-                    <h1 class="titExb">{{_("Objects")}}</h1>
-                {% endif %}
+
                     {% if objects %}
-                        {% with deletable=button_enable, editable=button_enable, repository_list = objects, element_type="object" %}
+                        {% with deletable=true, editable=true, repository_list = objects, element_type="object" %}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
@@ -75,7 +62,6 @@
                             <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
-            {% endif %}
 
             {% include "users/components/createbox.jinja2" %}
             <section id="modal" class="modal"></section>
