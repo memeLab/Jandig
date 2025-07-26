@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -62,11 +64,10 @@
             <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
             <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:space-x-4 md:mt-0 md:w-auto">
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao')">Exposição</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('historias')">Histórias</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('materiais-educativos')">Materiais educativos</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')">Making of</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')">Álbum de Figurinhas</a>
+               <!-- <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')">Making Of</a>-->
+                <!--<a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('aprender-fazer')">Aprenda a fazer</a>-->
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos')">Quem somos</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('ajuda')">Ajuda</a>
             </div>
         </div>
     </nav>
@@ -75,64 +76,64 @@
     <main class="flex-grow container mx-auto p-6">
         <!-- Home Section -->
         <section id="home" class="section active striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200 relative overflow-hidden">
-            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Bem-vindo à Mitologia Estendida</h1>
+            <!-- Removed h1 title from here -->
             
-            <!-- Banner Section - Now an Image -->
+            <!-- Banner Section -->
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
                 <img src="{{ static('images/icons/me/01JANDIGME_Hotsite_ABERTURA.png') }}"
                      alt="Banner: Descubra um mundo de lendas em Realidade Virtual!" 
                      class="w-full h-64 md:h-72 object-cover"
-                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Erro+ao+Carregar+Imagem';"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Erro+ao+Carregar+Imagem+do+Banner';"
                 >
             </div>
             <!-- End Banner Section -->
 
             <p class="text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed text-gray-700">
-                Mitologia Estendida é uma experiência imersiva em realidade virtual que o transporta para o coração das lendas e mitos. Explore narrativas ancestrais como nunca antes, combinando a riqueza do folclore com a tecnologia de ponta. Prepare-se para uma jornada inesquecível através de mundos fantásticos e personagens lendários.
+                Mitologia Estendida é uma experiência imersiva em realidade estendida que nos transporta para o coração das lendas e mitos brasileiros. O projeto é um convite para conhecer algumas narrativas ancestrais como nunca antes, combinando a riqueza da cultura brasileira com a tecnologia de ponta. Prepare-se para uma jornada inesquecível com personagens lendários em diálogo com os desafios que estamos enfrentando hoje em dia.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                <!-- Materiais Educativos Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Materiais Educativos</h2>
-                    <img src="{{ static('images/icons/me/05JANDIGME_Hotsite_,ateriaiseducativos.png') }}"
-                         alt="Materiais Educativos" 
+                <!-- EXPOSIÇÃO Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">EXPOSIÇÃO</h2>
+                    <img src="{{ static('images/icons/me/01JANDIGME_Hotsite_Exposicao.png') }}"
+                         alt="Imagem: Exposição" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
                          onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Erro+ao+Carregar+Imagem';"
                     >
-                    <p class="text-gray-700 mb-6">
-                        Descubra recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas. Perfeito para estudantes e entusiastas!
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Mitologia Estendida se desdobra também em uma exposição com realidade mista em setembro de 2025.
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('materiais-educativos')">
-                        Explorar Materiais
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')">
+                        Mais informações
                     </button>
                 </div>
 
-                <!-- Histórias Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Nossas Histórias</h2>
+                <!-- ÁLBUM DE FIGURINHAS Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">ÁLBUM DE FIGURINHAS</h2>
                     <img src="{{ static('images/icons/me/06JANDIGME_Hotsite_nossashistorias.png') }}"
-                         alt="Nossas Histórias" 
+                         alt="Imagem: Álbum de Figurinhas" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
                          onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Erro+ao+Carregar+Imagem';"
                     >
-                    <p class="text-gray-700 mb-6">
-                        Mergulhe nas três principais narrativas que inspiram nossa exposição. Cada história é uma jornada única através de mitos e lendas.
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        A principal forma de interagir com os mitos é por meio do álbum de figurinhas. Preparamos uma série de recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas e a tecnologia utilizada. Perfeito para estudantes e entusiastas!
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('historias')">
-                        Conhecer Histórias
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('album-figurinhas')">
+                        Conhecer Materiais
                     </button>
                 </div>
 
-                <!-- Último Post Making Of Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Último do Making Of</h2>
-                    <img src="{{ static('images/icons/me/01JANDIGME_mkof.png') }}" alt="Cena de Desenvolvimento" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-6">
-                        Confira os bastidores do nosso progresso! Recentemente, finalizamos a modelagem 3D dos personagens principais e estamos otimizando as texturas para a experiência VR. A imersão será incrível!
+                <!-- MAKING OF Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Quem Somos</h2>
+                    <img src="{{ static('images/icons/me/01JANDIGME_mkof.png') }}" alt="Imagem: Making Of" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Conheça nossa equipe e todo o projeto Jandig.
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105" onclick="showSection('making-of')">
-                        Ver Mais do Making Of
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('quem-somos')">
+                        Veja Quem Somos
                     </button>
                 </div>
             </div>
@@ -141,20 +142,47 @@
         <!-- Quem Somos Section -->
         <section id="quem-somos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Quem Somos</h1>
-            <div class="flex flex-col md:flex-row items-center md:space-x-8">
-                <img src="{{ static('images/icons/me/JANDIGME_Hotsite_equipe.png') }}" alt="Nossa Equipe" class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg mb-6 md:mb-0 border-4 border-[#08B59F]">
-                <div class="text-lg leading-relaxed text-gray-700">
-                    <p class="mb-4">
-                        Somos um coletivo apaixonado por tecnologia e narrativas, dedicado a explorar novas formas de contar histórias através da realidade virtual. Nosso grupo é composto por desenvolvedores, artistas 3D, roteiristas e pesquisadores de mitologia, todos unidos pelo objetivo de trazer as lendas ancestrais para o século XXI de uma maneira inovadora e imersiva.
-                    </p>
-                    <p class="mb-4">
-                        Acreditamos que a VR tem o poder de conectar as pessoas com o conhecimento e a cultura de uma forma profunda e significativa. Com "Mitologia Estendida", buscamos não apenas entreter, mas também educar e inspirar, convidando o público a mergulhar em universos ricos em simbolismo e sabedoria.
-                    </p>
-                    <p>
-                        Nosso compromisso é com a excelência e a inovação, garantindo que cada detalhe da experiência seja cuidadosamente elaborado para proporcionar uma jornada inesquecível.
-                    </p>
-                </div>
+            <div class="text-lg leading-relaxed text-gray-700 mb-8">
+                <p class="mb-4">Mitologia Estendida é feito à várias mãos:</p>
+                <ul class="list-disc list-inside mb-4 ml-4">
+                    <li><strong>Direção Geral:</strong> Angelo Pixel</li>
+                    <li><strong>Direção Artística:</strong> Cláudio Rodrigues</li>
+                    <li><strong>Direção Pedagógica:</strong> María Eugenia Salcedo Repolês</li>
+                    <li><strong>Direção de Tecnologia:</strong> Pablo Silva</li>
+                </ul>
+                <ul class="list-disc list-inside mb-4 ml-4">
+                    <li><strong>Concepção:</strong> Angelo Pixel, Cláudio Rodrigues e Demétrio Portugal</li>
+                    <li><strong>Roteiros:</strong> Angelo Pixel e María Eugenia Salcedo Repolês</li>
+                    <li><strong>Ilustrações:</strong> Auá Mendes</li>
+                    <li><strong>Animação 2D:</strong> Enzo Giaquinto, Max Duarte e Ulisses Tavares</li>
+                    <li><strong>Modelagem e Animação 3D:</strong> Adriana Pedrosa</li>
+                    <li><strong>Cenografia:</strong> Cláudio Rodrigues</li>
+                    <li><strong>Fotografia e Videografia:</strong> Bruna Quevedo</li>
+                    <li><strong>Design de Som:</strong> Lucas Miranda (Oscilloid)</li>
+                    <li><strong>Design Gráfico:</strong> Auá Mendes e Cláudio Rodrigues</li>
+                    <li><strong>Produção Gráfica:</strong> Cláudio Rodrigues</li>
+                    <li><strong>Gerente de Produto:</strong> Angelo Pixel</li>
+                    <li><strong>UX Design:</strong> Raquel Mei</li>
+                    <li><strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan</li>
+                    <li><strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal</li>
+                    <li><strong>Agradecimentos:</strong> Almir Almas</li>
+                </ul>
+
+                <h2 class="text-3xl font-bold text-center mt-12 mb-8 text-[#08B59F]">JANDIG</h2>
+                <p class="mb-4">
+                    O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.
+                </p>
+                <p class="mb-4">
+                    Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.
+                </p>
+                <p class="text-center">
+                    <a href="https://jandig.app/" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Conheça outras exposições e obras de arte da plataforma: https://jandig.app/</a>
+                </p>
+                <p class="text-center mt-2">
+                    <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Código fonte da plataforma no GitHub.</a>
+                </p>
             </div>
+            <!-- Removed "Nossos Patrocinadores" section -->
         </section>
 
         <!-- Histórias Section -->
@@ -171,16 +199,16 @@
                 </div>
                 <!-- História 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">anhanga</h2>
-                    <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Anhanga" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">O Enigma da Sereia Iara</h2>
+                    <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Iara" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 leading-relaxed">
                         Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.
                     </p>
                 </div>
                 <!-- História 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Boitata</h2>
-                    <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boitata" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">O Segredo do Boto</h2>
+                    <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boto" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 leading-relaxed">
                         Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.
                     </p>
@@ -188,9 +216,64 @@
             </div>
         </section>
 
-        <!-- Materiais Educativos Section -->
-        <section id="materiais-educativos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Materiais Educativos</h1>
+        <!-- Álbum de Figurinhas Section -->
+        <section id="album-figurinhas" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Álbum de Figurinhas</h1>
+            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/06JANDIGME_Hotsite_nossashistorias.png') }}"
+                     alt="Imagem: Álbum de Figurinhas" 
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Erro+ao+Carregar+Imagem+do+%C3%81lbum';"
+                >
+            </div>
+            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-center">
+                O álbum de figurinhas é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
+            </p>
+
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#08B59F]">Downloads</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Álbum de Figurinhas -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Álbum de figurinhas</h3>
+                    <img src="{{ static('images/icons/me/02JANDIGME_Hotsite_Album.png') }}" alt="Álbum de Figurinhas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4 flex-grow">Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto">
+                        Em Breve...
+                    </a>
+                </div>
+                <!-- Figurinhas -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Figurinhas</h3>
+                    <img src="{{ static('images/icons/me/03JANDIGME_Hotsite_Figurinhas.png') }}" alt="Figurinhas Avulsas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4 flex-grow">Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem.</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto">
+                        Em Breve...
+                    </a>
+                </div>
+                <!-- Cartaz -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Cartaz</h3>
+                    <img src="{{ static('images/icons/me/04JANDIGME_Hotsite_Cartazes.png') }}" alt="Cartazes Educativos" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4 flex-grow">Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto">
+                        Em Breve...
+                    </a>
+                </div>
+                <!-- Guia do multiplicador -->
+                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200 flex flex-col h-full">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Guia do multiplicador</h3>
+                    <img src="https://placehold.co/300x300/e0e0e0/333333?text=Guia+do+Multiplicador" alt="Guia do Multiplicador" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
+                    <p class="text-gray-700 mb-4 flex-grow">Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada. Também ajuda você a entrar na plataforma da Jandig que abriga a experiência e compreender a tecnologia que está por trás. Preparamos também algumas sugestões para estimular a criatividade e o uso do álbum de figurinhas e os marcadores.</p>
+                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto">
+                        Em Breve...
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aprenda a fazer Section -->
+        <section id="aprender-fazer" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Aprenda a fazer</h1>
             <div class="text-lg leading-relaxed mb-8 text-gray-700">
                 <p class="mb-4">
                     Desenvolvemos uma série de materiais educativos para complementar a experiência da "Mitologia Estendida" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
@@ -199,44 +282,7 @@
                     Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.
                 </p>
             </div>
-
-            <h2 class="text-3xl font-bold text-center mb-6 text-[#08B59F]">Guia de Uso</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200">
-                <p class="text-gray-700 leading-relaxed">
-                    Nossos materiais foram criados para serem flexíveis e adaptáveis. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem. Os cartazes são ótimos para decorar ambientes educativos ou para serem usados como apoio visual em apresentações. Incentive a criatividade e a exploração!
-                </p>
-            </div>
-
-            <h2 class="text-3xl font-bold text-center mb-6 text-[#08B59F]">Downloads</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Álbum de Figurinhas -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Álbum de Figurinhas</h3>
-                    <img src="{{ static('images/icons/me/02JANDIGME_Hotsite_Album.png') }}" alt="Álbum de Figurinhas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4">Colecione e aprenda sobre todos os personagens!</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
-                        Download Álbum (PDF)
-                    </a>
-                </div>
-                <!-- Figurinhas Avulsas -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Figurinhas Avulsas</h3>
-                    <img src="{{ static('images/icons/me/03JANDIGME_Hotsite_Figurinhas.png') }}" alt="Figurinhas Avulsas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4">Imprima e use em suas atividades!</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
-                        Download Figurinhas (ZIP)
-                    </a>
-                </div>
-                <!-- Cartazes -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-center border border-gray-200">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]">Cartazes</h3>
-                    <img src="{{ static('images/icons/me/04JANDIGME_Hotsite_Cartazes.png') }}" alt="Cartazes Educativos" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4">Decore e aprenda com nossos cartazes!</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
-                        Download Cartazes (PDF)
-                    </a>
-                </div>
-            </div>
+            <!-- Removed Guia de Uso and Downloads sections from here -->
         </section>
 
         <!-- Making Of Section -->
@@ -295,12 +341,18 @@
             </div>
             <!-- End Banner Section -->
             
-            <p class="text-2xl text-center text-gray-700">
-                Estamos trabalhando duro para trazer a você uma experiência de exposição incrível!
+            <!-- Novo Texto Adicionado -->
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Uma Jornada Imersiva na Arte e Tecnologia</h2>
+            <p class="text-lg text-center text-gray-700 mb-4 max-w-2xl mx-auto">
+                Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o prédio do Departamento de Cinema, Rádio e Televisão da USP. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual pelos corredores da USP para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista.
             </p>
-            <p class="text-3xl font-bold text-center text-[#08B59F] mt-4 animate-pulse">
-                Em construção...
+            <p class="text-lg text-center text-gray-700 mb-8 max-w-2xl mx-auto">
+                A exposição Mitologia Estendida vai acontecer nos dias 26 e 27 de setembro, 2025 no prédio da ECA-USP-CTR- Departamento de Cinema, Rádio e Televisão.
             </p>
+            <p class="text-lg text-center text-gray-700 mb-8 max-w-2xl mx-auto">
+                Av. Prof. Lúcio Martins Rodrigues, 443 - Prédio 4 - Butantã, São Paulo - SP
+            </p>
+            <!-- Fim do Novo Texto -->
         </section>
 
         <!-- Ajuda Section (FAQ) -->
@@ -341,23 +393,6 @@
         <!-- Contato Section -->
         <section id="contato" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-center mb-8 text-[#08B59F]">Contato</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Informações de Contato -->
-                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]">Informações de Contato</h2>
-                    <p class="text-gray-700 mb-2"><strong>Email:</strong> contato@mitologiaestendida.com</p>
-                    <p class="text-gray-700 mb-2"><strong>Telefone:</strong> +55 (11) 98765-4321</p>
-                    <p class="text-gray-700 mb-2"><strong>Endereço:</strong> Rua da Inovação, 123 - São Paulo, SP - Brasil</p>
-                    <div class="mt-6 flex flex-col md:flex-row md:space-x-4 items-center w-full">
-                        <h3 class="text-xl font-semibold mb-2 md:mb-0 text-[#08B59F] w-full md:w-auto text-center md:text-left">Redes Sociais:</h3>
-                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto items-center">
-                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Facebook</a>
-                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Instagram</a>
-                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">Twitter</a>
-                            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">LinkedIn</a>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Formulário de Contato -->
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
@@ -388,23 +423,65 @@
 
     <!-- Footer -->
     <footer class="bg-white p-6 text-center text-gray-600 mt-auto shadow-inner border-t border-gray-200">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; 2025 Mitologia Estendida. Todos os direitos reservados.</p>
-            <p class="mt-2 text-sm md:mt-0">Desenvolvido com paixão por lendas e tecnologia.</p>
-            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0" onclick="showSection('contato')">Contato</a>
-        </div>
-        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-12"> <!-- Increased space-x for desktop -->
-            <div class="flex flex-col items-center">
-                <p class="font-semibold text-gray-700 mb-2">Fomento:</p>
-                <img src="{{ static('images/icons/me/logos_proac/proac-texture.png') }}" alt="Logo PROAC" class="h-28 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
+        <div class="container mx-auto flex flex-col md:flex-row md:justify-between items-center">
+            <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1" onclick="showSection('contato')">Contato</a>
+            <p class="mt-2 text-sm md:mt-0 md:order-2 md:flex-grow md:text-center">Desenvolvido com paixão e tecnologia.</p>
+            <!-- Social Media Icons -->
+            <div class="flex space-x-4 mt-4 md:mt-0 md:order-3">
+                <a href="https://www.facebook.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                    <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+                <a href="https://www.instagram.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="https://x.com/JandigArt " target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                    <i class="fab fa-telegram text-xl"></i>
+                </a>
             </div>
-            <div class="flex flex-col items-center">
-                <p class="font-semibold text-gray-700 mb-2">Realização:</p>
-                <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-28 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
-                    <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria da Cultura, Economia e Indústria Criativa" class="h-32 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+        </div>
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-8 px-4">
+            <!-- Fomento Section -->
+            <div class="flex flex-col items-center mx-2 my-2 md:my-0">
+                <p class="font-semibold text-gray-700 mb-2">Fomento:</p>
+                <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
+            </div>
+
+            <!-- Produção Section -->
+            <div class="flex flex-col items-center mx-2 my-2 md:my-0">
+                <p class="font-semibold text-gray-700 mb-2">Produção:</p>
+                <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 space-y-2 sm:space-y-0">
+                    <img src="{{ static('images/icons/me/logos_proac/Logo-CTR-ECA-USP.png') }}" alt="Logo USP" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md">
+                    <img src="{{ static('images/icons/me/logos_proac/LOGO_LabArteMidia_letra-preta_fundo-alpha-768x94.png') }}" alt="Logo Labartemidia" class="h-auto max-h-8 w-auto max-w-full object-contain rounded-md">
+                    <img src="{{ static('images/icons/me/logos_proac/memelab.jpg') }}" alt="Logo memelab" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md">
                 </div>
             </div>
+        </div>
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-8 px-4">
+            <!-- Realização Section -->
+            <div class="flex flex-col items-center mx-2 my-2 md:my-0">
+                <p class="font-semibold text-gray-700 mb-2">Realização:</p>
+                <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 space-y-2 sm:space-y-0">
+                    <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
+                    <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria da Cultura, Economia e Indústria Criativa" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                    <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo aldir blanc" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                    <!-- This is the new responsive separator bar -->
+                    <!-- It's a horizontal line on small screens and a vertical line on medium screens and up -->
+                    <div class="h-0.5 w-full bg-black md:h-12 md:w-0.5 my-2"></div>
+                    <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo federal" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto flex flex-col items-center mt-6">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
+                <img src="{{ static('images/icons/me/logos_proac/creative_commons.png') }}" alt="Licença Creative Commons CC BY-NC-SA 4.0" class="h-8 w-auto mb-2">
+                <p class="text-sm">Alguns direitos reservados.</p>
+            </a>
         </div>
     </footer>
 
