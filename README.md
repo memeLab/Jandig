@@ -85,18 +85,12 @@ Jandig ARte server will run at localhost. To test modifications you just need to
 DJANGO_READ_DOT_ENV_FILE=True uv run python src/manage.py runserver
 ```
 
-If you want to test on a mobile device, you will need a https connection for AR detection, so we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate an https link for you.
+To work correctly with GLB files using UV, Jandig needs the libosmesa6 installed on the host system to render 3D objects' thumbnails
 
 ```bash
-sudo snap install ngrok
-ngrok http 8000
+sudo apt update
+sudo apt install -y libosmesa6-dev
 ```
-
-ngrok will prompt 3 links:
-
-![usage](https://user-images.githubusercontent.com/12930004/54871980-ab41da00-4d9b-11e9-8b80-bb1d4bec420d.png)
-
-Select the one with `https` at beginning.
 
 #### Windows OS
 

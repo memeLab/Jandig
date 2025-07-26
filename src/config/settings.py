@@ -24,6 +24,10 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
+# Set environment variables to instruct pyrender to use OSMesa for rendering and use software rendering
+PYOPENGL_PLATFORM = "osmesa"
+os.environ["PYOPENGL_PLATFORM"] = PYOPENGL_PLATFORM
+os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"
 
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 

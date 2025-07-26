@@ -17,7 +17,10 @@ RUN apt-get update && \
       gettext \
       docutils-common \
       curl \
-      wget \ 
+      wget \
+      git \
+      # To render GLB files
+      libosmesa6-dev \
   && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
   && chmod +x /usr/local/bin/tini && tini --version \ 
