@@ -272,14 +272,17 @@ def create_artwork(request):
             )
 
             if marker and augmented:
-                artwork_title = form.cleaned_data["title"]
-                artwork_desc = form.cleaned_data["description"]
+                data = form.cleaned_data
                 Artwork(
                     author=request.user.profile,
                     marker=marker,
                     augmented=augmented,
-                    title=artwork_title,
-                    description=artwork_desc,
+                    title=data["title"],
+                    description=data["description"],
+                    scale_x=data["scale"],
+                    scale_y=data["scale"],
+                    position_x=data["position_x"],
+                    position_y=data["position_y"],
                 ).save()
 
                 return redirect("profile")
@@ -326,11 +329,16 @@ def edit_artwork(request):
             augmented = (
                 Object.objects.get(id=selected_object) if selected_object else None
             )
+            data = form.cleaned_data
             model_data = {
                 "marker": marker,
                 "augmented": augmented,
-                "title": form.cleaned_data["title"],
-                "description": form.cleaned_data["description"],
+                "title": data["title"],
+                "description": data["description"],
+                "scale_x": data["scale"],
+                "scale_y": data["scale"],
+                "position_x": data["position_x"],
+                "position_y": data["position_y"],
             }
             Artwork.objects.filter(id=model.id).update(**model_data)
             return redirect("profile")
@@ -343,6 +351,9 @@ def edit_artwork(request):
         "description": model.description,
         "selected_marker": model.marker.id,
         "selected_object": model.augmented.id,
+        "scale": model.scale_x,
+        "position_x": model.position_x,
+        "position_y": model.position_y,
     }
 
     marker_list = Marker.objects.all().order_by("-created")

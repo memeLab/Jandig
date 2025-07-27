@@ -226,18 +226,29 @@ class ArtworkForm(forms.Form):
         initial=1.0,
         widget=RangeInput,
     )
+
+    position_x = forms.FloatField(
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+        required=False,
+        initial=0.0,
+        min_value=-2.0,
+        max_value=2.0,
+        help_text=_("Position of the object in the artwork on the X axis"),
+    )
+    position_y = forms.FloatField(
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+        required=False,
+        initial=0.0,
+        min_value=-2.0,
+        max_value=2.0,
+        help_text=_("Position of the object in the artwork on the Y axis"),
+    )
+
     selected_marker = forms.IntegerField(
         widget=HiddenInput(), min_value=1, required=True
     )
     selected_object = forms.IntegerField(
         widget=HiddenInput(), min_value=1, required=True
-    )
-
-    position = forms.CharField(
-        widget=HiddenInput(),
-        required=False,
-        initial="0 0 0",
-        help_text=_("Position of the object in the artwork (x,y,z)"),
     )
 
     def __init__(self, *args, **kwargs):
@@ -255,5 +266,16 @@ class ArtworkForm(forms.Form):
         scale_val = self.cleaned_data["scale"]
         if not (0.1 <= scale_val <= 5.0):
             raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
-        # Convert to string for saving
-        return f"{scale_val:.2f} {scale_val:.2f}"
+        return scale_val
+
+    def clean_position_x(self):
+        position_x = self.cleaned_data["position_x"]
+        if not (-2.0 <= position_x <= 2.0):
+            raise forms.ValidationError(_("Position X must be between -2.0 and 2.0"))
+        return position_x
+    
+    def clean_position_y(self):
+        position_y = self.cleaned_data["position_y"]
+        if not (-2.0 <= position_y <= 2.0):
+            raise forms.ValidationError(_("Position Y must be between -2.0 and 2.0"))
+        return position_y

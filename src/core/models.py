@@ -378,6 +378,10 @@ class Artwork(TimeStampedModel, ContentMixin):
     )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
+    scale_x = models.FloatField(default=1.0)
+    scale_y = models.FloatField(default=1.0)
+    position_x = models.IntegerField(default=0)
+    position_y = models.IntegerField(default=0)
 
     @property
     def exhibits_count(self):
