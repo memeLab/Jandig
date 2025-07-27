@@ -259,9 +259,11 @@ class ExhibitAdmin(admin.ModelAdmin):
         "slug",
         "_owner",
         "artworks_count",
+        "augmenteds_count",
         "created",
         "modified",
     ]
+    list_filter = ["exhibit_type"]
     search_fields = ["name", "slug"]
     ordering = ["-created"]
 
@@ -270,10 +272,11 @@ class ExhibitAdmin(admin.ModelAdmin):
             super()
             .get_queryset(request)
             .select_related("owner", "owner__user")
-            .prefetch_related("artworks")
+            .prefetch_related("artworks", "augmenteds")
         )
         queryset = queryset.annotate(
             _artworks_count=Count("artworks", distinct=True),
+            _augmenteds_count=Count("augmenteds", distinct=True),
         )
         return queryset
 
@@ -283,6 +286,21 @@ class ExhibitAdmin(admin.ModelAdmin):
     artworks_count.short_description = "Artworks Count"
     artworks_count.admin_order_field = "_artworks_count"
     artworks_count.allow_tags = True
+
+    def augmenteds_count(self, obj):
+        """Count of Objects in the exhibit"""
+        if obj._augmenteds_count == 0:
+            return obj._augmenteds_count
+        augmenteds_list = ",".join(
+            [str(augmented.id) for augmented in obj.augmenteds.all()]
+        )
+
+        link = reverse("admin:index") + "core/object/?id__in=" + str(augmenteds_list)
+        return format_html('<a href="{}">{}</a>', link, obj._augmenteds_count)
+
+    augmenteds_count.short_description = "Augmenteds Count"
+    augmenteds_count.admin_order_field = "_augmenteds_count"
+    augmenteds_count.allow_tags = True
 
     def _owner(self, obj):
         """Display the owner of the object"""
