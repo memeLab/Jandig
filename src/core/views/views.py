@@ -322,6 +322,7 @@ def create_artwork(request):
         "core/upload-artwork.jinja2",
         {
             "form": form,
+            "scale": 1.0,
             "marker_list": marker_list,
             "object_list": object_list,
         },
@@ -367,6 +368,7 @@ def edit_artwork(request):
         "core/upload-artwork.jinja2",
         {
             "form": ArtworkForm(initial=model_data),
+            "scale": model.augmented.scale.split(" ")[0],
             "marker_list": Marker.objects.all(),
             "object_list": Object.objects.all(),
             "selected_marker": model.marker.id,
