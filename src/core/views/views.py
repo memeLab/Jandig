@@ -16,7 +16,7 @@ from core.forms import (
     UploadObjectForm,
 )
 from core.glb_thumbnail_generator import generate_thumbnail
-from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
+from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, ObjectExtensions
 from core.utils import generate_uuid_name
 from users.models import Profile
 
@@ -388,22 +388,39 @@ def create_exhibit(request):
     if request.method == "POST":
         form = ExhibitForm(request.POST)
         if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
+            selected_artworks = form.cleaned_data.get("artworks")
+            selected_augmenteds = form.cleaned_data.get("augmenteds")
+            if selected_artworks == "":
+                selected_artworks = []
+            else:
+                selected_artworks = selected_artworks.split(",")
+            if selected_augmenteds == "":
+                selected_augmenteds = []
+            else:
+                selected_augmenteds = selected_augmenteds.split(",")
+
+            artwork_ids = selected_artworks
+            augmenteds_ids = selected_augmenteds
+            artworks = Artwork.objects.filter(id__in=artwork_ids).order_by("-id")
+            augmenteds = Object.objects.filter(id__in=augmenteds_ids).order_by("-id")
+            exhibit_type = ExhibitTypes.MR if len(augmenteds) > 0 else ExhibitTypes.AR
             exhibit = Exhibit(
                 owner=request.user.profile,
                 name=form.cleaned_data["name"],
                 slug=form.cleaned_data["slug"],
+                exhibit_type=exhibit_type,
             )
 
             exhibit.save()
             exhibit.artworks.set(artworks)
+            exhibit.augmenteds.set(augmenteds)
 
             return redirect("profile")
     else:
         form = ExhibitForm()
 
     artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
+    objects = Object.objects.all().order_by("-created")
 
     return render(
         request,
@@ -411,6 +428,7 @@ def create_exhibit(request):
         {
             "form": form,
             "artworks": artworks,
+            "objects": objects,
         },
     )
 
@@ -418,8 +436,12 @@ def create_exhibit(request):
 @login_required
 def edit_exhibit(request):
     index = request.GET.get("id", "-1")
-    model = Exhibit.objects.filter(id=index)
-    if not model or model.first().owner != Profile.objects.get(user=request.user):
+    try:
+        model = Exhibit.objects.get(id=index)
+    except Exhibit.DoesNotExist:
+        raise Http404
+
+    if model.owner != Profile.objects.get(user=request.user):
         raise Http404
 
     if request.method == "POST":
@@ -427,20 +449,58 @@ def edit_exhibit(request):
 
         form.full_clean()
         if form.is_valid():
-            ids = form.cleaned_data["artworks"].split(",")
-            artworks = Artwork.objects.filter(id__in=ids).order_by("-id")
+            selected_artworks = form.cleaned_data.get("artworks")
+            selected_augmenteds = form.cleaned_data.get("augmenteds")
+            if selected_artworks == "":
+                selected_artworks = []
+            else:
+                selected_artworks = selected_artworks.split(",")
+            if selected_augmenteds == "":
+                selected_augmenteds = []
+            else:
+                selected_augmenteds = selected_augmenteds.split(",")
+
+            artwork_ids = selected_artworks
+            augmenteds_ids = selected_augmenteds
+            artworks = Artwork.objects.filter(id__in=artwork_ids).order_by("-id")
+            augmenteds = Object.objects.filter(id__in=augmenteds_ids).order_by("-id")
+            exhibit_type = ExhibitTypes.MR if len(augmenteds) > 0 else ExhibitTypes.AR
 
             model_data = {
                 "name": form.cleaned_data["name"],
                 "slug": form.cleaned_data["slug"],
+                "exhibit_type": exhibit_type,
             }
-            model.update(**model_data)
-            model = model.first()
+            Exhibit.objects.filter(id=model.id).update(**model_data)
             model.artworks.set(artworks)
+            model.augmenteds.set(augmenteds)
 
             return redirect("profile")
+        else:
+            # Form is not valid, render with errors
+            model_artworks = ""
+            for artwork in model.artworks.all():
+                model_artworks += str(artwork.id) + ","
 
-    model = model.first()
+            model_artworks = model_artworks[:-1]
+
+            artworks = Artwork.objects.filter(author=request.user.profile).order_by(
+                "-id"
+            )
+            objects = Object.objects.all().order_by("-created")
+            return render(
+                request,
+                "core/exhibit_create.jinja2",
+                {
+                    "form": form,  # Pass the form with errors
+                    "artworks": artworks,
+                    "objects": objects,
+                    "selected_artworks": model_artworks,
+                    "edit": True,
+                },
+            )
+
+    # GET request - prepare initial form data
     model_artworks = ""
     for artwork in model.artworks.all():
         model_artworks += str(artwork.id) + ","
@@ -475,6 +535,7 @@ def exhibit_detail(request):
         "exhibit": exhibit,
         "exhibitImage": "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
+        "objects": exhibit.augmenteds.all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
 
@@ -494,9 +555,13 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit(request, slug):
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
+    artworks = exhibit.artworks.select_related("marker", "augmented").all()
+    if not artworks:
+        raise Http404("No artworks found for this exhibit.")
+
     ctx = {
         "exhibit": exhibit,
-        "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
+        "artworks": artworks,
     }
     return render(request, "core/exhibit.jinja2", ctx)
 

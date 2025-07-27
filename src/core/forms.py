@@ -13,7 +13,7 @@ from pymarker.core import generate_patt_from_image
 from core.models import Marker
 from core.views.api_views import MarkerGeneratorAPIView
 
-from .models import Exhibit, Object
+from .models import Exhibit, ExhibitTypes, Object
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
@@ -23,52 +23,9 @@ class RangeInput(NumberInput):
 
 
 class ExhibitSelectForm(forms.Form):
-    exhibit = forms.ModelChoiceField(queryset=Exhibit.objects.all().order_by("name"))
-
-
-class ExhibitForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    slug = forms.CharField(max_length=50, required=True)
-
-    artworks = forms.CharField(max_length=1000)
-
-    def __init__(self, *args, **kwargs):
-        self.exhibit_id = kwargs.pop("exhibit_id", None)
-        super(ExhibitForm, self).__init__(*args, **kwargs)
-        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _(
-            "Complete with your Exhibit URL here"
-        )
-
-    def clean_name(self):
-        name = self.cleaned_data["name"]
-        qs = Exhibit.objects.filter(name=name)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
-        if qs.exists():
-            raise forms.ValidationError(
-                _(
-                    "This name is already being used. Please choose another name for your exhibit."
-                )
-            )
-        return name
-
-    def clean_slug(self):
-        slug = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_-]*$", slug):
-            raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
-        qs = Exhibit.objects.filter(slug=slug)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
-        if qs.exists():
-            raise forms.ValidationError(
-                _(
-                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
-                )
-            )
-        return slug
+    exhibit = forms.ModelChoiceField(
+        queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
+    )
 
 
 class ObjectWidget(forms.ClearableFileInput):
@@ -194,6 +151,7 @@ class ArtworkForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
 
     scale = forms.FloatField(
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
         min_value=0.1,
         max_value=5.0,
         required=True,
@@ -202,7 +160,6 @@ class ArtworkForm(forms.Form):
             "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
         ),
         initial=1.0,
-        widget=RangeInput,
     )
 
     position_x = forms.FloatField(
@@ -236,9 +193,6 @@ class ArtworkForm(forms.Form):
         self.fields["description"].widget.attrs["placeholder"] = _(
             "Artwork description"
         )
-        self.fields["scale"].widget.attrs["placeholder"] = _("0.1 ~ 5.0")
-        self.fields["scale"].widget.attrs["step"] = 0.1
-        self.fields["scale"].widget.attrs["class"] = "slider"
 
     def clean_scale(self):
         scale_val = self.cleaned_data["scale"]
@@ -257,3 +211,61 @@ class ArtworkForm(forms.Form):
         if not (-2.0 <= position_y <= 2.0):
             raise forms.ValidationError(_("Position Y must be between -2.0 and 2.0"))
         return position_y
+
+
+class ExhibitForm(forms.Form):
+    name = forms.CharField(max_length=50, required=True)
+    slug = forms.CharField(max_length=50, required=True)
+
+    artworks = forms.CharField(max_length=1000, required=False)
+    augmenteds = forms.CharField(max_length=1000, required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.exhibit_id = kwargs.pop("exhibit_id", None)
+        super(ExhibitForm, self).__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
+        self.fields["slug"].widget.attrs["placeholder"] = _(
+            "Complete with your Exhibit URL here"
+        )
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        qs = Exhibit.objects.filter(name=name)
+        if self.exhibit_id:
+            qs = qs.exclude(id=self.exhibit_id)
+        if qs.exists():
+            raise forms.ValidationError(
+                _(
+                    "This name is already being used. Please choose another name for your exhibit."
+                )
+            )
+        return name
+
+    def clean_slug(self):
+        slug = self.cleaned_data["slug"]
+        if not re.match("^[a-zA-Z0-9_-]*$", slug):
+            raise forms.ValidationError(
+                _("Url can't contain spaces or special characters")
+            )
+        qs = Exhibit.objects.filter(slug=slug)
+        if self.exhibit_id:
+            qs = qs.exclude(id=self.exhibit_id)
+        if qs.exists():
+            raise forms.ValidationError(
+                _(
+                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
+                )
+            )
+        return slug
+
+    def clean(self):
+        cleaned_data = super().clean()
+        artworks = cleaned_data.get("artworks")
+        augmenteds = cleaned_data.get("augmenteds")
+
+        if not artworks and not augmenteds:
+            raise forms.ValidationError(
+                _("You must select at least one artwork or augmented object.")
+            )
+
+        return cleaned_data
