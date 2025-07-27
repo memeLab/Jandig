@@ -13,6 +13,7 @@ from core.tests.factory import (
     MarkerFactory,
     ObjectFactory,
 )
+from core.tests.utils import get_example_object
 
 
 class TestMarkerThumbnailGenerators(TestCase):
@@ -61,10 +62,16 @@ class TestMarkerThumbnailGenerators(TestCase):
 class TestObjectThumbnailGenerators(TestCase):
     def setUp(self):
         self.image_object = ObjectFactory(
-            title="Test Image", source="objects/test.gif", scale="2 1", position="0 1 0"
+            title="Test Image",
+            source=get_example_object("peixe.gif"),
+            scale="2 1",
+            position="0 1 0",
         )
         self.video_object = ObjectFactory(
-            title="Test Video", source="objects/test.mp4", scale="1 1", position="1 0 0"
+            title="Test Video",
+            source=get_example_object("belotur.mp4"),
+            scale="1 1",
+            position="1 0 0",
         )
 
     def test_gif_object_as_html_is_image(self):
@@ -135,7 +142,9 @@ class TestArtworkThumbnailGenerators(TestCase):
             title="Test Marker", source="markers/test.png", author="Test Author"
         )
         self.object = ObjectFactory(
-            title="Test Object", source="objects/test.gif", author="Test Author"
+            title="Test Object",
+            source=get_example_object("peixe.gif"),
+            author="Test Author",
         )
         self.artwork = ArtworkFactory(
             title="Test Artwork", marker=self.marker, augmented=self.object

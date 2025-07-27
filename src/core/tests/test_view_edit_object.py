@@ -1,12 +1,9 @@
-import os
-
-from django.conf import settings
-from django.core.files.base import ContentFile
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 
 from src.core.tests.factory import ArtworkFactory, ObjectFactory
+from src.core.tests.utils import get_example_object
 from src.users.tests.factory import ProfileFactory, UserFactory
 from users.models import Profile, User
 
@@ -26,23 +23,11 @@ class TestObjectEdit(TestCase):
         )
         self.profile = Profile.objects.get(user=self.user)
 
-    def get_example_object(self, filename):
-        return ContentFile(
-            open(
-                os.path.join(
-                    os.path.join(settings.ROOT_DIR + "collection/", "objects/"),
-                    filename,
-                ),
-                "rb",
-            ).read(),
-            name=filename,
-        )
-
     def get_example_object1(self):
-        return self.get_example_object("antipodas.gif")
+        return get_example_object("antipodas.gif")
 
     def get_example_object2(self):
-        return self.get_example_object("temaki.gif")
+        return get_example_object("temaki.gif")
 
     def test_edit_object_unauthenticated(self):
         """Test that an unauthenticated user cannot access the edit object page."""
@@ -56,7 +41,7 @@ class TestObjectEdit(TestCase):
         self.client.login(username=self.username, password=self.password)
         obj = ObjectFactory(
             title="Test Image",
-            source="objects/test.gif",
+            source=self.get_example_object1(),
             scale="2 1",
             position="0 1 0",
             owner=self.profile,
@@ -69,7 +54,7 @@ class TestObjectEdit(TestCase):
         """Test that a user cannot edit an object they do not own."""
         obj = ObjectFactory(
             title="Test Image",
-            source="objects/test.gif",
+            source=self.get_example_object1(),
             scale="2 1",
             position="0 1 0",
             owner=self.profile,

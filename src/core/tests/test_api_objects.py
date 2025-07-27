@@ -8,6 +8,7 @@ from django.test import TestCase
 from core.models import Object
 from core.serializers import ObjectSerializer
 from core.tests.factory import ObjectFactory
+from core.tests.utils import get_example_object
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -94,7 +95,10 @@ class TestObjectAPI(TestCase):
     def test_retrieve_gif_object_as_modal(self):
         # Create an object
         image_object = ObjectFactory(
-            title="Test Image", source="objects/test.gif", scale="2 1", position="0 1 0"
+            title="Test Image",
+            source=get_example_object("peixe.gif"),
+            scale="2 1",
+            position="0 1 0",
         )
         # Annotate the object to include the exhibit count
         annotated_obj = Object.objects.annotate(
@@ -115,7 +119,10 @@ class TestObjectAPI(TestCase):
 
     def test_retrieve_video_object_as_modal(self):
         video_object = ObjectFactory(
-            title="Test Video", source="objects/test.mp4", scale="1 1", position="1 0 0"
+            title="Test Video",
+            source=get_example_object("belotur.mp4"),
+            scale="1 1",
+            position="1 0 0",
         )
         # Annotate the object to include the exhibit count
         annotated_obj = Object.objects.annotate(
