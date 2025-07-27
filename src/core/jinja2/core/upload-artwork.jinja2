@@ -17,12 +17,12 @@
             <div id="artwork-data">
                 <h2>{{ _('About your artwork') }}</h3>
                 <p class="upload-field">
-                    {{ form.visible_fields()[2] }}
-                    {{ form.visible_fields()[2].errors }}
+                    {{ form.visible_fields()[0] }}
+                    {{ form.visible_fields()[0].errors }}
                 </p>
                 <p class="upload-field">
-                    {{ form.visible_fields()[3] }}
-                    {{ form.visible_fields()[3].errors }}
+                    {{ form.visible_fields()[1] }}
+                    {{ form.visible_fields()[1].errors }}
                 </p>
                 
             </div>
@@ -30,34 +30,33 @@
             <button id="select-marker" class="select-btn" type="button">
                 {{ _('Select Marker') }}
             </button>
+
+            <input id="id_selected_marker" type="hidden" name="selected_marker" onchange="validateSubmit()" {% if selected_marker %} value="{{ selected_marker }}" {% endif %}>
+            {{ form.hidden_fields()[0].errors }}
+            
             <button id="select-object" class="select-btn" type="button">
                 {{ _('Select Object') }}
             </button>
+
+            <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
+            {{ form.hidden_fields()[1].errors }}
+        
             <div id="form-modal" class="modal">
-                    <div id="marker-modal" class="tab">
-                        <h4 class="modal-title">{{ _('Select Marker') }}</h4>
+                <div id="marker-modal" class="tab">
+                    <h4 class="modal-title">{{ _('Select Marker') }}</h4>
 
-                        <p id="existent-marker">
-                            <input id="id_existent_marker" type="hidden" name="existent_marker" onchange="">
-                            {{ form.hidden_fields()[0].errors }}
-                        </p>
+                    {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker, htmx="false" %}
+                        {% include "core/components/repository-list.jinja2" %}
+                    {% endwith %}
 
-                        {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker, htmx="false" %}
-                            {% include "core/components/repository-list.jinja2" %}
-                        {% endwith %}
-
-                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                            {{ _('Okay') }}
-                        </a>
-                    </div>
-                    <div id="object-modal" class="tab">
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                        {{ _('Okay') }}
+                    </a>
+                </div>
+                <div id="object-modal" class="tab">
                     
                     <h4 class="modal-title">{{ _('Select Object') }}</h4>
-                    <p id="existent-object">
-                            <input id="id_existent_object" type="hidden" name="existent_object">
-                            {{ form.hidden_fields()[1].errors }}
-                    </p>
-
+                    
                     {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
                         {% include "core/components/repository-list.jinja2" %}
                     {% endwith%}
@@ -68,6 +67,7 @@
                 </div>
             </div>        
             <h2>{{ _('Position the content') }}</h2>
+
             <div id="edit_object_attributes">
 
                 <h3 id="scaleTitle">{{_("Adjust scale")}}
@@ -77,8 +77,8 @@
                 >?</span>
                 </h3>
                         
-                {{ form.visible_fields()[4] }}
-                {{ form.visible_fields()[4].errors }}
+                {{ form.visible_fields()[2] }}
+                {{ form.visible_fields()[2].errors }}
                 <p>
                     <span class="slider-label" id="scale-value">{{ scale }}</span>
                 </p>
@@ -107,7 +107,7 @@
             scale.oninput = function() {
                 output.innerHTML = this.value;
             }
-            
+
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
@@ -115,9 +115,9 @@
             }
 
             function validateSubmit() {
-                let selected_marker = $("#id_existent_marker");
-                let selected_object = $("#id_existent_object");
-
+                let selected_marker = $("#id_selected_marker");
+                let selected_object = $("#id_selected_object");
+                
                 if(selected_object[0].value && selected_marker[0].value){
                     $('input[type="submit"]').prop('disabled', false);
                 }else{
@@ -134,13 +134,6 @@
                 $('#form-modal').modal({showClose: false})
                 showTab(1);
             })
-
-            {% if selected_marker %}
-                $('input[type="submit"]').prop('disabled', false);
-            {% endif %}
-            {% if selected_object %}
-                $('input[type="submit"]').prop('disabled', false);
-            {% endif %}
 
             validateSubmit();
 

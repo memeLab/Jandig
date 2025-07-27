@@ -212,8 +212,6 @@ class UploadMarkerForm(forms.ModelForm):
 
 
 class ArtworkForm(forms.Form):
-    marker = forms.ImageField(required=False)
-    augmented = forms.ImageField(required=False)
     title = forms.CharField(max_length=50)
     description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
 
@@ -228,11 +226,11 @@ class ArtworkForm(forms.Form):
         initial=1.0,
         widget=RangeInput,
     )
-    existent_marker = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=False
+    selected_marker = forms.IntegerField(
+        widget=HiddenInput(), min_value=1, required=True
     )
-    existent_object = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=False
+    selected_object = forms.IntegerField(
+        widget=HiddenInput(), min_value=1, required=True
     )
 
     position = forms.CharField(

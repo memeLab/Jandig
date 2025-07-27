@@ -185,7 +185,6 @@ class Object(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
-
     thumbnail = models.ImageField(
         upload_to="objects/thumbnails/",
         blank=True,
