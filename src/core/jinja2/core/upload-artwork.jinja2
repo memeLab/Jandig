@@ -35,26 +35,26 @@
             </button>
             <div id="form-modal" class="modal">
                     <div id="marker-modal" class="tab">
-                        <h4 class="modal-title">{{ _('Select Marker (1/3)') }}</h4>
+                        <h4 class="modal-title">{{ _('Select Marker') }}</h4>
 
                         <p id="existent-marker">
-                            {{ form.hidden_fields()[0] }}
+                            <input id="id_existent_marker" type="hidden" name="existent_marker" onchange="">
                             {{ form.hidden_fields()[0].errors }}
                         </p>
 
-                        {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
+                        {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker, htmx="false" %}
                             {% include "core/components/repository-list.jinja2" %}
                         {% endwith %}
 
-                        <button id="next-object" type="button" class="select-btn next-btn" disabled>
-                            {{ _('Next') }}
-                        </button>
+                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                        </a>
                     </div>
                     <div id="object-modal" class="tab">
                     
-                    <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
+                    <h4 class="modal-title">{{ _('Select Object') }}</h4>
                     <p id="existent-object">
-                            {{ form.hidden_fields()[1] }}
+                            <input id="id_existent_object" type="hidden" name="existent_object">
                             {{ form.hidden_fields()[1].errors }}
                     </p>
 
@@ -62,32 +62,32 @@
                         {% include "core/components/repository-list.jinja2" %}
                     {% endwith%}
 
-                    <button id="next-desc" type="button" class="select-btn next-btn" disabled="disabled">
-                        {{ _('Next') }}
-                    </button>
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                    </a>
                 </div>
             </div>        
             <h2>{{ _('Position the content') }}</h2>
             <div id="edit_object_attributes">
-                <h3 id="scaleTitle">{{_("Adjust scale")}}</h3>
 
+                <h3 id="scaleTitle">{{_("Adjust scale")}}
                 <span
-                    id="tooltipText"
                     data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
                     class="tooltip"
                 >?</span>
+                </h3>
                         
                 {{ form.visible_fields()[4] }}
                 {{ form.visible_fields()[4].errors }}
                 <p>
                     <span class="slider-label" id="scale-value">{{ scale }}</span>
                 </p>
-                <h2 id="positionTitle">{{_("Adjust position")}}</h2>
+                <h2 id="positionTitle">{{_("Adjust position")}}
                 <span 
-                    id="tooltipText"
                     data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
                     class="tooltip"
                 >?</span>
+                </h2>
 
                 {% with xposition=0, yposition=0 %}
                     {% include "core/components/object-position.jinja2" %}
@@ -100,21 +100,19 @@
             <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
         </form>
         <script>
+            var scale = document.getElementById("id_scale");
+            var output = document.getElementById("scale-value");
+            output.innerHTML = scale.value; // Display the default slider value
+
+            scale.oninput = function() {
+                output.innerHTML = this.value;
+            }
+            
             function showTab(tabNumber){
                 let tabs = $('.tab');
                 tabs.hide();
                 $('#' + tabs[tabNumber].id).show();
             }
-
-
-
-            function validateNextButton(condition, button) {
-                if(condition){
-                    button.prop('disabled', false);
-                }else{
-                    button.prop('disabled', true);
-                }
-            } 
 
             function validateSubmit() {
                 let selected_marker = $("#id_existent_marker");
@@ -127,31 +125,6 @@
                 }
             }
 
-            function validateMarkerTab(){
-                let selected_marker = $("#id_existent_marker");
-                let nextButton = $('#next-object');
-
-                let tabCondition = selected_marker[0].value > 0;
-
-                validateNextButton(tabCondition, nextButton);
-                validateSubmit();
-            }
-
-            function validateObjectTab(){
-                let nextButton = $('#next-desc');
-                let selected_object = $("#id_existent_object");
-
-                let tabCondition = selected_object[0].value > 0;
-
-                validateNextButton(tabCondition, nextButton);
-                validateSubmit();
-            }
-
-            function validateTabs(){
-                validateMarkerTab();
-                validateObjectTab();
-            }
-
             $('#select-marker').click(function(){
                 $('#form-modal').modal({showClose: false});
                 showTab(0);
@@ -162,15 +135,6 @@
                 showTab(1);
             })
 
-            $('#next-object').click(function(){
-                showTab(1);
-            })
-
-            $('#next-desc').click(function(){
-                showTab(2);
-                validateSubmit();
-            })
-
             {% if selected_marker %}
                 $('input[type="submit"]').prop('disabled', false);
             {% endif %}
@@ -178,7 +142,7 @@
                 $('input[type="submit"]').prop('disabled', false);
             {% endif %}
 
-            validateTabs();
+            validateSubmit();
 
         </script>
     </section>
