@@ -72,4 +72,4 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 RUN uv run playwright install chromium --with-deps
 WORKDIR /jandig
 
-CMD ["/bin/bash", "-c", "/jandig/create_buckets.sh && /jandig/run.sh"]
+CMD ["/bin/bash", "-c", "/jandig/etc/create_buckets.sh && /jandig/run.sh"]
