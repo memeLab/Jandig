@@ -259,3 +259,112 @@ class TestEditArtworkView(TestCase):
         # Should not redirect, should show form again
         assert response.status_code == 200
         assert "form" in response.content.decode()
+
+    def test_edit_artwork_invalid_scale(self):
+        url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": -1.0,  # Invalid scale
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 0.0,  # Invalid scale
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 5.1,  # Invalid scale
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+
+    def test_edit_artwork_invalid_position(self):
+        url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 1.0,
+            "position_x": -3.0,  # Invalid position
+            "position_y": 2.0,
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).position_x == 0
+
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 1.0,
+            "position_x": 2.0,
+            "position_y": -3.0,  # Invalid position
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).position_y == 0
+
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 1.0,
+            "position_x": 2.1,  # Invalid position
+            "position_y": 2.0,
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).position_x == 0
+
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 1.0,
+            "position_x": 2.0,
+            "position_y": 2.1,  # Invalid position
+            "selected_marker": self.marker.id,
+            "selected_object": self.object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "form" in response.content.decode()
+        assert Artwork.objects.get(id=self.artwork.id).position_y == 0

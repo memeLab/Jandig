@@ -55,9 +55,6 @@ class TestObjectAPI(TestCase):
         self.assertIn("created", first_result)
         self.assertIn("author", first_result)
         self.assertIn("title", first_result)
-        self.assertIn("scale", first_result)
-        self.assertIn("position", first_result)
-        self.assertIn("rotation", first_result)
         self.assertIn("artworks_count", first_result)
         self.assertIn("exhibits_count", first_result)
 
@@ -97,8 +94,6 @@ class TestObjectAPI(TestCase):
         image_object = ObjectFactory(
             title="Test Image",
             source=get_example_object("peixe.gif"),
-            scale="2 1",
-            position="0 1 0",
         )
         # Annotate the object to include the exhibit count
         annotated_obj = Object.objects.annotate(
@@ -121,8 +116,6 @@ class TestObjectAPI(TestCase):
         video_object = ObjectFactory(
             title="Test Video",
             source=get_example_object("belotur.mp4"),
-            scale="1 1",
-            position="1 0 0",
         )
         # Annotate the object to include the exhibit count
         annotated_obj = Object.objects.annotate(

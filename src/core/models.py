@@ -1,5 +1,4 @@
 import logging
-import re
 
 import pghistory
 from django.core.files.base import ContentFile
@@ -176,9 +175,6 @@ class Object(TimeStampedModel, ContentMixin):
     source = models.FileField(upload_to="objects/")
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
-    scale = models.CharField(default="1 1", max_length=50)
-    position = models.CharField(default="0 0 0", max_length=50)
-    rotation = models.CharField(default="270 0 0", max_length=50)
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0)
     file_name_original = models.CharField(max_length=255)
@@ -215,87 +211,6 @@ class Object(TimeStampedModel, ContentMixin):
         and if the owner of those artworks is not the current user.
         """
         return self.artworks.exclude(author=self.owner).exists()
-
-    @property
-    def xproportion(self):
-        """
-        The 'xproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made
-        when a new scale value is entered by the user.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        width = float(a[0])
-        height = float(a[1])
-        if width > height:
-            height = (height * 1.0) / width
-            width = 1
-        else:
-            width = (width * 1.0) / height
-            height = 1
-        return width
-
-    @property
-    def yproportion(self):
-        """
-        The 'yproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made
-        when a new scale value is entered by the user.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        width = float(a[0])
-        height = float(a[1])
-        if width > height:
-            height = (height * 1.0) / width
-            width = 1
-        else:
-            width = (width * 1.0) / height
-            height = 1
-        return height
-
-    @property
-    def xscale(self):
-        """
-        The 'xscale' method returns the original proportion
-        of the Object multiplied by the scale value entered
-        by the user, and thus the Object appears resized in
-        augmented reality.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        return a[0]
-
-    @property
-    def yscale(self):
-        """
-        The 'yscale' method returns the original proportion
-        of the Object multiplied by the scale value entered
-        by the user, and thus the Object appears resized in
-        augmented reality.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        return a[1]
-
-    @property
-    def fullscale(self):
-        """
-        The 'fullscale' method is a workaround to show the
-        users the last scale value entered by them, when
-        they attempt to edit it.
-        """
-        x = self.xscale
-        y = self.yscale
-        if x > y:
-            return x
-        return y
-
-    @property
-    def xposition(self):
-        x = self.position.split(" ")[0]
-        return float(x)
-
-    @property
-    def yposition(self):
-        y = self.position.split(" ")[1]
-        return float(y)
 
     @property
     def is_video(self):
@@ -351,10 +266,8 @@ class Object(TimeStampedModel, ContentMixin):
             return render(img(**attributes))
 
     def as_html_thumbnail(self, editable=False):
-        thumbnail_height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
-        thumbnail_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
-        height = thumbnail_height * self.yproportion
-        width = thumbnail_width * self.xproportion
+        height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
+        width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
         to_render = [self.as_html(height, width)]
         if editable and not self.is_used_by_other_user():
             to_render.append(self._get_edit_button())
@@ -380,8 +293,8 @@ class Artwork(TimeStampedModel, ContentMixin):
     description = models.TextField(max_length=500, blank=True)
     scale_x = models.FloatField(default=1.0)
     scale_y = models.FloatField(default=1.0)
-    position_x = models.IntegerField(default=0)
-    position_y = models.IntegerField(default=0)
+    position_x = models.FloatField(default=0.0)
+    position_y = models.FloatField(default=0.0)
 
     @property
     def exhibits_count(self):

@@ -173,8 +173,6 @@ def generate_glb_thumbnail(modeladmin, request, queryset):
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + [
-        "scale",
-        "position",
         "file_extension",
     ]
     actions = [
@@ -198,6 +196,8 @@ class ArtworkAdmin(admin.ModelAdmin):
         "exhibits_count",
         "created",
         "modified",
+        "scale",
+        "position",
     ]
     search_fields = ["title", "id"]
     ordering = ["-created"]
@@ -242,6 +242,14 @@ class ArtworkAdmin(admin.ModelAdmin):
         """Display the author of the Artwork"""
         link = reverse("admin:index") + "users/profile/?id=" + str(obj.author.id)
         return format_html('<a href="{}">{}</a>', link, obj.author.user.username)
+
+    def scale(self, obj):
+        """Display the scale of the artwork"""
+        return f"{obj.scale_x} x {obj.scale_y}"
+
+    def position(self, obj):
+        """Display the position of the artwork"""
+        return f"x: {obj.position_x} y: {obj.position_y}"
 
 
 @admin.register(Exhibit)

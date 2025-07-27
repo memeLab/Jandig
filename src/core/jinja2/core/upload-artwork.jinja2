@@ -97,14 +97,14 @@
                 {{ form.visible_fields()[3] }}
                 {{ form.visible_fields()[3].errors }}
                 <p>
-                    <span class="slider-label" id="X-position-value">{{ xposition }}</span>
+                    <span class="slider-label" id="x-position-value">{{ xposition }}</span>
                 </p>
                 <h3>Vertical:</h3>
                 {{ form.visible_fields()[4] }}
                 {{ form.visible_fields()[4].errors }}
 
                 <p>
-                    <span class="slider-label" id="Y-position-value">{{ yposition }}</span>
+                    <span class="slider-label" id="y-position-value">{{ yposition }}</span>
                 </p>
             </div>
             <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
@@ -121,8 +121,8 @@
 
             var position_x = document.getElementById("id_position_x");
             var position_y = document.getElementById("id_position_y");
-            var display_position_X = document.getElementById("X-position-value");
-            var display_position_Y = document.getElementById("Y-position-value");
+            var display_position_X = document.getElementById("x-position-value");
+            var display_position_Y = document.getElementById("y-position-value");
 
             display_position_X.innerHTML = position_x.value; // Display the default slider value
             display_position_Y.innerHTML = position_y.value; // Display the default slider value

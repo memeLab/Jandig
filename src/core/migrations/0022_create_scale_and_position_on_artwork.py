@@ -23,12 +23,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='artwork',
             name='position_x',
-            field=models.IntegerField(default=0),
+            field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
             model_name='artwork',
             name='position_y',
-            field=models.IntegerField(default=0),
+            field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
             model_name='artwork',
@@ -43,12 +43,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='artworkevent',
             name='position_x',
-            field=models.IntegerField(default=0),
+            field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
             model_name='artworkevent',
             name='position_y',
-            field=models.IntegerField(default=0),
+            field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
             model_name='artworkevent',

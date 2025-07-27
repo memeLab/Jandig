@@ -227,9 +227,6 @@ def edit_object(request):
         "source": model.source,
         "created": model.created,
         "author": model.author,
-        "scale": model.scale.split(" ")[0],
-        "position": model.position,
-        "rotation": model.rotation,
         "title": model.title,
     }
     return edit_elements(
@@ -368,7 +365,6 @@ def edit_artwork(request):
         "core/upload-artwork.jinja2",
         {
             "form": ArtworkForm(initial=model_data),
-            "scale": model.augmented.scale.split(" ")[0],
             "marker_list": marker_list,
             "object_list": object_list,
             "selected_marker": model.marker.id,

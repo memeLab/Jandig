@@ -42,9 +42,6 @@ class ObjectSerializer(ModelSerializer):
             "created",
             "author",
             "title",
-            "scale",
-            "position",
-            "rotation",
             "artworks_count",
             "exhibits_count",
         )
@@ -70,6 +67,10 @@ class ArtworkSerializer(ModelSerializer):
             "description",
             "created",
             "exhibits_count",
+            "scale_x",
+            "scale_y",
+            "position_x",
+            "position_y",
         )
         read_only_fields = (
             "id",
