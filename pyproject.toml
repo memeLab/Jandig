@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "2.0.2"
+version = "2.0.3"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
