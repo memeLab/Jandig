@@ -2,7 +2,7 @@
 
 {% block content %}
 
-        {% with repository_list = repository_list, element_type=element_type %}
+        {% with repository_list = repository_list, element_type=element_type, htmx=htmx %}
             {% include "core/components/item-list.jinja2" %}
         {% endwith%}
 

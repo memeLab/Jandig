@@ -5,7 +5,7 @@
 {% endif %} 
     {% for element in repository_list %}
         <div 
-            {% if element_type != "exhibit" %} 
+            {% if element_type != "exhibit" and htmx != "false" %} 
                 hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
                 hx-target="#modal" 
                 hx-trigger="click"
