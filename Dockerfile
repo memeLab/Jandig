@@ -70,6 +70,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 RUN uv run playwright install chromium --with-deps
+
+RUN groupadd -g 1000 jandig && useradd -u 1000 -g 1000 -r -m -d /home/jandig jandig
+RUN chown -R jandig:jandig /jandig
+USER jandig
+
 WORKDIR /jandig
 
 CMD ["/bin/bash", "-c", "/jandig/etc/create_buckets.sh && /jandig/run.sh"]
