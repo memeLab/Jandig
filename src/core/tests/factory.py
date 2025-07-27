@@ -81,18 +81,10 @@ class ObjectFactory(DjangoModelFactory):
 
     author = Faker("name")
     title = Faker("sentence", nb_words=3)
-    # Scale is a string of 2 floats from 0 to 2, separated by a space
-    scale = LazyAttribute(
-        lambda _: f"{round(random.uniform(0.5, 2), 3)} {round(random.uniform(0.5, 2), 3)}"
-    )
-    position = LazyAttribute(
-        lambda _: f"{round(random.uniform(-1, 1), 3)} {round(random.uniform(-1, 1), 3)} 0"
-    )
 
-    rotation = "270 0 0"
     file_size = Faker("random_int", min=1000, max=1_000_000)
     file_name_original = Faker("slug")
-    file_extension = LazyAttribute(lambda obj: str(obj.source).split(".")[-1])
+    file_extension = LazyAttribute(lambda obj: obj.source.name.split(".")[-1])
 
 
 class MarkerFactory(DjangoModelFactory):
@@ -121,6 +113,11 @@ class ArtworkFactory(DjangoModelFactory):
 
     title = Faker("sentence", nb_words=3)  # Generate a random title
     description = Faker("text", max_nb_chars=200)  # Generate a random description
+
+    scale_x = LazyAttribute(lambda _: round(random.uniform(0.1, 5), 2))
+    scale_y = LazyAttribute(lambda _: round(random.uniform(0.1, 5), 2))
+    position_x = LazyAttribute(lambda _: round(random.uniform(-2, 2), 2))
+    position_y = LazyAttribute(lambda _: round(random.uniform(-2, 2), 2))
 
 
 class ExhibitFactory(DjangoModelFactory):

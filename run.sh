@@ -12,7 +12,7 @@ python src/manage.py compilemessages --ignore .venv --ignore cache
 
 if [ "$USE_GUNICORN" = "true" ]; then
   echo "Running Gunicorn Server"
-  bash -c "cd src && gunicorn --reload --max-requests-jitter=100 -max-requests=1000 --timeout=60 --graceful-timeout=60 --workers=2 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
+  bash -c "cd src && gunicorn --reload --max-requests-jitter=100 --max-requests=1000 --timeout=60 --graceful-timeout=60 --workers=2 --log-level debug --bind 0.0.0.0:8000 config.wsgi"
 else
   echo "Running Django development server"
   python src/manage.py runserver 0.0.0.0:8000

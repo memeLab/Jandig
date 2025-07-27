@@ -32,38 +32,7 @@
 
                     <div id="content-box"></div>
                     
-                     <div id="edit_object_attributes">
-                        <h2 id="scaleTitle">{{_("Adjust scale")}}</h2>
-
-                        <span
-                            id="tooltipText"
-                            data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
-                            class="tooltip"
-                        >
-                            ?
-                        </span>
-                            {{ form.visible_fields()[3] }}
-                            {{ form.visible_fields()[3].errors }}
-                            <p>
-                                <span class="slider-label" id="scale-value">{{ scale }}</span>
-                            </p>
-                        <h2 id="positionTitle">{{_("Adjust position")}}</h2>
-                        <span 
-                            id="tooltipText"
-                            data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left." 
-                            class="tooltip"
-                        >
-                            ?
-                        </span>
-
-                        {% with xposition=0, yposition=0 %}
-                            {% include "core/components/object-position.jinja2" %}
-                        {% endwith %}
-                        
-                        {{ form.hidden_fields()[0] }}
-                        {{ form.hidden_fields()[0].errors }}
-
-                    </div>
+                    
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">
                         <label for="author-chk">{{ _("I'm this Object author") }}</label>
@@ -271,29 +240,7 @@
                 }
             );
 
-            function updateValues(){
-                var image_preview = document.querySelector('#img-preview');
 
-                var xpos = document.getElementById('X-position').value;
-                var ypos = document.getElementById('Y-position').value;
-                // "x y z"
-                var pos = xpos/100 + " " + ypos/100 + " 0"; 
-
-                $('#id_position').val(pos);
-            }
-
-            var string_position = document.getElementById('id_position').value;
-            var position_x = string_position.split(" ")[0] * 100; 
-            var position_y = string_position.split(" ")[1] * 100;
-            var slider_X = document.getElementById("X-position");
-            var display_value_X = document.getElementById("X-position-value");
-            var slider_Y = document.getElementById("Y-position");
-            var display_value_Y = document.getElementById("Y-position-value");
-
-            slider_X.value = position_x;
-            display_value_X.innerHTML = position_x/100;
-            slider_Y.value = position_y;
-            display_value_Y.innerHTML = position_y/100;
         </script>
     </section>
 {% endblock %}

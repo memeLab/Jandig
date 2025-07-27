@@ -83,18 +83,6 @@ class ObjectWidget(forms.ClearableFileInput):
 
 
 class UploadObjectForm(forms.ModelForm):
-    scale = forms.FloatField(
-        min_value=0.1,
-        max_value=5.0,
-        required=True,
-        label=_("Scale (0.1 to 5.0)"),
-        help_text=_(
-            "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
-        ),
-        initial=1.0,
-        widget=RangeInput,
-    )
-
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
@@ -106,15 +94,12 @@ class UploadObjectForm(forms.ModelForm):
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
-        self.fields["position"].widget = HiddenInput()
+
         self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
-        self.fields["scale"].widget.attrs["placeholder"] = _("0.1 ~ 5.0")
-        self.fields["scale"].widget.attrs["step"] = 0.1
-        self.fields["scale"].widget.attrs["class"] = "slider"
 
     class Meta:
         model = Object
-        fields = ("source", "author", "title", "scale", "position")
+        fields = ("source", "author", "title")
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
@@ -144,13 +129,6 @@ class UploadObjectForm(forms.ModelForm):
                     )
 
         return file
-
-    def clean_scale(self):
-        scale_val = self.cleaned_data["scale"]
-        if not (0.1 <= scale_val <= 5.0):
-            raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
-        # Convert to string for saving
-        return f"{scale_val:.2f} {scale_val:.2f}"
 
     def save(self, *args, **kwargs):
         if owner := kwargs.get("owner", None):
@@ -212,25 +190,70 @@ class UploadMarkerForm(forms.ModelForm):
 
 
 class ArtworkForm(forms.Form):
-    marker = forms.ImageField(required=False)
-    marker_author = forms.CharField(max_length=12, required=False)
-    augmented = forms.ImageField(required=False)
-    augmented_author = forms.CharField(max_length=12, required=False)
-    existent_marker = forms.IntegerField(min_value=1, required=False)
-    existent_object = forms.IntegerField(min_value=1, required=False)
     title = forms.CharField(max_length=50)
     description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
+
+    scale = forms.FloatField(
+        min_value=0.1,
+        max_value=5.0,
+        required=True,
+        label=_("Scale (0.1 to 5.0)"),
+        help_text=_(
+            "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
+        ),
+        initial=1.0,
+        widget=RangeInput,
+    )
+
+    position_x = forms.FloatField(
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+        required=False,
+        initial=0.0,
+        min_value=-2.0,
+        max_value=2.0,
+        help_text=_("Position of the object in the artwork on the X axis"),
+    )
+    position_y = forms.FloatField(
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+        required=False,
+        initial=0.0,
+        min_value=-2.0,
+        max_value=2.0,
+        help_text=_("Position of the object in the artwork on the Y axis"),
+    )
+
+    selected_marker = forms.IntegerField(
+        widget=HiddenInput(), min_value=1, required=True
+    )
+    selected_object = forms.IntegerField(
+        widget=HiddenInput(), min_value=1, required=True
+    )
 
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["marker_author"].widget.attrs["placeholder"] = _(
-            DEFAULT_AUTHOR_PLACEHOLDER
-        )
-        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
-            DEFAULT_AUTHOR_PLACEHOLDER
-        )
         self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
         self.fields["description"].widget.attrs["placeholder"] = _(
             "Artwork description"
         )
+        self.fields["scale"].widget.attrs["placeholder"] = _("0.1 ~ 5.0")
+        self.fields["scale"].widget.attrs["step"] = 0.1
+        self.fields["scale"].widget.attrs["class"] = "slider"
+
+    def clean_scale(self):
+        scale_val = self.cleaned_data["scale"]
+        if not (0.1 <= scale_val <= 5.0):
+            raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
+        return scale_val
+
+    def clean_position_x(self):
+        position_x = self.cleaned_data["position_x"]
+        if not (-2.0 <= position_x <= 2.0):
+            raise forms.ValidationError(_("Position X must be between -2.0 and 2.0"))
+        return position_x
+
+    def clean_position_y(self):
+        position_y = self.cleaned_data["position_y"]
+        if not (-2.0 <= position_y <= 2.0):
+            raise forms.ValidationError(_("Position Y must be between -2.0 and 2.0"))
+        return position_y

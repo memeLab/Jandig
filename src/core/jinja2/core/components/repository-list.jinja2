@@ -2,7 +2,7 @@
 
 {% block content %}
 
-        {% with repository_list = repository_list, element_type=element_type %}
+        {% with repository_list = repository_list, element_type=element_type, htmx=htmx %}
             {% include "core/components/item-list.jinja2" %}
         {% endwith%}
 
@@ -21,9 +21,9 @@
                 $(this).css("border-bottom","3px solid #a6a6a6");
 
                 if(sectionId == 'repo-marker'){
-                    $('#existent-marker > input').val(elementId.split("-")[1]);
+                    $('#id_selected_marker').val(elementId.split("-")[1]);
                 }else{
-                    $('#existent-object > input').val(elementId.split("-")[1]);
+                    $('#id_selected_object').val(elementId.split("-")[1]);
                 }
             });
         </script>

@@ -1,0 +1,88 @@
+.tooltip {
+  position:relative; /* making the .tooltip span a container for the tooltip text */
+  border-bottom:1px #000; /* little indicater to indicate it's hoverable */
+  background: rgba(0,0,0,0.85);
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 0px 7px;
+  display: inline-block;
+/* consistent font styling */
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+.tooltip:before {
+  content: attr(data-text); /* here's the magic */
+  position:absolute;
+  
+  /* vertically center */
+  top:50%;
+  transform:translateY(-50%);
+  
+  /* move to right */
+  left:100%;
+  margin-left:15px; /* and add a small left margin */
+  
+  /* basic styles */
+  width:200px;
+  padding:10px;
+  border-radius:10px;
+  background:#000;
+  color: #fff;
+  text-align:center;
+  
+  /* consistent font styling */
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.4;
+  
+  /* ensure tooltip appears above other elements */
+  z-index: 9999;
+
+  display:none; /* hide by default */
+}
+
+.tipTrigger:after {
+    content: '?';
+    height: 20px;
+    width: 20px;
+    color: #fff;
+    background: #444444;
+    position: relative;
+    display: inline-block;
+    left: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+
+.tooltip:hover:before {
+  display:block;
+}
+
+/* Alternative tooltip style for #tooltipText elements */
+.tooltipText:hover:after {
+    content: attr(data-text);
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 1000;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    
+    /* consistent font styling */
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4;
+    font-family: Arial, sans-serif;
+    
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}

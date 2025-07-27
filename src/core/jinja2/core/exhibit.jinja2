@@ -21,9 +21,9 @@
             <ar-marker patt="/media/public/{{artwork.marker.patt.name}}">
                 <ar-content
                     src="/media/public/{{artwork.augmented.source.name}}"
-                    scale="{{artwork.augmented.scale}}"
-                    position="{{artwork.augmented.position}}"
-                    rotation="{{artwork.augmented.rotation}}">
+                    scale="{{artwork.scale_x}} {{artwork.scale_y}}"
+                    position="{{artwork.position_x}} {{artwork.position_y}} 0"
+                    rotation="270 0 0">
                 </ar-content>
             </ar-marker>
         {% endfor %}
