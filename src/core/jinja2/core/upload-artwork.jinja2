@@ -16,7 +16,7 @@
         <form name="creation-form" action="" method="post" enctype="multipart/form-data">
             {{ csrf_input }}
             <div id="artwork-data">
-                <h2>{{ _('About your artwork') }}</h3>
+                <h2>{{ _('About your artwork') }}</h2>
                 <p class="upload-field">
                     {{ form.visible_fields()[0] }}
                     {{ form.visible_fields()[0].errors }}

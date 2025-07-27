@@ -13,10 +13,26 @@ def populate_artwork_scale_and_position(apps, schema_editor):
         print (f"Parsed position: x={x}, y={y}")
         scale_x, scale_y = augmented.scale.split(" ")
         print(f"Parsed scale: scale_x={scale_x}, scale_y={scale_y}")
-        artwork.position_x = float(x)
-        artwork.position_y = float(y)
-        artwork.scale_x = float(scale_x)
-        artwork.scale_y = float(scale_y)
+        try:
+            artwork.position_x = float(x)
+        except ValueError:
+            print(f"Invalid position_x value: {x}, setting to 0")
+            artwork.position_x = 0.0
+        try:
+            artwork.position_y = float(y)
+        except ValueError:
+            print(f"Invalid position_y value: {y}, setting to 0")
+            artwork.position_y = 0.0
+        try:
+            artwork.scale_x = float(scale_x)
+        except ValueError:
+            print(f"Invalid scale_x value: {scale_x}, setting to 1.0")
+            artwork.scale_x = 1.0
+        try:
+            artwork.scale_y = float(scale_y)
+        except ValueError:
+            print(f"Invalid scale_y value: {scale_y}, setting to 1.0")
+            artwork.scale_y = 1.0
         Artwork.objects.filter(id=artwork.id).update(
             position_x=artwork.position_x,
             position_y=artwork.position_y,

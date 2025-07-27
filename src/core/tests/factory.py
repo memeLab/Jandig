@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from factory import Faker, LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object
 from users.tests.factory import ProfileFactory
 
 BASE_COLLECTION_DIR = settings.ROOT_DIR + "collection/"
@@ -134,9 +134,12 @@ class ExhibitFactory(DjangoModelFactory):
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         artworks_data = kwargs.pop("artworks", [])
+        augmenteds_data = kwargs.pop("augmenteds", [])
         instance = super()._create(model_class, *args, **kwargs)
         if artworks_data:
             instance.artworks.set(artworks_data)
+        if augmenteds_data:
+            instance.augmenteds.set(augmenteds_data)
         return instance
 
     @post_generation
@@ -149,6 +152,21 @@ class ExhibitFactory(DjangoModelFactory):
             self.artworks.set(
                 [
                     ArtworkFactory(author=self.owner)
-                    for _ in range(random.randint(1, 15))
+                    for _ in range(random.randint(1, 10))
                 ]
             )
+
+    @post_generation
+    def augmenteds(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            self.augmenteds.set(extracted)
+        else:
+            augmented = random.randint(0, 5)
+            self.augmenteds.set(
+                [ObjectFactory(owner=self.owner) for _ in range(augmented)]
+            )
+            if augmented > 0:
+                self.exhibit_type = ExhibitTypes.MR
+                self.save()

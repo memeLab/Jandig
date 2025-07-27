@@ -14,145 +14,177 @@
             {% else %}
                 <h1 class="titExb">{{ _('Create Jandig Exhibition') }}</h1>
             {% endif %}
-            <button id="select-artworks" class="select-btn">
-                {{ _('Select Artworks') }}
-            </button>
-        </div>
-        <div id="form-modal" class="modal">
+    
             <form name="creation-form" action="" method="post" enctype="multipart/form-data">
                 {{ csrf_input }}
-                <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select Artworks (1/2)') }}</h4>
-
-                    {% if repository_list != None %}
-                        <p class="gallery-title">{{ _('Choose from your repository') }}</p>
-                    {% else %}
-                        <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no Artworks. :c")}}</p>
-                            <a href="{{ url('create-artwork') }}" class="select-btn">
-                                {{ _('Create one') }}
-                            </a>
-                        </section>
-                    {% endif %}
-
-                    {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
-                        {% include "core/components/artworks-list.jinja2" %}
-                    {% endwith%}
-
-                    <p id="artworks-selected">
-                        {{ form.visible_fields()[2].as_hidden() }}
-                        <div id="artwork-error">
-                            {{ form.visible_fields()[2].errors }}
-                        </div>
+                <h2>{{ _('About your Exhibit') }}</h2>
+            
+                <h3>{{ _('Exhibit Name') }}</h3>
+                {{ form.visible_fields()[0] }}
+                {{ form.visible_fields()[0].errors }}
+                
+                
+                <h3>{{ _('Exhibit Link') }}</h3>
+                <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
+                <div style="display: flex; width: 100%">
+                    <label class="url-helper">https://jandig.app/</label>
+                    <p id="exhibit-slug-field" style="float: right; width: 65%">
+                        {{ form.visible_fields()[1] }}
+                            
                     </p>
-                    <button type="button" id="next-info" class="select-btn next-btn">
-                        {{ _('Next') }}
-                    </button>
                 </div>
-                <div id="artwork-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Exhibit Information (2/2)') }}</h4>
-                      <p id="exhibit-name-field" class="upload-field">
-                          {{ form.visible_fields()[0] }}
-                          <div id="exhibit-name-error">
-                            {{ form.visible_fields()[0].errors }}
-                          </div>
-                      </p>
-                    <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
-                      <label class="url-helper">https://jandig.app/</label>
-                        <p id="exhibit-slug-field" style="float: right; width: 65%">
-                            {{ form.visible_fields()[1] }}
-                            <div id="exhibit-slug-error">
-                                {{ form.visible_fields()[1].errors }}
-                            </div>
-                        </p>
-                    {% if edit %}
-                        <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Edit Exhibit') }}"/>
-                    {% else %}
-                        <input class="select-btn next-btn" onclick="cleanSlug()" type="submit" value="{{ _('Publish Exhibit') }}"/>
-                    {% endif %}
+                {{ form.visible_fields()[1].errors }}
+                
+                <h2>{{ _('Select the content') }}</h2>
+                <button id="select-artworks" class="select-btn" type="button">
+                    {{ _('Select Artworks') }}
+                </button>
+                {{ form.visible_fields()[2].as_hidden() }}
+                {{ form.visible_fields()[2].errors }}
+
+                <button id="select-objects" class="select-btn" type="button">
+                    {{ _('Select Objects') }}
+                </button>
+                {{ form.visible_fields()[3].as_hidden() }}
+                {{ form.visible_fields()[3].errors }}
+
+                <div id="form-modal" class="modal">
+                    <div id="artwork-modal" class="tab">
+                        <h4 class="modal-title">{{ _('Select Artworks') }}</h4>
+
+                        {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
+                            {% if repository_list|length > 0 %}
+                                <p class="gallery-title">{{ _('Choose from your repository') }}</p>
+                            {% else %}
+                                <section id="repo-{{element_type}}" class="repository-list">
+                                    <p>{{_("You have no Artworks. :c")}}</p>
+                                    <a href="{{ url('create-artwork') }}" class="button">
+                                        {{ _('Create one') }}
+                                    </a>
+                                </section>
+                            {% endif %}
+                            {% with repository_list = artworks, element_type="artwork", htmx="false"%}
+                                {% include "core/components/item-list.jinja2" %}
+                            {% endwith %}
+                        {% endwith %}
+
+                        
+                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                        </a>
+                    </div>
+                    <div id="object-modal" class="tab">
+                        <h4 class="modal-title">{{ _('Select Objects') }}</h4>
+
+                        {% with repository_list = objects, element_type="object", htmx="false"%}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+
+                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                        </a>
+                    </div>
                 </div>
+
+                <h2>{{ _('Publish the content') }}</h2>
+                {{ form.non_field_errors() }}
+                {% if edit %}
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Exhibit') }}"/>
+                {% else %}
+                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                {% endif %}
             </form>
         </div>
         <script>
-            const MARKER_TAB = 0;
-            const ARTWORK_TAB = 1;
 
-            let currentTab = MARKER_TAB;
+        // modal events
+        $('#select-artworks').click(function(){
+            currentTab = 0;
+            $('#form-modal').modal({showClose: false});
+            showTab(currentTab);
+        })
+        $('#select-objects').click(function(){
+            currentTab = 1;
+            $('#form-modal').modal({showClose: false});
+            showTab(currentTab);
+        })
+        function showTab(tabNumber){
+            let tabs = $('.tab');
+            tabs.hide();
+            $('#' + tabs[tabNumber].id).show();
+        }
+        // Validate submit button based on selected marker and object
+        function validateSubmit() {
+            let selected_artworks = $("#id_artworks");
+            let selected_objects = $("#id_augmenteds");
 
-            function showTab(tabNumber){
-                let tabs = $('.tab');
-                tabs.hide();
-                $('#' + tabs[tabNumber].id).show();
+            if(selected_objects[0].value.length > 0 || selected_artworks[0].value.length > 0){
+                $('input[type="submit"]').prop('disabled', false);
+            }else{
+                $('input[type="submit"]').prop('disabled', true);
             }
+        }
+        // On modal close validate submit
+        $('#form-modal').on($.modal.CLOSE, function(event) {
+            validateSubmit();
+        });
+        // Initial validation
+        validateSubmit();
 
-            function validateTab(tab){
-                if(tab == 'artworks'){
-                    let artworks = $('#artworks-selected > input')[0];
+        let artworks = {}
+        let augmenteds = {}
 
-                    if(artworks.textLength != 0){
-                        return true;
-                    }
-                }
-            }
-
-            function activateNextButton(){
-                if(validateTab('artworks')){
-                    $('#next-info').prop('disabled', false);
-                }else{
-                    $('#next-info').prop('disabled', true);
-                }
-            }
-
-            function cleanSlug() {
-                var slug = document.getElementById('id_slug').value
-                let validate = /^[a-zA-Z0-9_-]*$/
-                if (!slug.match(validate)) {
-                    alert("{{ _("Urls can't contain spaces or special characters (i.e: .:, /)") }}")
-                }
-            }
-
-            function checkMessage(innerText, messageList) {
-                var contain = false;
-
-                messageList.forEach((message) => {
-                    if(innerText.includes(message)) 
-                        contain = true;
-                });
-
-                return contain;
-            }
-
-            setInterval(activateNextButton, 100);
-            // modal events
-            $('#select-artworks').click(function(){
-                currentTab = MARKER_TAB;
-                $('#form-modal').modal({showClose: false});
-                showTab(currentTab);
+        {% if selected_artworks %}
+            "{{selected_artworks}}".split(",").forEach(function(id){
+                artworks[id] = id
+                $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
             })
-            $('#next-info').click(function(){
-                currentTab = ARTWORK_TAB;
-                showTab(currentTab);
-            })
-            $('#create-exhibit').ready(function () {
-                let artworkError = $('#artwork-error')[0].innerText;
-                let exhibitNameError = $('#exhibit-name-error')[0].innerText;
-                let exhibitSlugError = $('#exhibit-slug-error')[0].innerText;
+        {% endif %}
 
-                if (checkMessage(artworkError, ["Este campo é obrigatório", 
-                                                    "This field is required"])) {
-                    $('#form-modal').modal('toggle');
-                    currentTab = MARKER_TAB;
-                    showTab(currentTab);
-                } else if (checkMessage(exhibitNameError, ["This name is already being used", 
-                                                        "Este nome de exibição já está em uso"]) || 
-                        checkMessage(exhibitSlugError, ["That exhibit slug is already in use",
-                                                        "Este link de exibição já está sendo utilizado"])) {
-                    $('#form-modal').modal('toggle');
-                    currentTab = ARTWORK_TAB;
-                    showTab(currentTab);
-                }
+        {% if selected_objects %}
+            "{{selected_objects}}".split(",").forEach(function(id){
+                augmenteds[id] = id
+                $("#object-"+id).css("border-bottom","3px solid #a6a6a6");
             })
+        {% endif %}
 
+        function isSelected(item) {
+            return item.css('border-bottom-style') != "none";
+        }
+
+        $('.repository-item').click(function(){
+            let item = $(this).attr('id');
+            let item_type = item.split('-')[0];
+            let item_id = item.split('-')[1];
+
+
+            if(isSelected($(this))){
+                $(this).css("border-bottom","none");
+                if (item_type === "artwork")
+                    delete artworks[item_id];
+                else if (item_type === "object")
+                    delete augmenteds[item_id];
+                else
+                    console.error("Unknown item type: " + item_type);
+            }else{
+                $(this).css("border-bottom","3px solid #a6a6a6");
+                if (item_type === "artwork")
+                    artworks[item_id] = item_id;
+                else if (item_type === "object")
+                    augmenteds[item_id] = item_id;
+                else
+                    console.error("Unknown item type: " + item_type);
+            }
+
+            let selected_artworks = Object.values(artworks).join(',');
+            let selected_objects = Object.values(augmenteds).join(',');
+
+            let artworks_input = $('#id_artworks');
+            let objects_input = $('#id_augmenteds');
+            
+            artworks_input.val(selected_artworks);
+            objects_input.val(selected_objects);
+        });
         </script>
     </section>
 {% endblock %}

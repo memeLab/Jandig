@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from core.models import Exhibit
-from core.tests.factory import ArtworkFactory, ExhibitFactory
+from core.models import Exhibit, ExhibitTypes
+from core.tests.factory import ArtworkFactory, ExhibitFactory, ObjectFactory
 from users.tests.factory import ProfileFactory, UserFactory
 
 
@@ -13,6 +13,8 @@ class TestCreateExhibitView(TestCase):
         self.client.force_login(self.user)
         self.artwork1 = ArtworkFactory(author=self.profile)
         self.artwork2 = ArtworkFactory(author=self.profile)
+        self.object1 = ObjectFactory(author=self.profile)
+        self.object2 = ObjectFactory(author=self.profile)
 
     def test_create_exhibit_requires_login(self):
         self.client.logout()
@@ -57,14 +59,17 @@ class TestCreateExhibitView(TestCase):
         }
         response = self.client.post(url, data)
         # Should not redirect, should show form again
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "That exhibit slug is already in use")
-        self.assertEqual(Exhibit.objects.count(), 1)  # No exhibit should be created
+        assert response.status_code == 200
+        assert (
+            "That exhibit slug is already in use"
+            in response.context["form"].errors["slug"][0]
+        )
+        assert Exhibit.objects.count() == 1  # No exhibit should be created
 
     def test_create_exhibit_name_already_exists(self):
         # Create an exhibit with the same name
         _ = ExhibitFactory(owner=self.profile, name="My Test Exhibit")
-        self.assertEqual(Exhibit.objects.count(), 1)  # No exhibit should be created
+        assert Exhibit.objects.count() == 1  # No exhibit should be created
 
         url = reverse("create-exhibit")
         data = {
@@ -74,9 +79,12 @@ class TestCreateExhibitView(TestCase):
         }
         response = self.client.post(url, data)
         # Should not redirect, should show form again
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "This name is already being used")
-        self.assertEqual(Exhibit.objects.count(), 1)  # No exhibit should be created
+        assert response.status_code == 200
+        assert (
+            "This name is already being used"
+            in response.context["form"].errors["name"][0]
+        )
+        assert Exhibit.objects.count() == 1  # No exhibit should be created
 
     def test_create_exhibit_invalid_slug(self):
         url = reverse("create-exhibit")
@@ -93,11 +101,14 @@ class TestCreateExhibitView(TestCase):
         data["slug"] = "invalid_slug!"  # Invalid slug with special character
         response = self.client.post(url, data)
         # Should not redirect, should show form again
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "contain spaces or special characters")
-        self.assertEqual(Exhibit.objects.count(), 0)  # No exhibit should be created
+        assert response.status_code == 200
+        assert (
+            "contain spaces or special characters"
+            in response.context["form"].errors["slug"][0]
+        )
+        assert Exhibit.objects.count() == 0  # No exhibit should be created
 
-    def test_create_exhibit_success(self):
+    def test_create_exhibit_with_artworks(self):
         url = reverse("create-exhibit")
         data = {
             "name": "My Test Exhibit",
@@ -106,15 +117,81 @@ class TestCreateExhibitView(TestCase):
         }
         response = self.client.post(url, data)
         # Should redirect to profile after creation
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
         # Exhibit should be created
-        self.assertEqual(Exhibit.objects.count(), 1)
+        assert Exhibit.objects.count() == 1
         exhibit = Exhibit.objects.get(name="My Test Exhibit")
-        self.assertEqual(exhibit.owner, self.profile)
-        self.assertEqual(exhibit.slug, "my-test-exhibit")
+        assert exhibit.owner == self.profile
+        assert exhibit.slug == "my-test-exhibit"
         self.assertSetEqual(
             set(exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id, self.artwork2.id},
+        )
+        assert exhibit.exhibit_type == ExhibitTypes.AR
+
+    def test_create_exhibit_with_objects(self):
+        url = reverse("create-exhibit")
+        data = {
+            "name": "My Test Exhibit with Objects",
+            "slug": "my-test-exhibit-objects",
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after creation
+        assert response.status_code == 302
+        # Exhibit should be created
+        assert Exhibit.objects.count() == 1
+        exhibit = Exhibit.objects.get(name="My Test Exhibit with Objects")
+        assert exhibit.owner == self.profile
+        assert exhibit.slug == "my-test-exhibit-objects"
+        assert exhibit.exhibit_type == ExhibitTypes.MR
+        self.assertSetEqual(
+            set(exhibit.augmenteds.values_list("id", flat=True)),
+            {self.object1.id, self.object2.id},
+        )
+
+    def test_create_exhibit_with_artworks_and_objects(self):
+        url = reverse("create-exhibit")
+        data = {
+            "name": "My Test Exhibit with Artworks and Objects",
+            "slug": "my-test-exhibit-art-objects",
+            "artworks": f"{self.artwork1.id},{self.artwork2.id}",
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after creation
+        assert response.status_code == 302
+        # Exhibit should be created
+        assert Exhibit.objects.count() == 1
+        exhibit = Exhibit.objects.get(name="My Test Exhibit with Artworks and Objects")
+        assert exhibit.owner == self.profile
+        assert exhibit.slug == "my-test-exhibit-art-objects"
+        assert exhibit.exhibit_type == ExhibitTypes.MR
+        self.assertSetEqual(
+            set(exhibit.artworks.values_list("id", flat=True)),
+            {self.artwork1.id, self.artwork2.id},
+        )
+        self.assertSetEqual(
+            set(exhibit.augmenteds.values_list("id", flat=True)),
+            {self.object1.id, self.object2.id},
+        )
+
+    def test_create_exhibit_with_no_content(self):
+        url = reverse("create-exhibit")
+        data = {
+            "name": "Empty Exhibit",
+            "slug": "empty-exhibit",
+            "artworks": "",
+            "augmenteds": "",
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after creation
+        assert response.status_code == 200
+        # Exhibit should be created with no artworks or objects
+        assert Exhibit.objects.count() == 0
+        assert (
+            "You must select at least one artwork or augmented object."
+            in response.context["form"].non_field_errors()
         )
 
 
@@ -125,6 +202,8 @@ class TestEditExhibitView(TestCase):
         self.client.force_login(self.user)
         self.artwork1 = ArtworkFactory(author=self.profile)
         self.artwork2 = ArtworkFactory(author=self.profile)
+        self.object1 = ObjectFactory(author=self.profile)
+        self.object2 = ObjectFactory(author=self.profile)
         self.exhibit = ExhibitFactory(
             owner=self.profile,
             artworks=[self.artwork1],
@@ -144,14 +223,15 @@ class TestEditExhibitView(TestCase):
             "name": "Edited Exhibit",
             "slug": "edited-exhibit",
             "artworks": f"{self.artwork1.id},{self.artwork2.id}",
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        self.assertIn(reverse("login"), response.url)
+        assert response.status_code == 302
+        assert reverse("login") in response.url
         # Exhibit should not be changed
         self.exhibit.refresh_from_db()
-        self.assertEqual(self.exhibit.name, "Edit Exhibit")
-        self.assertEqual(self.exhibit.slug, "edit-exhibit")
+        assert self.exhibit.name == "Edit Exhibit"
+        assert self.exhibit.slug == "edit-exhibit"
         self.assertSetEqual(
             set(self.exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id},
@@ -163,7 +243,7 @@ class TestEditExhibitView(TestCase):
         other_exhibit = ExhibitFactory(owner=other_profile)
         url = reverse("edit-exhibit") + f"?id={other_exhibit.id}"
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
     def test_edit_exhibit_invalid_data(self):
         url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
@@ -171,13 +251,14 @@ class TestEditExhibitView(TestCase):
             "name": "",
             "slug": "",
             "artworks": "",
+            "augmenteds": "",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "form")
+        assert response.status_code == 200
+        assert "form" in response.context
         # Exhibit should not be changed
         self.exhibit.refresh_from_db()
-        self.assertEqual(self.exhibit.name, "Edit Exhibit")
+        assert self.exhibit.name == "Edit Exhibit"
 
     def test_edit_exhibit_slug_already_exists(self):
         # Create another exhibit with the same slug
@@ -189,10 +270,13 @@ class TestEditExhibitView(TestCase):
             "artworks": str(self.artwork1.id),
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "That exhibit slug is already in use")
+        assert response.status_code == 200
+        assert (
+            "That exhibit slug is already in use"
+            in response.context["form"].errors["slug"][0]
+        )
         self.exhibit.refresh_from_db()
-        self.assertNotEqual(self.exhibit.slug, "taken-slug")
+        assert self.exhibit.slug != "taken-slug"
 
     def test_edit_exhibit_name_already_exists(self):
         ExhibitFactory(owner=self.profile, name="Taken Name")
@@ -203,10 +287,13 @@ class TestEditExhibitView(TestCase):
             "artworks": str(self.artwork1.id),
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "This name is already being used")
+        assert response.status_code == 200
+        assert (
+            "This name is already being used"
+            in response.context["form"].errors["name"][0]
+        )
         self.exhibit.refresh_from_db()
-        self.assertNotEqual(self.exhibit.name, "Taken Name")
+        assert self.exhibit.name != "Taken Name"
 
     def test_edit_exhibit_invalid_slug(self):
         url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
@@ -216,10 +303,13 @@ class TestEditExhibitView(TestCase):
             "artworks": str(self.artwork1.id),
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "contain spaces or special characters")
+        assert response.status_code == 200
+        assert (
+            "contain spaces or special characters"
+            in response.context["form"].errors["slug"][0]
+        )
         self.exhibit.refresh_from_db()
-        self.assertNotEqual(self.exhibit.slug, "invalid slug!")
+        assert self.exhibit.slug != "invalid slug!"
 
     def test_edit_exhibit_success(self):
         url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
@@ -227,12 +317,14 @@ class TestEditExhibitView(TestCase):
             "name": "Edited Exhibit",
             "slug": "edited-exhibit",
             "artworks": f"{self.artwork1.id},{self.artwork2.id}",
+            "augmenteds": "",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
         self.exhibit.refresh_from_db()
-        self.assertEqual(self.exhibit.name, "Edited Exhibit")
-        self.assertEqual(self.exhibit.slug, "edited-exhibit")
+        assert self.exhibit.name == "Edited Exhibit"
+        assert self.exhibit.slug == "edited-exhibit"
+        assert self.exhibit.exhibit_type == ExhibitTypes.AR
         self.assertSetEqual(
             set(self.exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id, self.artwork2.id},
@@ -244,13 +336,73 @@ class TestEditExhibitView(TestCase):
             "name": self.exhibit.name,
             "slug": self.exhibit.slug,
             "artworks": str(self.artwork1.id),
+            "augmenteds": "",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
         self.exhibit.refresh_from_db()
-        self.assertEqual(self.exhibit.name, "Edit Exhibit")
-        self.assertEqual(self.exhibit.slug, "edit-exhibit")
+        assert self.exhibit.name == "Edit Exhibit"
+        assert self.exhibit.slug == "edit-exhibit"
+        assert self.exhibit.exhibit_type == ExhibitTypes.AR
+
         self.assertSetEqual(
             set(self.exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id},
         )
+
+    def test_edit_exhibit_with_objects(self):
+        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        data = {
+            "name": "Edited Exhibit with Objects",
+            "slug": "edited-exhibit-objects",
+            "artworks": str(self.artwork1.id),
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
+        }
+        response = self.client.post(url, data)
+        assert response.status_code == 302
+        self.exhibit.refresh_from_db()
+        assert self.exhibit.name == "Edited Exhibit with Objects"
+        assert self.exhibit.slug == "edited-exhibit-objects"
+        assert self.exhibit.exhibit_type == ExhibitTypes.MR
+        self.assertSetEqual(
+            set(self.exhibit.artworks.values_list("id", flat=True)),
+            {self.artwork1.id},
+        )
+        self.assertSetEqual(
+            set(self.exhibit.augmenteds.values_list("id", flat=True)),
+            {self.object1.id, self.object2.id},
+        )
+
+    def test_edit_exhibit_type_changes_correctly(self):
+        # Initially, the exhibit has artworks only
+        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        data = {
+            "name": "Exhibit with Artworks",
+            "slug": "exhibit-with-artworks",
+            "artworks": f"{self.artwork1.id},{self.artwork2.id}",
+            "augmenteds": "",
+        }
+        response = self.client.post(url, data)
+        assert response.status_code == 302
+        self.exhibit.refresh_from_db()
+        assert self.exhibit.exhibit_type == ExhibitTypes.AR
+
+        # Now add objects to change it to MR
+        data["augmenteds"] = f"{self.object1.id},{self.object2.id}"
+        response = self.client.post(url, data)
+        assert response.status_code == 302
+        self.exhibit.refresh_from_db()
+        assert self.exhibit.exhibit_type == ExhibitTypes.MR
+
+        data["artworks"] = ""
+        response = self.client.post(url, data)
+        assert response.status_code == 302
+        self.exhibit.refresh_from_db()
+        assert self.exhibit.exhibit_type == ExhibitTypes.MR  # Should remain MR even
+
+        data["augmenteds"] = ""
+        data["artworks"] = f"{self.artwork1.id},{self.artwork2.id}"
+        response = self.client.post(url, data)
+        assert response.status_code == 302
+        self.exhibit.refresh_from_db()
+        assert self.exhibit.exhibit_type == ExhibitTypes.AR  # Should change back to AR

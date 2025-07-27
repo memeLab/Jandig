@@ -100,6 +100,7 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
                 "artworks__marker__owner__user",
                 "artworks__augmented__artworks",
                 "artworks__augmented__owner__user",
+                "augmenteds__exhibits",
             )
             .all()
             .order_by("id")

@@ -360,6 +360,11 @@ def remove_source_file(sender, instance, **kwargs):
     instance.source.delete(False)
 
 
+class ExhibitTypes(models.TextChoices):
+    AR = "AR", "Augmented Reality"
+    MR = "MR", "Mixed Reality"
+
+
 @pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     owner = models.ForeignKey(
@@ -367,7 +372,18 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     )
     name = models.CharField(unique=True, max_length=50)
     slug = models.CharField(unique=True, max_length=50)
-    artworks = models.ManyToManyField(Artwork, related_name="exhibits")
+    artworks = models.ManyToManyField(Artwork, related_name="exhibits", blank=True)
+    augmenteds = models.ManyToManyField(Object, related_name="exhibits", blank=True)
+
+    exhibit_type = models.CharField(
+        max_length=20,
+        choices=[
+            (ExhibitTypes.AR, "Augmented Reality"),
+            (ExhibitTypes.MR, "Mixed Reality"),
+        ],
+        default=ExhibitTypes.AR,
+        db_index=True,
+    )
 
     def __str__(self):
         return self.name
@@ -375,6 +391,10 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     @property
     def artworks_count(self):
         return self.artworks.count()
+
+    @property
+    def augmenteds_count(self):
+        return self.augmenteds.count()
 
     @property
     def date(self):
@@ -387,12 +407,23 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         exhibit_info = [
             p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
             p(self.date, class_="exbDate"),
-            p(
-                a(
-                    "{} {}".format(self.artworks_count, _("Artwork(s)")),
-                    href=link_to_exhibit,
-                ),
-                class_="exhibit-about",
+            div(
+                [
+                    p(
+                        a(
+                            "{} {}".format(self.artworks_count, _("Artwork(s)")),
+                            href=link_to_exhibit,
+                        ),
+                        class_="exhibit-about",
+                    ),
+                    p(
+                        a(
+                            "{} {}".format(self.augmenteds_count, _("Object(s)")),
+                            href=link_to_exhibit,
+                        ),
+                        class_="exhibit-about",
+                    ),
+                ]
             ),
         ]
 
@@ -408,10 +439,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         ]
         if editable:
             exhibit_card_elements.extend(
-                [
-                    self._get_edit_button(),
-                    self._get_delete_button(),
-                ]
+                [div([self._get_delete_button(), self._get_edit_button()])]
             )
         exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
         elements = [
