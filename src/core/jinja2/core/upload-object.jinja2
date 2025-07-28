@@ -49,30 +49,24 @@
                             </label>
                         </p>
                     </div>
-                    <input class="submit-btn" onclick="updateValues()" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
+                    <input id="submit-btn" class="submit-btn" onclick="updateValues()" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
                 </form>
             </div>
         </section>
 
         <script>
-            var scale = document.getElementById("id_scale");
-            var output = document.getElementById("scale-value");
-            output.innerHTML = scale.value; // Display the default slider value
-
-            scale.oninput = function() {
-                output.innerHTML = this.value;
-            } 
+           
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
-                    $('input[type="submit"]').prop('disabled', false);
+                    $('#submit-btn').prop('disabled', false);
                 } else {
-                    $('input[type="submit"]').prop('disabled', true);
+                    $('#submit-btn').prop('disabled', true);
                 }
             });
 
             $('#author-chk').click(function(){
                 if($(this).prop('checked') == true){
-                    let user = $('div.welcome > p > a')[0].innerText;
+                    let user = "{{ request.user.username }}";
                     console.log(user);
                     $('#author-field > input').val(user);
                     $('#author-field > input').prop('readonly', true);
