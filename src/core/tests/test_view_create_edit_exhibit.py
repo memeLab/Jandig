@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from core.models import Exhibit, ExhibitTypes
+from core.models import Exhibit, ExhibitTypes, Object
 from core.tests.factory import ArtworkFactory, ExhibitFactory, ObjectFactory
 from users.tests.factory import ProfileFactory, UserFactory
 
@@ -406,3 +406,25 @@ class TestEditExhibitView(TestCase):
         assert response.status_code == 302
         self.exhibit.refresh_from_db()
         assert self.exhibit.exhibit_type == ExhibitTypes.AR  # Should change back to AR
+
+    def test_edit_exhibit_comes_filled_with_current_data(self):
+        self.exhibit.artworks.set([self.artwork1, self.artwork2])
+        self.exhibit.augmenteds.set([self.object1, self.object2])
+
+        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert response.context["form"].initial["name"] == self.exhibit.name
+        assert response.context["form"].initial["slug"] == self.exhibit.slug
+        assert "objects" in response.context
+        assert "artworks" in response.context
+        assert list(response.context["artworks"]) == [self.artwork2, self.artwork1]
+        assert list(response.context["objects"]) == list(
+            Object.objects.all().order_by("-created")
+        )
+        assert response.context["selected_artworks"] == "".join(
+            f"{artwork.id}," for artwork in self.exhibit.artworks.all()
+        ).rstrip(",")
+        assert response.context["selected_objects"] == "".join(
+            f"{object.id}," for object in self.exhibit.augmenteds.all()
+        ).rstrip(",")

@@ -502,21 +502,39 @@ def edit_exhibit(request):
 
     # GET request - prepare initial form data
     model_artworks = ""
-    for artwork in model.artworks.all():
-        model_artworks += str(artwork.id) + ","
+    # Artworks IDs string separated by commas, without extra comma at the end
+    artworks = model.artworks.all()
+    for i in range(len(artworks)):
+        if i == 0:
+            model_artworks += str(artworks[i].id)
+        else:
+            model_artworks += "," + str(artworks[i].id)
+    model_augmenteds = ""
+    augmenteds = model.augmenteds.all()
+    for i in range(len(augmenteds)):
+        if i == 0:
+            model_augmenteds += str(augmenteds[i].id)
+        else:
+            model_augmenteds += "," + str(augmenteds[i].id)
 
-    model_artworks = model_artworks[:-1]
-
-    model_data = {"name": model.name, "slug": model.slug, "artworks": model_artworks}
+    model_data = {
+        "name": model.name,
+        "slug": model.slug,
+        "artworks": model_artworks,
+        "augmenteds": model_augmenteds,
+    }
 
     artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
+    augmenteds = Object.objects.all().order_by("-created")
     return render(
         request,
         "core/exhibit_create.jinja2",
         {
             "form": ExhibitForm(initial=model_data, exhibit_id=index),
             "artworks": artworks,
+            "objects": augmenteds,
             "selected_artworks": model_artworks,
+            "selected_objects": model_augmenteds,
             "edit": True,
         },
     )
