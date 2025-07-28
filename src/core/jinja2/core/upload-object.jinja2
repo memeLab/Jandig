@@ -142,6 +142,7 @@
                                 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                                 document.getElementById("content-box").appendChild(renderer.domElement);
                                 document.getElementById("content-box").appendChild(blockquote);
+                                
                                 // Add OrbitControls for camera interaction
                                 const controls = new OrbitControls(camera, renderer.domElement);
                                 controls.enableDamping = true; // Smooth camera movement
@@ -168,9 +169,17 @@
                                 pointLight2.position.set(-2, 2, 2);
                                 scene.add(pointLight2);
                                 
-                                // Animation loop for smooth controls
+                                // Animation variables
+                                let mixer = null;
+                                const clock = new THREE.Clock();
+                                
+                                // Animation loop for smooth controls and animations
                                 function animate() {
                                     requestAnimationFrame(animate);
+                                    
+                                    const delta = clock.getDelta();
+                                    if (mixer) mixer.update(delta);
+                                    
                                     controls.update(); // Update controls for damping
                                     renderer.render(scene, camera);
                                 }
@@ -181,6 +190,23 @@
                                     URL.createObjectURL(file),
                                     function (gltf) { 
                                         scene.add(gltf.scene);
+                                        
+                                        // Handle animations if they exist
+                                        if (gltf.animations && gltf.animations.length > 0) {
+                                            mixer = new THREE.AnimationMixer(gltf.scene);
+                                            
+                                            // Play all animations
+                                            gltf.animations.forEach((clip) => {
+                                                const action = mixer.clipAction(clip);
+                                                action.play();
+                                            });
+                                            
+                                            // Add animation info
+                                            const animationInfo = document.createElement("div");
+                                            animationInfo.style.cssText = "margin: 10px 0; padding: 10px; background: #d4edda; border-radius: 5px; font-size: 14px;";
+                                            animationInfo.innerHTML = `<strong>Animations:</strong> ${gltf.animations.length} animation(s) found and playing`;
+                                            document.getElementById("content-box").appendChild(animationInfo);
+                                        }
                                         
                                         // Auto-scale and center the model
                                         const box = new THREE.Box3().setFromObject(gltf.scene);
