@@ -3,7 +3,7 @@ from io import BytesIO
 
 from django import forms
 from django.core.files.base import ContentFile, File
-from django.forms.widgets import HiddenInput, NumberInput
+from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -158,36 +158,38 @@ class ArtworkForm(forms.ModelForm):
         widget=forms.Select(attrs={"class": "form-control"}),
     )
     scale = forms.FloatField(
+        min_value=0.1,
+        max_value=5.0,
         initial=1.0,
-        widget=forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
     )
 
     class Meta:
         model = Artwork
         fields = ["title", "description", "position_x", "position_y"]
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control"}),
-            "position_x": forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
-            "position_y": forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": _("Artwork title")}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": _("Artwork description")}
+            ),
+            "position_x": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
+            "position_y": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Set initial values for custom fields when editing
-        if self.instance and self.instance.pk:
-            self.fields['selected_marker'].initial = self.instance.marker
-            self.fields['selected_object'].initial = self.instance.augmented
-            self.fields['scale'].initial = self.instance.scale_x
+        super(ArtworkForm, self).__init__(*args, **kwargs)
 
-    def clean_scale(self):
-        scale = self.cleaned_data.get("scale")
-        if scale is not None:
-            if scale < 0.1:
-                raise forms.ValidationError(_("Scale must be at least 0.1"))
-            if scale > 5.0:
-                raise forms.ValidationError(_("Scale must not exceed 5.0"))
-        return scale
+        if self.instance.pk:
+            # If editing an existing artwork, prepopulate the fields
+            self.fields["scale"].initial = self.instance.scale_x
+            self.fields["selected_marker"].initial = self.instance.marker
+            self.fields["selected_object"].initial = self.instance.augmented
 
     def clean_position_x(self):
         position_x = self.cleaned_data.get("position_x")
@@ -233,6 +235,12 @@ class ExhibitForm(forms.ModelForm):
     class Meta:
         model = Exhibit
         fields = ("name", "slug", "artworks", "augmenteds")
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": _("Exhibit Title")}),
+            "slug": forms.TextInput(
+                attrs={"placeholder": _("Complete with your Exhibit URL here")}
+            ),
+        }
 
     def clean_name(self):
         name = self.cleaned_data["name"]
@@ -289,35 +297,6 @@ class ExhibitForm(forms.ModelForm):
         except ValueError:
             raise forms.ValidationError(_("Invalid object IDs provided."))
 
-        augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
-        return augmenteds
-
-    def clean(self):
-        cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks", [])
-        augmenteds = cleaned_data.get("augmenteds", [])
-
-        if not artworks and not augmenteds:
-            raise forms.ValidationError(
-                _("You must select at least one artwork or augmented object.")
-            )
-
-        return cleaned_data
-
-    def save(self, commit=True):
-        exhibit = super().save(commit=False)
-
-        # Set exhibit_type based on augmented objects
-        artworks = self.cleaned_data.get("artworks", [])
-        augmenteds = self.cleaned_data.get("augmenteds", [])
-        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
-
-        if commit:
-            exhibit.save()
-            exhibit.artworks.set(artworks)
-            exhibit.augmenteds.set(augmenteds)
-
-        return exhibit
         augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
         return augmenteds
 

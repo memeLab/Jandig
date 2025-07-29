@@ -178,11 +178,11 @@ class TestEditArtworkView(TestCase):
         form = response.context["form"]
         assert form.initial["title"] == self.artwork.title
         assert form.initial["description"] == self.artwork.description
-        assert form.initial["scale"] == self.artwork.scale_x
-        assert form.initial["position_x"] == self.artwork.position_x
-        assert form.initial["position_y"] == self.artwork.position_y
-        assert form.initial["selected_marker"] == self.marker.id
-        assert form.initial["selected_object"] == self.object.id
+        assert form.fields["scale"].initial == self.artwork.scale_x
+        assert form.fields["position_x"].initial == self.artwork.position_x
+        assert form.fields["position_y"].initial == self.artwork.position_y
+        assert form.fields["selected_marker"].initial == self.marker
+        assert form.fields["selected_object"].initial == self.object
 
     def test_edit_artwork_success(self):
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"

@@ -260,7 +260,7 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
 
     if request.method == "POST":
         form = ArtworkForm(request.POST, request.FILES, instance=artwork_instance)
-        
+
         if form.is_valid():
             artwork = form.save(commit=False)
             if not is_edit:
@@ -269,7 +269,6 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
             return redirect("profile")
     else:
         form = ArtworkForm(instance=artwork_instance)
-
     context = _get_artwork_context_data(form, artwork_instance)
     return render(request, "core/upload-artwork.jinja2", context)
 
@@ -312,6 +311,7 @@ def edit_artwork(request):
         model = Artwork.objects.get(id=index)
     except Artwork.DoesNotExist:
         raise Http404
+
     if model.author != Profile.objects.get(user=request.user):
         raise Http404
 

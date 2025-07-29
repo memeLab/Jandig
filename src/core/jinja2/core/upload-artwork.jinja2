@@ -18,12 +18,12 @@
             <div id="artwork-data">
                 <h2>{{ _('About your artwork') }}</h2>
                 <p class="upload-field">
-                    {{ form.visible_fields()[3] }}
-                    {{ form.visible_fields()[3].errors }}
+                    {{ form.visible_fields()[0] }}
+                    {{ form.visible_fields()[0].errors }}
                 </p>
                 <p class="upload-field">
-                    {{ form.visible_fields()[4] }}
-                    {{ form.visible_fields()[4].errors }}
+                    {{ form.visible_fields()[1] }}
+                    {{ form.visible_fields()[1].errors }}
                 </p>
                 
             </div>
@@ -33,14 +33,14 @@
             </button>
 
             <input id="id_selected_marker" type="hidden" name="selected_marker" onchange="validateSubmit()" {% if selected_marker %} value="{{ selected_marker }}" {% endif %}>
-            {{ form.visible_fields()[0].errors }}
+            {{ form.visible_fields()[4].errors }}
             
             <button id="select-object" class="select-btn" type="button">
                 {{ _('Select Object') }}
             </button>
 
             <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
-            {{ form.visible_fields()[1].errors }}
+            {{ form.visible_fields()[5].errors }}
         
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
@@ -57,10 +57,10 @@
                 <div id="object-modal" class="tab">
                     
                     <h4 class="modal-title">{{ _('Select Object') }}</h4>
-                    
-                    {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
+
+                    {% with repository_list = object_list, element_type = 'object', selected=selected_object, htmx="false" %}
                         {% include "core/components/repository-list.jinja2" %}
-                    {% endwith%}
+                    {% endwith %}
 
                     <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
                             {{ _('Okay') }}
@@ -78,8 +78,8 @@
                 >?</span>
                 </h3>
                         
-                {{ form.visible_fields()[2] }}
-                {{ form.visible_fields()[2].errors }}
+                {{ form.visible_fields()[6] }}
+                {{ form.visible_fields()[6].errors }}
                 <p>
                     <span class="slider-label" id="scale-value">{{ scale }}</span>
                 </p>
@@ -94,14 +94,14 @@
                     <div id="box-shadow"></div>
                 </div>
                 <h3>Horizontal:</h3>
-                {{ form.visible_fields()[5] }}
-                {{ form.visible_fields()[5].errors }}
+                {{ form.visible_fields()[2] }}
+                {{ form.visible_fields()[2].errors }}
                 <p>
                     <span class="slider-label" id="x-position-value">{{ xposition }}</span>
                 </p>
                 <h3>Vertical:</h3>
-                {{ form.visible_fields()[6] }}
-                {{ form.visible_fields()[6].errors }}
+                {{ form.visible_fields()[3] }}
+                {{ form.visible_fields()[3].errors }}
 
                 <p>
                     <span class="slider-label" id="y-position-value">{{ yposition }}</span>
