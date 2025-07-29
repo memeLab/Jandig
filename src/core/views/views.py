@@ -350,34 +350,16 @@ def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
         return render(request, "core/exhibit_create.jinja2", context)
 
 
-@login_required
-def create_exhibit(request):
-    return _handle_exhibit_form(request, request.user.profile)
-
-
-@login_required
-def edit_exhibit(request):
-    index = request.GET.get("id", "-1")
-    try:
-        model = Exhibit.objects.get(id=index)
-    except Exhibit.DoesNotExist:
-        raise Http404
-
-    if model.owner != Profile.objects.get(user=request.user):
-        raise Http404
-
-    return _handle_exhibit_form(request, request.user.profile, model)
-
-
 def _get_exhibit_context_data(user_profile, form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
     artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
     objects = Object.objects.all().order_by("-created")
-
+    paginator = Paginator(objects, settings.PAGE_SIZE)
     context = {
         "form": form,
         "artworks": artworks,
-        "objects": objects,
+        "objects": objects[: settings.PAGE_SIZE],
+        "total_pages": paginator.num_pages,
     }
 
     if edit:
@@ -396,6 +378,40 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
         )
 
     return context
+
+
+@login_required
+def create_exhibit(request):
+    if request.htmx:
+        page = int(request.GET.get("page", "1"))
+        qs = Object.objects.all().order_by("-created")
+        paginator = Paginator(qs, settings.PAGE_SIZE)
+        if page > paginator.num_pages:
+            page = paginator.num_pages
+        return render(
+            request,
+            "core/components/item-list.jinja2",
+            {
+                "repository_list": paginator.get_page(page),
+                "element_type": "object",
+                "htmx": "false",
+            },
+        )
+    return _handle_exhibit_form(request, request.user.profile)
+
+
+@login_required
+def edit_exhibit(request):
+    index = request.GET.get("id", "-1")
+    try:
+        model = Exhibit.objects.get(id=index)
+    except Exhibit.DoesNotExist:
+        raise Http404
+
+    if model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    return _handle_exhibit_form(request, request.user.profile, model)
 
 
 @require_http_methods(["GET"])
