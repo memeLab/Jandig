@@ -383,20 +383,31 @@ def artwork_preview(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
-@login_required
-def create_exhibit(request):
+def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
+    """Helper function to handle exhibit form processing for both create and edit operations."""
+    is_edit = exhibit_instance is not None
+
     if request.method == "POST":
-        form = ExhibitForm(request.POST)
+        form = ExhibitForm(request.POST, instance=exhibit_instance)
+        form.full_clean()
+
         if form.is_valid():
             exhibit = form.save(commit=False)
-            exhibit.owner = request.user.profile
+            exhibit.owner = user_profile
             form.save()
             return redirect("profile")
+        else:
+            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+            return render(request, "core/exhibit_create.jinja2", context)
     else:
-        form = ExhibitForm()
+        form = ExhibitForm(instance=exhibit_instance)
+        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+        return render(request, "core/exhibit_create.jinja2", context)
 
-    context = _get_exhibit_context_data(request.user.profile, form)
-    return render(request, "core/exhibit_create.jinja2", context)
+
+@login_required
+def create_exhibit(request):
+    return _handle_exhibit_form(request, request.user.profile)
 
 
 @login_required
@@ -410,24 +421,7 @@ def edit_exhibit(request):
     if model.owner != Profile.objects.get(user=request.user):
         raise Http404
 
-    if request.method == "POST":
-        form = ExhibitForm(request.POST, instance=model)
-        form.full_clean()
-
-        if form.is_valid():
-            exhibit = form.save(commit=False)
-            exhibit.owner = request.user.profile
-            form.save()
-            return redirect("profile")
-        else:
-            context = _get_exhibit_context_data(request.user.profile, form, edit=True)
-            return render(request, "core/exhibit_create.jinja2", context)
-    else:
-        # GET request - prepare initial form data
-
-        form = ExhibitForm(instance=model)
-        context = _get_exhibit_context_data(request.user.profile, form, edit=True)
-        return render(request, "core/exhibit_create.jinja2", context)
+    return _handle_exhibit_form(request, request.user.profile, model)
 
 
 def _get_exhibit_context_data(user_profile, form, edit=False):
