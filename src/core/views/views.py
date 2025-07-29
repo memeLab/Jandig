@@ -259,52 +259,16 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
     is_edit = artwork_instance is not None
 
     if request.method == "POST":
-        form = ArtworkForm(request.POST, request.FILES)
-
+        form = ArtworkForm(request.POST, request.FILES, instance=artwork_instance)
+        
         if form.is_valid():
-            selected_marker = form.cleaned_data.get("selected_marker")
-            selected_object = form.cleaned_data.get("selected_object")
-
-            marker = Marker.objects.get(id=selected_marker) if selected_marker else None
-            augmented = (
-                Object.objects.get(id=selected_object) if selected_object else None
-            )
-
-            if marker and augmented:
-                data = form.cleaned_data
-                artwork_data = {
-                    "marker": marker,
-                    "augmented": augmented,
-                    "title": data["title"],
-                    "description": data["description"],
-                    "scale_x": data["scale"],
-                    "scale_y": data["scale"],
-                    "position_x": data["position_x"],
-                    "position_y": data["position_y"],
-                }
-
-                if is_edit:
-                    Artwork.objects.filter(id=artwork_instance.id).update(
-                        **artwork_data
-                    )
-                else:
-                    Artwork(author=user_profile, **artwork_data).save()
-
-                return redirect("profile")
+            artwork = form.save(commit=False)
+            if not is_edit:
+                artwork.author = user_profile
+            artwork.save()
+            return redirect("profile")
     else:
-        # Prepare initial data for edit mode
-        initial_data = None
-        if is_edit:
-            initial_data = {
-                "title": artwork_instance.title,
-                "description": artwork_instance.description,
-                "selected_marker": artwork_instance.marker.id,
-                "selected_object": artwork_instance.augmented.id,
-                "scale": artwork_instance.scale_x,
-                "position_x": artwork_instance.position_x,
-                "position_y": artwork_instance.position_y,
-            }
-        form = ArtworkForm(initial=initial_data)
+        form = ArtworkForm(instance=artwork_instance)
 
     context = _get_artwork_context_data(form, artwork_instance)
     return render(request, "core/upload-artwork.jinja2", context)
