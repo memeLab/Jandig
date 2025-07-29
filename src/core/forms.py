@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
 
-from core.models import Marker
+from core.models import Artwork, Marker
 from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object
@@ -213,26 +213,26 @@ class ArtworkForm(forms.Form):
         return position_y
 
 
-class ExhibitForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    slug = forms.CharField(max_length=50, required=True)
-
+class ExhibitForm(forms.ModelForm):
     artworks = forms.CharField(max_length=1000, required=False)
     augmenteds = forms.CharField(max_length=1000, required=False)
 
     def __init__(self, *args, **kwargs):
-        self.exhibit_id = kwargs.pop("exhibit_id", None)
         super(ExhibitForm, self).__init__(*args, **kwargs)
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
 
+    class Meta:
+        model = Exhibit
+        fields = ("name", "slug", "artworks", "augmenteds")
+
     def clean_name(self):
         name = self.cleaned_data["name"]
         qs = Exhibit.objects.filter(name=name)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
         if qs.exists():
             raise forms.ValidationError(
                 _(
@@ -248,8 +248,8 @@ class ExhibitForm(forms.Form):
                 _("Url can't contain spaces or special characters")
             )
         qs = Exhibit.objects.filter(slug=slug)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
         if qs.exists():
             raise forms.ValidationError(
                 _(
@@ -258,10 +258,38 @@ class ExhibitForm(forms.Form):
             )
         return slug
 
+    def clean_artworks(self):
+        artworks_str = self.cleaned_data.get("artworks", "")
+        if not artworks_str:
+            return []
+
+        artwork_ids = [id.strip() for id in artworks_str.split(",") if id.strip()]
+        try:
+            artwork_ids = [int(id) for id in artwork_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid artwork IDs provided."))
+
+        artworks = list(Artwork.objects.filter(id__in=artwork_ids).order_by("-id"))
+        return artworks
+
+    def clean_augmenteds(self):
+        augmenteds_str = self.cleaned_data.get("augmenteds", "")
+        if not augmenteds_str:
+            return []
+
+        augmented_ids = [id.strip() for id in augmenteds_str.split(",") if id.strip()]
+        try:
+            augmented_ids = [int(id) for id in augmented_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid object IDs provided."))
+
+        augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
+        return augmenteds
+
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks")
-        augmenteds = cleaned_data.get("augmenteds")
+        artworks = cleaned_data.get("artworks", [])
+        augmenteds = cleaned_data.get("augmenteds", [])
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
@@ -269,3 +297,18 @@ class ExhibitForm(forms.Form):
             )
 
         return cleaned_data
+
+    def save(self, commit=True):
+        exhibit = super().save(commit=False)
+
+        # Set exhibit_type based on augmented objects
+        artworks = self.cleaned_data.get("artworks", [])
+        augmenteds = self.cleaned_data.get("augmenteds", [])
+        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+
+        if commit:
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+            exhibit.augmenteds.set(augmenteds)
+
+        return exhibit
