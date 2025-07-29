@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
 
-from core.models import Artwork, Marker
+from core.models import Artwork, Marker, ObjectExtensions
 from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object
@@ -146,71 +146,77 @@ class UploadMarkerForm(forms.ModelForm):
             return super(UploadMarkerForm, self).save(*args, **kwargs)
 
 
-class ArtworkForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
-
-    scale = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
-        min_value=0.1,
-        max_value=5.0,
+class ArtworkForm(forms.ModelForm):
+    selected_marker = forms.ModelChoiceField(
+        queryset=Marker.objects.all(),
         required=True,
-        label=_("Scale (0.1 to 5.0)"),
-        help_text=_(
-            "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
-        ),
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    selected_object = forms.ModelChoiceField(
+        queryset=Object.objects.exclude(file_extension=ObjectExtensions.GLB),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    scale = forms.FloatField(
         initial=1.0,
+        widget=forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
     )
 
-    position_x = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
-        required=False,
-        initial=0.0,
-        min_value=-2.0,
-        max_value=2.0,
-        help_text=_("Position of the object in the artwork on the X axis"),
-    )
-    position_y = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
-        required=False,
-        initial=0.0,
-        min_value=-2.0,
-        max_value=2.0,
-        help_text=_("Position of the object in the artwork on the Y axis"),
-    )
-
-    selected_marker = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=True
-    )
-    selected_object = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=True
-    )
+    class Meta:
+        model = Artwork
+        fields = ["title", "description", "position_x", "position_y"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control"}),
+            "position_x": forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
+            "position_y": forms.NumberInput(attrs={"class": "form-control", "step": "0.1"}),
+        }
 
     def __init__(self, *args, **kwargs):
-        super(ArtworkForm, self).__init__(*args, **kwargs)
-
-        self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeholder"] = _(
-            "Artwork description"
-        )
+        super().__init__(*args, **kwargs)
+        # Set initial values for custom fields when editing
+        if self.instance and self.instance.pk:
+            self.fields['selected_marker'].initial = self.instance.marker
+            self.fields['selected_object'].initial = self.instance.augmented
+            self.fields['scale'].initial = self.instance.scale_x
 
     def clean_scale(self):
-        scale_val = self.cleaned_data["scale"]
-        if not (0.1 <= scale_val <= 5.0):
-            raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
-        return scale_val
+        scale = self.cleaned_data.get("scale")
+        if scale is not None:
+            if scale < 0.1:
+                raise forms.ValidationError(_("Scale must be at least 0.1"))
+            if scale > 5.0:
+                raise forms.ValidationError(_("Scale must not exceed 5.0"))
+        return scale
 
     def clean_position_x(self):
-        position_x = self.cleaned_data["position_x"]
-        if not (-2.0 <= position_x <= 2.0):
-            raise forms.ValidationError(_("Position X must be between -2.0 and 2.0"))
+        position_x = self.cleaned_data.get("position_x")
+        if position_x is not None:
+            if position_x < -2.0:
+                raise forms.ValidationError(_("Position X must be at least -2.0"))
+            if position_x > 2.0:
+                raise forms.ValidationError(_("Position X must not exceed 2.0"))
         return position_x
 
     def clean_position_y(self):
-        position_y = self.cleaned_data["position_y"]
-        if not (-2.0 <= position_y <= 2.0):
-            raise forms.ValidationError(_("Position Y must be between -2.0 and 2.0"))
+        position_y = self.cleaned_data.get("position_y")
+        if position_y is not None:
+            if position_y < -2.0:
+                raise forms.ValidationError(_("Position Y must be at least -2.0"))
+            if position_y > 2.0:
+                raise forms.ValidationError(_("Position Y must not exceed 2.0"))
         return position_y
+
+    def save(self, commit=True):
+        artwork = super().save(commit=False)
+        artwork.marker = self.cleaned_data["selected_marker"]
+        artwork.augmented = self.cleaned_data["selected_object"]
+        artwork.scale_x = self.cleaned_data["scale"]
+        artwork.scale_y = self.cleaned_data["scale"]
+
+        if commit:
+            artwork.save()
+        return artwork
 
 
 class ExhibitForm(forms.ModelForm):
@@ -283,6 +289,35 @@ class ExhibitForm(forms.ModelForm):
         except ValueError:
             raise forms.ValidationError(_("Invalid object IDs provided."))
 
+        augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
+        return augmenteds
+
+    def clean(self):
+        cleaned_data = super().clean()
+        artworks = cleaned_data.get("artworks", [])
+        augmenteds = cleaned_data.get("augmenteds", [])
+
+        if not artworks and not augmenteds:
+            raise forms.ValidationError(
+                _("You must select at least one artwork or augmented object.")
+            )
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        exhibit = super().save(commit=False)
+
+        # Set exhibit_type based on augmented objects
+        artworks = self.cleaned_data.get("artworks", [])
+        augmenteds = self.cleaned_data.get("augmenteds", [])
+        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+
+        if commit:
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+            exhibit.augmenteds.set(augmenteds)
+
+        return exhibit
         augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
         return augmenteds
 
