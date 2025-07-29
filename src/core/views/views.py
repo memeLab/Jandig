@@ -238,22 +238,6 @@ def edit_object(request):
     )
 
 
-def get_element(request, form_class, form_type, source, author, existent_element):
-    element = None
-
-    if source and author:
-        instance = form_type(source=source, author=author)
-        element = form_class(instance=instance).save(commit=False)
-        element.save()
-    elif existent_element:
-        qs = form_type.objects.filter(id=existent_element)
-        if qs:
-            element = qs[0]
-            element.owner = request.user.profile
-
-    return element
-
-
 def _handle_artwork_form(request, user_profile, artwork_instance=None):
     """Helper function to handle artwork form processing for both create and edit operations."""
     is_edit = artwork_instance is not None
@@ -281,11 +265,15 @@ def _get_artwork_context_data(form, artwork_instance=None):
         .all()
         .order_by("-created")
     )
+    paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
+    paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
-        "marker_list": marker_list,
-        "object_list": object_list,
+        "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
+        "object_list": object_list[: settings.MODAL_PAGE_SIZE],
+        "total_marker_pages": paginator_marker.num_pages,
+        "total_object_pages": paginator_object.num_pages,
     }
 
     if artwork_instance:
@@ -354,11 +342,11 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
     artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
     objects = Object.objects.all().order_by("-created")
-    paginator = Paginator(objects, settings.PAGE_SIZE)
+    paginator = Paginator(objects, settings.MODAL_PAGE_SIZE)
     context = {
         "form": form,
         "artworks": artworks,
-        "objects": objects[: settings.PAGE_SIZE],
+        "objects": objects[: settings.MODAL_PAGE_SIZE],
         "total_pages": paginator.num_pages,
     }
 
@@ -381,22 +369,35 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
 
 @login_required
-def create_exhibit(request):
+def get_element(request):
     if request.htmx:
         page = int(request.GET.get("page", "1"))
-        qs = Object.objects.all().order_by("-created")
-        paginator = Paginator(qs, settings.PAGE_SIZE)
+        match element_type := request.GET.get("element_type"):
+            case "object":
+                qs = Object.objects.all().order_by("-created")
+            case "marker":
+                qs = Marker.objects.all().order_by("-created")
+            case _:
+                raise ValueError("Invalid element type")
+
+        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
         if page > paginator.num_pages:
             page = paginator.num_pages
+
         return render(
             request,
             "core/components/item-list.jinja2",
             {
                 "repository_list": paginator.get_page(page),
-                "element_type": "object",
+                "element_type": element_type,
                 "htmx": "false",
             },
         )
+    return Http404
+
+
+@login_required
+def create_exhibit(request):
     return _handle_exhibit_form(request, request.user.profile)
 
 

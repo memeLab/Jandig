@@ -75,8 +75,8 @@
                     <div id="object-modal" class="tab">
                         <h4 class="modal-title">{{ _('Select Objects') }}</h4>
                         <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button" hx-get="/exhibits/create/" hx-vals='js:{page: get_page(-1)}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
-                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button" hx-get="/exhibits/create/" hx-vals='js:{page: get_page(1)}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button" hx-get="/elements/" hx-vals='js:{page: get_page(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button" hx-get="/elements/" hx-vals='js:{page: get_page(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
                         </div>
 
                         {% with repository_list = objects, element_type="object", htmx="false"%}

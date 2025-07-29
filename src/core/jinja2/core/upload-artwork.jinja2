@@ -45,9 +45,12 @@
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Marker') }}</h4>
-
-                    {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker, htmx="false" %}
-                        {% include "core/components/repository-list.jinja2" %}
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> > </button>
+                    </div>
+                    {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
+                        {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
 
                     <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
@@ -57,9 +60,12 @@
                 <div id="object-modal" class="tab">
                     
                     <h4 class="modal-title">{{ _('Select Object') }}</h4>
-
-                    {% with repository_list = object_list, element_type = 'object', selected=selected_object, htmx="false" %}
-                        {% include "core/components/repository-list.jinja2" %}
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                    </div>
+                    {% with repository_list = object_list, element_type = 'object', htmx="false" %}
+                        {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
 
                     <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
@@ -188,8 +194,87 @@
                 $('#form-modal').modal({showClose: false})
                 showTab(1);
             })
+            page_marker = 1;
+            function get_page_marker(increment) {
+                actual_page = page_marker + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_marker = actual_page;
+                previous_button = document.getElementById("previous-button-marker");
+                next_button = document.getElementById("next-button-marker");
+                if (page_marker == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_marker == {{total_marker_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
 
+                return page_marker
+            }
+            page_object = 1;
+            function get_page_object(increment) {
+                actual_page = page_object + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_object = actual_page;
+                previous_button = document.getElementById("previous-button-object");
+                next_button = document.getElementById("next-button-object");
+                if (page_object == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_object == {{total_object_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
 
+                return page_object
+            }
+            document.body.addEventListener("htmx:afterSwap", function(evt){
+                update_selected_items();
+                enable_selection();
+            });
+            selected_marker = {{selected_marker}};
+            selected_object = {{selected_object}};
+            function update_selected_items(){
+                id_marker = "#marker-" + selected_marker;
+                $('#existent-marker > input').val(selected_marker);
+                $(id_marker).css("border-bottom","3px solid #a6a6a6");
+
+                id_object = "#object-" + selected_object;
+                $('#existent-object > input').val(selected_object);
+                $(id_object).css("border-bottom","3px solid #a6a6a6");
+            }
+            update_selected_items();
+
+            function enable_selection(){
+                $('.repository-item').click(function(){
+                    let elementId = $(this).attr('id');
+                    let sectionId = $(this).parent().attr('id');
+
+                    // reset background
+                    $(this).parent().children().css('border-bottom', 'none')
+                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    id = elementId.split("-")[1];
+                    if(sectionId == 'repo-marker'){
+                        $('#id_selected_marker').val(id);
+                        selected_marker = id;
+                    }else{
+                        $('#id_selected_object').val(id);
+                        selected_object = id;
+                    }
+            });
+            }
+            enable_selection();
+            
         </script>
     </section>
 {% endblock %}

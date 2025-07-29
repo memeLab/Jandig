@@ -26,6 +26,7 @@ from core.views.views import (
     exhibit,
     exhibit_detail,
     exhibit_select,
+    get_element,
     marker_upload,
     object_upload,
     related_content,
@@ -50,6 +51,7 @@ urlpatterns = [
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
+    path("elements/", get_element, name="get-element"),
     re_path(
         r"^(me|ME)\/?$",
         me_hotsite,
