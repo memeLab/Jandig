@@ -371,7 +371,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
     name = models.CharField(unique=True, max_length=50)
-    slug = models.CharField(unique=True, max_length=50)
+    slug = models.SlugField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork, related_name="exhibits", blank=True)
     augmenteds = models.ManyToManyField(Object, related_name="exhibits", blank=True)
 
