@@ -254,8 +254,10 @@ def get_element(request, form_class, form_type, source, author, existent_element
     return element
 
 
-@login_required
-def create_artwork(request):
+def _handle_artwork_form(request, user_profile, artwork_instance=None):
+    """Helper function to handle artwork form processing for both create and edit operations."""
+    is_edit = artwork_instance is not None
+
     if request.method == "POST":
         form = ArtworkForm(request.POST, request.FILES)
 
@@ -270,22 +272,46 @@ def create_artwork(request):
 
             if marker and augmented:
                 data = form.cleaned_data
-                Artwork(
-                    author=request.user.profile,
-                    marker=marker,
-                    augmented=augmented,
-                    title=data["title"],
-                    description=data["description"],
-                    scale_x=data["scale"],
-                    scale_y=data["scale"],
-                    position_x=data["position_x"],
-                    position_y=data["position_y"],
-                ).save()
+                artwork_data = {
+                    "marker": marker,
+                    "augmented": augmented,
+                    "title": data["title"],
+                    "description": data["description"],
+                    "scale_x": data["scale"],
+                    "scale_y": data["scale"],
+                    "position_x": data["position_x"],
+                    "position_y": data["position_y"],
+                }
+
+                if is_edit:
+                    Artwork.objects.filter(id=artwork_instance.id).update(
+                        **artwork_data
+                    )
+                else:
+                    Artwork(author=user_profile, **artwork_data).save()
 
                 return redirect("profile")
     else:
-        form = ArtworkForm()
+        # Prepare initial data for edit mode
+        initial_data = None
+        if is_edit:
+            initial_data = {
+                "title": artwork_instance.title,
+                "description": artwork_instance.description,
+                "selected_marker": artwork_instance.marker.id,
+                "selected_object": artwork_instance.augmented.id,
+                "scale": artwork_instance.scale_x,
+                "position_x": artwork_instance.position_x,
+                "position_y": artwork_instance.position_y,
+            }
+        form = ArtworkForm(initial=initial_data)
 
+    context = _get_artwork_context_data(form, artwork_instance)
+    return render(request, "core/upload-artwork.jinja2", context)
+
+
+def _get_artwork_context_data(form, artwork_instance=None):
+    """Helper function to prepare context data for artwork templates."""
     marker_list = Marker.objects.all().order_by("-created")
     object_list = (
         Object.objects.exclude(file_extension=ObjectExtensions.GLB)
@@ -293,15 +319,26 @@ def create_artwork(request):
         .order_by("-created")
     )
 
-    return render(
-        request,
-        "core/upload-artwork.jinja2",
-        {
-            "form": form,
-            "marker_list": marker_list,
-            "object_list": object_list,
-        },
-    )
+    context = {
+        "form": form,
+        "marker_list": marker_list,
+        "object_list": object_list,
+    }
+
+    if artwork_instance:
+        context.update(
+            {
+                "selected_marker": artwork_instance.marker.id,
+                "selected_object": artwork_instance.augmented.id,
+            }
+        )
+
+    return context
+
+
+@login_required
+def create_artwork(request):
+    return _handle_artwork_form(request, request.user.profile)
 
 
 @login_required
@@ -314,63 +351,7 @@ def edit_artwork(request):
     if model.author != Profile.objects.get(user=request.user):
         raise Http404
 
-    if request.method == "POST":
-        form = ArtworkForm(request.POST, request.FILES)
-
-        form.full_clean()
-        if form.is_valid():
-            selected_marker = form.cleaned_data.get("selected_marker")
-            selected_object = form.cleaned_data.get("selected_object")
-
-            marker = Marker.objects.get(id=selected_marker) if selected_marker else None
-            augmented = (
-                Object.objects.get(id=selected_object) if selected_object else None
-            )
-            data = form.cleaned_data
-            model_data = {
-                "marker": marker,
-                "augmented": augmented,
-                "title": data["title"],
-                "description": data["description"],
-                "scale_x": data["scale"],
-                "scale_y": data["scale"],
-                "position_x": data["position_x"],
-                "position_y": data["position_y"],
-            }
-            Artwork.objects.filter(id=model.id).update(**model_data)
-            return redirect("profile")
-
-    model = model
-    model_data = {
-        "marker": model.marker,
-        "augmented": model.augmented,
-        "title": model.title,
-        "description": model.description,
-        "selected_marker": model.marker.id,
-        "selected_object": model.augmented.id,
-        "scale": model.scale_x,
-        "position_x": model.position_x,
-        "position_y": model.position_y,
-    }
-
-    marker_list = Marker.objects.all().order_by("-created")
-    object_list = (
-        Object.objects.exclude(file_extension=ObjectExtensions.GLB)
-        .all()
-        .order_by("-created")
-    )
-
-    return render(
-        request,
-        "core/upload-artwork.jinja2",
-        {
-            "form": ArtworkForm(initial=model_data),
-            "marker_list": marker_list,
-            "object_list": object_list,
-            "selected_marker": model.marker.id,
-            "selected_object": model.augmented.id,
-        },
-    )
+    return _handle_artwork_form(request, request.user.profile, model)
 
 
 @require_http_methods(["GET"])
