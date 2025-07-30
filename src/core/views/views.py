@@ -378,7 +378,7 @@ def get_element(request):
             case "marker":
                 qs = Marker.objects.all().order_by("-created")
             case _:
-                raise ValueError("Invalid element type")
+                raise Http404("Invalid element type")
 
         paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
         if page > paginator.num_pages:
@@ -393,7 +393,7 @@ def get_element(request):
                 "htmx": "false",
             },
         )
-    return Http404
+    raise Http404
 
 
 @login_required
