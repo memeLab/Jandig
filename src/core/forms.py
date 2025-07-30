@@ -3,14 +3,14 @@ from io import BytesIO
 
 from django import forms
 from django.core.files.base import ContentFile, File
-from django.forms.widgets import HiddenInput, NumberInput
+from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
 
-from core.models import Marker
+from core.models import Artwork, Marker, ObjectExtensions
 from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object
@@ -117,7 +117,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ("owner", "created", "patt", "file_size")
+        fields = ("source", "author", "title")
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
@@ -146,93 +146,107 @@ class UploadMarkerForm(forms.ModelForm):
             return super(UploadMarkerForm, self).save(*args, **kwargs)
 
 
-class ArtworkForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
-
+class ArtworkForm(forms.ModelForm):
+    selected_marker = forms.ModelChoiceField(
+        queryset=Marker.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    selected_object = forms.ModelChoiceField(
+        queryset=Object.objects.exclude(file_extension=ObjectExtensions.GLB),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
     scale = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
         min_value=0.1,
         max_value=5.0,
-        required=True,
-        label=_("Scale (0.1 to 5.0)"),
-        help_text=_(
-            "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
-        ),
         initial=1.0,
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
     )
 
-    position_x = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
-        required=False,
-        initial=0.0,
-        min_value=-2.0,
-        max_value=2.0,
-        help_text=_("Position of the object in the artwork on the X axis"),
-    )
-    position_y = forms.FloatField(
-        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
-        required=False,
-        initial=0.0,
-        min_value=-2.0,
-        max_value=2.0,
-        help_text=_("Position of the object in the artwork on the Y axis"),
-    )
-
-    selected_marker = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=True
-    )
-    selected_object = forms.IntegerField(
-        widget=HiddenInput(), min_value=1, required=True
-    )
+    class Meta:
+        model = Artwork
+        fields = ["title", "description", "position_x", "position_y"]
+        widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": _("Artwork title")}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": _("Artwork description")}
+            ),
+            "position_x": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
+            "position_y": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeholder"] = _(
-            "Artwork description"
-        )
-
-    def clean_scale(self):
-        scale_val = self.cleaned_data["scale"]
-        if not (0.1 <= scale_val <= 5.0):
-            raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
-        return scale_val
+        if self.instance.pk:
+            # If editing an existing artwork, prepopulate the fields
+            self.fields["scale"].initial = self.instance.scale_x
+            self.fields["selected_marker"].initial = self.instance.marker
+            self.fields["selected_object"].initial = self.instance.augmented
 
     def clean_position_x(self):
-        position_x = self.cleaned_data["position_x"]
-        if not (-2.0 <= position_x <= 2.0):
-            raise forms.ValidationError(_("Position X must be between -2.0 and 2.0"))
+        position_x = self.cleaned_data.get("position_x")
+        if position_x is not None:
+            if position_x < -2.0:
+                raise forms.ValidationError(_("Position X must be at least -2.0"))
+            if position_x > 2.0:
+                raise forms.ValidationError(_("Position X must not exceed 2.0"))
         return position_x
 
     def clean_position_y(self):
-        position_y = self.cleaned_data["position_y"]
-        if not (-2.0 <= position_y <= 2.0):
-            raise forms.ValidationError(_("Position Y must be between -2.0 and 2.0"))
+        position_y = self.cleaned_data.get("position_y")
+        if position_y is not None:
+            if position_y < -2.0:
+                raise forms.ValidationError(_("Position Y must be at least -2.0"))
+            if position_y > 2.0:
+                raise forms.ValidationError(_("Position Y must not exceed 2.0"))
         return position_y
 
+    def save(self, commit=True):
+        artwork = super().save(commit=False)
+        artwork.marker = self.cleaned_data["selected_marker"]
+        artwork.augmented = self.cleaned_data["selected_object"]
+        artwork.scale_x = self.cleaned_data["scale"]
+        artwork.scale_y = self.cleaned_data["scale"]
 
-class ExhibitForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    slug = forms.CharField(max_length=50, required=True)
+        if commit:
+            artwork.save()
+        return artwork
 
+
+class ExhibitForm(forms.ModelForm):
     artworks = forms.CharField(max_length=1000, required=False)
     augmenteds = forms.CharField(max_length=1000, required=False)
 
     def __init__(self, *args, **kwargs):
-        self.exhibit_id = kwargs.pop("exhibit_id", None)
         super(ExhibitForm, self).__init__(*args, **kwargs)
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
 
+    class Meta:
+        model = Exhibit
+        fields = ("name", "slug", "artworks", "augmenteds")
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": _("Exhibit Title")}),
+            "slug": forms.TextInput(
+                attrs={"placeholder": _("Complete with your Exhibit URL here")}
+            ),
+        }
+
     def clean_name(self):
         name = self.cleaned_data["name"]
         qs = Exhibit.objects.filter(name=name)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
         if qs.exists():
             raise forms.ValidationError(
                 _(
@@ -248,8 +262,8 @@ class ExhibitForm(forms.Form):
                 _("Url can't contain spaces or special characters")
             )
         qs = Exhibit.objects.filter(slug=slug)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
         if qs.exists():
             raise forms.ValidationError(
                 _(
@@ -258,10 +272,38 @@ class ExhibitForm(forms.Form):
             )
         return slug
 
+    def clean_artworks(self):
+        artworks_str = self.cleaned_data.get("artworks", "")
+        if not artworks_str:
+            return []
+
+        artwork_ids = [id.strip() for id in artworks_str.split(",") if id.strip()]
+        try:
+            artwork_ids = [int(id) for id in artwork_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid artwork IDs provided."))
+
+        artworks = list(Artwork.objects.filter(id__in=artwork_ids).order_by("-id"))
+        return artworks
+
+    def clean_augmenteds(self):
+        augmenteds_str = self.cleaned_data.get("augmenteds", "")
+        if not augmenteds_str:
+            return []
+
+        augmented_ids = [id.strip() for id in augmenteds_str.split(",") if id.strip()]
+        try:
+            augmented_ids = [int(id) for id in augmented_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid object IDs provided."))
+
+        augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
+        return augmenteds
+
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks")
-        augmenteds = cleaned_data.get("augmenteds")
+        artworks = cleaned_data.get("artworks", [])
+        augmenteds = cleaned_data.get("augmenteds", [])
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
@@ -269,3 +311,18 @@ class ExhibitForm(forms.Form):
             )
 
         return cleaned_data
+
+    def save(self, commit=True):
+        exhibit = super().save(commit=False)
+
+        # Set exhibit_type based on augmented objects
+        artworks = self.cleaned_data.get("artworks", [])
+        augmenteds = self.cleaned_data.get("augmenteds", [])
+        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+
+        if commit:
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+            exhibit.augmenteds.set(augmenteds)
+
+        return exhibit

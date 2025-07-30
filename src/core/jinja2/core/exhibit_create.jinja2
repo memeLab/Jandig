@@ -68,13 +68,16 @@
                             {% endwith %}
                         {% endwith %}
 
-                        
                         <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
                             {{ _('Okay') }}
                         </a>
                     </div>
                     <div id="object-modal" class="tab">
                         <h4 class="modal-title">{{ _('Select Objects') }}</h4>
+                        <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button" hx-get="/elements/" hx-vals='js:{page: get_page(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button" hx-get="/elements/" hx-vals='js:{page: get_page(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                        </div>
 
                         {% with repository_list = objects, element_type="object", htmx="false"%}
                             {% include "core/components/item-list.jinja2" %}
@@ -96,7 +99,33 @@
             </form>
         </div>
         <script>
+        page = 1;
+        get_page(0);
+        function get_page(increment) {
+            actual_page = page + increment;
+            if (actual_page < 1) {
+                actual_page = 1;
+            }
+            page = actual_page;
+            previous_button = document.getElementById("previous-button");
+            next_button = document.getElementById("next-button");
+            if (page == 1) {
+                previous_button.disabled = true;
+            }else {
+                previous_button.disabled = false;
+            }
+            if (page == {{total_pages}}) {
+                next_button.disabled = true;
+            }else {
+                next_button.disabled = false;
+            }
 
+            return page
+        }
+        document.body.addEventListener("htmx:afterSwap", function(evt){
+            update_selected_items();
+            enable_selection();
+        });
         // modal events
         $('#select-artworks').click(function(){
             currentTab = 0;
@@ -133,26 +162,26 @@
 
         let artworks = {}
         let augmenteds = {}
+        selected_artworks = "{{ selected_artworks|default('', true) }}";
+        selected_objects = "{{ selected_objects|default('', true) }}";
 
-        {% if selected_artworks %}
-            "{{selected_artworks}}".split(",").forEach(function(id){
-                artworks[id] = id
-                $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
-            })
-        {% endif %}
-
-        {% if selected_objects %}
-            "{{selected_objects}}".split(",").forEach(function(id){
+        function update_selected_items(){
+            selected_artworks.split(",").forEach(function(id){
+                    artworks[id] = id
+                    $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
+            });
+            selected_objects.split(",").forEach(function(id){
                 augmenteds[id] = id
                 $("#object-"+id).css("border-bottom","3px solid #a6a6a6");
-            })
-        {% endif %}
+            });
+        }
+        update_selected_items();
 
         function isSelected(item) {
             return item.css('border-bottom-style') != "none";
         }
-
-        $('.repository-item').click(function(){
+        function enable_selection(){
+            $('.repository-item').click(function(){
             let item = $(this).attr('id');
             let item_type = item.split('-')[0];
             let item_id = item.split('-')[1];
@@ -185,6 +214,9 @@
             artworks_input.val(selected_artworks);
             objects_input.val(selected_objects);
         });
+        }
+        enable_selection();
+        
         </script>
     </section>
 {% endblock %}

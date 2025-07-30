@@ -16,7 +16,7 @@ from core.forms import (
     UploadObjectForm,
 )
 from core.glb_thumbnail_generator import generate_thumbnail
-from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, ObjectExtensions
+from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
 from core.utils import generate_uuid_name
 from users.models import Profile
 
@@ -238,70 +238,58 @@ def edit_object(request):
     )
 
 
-def get_element(request, form_class, form_type, source, author, existent_element):
-    element = None
+def _handle_artwork_form(request, user_profile, artwork_instance=None):
+    """Helper function to handle artwork form processing for both create and edit operations."""
+    is_edit = artwork_instance is not None
 
-    if source and author:
-        instance = form_type(source=source, author=author)
-        element = form_class(instance=instance).save(commit=False)
-        element.save()
-    elif existent_element:
-        qs = form_type.objects.filter(id=existent_element)
-        if qs:
-            element = qs[0]
-            element.owner = request.user.profile
-
-    return element
-
-
-@login_required
-def create_artwork(request):
     if request.method == "POST":
-        form = ArtworkForm(request.POST, request.FILES)
+        form = ArtworkForm(request.POST, request.FILES, instance=artwork_instance)
 
         if form.is_valid():
-            selected_marker = form.cleaned_data.get("selected_marker")
-            selected_object = form.cleaned_data.get("selected_object")
-
-            marker = Marker.objects.get(id=selected_marker) if selected_marker else None
-            augmented = (
-                Object.objects.get(id=selected_object) if selected_object else None
-            )
-
-            if marker and augmented:
-                data = form.cleaned_data
-                Artwork(
-                    author=request.user.profile,
-                    marker=marker,
-                    augmented=augmented,
-                    title=data["title"],
-                    description=data["description"],
-                    scale_x=data["scale"],
-                    scale_y=data["scale"],
-                    position_x=data["position_x"],
-                    position_y=data["position_y"],
-                ).save()
-
-                return redirect("profile")
+            artwork = form.save(commit=False)
+            if not is_edit:
+                artwork.author = user_profile
+            artwork.save()
+            return redirect("profile")
     else:
-        form = ArtworkForm()
+        form = ArtworkForm(instance=artwork_instance)
+    context = _get_artwork_context_data(form, artwork_instance)
+    return render(request, "core/upload-artwork.jinja2", context)
 
+
+def _get_artwork_context_data(form, artwork_instance=None):
+    """Helper function to prepare context data for artwork templates."""
     marker_list = Marker.objects.all().order_by("-created")
     object_list = (
         Object.objects.exclude(file_extension=ObjectExtensions.GLB)
         .all()
         .order_by("-created")
     )
+    paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
+    paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
 
-    return render(
-        request,
-        "core/upload-artwork.jinja2",
-        {
-            "form": form,
-            "marker_list": marker_list,
-            "object_list": object_list,
-        },
-    )
+    context = {
+        "form": form,
+        "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
+        "object_list": object_list[: settings.MODAL_PAGE_SIZE],
+        "total_marker_pages": paginator_marker.num_pages,
+        "total_object_pages": paginator_object.num_pages,
+    }
+
+    if artwork_instance:
+        context.update(
+            {
+                "selected_marker": artwork_instance.marker.id,
+                "selected_object": artwork_instance.augmented.id,
+            }
+        )
+
+    return context
+
+
+@login_required
+def create_artwork(request):
+    return _handle_artwork_form(request, request.user.profile)
 
 
 @login_required
@@ -311,66 +299,11 @@ def edit_artwork(request):
         model = Artwork.objects.get(id=index)
     except Artwork.DoesNotExist:
         raise Http404
+
     if model.author != Profile.objects.get(user=request.user):
         raise Http404
 
-    if request.method == "POST":
-        form = ArtworkForm(request.POST, request.FILES)
-
-        form.full_clean()
-        if form.is_valid():
-            selected_marker = form.cleaned_data.get("selected_marker")
-            selected_object = form.cleaned_data.get("selected_object")
-
-            marker = Marker.objects.get(id=selected_marker) if selected_marker else None
-            augmented = (
-                Object.objects.get(id=selected_object) if selected_object else None
-            )
-            data = form.cleaned_data
-            model_data = {
-                "marker": marker,
-                "augmented": augmented,
-                "title": data["title"],
-                "description": data["description"],
-                "scale_x": data["scale"],
-                "scale_y": data["scale"],
-                "position_x": data["position_x"],
-                "position_y": data["position_y"],
-            }
-            Artwork.objects.filter(id=model.id).update(**model_data)
-            return redirect("profile")
-
-    model = model
-    model_data = {
-        "marker": model.marker,
-        "augmented": model.augmented,
-        "title": model.title,
-        "description": model.description,
-        "selected_marker": model.marker.id,
-        "selected_object": model.augmented.id,
-        "scale": model.scale_x,
-        "position_x": model.position_x,
-        "position_y": model.position_y,
-    }
-
-    marker_list = Marker.objects.all().order_by("-created")
-    object_list = (
-        Object.objects.exclude(file_extension=ObjectExtensions.GLB)
-        .all()
-        .order_by("-created")
-    )
-
-    return render(
-        request,
-        "core/upload-artwork.jinja2",
-        {
-            "form": ArtworkForm(initial=model_data),
-            "marker_list": marker_list,
-            "object_list": object_list,
-            "selected_marker": model.marker.id,
-            "selected_object": model.augmented.id,
-        },
-    )
+    return _handle_artwork_form(request, request.user.profile, model)
 
 
 @require_http_methods(["GET"])
@@ -383,54 +316,91 @@ def artwork_preview(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
+def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
+    """Helper function to handle exhibit form processing for both create and edit operations."""
+    is_edit = exhibit_instance is not None
+
+    if request.method == "POST":
+        form = ExhibitForm(request.POST, instance=exhibit_instance)
+        form.full_clean()
+
+        if form.is_valid():
+            exhibit = form.save(commit=False)
+            exhibit.owner = user_profile
+            form.save()
+            return redirect("profile")
+        else:
+            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+            return render(request, "core/exhibit_create.jinja2", context)
+    else:
+        form = ExhibitForm(instance=exhibit_instance)
+        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+        return render(request, "core/exhibit_create.jinja2", context)
+
+
+def _get_exhibit_context_data(user_profile, form, edit=False):
+    """Helper method to prepare context data for exhibit templates."""
+    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
+    objects = Object.objects.all().order_by("-created")
+    paginator = Paginator(objects, settings.MODAL_PAGE_SIZE)
+    context = {
+        "form": form,
+        "artworks": artworks,
+        "objects": objects[: settings.MODAL_PAGE_SIZE],
+        "total_pages": paginator.num_pages,
+    }
+
+    if edit:
+        selected_artworks = ",".join(
+            str(artwork.id) for artwork in form.instance.artworks.all()
+        )
+        selected_objects = ",".join(
+            str(augmented.id) for augmented in form.instance.augmenteds.all()
+        )
+        context.update(
+            {
+                "selected_artworks": selected_artworks,
+                "selected_objects": selected_objects,
+                "edit": True,
+            }
+        )
+
+    return context
+
+
+@login_required
+def get_element(request):
+    if request.htmx:
+        page = int(request.GET.get("page", "1"))
+        match element_type := request.GET.get("element_type"):
+            case "object":
+                qs = Object.objects.all().order_by("-created")
+                if request.GET.get("exclude_glb", "false") == "true":
+                    qs = qs.exclude(file_extension=ObjectExtensions.GLB)
+            case "marker":
+                qs = Marker.objects.all().order_by("-created")
+            case _:
+                raise Http404("Invalid element type")
+
+        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
+        if page > paginator.num_pages:
+            page = paginator.num_pages
+
+        return render(
+            request,
+            "core/components/item-list.jinja2",
+            {
+                "repository_list": paginator.get_page(page),
+                "element_type": element_type,
+                "htmx": "false",
+            },
+        )
+    raise Http404
+
+
 @login_required
 def create_exhibit(request):
-    if request.method == "POST":
-        form = ExhibitForm(request.POST)
-        if form.is_valid():
-            selected_artworks = form.cleaned_data.get("artworks")
-            selected_augmenteds = form.cleaned_data.get("augmenteds")
-            if selected_artworks == "":
-                selected_artworks = []
-            else:
-                selected_artworks = selected_artworks.split(",")
-            if selected_augmenteds == "":
-                selected_augmenteds = []
-            else:
-                selected_augmenteds = selected_augmenteds.split(",")
-
-            artwork_ids = selected_artworks
-            augmenteds_ids = selected_augmenteds
-            artworks = Artwork.objects.filter(id__in=artwork_ids).order_by("-id")
-            augmenteds = Object.objects.filter(id__in=augmenteds_ids).order_by("-id")
-            exhibit_type = ExhibitTypes.MR if len(augmenteds) > 0 else ExhibitTypes.AR
-            exhibit = Exhibit(
-                owner=request.user.profile,
-                name=form.cleaned_data["name"],
-                slug=form.cleaned_data["slug"],
-                exhibit_type=exhibit_type,
-            )
-
-            exhibit.save()
-            exhibit.artworks.set(artworks)
-            exhibit.augmenteds.set(augmenteds)
-
-            return redirect("profile")
-    else:
-        form = ExhibitForm()
-
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-    objects = Object.objects.all().order_by("-created")
-
-    return render(
-        request,
-        "core/exhibit_create.jinja2",
-        {
-            "form": form,
-            "artworks": artworks,
-            "objects": objects,
-        },
-    )
+    return _handle_exhibit_form(request, request.user.profile)
 
 
 @login_required
@@ -444,100 +414,7 @@ def edit_exhibit(request):
     if model.owner != Profile.objects.get(user=request.user):
         raise Http404
 
-    if request.method == "POST":
-        form = ExhibitForm(request.POST, exhibit_id=index)
-
-        form.full_clean()
-        if form.is_valid():
-            selected_artworks = form.cleaned_data.get("artworks")
-            selected_augmenteds = form.cleaned_data.get("augmenteds")
-            if selected_artworks == "":
-                selected_artworks = []
-            else:
-                selected_artworks = selected_artworks.split(",")
-            if selected_augmenteds == "":
-                selected_augmenteds = []
-            else:
-                selected_augmenteds = selected_augmenteds.split(",")
-
-            artwork_ids = selected_artworks
-            augmenteds_ids = selected_augmenteds
-            artworks = Artwork.objects.filter(id__in=artwork_ids).order_by("-id")
-            augmenteds = Object.objects.filter(id__in=augmenteds_ids).order_by("-id")
-            exhibit_type = ExhibitTypes.MR if len(augmenteds) > 0 else ExhibitTypes.AR
-
-            model_data = {
-                "name": form.cleaned_data["name"],
-                "slug": form.cleaned_data["slug"],
-                "exhibit_type": exhibit_type,
-            }
-            Exhibit.objects.filter(id=model.id).update(**model_data)
-            model.artworks.set(artworks)
-            model.augmenteds.set(augmenteds)
-
-            return redirect("profile")
-        else:
-            # Form is not valid, render with errors
-            model_artworks = ""
-            for artwork in model.artworks.all():
-                model_artworks += str(artwork.id) + ","
-
-            model_artworks = model_artworks[:-1]
-
-            artworks = Artwork.objects.filter(author=request.user.profile).order_by(
-                "-id"
-            )
-            objects = Object.objects.all().order_by("-created")
-            return render(
-                request,
-                "core/exhibit_create.jinja2",
-                {
-                    "form": form,  # Pass the form with errors
-                    "artworks": artworks,
-                    "objects": objects,
-                    "selected_artworks": model_artworks,
-                    "edit": True,
-                },
-            )
-
-    # GET request - prepare initial form data
-    model_artworks = ""
-    # Artworks IDs string separated by commas, without extra comma at the end
-    artworks = model.artworks.all()
-    for i in range(len(artworks)):
-        if i == 0:
-            model_artworks += str(artworks[i].id)
-        else:
-            model_artworks += "," + str(artworks[i].id)
-    model_augmenteds = ""
-    augmenteds = model.augmenteds.all()
-    for i in range(len(augmenteds)):
-        if i == 0:
-            model_augmenteds += str(augmenteds[i].id)
-        else:
-            model_augmenteds += "," + str(augmenteds[i].id)
-
-    model_data = {
-        "name": model.name,
-        "slug": model.slug,
-        "artworks": model_artworks,
-        "augmenteds": model_augmenteds,
-    }
-
-    artworks = Artwork.objects.filter(author=request.user.profile).order_by("-id")
-    augmenteds = Object.objects.all().order_by("-created")
-    return render(
-        request,
-        "core/exhibit_create.jinja2",
-        {
-            "form": ExhibitForm(initial=model_data, exhibit_id=index),
-            "artworks": artworks,
-            "objects": augmenteds,
-            "selected_artworks": model_artworks,
-            "selected_objects": model_augmenteds,
-            "edit": True,
-        },
-    )
+    return _handle_exhibit_form(request, request.user.profile, model)
 
 
 @require_http_methods(["GET"])

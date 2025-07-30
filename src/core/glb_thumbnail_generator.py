@@ -121,7 +121,7 @@ def generate_thumbnail_from_bytes(obj_bytes) -> Image:
 
     # Set up renderer
     renderer = pyrender.OffscreenRenderer(*size)
-    color, depth = renderer.render(pyrender_scene)
+    color, _ = renderer.render(pyrender_scene)
 
     # Convert to PIL Image and save
     image = Image.fromarray(color, "RGB")

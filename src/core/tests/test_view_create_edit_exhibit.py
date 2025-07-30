@@ -96,14 +96,17 @@ class TestCreateExhibitView(TestCase):
         response = self.client.post(url, data)
         # Should not redirect, should show form again
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "contain spaces or special characters")
+        self.assertContains(
+            response,
+            "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens",
+        )
 
         data["slug"] = "invalid_slug!"  # Invalid slug with special character
         response = self.client.post(url, data)
         # Should not redirect, should show form again
         assert response.status_code == 200
         assert (
-            "contain spaces or special characters"
+            "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens"
             in response.context["form"].errors["slug"][0]
         )
         assert Exhibit.objects.count() == 0  # No exhibit should be created
@@ -305,7 +308,7 @@ class TestEditExhibitView(TestCase):
         response = self.client.post(url, data)
         assert response.status_code == 200
         assert (
-            "contain spaces or special characters"
+            "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
             in response.context["form"].errors["slug"][0]
         )
         self.exhibit.refresh_from_db()

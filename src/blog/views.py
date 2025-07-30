@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 
 from blog.models import Category, Clipping, Post, PostStatus
@@ -7,21 +8,25 @@ PAGE_SIZE = 4
 
 
 def blog_index(request):
-    actual_page_number = int(request.GET.get("page", "1"))
-    initial_post = 0 + (actual_page_number - 1) * PAGE_SIZE
-    last_post = PAGE_SIZE * actual_page_number
-    posts = (
+    page_number = int(request.GET.get("page", "1"))
+    paginator = Paginator(
         Post.objects.prefetch_related("categories")
         .filter(status=PostStatus.PUBLISHED)
-        .all()
-        .order_by("-created")[initial_post:last_post]
+        .order_by("-created"),
+        PAGE_SIZE,
     )
+    if page_number < 1:
+        page_number = 1
+
+    page = paginator.get_page(page_number)
+    posts = page.object_list
 
     context = {
-        "next_page_number": actual_page_number + 1,
+        "next_page_number": page_number + 1,
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
-        "page_size": PAGE_SIZE,
+        "last_page": page.has_previous(),
+        "total_pages": paginator.num_pages,
         "page_url": "/memories/",
         "blog_categories": Category.objects.all(),
     }
@@ -57,7 +62,7 @@ def blog_category(request, category):
     return render(request, "blog/category.jinja2", context)
 
 
-def blog_detail(request, pk):
+def post_detail(request, pk):
     post = Post.objects.prefetch_related("images", "categories").get(pk=pk)
 
     context = {"post": post, "images": post.images.all()}
