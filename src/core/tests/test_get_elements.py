@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from core.models import ObjectExtensions
 from core.tests.factory import MarkerFactory, ObjectFactory
 
 
@@ -22,10 +23,16 @@ class TestHTMXGetElements(TestCase):
             marker = MarkerFactory.create(title=f"Test Marker {i}", owner=self.profile)
             self.markers.append(marker)
 
-        # Create test objects
+        # Create test objects with mixed file extensions
         self.objects = []
         for i in range(12):  # Create more than MODAL_PAGE_SIZE to test pagination
-            obj = ObjectFactory.create(title=f"Test Object {i}", owner=self.profile)
+            # Create some GLB and some non-GLB objects
+            file_extension = ObjectExtensions.GLB
+            obj = ObjectFactory.create(
+                title=f"Test Object {i}",
+                owner=self.profile,
+                file_extension=file_extension,
+            )
             self.objects.append(obj)
 
     def test_unauthenticated_request_does_not_work(self):
@@ -205,3 +212,104 @@ class TestHTMXGetElements(TestCase):
             self.assertGreaterEqual(
                 repository_list[i].created, repository_list[i + 1].created
             )
+
+    def test_exclude_glb_true_filters_glb_objects(self):
+        """Test that exclude_glb=true filters out GLB objects"""
+        self.client.login(username="testuser", password="testpass123")
+
+        response = self.client.get(
+            reverse("get-element"),
+            {"element_type": "object", "page": "1", "exclude_glb": "true"},
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        repository_list = response.context["repository_list"]
+
+        # Verify no GLB objects are returned
+        for obj in repository_list:
+            self.assertNotEqual(obj.file_extension, ObjectExtensions.GLB)
+
+    def test_exclude_glb_false_includes_glb_objects(self):
+        """Test that exclude_glb=false includes GLB objects"""
+        self.client.login(username="testuser", password="testpass123")
+
+        response = self.client.get(
+            reverse("get-element"),
+            {"element_type": "object", "page": "1", "exclude_glb": "false"},
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        repository_list = response.context["repository_list"]
+
+        # Verify GLB objects are included
+        has_glb = any(
+            obj.file_extension == ObjectExtensions.GLB for obj in repository_list
+        )
+        self.assertTrue(
+            has_glb, "GLB objects should be included when exclude_glb=false"
+        )
+
+    def test_exclude_glb_default_includes_glb_objects(self):
+        """Test that when exclude_glb is not provided, GLB objects are included"""
+        self.client.login(username="testuser", password="testpass123")
+
+        response = self.client.get(
+            reverse("get-element"),
+            {"element_type": "object", "page": "1"},
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        repository_list = response.context["repository_list"]
+
+        # Verify GLB objects are included by default
+        has_glb = any(
+            obj.file_extension == ObjectExtensions.GLB for obj in repository_list
+        )
+        self.assertTrue(has_glb, "GLB objects should be included by default")
+
+    def test_exclude_glb_pagination_works_correctly(self):
+        """Test that pagination works correctly when excluding GLB objects"""
+        self.client.login(username="testuser", password="testpass123")
+
+        with patch.object(settings, "MODAL_PAGE_SIZE", 5):
+            response = self.client.get(
+                reverse("get-element"),
+                {"element_type": "object", "page": "1", "exclude_glb": "true"},
+                HTTP_HX_REQUEST="true",
+            )
+
+        self.assertEqual(response.status_code, 200)
+        repository_list = response.context["repository_list"]
+
+        # Should have 5 or fewer non-GLB objects
+        self.assertLessEqual(len(repository_list), 5)
+        # Verify no GLB objects are returned
+        for obj in repository_list:
+            self.assertNotEqual(obj.file_extension, ObjectExtensions.GLB)
+
+    def test_exclude_glb_count_accuracy(self):
+        """Test that the correct number of objects are returned when excluding GLB"""
+        self.client.login(username="testuser", password="testpass123")
+
+        # Count non-GLB objects we created (8 out of 12 should be non-GLB based on our setup)
+        expected_non_glb_count = sum(
+            1 for obj in self.objects if obj.file_extension != ObjectExtensions.GLB
+        )
+
+        with patch.object(
+            settings, "MODAL_PAGE_SIZE", 20
+        ):  # Large page size to get all
+            response = self.client.get(
+                reverse("get-element"),
+                {"element_type": "object", "page": "1", "exclude_glb": "true"},
+                HTTP_HX_REQUEST="true",
+            )
+
+        self.assertEqual(response.status_code, 200)
+        repository_list = response.context["repository_list"]
+
+        # Should return exactly the number of non-GLB objects
+        self.assertEqual(len(repository_list), expected_non_glb_count)

@@ -375,6 +375,8 @@ def get_element(request):
         match element_type := request.GET.get("element_type"):
             case "object":
                 qs = Object.objects.all().order_by("-created")
+                if request.GET.get("exclude_glb", "false") == "true":
+                    qs = qs.exclude(file_extension=ObjectExtensions.GLB)
             case "marker":
                 qs = Marker.objects.all().order_by("-created")
             case _:

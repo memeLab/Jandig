@@ -61,8 +61,8 @@
                     
                     <h4 class="modal-title">{{ _('Select Object') }}</h4>
                     <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
-                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
                     </div>
                     {% with repository_list = object_list, element_type = 'object', htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
