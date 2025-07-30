@@ -1,7 +1,7 @@
 {% for post in posts %}
     <div class="post">
-        <h3><a href="{{ url('blog_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
-        <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('blog_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
+        <h3><a href="{{ url('post_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
+        <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
     </div>
 {% endfor %}
 {% if posts.count() == page_size %}
