@@ -59,6 +59,7 @@ addopts="-n4"
 
 [tool.coverage.run]
 relative_files=true
+omit=["manage.py","asgi.py","wsgi.py","src/core/migrations/*.py", "src/users/migrations/*.py","src/blog/migrations/*.py", "src/ui_tests/*"]
 
 [tool.ruff]
 exclude = [
