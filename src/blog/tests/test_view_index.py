@@ -27,7 +27,7 @@ class TestBlogIndex(TestCase):
         assert posts[0].title == "Test Post 9"
         assert posts[-1].title == "Test Post 6"
         assert response.context["next_page_number"] == 2
-        assert response.context["page_size"] == PAGE_SIZE
+        assert response.context["total_pages"] == 6
         assert response.context["page_url"] == "/memories/"
         assert response.context["blog_categories"].count() > 0
 
@@ -53,7 +53,7 @@ class TestBlogIndex(TestCase):
         assert posts[0].title == "Test Post 5"
         assert posts[-1].title == "Test Post 2"
         assert response.context["next_page_number"] == 3
-        assert response.context["page_size"] == PAGE_SIZE
+        assert response.context["total_pages"] == 6
         assert response.context["page_url"] == "/memories/"
         assert response.context["blog_categories"].count() > 0
 

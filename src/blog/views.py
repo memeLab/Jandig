@@ -17,17 +17,16 @@ def blog_index(request):
     )
     if page_number < 1:
         page_number = 1
-    if page_number > paginator.num_pages:
-        page_number = paginator.num_pages
 
     page = paginator.get_page(page_number)
     posts = page.object_list
 
     context = {
-        "next_page_number": page_number + 1 if page.has_next() else page_number,
+        "next_page_number": page_number + 1,
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
-        "page_size": PAGE_SIZE,
+        "last_page": page.has_previous(),
+        "total_pages": paginator.num_pages,
         "page_url": "/memories/",
         "blog_categories": Category.objects.all(),
     }

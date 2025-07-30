@@ -4,6 +4,6 @@
         <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
     </div>
 {% endfor %}
-{% if posts.count() == page_size %}
+{% if next_page_number <= total_pages %}
     <button hx-get="{{ page_url }}?page={{ next_page_number }}" hx-trigger="click" hx-swap="outerHTML"> {{_("See more")}}</button>
 {% endif %}
