@@ -7,6 +7,7 @@ from core.tests.factory import (
     MarkerFactory,
     ObjectFactory,
 )
+from core.tests.utils import get_example_object
 from users.tests.factory import ProfileFactory, UserFactory
 
 
@@ -184,7 +185,8 @@ class TestEditArtworkView(TestCase):
         assert form.fields["selected_marker"].initial == self.marker
         assert form.fields["selected_object"].initial == self.object
 
-    def test_edit_artwork_success(self):
+    def test_edit_artwork_success_gif(self):
+        object = ObjectFactory(source=get_example_object("peixe.gif"))
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
         data = {
             "title": "Edited Artwork",
@@ -193,7 +195,7 @@ class TestEditArtworkView(TestCase):
             "position_x": 2,
             "position_y": 2,
             "selected_marker": self.marker.id,
-            "selected_object": self.object.id,
+            "selected_object": object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after editing
@@ -209,7 +211,94 @@ class TestEditArtworkView(TestCase):
         assert artwork.position_x == 2
         assert artwork.position_y == 2
         assert artwork.marker == self.marker
-        assert artwork.augmented == self.object
+        assert artwork.augmented == object
+
+    def test_edit_artwork_success_mp4(self):
+        object = ObjectFactory(source=get_example_object("belotur.mp4"))
+        url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 2.0,
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after editing
+        assert response.status_code == 302
+        self.assertRedirects(response, reverse("profile"))
+
+        # Artwork should be updated
+        artwork = Artwork.objects.get(id=self.artwork.id)
+        assert artwork.title == "Edited Artwork"
+        assert artwork.description == "Edited Description"
+        assert artwork.scale_x == 2.0
+        assert artwork.scale_y == 2.0
+        assert artwork.position_x == 2
+        assert artwork.position_y == 2
+        assert artwork.marker == self.marker
+        assert artwork.augmented == object
+
+    def test_edit_artwork_with_glb_fails(self):
+        object = ObjectFactory(source=get_example_object("werewolf.glb"))
+        url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 2.0,
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after editing
+        assert response.status_code == 200
+        assert "selected_object" in response.context["form"].errors
+        assert response.context["form"].errors["selected_object"] == [
+            "Select a valid choice. That choice is not one of the available choices."
+        ]
+
+        # Artwork should not be updated
+        artwork = Artwork.objects.get(id=self.artwork.id)
+        assert artwork.title == self.artwork.title
+        assert artwork.description == self.artwork.description
+        assert artwork.scale_x == self.artwork.scale_x
+        assert artwork.scale_y == self.artwork.scale_y
+        assert artwork.position_x == self.artwork.position_x
+        assert artwork.position_y == self.artwork.position_y
+        assert artwork.marker == self.artwork.marker
+        assert artwork.augmented == self.artwork.augmented
+
+    def test_edit_artwork_success_webm(self):
+        object = ObjectFactory(source=get_example_object("escher.webm"))
+        url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        data = {
+            "title": "Edited Artwork",
+            "description": "Edited Description",
+            "scale": 2.0,
+            "position_x": 2,
+            "position_y": 2,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after editing
+        assert response.status_code == 302
+        self.assertRedirects(response, reverse("profile"))
+
+        # Artwork should be updated
+        artwork = Artwork.objects.get(id=self.artwork.id)
+        assert artwork.title == "Edited Artwork"
+        assert artwork.description == "Edited Description"
+        assert artwork.scale_x == 2.0
+        assert artwork.scale_y == 2.0
+        assert artwork.position_x == 2
+        assert artwork.position_y == 2
+        assert artwork.marker == self.marker
+        assert artwork.augmented == object
 
     def test_edit_artwork_invalid_data(self):
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
