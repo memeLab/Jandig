@@ -19,7 +19,8 @@ class TestCreateArtworkView(TestCase):
         self.marker = MarkerFactory(author=self.profile)
         self.object = ObjectFactory(author=self.profile)
 
-    def test_create_artwork_success(self):
+    def test_create_artwork_success_gif(self):
+        object = ObjectFactory(source=get_example_object("peixe.gif"))
         url = reverse("create-artwork")
         data = {
             "title": "My Test Artwork",
@@ -28,7 +29,7 @@ class TestCreateArtworkView(TestCase):
             "position_x": 1,
             "position_y": 1,
             "selected_marker": self.marker.id,
-            "selected_object": self.object.id,
+            "selected_object": object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after creation
@@ -43,8 +44,86 @@ class TestCreateArtworkView(TestCase):
         assert artwork.position_x == 1
         assert artwork.position_y == 1
         assert artwork.marker == self.marker
-        assert artwork.augmented == self.object
+        assert artwork.augmented == object
         assert artwork.author == self.profile
+
+    def test_create_artwork_success_mp4(self):
+        object = ObjectFactory(source=get_example_object("belotur.mp4"))
+        url = reverse("create-artwork")
+        data = {
+            "title": "My Test Artwork",
+            "description": "This is a test artwork.",
+            "scale": 1.5,
+            "position_x": 1,
+            "position_y": 1,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after creation
+        assert response.status_code == 302
+        # Artwork should be created
+        assert Artwork.objects.count() == 1
+        artwork = Artwork.objects.first()
+        assert artwork.title == "My Test Artwork"
+        assert artwork.description == "This is a test artwork."
+        assert artwork.scale_x == 1.5
+        assert artwork.scale_y == 1.5
+        assert artwork.position_x == 1
+        assert artwork.position_y == 1
+        assert artwork.marker == self.marker
+        assert artwork.augmented == object
+        assert artwork.author == self.profile
+
+    def test_create_artwork_success_webm(self):
+        object = ObjectFactory(source=get_example_object("escher.webm"))
+        url = reverse("create-artwork")
+        data = {
+            "title": "My Test Artwork",
+            "description": "This is a test artwork.",
+            "scale": 1.5,
+            "position_x": 1,
+            "position_y": 1,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should redirect to profile after creation
+        assert response.status_code == 302
+        # Artwork should be created
+        assert Artwork.objects.count() == 1
+        artwork = Artwork.objects.first()
+        assert artwork.title == "My Test Artwork"
+        assert artwork.description == "This is a test artwork."
+        assert artwork.scale_x == 1.5
+        assert artwork.scale_y == 1.5
+        assert artwork.position_x == 1
+        assert artwork.position_y == 1
+        assert artwork.marker == self.marker
+        assert artwork.augmented == object
+        assert artwork.author == self.profile
+
+    def test_create_artwork_with_glb_fails(self):
+        object = ObjectFactory(source=get_example_object("werewolf.glb"))
+        url = reverse("create-artwork")
+        data = {
+            "title": "My Test Artwork",
+            "description": "This is a test artwork.",
+            "scale": 1.5,
+            "position_x": 1,
+            "position_y": 1,
+            "selected_marker": self.marker.id,
+            "selected_object": object.id,
+        }
+        response = self.client.post(url, data)
+        # Should not redirect, should show form again
+        assert response.status_code == 200
+        assert "selected_object" in response.context["form"].errors
+        assert response.context["form"].errors["selected_object"] == [
+            "Select a valid choice. That choice is not one of the available choices."
+        ]
+        # No artwork should be created
+        assert Artwork.objects.count() == 0
 
     def test_create_artwork_requires_login(self):
         self.client.logout()
