@@ -55,7 +55,7 @@ urlpatterns = [
     re_path(
         r"^(me|ME)\/?$",
         me_hotsite,
-        name="Memorias-Extendidas",
+        name="mitologia-extendida",
     ),
     path("related-content", related_content, name="related-content"),
     path("sw.js", service_worker, name="sw"),
@@ -66,8 +66,8 @@ urlpatterns = [
         see_all,
         name="see_all",
     ),
-    path("robots.txt", robots_txt),
-    path("favicon.ico", favicon),
-    path(settings.HEALTH_CHECK_URL, health_check),
+    path("robots.txt", robots_txt, name="robots_txt"),
+    path("favicon.ico", favicon, name="favicon"),
+    path(settings.HEALTH_CHECK_URL, health_check, name="health_check"),
     path("<slug:slug>/", exhibit, name="exhibit"),
 ]
