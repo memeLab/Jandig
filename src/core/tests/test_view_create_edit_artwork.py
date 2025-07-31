@@ -199,6 +199,22 @@ class TestCreateArtworkView(TestCase):
         assert "form" in response.content.decode()
         assert Artwork.objects.count() == 0  # No artwork should be created
 
+    def test_create_artwork_comes_populated_correctly(self):
+        url = reverse("create-artwork")
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert "form" in response.context
+        form = response.context["form"]
+        assert form.fields["title"].initial is None
+        assert form.fields["description"].initial is None
+        assert form.fields["scale"].initial == 1.0
+        assert form.fields["position_x"].initial == 0
+        assert form.fields["position_y"].initial == 0
+        assert form.fields["selected_marker"].initial is None
+        assert form.fields["selected_object"].initial is None
+        assert "selected_object" not in response.context
+        assert "selected_marker" not in response.context
+
 
 class TestEditArtworkView(TestCase):
     def setUp(self):

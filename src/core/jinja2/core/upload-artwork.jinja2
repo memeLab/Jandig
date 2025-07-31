@@ -242,8 +242,8 @@
                 update_selected_items();
                 enable_selection();
             });
-            selected_marker = {{selected_marker}};
-            selected_object = {{selected_object}};
+            selected_marker = "{{ selected_marker|default('', true) }}";
+            selected_object = "{{ selected_object|default('', true) }}";
             function update_selected_items(){
                 id_marker = "#marker-" + selected_marker;
                 $('#existent-marker > input').val(selected_marker);
