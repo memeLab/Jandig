@@ -6,14 +6,13 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
-from django.urls import reverse
 from django.utils.html import format_html
 
+from core.utils import get_admin_url
 from users.models import Profile
 
 admin.site.unregister(User)
 
-ADMIN_URL = reverse("admin:index")
 HTML_LINK = '<a href="{}">{}</a>'
 
 
@@ -98,7 +97,7 @@ class ProfileAdmin(admin.ModelAdmin):
             return obj.artworks_count
         artworks_list = ",".join([str(artwork.id) for artwork in obj.artworks.all()])
 
-        link = ADMIN_URL + "core/artwork/?id__in=" + str(artworks_list)
+        link = get_admin_url() + "core/artwork/?id__in=" + str(artworks_list)
         return format_html(HTML_LINK, link, obj.artworks_count)
 
     artworks_count.admin_order_field = "_artworks_count"
@@ -109,7 +108,7 @@ class ProfileAdmin(admin.ModelAdmin):
             return obj.markers_count
         markers_list = ",".join([str(marker.id) for marker in obj.markers.all()])
 
-        link = ADMIN_URL + "core/marker/?id__in=" + str(markers_list)
+        link = get_admin_url() + "core/marker/?id__in=" + str(markers_list)
         return format_html(HTML_LINK, link, obj.markers_count)
 
     markers_count.admin_order_field = "_markers_count"
@@ -122,7 +121,7 @@ class ProfileAdmin(admin.ModelAdmin):
             [str(ar_object.id) for ar_object in obj.ar_objects.all()]
         )
 
-        link = ADMIN_URL + "core/object/?id__in=" + str(ar_objects_list)
+        link = get_admin_url() + "core/object/?id__in=" + str(ar_objects_list)
         return format_html(HTML_LINK, link, obj.ar_objects_count)
 
     ar_objects_count.admin_order_field = "_ar_objects_count"
@@ -133,7 +132,7 @@ class ProfileAdmin(admin.ModelAdmin):
             return obj.exhibits_count
         exhibits_list = ",".join([str(exhibit.id) for exhibit in obj.exhibits.all()])
 
-        link = ADMIN_URL + "core/exhibit/?id__in=" + str(exhibits_list)
+        link = get_admin_url() + "core/exhibit/?id__in=" + str(exhibits_list)
         return format_html(HTML_LINK, link, obj.exhibits_count)
 
     exhibits_count.admin_order_field = "_exhibits_count"
@@ -150,7 +149,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def user_link(self, obj):
         """Link to related User"""
-        link = ADMIN_URL + "auth/user/?id=" + str(obj.user.id)
+        link = get_admin_url() + "auth/user/?id=" + str(obj.user.id)
         return format_html(HTML_LINK, link, obj.user.username)
 
 
@@ -172,5 +171,5 @@ class JandigUserAdmin(UserAdmin):
 
     def profile_link(self, obj):
         """Link to related Profile"""
-        link = ADMIN_URL + "users/profile/?id=" + str(obj.profile.id)
+        link = get_admin_url() + "users/profile/?id=" + str(obj.profile.id)
         return format_html(HTML_LINK, link, obj.username)

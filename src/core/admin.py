@@ -4,19 +4,21 @@ from django.contrib import admin
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db.models import Count
-from django.urls import reverse
 from django.utils.html import format_html
 from PIL import Image
 from pymarker import generate_patt_from_image, remove_borders_from_image
 
 from core.glb_thumbnail_generator import generate_thumbnail
 from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
-from core.utils import generate_uuid_name
+from core.utils import generate_uuid_name, get_admin_url
 from core.views.api_views import MarkerGeneratorAPIView
 
-ADMIN_URL = reverse("admin:index")
 HTML_LINK = '<a href="{}">{}</a>'
-USER_PROFILE_PATH = ADMIN_URL + "users/profile/?id={}"
+
+
+def get_user_profile_path():
+    """Get the user profile path"""
+    return get_admin_url() + "users/profile/?id={}"
 
 
 def create_link_to_related_artworks(obj, artworks_list):
@@ -25,7 +27,7 @@ def create_link_to_related_artworks(obj, artworks_list):
         return obj._artworks_count
     artworks_list = ",".join([str(artwork.id) for artwork in artworks_list])
 
-    link = ADMIN_URL + "core/artwork/?id__in=" + str(artworks_list)
+    link = get_admin_url() + "core/artwork/?id__in=" + str(artworks_list)
     return format_html(HTML_LINK, link, obj._artworks_count)
 
 
@@ -81,7 +83,7 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
 
     def _owner(self, obj):
         """Display the owner of the object"""
-        link = USER_PROFILE_PATH.format(obj.owner.id)
+        link = get_user_profile_path().format(obj.owner.id)
         return format_html(HTML_LINK, link, obj.owner.user.username)
 
 
@@ -224,7 +226,7 @@ class ArtworkAdmin(admin.ModelAdmin):
             return obj._exhibits_count
         exhibit_list = ",".join([str(exhibit.id) for exhibit in obj.exhibits.all()])
 
-        link = ADMIN_URL + "core/exhibit/?id__in=" + str(exhibit_list)
+        link = get_admin_url() + "core/exhibit/?id__in=" + str(exhibit_list)
         return format_html(HTML_LINK, link, obj._exhibits_count)
 
     exhibits_count.admin_order_field = "_exhibits_count"
@@ -244,7 +246,7 @@ class ArtworkAdmin(admin.ModelAdmin):
 
     def _author(self, obj):
         """Display the author of the Artwork"""
-        link = USER_PROFILE_PATH.format(obj.author.id)
+        link = get_user_profile_path().format(obj.author.id)
         return format_html(HTML_LINK, link, obj.author.user.username)
 
     def scale(self, obj):
@@ -299,7 +301,7 @@ class ExhibitAdmin(admin.ModelAdmin):
             [str(augmented.id) for augmented in obj.augmenteds.all()]
         )
 
-        link = ADMIN_URL + "core/object/?id__in=" + str(augmenteds_list)
+        link = get_admin_url() + "core/object/?id__in=" + str(augmenteds_list)
         return format_html(HTML_LINK, link, obj._augmenteds_count)
 
     augmenteds_count.short_description = "Augmenteds Count"
@@ -308,5 +310,5 @@ class ExhibitAdmin(admin.ModelAdmin):
 
     def _owner(self, obj):
         """Display the owner of the object"""
-        link = USER_PROFILE_PATH.format(obj.owner.id)
+        link = get_user_profile_path().format(obj.owner.id)
         return format_html(HTML_LINK, link, obj.owner.user.username)
