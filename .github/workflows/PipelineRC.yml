@@ -31,7 +31,6 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          sudo apt update && sudo apt install -y libosmesa6-dev
           export UV_PROJECT_ENVIRONMENT="${pythonLocation}"
           uv sync --only-dev
           export ROOT_DIR=${GITHUB_WORKSPACE}/

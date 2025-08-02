@@ -23,7 +23,6 @@ class TestAuthAPI(TestCase):
         assert response.status_code == 200
         assert data["access"] is not None
         assert data["refresh"] is not None
-        print(data)
         # Access JWT token payload
         payload = data["access"].split(".")[1]
         # Decode the base 64 payload

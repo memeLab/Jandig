@@ -43,7 +43,7 @@
                     </p>
                     
                     <!-- Hidden input for auto-generated thumbnail -->
-                    <input type="file" id="thumbnail-input" name="thumbnail" style="display: none;" accept="image/*">
+                    <input type="file" id="id_thumbnail" name="thumbnail" style="display: none;" accept="image/*">
                     
                     <div class="form-options">
                         <p>
@@ -71,7 +71,6 @@
             $('#author-chk').click(function(){
                 if($(this).prop('checked') == true){
                     let user = "{{ request.user.username }}";
-                    console.log(user);
                     $('#author-field > input').val(user);
                     $('#author-field > input').prop('readonly', true);
                 }else{
@@ -142,7 +141,7 @@
                                 
                                 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
                                 renderer.setSize(600, 600);
-                                renderer.shadowMap.enabled = true;
+                                renderer.shadowMap.enabled = false;
                                 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                                 document.getElementById("content-box").appendChild(renderer.domElement);
                                 document.getElementById("content-box").appendChild(blockquote);
@@ -157,21 +156,9 @@
                                 controls.autoRotate = false;
                                 
                                 // Add lighting
-                                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Brighter ambient light
+                                const ambientLight = new THREE.AmbientLight(0xFFFDD0, 3.5); // Brighter ambient light
                                 scene.add(ambientLight);
-                                
-                                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-                                directionalLight.position.set(1, 1, 1);
-                                directionalLight.castShadow = true;
-                                scene.add(directionalLight);
-                                
-                                const pointLight1 = new THREE.PointLight(0xffffff, 0.8);
-                                pointLight1.position.set(2, 2, 2);
-                                scene.add(pointLight1);
-                                
-                                const pointLight2 = new THREE.PointLight(0xffffff, 0.8);
-                                pointLight2.position.set(-2, 2, 2);
-                                scene.add(pointLight2);
+         
                                 
                                 // Animation variables
                                 let mixer = null;
@@ -222,7 +209,7 @@
                                         
                                         // Scale to fit in view (make it bigger)
                                         const maxDim = Math.max(size.x, size.y, size.z);
-                                        const scale = 1.5 / maxDim; // Make it take up more of the view
+                                        const scale = 5 / maxDim; // Make it take up more of the view
                                         gltf.scene.scale.setScalar(scale);
                                         
                                         // Position camera at optimal distance
@@ -239,7 +226,7 @@
                                         
                                         // Auto-generate thumbnail after model is loaded and positioned
                                         setTimeout(() => {
-                                            generateThumbnail(renderer);
+                                            generateThumbnail(renderer, scene, camera);
                                         }, 1000); // Wait 1 second for the model to be properly positioned
                                     },
                                     function (progress) {
@@ -271,10 +258,10 @@
 
 
             // Function to generate thumbnail from canvas
-            function generateThumbnail(renderer) {
+            function generateThumbnail(renderer, scene, camera) {
                 try {
                     // Render one more frame to ensure everything is properly drawn
-                    renderer.render(renderer.scene || scene, camera);
+                    renderer.render(scene, camera);
                     
                     // Get canvas data as blob
                     renderer.domElement.toBlob(function(blob) {
@@ -290,13 +277,12 @@
                             dt.items.add(thumbnailFile);
                             
                             // Set the file to the hidden input
-                            const thumbnailInput = document.getElementById('thumbnail-input');
+                            const thumbnailInput = document.getElementById('id_thumbnail');
                             thumbnailInput.files = dt.files;
                             
                             console.log('Thumbnail generated successfully:', thumbnailFile);
-                            
-                            // Optional: Show a small preview of the generated thumbnail
-                            showThumbnailPreview(blob);
+
+                            showThumbnailPreview(blob, renderer, scene, camera);
                         }
                     }, 'image/png', 0.8); // PNG format with 80% quality
                 } catch (error) {
@@ -304,17 +290,31 @@
                 }
             }
             
-            // Optional: Function to show thumbnail preview
-            function showThumbnailPreview(blob) {
+            function showThumbnailPreview(blob, renderer, scene, camera) {
+                // Remove any existing thumbnail preview
+                const existingPreview = document.getElementById('thumbnail-preview');
+                if (existingPreview) {
+                    existingPreview.remove();
+                }
                 const thumbnailPreview = document.createElement('div');
-                thumbnailPreview.style.cssText = 'margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px;';
-                thumbnailPreview.innerHTML = '<strong>Auto-generated thumbnail:</strong>';
+                thumbnailPreview.id = 'thumbnail-preview';
+                thumbnailPreview.innerHTML = '<strong style="display: block;">Thumbnail</strong>';
+
+                // Regenerate Button
+                const regenerateButton = document.createElement('button');
+                regenerateButton.type = 'button';
+                regenerateButton.textContent = 'Generate Thumbnail';
                 
+                regenerateButton.onclick = function() {
+                    generateThumbnail(renderer, scene, camera);
+                };
+
                 const thumbnailImg = document.createElement('img');
                 thumbnailImg.src = URL.createObjectURL(blob);
                 thumbnailImg.style.cssText = 'width: 100px; height: 100px; object-fit: cover; margin-left: 10px; border-radius: 3px; border: 1px solid #ddd;';
                 
                 thumbnailPreview.appendChild(thumbnailImg);
+                thumbnailPreview.appendChild(regenerateButton);
                 document.getElementById("content-box").appendChild(thumbnailPreview);
             }
 

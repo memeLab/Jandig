@@ -49,7 +49,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.4")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.5")
 
 
 def traces_sampler(sampling_context):

@@ -8,8 +8,7 @@ from django.utils.html import format_html
 from PIL import Image
 from pymarker import generate_patt_from_image, remove_borders_from_image
 
-from core.glb_thumbnail_generator import generate_thumbnail
-from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
+from core.models import Artwork, Exhibit, Marker, Object
 from core.utils import generate_uuid_name, get_admin_url
 from core.views.api_views import MarkerGeneratorAPIView
 
@@ -160,29 +159,10 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
         return format_html(obj.as_html_thumbnail())
 
 
-@admin.action(description="Generate Thumbnail")
-def generate_glb_thumbnail(modeladmin, request, queryset):
-    """Generate thumbnail for objects."""
-    for obj in queryset:
-        if obj.file_extension == ObjectExtensions.GLB:
-            image = generate_thumbnail(obj)
-            if image:
-                # Save the thumbnail image to the object
-                thumbnail_name = generate_uuid_name() + ".png"
-                blob = BytesIO()
-                image.save(blob, format="PNG")
-
-                obj.thumbnail.save(thumbnail_name, File(blob), save=True)
-            obj.save()
-
-
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + [
         "file_extension",
-    ]
-    actions = [
-        generate_glb_thumbnail,
     ]
     search_fields = ["title", "id"]
     list_filter = ["file_extension"]

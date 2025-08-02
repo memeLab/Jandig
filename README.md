@@ -85,13 +85,6 @@ Jandig ARte server will run at localhost. To test modifications you just need to
 DJANGO_READ_DOT_ENV_FILE=True uv run python src/manage.py runserver
 ```
 
-To work correctly with GLB files using UV, Jandig needs the libosmesa6 installed on the host system to render 3D objects' thumbnails
-
-```bash
-sudo apt update
-sudo apt install -y libosmesa6-dev
-```
-
 #### Windows OS
 
 To run Jandig ARte all you need to do is:
