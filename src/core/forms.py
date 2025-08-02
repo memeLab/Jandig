@@ -32,9 +32,16 @@ class ObjectWidget(forms.ClearableFileInput):
     """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
 
     template_name = "core/templates/object_edit_template.jinja2"
+    thumbnail = None
+
+    def __init__(self, thumbnail=None, attrs=None):
+        super().__init__(attrs)
+        self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
         context = self.get_context(name, value, attrs)
+        if self.thumbnail:
+            context["widget"]["thumbnail"] = self.thumbnail
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
 
@@ -43,11 +50,16 @@ class UploadObjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
-        self.fields["source"].widget = ObjectWidget()
+        if thumbnail := kwargs.get("initial", {}).get("thumbnail", None):
+            self.fields["source"].widget = ObjectWidget(thumbnail)
+        else:
+            self.fields["source"].widget = ObjectWidget()
+
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
         self.fields["source"].widget.attrs["accept"] = (
             "image/gif, .gif, .mp4, .webm, .glb"
         )
+
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
@@ -56,7 +68,7 @@ class UploadObjectForm(forms.ModelForm):
 
     class Meta:
         model = Object
-        fields = ("source", "author", "title")
+        fields = ("source", "author", "title", "thumbnail")
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
