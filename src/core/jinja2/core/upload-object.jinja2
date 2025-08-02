@@ -41,6 +41,10 @@
                         {{ form.visible_fields()[1] }}
                         {{ form.visible_fields()[1].errors }}
                     </p>
+                    
+                    <!-- Hidden input for auto-generated thumbnail -->
+                    <input type="file" id="thumbnail-input" name="thumbnail" style="display: none;" accept="image/*">
+                    
                     <div class="form-options">
                         <p>
                             <input id="agreement-chk" type="checkbox" name="agreement" value="1">
@@ -232,6 +236,11 @@
                                         
                                         // Start animation loop
                                         animate();
+                                        
+                                        // Auto-generate thumbnail after model is loaded and positioned
+                                        setTimeout(() => {
+                                            generateThumbnail(renderer);
+                                        }, 1000); // Wait 1 second for the model to be properly positioned
                                     },
                                     function (progress) {
                                         console.log('Loading progress:', progress);
@@ -259,6 +268,55 @@
                     reader.readAsDataURL(file);
                 }
             );
+
+
+            // Function to generate thumbnail from canvas
+            function generateThumbnail(renderer) {
+                try {
+                    // Render one more frame to ensure everything is properly drawn
+                    renderer.render(renderer.scene || scene, camera);
+                    
+                    // Get canvas data as blob
+                    renderer.domElement.toBlob(function(blob) {
+                        if (blob) {
+                            // Create a File object from the blob
+                            const thumbnailFile = new File([blob], 'thumbnail.png', {
+                                type: 'image/png',
+                                lastModified: Date.now()
+                            });
+                            
+                            // Create a DataTransfer object to set the file
+                            const dt = new DataTransfer();
+                            dt.items.add(thumbnailFile);
+                            
+                            // Set the file to the hidden input
+                            const thumbnailInput = document.getElementById('thumbnail-input');
+                            thumbnailInput.files = dt.files;
+                            
+                            console.log('Thumbnail generated successfully:', thumbnailFile);
+                            
+                            // Optional: Show a small preview of the generated thumbnail
+                            showThumbnailPreview(blob);
+                        }
+                    }, 'image/png', 0.8); // PNG format with 80% quality
+                } catch (error) {
+                    console.error('Error generating thumbnail:', error);
+                }
+            }
+            
+            // Optional: Function to show thumbnail preview
+            function showThumbnailPreview(blob) {
+                const thumbnailPreview = document.createElement('div');
+                thumbnailPreview.style.cssText = 'margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px;';
+                thumbnailPreview.innerHTML = '<strong>Auto-generated thumbnail:</strong>';
+                
+                const thumbnailImg = document.createElement('img');
+                thumbnailImg.src = URL.createObjectURL(blob);
+                thumbnailImg.style.cssText = 'width: 100px; height: 100px; object-fit: cover; margin-left: 10px; border-radius: 3px; border: 1px solid #ddd;';
+                
+                thumbnailPreview.appendChild(thumbnailImg);
+                document.getElementById("content-box").appendChild(thumbnailPreview);
+            }
 
 
         </script>
