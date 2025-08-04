@@ -28,6 +28,7 @@ dependencies = [
   "fast-html>=1.0.11",
   "psycopg[binary,pool]>=3.2.9",
   "django-pghistory>=3.7.0",
+  "django-formtools>=2.5.1",
 ]
 
 [dependency-groups]
