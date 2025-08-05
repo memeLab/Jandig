@@ -44,7 +44,7 @@ urlpatterns = [
     path("", include("core.urls")),
 ]
 
-if not settings.USE_GUNICORN:
+if not settings.USE_GRANIAN:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -53,5 +53,5 @@ if settings.TOOLBAR_ENABLED:
 
     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
-if os.getenv("USE_GUNICORN", "true").lower() in ("false", "0"):
+if os.getenv("USE_GRANIAN", "true").lower() in ("false", "0"):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
