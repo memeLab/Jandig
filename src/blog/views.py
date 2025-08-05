@@ -8,7 +8,10 @@ PAGE_SIZE = 4
 
 
 def blog_index(request):
-    page_number = int(request.GET.get("page", "1"))
+    try:
+        page_number = int(request.GET.get("page", "1"))
+    except ValueError:
+        page_number = 1
     paginator = Paginator(
         Post.objects.prefetch_related("categories")
         .filter(status=PostStatus.PUBLISHED)
