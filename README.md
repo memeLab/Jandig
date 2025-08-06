@@ -1,12 +1,12 @@
-# Jandig ARte
+# Jandig 
 
-ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
+Jandig is an open source platform for extended reality. Our goal is to give a way for artists share their artworks in a simple and free way.
 
-You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig. 
+[![No words can show it - watch the video! =) ](https://img.youtube.com/vi/Oou7uE2XeRo/0.jpg)](https://www.youtube.com/watch?v=Oou7uE2XeRo&list=PLnqMPRm2VJBjEUmQSHG5VR2w2U1kqq9Gn)
 
 ## How it works
 
-Jandig ARte uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
+Jandig uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
 
 ![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
 
