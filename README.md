@@ -2,6 +2,8 @@
 
 Jandig is an open source platform for extended reality. Our goal is to give a way for artists share their artworks in a simple and free way.
 
+See for yourself in the 1 minute video below (make sure subtitles are on).
+
 [![No words can show it - watch the video! =) ](https://img.youtube.com/vi/Oou7uE2XeRo/0.jpg)](https://www.youtube.com/watch?v=Oou7uE2XeRo&list=PLnqMPRm2VJBjEUmQSHG5VR2w2U1kqq9Gn)
 
 ## How it works
