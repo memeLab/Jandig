@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
-from fast_html import a, b, div, h1, img, p, render, video
+from fast_html import a, audio, b, div, h1, img, p, render, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -450,7 +450,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 
 
 @pghistory.track()
-class Sound(TimeStampedModel):
+class Sound(TimeStampedModel, ContentMixin):
     file = models.FileField(upload_to="sounds/")
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=60, blank=False)
@@ -460,6 +460,93 @@ class Sound(TimeStampedModel):
     augmenteds = models.ManyToManyField(Object, related_name="sounds", blank=True)
     artworks = models.ManyToManyField(Artwork, related_name="sounds", blank=True)
     exhibits = models.ManyToManyField(Exhibit, related_name="sounds", blank=True)
+
+    @property
+    def date(self):
+        return self.created.strftime("%d/%m/%Y")
+
+    @property
+    def artworks_count(self):
+        return self.artworks.count()
+
+    @property
+    def augmenteds_count(self):
+        return self.augmenteds.count()
+
+    @property
+    def exhibits_count(self):
+        return self.exhibits.count()
+
+    def is_used_by_other_user(self):
+        """
+        Check if the object is used by another user.
+        This is done by checking if there are artworks that reference this object
+        and if the owner of those artworks is not the current user.
+        """
+        return (
+            self.augmenteds.exclude(owner=self.owner).exists()
+            or self.artworks.exclude(author=self.owner).exists()
+            or self.exhibits.exclude(owner=self.owner).exists()
+        )
+
+    @property
+    def in_use(self):
+        if self.exhibits_count > 0:
+            return True
+        if self.augmenteds_count > 0:
+            return True
+        if self.artworks_count > 0:
+            return True
+        return False
+
+    def used_in_html_string(self):
+        used_in = "{} {} {} {} {} {} {}".format(
+            _("Used in"),
+            self.artworks_count,
+            _("artworks"),
+            self.augmenteds_count,
+            _("objects"),
+            self.exhibits_count,
+            _("exhibits"),
+        )
+
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
+
+    def as_html(self):
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "src": self.file.url,
+        }
+        return render(
+            audio(
+                **attributes,
+                controls=True,
+            )
+        )
+
+    def as_html_thumbnail(self, editable=False):
+        elements = [
+            self.as_html(),
+            div(class_="separator"),
+        ]
+        if editable and not self.is_used_by_other_user():
+            elements.append(self._get_edit_button())
+
+        if editable and not self.in_use:
+            elements.append(self._get_delete_button())
+
+        return render(div(*elements))
 
 
 @receiver(post_delete, sender=Sound)
