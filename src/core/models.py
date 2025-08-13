@@ -449,6 +449,11 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         return render(elements)
 
 
+class SoundExtensions(models.TextChoices):
+    MP3 = "mp3", "MP3"
+    OGG = "ogg", "OGG"
+
+
 @pghistory.track()
 class Sound(TimeStampedModel, ContentMixin):
     file = models.FileField(upload_to="sounds/")
@@ -460,6 +465,12 @@ class Sound(TimeStampedModel, ContentMixin):
     augmenteds = models.ManyToManyField(Object, related_name="sounds", blank=True)
     artworks = models.ManyToManyField(Artwork, related_name="sounds", blank=True)
     exhibits = models.ManyToManyField(Exhibit, related_name="sounds", blank=True)
+    # Save the file size of the sound, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0)
+    file_name_original = models.CharField(max_length=255)
+    file_extension = models.CharField(
+        max_length=10, db_index=True, choices=SoundExtensions.choices
+    )
 
     @property
     def date(self):
