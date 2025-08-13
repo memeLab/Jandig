@@ -372,3 +372,14 @@ class SoundForm(forms.ModelForm):
                     )
 
         return file
+
+    def save(self, *args, **kwargs):
+        if owner := kwargs.get("owner", None):
+            self.instance.owner = owner
+            del kwargs["owner"]
+
+        self.instance.file_size = self.instance.file.size
+        self.instance.file_name_original = self.instance.file.name.split("/")[-1]
+        self.instance.file_extension = self.instance.file.name.split(".")[-1].lower()
+
+        return super(SoundForm, self).save(*args, **kwargs)

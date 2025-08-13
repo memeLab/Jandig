@@ -9,10 +9,18 @@ from core.forms import (
     ArtworkForm,
     ExhibitForm,
     ExhibitSelectForm,
+    SoundForm,
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
+from core.models import (
+    Artwork,
+    Exhibit,
+    Marker,
+    Object,
+    ObjectExtensions,
+    Sound,
+)
 from users.models import Profile
 
 
@@ -420,6 +428,42 @@ def exhibit_detail(request):
         "objects": exhibit.augmenteds.all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
+
+
+@login_required
+def sound_upload(request):
+    if request.method == "POST":
+        form = SoundForm(request.POST, request.FILES)
+        if form.is_valid():
+            sound = form.save(commit=False)
+            sound.owner = request.user.profile
+            sound.save()
+            return redirect("sound-list")
+    else:
+        form = SoundForm()
+    return render(request, "core/upload-sound.jinja2", {"form": form})
+
+
+@login_required
+def edit_sound(request):
+    index = request.GET.get("id", "-1")
+    try:
+        model = Sound.objects.get(id=index)
+    except Sound.DoesNotExist:
+        raise Http404
+
+    if model.author != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = SoundForm(request.POST, request.FILES, instance=model)
+        if form.is_valid():
+            form.save()
+            return redirect("sound-list")
+    else:
+        form = SoundForm(instance=model)
+
+    return render(request, "core/upload-sound.jinja2", {"form": form, "model": model})
 
 
 def exhibit_select(request):
