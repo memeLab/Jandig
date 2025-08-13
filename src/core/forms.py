@@ -13,7 +13,7 @@ from pymarker.core import generate_patt_from_image
 from core.models import Artwork, Marker, ObjectExtensions
 from core.views.api_views import MarkerGeneratorAPIView
 
-from .models import Exhibit, ExhibitTypes, Object
+from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
@@ -338,3 +338,37 @@ class ExhibitForm(forms.ModelForm):
             exhibit.augmenteds.set(augmenteds)
 
         return exhibit
+
+
+class SoundForm(forms.ModelForm):
+    class Meta:
+        model = Sound
+        fields = ("title", "file", "author")
+
+    def clean_file(self):
+        file = self.cleaned_data.get("file")
+        if not file:
+            raise forms.ValidationError(_("This field is required."))
+
+        allowed_extensions = ["mp3", "ogg"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
+            raise forms.ValidationError(_("Only MP3 and OGG audio files are allowed."))
+
+        # Sound already exists, we need to check if it's being used by another user
+        if self.instance.pk:
+            # Compare if the file changed
+            file_content = file.read()
+            file.seek(0)  # Reset file pointer
+            instance_content = self.instance.file.read()
+            self.instance.file.seek(0)  # Reset instance file pointer
+
+            if instance_content != file_content:
+                if self.instance.is_used_by_other_user():
+                    raise forms.ValidationError(
+                        _(
+                            "This sound is being used by another user. You cannot change the source file."
+                        )
+                    )
+
+        return file
