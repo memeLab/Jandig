@@ -447,3 +447,21 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
             exhibit_card,
         ]
         return render(elements)
+
+
+@pghistory.track()
+class Sound(TimeStampedModel):
+    file = models.FileField(upload_to="sounds/")
+    title = models.CharField(max_length=50, blank=False)
+    author = models.CharField(max_length=60, blank=False)
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="sounds"
+    )
+    augmenteds = models.ManyToManyField(Object, related_name="sounds", blank=True)
+    artworks = models.ManyToManyField(Artwork, related_name="sounds", blank=True)
+    exhibits = models.ManyToManyField(Exhibit, related_name="sounds", blank=True)
+
+
+@receiver(post_delete, sender=Sound)
+def remove_file(sender, instance, **kwargs):
+    instance.file.delete(False)
