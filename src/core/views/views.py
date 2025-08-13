@@ -452,7 +452,7 @@ def edit_sound(request):
     except Sound.DoesNotExist:
         raise Http404
 
-    if model.author != Profile.objects.get(user=request.user):
+    if model.owner != Profile.objects.get(user=request.user):
         raise Http404
 
     if request.method == "POST":

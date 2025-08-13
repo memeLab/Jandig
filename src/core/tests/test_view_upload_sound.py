@@ -7,6 +7,7 @@ from core.models import Sound, SoundExtensions
 from users.models import Profile, User
 
 EXAMPLE_SOUND_PATH = "collection/sounds/happy-message-ping.mp3"
+EXAMPLE_SOUND_FILE_SIZE = 36096  # Size in bytes of the example sound file
 
 
 class TestSoundUpload(TestCase):
@@ -53,7 +54,7 @@ class TestSoundUpload(TestCase):
         sound = Sound.objects.first()
         assert sound.title == "Test Marker"
         assert sound.author == "Test Author"
-        assert sound.file_size == 36096  # Size in bytes of the example sound file
+        assert sound.file_size == EXAMPLE_SOUND_FILE_SIZE
 
         assert sound.file_name_original == "happy-message-ping.mp3"
         assert sound.file_extension == SoundExtensions.MP3
