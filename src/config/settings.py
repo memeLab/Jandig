@@ -263,9 +263,9 @@ AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
 AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
 
-USE_GUNICORN = os.getenv("USE_GUNICORN", "true").lower() in ("true", "1")
+USE_GRANIAN = os.getenv("USE_GRANIAN", "true").lower() in ("true", "1")
 
-if not USE_GUNICORN:
+if not USE_GRANIAN:
     USE_MINIO = False
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
@@ -300,7 +300,7 @@ STATICFILES_FINDERS = [
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 
-if USE_GUNICORN:
+if USE_GRANIAN:
     STORAGES = {
         "default": {
             "BACKEND": "config.storage_backends.PublicMediaStorage",
