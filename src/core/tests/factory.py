@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from factory import Faker, LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object
+from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, Sound
 from users.tests.factory import ProfileFactory
 
 BASE_COLLECTION_DIR = settings.ROOT_DIR + "collection/"
@@ -46,6 +46,24 @@ def choose_random_marker_file(_):
     return ContentFile(
         open(
             os.path.join(markers_dir, file),
+            "rb",
+        ).read(),
+        name=file,
+    )
+
+
+def choose_random_sound_file(_):
+    """
+    Randomly selects a file from the collection/sounds folder.
+    """
+    sounds_dir = os.path.join(BASE_COLLECTION_DIR, "sounds/")
+    files = [
+        f for f in os.listdir(sounds_dir) if os.path.isfile(os.path.join(sounds_dir, f))
+    ]
+    file = random.choice(files)
+    return ContentFile(
+        open(
+            os.path.join(sounds_dir, file),
             "rb",
         ).read(),
         name=file,
@@ -170,3 +188,13 @@ class ExhibitFactory(DjangoModelFactory):
             if augmented > 0:
                 self.exhibit_type = ExhibitTypes.MR
                 self.save()
+
+
+class SoundFactory(DjangoModelFactory):
+    class Meta:
+        model = Sound
+
+    owner = SubFactory(ProfileFactory)
+    file = LazyAttribute(choose_random_sound_file)
+    title = Faker("sentence", nb_words=3)
+    author = Faker("name")

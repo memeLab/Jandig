@@ -15,3 +15,16 @@ def get_example_object(filename):
         ).read(),
         name=filename,
     )
+
+
+def get_example_sound(filename):
+    return ContentFile(
+        open(
+            os.path.join(
+                os.path.join(settings.ROOT_DIR + "collection/", "sounds/"),
+                filename,
+            ),
+            "rb",
+        ).read(),
+        name=filename,
+    )

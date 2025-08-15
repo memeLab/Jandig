@@ -17,6 +17,7 @@ from core.views.viewsets import (
     ExhibitViewset,
     MarkerViewset,
     ObjectViewset,
+    SoundViewset,
 )
 from users.viewsets import ProfileViewset
 
@@ -26,6 +27,7 @@ api_router.register("objects", ObjectViewset, basename="object")
 api_router.register("artworks", ArtworkViewset, basename="artwork")
 api_router.register("exhibits", ExhibitViewset, basename="exhibit")
 api_router.register("profiles", ProfileViewset, basename="profile")
+api_router.register("sounds", SoundViewset, basename="sound")
 
 urlpatterns = [
     path(settings.DJANGO_ADMIN_URL, admin.site.urls),
