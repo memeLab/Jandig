@@ -55,11 +55,6 @@ class UploadObjectForm(forms.ModelForm):
         else:
             self.fields["source"].widget = ObjectWidget()
 
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = (
-            "image/gif, .gif, .mp4, .webm, .glb"
-        )
-
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
@@ -119,9 +114,6 @@ class UploadMarkerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
-
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
             DEFAULT_AUTHOR_PLACEHOLDER
         )
