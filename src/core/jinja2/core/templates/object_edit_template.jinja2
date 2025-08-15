@@ -4,6 +4,10 @@
         <video controls>
             <source src="{{ widget.value.url }}" type="video/{{ widget.value.url.split('.')[-1] }}">
         </video>
+    {% elif widget.value.url.endswith(".glb") %}
+        {#TODO: 3D model preview #}
+        <p>{{ _("3D model preview not implemented yet.") }}</p>
+        <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% else %}
         <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% endif %}

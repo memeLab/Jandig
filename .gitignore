@@ -5,12 +5,12 @@ src/ARte/config/__pycache__/
 ##sqlite
 *.sqlite3
 
-build/
-static/
-media/
-src/data/certbot/
-docker/node_modules/
-node_modules/
+/build/
+/static/
+/media/
+/src/data/certbot/
+/docker/node_modules/
+/node_modules/
 package-lock.json
 .venv/
 ## pycharm

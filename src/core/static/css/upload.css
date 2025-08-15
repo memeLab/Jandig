@@ -64,7 +64,7 @@
 
 #content-box {
     height: 50%;
-    width: 65%;
+    margin: auto;
 }
 
 img {

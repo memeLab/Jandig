@@ -3,8 +3,11 @@
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
+        <link rel="stylesheet" href="{{ static('css/warning.css') }}">
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
 
+        {# The last version of threejs that this works, after 0.127.0 we have an error. After 150+ three.min.js is deprecated for usage as a module #}
+        <script src="https://unpkg.com/three@0.127.0/build/three.min.js"></script>
         {% if edit %}
             <h2>{{_('Edit object')}}</h2>
         {% else %}
@@ -135,8 +138,126 @@
                             image_preview.id = "img-preview";
                             document.getElementById("content-box").appendChild(image_preview);
                         }
+                    // file.type for GLB files is none
+                    } else if(file.name.endsWith(".glb")) {
+                        document.getElementById("content-box").innerHTML = "";
+
+                        // Warn the user about GLB file limitations
+                        blockquote = document.createElement("div");
+                        blockquote.className = "warning-box";
+                        blockquote_title = document.createElement("span");
+                        blockquote_title.className = "warning-icon";
+                        blockquote_title.innerHTML = "⚠";
+                        blockquote_text = document.createElement("p");
+                        blockquote_text.className = "warning-text";
+                        blockquote_text.innerHTML = "{{ _("GLB files are only supported in MR (Meta Quest 3) exhibits. They cannot be used in AR exhibits or Artworks yet.") }}";
+                        blockquote.appendChild(blockquote_title);
+                        blockquote.appendChild(blockquote_text);
+                        
+                        
+                        // Add controls info to 3d viewer
+                        const controlsInfo = document.createElement("div");
+                        controlsInfo.className = "controls-info";
+                        controlsInfo.style.cssText = "margin: 10px 0; padding: 10px; background: #e8f4fd; border-radius: 5px; font-size: 14px;";
+                        controlsInfo.innerHTML = "<strong>3D Controls:</strong> Left click + drag to rotate, Right click + drag to pan, Scroll to zoom";
+                        document.getElementById("content-box").appendChild(controlsInfo);
+  
+                        // THREE.js is already loaded globally, just import GLTFLoader and OrbitControls
+                        Promise.all([
+                            import('https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js'),
+                            import('https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js')
+                        ]).then(([{ GLTFLoader }, { OrbitControls }]) => {
+                                const scene = new THREE.Scene();
+                                scene.background = new THREE.Color(0xf0f0f0); // Light gray background
+                                
+                                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                                camera.position.set(0, 0, 5);
+                                
+                                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                                renderer.setSize(600, 600);
+                                renderer.shadowMap.enabled = true;
+                                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                                document.getElementById("content-box").appendChild(renderer.domElement);
+                                document.getElementById("content-box").appendChild(blockquote);
+                                // Add OrbitControls for camera interaction
+                                const controls = new OrbitControls(camera, renderer.domElement);
+                                controls.enableDamping = true; // Smooth camera movement
+                                controls.dampingFactor = 0.05;
+                                controls.enableZoom = true;
+                                controls.enablePan = true;
+                                controls.enableRotate = true;
+                                controls.autoRotate = false;
+                                
+                                // Add lighting
+                                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Brighter ambient light
+                                scene.add(ambientLight);
+                                
+                                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+                                directionalLight.position.set(1, 1, 1);
+                                directionalLight.castShadow = true;
+                                scene.add(directionalLight);
+                                
+                                const pointLight1 = new THREE.PointLight(0xffffff, 0.8);
+                                pointLight1.position.set(2, 2, 2);
+                                scene.add(pointLight1);
+                                
+                                const pointLight2 = new THREE.PointLight(0xffffff, 0.8);
+                                pointLight2.position.set(-2, 2, 2);
+                                scene.add(pointLight2);
+                                
+                                // Animation loop for smooth controls
+                                function animate() {
+                                    requestAnimationFrame(animate);
+                                    controls.update(); // Update controls for damping
+                                    renderer.render(scene, camera);
+                                }
+                                
+                                // Load the GLB file
+                                const loader = new GLTFLoader();
+                                loader.load(
+                                    URL.createObjectURL(file),
+                                    function (gltf) { 
+                                        scene.add(gltf.scene);
+                                        
+                                        // Auto-scale and center the model
+                                        const box = new THREE.Box3().setFromObject(gltf.scene);
+                                        const center = box.getCenter(new THREE.Vector3());
+                                        const size = box.getSize(new THREE.Vector3());
+                                        
+                                        // Center the model
+                                        gltf.scene.position.sub(center);
+                                        
+                                        // Scale to fit in view (make it bigger)
+                                        const maxDim = Math.max(size.x, size.y, size.z);
+                                        const scale = 1.5 / maxDim; // Make it take up more of the view
+                                        gltf.scene.scale.setScalar(scale);
+                                        
+                                        // Position camera at optimal distance
+                                        const distance = Math.max(3, maxDim * 2);
+                                        camera.position.set(distance, distance * 0.5, distance);
+                                        camera.lookAt(0, 0, 0);
+                                        
+                                        // Update controls target to model center
+                                        controls.target.set(0, 0, 0);
+                                        controls.update();
+                                        
+                                        // Start animation loop
+                                        animate();
+                                    },
+                                    function (progress) {
+                                        console.log('Loading progress:', progress);
+                                    },
+                                    function (error) {
+                                        console.error('Error loading GLB file:', error);
+                                    }
+                                );
+                            })
+                            .catch(error => {
+                                console.error('Error loading GLTFLoader or OrbitControls:', error);
+                            });
                     } else {
-                        alert("{{ _("Invalid file type! Only image or video files are accepted.") }}")
+                        console.log("Invalid file type: " + file.type);
+                        alert("{{ _("Invalid file type! Only image, video or GLB files are accepted.") }}")
                         
                         document.getElementById("id_source").value = "";
 

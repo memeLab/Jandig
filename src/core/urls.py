@@ -9,6 +9,7 @@ from core.views.static_views import (
     home,
     manifest,
     marker_generator,
+    me_hotsite,
     robots_txt,
     service_worker,
 )
@@ -49,6 +50,11 @@ urlpatterns = [
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
+    re_path(
+        r"^(me|ME)\/?$",
+        me_hotsite,
+        name="Memorias-Extendidas",
+    ),
     path("related-content", related_content, name="related-content"),
     path("sw.js", service_worker, name="sw"),
     path("manifest.json", manifest, name="manifest"),

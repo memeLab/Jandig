@@ -100,7 +100,9 @@ class UploadObjectForm(forms.ModelForm):
 
         self.fields["source"].widget = ObjectWidget()
         self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = "image/gif, .gif, .mp4, .webm"
+        self.fields["source"].widget.attrs["accept"] = (
+            "image/gif, .gif, .mp4, .webm, .glb"
+        )
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
@@ -119,11 +121,11 @@ class UploadObjectForm(forms.ModelForm):
         if not file:
             raise forms.ValidationError(_("This field is required."))
 
-        allowed_extensions = ["gif", "mp4", "webm"]
+        allowed_extensions = ["gif", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
         if extension not in allowed_extensions:
             raise forms.ValidationError(
-                _("Only GIF images, MP4, and WebM videos are allowed.")
+                _("Only GIF images, MP4, WebM videos, and GLB files are allowed.")
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
@@ -156,6 +158,8 @@ class UploadObjectForm(forms.ModelForm):
             del kwargs["owner"]
 
         self.instance.file_size = self.instance.source.size
+        self.instance.file_name_original = self.instance.source.name.split("/")[-1]
+        self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
 

@@ -3,6 +3,7 @@
 
 {% block content %}
     <section class="create-artwork container">
+        <link rel="stylesheet" href="{{ static('css/warning.css') }}">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="/static/css/marker-creation.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
@@ -42,6 +43,7 @@
                     </button>
                 </div>
                 <div id="object-modal" class="tab">
+                    
                     <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
                     <p id="existent-object">
                         {{ form.visible_fields()[5].as_hidden() }}

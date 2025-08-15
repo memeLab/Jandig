@@ -23,6 +23,10 @@ def health_check(_):
     return JsonResponse({"status": "ok"}, status=200)
 
 
+def me_hotsite(request, _):
+    return render(request, "core/ME/hotsite.html", {})
+
+
 def home(request):
     return render(request, "core/home.jinja2", {})
 
