@@ -189,6 +189,10 @@ button,
   display: inline-block;
 }
 
+button:hover {
+  cursor: pointer; /* Changes the cursor to a hand pointer on hover */
+}
+
 input:disabled,
 input[type="submit" i]:disabled,
 input[type="submit"]:disabled,
