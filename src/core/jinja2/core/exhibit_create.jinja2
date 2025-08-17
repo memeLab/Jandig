@@ -48,6 +48,12 @@
                 {{ form.visible_fields()[3].as_hidden() }}
                 {{ form.visible_fields()[3].errors }}
 
+                <button id="select-sounds" class="select-btn" type="button">
+                    {{ _('Select Sounds') }}
+                </button>
+                {{ form.visible_fields()[4].as_hidden() }}
+                {{ form.visible_fields()[4].errors }}
+
                 <div id="form-modal" class="modal">
                     <div id="artwork-modal" class="tab">
                         <h4 class="modal-title">{{ _('Select Artworks') }}</h4>
@@ -75,11 +81,26 @@
                     <div id="object-modal" class="tab">
                         <h4 class="modal-title">{{ _('Select Objects') }}</h4>
                         <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button" hx-get="/elements/" hx-vals='js:{page: get_page(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
-                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button" hx-get="/elements/" hx-vals='js:{page: get_page(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-objects" hx-get="/elements/" hx-vals='js:{page: get_page_objects(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-objects" hx-get="/elements/" hx-vals='js:{page: get_page_objects(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
                         </div>
 
                         {% with repository_list = objects, element_type="object", htmx="false"%}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+
+                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                        </a>
+                    </div>
+                    <div id="sound-modal" class="tab">
+                        <h4 class="modal-title">{{ _('Select Sounds') }}</h4>
+                        <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sounds" hx-get="/elements/" hx-vals='js:{page: get_page_sounds(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sounds" hx-get="/elements/" hx-vals='js:{page: get_page_sounds(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                        </div>
+
+                        {% with repository_list = sounds, element_type="sound", htmx="false"%}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
 
@@ -99,33 +120,58 @@
             </form>
         </div>
         <script>
-        page = 1;
-        get_page(0);
-        function get_page(increment) {
-            actual_page = page + increment;
+        page_objects = 1;
+        get_page_objects(0);
+        function get_page_objects(increment) {
+            actual_page = page_objects + increment;
             if (actual_page < 1) {
                 actual_page = 1;
             }
-            page = actual_page;
-            previous_button = document.getElementById("previous-button");
-            next_button = document.getElementById("next-button");
-            if (page == 1) {
+            page_objects = actual_page;
+            previous_button = document.getElementById("previous-button-objects");
+            next_button = document.getElementById("next-button-objects");
+            if (page_objects == 1) {
                 previous_button.disabled = true;
             }else {
                 previous_button.disabled = false;
             }
-            if (page == {{total_pages}}) {
+            if (page_objects == {{total_object_pages}}) {
                 next_button.disabled = true;
             }else {
                 next_button.disabled = false;
             }
 
-            return page
+            return page_objects
         }
+        page_sounds=1;
+        function get_page_sounds(increment) {
+            actual_page = page_sounds + increment;
+            if (actual_page < 1) {
+                actual_page = 1;
+            }
+            page_sounds = actual_page;
+            previous_button = document.getElementById("previous-button-sounds");
+            next_button = document.getElementById("next-button-sounds");
+            if (page_sounds == 1) {
+                previous_button.disabled = true;
+            }else {
+                previous_button.disabled = false;
+            }
+            if (page_sounds == {{total_sound_pages}}) {
+                next_button.disabled = true;
+            }else {
+                next_button.disabled = false;
+            }
+
+            return page_sounds
+        }
+
         document.body.addEventListener("htmx:afterSwap", function(evt){
+            console.log("aaa")
             update_selected_items();
             enable_selection();
         });
+
         // modal events
         $('#select-artworks').click(function(){
             currentTab = 0;
@@ -137,6 +183,12 @@
             $('#form-modal').modal({showClose: false});
             showTab(currentTab);
         })
+        $('#select-sounds').click(function(){
+            currentTab = 2;
+            $('#form-modal').modal({showClose: false});
+            showTab(currentTab);
+        })
+
         function showTab(tabNumber){
             let tabs = $('.tab');
             tabs.hide();
@@ -162,18 +214,30 @@
 
         let artworks = {}
         let augmenteds = {}
+        let sounds = {}
         selected_artworks = "{{ selected_artworks|default('', true) }}";
         selected_objects = "{{ selected_objects|default('', true) }}";
+        selected_sounds = "{{ selected_sounds|default('', true) }}";
 
         function update_selected_items(){
+            
             selected_artworks.split(",").forEach(function(id){
-                    artworks[id] = id
-                    $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
+                artworks[id] = id
+                $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
             });
+    
+        
             selected_objects.split(",").forEach(function(id){
                 augmenteds[id] = id
                 $("#object-"+id).css("border-bottom","3px solid #a6a6a6");
             });
+        
+        
+            selected_sounds.split(",").forEach(function(id){
+                sounds[id] = id
+                $("#sound-"+id).css("border-bottom","3px solid #a6a6a6");
+            });
+            
         }
         update_selected_items();
 
@@ -182,37 +246,44 @@
         }
         function enable_selection(){
             $('.repository-item').click(function(){
-            let item = $(this).attr('id');
-            let item_type = item.split('-')[0];
-            let item_id = item.split('-')[1];
+                let item = $(this).attr('id');
+                let item_type = item.split('-')[0];
+                let item_id = item.split('-')[1];
 
 
-            if(isSelected($(this))){
-                $(this).css("border-bottom","none");
-                if (item_type === "artwork")
-                    delete artworks[item_id];
-                else if (item_type === "object")
-                    delete augmenteds[item_id];
-                else
-                    console.error("Unknown item type: " + item_type);
-            }else{
-                $(this).css("border-bottom","3px solid #a6a6a6");
-                if (item_type === "artwork")
-                    artworks[item_id] = item_id;
-                else if (item_type === "object")
-                    augmenteds[item_id] = item_id;
-                else
-                    console.error("Unknown item type: " + item_type);
-            }
+                if(isSelected($(this))){
+                    $(this).css("border-bottom","none");
+                    if (item_type === "artwork")
+                        delete artworks[item_id];
+                    else if (item_type === "object")
+                        delete augmenteds[item_id];
+                    else if (item_type === "sound")
+                        delete sounds[item_id];
+                    else
+                        console.error("Unknown item type: " + item_type);
+                }else{
+                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    if (item_type === "artwork")
+                        artworks[item_id] = item_id;
+                    else if (item_type === "object")
+                        augmenteds[item_id] = item_id;
+                    else if (item_type === "sound")
+                        sounds[item_id] = item_id;
+                    else
+                        console.error("Unknown item type: " + item_type);
+                }
 
-            let selected_artworks = Object.values(artworks).join(',');
-            let selected_objects = Object.values(augmenteds).join(',');
+                selected_artworks = Object.values(artworks).join(',');
+                selected_objects = Object.values(augmenteds).join(',');
+                selected_sounds = Object.values(sounds).join(',');
 
-            let artworks_input = $('#id_artworks');
-            let objects_input = $('#id_augmenteds');
-            
-            artworks_input.val(selected_artworks);
-            objects_input.val(selected_objects);
+                let artworks_input = $('#id_artworks');
+                let objects_input = $('#id_augmenteds');
+                let sounds_input = $('#id_sounds');
+
+                artworks_input.val(selected_artworks);
+                objects_input.val(selected_objects);
+                sounds_input.val(selected_sounds);
         });
         }
         enable_selection();

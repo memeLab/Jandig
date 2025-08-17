@@ -8,7 +8,7 @@ from django.utils.html import format_html
 from PIL import Image
 from pymarker import generate_patt_from_image, remove_borders_from_image
 
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.utils import generate_uuid_name, get_admin_url
 from core.views.api_views import MarkerGeneratorAPIView
 
@@ -292,3 +292,22 @@ class ExhibitAdmin(admin.ModelAdmin):
         """Display the owner of the object"""
         link = get_user_profile_path().format(obj.owner.id)
         return format_html(HTML_LINK, link, obj.owner.user.username)
+
+
+@admin.register(Sound)
+class SoundAdmin(admin.ModelAdmin):
+    list_display = [
+        "title",
+        "preview",
+        "_owner",
+        "created",
+        "modified",
+    ]
+
+    def _owner(self, obj):
+        """Display the owner of the object"""
+        link = get_user_profile_path().format(obj.owner.id)
+        return format_html(HTML_LINK, link, obj.owner.user.username)
+
+    def preview(self, obj):
+        return format_html(obj.as_html_thumbnail().replace(obj.title, ""))

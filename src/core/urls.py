@@ -23,6 +23,7 @@ from core.views.views import (
     edit_exhibit,
     edit_marker,
     edit_object,
+    edit_sound,
     exhibit,
     exhibit_detail,
     exhibit_select,
@@ -31,6 +32,7 @@ from core.views.views import (
     object_upload,
     related_content,
     see_all,
+    sound_upload,
 )
 
 urlpatterns = [
@@ -51,6 +53,8 @@ urlpatterns = [
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
+    path("sounds/edit/", edit_sound, name="edit-sound"),
+    path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),
     re_path(
         r"^(me|ME)\/?$",

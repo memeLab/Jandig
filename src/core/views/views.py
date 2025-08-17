@@ -9,10 +9,18 @@ from core.forms import (
     ArtworkForm,
     ExhibitForm,
     ExhibitSelectForm,
+    SoundForm,
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.models import Artwork, Exhibit, Marker, Object, ObjectExtensions
+from core.models import (
+    Artwork,
+    Exhibit,
+    Marker,
+    Object,
+    ObjectExtensions,
+    Sound,
+)
 from users.models import Profile
 
 
@@ -31,12 +39,14 @@ def collection(request):
     )
     markers = Marker.objects.all().order_by("-created")[:8]
     objects = Object.objects.all().order_by("-created")[:8]
+    sounds = Sound.objects.all().order_by("-created")[:8]
 
     ctx = {
         "artworks": artworks,
         "exhibits": exhibits,
         "markers": markers,
         "objects": objects,
+        "sounds": sounds,
         "seeall": False,
     }
 
@@ -46,7 +56,7 @@ def collection(request):
 @require_http_methods(["GET"])
 def see_all(request, which=""):
     request_type = request.GET.get("which", which)
-    if request_type not in ["objects", "markers", "artworks", "exhibits"]:
+    if request_type not in ["objects", "markers", "artworks", "exhibits", "sounds"]:
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
@@ -70,6 +80,7 @@ def see_all(request, which=""):
         .prefetch_related("artworks")
         .all()
         .order_by("created"),
+        "sounds": Sound.objects.all().order_by("created"),
     }
 
     data = data_types.get(request_type)
@@ -116,6 +127,8 @@ def delete(request):
         delete_content(Artwork, request.user, request.GET.get("id", -1))
     elif content_type == "exhibit":
         delete_content(Exhibit, request.user, request.GET.get("id", -1))
+    elif content_type == "sound":
+        delete_content(Sound, request.user, request.GET.get("id", -1))
     return redirect("profile")
 
 
@@ -132,10 +145,11 @@ def object_upload(request):
     else:
         form = UploadObjectForm()
 
+    sounds = Sound.objects.all().order_by("-created")[:8]
     return render(
         request,
         "core/upload-object.jinja2",
-        {"form": form, "edit": False},
+        {"form": form, "edit": False, "sounds": sounds},
     )
 
 
@@ -158,30 +172,6 @@ def marker_upload(request):
     )
 
 
-def edit_elements(request, form_class, route, model, model_data):
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
-
-    if request.method == "POST":
-        form = form_class(request.POST, request.FILES, instance=model)
-
-        form.full_clean()
-        if form.is_valid():
-            form.save()
-            return redirect("profile")
-    else:
-        form = form_class(initial=model_data)
-    return render(
-        request,
-        route,
-        {
-            "form": form,
-            "model": model,
-            "edit": True,
-        },
-    )
-
-
 @login_required
 def edit_marker(request):
     index = request.GET.get("id", "-1")
@@ -195,12 +185,27 @@ def edit_marker(request):
         "title": model.title,
     }
 
-    return edit_elements(
+    if not model or model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = UploadMarkerForm(request.POST, request.FILES, instance=model)
+
+        form.full_clean()
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = UploadMarkerForm(initial=model_data)
+
+    return render(
         request,
-        UploadMarkerForm,
-        route="core/edit-marker.jinja2",
-        model=model,
-        model_data=model_data,
+        "core/upload-marker.jinja2",
+        {
+            "form": form,
+            "model": model,
+            "edit": True,
+        },
     )
 
 
@@ -216,12 +221,33 @@ def edit_object(request):
         "title": model.title,
         "thumbnail": model.thumbnail,
     }
-    return edit_elements(
+    if not model or model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = UploadObjectForm(request.POST, request.FILES, instance=model)
+
+        form.full_clean()
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = UploadObjectForm(initial=model_data)
+
+    sounds = Sound.objects.all().order_by("-created")[:8]
+    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+
+    return render(
         request,
-        UploadObjectForm,
-        route="core/upload-object.jinja2",
-        model=model,
-        model_data=model_data,
+        "core/upload-object.jinja2",
+        {
+            "form": form,
+            "model": model,
+            "edit": True,
+            "sounds": sounds,
+            "selected_sound": model.sound.id if model.sound else None,
+            "total_sound_pages": paginator_sounds.num_pages,
+        },
     )
 
 
@@ -252,15 +278,19 @@ def _get_artwork_context_data(form, artwork_instance=None):
         .all()
         .order_by("-created")
     )
+    sound_list = Sound.objects.all().order_by("-created")
     paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
     paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
+    paginator_sound = Paginator(sound_list, settings.MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
+        "sound_list": sound_list[: settings.MODAL_PAGE_SIZE],
         "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
         "object_list": object_list[: settings.MODAL_PAGE_SIZE],
         "total_marker_pages": paginator_marker.num_pages,
         "total_object_pages": paginator_object.num_pages,
+        "total_sound_pages": paginator_sound.num_pages,
     }
 
     if artwork_instance:
@@ -270,6 +300,12 @@ def _get_artwork_context_data(form, artwork_instance=None):
                 "selected_object": artwork_instance.augmented.id,
             }
         )
+        if artwork_instance.sound:
+            context.update(
+                {
+                    "selected_sound": artwork_instance.sound.id,
+                }
+            )
 
     return context
 
@@ -303,6 +339,38 @@ def artwork_preview(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
+@login_required
+def get_element(request):
+    if request.htmx:
+        page = int(request.GET.get("page", "1"))
+        match element_type := request.GET.get("element_type"):
+            case "object":
+                qs = Object.objects.all().order_by("-created")
+                if request.GET.get("exclude_glb", "false") == "true":
+                    qs = qs.exclude(file_extension=ObjectExtensions.GLB)
+            case "marker":
+                qs = Marker.objects.all().order_by("-created")
+            case "sound":
+                qs = Sound.objects.all().order_by("-created")
+            case _:
+                raise Http404("Invalid element type")
+
+        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
+        if page > paginator.num_pages:
+            page = paginator.num_pages
+
+        return render(
+            request,
+            "core/components/item-list.jinja2",
+            {
+                "repository_list": paginator.get_page(page),
+                "element_type": element_type,
+                "htmx": "false",
+            },
+        )
+    raise Http404
+
+
 def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
     """Helper function to handle exhibit form processing for both create and edit operations."""
     is_edit = exhibit_instance is not None
@@ -329,12 +397,18 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
     artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
     objects = Object.objects.all().order_by("-created")
-    paginator = Paginator(objects, settings.MODAL_PAGE_SIZE)
+    sounds = Sound.objects.all().order_by("-created")
+
+    paginator_objects = Paginator(objects, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+
     context = {
         "form": form,
         "artworks": artworks,
         "objects": objects[: settings.MODAL_PAGE_SIZE],
-        "total_pages": paginator.num_pages,
+        "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+        "total_object_pages": paginator_objects.num_pages,
+        "total_sound_pages": paginator_sounds.num_pages,
     }
 
     if edit:
@@ -344,45 +418,19 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
         selected_objects = ",".join(
             str(augmented.id) for augmented in form.instance.augmenteds.all()
         )
+        selected_sounds = ",".join(
+            str(sound.id) for sound in form.instance.sounds.all()
+        )
         context.update(
             {
                 "selected_artworks": selected_artworks,
                 "selected_objects": selected_objects,
+                "selected_sounds": selected_sounds,
                 "edit": True,
             }
         )
 
     return context
-
-
-@login_required
-def get_element(request):
-    if request.htmx:
-        page = int(request.GET.get("page", "1"))
-        match element_type := request.GET.get("element_type"):
-            case "object":
-                qs = Object.objects.all().order_by("-created")
-                if request.GET.get("exclude_glb", "false") == "true":
-                    qs = qs.exclude(file_extension=ObjectExtensions.GLB)
-            case "marker":
-                qs = Marker.objects.all().order_by("-created")
-            case _:
-                raise Http404("Invalid element type")
-
-        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
-        if page > paginator.num_pages:
-            page = paginator.num_pages
-
-        return render(
-            request,
-            "core/components/item-list.jinja2",
-            {
-                "repository_list": paginator.get_page(page),
-                "element_type": element_type,
-                "htmx": "false",
-            },
-        )
-    raise Http404
 
 
 @login_required
@@ -418,8 +466,45 @@ def exhibit_detail(request):
         "exhibitImage": "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
         "objects": exhibit.augmenteds.all(),
+        "sounds": exhibit.sounds.all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
+
+
+@login_required
+def sound_upload(request):
+    if request.method == "POST":
+        form = SoundForm(request.POST, request.FILES)
+        if form.is_valid():
+            sound = form.save(commit=False)
+            sound.owner = request.user.profile
+            sound.save()
+            return redirect("profile")
+    else:
+        form = SoundForm()
+    return render(request, "core/upload-sound.jinja2", {"form": form})
+
+
+@login_required
+def edit_sound(request):
+    index = request.GET.get("id", "-1")
+    try:
+        model = Sound.objects.get(id=index)
+    except Sound.DoesNotExist:
+        raise Http404
+
+    if model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = SoundForm(request.POST, request.FILES, instance=model)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = SoundForm(instance=model)
+
+    return render(request, "core/upload-sound.jinja2", {"form": form, "model": model})
 
 
 def exhibit_select(request):
@@ -454,7 +539,7 @@ def related_content(request):
     element_type = request.GET.get("type")
     if element_id is None or element_type is None:
         raise Http404
-    if element_type not in ["object", "marker", "artwork"]:
+    if element_type not in ["object", "marker", "artwork", "sound"]:
         raise Http404
     # Bots insert random strings in the id parameter, element_id should be an integer
     try:
@@ -499,5 +584,17 @@ def related_content(request):
         exhibits = element.exhibits.all()
 
         ctx = {"exhibits": exhibits, "seeall:": False}
+
+    elif element_type == "sound":
+        element = Sound.objects.prefetch_related(
+            "exhibits", "artworks", "ar_objects"
+        ).get(id=element_id)
+
+        ctx = {
+            "exhibits": element.exhibits.all(),
+            "artworks": element.artworks.all(),
+            "objects": element.ar_objects.all(),
+            "seeall": False,
+        }
 
     return render(request, "core/collection.jinja2", ctx)
