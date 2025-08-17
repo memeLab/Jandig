@@ -80,7 +80,7 @@
                     var audio_preview = null;
                     var previewAndLoadFile = null;
                     
-                    if (file.type === "audio/mp3" || file.type === "audio/ogg") {
+                    if (file.type === "audio/mp3" || file.type === "audio/ogg" || file.type === "audio/wav") {
                         audio_preview = document.createElement("audio");
                         document.getElementById("content-box").innerHTML = "";
                         previewAndLoadFile = function() {

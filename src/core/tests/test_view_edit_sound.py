@@ -168,11 +168,11 @@ class TestSoundEdit(TestCase):
             author="Old Author",
         )
         # Simulate the sound being used by the user
-        artwork = ArtworkFactory(
+        _ = ArtworkFactory(
             title="Test Artwork",
             author=self.profile,
+            sound=sound
         )
-        artwork.sounds.set([sound])
 
         url = reverse("edit-sound", query={"id": sound.id})
         response = self.client.get(url)
@@ -208,11 +208,11 @@ class TestSoundEdit(TestCase):
         # Simulate the sound being used by another user
         another_user = UserFactory(username="anotheruser", password="anotherpassword")
         another_profile = ProfileFactory(user=another_user)
-        artwork = ArtworkFactory(
+        _ = ArtworkFactory(
             title="Test Artwork",
             author=another_profile,
+            sound=sound
         )
-        artwork.sounds.set([sound])
 
         self.client.login(username=self.username, password=self.password)
         url = reverse("edit-sound", query={"id": sound.id})
@@ -247,11 +247,11 @@ class TestSoundEdit(TestCase):
         # Simulate the object being used by another user
         another_user = UserFactory(username="anotheruser", password="anotherpassword")
         another_profile = ProfileFactory(user=another_user)
-        artwork = ArtworkFactory(
+        _ = ArtworkFactory(
             title="Test Artwork",
             author=another_profile,
+            sound=sound
         )
-        artwork.sounds.set([sound])
 
         self.client.login(username=self.username, password=self.password)
         url = reverse("edit-sound", query={"id": sound.id})

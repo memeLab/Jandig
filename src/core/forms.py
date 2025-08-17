@@ -342,10 +342,10 @@ class SoundForm(forms.ModelForm):
         if not file:
             raise forms.ValidationError(_("This field is required."))
 
-        allowed_extensions = ["mp3", "ogg"]
+        allowed_extensions = ["mp3", "ogg", ".wav"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
         if extension not in allowed_extensions:
-            raise forms.ValidationError(_("Only MP3 and OGG audio files are allowed."))
+            raise forms.ValidationError(_("Only MP3, OGG, and WAV audio files are allowed."))
 
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:

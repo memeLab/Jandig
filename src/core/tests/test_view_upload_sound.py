@@ -101,7 +101,7 @@ class TestSoundUpload(TestCase):
         response = self.client.post(reverse("sound-upload"), data)
         # Should fail validation or be rejected by the form
         assert response.status_code == 200
-        assert b"Only MP3 and OGG audio files are allowed." in response.content
+        assert b"Only MP3, OGG, and WAV audio files are allowed." in response.content
         assert Sound.objects.count() == 0
 
     def test_upload_sound_permission_denied_for_anonymous(self):

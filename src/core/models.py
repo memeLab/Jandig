@@ -90,6 +90,117 @@ class ContentMixin:
             )
         return used_in
 
+class SoundExtensions(models.TextChoices):
+    MP3 = "mp3", "MP3"
+    OGG = "ogg", "OGG"
+    WAV = "wav", "WAV"
+
+
+@pghistory.track()
+class Sound(TimeStampedModel, ContentMixin):
+    file = models.FileField(upload_to="sounds/")
+    title = models.CharField(max_length=50, blank=False)
+    author = models.CharField(max_length=60, blank=False)
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="sounds"
+    )
+    # Save the file size of the sound, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0)
+    file_name_original = models.CharField(max_length=255)
+    file_extension = models.CharField(
+        max_length=10, db_index=True, choices=SoundExtensions.choices
+    )
+
+    @property
+    def date(self):
+        return self.created.strftime("%d/%m/%Y")
+
+    @property
+    def artworks_count(self):
+        return self.artworks.count()
+
+    @property
+    def augmenteds_count(self):
+        return self.ar_objects.count()
+
+    @property
+    def exhibits_count(self):
+        return self.exhibits.count()
+
+    def is_used_by_other_user(self):
+        """
+        Check if the object is used by another user.
+        This is done by checking if there are artworks that reference this object
+        and if the owner of those artworks is not the current user.
+        """
+        return (
+            self.ar_objects.exclude(owner=self.owner).exists()
+            or self.artworks.exclude(author=self.owner).exists()
+            or self.exhibits.exclude(owner=self.owner).exists()
+        )
+
+    @property
+    def in_use(self):
+        if self.exhibits_count > 0:
+            return True
+        if self.augmenteds_count > 0:
+            return True
+        if self.artworks_count > 0:
+            return True
+        return False
+
+    def used_in_html_string(self):
+        used_in = "{} {} {} {} {} {} {}".format(
+            _("Used in"),
+            self.artworks_count,
+            _("artworks"),
+            self.augmenteds_count,
+            _("objects"),
+            self.exhibits_count,
+            _("exhibits"),
+        )
+
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
+
+    def as_html(self):
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "src": self.file.url,
+        }
+        return render(
+            audio(
+                **attributes,
+                controls=True,
+            )
+        )
+
+    def as_html_thumbnail(self, editable=False):
+        elements = [
+            self.as_html(),
+            div(class_="separator"),
+        ]
+        if editable and not self.is_used_by_other_user():
+            elements.append(self._get_edit_button())
+
+        if editable and not self.in_use:
+            elements.append(self._get_delete_button())
+
+        return render(div(*elements))
+
+class ExhibitTypes(models.TextChoices):
+    AR = "AR", "Augmented Reality"
+    MR = "MR", "Mixed Reality"
 
 @pghistory.track()
 class Marker(TimeStampedModel, ContentMixin):
@@ -172,6 +283,10 @@ class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
+    sound = models.ForeignKey(
+        Sound, on_delete=models.DO_NOTHING, related_name="ar_objects", null=True, blank=True
+    )
+    audio_description = models.FileField(upload_to="audio_descriptions/", null=True, blank=True)
     source = models.FileField(upload_to="objects/")
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
@@ -289,6 +404,9 @@ class Artwork(TimeStampedModel, ContentMixin):
     augmented = models.ForeignKey(
         Object, on_delete=models.DO_NOTHING, related_name="artworks"
     )
+    sound = models.ForeignKey(
+        Sound, on_delete=models.DO_NOTHING, related_name="artworks", null=True, blank=True
+    )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
     scale_x = models.FloatField(default=1.0)
@@ -354,17 +472,6 @@ class Artwork(TimeStampedModel, ContentMixin):
         return render(div(elements, class_="artwork-elements flex"))
 
 
-@receiver(post_delete, sender=Object)
-@receiver(post_delete, sender=Marker)
-def remove_source_file(sender, instance, **kwargs):
-    instance.source.delete(False)
-
-
-class ExhibitTypes(models.TextChoices):
-    AR = "AR", "Augmented Reality"
-    MR = "MR", "Mixed Reality"
-
-
 @pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     owner = models.ForeignKey(
@@ -374,7 +481,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     slug = models.SlugField(unique=True, max_length=50)
     artworks = models.ManyToManyField(Artwork, related_name="exhibits", blank=True)
     augmenteds = models.ManyToManyField(Object, related_name="exhibits", blank=True)
-
+    sounds = models.ManyToManyField(Sound, related_name="exhibits", blank=True)
     exhibit_type = models.CharField(
         max_length=20,
         choices=[
@@ -448,118 +555,14 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         ]
         return render(elements)
 
-
-class SoundExtensions(models.TextChoices):
-    MP3 = "mp3", "MP3"
-    OGG = "ogg", "OGG"
-
-
-@pghistory.track()
-class Sound(TimeStampedModel, ContentMixin):
-    file = models.FileField(upload_to="sounds/")
-    title = models.CharField(max_length=50, blank=False)
-    author = models.CharField(max_length=60, blank=False)
-    owner = models.ForeignKey(
-        Profile, on_delete=models.DO_NOTHING, related_name="sounds"
-    )
-    augmenteds = models.ManyToManyField(Object, related_name="sounds", blank=True)
-    artworks = models.ManyToManyField(Artwork, related_name="sounds", blank=True)
-    exhibits = models.ManyToManyField(Exhibit, related_name="sounds", blank=True)
-    # Save the file size of the sound, so we avoid making requests to S3 / MinIO to check for it.
-    file_size = models.IntegerField(default=0)
-    file_name_original = models.CharField(max_length=255)
-    file_extension = models.CharField(
-        max_length=10, db_index=True, choices=SoundExtensions.choices
-    )
-
-    @property
-    def date(self):
-        return self.created.strftime("%d/%m/%Y")
-
-    @property
-    def artworks_count(self):
-        return self.artworks.count()
-
-    @property
-    def augmenteds_count(self):
-        return self.augmenteds.count()
-
-    @property
-    def exhibits_count(self):
-        return self.exhibits.count()
-
-    def is_used_by_other_user(self):
-        """
-        Check if the object is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return (
-            self.augmenteds.exclude(owner=self.owner).exists()
-            or self.artworks.exclude(author=self.owner).exists()
-            or self.exhibits.exclude(owner=self.owner).exists()
-        )
-
-    @property
-    def in_use(self):
-        if self.exhibits_count > 0:
-            return True
-        if self.augmenteds_count > 0:
-            return True
-        if self.artworks_count > 0:
-            return True
-        return False
-
-    def used_in_html_string(self):
-        used_in = "{} {} {} {} {} {} {}".format(
-            _("Used in"),
-            self.artworks_count,
-            _("artworks"),
-            self.augmenteds_count,
-            _("objects"),
-            self.exhibits_count,
-            _("exhibits"),
-        )
-
-        if self.in_use:
-            return render(
-                a(
-                    used_in,
-                    href=reverse(
-                        "related-content",
-                        query={"id": self.id, "type": self.content_type()},
-                    ),
-                )
-            )
-        return used_in
-
-    def as_html(self):
-        attributes = {
-            "id": self.id,
-            "title": self.title,
-            "src": self.file.url,
-        }
-        return render(
-            audio(
-                **attributes,
-                controls=True,
-            )
-        )
-
-    def as_html_thumbnail(self, editable=False):
-        elements = [
-            self.as_html(),
-            div(class_="separator"),
-        ]
-        if editable and not self.is_used_by_other_user():
-            elements.append(self._get_edit_button())
-
-        if editable and not self.in_use:
-            elements.append(self._get_delete_button())
-
-        return render(div(*elements))
-
-
+@receiver(post_delete, sender=Object)
+@receiver(post_delete, sender=Marker)
 @receiver(post_delete, sender=Sound)
-def remove_file(sender, instance, **kwargs):
-    instance.file.delete(False)
+def remove_source_file(sender, instance, **kwargs):
+    if isinstance(instance, Marker):
+        instance.source.delete(False)
+    if isinstance(instance, Object):
+        instance.source.delete(False)
+        instance.audio_description.delete(False)
+    if isinstance(instance, Sound):
+        instance.file.delete(False)
