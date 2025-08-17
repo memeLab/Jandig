@@ -275,15 +275,19 @@ def _get_artwork_context_data(form, artwork_instance=None):
         .all()
         .order_by("-created")
     )
+    sound_list = Sound.objects.all().order_by("-created")
     paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
     paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
+    paginator_sound = Paginator(sound_list, settings.MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
+        "sound_list": sound_list[: settings.MODAL_PAGE_SIZE],
         "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
         "object_list": object_list[: settings.MODAL_PAGE_SIZE],
         "total_marker_pages": paginator_marker.num_pages,
         "total_object_pages": paginator_object.num_pages,
+        "total_sound_pages": paginator_sound.num_pages,
     }
 
     if artwork_instance:
@@ -291,6 +295,7 @@ def _get_artwork_context_data(form, artwork_instance=None):
             {
                 "selected_marker": artwork_instance.marker.id,
                 "selected_object": artwork_instance.augmented.id,
+                "selected_sound": artwork_instance.sound.id,
             }
         )
 
@@ -389,6 +394,8 @@ def get_element(request):
                     qs = qs.exclude(file_extension=ObjectExtensions.GLB)
             case "marker":
                 qs = Marker.objects.all().order_by("-created")
+            case "sound":
+                qs = Sound.objects.all().order_by("-created")
             case _:
                 raise Http404("Invalid element type")
 

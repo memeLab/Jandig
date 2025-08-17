@@ -183,11 +183,17 @@ class ArtworkForm(forms.ModelForm):
         required=True,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
+
     scale = forms.FloatField(
         min_value=0.1,
         max_value=5.0,
         initial=1.0,
         widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+    )
+    selected_sound = forms.ModelChoiceField(
+        queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
 
     class Meta:
@@ -216,6 +222,7 @@ class ArtworkForm(forms.ModelForm):
             self.fields["scale"].initial = self.instance.scale_x
             self.fields["selected_marker"].initial = self.instance.marker
             self.fields["selected_object"].initial = self.instance.augmented
+            self.fields["selected_sound"].initial = self.instance.sound
 
     def clean_position_x(self):
         position_x = self.cleaned_data.get("position_x")
@@ -239,6 +246,7 @@ class ArtworkForm(forms.ModelForm):
         artwork = super().save(commit=False)
         artwork.marker = self.cleaned_data["selected_marker"]
         artwork.augmented = self.cleaned_data["selected_object"]
+        artwork.sound = self.cleaned_data["selected_sound"]
         artwork.scale_x = self.cleaned_data["scale"]
         artwork.scale_y = self.cleaned_data["scale"]
 
@@ -358,6 +366,12 @@ class SoundForm(forms.ModelForm):
     class Meta:
         model = Sound
         fields = ("title", "file", "author")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["file"].widget.attrs.update(
+            {"accept": ".mp3,.ogg,.wav", "style": "height: auto;"}
+        )
 
     def clean_file(self):
         file = self.cleaned_data.get("file")

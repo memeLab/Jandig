@@ -71,8 +71,8 @@
                     <div id="form-modal" class="tab">
                         <h4 class="modal-title">{{ _('Select Sound') }}</h4>
                         <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button" hx-get="/elements/" hx-vals='js:{page: get_page(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> < </button>
-                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button" hx-get="/elements/" hx-vals='js:{page: get_page(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML" disabled="disabled"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
                         </div>
 
                         {% with repository_list = sounds, element_type="sound", htmx="false"%}
@@ -124,6 +124,28 @@
             }
             enable_selection();
 
+            page_sound = 1;
+            function get_page_sound(increment) {
+                actual_page = page_sound + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_sound = actual_page;
+                previous_button = document.getElementById("previous-button-sound");
+                next_button = document.getElementById("next-button-sound");
+                if (page_sound == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_sound == {{total_sound_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
+
+                return page_sound
+            }
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
                     $('#submit-btn').prop('disabled', false);

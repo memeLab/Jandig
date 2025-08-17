@@ -178,7 +178,6 @@ class Sound(TimeStampedModel, ContentMixin):
             "id": self.id,
             "title": self.title,
             "src": self.file.url,
-            "style": "display: block;",
         }
         return render(
             audio(
@@ -189,7 +188,7 @@ class Sound(TimeStampedModel, ContentMixin):
 
     def as_html_thumbnail(self, editable=False):
         elements = [
-            span(self.title),
+            span(self.title, style="display:block;"),
             self.as_html(),
         ]
         if editable and not self.is_used_by_other_user():
