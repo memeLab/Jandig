@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
-from fast_html import a, audio, b, div, h1, img, p, render, video
+from fast_html import a, audio, b, div, h1, img, p, render, span, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -89,6 +89,7 @@ class ContentMixin:
                 )
             )
         return used_in
+
 
 class SoundExtensions(models.TextChoices):
     MP3 = "mp3", "MP3"
@@ -187,8 +188,8 @@ class Sound(TimeStampedModel, ContentMixin):
 
     def as_html_thumbnail(self, editable=False):
         elements = [
+            span(self.title),
             self.as_html(),
-            div(class_="separator"),
         ]
         if editable and not self.is_used_by_other_user():
             elements.append(self._get_edit_button())
@@ -196,11 +197,13 @@ class Sound(TimeStampedModel, ContentMixin):
         if editable and not self.in_use:
             elements.append(self._get_delete_button())
 
-        return render(div(*elements))
+        return render(div(elements))
+
 
 class ExhibitTypes(models.TextChoices):
     AR = "AR", "Augmented Reality"
     MR = "MR", "Mixed Reality"
+
 
 @pghistory.track()
 class Marker(TimeStampedModel, ContentMixin):
@@ -284,9 +287,15 @@ class Object(TimeStampedModel, ContentMixin):
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
     sound = models.ForeignKey(
-        Sound, on_delete=models.DO_NOTHING, related_name="ar_objects", null=True, blank=True
+        Sound,
+        on_delete=models.DO_NOTHING,
+        related_name="ar_objects",
+        null=True,
+        blank=True,
     )
-    audio_description = models.FileField(upload_to="audio_descriptions/", null=True, blank=True)
+    audio_description = models.FileField(
+        upload_to="audio_descriptions/", null=True, blank=True
+    )
     source = models.FileField(upload_to="objects/")
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
@@ -405,7 +414,11 @@ class Artwork(TimeStampedModel, ContentMixin):
         Object, on_delete=models.DO_NOTHING, related_name="artworks"
     )
     sound = models.ForeignKey(
-        Sound, on_delete=models.DO_NOTHING, related_name="artworks", null=True, blank=True
+        Sound,
+        on_delete=models.DO_NOTHING,
+        related_name="artworks",
+        null=True,
+        blank=True,
     )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
@@ -554,6 +567,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
             exhibit_card,
         ]
         return render(elements)
+
 
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)

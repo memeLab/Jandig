@@ -39,12 +39,14 @@ def collection(request):
     )
     markers = Marker.objects.all().order_by("-created")[:8]
     objects = Object.objects.all().order_by("-created")[:8]
+    sounds = Sound.objects.all().order_by("-created")[:8]
 
     ctx = {
         "artworks": artworks,
         "exhibits": exhibits,
         "markers": markers,
         "objects": objects,
+        "sounds": sounds,
         "seeall": False,
     }
 
@@ -54,7 +56,7 @@ def collection(request):
 @require_http_methods(["GET"])
 def see_all(request, which=""):
     request_type = request.GET.get("which", which)
-    if request_type not in ["objects", "markers", "artworks", "exhibits"]:
+    if request_type not in ["objects", "markers", "artworks", "exhibits", "sounds"]:
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
@@ -78,6 +80,7 @@ def see_all(request, which=""):
         .prefetch_related("artworks")
         .all()
         .order_by("created"),
+        "sounds": Sound.objects.all().order_by("created"),
     }
 
     data = data_types.get(request_type)
@@ -124,6 +127,8 @@ def delete(request):
         delete_content(Artwork, request.user, request.GET.get("id", -1))
     elif content_type == "exhibit":
         delete_content(Exhibit, request.user, request.GET.get("id", -1))
+    elif content_type == "sound":
+        delete_content(Sound, request.user, request.GET.get("id", -1))
     return redirect("profile")
 
 
@@ -438,7 +443,7 @@ def sound_upload(request):
             sound = form.save(commit=False)
             sound.owner = request.user.profile
             sound.save()
-            return redirect("sound-list")
+            return redirect("profile")
     else:
         form = SoundForm()
     return render(request, "core/upload-sound.jinja2", {"form": form})
@@ -459,7 +464,7 @@ def edit_sound(request):
         form = SoundForm(request.POST, request.FILES, instance=model)
         if form.is_valid():
             form.save()
-            return redirect("sound-list")
+            return redirect("profile")
     else:
         form = SoundForm(instance=model)
 

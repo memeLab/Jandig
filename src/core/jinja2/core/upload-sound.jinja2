@@ -23,7 +23,12 @@
                 
                         <h3>{{_("Choose Sound")}}</h3>
                     
-                        {{ form.visible_fields()[1] | safe}}
+                        <div style="display: flex; flex-direction: column;">
+                            <input type="file" name="file" accept="audio/wav, audio/mp3, audio/ogg" title="{{ _('Choose the Sound File')}}" required="True" id="id_file"
+                            style="height: auto;">
+                            <p style="font-size: small; text-align: left; padding: 0 10px">(.wav, .mp3, .ogg)</p>
+                        </div>
+                        
                         {{ form.visible_fields()[1].errors }}
                     </p>
 

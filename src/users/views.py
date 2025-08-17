@@ -94,18 +94,22 @@ def profile(request):
         "artworks__augmented",
         "markers__artworks",
         "ar_objects__artworks",
+        "sounds__artworks",
+        "sounds__ar_objects",
+        "sounds__exhibits",
     ).get(user=user)
 
     exhibits = profile.exhibits.all().order_by("-created")
     artworks = profile.artworks.all().order_by("-created")
     markers = profile.markers.all().order_by("-created")
     objects = profile.ar_objects.all().order_by("-created")
-
+    sounds = profile.sounds.all().order_by("-created")
     ctx = {
         "exhibits": exhibits,
         "artworks": artworks,
         "markers": markers,
         "objects": objects,
+        "sounds": sounds,
     }
     return render(request, "users/profile.jinja2", ctx)
 
