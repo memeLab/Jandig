@@ -235,6 +235,8 @@ def edit_object(request):
         form = UploadObjectForm(initial=model_data)
 
     sounds = Sound.objects.all().order_by("-created")[:8]
+    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+
     return render(
         request,
         "core/upload-object.jinja2",
@@ -244,6 +246,7 @@ def edit_object(request):
             "edit": True,
             "sounds": sounds,
             "selected_sound": model.sound.id if model.sound else None,
+            "total_sound_pages": paginator_sounds.num_pages,
         },
     )
 
@@ -295,9 +298,14 @@ def _get_artwork_context_data(form, artwork_instance=None):
             {
                 "selected_marker": artwork_instance.marker.id,
                 "selected_object": artwork_instance.augmented.id,
-                "selected_sound": artwork_instance.sound.id,
             }
         )
+        if artwork_instance.sound:
+            context.update(
+                {
+                    "selected_sound": artwork_instance.sound.id,
+                }
+            )
 
     return context
 
@@ -331,58 +339,6 @@ def artwork_preview(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
-def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
-    """Helper function to handle exhibit form processing for both create and edit operations."""
-    is_edit = exhibit_instance is not None
-
-    if request.method == "POST":
-        form = ExhibitForm(request.POST, instance=exhibit_instance)
-        form.full_clean()
-
-        if form.is_valid():
-            exhibit = form.save(commit=False)
-            exhibit.owner = user_profile
-            form.save()
-            return redirect("profile")
-        else:
-            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-            return render(request, "core/exhibit_create.jinja2", context)
-    else:
-        form = ExhibitForm(instance=exhibit_instance)
-        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-        return render(request, "core/exhibit_create.jinja2", context)
-
-
-def _get_exhibit_context_data(user_profile, form, edit=False):
-    """Helper method to prepare context data for exhibit templates."""
-    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
-    objects = Object.objects.all().order_by("-created")
-    paginator = Paginator(objects, settings.MODAL_PAGE_SIZE)
-    context = {
-        "form": form,
-        "artworks": artworks,
-        "objects": objects[: settings.MODAL_PAGE_SIZE],
-        "total_pages": paginator.num_pages,
-    }
-
-    if edit:
-        selected_artworks = ",".join(
-            str(artwork.id) for artwork in form.instance.artworks.all()
-        )
-        selected_objects = ",".join(
-            str(augmented.id) for augmented in form.instance.augmenteds.all()
-        )
-        context.update(
-            {
-                "selected_artworks": selected_artworks,
-                "selected_objects": selected_objects,
-                "edit": True,
-            }
-        )
-
-    return context
-
-
 @login_required
 def get_element(request):
     if request.htmx:
@@ -413,6 +369,68 @@ def get_element(request):
             },
         )
     raise Http404
+
+
+def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
+    """Helper function to handle exhibit form processing for both create and edit operations."""
+    is_edit = exhibit_instance is not None
+
+    if request.method == "POST":
+        form = ExhibitForm(request.POST, instance=exhibit_instance)
+        form.full_clean()
+
+        if form.is_valid():
+            exhibit = form.save(commit=False)
+            exhibit.owner = user_profile
+            form.save()
+            return redirect("profile")
+        else:
+            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+            return render(request, "core/exhibit_create.jinja2", context)
+    else:
+        form = ExhibitForm(instance=exhibit_instance)
+        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+        return render(request, "core/exhibit_create.jinja2", context)
+
+
+def _get_exhibit_context_data(user_profile, form, edit=False):
+    """Helper method to prepare context data for exhibit templates."""
+    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
+    objects = Object.objects.all().order_by("-created")
+    sounds = Sound.objects.all().order_by("-created")
+
+    paginator_objects = Paginator(objects, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+
+    context = {
+        "form": form,
+        "artworks": artworks,
+        "objects": objects[: settings.MODAL_PAGE_SIZE],
+        "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+        "total_object_pages": paginator_objects.num_pages,
+        "total_sound_pages": paginator_sounds.num_pages,
+    }
+
+    if edit:
+        selected_artworks = ",".join(
+            str(artwork.id) for artwork in form.instance.artworks.all()
+        )
+        selected_objects = ",".join(
+            str(augmented.id) for augmented in form.instance.augmenteds.all()
+        )
+        selected_sounds = ",".join(
+            str(sound.id) for sound in form.instance.sounds.all()
+        )
+        context.update(
+            {
+                "selected_artworks": selected_artworks,
+                "selected_objects": selected_objects,
+                "selected_sounds": selected_sounds,
+                "edit": True,
+            }
+        )
+
+    return context
 
 
 @login_required
@@ -448,6 +466,7 @@ def exhibit_detail(request):
         "exhibitImage": "https://cdn3.iconfinder.com/data/icons/basic-mobile-part-2/512/painter-512.png",
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
         "objects": exhibit.augmenteds.all(),
+        "sounds": exhibit.sounds.all(),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
 
@@ -520,7 +539,7 @@ def related_content(request):
     element_type = request.GET.get("type")
     if element_id is None or element_type is None:
         raise Http404
-    if element_type not in ["object", "marker", "artwork"]:
+    if element_type not in ["object", "marker", "artwork", "sound"]:
         raise Http404
     # Bots insert random strings in the id parameter, element_id should be an integer
     try:
@@ -565,5 +584,17 @@ def related_content(request):
         exhibits = element.exhibits.all()
 
         ctx = {"exhibits": exhibits, "seeall:": False}
+
+    elif element_type == "sound":
+        element = Sound.objects.prefetch_related(
+            "exhibits", "artworks", "ar_objects"
+        ).get(id=element_id)
+
+        ctx = {
+            "exhibits": element.exhibits.all(),
+            "artworks": element.artworks.all(),
+            "objects": element.ar_objects.all(),
+            "seeall": False,
+        }
 
     return render(request, "core/collection.jinja2", ctx)

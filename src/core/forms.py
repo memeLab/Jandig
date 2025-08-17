@@ -192,7 +192,7 @@ class ArtworkForm(forms.ModelForm):
     )
     selected_sound = forms.ModelChoiceField(
         queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
-        required=True,
+        required=False,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
 
@@ -258,6 +258,7 @@ class ArtworkForm(forms.ModelForm):
 class ExhibitForm(forms.ModelForm):
     artworks = forms.CharField(max_length=1000, required=False)
     augmenteds = forms.CharField(max_length=1000, required=False)
+    sounds = forms.CharField(max_length=1000, required=False)
 
     def __init__(self, *args, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
@@ -334,6 +335,20 @@ class ExhibitForm(forms.ModelForm):
         augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
         return augmenteds
 
+    def clean_sounds(self):
+        sounds_str = self.cleaned_data.get("sounds", "")
+        if not sounds_str:
+            return []
+
+        sound_ids = [id.strip() for id in sounds_str.split(",") if id.strip()]
+        try:
+            sound_ids = [int(id) for id in sound_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid sound IDs provided."))
+
+        sounds = list(Sound.objects.filter(id__in=sound_ids).order_by("-id"))
+        return sounds
+
     def clean(self):
         cleaned_data = super().clean()
         artworks = cleaned_data.get("artworks", [])
@@ -352,12 +367,15 @@ class ExhibitForm(forms.ModelForm):
         # Set exhibit_type based on augmented objects
         artworks = self.cleaned_data.get("artworks", [])
         augmenteds = self.cleaned_data.get("augmenteds", [])
+        sounds = self.cleaned_data.get("sounds", [])
+
         exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
 
         if commit:
             exhibit.save()
             exhibit.artworks.set(artworks)
             exhibit.augmenteds.set(augmenteds)
+            exhibit.sounds.set(sounds)
 
         return exhibit
 
