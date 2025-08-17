@@ -63,7 +63,7 @@ class UploadObjectForm(forms.ModelForm):
 
     class Meta:
         model = Object
-        fields = ("source", "author", "title", "thumbnail")
+        fields = ("source", "author", "title", "thumbnail", "audio_description")
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
@@ -92,6 +92,19 @@ class UploadObjectForm(forms.ModelForm):
                         )
                     )
 
+        return file
+
+    def clean_audio_description(self):
+        file = self.cleaned_data.get("audio_description")
+        if not file:
+            return None
+
+        allowed_extensions = ["mp3", "ogg", "wav"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
+            raise forms.ValidationError(
+                _("Only MP3, OGG, and WAV audio files are allowed.")
+            )
         return file
 
     def save(self, *args, **kwargs):

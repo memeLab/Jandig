@@ -14,8 +14,15 @@
             {{ ar_object.used_in_html_string() | safe }}
         </p>
             {{ ar_object.as_html()| safe }}
-        <p id="download"> Download file:</p>
+        {% if ar_object.audio_description %}
+        <br>
+        <p>{{ _("Audio Description:") }}</p>
+        <audio controls>
+            <source src="{{ ar_object.audio_description.url }}" />
+        </audio>
+        {% endif %}
         <p id="element-download">
+            <p id="download"> Download file:</p>
             <a id="png-download" href="{{ ar_object.source.url }}">{{ "{} ({}KB)".format(_("Download File"), ar_object.file_size)}}</a>
         </p>
     </div>

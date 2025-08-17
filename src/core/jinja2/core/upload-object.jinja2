@@ -26,16 +26,16 @@
                 
                         <h3>{{_("Choose Object")}}</h3>
                     
-                        <div style="display: flex; flex-direction: column;">
-                            <input type="file" name="source" accept="image/gif, .gif, .mp4, .webm, .glb" title="{{ _('Choose the Object File')}}" required="True" id="id_source"
-                            style="height: auto;">
-                            <p style="font-size: small; text-align: left; padding: 0 10px">(.gif, .mp4, .webm, .glb)</p>
-                        </div>
+                        {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
-
                     <div id="content-box"></div>
-                    
+                    <h3>{{_("Choose Audio Description")}}</h3>
+                    <div style="display: flex; flex-direction: column;">
+                            <input type="file" name="audio_description" accept="audio/mp3, audio/ogg,audio/wav" title="{{ _('Choose the Audio Description File')}}" required="True" id="id_audio_description"
+                            style="height: auto;">
+                            <p style="font-size: small; text-align: left; padding: 0 10px">{{_("optional")}} (.mp3, .ogg, .wav)</p>
+                    </div>
                     
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">
