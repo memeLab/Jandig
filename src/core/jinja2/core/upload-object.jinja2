@@ -26,7 +26,11 @@
                 
                         <h3>{{_("Choose Object")}}</h3>
                     
-                        {{ form.visible_fields()[0] | safe}}
+                        <div style="display: flex; flex-direction: column;">
+                            <input type="file" name="source" accept="image/gif, .gif, .mp4, .webm, .glb" title="{{ _('Choose the Object File')}}" required="True" id="id_source"
+                            style="height: auto;">
+                            <p style="font-size: small; text-align: left; padding: 0 10px">(.gif, .mp4, .webm, .glb)</p>
+                        </div>
                         {{ form.visible_fields()[0].errors }}
                     </p>
 

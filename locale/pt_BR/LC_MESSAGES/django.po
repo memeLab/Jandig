@@ -45,7 +45,7 @@ msgstr "Este nome de exibição já está em uso. Por favor, escolha outro nome.
 
 #: src/core/forms.py:60
 msgid "Url can't contain spaces or special characters"
-msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+msgstr "URLs não podem conter espaços ou caracteres especiais (ex.: .:, /)"
 
 #: src/core/forms.py:68
 msgid ""
@@ -128,7 +128,7 @@ msgstr "excluir"
 
 #: src/core/models.py:75 src/core/models.py:360
 msgid "Used in"
-msgstr " Usado em "
+msgstr "Usado em"
 
 #: src/core/models.py:77
 msgid "artworks"
@@ -261,7 +261,7 @@ msgstr "Clipping"
 
 #: src/blog/jinja2/blog/clipping.jinja2:14
 msgid "The content below is in the original languages."
-msgstr "Os conteúdos abaixo estão em suas linguas originais"
+msgstr "Os conteúdos abaixo estão em suas línguas originais."
 
 #: src/blog/jinja2/blog/clipping.jinja2:22
 msgid "View as PDF"
@@ -277,7 +277,7 @@ msgstr "Ver Arquivo"
 
 #: src/blog/jinja2/blog/detail.jinja2:24
 msgid "Back to Top"
-msgstr "Página inicial"
+msgstr "Voltar ao topo"
 
 #: src/blog/jinja2/blog/index.jinja2:12
 #: src/core/jinja2/core/useful_links.jinja2:12
@@ -321,7 +321,7 @@ msgstr ""
 
 #: src/core/jinja2/core/community.jinja2:12
 msgid "Know More"
-msgstr "Entenda"
+msgstr "Saiba mais"
 
 #: src/core/jinja2/core/community.jinja2:14
 msgid ""
@@ -368,7 +368,7 @@ msgstr ""
 "Cada exposição é feita a partir da disposição de diversos marcadores, que "
 "utilizam como suporte adesivos, imagens de stencil, de carimbos, ou outras, "
 "em diferentes tamanhos. Esses suportes são também entregues ao público que "
-"circulam pelo espaço, de modo que possam fazer interferências locais e que "
+"circula pelo espaço, de modo que possam fazer interferências locais e que "
 "seja possível “viralizar” os marcadores enquanto a exposição estiver "
 "disponível, deixando rastros e proporcionando interações entre os "
 "participantes/visitantes."
@@ -379,9 +379,9 @@ msgid ""
 "public must point their devices at the markers, so that the Jandig platform "
 "viewer can read them and show the content in augmented reality."
 msgstr ""
-"Para enxergar através das “janelas” e ver as imagens fabulosas o que elas "
+"Para enxergar através das “janelas” e ver as imagens fabulosas que elas "
 "revelam, o público deverá apontar seus dispositivos para os marcadores, para "
-"que o visualizador da plataforma Jandig ufaça a leitura dos mesmos e mostre "
+"que o visualizador da plataforma Jandig faça a leitura dos mesmos e mostre "
 "o conteúdo em realidade aumentada."
 
 #: src/core/jinja2/core/community.jinja2:26
@@ -471,7 +471,7 @@ msgstr "Informações da Exposição (2/2)"
 
 #: src/core/jinja2/core/exhibit_create.jinja2:60
 msgid "Your exhibit URL will look like this"
-msgstr "Sua URL de exibição vai se parecer com isso."
+msgstr "Sua URL de exposição ficará assim:"
 
 #: src/core/jinja2/core/exhibit_create.jinja2:69
 msgid "Edit Exhibit"
@@ -483,7 +483,7 @@ msgstr "Publicar Exposição"
 
 #: src/core/jinja2/core/exhibit_create.jinja2:110
 msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
-msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+msgstr "URLs não podem conter espaços ou caracteres especiais (ex.: .:, /)"
 
 #: src/core/jinja2/core/exhibit_detail.jinja2:12
 msgid "See this exhibition"
@@ -543,7 +543,7 @@ msgstr "Entrar"
 
 #: src/core/jinja2/core/home.jinja2:39
 msgid "Welcome to Jandig"
-msgstr "Bem vindo ao Jandig"
+msgstr "Bem-vindo ao Jandig"
 
 #: src/core/jinja2/core/home.jinja2:40
 msgid "An Open Source Augmented Reality art community."
@@ -551,7 +551,7 @@ msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
 #: src/core/jinja2/core/home.jinja2:41
 msgid "To see the Artworks you need to grant camera access to the app."
-msgstr "Para ver as Obras você precisa dar acesso a câmera no aplicativo."
+msgstr "Para ver as obras, você precisa dar acesso à câmera no aplicativo."
 
 #: src/core/jinja2/core/home.jinja2:43
 msgid "Go to camera"
@@ -571,7 +571,7 @@ msgstr "Alterar exposição"
 
 #: src/core/jinja2/core/ui.jinja2:5
 msgid "Back to home"
-msgstr "Página inicial"
+msgstr "Voltar ao início"
 
 #: src/core/jinja2/core/upload-artwork.jinja2:11
 msgid "Edit Jandig Artwork"
@@ -630,11 +630,11 @@ msgstr "Escolha o título do seu Marcador"
 
 #: src/core/jinja2/core/upload-marker.jinja2:22
 msgid "Choose Marker image"
-msgstr "Selecione uma imagem de Marcador"
+msgstr "Selecione uma imagem do Marcador"
 
 #: src/core/jinja2/core/upload-marker.jinja2:40
 msgid "I'm this Marker author"
-msgstr "Sou autor/a desse Marcador"
+msgstr "Sou autor(a) deste Marcador"
 
 #: src/core/jinja2/core/upload-marker.jinja2:53
 #: src/core/jinja2/core/upload-object.jinja2:76
@@ -669,8 +669,8 @@ msgid ""
 "Scale should be adjusted relative to Marker size on the screen. A scale of 2 "
 "will render an Object twice the size of the Marker."
 msgstr ""
-"A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma "
-"escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
+"A escala deve ser ajustada relativamente ao tamanho do Marcador na tela. Uma "
+"escala de 2 renderizará um objeto duas vezes maior que o Marcador."
 
 #: src/core/jinja2/core/upload-object.jinja2:47
 msgid "Adjust position"
@@ -678,12 +678,12 @@ msgstr "Ajustar posição"
 
 #: src/core/jinja2/core/upload-object.jinja2:66
 msgid "I'm this Object author"
-msgstr "Sou autor/a desse Objeto"
+msgstr "Sou autor(a) deste objeto"
 
 #: src/core/jinja2/core/upload-object.jinja2:139
 msgid "Invalid file type! Only image or video files are accepted."
 msgstr ""
-"Tipo inválido de arquivo! Somente arquivos de imagem ou vídeo são aceitos."
+"Tipo de arquivo inválido! Somente arquivos de imagem ou vídeo são aceitos."
 
 #: src/core/jinja2/core/useful_links.jinja2:5
 msgid "AR Viewer"
@@ -840,7 +840,7 @@ msgstr " Obras"
 
 #: src/users/jinja2/users/components/userbox.jinja2:40
 msgid "No Artworks yet."
-msgstr "Sem Obras."
+msgstr "Nenhuma Obra ainda."
 
 #: src/users/jinja2/users/components/userbox.jinja2:44
 #: src/users/jinja2/users/components/userbox.jinja2:62
@@ -857,4 +857,4 @@ msgstr " Exposições"
 
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
-msgstr "Sem Exposições."
+msgstr "Nenhuma Exposição ainda."
