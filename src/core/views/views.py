@@ -145,10 +145,11 @@ def object_upload(request):
     else:
         form = UploadObjectForm()
 
+    sounds = Sound.objects.all().order_by("-created")[:8]
     return render(
         request,
         "core/upload-object.jinja2",
-        {"form": form, "edit": False},
+        {"form": form, "edit": False, "sounds": sounds},
     )
 
 
@@ -171,30 +172,6 @@ def marker_upload(request):
     )
 
 
-def edit_elements(request, form_class, route, model, model_data):
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
-
-    if request.method == "POST":
-        form = form_class(request.POST, request.FILES, instance=model)
-
-        form.full_clean()
-        if form.is_valid():
-            form.save()
-            return redirect("profile")
-    else:
-        form = form_class(initial=model_data)
-    return render(
-        request,
-        route,
-        {
-            "form": form,
-            "model": model,
-            "edit": True,
-        },
-    )
-
-
 @login_required
 def edit_marker(request):
     index = request.GET.get("id", "-1")
@@ -208,12 +185,27 @@ def edit_marker(request):
         "title": model.title,
     }
 
-    return edit_elements(
+    if not model or model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = UploadMarkerForm(request.POST, request.FILES, instance=model)
+
+        form.full_clean()
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = UploadMarkerForm(initial=model_data)
+
+    return render(
         request,
-        UploadMarkerForm,
-        route="core/edit-marker.jinja2",
-        model=model,
-        model_data=model_data,
+        "core/upload-marker.jinja2",
+        {
+            "form": form,
+            "model": model,
+            "edit": True,
+        },
     )
 
 
@@ -229,12 +221,30 @@ def edit_object(request):
         "title": model.title,
         "thumbnail": model.thumbnail,
     }
-    return edit_elements(
+    if not model or model.owner != Profile.objects.get(user=request.user):
+        raise Http404
+
+    if request.method == "POST":
+        form = UploadObjectForm(request.POST, request.FILES, instance=model)
+
+        form.full_clean()
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = UploadObjectForm(initial=model_data)
+
+    sounds = Sound.objects.all().order_by("-created")[:8]
+    return render(
         request,
-        UploadObjectForm,
-        route="core/upload-object.jinja2",
-        model=model,
-        model_data=model_data,
+        "core/upload-object.jinja2",
+        {
+            "form": form,
+            "model": model,
+            "edit": True,
+            "sounds": sounds,
+            "selected_sound": model.sound.id if model.sound else None,
+        },
     )
 
 

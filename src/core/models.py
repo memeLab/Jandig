@@ -178,6 +178,7 @@ class Sound(TimeStampedModel, ContentMixin):
             "id": self.id,
             "title": self.title,
             "src": self.file.url,
+            "style": "display: block;",
         }
         return render(
             audio(
@@ -197,7 +198,7 @@ class Sound(TimeStampedModel, ContentMixin):
         if editable and not self.in_use:
             elements.append(self._get_delete_button())
 
-        return render(div(elements))
+        return render(div(elements, style="margin: 10px auto;"))
 
 
 class ExhibitTypes(models.TextChoices):

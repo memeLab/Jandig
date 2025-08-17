@@ -14,6 +14,13 @@
             {{ ar_object.used_in_html_string() | safe }}
         </p>
             {{ ar_object.as_html()| safe }}
+        {% if ar_object.sound %}
+        <br>
+        <p>{{ _("Sound:") }}</p>
+        <audio controls>
+            <source src="{{ ar_object.sound.file.url }}" />
+        </audio>
+        {% endif %}
         {% if ar_object.audio_description %}
         <br>
         <p>{{ _("Audio Description:") }}</p>

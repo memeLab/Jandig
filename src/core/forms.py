@@ -39,14 +39,22 @@ class ObjectWidget(forms.ClearableFileInput):
         self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
+        attrs.update({"accept": ".gif, .mp4, .webm, .glb"})
         context = self.get_context(name, value, attrs)
         if self.thumbnail:
             context["widget"]["thumbnail"] = self.thumbnail
+
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
 
 
 class UploadObjectForm(forms.ModelForm):
+    selected_sound = forms.ModelChoiceField(
+        queryset=Sound.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
@@ -112,6 +120,7 @@ class UploadObjectForm(forms.ModelForm):
             self.instance.owner = owner
             del kwargs["owner"]
 
+        self.instance.sound = self.cleaned_data.get("selected_sound", None)
         self.instance.file_size = self.instance.source.size
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
