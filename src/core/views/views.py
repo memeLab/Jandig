@@ -146,10 +146,16 @@ def object_upload(request):
         form = UploadObjectForm()
 
     sounds = Sound.objects.all().order_by("-created")[:8]
+    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
     return render(
         request,
         "core/upload-object.jinja2",
-        {"form": form, "edit": False, "sounds": sounds},
+        {
+            "form": form,
+            "edit": False,
+            "sounds": sounds,
+            "total_sound_pages": paginator_sounds.num_pages,
+        },
     )
 
 
