@@ -517,6 +517,10 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         return self.augmenteds.count()
 
     @property
+    def sounds_count(self):
+        return self.sounds.count()
+
+    @property
     def date(self):
         return self.created.strftime("%d/%m/%Y")
 
@@ -539,6 +543,13 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
                     p(
                         a(
                             "{} {}".format(self.augmenteds_count, _("Object(s)")),
+                            href=link_to_exhibit,
+                        ),
+                        class_="exhibit-about",
+                    ),
+                    p(
+                        a(
+                            "{} {}".format(self.sounds_count, _("Sound(s)")),
                             href=link_to_exhibit,
                         ),
                         class_="exhibit-about",
