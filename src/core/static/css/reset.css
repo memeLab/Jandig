@@ -189,7 +189,7 @@ button,
   display: inline-block;
 }
 
-button:hover {
+input[type=submit]:hover, button:hover {
   cursor: pointer; /* Changes the cursor to a hand pointer on hover */
 }
 
