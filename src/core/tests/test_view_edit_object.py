@@ -207,7 +207,7 @@ class TestObjectEdit(TestCase):
         # Simulate the object being used by another user
         another_user = UserFactory(username="anotheruser", password="anotherpassword")
         another_profile = ProfileFactory(user=another_user)
-        _ = ArtworkFactory(
+        another_user_artwork = ArtworkFactory(
             title="Test Artwork",
             author=another_profile,
             augmented=obj,
@@ -229,6 +229,25 @@ class TestObjectEdit(TestCase):
         obj.refresh_from_db()
         assert obj.source.size == self.get_example_object1().size
         assert obj.source.read() == self.get_example_object1().read()
+        assert obj.title == "Test Image"
+        assert obj.author == "Old Author"
+        assert obj.owner == self.profile
+
+        # After freeing the object, the user should be able to edit it
+        another_user_artwork.delete()
+
+        response = self.client.post(
+            url,
+            {
+                "title": obj.title,
+                "source": self.get_example_object2(),
+                "author": obj.author,
+            },
+        )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.source.size == self.get_example_object2().size
+        assert obj.source.read() == self.get_example_object2().read()
         assert obj.title == "Test Image"
         assert obj.author == "Old Author"
         assert obj.owner == self.profile

@@ -204,7 +204,9 @@ class TestSoundEdit(TestCase):
         # Simulate the sound being used by another user
         another_user = UserFactory(username="anotheruser", password="anotherpassword")
         another_profile = ProfileFactory(user=another_user)
-        _ = ArtworkFactory(title="Test Artwork", author=another_profile, sound=sound)
+        another_user_artwork = ArtworkFactory(
+            title="Test Artwork", author=another_profile, sound=sound
+        )
 
         self.client.login(username=self.username, password=self.password)
         url = reverse("edit-sound", query={"id": sound.id})
@@ -222,6 +224,25 @@ class TestSoundEdit(TestCase):
         sound.refresh_from_db()
         assert sound.file.size == self.get_example_sound1().size
         assert sound.file.read() == self.get_example_sound1().read()
+        assert sound.title == "Test Sound"
+        assert sound.author == "Old Author"
+        assert sound.owner == self.profile
+
+        # After deleting the other user content editing should be possible
+        another_user_artwork.delete()
+
+        response = self.client.post(
+            url,
+            {
+                "title": sound.title,
+                "file": self.get_example_sound2(),
+                "author": sound.author,
+            },
+        )
+        assert response.status_code == status.HTTP_302_FOUND
+        sound.refresh_from_db()
+        assert sound.file.size == self.get_example_sound2().size
+        assert sound.file.read() == self.get_example_sound2().read()
         assert sound.title == "Test Sound"
         assert sound.author == "Old Author"
         assert sound.owner == self.profile
