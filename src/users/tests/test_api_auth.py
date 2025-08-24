@@ -13,11 +13,32 @@ class TestAuthAPI(TestCase):
         self.user.set_password("password")
         self.user.save()
 
-    def test_login_success(self):
+    def test_login_with_username_success(self):
         """Test that the login endpoint works"""
         response = self.client.post(
             "/api/v1/auth/login/",
             {"username": self.user.username, "password": "password"},
+        )
+        data = response.json()
+        assert response.status_code == 200
+        assert data["access"] is not None
+        assert data["refresh"] is not None
+        # Access JWT token payload
+        payload = data["access"].split(".")[1]
+        # Decode the base 64 payload
+        decoded_payload = base64.b64decode(payload + "==").decode("utf-8")
+        json_payload = json.loads(decoded_payload)
+
+        # Check the payload contains the user id
+        assert int(json_payload["user_profile_id"]) == self.user.profile.id
+        assert int(json_payload["user_id"]) == self.user.id
+        assert json_payload["username"] == self.user.username
+
+    def test_login_with_email_success(self):
+        """Test that the login endpoint works"""
+        response = self.client.post(
+            "/api/v1/auth/login/",
+            {"username": self.user.email, "password": "password"},
         )
         data = response.json()
         assert response.status_code == 200
