@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "2.0.5"
+version = "2.0.6"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -51,7 +51,7 @@ DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 testpaths = ["src/core", "src/users", "src/blog", "src/ui_tests"]
 pythonpath = "src"
-addopts="-n4"
+addopts="-n1"
 
 [tool.coverage.run]
 relative_files=true

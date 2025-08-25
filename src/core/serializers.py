@@ -57,7 +57,7 @@ class ObjectSerializer(ModelSerializer):
     owner = ProfileSerializer(read_only=True)
     exhibits_count = IntegerField(read_only=True)
     artworks_count = IntegerField(read_only=True)
-    sounds = SoundSerializer(many=True, read_only=True)
+    sound = SoundSerializer(read_only=True)
 
     class Meta:
         model = Object
@@ -71,7 +71,8 @@ class ObjectSerializer(ModelSerializer):
             "title",
             "artworks_count",
             "exhibits_count",
-            "sounds",
+            "audio_description",
+            "sound",
         )
         read_only_fields = (
             "id",
@@ -83,7 +84,7 @@ class ArtworkSerializer(ModelSerializer):
     marker = MarkerSerializer(read_only=True)
     augmented = ObjectSerializer(read_only=True)
     author = ProfileSerializer(read_only=True)
-    sounds = SoundSerializer(many=True, read_only=True)
+    sound = SoundSerializer(read_only=True)
 
     class Meta:
         model = Artwork
@@ -100,7 +101,7 @@ class ArtworkSerializer(ModelSerializer):
             "scale_y",
             "position_x",
             "position_y",
-            "sounds",
+            "sound",
         )
         read_only_fields = (
             "id",
