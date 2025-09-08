@@ -132,6 +132,10 @@
                     actual_page = 1;
                 }
                 page_sound = actual_page;
+                update_next_previous_buttons();
+                return page_sound
+            }
+            function update_next_previous_buttons() {
                 previous_button = document.getElementById("previous-button-sound");
                 next_button = document.getElementById("next-button-sound");
                 if (page_sound == 1) {
@@ -144,9 +148,8 @@
                 }else {
                     next_button.disabled = false;
                 }
-
-                return page_sound
             }
+            update_next_previous_buttons();
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
                     $('#submit-btn').prop('disabled', false);

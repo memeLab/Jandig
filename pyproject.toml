@@ -51,7 +51,7 @@ DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 testpaths = ["src/core", "src/users", "src/blog", "src/ui_tests"]
 pythonpath = "src"
-addopts="-n1"
+addopts="-n4"
 
 [tool.coverage.run]
 relative_files=true

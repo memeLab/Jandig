@@ -147,7 +147,7 @@ def object_upload(request):
     else:
         form = UploadObjectForm()
 
-    sounds = Sound.objects.all().order_by("-created")[:8]
+    sounds = Sound.objects.all().order_by("-created")
     paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
     return render(
         request,
@@ -155,7 +155,7 @@ def object_upload(request):
         {
             "form": form,
             "edit": False,
-            "sounds": sounds,
+            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
             "total_sound_pages": paginator_sounds.num_pages,
         },
     )
@@ -242,7 +242,7 @@ def edit_object(request):
     else:
         form = UploadObjectForm(initial=model_data)
 
-    sounds = Sound.objects.all().order_by("-created")[:8]
+    sounds = Sound.objects.all().order_by("-created")
     paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
 
     return render(
@@ -252,7 +252,7 @@ def edit_object(request):
             "form": form,
             "model": model,
             "edit": True,
-            "sounds": sounds,
+            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
             "selected_sound": model.sound.id if model.sound else None,
             "total_sound_pages": paginator_sounds.num_pages,
         },
