@@ -1,5 +1,3 @@
-/*  @import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');  */
-
 body {
   color: #000;
   background: #fff;
@@ -378,13 +376,11 @@ a.jandigIco {
   margin: 0 0 0 10px;
   display: block;
   font-size: 0;
-}
-
-/****** temporary disable icons ******/
-.icon-menu a {
   opacity: 0.2;
   pointer-events: none;
 }
+
+/****** temporary disable icons ******/
 
 .icon-menu a.btnLang {
   background: url(../images/icons/icoLng.png) no-repeat;
@@ -439,12 +435,7 @@ div.contCam:before {
   z-index: 1;
 }
 
-.animCam {
-  width: 40px;
-  height: 40px;
-  margin: -25px auto 0;
-  background: #03b595;
-}
+
 
 .useful-links a.cambtn {
   width: 40px;
@@ -463,7 +454,6 @@ div.contCam:before {
   font-size: 0.75em;
   font-weight: bold;
   clear: both;
-  font-size: 75%;
 }
 
 .useful-links .container {
@@ -871,6 +861,10 @@ a.jandigIco:hover,
 
 /****** Animation  ********/
 .animCam {
+  width: 40px;
+  height: 40px;
+  margin: -25px auto 0;
+  background: #03b595;
   animation: colorchange 4s infinite; /* animation-name followed by duration in seconds*/
   -webkit-animation: colorchange 4s infinite; /* Chrome and Safari */
 }

@@ -24,6 +24,8 @@ DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 
 SCALE_REGEX = r"[\d\.\d]+"
 
+USED_IN = _("Used in")
+
 
 def create_patt(filename, original_filename):
     filestorage = PublicMediaStorage()
@@ -71,7 +73,7 @@ class ContentMixin:
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {}".format(
-            _("Used in"),
+            USED_IN,
             self.artworks_count,
             _("artworks"),
             _("and in "),
@@ -152,7 +154,7 @@ class Sound(TimeStampedModel, ContentMixin):
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {} {}".format(
-            _("Used in"),
+            USED_IN,
             self.artworks_count,
             _("artworks"),
             self.augmenteds_count,
@@ -435,7 +437,7 @@ class Artwork(TimeStampedModel, ContentMixin):
 
     def used_in_html_string(self):
         used_in = "{} {} {}".format(
-            _("Used in"),
+            USED_IN,
             self.exhibits_count,
             _("Exhibits"),
         )

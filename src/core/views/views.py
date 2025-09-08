@@ -23,6 +23,8 @@ from core.models import (
 )
 from users.models import Profile
 
+COLLECTION_PAGE = "core/collection.jinja2"
+
 
 @require_http_methods(["GET"])
 def collection(request):
@@ -50,7 +52,7 @@ def collection(request):
         "seeall": False,
     }
 
-    return render(request, "core/collection.jinja2", ctx)
+    return render(request, COLLECTION_PAGE, ctx)
 
 
 @require_http_methods(["GET"])
@@ -94,7 +96,7 @@ def see_all(request, which=""):
             request_type: paginated_data,
             "seeall": True,
         }
-    return render(request, "core/collection.jinja2", ctx)
+    return render(request, COLLECTION_PAGE, ctx)
 
 
 def delete_content(model, user, instance_id):
@@ -601,4 +603,4 @@ def related_content(request):
             "seeall": False,
         }
 
-    return render(request, "core/collection.jinja2", ctx)
+    return render(request, COLLECTION_PAGE, ctx)
