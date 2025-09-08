@@ -41,12 +41,19 @@
 
             <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
             {{ form.visible_fields()[5].errors }}
-        
+
+            <h2>{{ _('Select a Sound') }}</h2>
+            <button id="select-sound" class="select-btn" type="button">
+                        {{ _('Select a Sound') }}
+            </button>
+            <input id="id_selected_sound" type="hidden" name="selected_sound" onchange="validateSubmit()" {% if selected_sound %} value="{{ selected_sound }}" {% endif %}>
+            {{ form.visible_fields()[5].errors }}
+
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
                     <h4 class="modal-title">{{ _('Select Marker') }}</h4>
                     <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML" disabled="disabled"> < </button>
                         <button style="width:2.5em; font-size: larger; margin:0" id="next-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> > </button>
                     </div>
                     {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
@@ -61,7 +68,7 @@
                     
                     <h4 class="modal-title">{{ _('Select Object') }}</h4>
                     <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML" disabled="disabled"> < </button>
                         <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
                     </div>
                     {% with repository_list = object_list, element_type = 'object', htmx="false" %}
@@ -70,6 +77,21 @@
 
                     <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
                             {{ _('Okay') }}
+                    </a>
+                </div>
+                <div id="sound-modal" class="tab">
+                    <h4 class="modal-title">{{ _('Select Sound') }}</h4>
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML" disabled="disabled"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                    </div>
+
+                    {% with repository_list = sound_list, element_type="sound", htmx="false"%}
+                        {% include "core/components/item-list.jinja2" %}
+                    {% endwith %}
+
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                        {{ _('Okay') }}
                     </a>
                 </div>
             </div>        
@@ -194,6 +216,10 @@
                 $('#form-modal').modal({showClose: false})
                 showTab(1);
             })
+            $('#select-sound').click(function(){
+                $('#form-modal').modal({showClose: false})
+                showTab(2);
+            })
             page_marker = 1;
             function get_page_marker(increment) {
                 actual_page = page_marker + increment;
@@ -238,12 +264,36 @@
 
                 return page_object
             }
+            page_sound = 1;
+            function get_page_sound(increment) {
+                actual_page = page_sound + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_sound = actual_page;
+                previous_button = document.getElementById("previous-button-sound");
+                next_button = document.getElementById("next-button-sound");
+                if (page_sound == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_sound == {{total_sound_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
+
+                return page_sound
+            }
             document.body.addEventListener("htmx:afterSwap", function(evt){
                 update_selected_items();
                 enable_selection();
             });
             selected_marker = "{{ selected_marker|default('', true) }}";
             selected_object = "{{ selected_object|default('', true) }}";
+            selected_sound = "{{ selected_sound|default('', true) }}";
+
             function update_selected_items(){
                 id_marker = "#marker-" + selected_marker;
                 $('#existent-marker > input').val(selected_marker);
@@ -252,6 +302,10 @@
                 id_object = "#object-" + selected_object;
                 $('#existent-object > input').val(selected_object);
                 $(id_object).css("border-bottom","3px solid #a6a6a6");
+
+                id_sound = "#sound-" + selected_sound;
+                $('#existent-sound > input').val(selected_sound);
+                $(id_sound).css("border-bottom","3px solid #a6a6a6");
             }
             update_selected_items();
 
@@ -267,9 +321,12 @@
                     if(sectionId == 'repo-marker'){
                         $('#id_selected_marker').val(id);
                         selected_marker = id;
-                    }else{
+                    }else if(sectionId == 'repo-object'){
                         $('#id_selected_object').val(id);
                         selected_object = id;
+                    }else{
+                        $('#id_selected_sound').val(id);
+                        selected_sound = id;
                     }
             });
             }

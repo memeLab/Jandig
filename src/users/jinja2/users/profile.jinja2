@@ -63,6 +63,19 @@
                         </section>
                     {% endif %}
 
+                    <h1 class="titArt">{{_("Your Sounds")}}</h1>
+                    {% if sounds %}
+                        {% with deletable=true, editable=true, repository_list = sounds, element_type="sound" %}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+                    {% else %}
+                        <section id="repo-{{element_type}}" class="repository-list">
+                            <p>{{_("You have no Sounds. :c")}}</p>
+                            <a href="{{ url('sound-upload') }}">{{ _('Upload one') }}</a>
+                        </section>
+                    {% endif %}
+
+
             {% include "users/components/createbox.jinja2" %}
             <section id="modal" class="modal"></section>
         </div>

@@ -15,7 +15,8 @@
                                                         ("exhibit",exhibits, "titExb"),
                                                         ("artwork",artworks, "titArt"),
                                                         ("marker",markers, "titMrk"),
-                                                        ("object",objects, "titObj")
+                                                        ("object",objects, "titObj"),
+                                                        ("sound",sounds, "titObj")
                                                     ] 
             %}
                                  
@@ -51,7 +52,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            {% if not exhibits and not artworks and not markers and not objects %}
+            {% if not exhibits and not artworks and not markers and not objects and not sounds %}
                     <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
             {% endif %}
 

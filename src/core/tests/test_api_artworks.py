@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from core.models import Artwork, Marker, Object
+from core.models import Artwork, Marker, Object, Sound
 from core.tests.factory import ArtworkFactory
 from users.models import User
 
@@ -47,8 +47,9 @@ class TestArtworkAPI(TestCase):
     def test_retrieve_artwork(self):
         marker = Marker.objects.create(owner=self.profile, source=fake_file)
         obj = Object.objects.create(owner=self.profile, source=fake_file)
+        sound = Sound.objects.create(owner=self.profile, file=fake_file)
         artwork = Artwork.objects.create(
-            author=self.profile, augmented=obj, marker=marker
+            author=self.profile, augmented=obj, marker=marker, sound=sound
         )
         self.assertEqual(artwork.author, self.profile)
 
@@ -61,6 +62,7 @@ class TestArtworkAPI(TestCase):
         assert data["author"]["id"] == self.profile.id
         assert data["marker"]["id"] == marker.id
         assert data["augmented"]["id"] == obj.id
+        assert data["sound"]["id"] == sound.id
 
     def test_retrieve_artwork_as_modal(self):
         artwork = ArtworkFactory()
