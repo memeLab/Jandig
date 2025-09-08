@@ -28,19 +28,23 @@ log = logging.getLogger(__file__)
 
 User = get_user_model()
 
+INVALID_MESSAGE = "Invalid Request"
+
 
 def signup(request):
     if request.method == "POST":
         if settings.RECAPTCHA_ENABLED:
             recaptcha_token = request.POST.get("g-recaptcha-response")
             if not recaptcha_token:
-                return JsonResponse({"error": "Invalid Request"}, status=400)
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
             assessment = create_assessment(
                 token=recaptcha_token, recaptcha_action="sign_up"
             )
+            if not assessment:
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
             score = assessment.get("riskAnalysis", {}).get("score", -1)
             if score <= BOT_SCORE:
-                return JsonResponse({"error": "Invalid Request"}, status=400)
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
 
         form = SignupForm(request.POST)
 
@@ -129,7 +133,7 @@ def edit_password(request):
             "form_profile": ProfileForm(instance=profile),
         }
         return render(request, "users/profile-edit.jinja2", ctx)
-    return Http404
+    raise Http404
 
 
 @login_required
