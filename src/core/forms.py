@@ -1,4 +1,3 @@
-import re
 from io import BytesIO
 
 from django import forms
@@ -75,8 +74,6 @@ class UploadObjectForm(forms.ModelForm):
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
-        if not file:
-            raise forms.ValidationError(_("This field is required."))
 
         allowed_extensions = ["gif", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
@@ -116,10 +113,6 @@ class UploadObjectForm(forms.ModelForm):
         return file
 
     def save(self, *args, **kwargs):
-        if owner := kwargs.get("owner", None):
-            self.instance.owner = owner
-            del kwargs["owner"]
-
         self.instance.sound = self.cleaned_data.get("selected_sound", None)
         self.instance.file_size = self.instance.source.size
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
@@ -164,10 +157,6 @@ class UploadMarkerForm(forms.ModelForm):
                 ContentFile(patt_str.encode("utf-8")),
                 save=commit,
             )
-
-            if kwargs.get("owner"):
-                self.instance.owner = kwargs.get("owner")
-                del kwargs["owner"]
 
             return super(UploadMarkerForm, self).save(*args, **kwargs)
 
@@ -249,9 +238,6 @@ class ArtworkForm(forms.ModelForm):
         artwork.sound = self.cleaned_data["selected_sound"]
         artwork.scale_x = self.cleaned_data["scale"]
         artwork.scale_y = self.cleaned_data["scale"]
-
-        if commit:
-            artwork.save()
         return artwork
 
 
@@ -292,10 +278,6 @@ class ExhibitForm(forms.ModelForm):
 
     def clean_slug(self):
         slug = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_-]*$", slug):
-            raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
         qs = Exhibit.objects.filter(slug=slug)
         if self.instance.pk:
             qs = qs.exclude(id=self.instance.pk)

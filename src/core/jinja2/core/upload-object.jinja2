@@ -47,6 +47,7 @@
                             style="height: auto;">
                             <p style="font-size: small; text-align: left; padding: 0 10px">{{_("optional")}} (.mp3, .ogg, .wav)</p>
                     </div>
+                    {{ form.visible_fields()[4].errors }}
                     
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">

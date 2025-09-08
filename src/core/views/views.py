@@ -164,9 +164,9 @@ def marker_upload(request):
     if request.method == "POST":
         form = UploadMarkerForm(request.POST, request.FILES)
         if form.is_valid():
-            upload = form.save(commit=False)
-            upload.owner = request.user.profile
-            upload.save()
+            marker = form.save(commit=False)
+            marker.owner = request.user.profile
+            marker.save()
             return redirect("profile")
     else:
         form = UploadMarkerForm()
@@ -259,15 +259,13 @@ def edit_object(request):
 
 def _handle_artwork_form(request, user_profile, artwork_instance=None):
     """Helper function to handle artwork form processing for both create and edit operations."""
-    is_edit = artwork_instance is not None
 
     if request.method == "POST":
         form = ArtworkForm(request.POST, request.FILES, instance=artwork_instance)
 
         if form.is_valid():
             artwork = form.save(commit=False)
-            if not is_edit:
-                artwork.author = user_profile
+            artwork.author = user_profile
             artwork.save()
             return redirect("profile")
     else:

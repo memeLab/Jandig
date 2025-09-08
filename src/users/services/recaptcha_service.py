@@ -58,7 +58,8 @@ def create_assessment(token: str, recaptcha_action: str):
         # Get the risk score and the reason(s).
         # For more information on interpreting the assessment, see:
         # https://cloud.google.com/recaptcha-enterprise/docs/interpret-assessment
-        for reason in response_data["riskAnalysis"]["reasons"]:
+
+        for reason in response_data["riskAnalysis"].get("reasons", []):
             logger.info(reason)
         logger.info(
             "The reCAPTCHA score for this token is: "

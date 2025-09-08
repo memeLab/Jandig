@@ -229,10 +229,6 @@ class Marker(TimeStampedModel, ContentMixin):
         return self.artworks.count()
 
     @property
-    def artworks_list(self):
-        return self.artworks.order_by("-id")
-
-    @property
     def in_use(self):
         if self.artworks_count > 0:
             return True
@@ -317,10 +313,6 @@ class Object(TimeStampedModel, ContentMixin):
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def artworks_list(self):
-        return self.artworks.order_by("-id")
 
     @property
     def in_use(self):
