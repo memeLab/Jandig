@@ -12,7 +12,14 @@ from core.models import Artwork, Exhibit, Marker, Object
 
 
 class TestGenerateObjectsCommand(TestCase):
+    def test_generate_objects_parser(self):
+        """Test to ensure the add_arguments function is covered."""
+        command = GenerateObjectsCommand()
+        parser = command.create_parser("manage.py", "generate_objects")
+        command.add_arguments(parser)
+
     def test_generate_objects_command(self):
+        """Generating a single object should work."""
         command = GenerateObjectsCommand()
         command.handle(count=1)
         # Check if an object was created
@@ -27,6 +34,7 @@ class TestGenerateObjectsCommand(TestCase):
         self.assertIsNotNone(obj.file_size)
 
     def test_generate_multiple(self):
+        """Generating multiple objects should work."""
         command = GenerateObjectsCommand()
         command.handle(count=5)
         # Check if 5 objects were created
@@ -41,7 +49,14 @@ class TestGenerateObjectsCommand(TestCase):
 
 
 class TestGenerateMarkersCommand(TestCase):
+    def test_generate_markers_parser(self):
+        """Test to ensure the add_arguments function is covered."""
+        command = GenerateMarkersCommand()
+        parser = command.create_parser("manage.py", "generate_markers")
+        command.add_arguments(parser)
+
     def test_generate_markers_command(self):
+        """Generating a single marker should work."""
         command = GenerateMarkersCommand()
         command.handle(count=1)
         # Check if a marker was created
@@ -51,6 +66,7 @@ class TestGenerateMarkersCommand(TestCase):
         self.assertIsNotNone(marker.title)
 
     def test_generate_multiple_markers(self):
+        """Generating multiple markers should work."""
         command = GenerateMarkersCommand()
         command.handle(count=3)
         # Check if 3 markers were created
@@ -60,7 +76,14 @@ class TestGenerateMarkersCommand(TestCase):
 
 
 class TestGenerateArtworksCommand(TestCase):
+    def test_generate_artworks_parser(self):
+        """Test to ensure the add_arguments function is covered."""
+        command = GenerateArtworksCommand()
+        parser = command.create_parser("manage.py", "generate_artworks")
+        command.add_arguments(parser)
+
     def test_generate_artworks_command(self):
+        """Generating a single artwork should work."""
         command = GenerateArtworksCommand()
         command.handle(count=1)
         # Check if an artwork was created
@@ -79,21 +102,29 @@ class TestGenerateArtworksCommand(TestCase):
         self.assertIsNotNone(artwork.marker)
 
     def test_generate_multiple_artworks(self):
+        """Generating multiple artworks should work."""
         command = GenerateArtworksCommand()
-        command.handle(count=3)
-        # Check if 3 artworks were created
-        self.assertEqual(Artwork.objects.count(), 3)
+        command.handle(count=10)
+        # Check if 10 artworks were created
+        self.assertEqual(Artwork.objects.count(), 10)
         for artwork in Artwork.objects.all():
             self.assertIsNotNone(artwork.title)
             self.assertIsNotNone(artwork.description)
             self.assertIsNotNone(artwork.augmented)
             self.assertIsNotNone(artwork.marker)
-        self.assertEqual(Object.objects.count(), 3)
-        self.assertEqual(Marker.objects.count(), 3)
+        self.assertEqual(Object.objects.count(), 10)
+        self.assertEqual(Marker.objects.count(), 10)
 
 
 class TestGenerateExhibitsCommand(TestCase):
+    def test_generate_exhibits_parser(self):
+        """Test to ensure the add_arguments function is covered."""
+        command = GenerateExhibitsCommand()
+        parser = command.create_parser("manage.py", "generate_exhibits")
+        command.add_arguments(parser)
+
     def test_generate_exhibits_command(self):
+        """Generating a single exhibit should work."""
         command = GenerateExhibitsCommand()
         command.handle(count=1)
         # Check if an exhibit was created
@@ -107,10 +138,11 @@ class TestGenerateExhibitsCommand(TestCase):
         )  # Ensure at least one artwork is associated
 
     def test_generate_multiple_exhibits(self):
+        """Generating multiple exhibits should work."""
         command = GenerateExhibitsCommand()
-        command.handle(count=2)
-        # Check if 2 exhibits were created
-        self.assertEqual(Exhibit.objects.count(), 2)
+        command.handle(count=3)
+        # Check if 3 exhibits were created
+        self.assertEqual(Exhibit.objects.count(), 3)
         for exhibit in Exhibit.objects.all():
             self.assertIsNotNone(exhibit.name)
             self.assertGreater(exhibit.artworks.count(), 0)

@@ -6,7 +6,13 @@ DEFAULT_VALID_PASSWORD = "Aa#12C34d6561"
 
 
 class TestSignup(TestCase):
-    def test_signup(self):
+    def test_signup_get(self):
+        """Signup page should be reachable"""
+        response = self.client.get(reverse("signup"))
+        assert response.status_code == 200
+
+    def test_signup_success_post(self):
+        """Signup with valid data should succeed"""
         response = self.client.post(
             reverse("signup"),
             {

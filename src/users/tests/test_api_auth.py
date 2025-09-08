@@ -55,6 +55,20 @@ class TestAuthAPI(TestCase):
         assert int(json_payload["user_id"]) == self.user.id
         assert json_payload["username"] == self.user.username
 
+    def test_login_fails_with_wrong_user(self):
+        """Test that the login endpoint fails with wrong credentials"""
+        response = self.client.post(
+            "/api/v1/auth/login/", {"username": "not_user", "password": "password"}
+        )
+        self.assertEqual(response.status_code, 401)
+
+    def test_login_fails_with_wrong_password(self):
+        """Test that the login endpoint fails with wrong credentials"""
+        response = self.client.post(
+            "/api/v1/auth/login/", {"username": "user", "password": "wrong_password"}
+        )
+        self.assertEqual(response.status_code, 401)
+
     def test_verify_token_success(self):
         """Test that the verify token endpoint works"""
         response = self.client.post(
