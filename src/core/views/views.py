@@ -73,16 +73,16 @@ def see_all(request, which=""):
         page = 1
 
     data_types = {
-        "objects": Object.objects.all().order_by("created"),
-        "markers": Marker.objects.all().order_by("created"),
+        "objects": Object.objects.all().order_by("-created"),
+        "markers": Marker.objects.all().order_by("-created"),
         "artworks": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
-        .order_by("created"),
+        .order_by("-created"),
         "exhibits": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .all()
-        .order_by("created"),
-        "sounds": Sound.objects.all().order_by("created"),
+        .order_by("-created"),
+        "sounds": Sound.objects.all().order_by("-created"),
     }
 
     data = data_types.get(request_type)

@@ -104,7 +104,7 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
                 "augmenteds__exhibits",
             )
             .all()
-            .order_by("id")
+            .order_by("-id")
         )
         owner_id = self.request.query_params.get("owner")
         search = self.request.query_params.get("search")
