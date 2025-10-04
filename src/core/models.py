@@ -518,6 +518,14 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     def date(self):
         return self.created.strftime("%d/%m/%Y")
 
+    def content_type(self):
+        if self.exhibit_type == ExhibitTypes.AR:
+            return "ar-exhibit"
+        elif self.exhibit_type == ExhibitTypes.MR:
+            return "mr-exhibit"
+        else:
+            raise ValueError("Invalid exhibit type")
+
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
         exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)

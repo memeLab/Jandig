@@ -4,6 +4,7 @@ from django.urls import reverse
 from core.models import (
     DEFAULT_MARKER_THUMBNAIL_HEIGHT,
     DEFAULT_MARKER_THUMBNAIL_WIDTH,
+    ExhibitTypes,
 )
 from core.tests.factory import (
     ArtworkFactory,
@@ -198,10 +199,11 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
 
         # Should not contain edit/delete buttons
-        assert reverse("edit-exhibit") not in html
+        assert reverse("edit-ar-exhibit") not in html
         assert reverse("delete-content") not in html
 
-    def test_exhibit_thumbnail_editable(self):
+    def test_ar_exhibit_thumbnail_editable(self):
+        self.exhibit.exhibit_type = ExhibitTypes.AR
         html = self.exhibit.as_html_thumbnail(editable=True)
 
         # Should contain all basic information
@@ -215,9 +217,34 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
 
         # Should contain edit/delete buttons with correct URLs
-        edit_url = reverse("edit-exhibit", query={"id": self.exhibit.id})
+        edit_url = reverse("edit-ar-exhibit", query={"id": self.exhibit.id})
         delete_url = reverse(
-            "delete-content", query={"content_type": "exhibit", "id": self.exhibit.id}
+            "delete-content",
+            query={"content_type": "ar-exhibit", "id": self.exhibit.id},
+        )
+
+        assert f'href="{edit_url}"' in html
+        assert f'href="{delete_url}"' in html
+
+    def test_mr_exhibit_thumbnail_editable(self):
+        self.exhibit.exhibit_type = ExhibitTypes.MR
+        html = self.exhibit.as_html_thumbnail(editable=True)
+
+        # Should contain all basic information
+        assert self.exhibit.name in html
+        assert self.exhibit.owner.user.username in html
+        assert self.exhibit.date in html
+        assert f"{self.exhibit.artworks_count} " in html
+
+        # Check links
+        assert f'href="/{self.exhibit.slug}/"' in html
+        assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
+
+        # Should contain edit/delete buttons with correct URLs
+        edit_url = reverse("edit-mr-exhibit", query={"id": self.exhibit.id})
+        delete_url = reverse(
+            "delete-content",
+            query={"content_type": "mr-exhibit", "id": self.exhibit.id},
         )
 
         assert f'href="{edit_url}"' in html

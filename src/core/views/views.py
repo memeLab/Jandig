@@ -16,6 +16,7 @@ from core.forms import (
 from core.models import (
     Artwork,
     Exhibit,
+    ExhibitTypes,
     Marker,
     Object,
     ObjectExtensions,
@@ -127,7 +128,7 @@ def delete(request):
         delete_content(Object, request.user, request.GET.get("id", -1))
     elif content_type == "artwork":
         delete_content(Artwork, request.user, request.GET.get("id", -1))
-    elif content_type == "exhibit":
+    elif content_type == "ar-exhibit" or content_type == "mr-exhibit":
         delete_content(Exhibit, request.user, request.GET.get("id", -1))
     elif content_type == "sound":
         delete_content(Sound, request.user, request.GET.get("id", -1))
@@ -377,7 +378,9 @@ def get_element(request):
     raise Http404
 
 
-def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
+def _handle_exhibit_form(
+    request, user_profile, exhibit_instance=None, exhibit_type=None
+):
     """Helper function to handle exhibit form processing for both create and edit operations."""
     is_edit = exhibit_instance is not None
 
@@ -391,17 +394,22 @@ def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
             form.save()
             return redirect("profile")
         else:
-            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+            if exhibit_type == ExhibitTypes.MR:
+                context = _get_mr_exhibit_context_data(form, edit=is_edit)
+                return render(request, "core/exhibit_create_mr.jinja2", context)
+            context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
             return render(request, "core/exhibit_create_ar.jinja2", context)
     else:
         form = ExhibitForm(instance=exhibit_instance)
-        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
+        if exhibit_type == ExhibitTypes.MR:
+            context = _get_mr_exhibit_context_data(form, edit=is_edit)
+            return render(request, "core/exhibit_create_mr.jinja2", context)
+        context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
         return render(request, "core/exhibit_create_ar.jinja2", context)
 
 
-def _get_exhibit_context_data(user_profile, form, edit=False):
+def _get_mr_exhibit_context_data(form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
-    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
     objects = Object.objects.all().order_by("-created")
     sounds = Sound.objects.all().order_by("-created")
 
@@ -410,7 +418,6 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
     context = {
         "form": form,
-        "artworks": artworks,
         "objects": objects[: settings.MODAL_PAGE_SIZE],
         "sounds": sounds[: settings.MODAL_PAGE_SIZE],
         "total_object_pages": paginator_objects.num_pages,
@@ -418,9 +425,6 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
     }
 
     if edit:
-        selected_artworks = ",".join(
-            str(artwork.id) for artwork in form.instance.artworks.all()
-        )
         selected_objects = ",".join(
             str(augmented.id) for augmented in form.instance.augmenteds.all()
         )
@@ -429,10 +433,33 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
         )
         context.update(
             {
-                "selected_artworks": selected_artworks,
                 "selected_objects": selected_objects,
                 "selected_sounds": selected_sounds,
-                "edit": True,
+                "edit": edit,
+            }
+        )
+
+    return context
+
+
+def _get_ar_exhibit_context_data(user_profile, form, edit=False):
+    """Helper method to prepare context data for exhibit templates."""
+    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
+
+    context = {
+        "form": form,
+        "artworks": artworks,
+    }
+
+    if edit:
+        selected_artworks = ",".join(
+            str(artwork.id) for artwork in form.instance.artworks.all()
+        )
+
+        context.update(
+            {
+                "selected_artworks": selected_artworks,
+                "edit": edit,
             }
         )
 
@@ -440,7 +467,16 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
 
 @login_required
-def create_or_edit_exhibit(request):
+def create_or_edit_ar_exhibit(request):
+    return create_or_edit_exhibit(request, ExhibitTypes.AR)
+
+
+@login_required
+def create_or_edit_mr_exhibit(request):
+    return create_or_edit_exhibit(request, ExhibitTypes.MR)
+
+
+def create_or_edit_exhibit(request, exhibit_type=None):
     index = request.GET.get("id", "-1")
     model = None
     if index != "-1":
@@ -457,7 +493,7 @@ def create_or_edit_exhibit(request):
         if model.owner != Profile.objects.get(user=request.user):
             raise Http404
 
-    return _handle_exhibit_form(request, request.user.profile, model)
+    return _handle_exhibit_form(request, request.user.profile, model, exhibit_type)
 
 
 @require_http_methods(["GET"])
