@@ -12,7 +12,8 @@
             <script src="{{ static('js/modal.js') }}"></script>
             
             {% for element_type, repository_list, class_type in [
-                                                        ("exhibit",exhibits, "titExb"),
+                                                        ("mr-exhibit",mr_exhibits, "titExb"),
+                                                        ("ar-exhibit",ar_exhibits, "titExb"),
                                                         ("artwork",artworks, "titArt"),
                                                         ("marker",markers, "titMrk"),
                                                         ("object",objects, "titObj"),
@@ -21,12 +22,26 @@
             %}
                                  
                 {% if repository_list %}
-                    <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>
+
+                    {% if element_type == "ar-exhibit" %}   
+                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig AR Exhibits")}}</h1>
+                    {% elif element_type == "mr-exhibit" %}   
+                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig MR Exhibits")}}</h1>
+                    {% else %}
+                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>
+                    {% endif %}
+                    
                     {% with repository_list = repository_list, element_type=element_type %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                    <a href = "/see_all/?which={{element_type}}s" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
+                        {% if element_type == "ar-exhibit" %}   
+                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All AR Exhibits")}}</a>
+                        {% elif element_type == "mr-exhibit" %}
+                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All MR Exhibits")}}</a>
+                        {% else %}
+                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
+                        {% endif %}
                     {% endif %}
                     {% if seeall == True %}
                         <nav> 
@@ -41,7 +56,7 @@
                                     {% else %}
                                         <div class="useful-links">
                                             <a class="page-link" 
-                                                href="?which={{element_type}}s&page={{ page_number }}">
+                                                href="?which={{element_type}}&page={{ page_number }}">
                                                 {{ page_number }}
                                             </a>
                                         </div> 
@@ -52,7 +67,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            {% if not exhibits and not artworks and not markers and not objects and not sounds %}
+            {% if not ar_exhibits and not mr_exhibits and not artworks and not markers and not objects and not sounds %}
                     <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
             {% endif %}
 

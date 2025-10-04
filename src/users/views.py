@@ -16,6 +16,8 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
+from core.models import ExhibitTypes
+
 from .forms import (
     PasswordChangeForm,
     ProfileForm,
@@ -103,13 +105,19 @@ def profile(request):
         "sounds__exhibits",
     ).get(user=user)
 
-    exhibits = profile.exhibits.all().order_by("-created")
+    ar_exhibits = (
+        profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
+    )
+    mr_exhibits = (
+        profile.exhibits.filter(exhibit_type=ExhibitTypes.MR).all().order_by("-created")
+    )
     artworks = profile.artworks.all().order_by("-created")
     markers = profile.markers.all().order_by("-created")
     objects = profile.ar_objects.all().order_by("-created")
     sounds = profile.sounds.all().order_by("-created")
     ctx = {
-        "exhibits": exhibits,
+        "ar_exhibits": ar_exhibits,
+        "mr_exhibits": mr_exhibits,
         "artworks": artworks,
         "markers": markers,
         "objects": objects,

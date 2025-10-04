@@ -16,6 +16,7 @@ from core.forms import (
 from core.models import (
     Artwork,
     Exhibit,
+    ExhibitTypes,
     Marker,
     Object,
     ObjectExtensions,
@@ -28,9 +29,17 @@ COLLECTION_PAGE = "core/collection.jinja2"
 
 @require_http_methods(["GET"])
 def collection(request):
-    exhibits = (
+    ar_exhibits = (
         Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.AR)
+        .all()
+        .order_by("-created")[:4]
+    )
+    mr_exhibits = (
+        Exhibit.objects.select_related("owner", "owner__user")
+        .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.MR)
         .all()
         .order_by("-created")[:4]
     )
@@ -45,7 +54,8 @@ def collection(request):
 
     ctx = {
         "artworks": artworks,
-        "exhibits": exhibits,
+        "ar_exhibits": ar_exhibits,
+        "mr_exhibits": mr_exhibits,
         "markers": markers,
         "objects": objects,
         "sounds": sounds,
@@ -58,7 +68,14 @@ def collection(request):
 @require_http_methods(["GET"])
 def see_all(request, which=""):
     request_type = request.GET.get("which", which)
-    if request_type not in ["objects", "markers", "artworks", "exhibits", "sounds"]:
+    if request_type not in [
+        "object",
+        "marker",
+        "artwork",
+        "ar-exhibit",
+        "mr-exhibit",
+        "sound",
+    ]:
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
@@ -73,16 +90,22 @@ def see_all(request, which=""):
         page = 1
 
     data_types = {
-        "objects": Object.objects.all().order_by("-created"),
-        "markers": Marker.objects.all().order_by("-created"),
-        "artworks": Artwork.objects.prefetch_related("marker", "augmented")
+        "object": Object.objects.all().order_by("-created"),
+        "marker": Marker.objects.all().order_by("-created"),
+        "artwork": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
         .order_by("-created"),
-        "exhibits": Exhibit.objects.select_related("owner", "owner__user")
+        "ar-exhibit": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.AR)
         .all()
         .order_by("-created"),
-        "sounds": Sound.objects.all().order_by("-created"),
+        "mr-exhibit": Exhibit.objects.select_related("owner", "owner__user")
+        .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.MR)
+        .all()
+        .order_by("-created"),
+        "sound": Sound.objects.all().order_by("-created"),
     }
 
     data = data_types.get(request_type)
@@ -92,8 +115,10 @@ def see_all(request, which=""):
             return redirect("see_all", request_type)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
+        # We need to match the variable name in the collection template context
+        collection_page_variable_name = f"{request_type.replace('-', '_')}s"
         ctx = {
-            request_type: paginated_data,
+            collection_page_variable_name: paginated_data,
             "seeall": True,
         }
     return render(request, COLLECTION_PAGE, ctx)
@@ -127,7 +152,7 @@ def delete(request):
         delete_content(Object, request.user, request.GET.get("id", -1))
     elif content_type == "artwork":
         delete_content(Artwork, request.user, request.GET.get("id", -1))
-    elif content_type == "exhibit":
+    elif content_type == "ar-exhibit" or content_type == "mr-exhibit":
         delete_content(Exhibit, request.user, request.GET.get("id", -1))
     elif content_type == "sound":
         delete_content(Sound, request.user, request.GET.get("id", -1))
@@ -377,7 +402,9 @@ def get_element(request):
     raise Http404
 
 
-def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
+def _handle_exhibit_form(
+    request, user_profile, exhibit_instance=None, exhibit_type=None
+):
     """Helper function to handle exhibit form processing for both create and edit operations."""
     is_edit = exhibit_instance is not None
 
@@ -391,17 +418,22 @@ def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
             form.save()
             return redirect("profile")
         else:
-            context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-            return render(request, "core/exhibit_create.jinja2", context)
+            if exhibit_type == ExhibitTypes.MR:
+                context = _get_mr_exhibit_context_data(form, edit=is_edit)
+                return render(request, "core/exhibit_create_mr.jinja2", context)
+            context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
+            return render(request, "core/exhibit_create_ar.jinja2", context)
     else:
         form = ExhibitForm(instance=exhibit_instance)
-        context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-        return render(request, "core/exhibit_create.jinja2", context)
+        if exhibit_type == ExhibitTypes.MR:
+            context = _get_mr_exhibit_context_data(form, edit=is_edit)
+            return render(request, "core/exhibit_create_mr.jinja2", context)
+        context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
+        return render(request, "core/exhibit_create_ar.jinja2", context)
 
 
-def _get_exhibit_context_data(user_profile, form, edit=False):
+def _get_mr_exhibit_context_data(form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
-    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
     objects = Object.objects.all().order_by("-created")
     sounds = Sound.objects.all().order_by("-created")
 
@@ -410,7 +442,6 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
     context = {
         "form": form,
-        "artworks": artworks,
         "objects": objects[: settings.MODAL_PAGE_SIZE],
         "sounds": sounds[: settings.MODAL_PAGE_SIZE],
         "total_object_pages": paginator_objects.num_pages,
@@ -418,9 +449,6 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
     }
 
     if edit:
-        selected_artworks = ",".join(
-            str(artwork.id) for artwork in form.instance.artworks.all()
-        )
         selected_objects = ",".join(
             str(augmented.id) for augmented in form.instance.augmenteds.all()
         )
@@ -429,10 +457,33 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
         )
         context.update(
             {
-                "selected_artworks": selected_artworks,
                 "selected_objects": selected_objects,
                 "selected_sounds": selected_sounds,
-                "edit": True,
+                "edit": edit,
+            }
+        )
+
+    return context
+
+
+def _get_ar_exhibit_context_data(user_profile, form, edit=False):
+    """Helper method to prepare context data for exhibit templates."""
+    artworks = Artwork.objects.filter(author=user_profile).order_by("-id")
+
+    context = {
+        "form": form,
+        "artworks": artworks,
+    }
+
+    if edit:
+        selected_artworks = ",".join(
+            str(artwork.id) for artwork in form.instance.artworks.all()
+        )
+
+        context.update(
+            {
+                "selected_artworks": selected_artworks,
+                "edit": edit,
             }
         )
 
@@ -440,22 +491,33 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
 
 @login_required
-def create_exhibit(request):
-    return _handle_exhibit_form(request, request.user.profile)
+def create_or_edit_ar_exhibit(request):
+    return create_or_edit_exhibit(request, ExhibitTypes.AR)
 
 
 @login_required
-def edit_exhibit(request):
+def create_or_edit_mr_exhibit(request):
+    return create_or_edit_exhibit(request, ExhibitTypes.MR)
+
+
+def create_or_edit_exhibit(request, exhibit_type=None):
     index = request.GET.get("id", "-1")
-    try:
-        model = Exhibit.objects.get(id=index)
-    except Exhibit.DoesNotExist:
-        raise Http404
+    model = None
+    if index != "-1":
+        try:
+            index = int(index)
+        except ValueError:
+            raise Http404
 
-    if model.owner != Profile.objects.get(user=request.user):
-        raise Http404
+        try:
+            model = Exhibit.objects.get(id=index)
+        except Exhibit.DoesNotExist:
+            raise Http404
 
-    return _handle_exhibit_form(request, request.user.profile, model)
+        if model.owner != Profile.objects.get(user=request.user):
+            raise Http404
+
+    return _handle_exhibit_form(request, request.user.profile, model, exhibit_type)
 
 
 @require_http_methods(["GET"])

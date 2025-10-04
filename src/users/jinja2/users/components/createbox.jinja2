@@ -1,5 +1,8 @@
 <section class="createbox flex">
     <h1>{{_("Come on! Create new content now!")}}</h1>
+    <div class="upSound sm-full lg-full">
+        <a class="option-link creSnd" href="{{ url('sound-upload') }}">{{ _('Upload Sound') }}</a>
+    </div>
     <div class="upload sm-full flex">
         <div class="upMrk sm-half lg-full">
             <a class="option-link" href="{{ url('marker-upload') }}">{{ _('Upload Marker') }}</a>
@@ -13,9 +16,9 @@
         <a class="option-link creArt" href="{{ url('create-artwork') }}">{{ _('Create Jandig Artwork') }}</a>
     </div>
     <div class="createExhibition sm-full lg-full">
-        <a class="option-link creExh" href="{{ url('create-exhibit') }}">{{ _('Create Exhibition') }}</a>
+        <a class="option-link creExh" href="{{ url('create-ar-exhibit') }}">{{ _('Create AR Exhibition') }}</a>
     </div>
-    <div class="upObj sm-full lg-full">
-        <a class="option-link creSnd" href="{{ url('sound-upload') }}">{{ _('Upload Sound') }}</a>
+    <div class="createExhibition sm-full lg-full">
+        <a class="option-link creExh" href="{{ url('create-mr-exhibit') }}">{{ _('Create MR Exhibition') }}</a>
     </div>
 </section>
