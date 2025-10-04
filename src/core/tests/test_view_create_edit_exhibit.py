@@ -216,7 +216,7 @@ class TestEditExhibitView(TestCase):
 
     def test_edit_exhibit_requires_login(self):
         self.client.logout()
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("login"), response.url)
@@ -244,12 +244,12 @@ class TestEditExhibitView(TestCase):
         other_user = UserFactory(username="otheruser")
         other_profile = ProfileFactory(user=other_user)
         other_exhibit = ExhibitFactory(owner=other_profile)
-        url = reverse("edit-exhibit") + f"?id={other_exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": other_exhibit.id})
         response = self.client.get(url)
         assert response.status_code == 404
 
     def test_edit_exhibit_invalid_data(self):
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "",
             "slug": "",
@@ -266,7 +266,7 @@ class TestEditExhibitView(TestCase):
     def test_edit_exhibit_slug_already_exists(self):
         # Create another exhibit with the same slug
         ExhibitFactory(owner=self.profile, slug="taken-slug")
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "New Name",
             "slug": "taken-slug",
@@ -283,7 +283,7 @@ class TestEditExhibitView(TestCase):
 
     def test_edit_exhibit_name_already_exists(self):
         ExhibitFactory(owner=self.profile, name="Taken Name")
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Taken Name",
             "slug": "unique-slug",
@@ -299,7 +299,7 @@ class TestEditExhibitView(TestCase):
         assert self.exhibit.name != "Taken Name"
 
     def test_edit_exhibit_invalid_slug(self):
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Valid Name",
             "slug": "invalid slug!",
@@ -315,7 +315,7 @@ class TestEditExhibitView(TestCase):
         assert self.exhibit.slug != "invalid slug!"
 
     def test_edit_exhibit_success(self):
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Edited Exhibit",
             "slug": "edited-exhibit",
@@ -334,7 +334,7 @@ class TestEditExhibitView(TestCase):
         )
 
     def test_edit_exhibit_no_changes(self):
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": self.exhibit.name,
             "slug": self.exhibit.slug,
@@ -354,7 +354,7 @@ class TestEditExhibitView(TestCase):
         )
 
     def test_edit_exhibit_with_objects(self):
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Edited Exhibit with Objects",
             "slug": "edited-exhibit-objects",
@@ -378,7 +378,7 @@ class TestEditExhibitView(TestCase):
 
     def test_edit_exhibit_type_changes_correctly(self):
         # Initially, the exhibit has artworks only
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Exhibit with Artworks",
             "slug": "exhibit-with-artworks",
@@ -414,7 +414,7 @@ class TestEditExhibitView(TestCase):
         self.exhibit.artworks.set([self.artwork1, self.artwork2])
         self.exhibit.augmenteds.set([self.object1, self.object2])
 
-        url = reverse("edit-exhibit") + f"?id={self.exhibit.id}"
+        url = reverse("edit-exhibit", query={"id": self.exhibit.id})
         response = self.client.get(url)
         assert response.status_code == 200
         assert response.context["form"].initial["name"] == self.exhibit.name

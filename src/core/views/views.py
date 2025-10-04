@@ -392,11 +392,11 @@ def _handle_exhibit_form(request, user_profile, exhibit_instance=None):
             return redirect("profile")
         else:
             context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-            return render(request, "core/exhibit_create.jinja2", context)
+            return render(request, "core/exhibit_create_ar.jinja2", context)
     else:
         form = ExhibitForm(instance=exhibit_instance)
         context = _get_exhibit_context_data(user_profile, form, edit=is_edit)
-        return render(request, "core/exhibit_create.jinja2", context)
+        return render(request, "core/exhibit_create_ar.jinja2", context)
 
 
 def _get_exhibit_context_data(user_profile, form, edit=False):
@@ -440,20 +440,22 @@ def _get_exhibit_context_data(user_profile, form, edit=False):
 
 
 @login_required
-def create_exhibit(request):
-    return _handle_exhibit_form(request, request.user.profile)
-
-
-@login_required
-def edit_exhibit(request):
+def create_or_edit_exhibit(request):
     index = request.GET.get("id", "-1")
-    try:
-        model = Exhibit.objects.get(id=index)
-    except Exhibit.DoesNotExist:
-        raise Http404
+    model = None
+    if index != "-1":
+        try:
+            index = int(index)
+        except ValueError:
+            raise Http404
 
-    if model.owner != Profile.objects.get(user=request.user):
-        raise Http404
+        try:
+            model = Exhibit.objects.get(id=index)
+        except Exhibit.DoesNotExist:
+            raise Http404
+
+        if model.owner != Profile.objects.get(user=request.user):
+            raise Http404
 
     return _handle_exhibit_form(request, request.user.profile, model)
 
