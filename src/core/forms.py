@@ -16,6 +16,15 @@ from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
+def file_has_changed(new_file, instance_file):
+    new_content = new_file.read()
+    new_file.seek(0)  # Reset file pointer
+
+    instance_content = instance_file.read()
+    instance_file.seek(0)  # Reset file pointer
+
+    return instance_content != new_content
+
 
 class RangeInput(NumberInput):
     input_type = "range"
@@ -83,13 +92,7 @@ class UploadObjectForm(forms.ModelForm):
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
-            # Compare if the file changed
-            file_content = file.read()
-            file.seek(0)  # Reset file pointer
-            instance_content = self.instance.source.read()
-            self.instance.source.seek(0)  # Reset instance file pointer
-
-            if instance_content != file_content:
+            if file_has_changed(file, self.instance.source):
                 if self.instance.is_used_by_other_user():
                     raise forms.ValidationError(
                         _(
@@ -387,13 +390,7 @@ class SoundForm(forms.ModelForm):
 
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:
-            # Compare if the file changed
-            file_content = file.read()
-            file.seek(0)  # Reset file pointer
-            instance_content = self.instance.file.read()
-            self.instance.file.seek(0)  # Reset instance file pointer
-
-            if instance_content != file_content:
+            if file_has_changed(file, self.instance.file):
                 if self.instance.is_used_by_other_user():
                     raise forms.ValidationError(
                         _(
