@@ -18,17 +18,34 @@
                     <div class="profile-section-header">
                         <div class="profile-section-title">
                             <img class="icon" src="{{ static('images/icons/icoExb.png') }}" alt="exhibition icon" class="icon">
-                            <p>{{_("Your Exhibitions")}}</p>
+                            <p>{{_("Your MR Exhibitions")}}</p>
                         </div>
-                        <a class="create-one-btn" href="{{ url('create-ar-exhibit') }}">{{ _('Create one') }}</a>
+                        <a class="create-one-btn" href="{{ url('create-mr-exhibit') }}">{{ _('Create one') }}</a>
                     </div>
-                    {% if exhibits %}
-                        {% with deletable=true, editable=true, repository_list = exhibits, element_type="exhibit"%}
+                    {% if mr_exhibits %}
+                        {% with deletable=true, editable=true, repository_list = mr_exhibits, element_type="mr-exhibit"%}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no Exhibitions. :c")}}</p>
+                            <p>{{_("You have no MR Exhibitions. :c")}}</p>
+                        </section>
+                    {% endif %}
+
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoExb.png') }}" alt="exhibition icon" class="icon">
+                            <p>{{_("Your AR Exhibitions")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('create-ar-exhibit') }}">{{ _('Create one') }}</a>
+                    </div>
+                    {% if ar_exhibits %}
+                        {% with deletable=true, editable=true, repository_list = ar_exhibits, element_type="ar-exhibit"%}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+                    {% else %}
+                        <section id="repo-{{element_type}}" class="repository-list">
+                            <p>{{_("You have no AR Exhibitions. :c")}}</p>
                         </section>
                     {% endif %}
 

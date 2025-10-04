@@ -529,35 +529,40 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
         exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
-
+        media_stats = []
+        if self.exhibit_type == ExhibitTypes.AR:
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.artworks_count, _("Artwork(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
+        elif self.exhibit_type == ExhibitTypes.MR:
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.augmenteds_count, _("Object(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.sounds_count, _("Sound(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
         exhibit_info = [
             p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
             p(self.date, class_="exbDate"),
-            div(
-                [
-                    p(
-                        a(
-                            "{} {}".format(self.artworks_count, _("Artwork(s)")),
-                            href=link_to_exhibit,
-                        ),
-                        class_="exhibit-about",
-                    ),
-                    p(
-                        a(
-                            "{} {}".format(self.augmenteds_count, _("Object(s)")),
-                            href=link_to_exhibit,
-                        ),
-                        class_="exhibit-about",
-                    ),
-                    p(
-                        a(
-                            "{} {}".format(self.sounds_count, _("Sound(s)")),
-                            href=link_to_exhibit,
-                        ),
-                        class_="exhibit-about",
-                    ),
-                ]
-            ),
+            div(media_stats),
         ]
 
         button_see_this_exhibit = a(
