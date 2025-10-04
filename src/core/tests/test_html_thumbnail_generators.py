@@ -191,7 +191,6 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert self.exhibit.name in html
         assert self.exhibit.owner.user.username in html
         assert self.exhibit.date in html
-        assert f"{self.exhibit.artworks_count} " in html
 
         # Check links
         assert f'href="/{self.exhibit.slug}/"' in html
@@ -234,7 +233,8 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert self.exhibit.name in html
         assert self.exhibit.owner.user.username in html
         assert self.exhibit.date in html
-        assert f"{self.exhibit.artworks_count} " in html
+        assert f"{self.exhibit.sounds_count} " in html
+        assert f"{self.exhibit.augmenteds_count} " in html
 
         # Check links
         assert f'href="/{self.exhibit.slug}/"' in html
