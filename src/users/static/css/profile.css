@@ -82,7 +82,37 @@
     color: #03b595;
     background: #e1e1e1;
 }
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 10px solid #f1f1f1;
+}
 
+.profile-section-title {
+  display: flex;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+
+}
+.profile-section-title p {
+    margin: 0;
+}
+.profile-section-title .icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.create-one-btn {
+  flex-basis: 100px;
+  background: #f1f1f1;
+  line-height: 40px;
+  font-size: 0.75em;
+  font-weight: bold;
+  margin: 0 0 1px 0px;
+}
 
 /**** Media Queries *****/
 @media all and (min-width: 800px) {
