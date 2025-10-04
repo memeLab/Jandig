@@ -29,9 +29,17 @@ COLLECTION_PAGE = "core/collection.jinja2"
 
 @require_http_methods(["GET"])
 def collection(request):
-    exhibits = (
+    ar_exhibits = (
         Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.AR)
+        .all()
+        .order_by("-created")[:4]
+    )
+    mr_exhibits = (
+        Exhibit.objects.select_related("owner", "owner__user")
+        .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.MR)
         .all()
         .order_by("-created")[:4]
     )
@@ -46,7 +54,8 @@ def collection(request):
 
     ctx = {
         "artworks": artworks,
-        "exhibits": exhibits,
+        "ar_exhibits": ar_exhibits,
+        "mr_exhibits": mr_exhibits,
         "markers": markers,
         "objects": objects,
         "sounds": sounds,
@@ -59,7 +68,14 @@ def collection(request):
 @require_http_methods(["GET"])
 def see_all(request, which=""):
     request_type = request.GET.get("which", which)
-    if request_type not in ["objects", "markers", "artworks", "exhibits", "sounds"]:
+    if request_type not in [
+        "object",
+        "marker",
+        "artwork",
+        "ar-exhibit",
+        "mr-exhibit",
+        "sound",
+    ]:
         # Invalid request type, return to collection
         return redirect("collection")
     ctx = {}
@@ -74,16 +90,22 @@ def see_all(request, which=""):
         page = 1
 
     data_types = {
-        "objects": Object.objects.all().order_by("-created"),
-        "markers": Marker.objects.all().order_by("-created"),
-        "artworks": Artwork.objects.prefetch_related("marker", "augmented")
+        "object": Object.objects.all().order_by("-created"),
+        "marker": Marker.objects.all().order_by("-created"),
+        "artwork": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
         .order_by("-created"),
-        "exhibits": Exhibit.objects.select_related("owner", "owner__user")
+        "ar-exhibit": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.AR)
         .all()
         .order_by("-created"),
-        "sounds": Sound.objects.all().order_by("-created"),
+        "mr-exhibit": Exhibit.objects.select_related("owner", "owner__user")
+        .prefetch_related("artworks")
+        .filter(exhibit_type=ExhibitTypes.MR)
+        .all()
+        .order_by("-created"),
+        "sound": Sound.objects.all().order_by("-created"),
     }
 
     data = data_types.get(request_type)
@@ -93,8 +115,10 @@ def see_all(request, which=""):
             return redirect("see_all", request_type)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
+        # We need to match the variable name in the collection template context
+        collection_page_variable_name = f"{request_type.replace('-', '_')}s"
         ctx = {
-            request_type: paginated_data,
+            collection_page_variable_name: paginated_data,
             "seeall": True,
         }
     return render(request, COLLECTION_PAGE, ctx)
