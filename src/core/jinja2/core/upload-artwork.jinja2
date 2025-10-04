@@ -42,12 +42,14 @@
             <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
             {{ form.visible_fields()[5].errors }}
 
-            <h2>{{ _('Select a Sound') }}</h2>
+            {# Disabled Section of Sounds in Artworks #}
+            {# Even though it is supported by our models, users are confused on uploads of sounds to artworks, we are disabling #}
+            {# <h2>{{ _('Select a Sound') }}</h2>
             <button id="select-sound" class="select-btn" type="button">
                         {{ _('Select a Sound') }}
             </button>
             <input id="id_selected_sound" type="hidden" name="selected_sound" onchange="validateSubmit()" {% if selected_sound %} value="{{ selected_sound }}" {% endif %}>
-            {{ form.visible_fields()[5].errors }}
+            {{ form.visible_fields()[5].errors }} #}
 
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
