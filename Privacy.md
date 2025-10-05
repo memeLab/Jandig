@@ -9,9 +9,8 @@ The Application collects information when you download and use it. This informat
 *   Your device's Internet Protocol address (e.g. IP address)
 *   The pages of the Application that you visit, the time and date of your visit, the time spent on those pages
 *   The time spent on the Application
-*   The operating system you use on your mobile device
 
-The Application does not gather precise information about the location of your mobile device.
+The Application does not gather precise information about the location of your meta quest.
 
 The Service Provider may use the information you provided to contact you from time to time to provide you with important information, required notices and marketing promotions.
 
@@ -33,7 +32,7 @@ The Service Provider may disclose User Provided and Automatically Collected Info
 
 **Opt-Out Rights**
 
-You can stop all collection of information by the Application easily by uninstalling it. You may use the standard uninstall processes as may be available as part of your mobile device or via the mobile application marketplace or network.
+You can stop all collection of information by the Application easily by uninstalling it. You may use the standard uninstall processes as may be available as part of your meta quest or via the mobile application marketplace or network.
 
 **Data Retention Policy**
 
