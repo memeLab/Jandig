@@ -16,6 +16,7 @@ from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
+
 def file_has_changed(new_file, instance_file):
     new_content = new_file.read()
     new_file.seek(0)  # Reset file pointer
