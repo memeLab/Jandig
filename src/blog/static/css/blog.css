@@ -14,7 +14,7 @@
     transition: all 0.2s ease-in;
     background-image: linear-gradient( to top, #05f7ae, #05f7ae 50%, transparent 50%, transparent );
     background-position: 100% 0%;
-    background-size: 100% 100%;
+    background-size: 100% 200%;
 }
 .post a:hover,
 #category-header a:hover{
