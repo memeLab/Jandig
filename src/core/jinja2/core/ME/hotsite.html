@@ -54,6 +54,9 @@
             background-image: linear-gradient(45deg, #f8f8f8 25%, #f5f5f5 25%, #f5f5f5 50%, #f8f8f8 50%, #f8f8f8 75%, #f5f5f5 75%, #f5f5f5 100%);
             background-size: 30px 30px; /* Adjust size of stripes for more spacing */
         }
+        p {
+            text-align: start;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -73,7 +76,7 @@
             <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
             <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-4 md:mt-0 md:w-auto">
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao')" data-translate="nav_exhibition">Exposição</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum de Figurinhas</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum de Interativo</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')" data-translate="nav_making_of">Making Of</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos')" data-translate="nav_who_we_are">Quem somos</a>
                 
@@ -113,25 +116,10 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                <!-- EXPOSIÇÃO Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">EXPOSIÇÃO</h2>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
-                         alt="Imagem: Exposição" 
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
-                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
-                    >
-                    <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
-                        Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
-                    </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
-                        Mais informações
-                    </button>
-                </div>
-
+                
                 <!-- ÁLBUM DE FIGURINHAS Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">ÁLBUM DE FIGURINHAS</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">Álbum Interativo</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA5.png') }}"
                          alt="Imagem: Álbum de Figurinhas" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
@@ -144,10 +132,27 @@
                         Conhecer materiais
                     </button>
                 </div>
+                
+                <!-- EXPOSIÇÃO Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">Exposição</h2>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
+                         alt="Imagem: Exposição" 
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
+                    >
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
+                        Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
+                    </p>
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
+                        Mais informações
+                    </button>
+                </div>
+                
 
                 <!-- QUEM SOMOS Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">QUEM SOMOS</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">Quem Somos</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box3_p">
                         Conheça nossa equipe e todo o projeto Jandig.
@@ -174,7 +179,7 @@
                     <li data-translate="qs_list2_li1"><strong>Concepção:</strong> Angelo Pixel, Cláudio Rodrigues e Demétrio Portugal</li>
                     <li data-translate="qs_list2_li2"><strong>Roteiros:</strong> Angelo Pixel e María Eugenia Salcedo Repolês</li>
                     <li data-translate="qs_list2_li3"><strong>Ilustrações:</strong> Auá Mendes</li>
-                    <li data-translate="qs_list2_li4"><strong>Animação 2D:</strong> Enzo Giaquinto, Max Duarte e Ulisses Tavares</li>
+                    <li data-translate="qs_list2_li4"><strong>Animação 2D:</strong> Enzo Giaquinto e Ulisses Tavares</li>
                     <li data-translate="qs_list2_li5"><strong>Modelagem e Animação 3D:</strong> Gabriel Camelo</li>
                     <li data-translate="qs_list2_li6"><strong>Cenografia:</strong> Cláudio Rodrigues</li>
                     <li data-translate="qs_list2_li7"><strong>Fotografia e Videografia:</strong> Bruna Quevedo</li>
@@ -185,7 +190,7 @@
                     <li data-translate="qs_list2_li12"><strong>UX Design:</strong> Raquel Mei</li>
                     <li data-translate="qs_list2_li13"><strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan</li>
                     <li data-translate="qs_list2_li14"><strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal</li>
-                    <li data-translate="qs_list2_li15"><strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa e <a href="https://clarice.ai">Clarice.ai</a></li>
+                    <li data-translate="qs_list2_li15"><strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href="https://clarice.ai">Clarice.ai</a></li>
                 </ul>
                 
                 <h2 class="text-3xl font-bold text-center mt-12 mb-8 text-[#08B59F]" data-translate="qs_jandig_title">JANDIG</h2>
@@ -555,7 +560,7 @@
                 qs_list2_li1: "<strong>Concepção:</strong> Angelo Pixel, Cláudio Rodrigues e Demétrio Portugal",
                 qs_list2_li2: "<strong>Roteiros:</strong> Angelo Pixel e María Eugenia Salcedo Repolês",
                 qs_list2_li3: "<strong>Ilustrações:</strong> Auá Mendes",
-                qs_list2_li4: "<strong>Animação 2D:</strong> Enzo Giaquinto, Max Duarte e Ulisses Tavares",
+                qs_list2_li4: "<strong>Animação 2D:</strong> Enzo Giaquinto e Ulisses Tavares",
                 qs_list2_li5: "<strong>Modelagem e Animação 3D:</strong> Gabriel Camelo",
                 qs_list2_li6: "<strong>Cenografia:</strong> Cláudio Rodrigues",
                 qs_list2_li7: "<strong>Fotografia e Videografia:</strong> Bruna Quevedo",
@@ -566,11 +571,11 @@
                 qs_list2_li12: "<strong>UX Design:</strong> Raquel Mei",
                 qs_list2_li13: "<strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan",
                 qs_list2_li14: "<strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal",
-                qs_list2_li15: "<strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa e <a href='https://clarice.ai'>Clarice.ai</a>",
+                qs_list2_li15: "<strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href='https://clarice.ai'>Clarice.ai</a>",
                 qs_jandig_title: "JANDIG",
                 qs_jandig_p1: "O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.",
                 qs_jandig_p2: "Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.",
-                qs_jandig_link1: "Conheça outras exposições e obras de arte da plataforma: https://jandig.app/",
+                qs_jandig_link1: "Conheça outras exposições e obras de arte da plataforma Jandig",
                 qs_jandig_link2: "Código fonte da plataforma no GitHub.",
                 stories_title: "Nossas Histórias",
                 stories_h1: "A Lenda do Curupira",
@@ -579,10 +584,10 @@
                 stories_p2: "Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.",
                 stories_h3: "O Segredo do Boto",
                 stories_p3: "Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.",
-                album_title: "Álbum de Figurinhas",
-                album_intro: "O álbum de figurinhas é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
+                album_title: "Álbum Interativo",
+                album_intro: "O álbum interativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
                 album_downloads_title: "DOWNLOADS",
-                album_dl1_title: "Álbum de figurinhas",
+                album_dl1_title: "Álbum interativo",
                 album_dl1_p: "Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.",
                 coming_soon: "Em Breve...",
                 album_dl2_title: "Figurinhas",
@@ -595,7 +600,7 @@
                 learn_p1: "Desenvolvemos uma série de materiais educativos para complementar a experiência da \"Mitologia Estendida\" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
                 learn_p2: "Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.",
                 makingof_title: "Making Of: Diário de Desenvolvimento",
-                makingof_intro: "Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos. Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição. Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação. Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco pelo [contato].",
+                makingof_intro: "Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco pelo <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick='showSection('contato')'>CONTATO</a>.",
                 makingof_post1_title: "Mitos vivos",
                 makingof_post1_p1: "Tem algo no coração da floresta…e faz alguns meses que estamos tateando, pesquisando, de orelha em pé e olhos bem abertos para compreender e traduzir o que as matas nos mostram. Do outro lado, testamos e mergulhamos para esticar os limites da JANDIG - uma comunidade que cria arte em Realidade Aumentada.",
                 makingof_post1_p2: "A plataforma Jandig, também criada pela comunidade, permite a criação de exposições em realidade aumentada e mista e até agora funcionou muito para artistas. Agora queremos que professores, educadores e pessoas em geral também entendam como JANDIG pode ser uma ferramenta para expandir a imaginação!",
@@ -612,13 +617,13 @@
                 exhibition_h2: "Uma Jornada Imersiva na Arte e Tecnologia",
                 exhibition_p1: "Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos.",
                 exhibition_p2: "Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.",
-                exhibition_p3: "A exposição Mitologia Estendida ocupará o Centro Cultural Coletivo Digital em dois momentos:",
-                exhibition_p4: "Experiência de realidade mista (MR)<br>Palestra de abertura: <br>28/Nov 18h-19h",
-                exhibition_p5: "Oficina<br>29/Nov 9h30-13h30",
-                exhibition_p6: "Experiência MR<br>28/Nov 19-21h<br>29/Nov 9h30-19h",
-                exhibition_p7: "Exposição de realidade aumentada (AR)<br>28/Nov 19-21h<br>29/Nov 9h30-19h<br>1-19/Dez 11-19h (segunda a sexta)<br>12-23/Jan 11-19h (segunda a sexta)",
+                exhibition_p3: "A exposição Mitologia Estendida ocupará o Coletivo Digital em dois momentos:",
+                exhibition_p4: "Abertura: <br>27/Nov 18h-19h",
+                exhibition_p5: "Experiencia em realidade mista<br>27/Nov 19-21H <br> 28/Nov 11-19H",
+                exhibition_p6: "Oficina: Criação de publicações interativas em realidade aumentada<br>29/Nov 9:30-13:30H",
+                exhibition_p7: "Exposição em realidade aumentada <br>1-19/Dez<br>segunda a sexta 11-19h",
                 exhibition_p8: "Engajado na luta contra a privatização dos saberes, o Coletivo Digital atua para que o acesso ao conhecimento seja reconhecido como um bem da humanidade e como um direito de todos.",
-                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP",
+                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP <br> GRATUITO E ACESSIVEL",
                 faq_title: "Ajuda e Perguntas Frequentes (FAQ)",
                 faq1_q: "O que é Mitologia Estendida?",
                 faq1_a: "Mitologia Estendida é uma exposição cultural em realidade virtual que permite aos usuários explorar e interagir com lendas e mitos de diversas culturas, de uma forma imersiva e educativa.",
@@ -668,7 +673,7 @@
                 qs_list2_li1: "<strong>Conception:</strong> Angelo Pixel, Cláudio Rodrigues, and Demétrio Portugal",
                 qs_list2_li2: "<strong>Scripts:</strong> Angelo Pixel and María Eugenia Salcedo Repolês",
                 qs_list2_li3: "<strong>Illustrations:</strong> Auá Mendes",
-                qs_list2_li4: "<strong>2D Animation:</strong> Enzo Giaquinto, Max Duarte, and Ulisses Tavares",
+                qs_list2_li4: "<strong>2D Animation:</strong> Enzo Giaquinto and Ulisses Tavares",
                 qs_list2_li5: "<strong>3D Modeling and Animation:</strong> Gabriel Camelo",
                 qs_list2_li6: "<strong>Set Design:</strong> Cláudio Rodrigues",
                 qs_list2_li7: "<strong>Photography and Videography:</strong> Bruna Quevedo",
@@ -679,7 +684,7 @@
                 qs_list2_li12: "<strong>UX Design:</strong> Raquel Mei",
                 qs_list2_li13: "<strong>Programming:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira, and Thiago Hersan",
                 qs_list2_li14: "<strong>Consulting:</strong> Auá Mendes and Demétrio Portugal",
-                qs_list2_li15: "<strong>Acknowledgments:</strong> Almir Almas, Adriana Pedrosa, and <a href='https://clarice.ai'>Clarice.ai</a>",
+                qs_list2_li15: "<strong>Acknowledgments:</strong> Almir Almas, Adriana Pedrosa, Max Duarte and <a href='https://clarice.ai'>Clarice.ai</a>",
                 qs_jandig_title: "JANDIG",
                 qs_jandig_p1: "The Extended Mythology project is part of Jandig - an open-source Augmented Reality art community. The Jandig platform enables exhibitions using augmented and mixed reality.",
                 qs_jandig_p2: "With the Extended Mythology project, we take a step towards experimenting with educational resources and exhibitions related to the myths and legends of Brazil.",
@@ -781,7 +786,7 @@
                 qs_list2_li1: "<strong>Concepción:</strong> Angelo Pixel, Cláudio Rodrigues y Demétrio Portugal",
                 qs_list2_li2: "<strong>Guiones:</strong> Angelo Pixel y María Eugenia Salcedo Repolês",
                 qs_list2_li3: "<strong>Ilustraciones:</strong> Auá Mendes",
-                qs_list2_li4: "<strong>Animación 2D:</strong> Enzo Giaquinto, Max Duarte y Ulisses Tavares",
+                qs_list2_li4: "<strong>Animación 2D:</strong> Enzo Giaquinto y Ulisses Tavares",
                 qs_list2_li5: "<strong>Modelado y Animación 3D:</strong> Gabriel Camelo",
                 qs_list2_li6: "<strong>Escenografía:</strong> Cláudio Rodrigues",
                 qs_list2_li7: "<strong>Fotografía y Videografía:</strong> Bruna Quevedo",
@@ -792,7 +797,7 @@
                 qs_list2_li12: "<strong>Diseño UX:</strong> Raquel Mei",
                 qs_list2_li13: "<strong>Programación:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira y Thiago Hersan",
                 qs_list2_li14: "<strong>Consultoría:</strong> Auá Mendes y Demétrio Portugal",
-                qs_list2_li15: "<strong>Agradecimientos:</strong> Almir Almas, Adriana Pedrosa y <a href='https://clarice.ai'>Clarice.ai</a>",
+                qs_list2_li15: "<strong>Agradecimientos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte y <a href='https://clarice.ai'>Clarice.ai</a>",
                 qs_jandig_title: "JANDIG",
                 qs_jandig_p1: "El proyecto Mitología Extendida forma parte de Jandig, una comunidad de arte en Realidad Aumentada de código abierto. La plataforma Jandig permite la realización de exposiciones con el uso de realidad aumentada y mixta.",
                 qs_jandig_p2: "Con el proyecto Mitología Extendida damos un paso en la dirección de experimentar con recursos educativos y exposiciones relacionadas con los mitos y leyendas de Brasil.",
