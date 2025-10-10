@@ -73,7 +73,7 @@
             <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
             <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-4 md:mt-0 md:w-auto">
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao')" data-translate="nav_exhibition">Exposição</a>
-                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum de Figurinhas</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum de Interativo</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')" data-translate="nav_making_of">Making Of</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos')" data-translate="nav_who_we_are">Quem somos</a>
                 
@@ -113,25 +113,10 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                <!-- EXPOSIÇÃO Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">EXPOSIÇÃO</h2>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
-                         alt="Imagem: Exposição" 
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
-                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
-                    >
-                    <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
-                        Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
-                    </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
-                        Mais informações
-                    </button>
-                </div>
-
+                
                 <!-- ÁLBUM DE FIGURINHAS Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">ÁLBUM DE FIGURINHAS</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">Álbum Interativo</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA5.png') }}"
                          alt="Imagem: Álbum de Figurinhas" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
@@ -144,10 +129,27 @@
                         Conhecer materiais
                     </button>
                 </div>
+                
+                <!-- EXPOSIÇÃO Box -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">Exposição</h2>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
+                         alt="Imagem: Exposição" 
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
+                    >
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
+                        Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
+                    </p>
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
+                        Mais informações
+                    </button>
+                </div>
+                
 
                 <!-- QUEM SOMOS Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">QUEM SOMOS</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">Quem Somos</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box3_p">
                         Conheça nossa equipe e todo o projeto Jandig.
@@ -570,7 +572,7 @@
                 qs_jandig_title: "JANDIG",
                 qs_jandig_p1: "O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.",
                 qs_jandig_p2: "Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.",
-                qs_jandig_link1: "Conheça outras exposições e obras de arte da plataforma: https://jandig.app/",
+                qs_jandig_link1: "Conheça outras exposições e obras de arte da plataforma Jandig",
                 qs_jandig_link2: "Código fonte da plataforma no GitHub.",
                 stories_title: "Nossas Histórias",
                 stories_h1: "A Lenda do Curupira",
