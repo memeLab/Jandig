@@ -31,9 +31,6 @@ class TestObjectUpload(TestCase):
                 "source": image_file,
                 "author": "Test Author",
                 "title": "Test Marker",
-                "scale": "1",  # Default scale
-                "position": "0,0,0",  # Default position
-                "rotation": "270,0,0",  # Default rotation
             }
             response = self.client.post(url, data)
         assert response.status_code == status.HTTP_302_FOUND  # Redirect to login page
@@ -45,8 +42,6 @@ class TestObjectUpload(TestCase):
                 "source": image_file,
                 "author": "Test Author",
                 "title": "Test Marker",
-                "scale": "3",
-                "position": "0 0 0",  # Default position
             }
 
             self.client.login(username=self.username, password=self.password)
@@ -62,9 +57,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 70122  # Size in bytes of the example object gif
 
-        assert ar_object.scale == "3.00 3.00"
-        assert ar_object.position == "0 0 0"
-        assert ar_object.rotation == "270 0 0"
         assert ar_object.file_name_original == "example_object.gif"
         assert ar_object.file_extension == ObjectExtensions.GIF
 
@@ -74,8 +66,6 @@ class TestObjectUpload(TestCase):
                 "source": video_file,
                 "author": "Test Author",
                 "title": "Test Video",
-                "scale": "1",
-                "position": "0 0 0",  # Default position
             }
 
             self.client.login(username=self.username, password=self.password)
@@ -89,9 +79,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test Video"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 2222838  # Size in bytes of the example mp4
-        assert ar_object.scale == "1.00 1.00"
-        assert ar_object.position == "0 0 0"
-        assert ar_object.rotation == "270 0 0"
         assert ar_object.file_name_original == "belotur.mp4"
         assert ar_object.file_extension == ObjectExtensions.MP4
 
@@ -101,8 +88,6 @@ class TestObjectUpload(TestCase):
                 "source": video_file,
                 "author": "Test Author",
                 "title": "Test Video",
-                "scale": "1",
-                "position": "0 0 0",  # Default position
             }
 
             self.client.login(username=self.username, password=self.password)
@@ -116,9 +101,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test Video"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 1509266  # Size in bytes of the example webm
-        assert ar_object.scale == "1.00 1.00"
-        assert ar_object.position == "0 0 0"
-        assert ar_object.rotation == "270 0 0"
         assert ar_object.file_name_original == "escher.webm"
         assert ar_object.file_extension == ObjectExtensions.WEBM
 
@@ -128,8 +110,6 @@ class TestObjectUpload(TestCase):
                 "source": glb_file,
                 "author": "Test Author",
                 "title": "Test GLB",
-                "scale": "1",
-                "position": "0 0 0",  # Default position
             }
 
             self.client.login(username=self.username, password=self.password)
@@ -143,9 +123,6 @@ class TestObjectUpload(TestCase):
         assert ar_object.title == "Test GLB"
         assert ar_object.author == "Test Author"
         assert ar_object.file_size == 10782148  # Size in bytes of the example glb
-        assert ar_object.scale == "1.00 1.00"
-        assert ar_object.position == "0 0 0"
-        assert ar_object.rotation == "270 0 0"
         assert ar_object.file_name_original == "werewolf.glb"
         assert ar_object.file_extension == ObjectExtensions.GLB
 
@@ -161,8 +138,6 @@ class TestObjectUpload(TestCase):
             "author": "Test Author",
             "title": "Test Marker",
             # Missing 'source'
-            "scale": "1",
-            "position": "0,0,0",
         }
         response = self.client.post(reverse("object-upload"), data)
         assert response.status_code == 200
@@ -173,8 +148,6 @@ class TestObjectUpload(TestCase):
             "source": SimpleUploadedFile("test.gif", b"test content"),
             # missing 'title'
             "author": "Test Author",
-            "scale": "1",
-            "position": "0,0,0",
         }
 
         response = self.client.post(reverse("object-upload"), data)
@@ -191,8 +164,6 @@ class TestObjectUpload(TestCase):
             "source": fake_file,
             "author": "Test Author",
             "title": "Test Marker",
-            "scale": "1",
-            "position": "0,0,0",
         }
         response = self.client.post(reverse("object-upload"), data)
         # Should fail validation or be rejected by the form
@@ -203,32 +174,41 @@ class TestObjectUpload(TestCase):
         )
         assert Object.objects.count() == 0
 
-    def test_upload_object_post_invalid_scale(self):
-        self.client.login(username=self.username, password=self.password)
-        with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
-            data = {
-                "source": image_file,
-                "author": "Test Author",
-                "title": "Test Marker",
-                "scale": "10",  # Invalid scale
-                "position": "0,0,0",
-            }
-            response = self.client.post(reverse("object-upload"), data)
-            assert response.status_code == 200
-            print(response.content)
-            # Note: No idea where this message is from, probably from the max_value in the form
-            assert b"Ensure this value is less than or equal to 5.0" in response.content
-            assert Object.objects.count() == 0
-
-            data["scale"] = "0"  # Invalid scale
-            response = self.client.post(reverse("object-upload"), data)
-            assert response.status_code == 200
-            assert (
-                b"Ensure this value is greater than or equal to 0.1" in response.content
-            )
-            assert Object.objects.count() == 0
-
     def test_upload_object_permission_denied_for_anonymous(self):
         response = self.client.get(reverse("object-upload"))
         assert response.status_code == status.HTTP_302_FOUND
         assert "/users/login" in response.url
+
+    def test_upload_object_allows_audiodescription_mp3_file(self):
+        self.client.login(username=self.username, password=self.password)
+        audio_file = SimpleUploadedFile(
+            "audio.mp3", b"fake audio content", content_type="audio/mpeg"
+        )
+        with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
+            data = {
+                "source": image_file,
+                "author": "Test Author",
+                "title": "Test Marker with Audio",
+                "audio_description": audio_file,
+            }
+            response = self.client.post(reverse("object-upload"), data)
+            assert response.status_code == status.HTTP_302_FOUND
+        assert Object.objects.count() == 1
+
+    def test_upload_object_blocks_audiodescription_not_audio_file(self):
+        self.client.login(username=self.username, password=self.password)
+        audio_file = SimpleUploadedFile(
+            "audio.jpg", b"fake audio content", content_type="image/jpeg"
+        )
+        with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
+            data = {
+                "source": image_file,
+                "author": "Test Author",
+                "title": "Test Marker with Audio",
+                "audio_description": audio_file,
+            }
+            response = self.client.post(reverse("object-upload"), data)
+            assert response.status_code == status.HTTP_200_OK
+
+        assert Object.objects.count() == 0
+        assert b"Only MP3, OGG, and WAV audio files are allowed." in response.content

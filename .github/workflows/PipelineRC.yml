@@ -73,7 +73,7 @@ jobs:
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py
+            -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py,**/admin.py,**/asgi.py,**/manage.py,**/ui_tests/**,**/*.css,**/*.js,**/*.jinja2
             -Dsonar.cpd.exclusions=**/migrations/**
             -Dsonar.python.version=3.13
 

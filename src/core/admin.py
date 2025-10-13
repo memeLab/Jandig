@@ -4,13 +4,20 @@ from django.contrib import admin
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db.models import Count
-from django.urls import reverse
 from django.utils.html import format_html
 from PIL import Image
 from pymarker import generate_patt_from_image, remove_borders_from_image
 
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, Marker, Object, Sound
+from core.utils import generate_uuid_name, get_admin_url
 from core.views.api_views import MarkerGeneratorAPIView
+
+HTML_LINK = '<a href="{}">{}</a>'
+
+
+def get_user_profile_path():
+    """Get the user profile path"""
+    return get_admin_url() + "users/profile/?id={}"
 
 
 def create_link_to_related_artworks(obj, artworks_list):
@@ -19,8 +26,8 @@ def create_link_to_related_artworks(obj, artworks_list):
         return obj._artworks_count
     artworks_list = ",".join([str(artwork.id) for artwork in artworks_list])
 
-    link = reverse("admin:index") + "core/artwork/?id__in=" + str(artworks_list)
-    return format_html('<a href="{}">{}</a>', link, obj._artworks_count)
+    link = get_admin_url() + "core/artwork/?id__in=" + str(artworks_list)
+    return format_html(HTML_LINK, link, obj._artworks_count)
 
 
 class BaseMarkerObjectAdmin(admin.ModelAdmin):
@@ -75,8 +82,8 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
 
     def _owner(self, obj):
         """Display the owner of the object"""
-        link = reverse("admin:index") + "users/profile/?id=" + str(obj.owner.id)
-        return format_html('<a href="{}">{}</a>', link, obj.owner.user.username)
+        link = get_user_profile_path().format(obj.owner.id)
+        return format_html(HTML_LINK, link, obj.owner.user.username)
 
 
 @admin.action(description="Regenerate Marker With Inner Border")
@@ -94,13 +101,6 @@ def regenerate_marker_no_inner_border(modeladmin, request, queryset):
     This action will regenerate the marker images without a white inner border.
     """
     regenerate_marker(queryset, inner_border=False)
-
-
-def generate_uuid_name():
-    """Generate a UUID4 name for the marker."""
-    import uuid
-
-    return str(uuid.uuid4())  # Use uuid4 for a random unique identifier
 
 
 @admin.action(description="Remove Border")
@@ -162,8 +162,6 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + [
-        "scale",
-        "position",
         "file_extension",
     ]
     search_fields = ["title", "id"]
@@ -184,6 +182,8 @@ class ArtworkAdmin(admin.ModelAdmin):
         "exhibits_count",
         "created",
         "modified",
+        "scale",
+        "position",
     ]
     search_fields = ["title", "id"]
     ordering = ["-created"]
@@ -206,8 +206,8 @@ class ArtworkAdmin(admin.ModelAdmin):
             return obj._exhibits_count
         exhibit_list = ",".join([str(exhibit.id) for exhibit in obj.exhibits.all()])
 
-        link = reverse("admin:index") + "core/exhibit/?id__in=" + str(exhibit_list)
-        return format_html('<a href="{}">{}</a>', link, obj._exhibits_count)
+        link = get_admin_url() + "core/exhibit/?id__in=" + str(exhibit_list)
+        return format_html(HTML_LINK, link, obj._exhibits_count)
 
     exhibits_count.admin_order_field = "_exhibits_count"
     exhibits_count.short_description = "Exhibits Count"
@@ -226,8 +226,16 @@ class ArtworkAdmin(admin.ModelAdmin):
 
     def _author(self, obj):
         """Display the author of the Artwork"""
-        link = reverse("admin:index") + "users/profile/?id=" + str(obj.author.id)
-        return format_html('<a href="{}">{}</a>', link, obj.author.user.username)
+        link = get_user_profile_path().format(obj.author.id)
+        return format_html(HTML_LINK, link, obj.author.user.username)
+
+    def scale(self, obj):
+        """Display the scale of the artwork"""
+        return f"{obj.scale_x} x {obj.scale_y}"
+
+    def position(self, obj):
+        """Display the position of the artwork"""
+        return f"x: {obj.position_x} y: {obj.position_y}"
 
 
 @admin.register(Exhibit)
@@ -237,9 +245,11 @@ class ExhibitAdmin(admin.ModelAdmin):
         "slug",
         "_owner",
         "artworks_count",
+        "augmenteds_count",
         "created",
         "modified",
     ]
+    list_filter = ["exhibit_type"]
     search_fields = ["name", "slug"]
     ordering = ["-created"]
 
@@ -248,10 +258,11 @@ class ExhibitAdmin(admin.ModelAdmin):
             super()
             .get_queryset(request)
             .select_related("owner", "owner__user")
-            .prefetch_related("artworks")
+            .prefetch_related("artworks", "augmenteds")
         )
         queryset = queryset.annotate(
             _artworks_count=Count("artworks", distinct=True),
+            _augmenteds_count=Count("augmenteds", distinct=True),
         )
         return queryset
 
@@ -262,7 +273,41 @@ class ExhibitAdmin(admin.ModelAdmin):
     artworks_count.admin_order_field = "_artworks_count"
     artworks_count.allow_tags = True
 
+    def augmenteds_count(self, obj):
+        """Count of Objects in the exhibit"""
+        if obj._augmenteds_count == 0:
+            return obj._augmenteds_count
+        augmenteds_list = ",".join(
+            [str(augmented.id) for augmented in obj.augmenteds.all()]
+        )
+
+        link = get_admin_url() + "core/object/?id__in=" + str(augmenteds_list)
+        return format_html(HTML_LINK, link, obj._augmenteds_count)
+
+    augmenteds_count.short_description = "Augmenteds Count"
+    augmenteds_count.admin_order_field = "_augmenteds_count"
+    augmenteds_count.allow_tags = True
+
     def _owner(self, obj):
         """Display the owner of the object"""
-        link = reverse("admin:index") + "users/profile/?id=" + str(obj.owner.id)
-        return format_html('<a href="{}">{}</a>', link, obj.owner.user.username)
+        link = get_user_profile_path().format(obj.owner.id)
+        return format_html(HTML_LINK, link, obj.owner.user.username)
+
+
+@admin.register(Sound)
+class SoundAdmin(admin.ModelAdmin):
+    list_display = [
+        "title",
+        "preview",
+        "_owner",
+        "created",
+        "modified",
+    ]
+
+    def _owner(self, obj):
+        """Display the owner of the object"""
+        link = get_user_profile_path().format(obj.owner.id)
+        return format_html(HTML_LINK, link, obj.owner.user.username)
+
+    def preview(self, obj):
+        return format_html(obj.as_html_thumbnail().replace(obj.title, ""))

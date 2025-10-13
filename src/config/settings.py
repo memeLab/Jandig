@@ -24,6 +24,12 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 
 CSRF_TRUSTED_ORIGINS = ["https://*.jandig.app"]
 
+AUTHENTICATION_BACKENDS = ["config.auth_backends.EmailOrUsernameModelBackend"]
+
+# Set environment variables to instruct pyrender to use OSMesa for rendering and use software rendering
+PYOPENGL_PLATFORM = "osmesa"
+os.environ["PYOPENGL_PLATFORM"] = PYOPENGL_PLATFORM
+os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"
 
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
@@ -45,7 +51,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.0")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.7")
 
 
 def traces_sampler(sampling_context):
@@ -121,6 +127,7 @@ MIDDLEWARE += [
 ROOT_URLCONF = "config.urls"
 
 PAGE_SIZE = 20
+MODAL_PAGE_SIZE = 40
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [

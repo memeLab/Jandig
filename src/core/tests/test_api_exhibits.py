@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from core.serializers import ArtworkSerializer
+from core.serializers import ArtworkSerializer, ObjectSerializer
 from core.tests.factory import ExhibitFactory
 from users.tests.factory import ProfileFactory, UserFactory
 
@@ -41,6 +41,14 @@ class TestExhibitAPI(TestCase):
             data["results"][0]["artworks"]
             == ArtworkSerializer(exhibit.artworks.all(), many=True).data
         )
+        assert (
+            data["results"][0]["augmenteds"]
+            == ObjectSerializer(exhibit.augmenteds.all(), many=True).data
+        )
+        assert (
+            data["results"][0]["sounds"]
+            == ObjectSerializer(exhibit.sounds.all(), many=True).data
+        )
 
     def test_api_exhibit_lists_multiple_exhibits(self):
         """API returns multiple exhibits if there are multiple exhibits"""
@@ -69,6 +77,11 @@ class TestExhibitAPI(TestCase):
             data["artworks"]
             == ArtworkSerializer(exhibit.artworks.all(), many=True).data
         )
+        assert (
+            data["augmenteds"]
+            == ObjectSerializer(exhibit.augmenteds.all(), many=True).data
+        )
+        assert data["sounds"] == ObjectSerializer(exhibit.sounds.all(), many=True).data
 
     def test_searching_exhibits_by_owner_id(self):
         """Test that the exhibit can be searched using owner id"""
@@ -88,6 +101,14 @@ class TestExhibitAPI(TestCase):
         assert (
             data["results"][0]["artworks"]
             == ArtworkSerializer(exhibit.artworks.all(), many=True).data
+        )
+        assert (
+            data["results"][0]["augmenteds"]
+            == ObjectSerializer(exhibit.augmenteds.all(), many=True).data
+        )
+        assert (
+            data["results"][0]["sounds"]
+            == ObjectSerializer(exhibit.sounds.all(), many=True).data
         )
 
     def test_searching_exhibits_by_invalid_owner(self):

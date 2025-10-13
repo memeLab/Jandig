@@ -24,7 +24,7 @@ class SignupForm(UserCreationForm):
     )
 
     username = forms.CharField(
-        max_length=12,
+        max_length=20,
         help_text=_("Your username"),
     )
 

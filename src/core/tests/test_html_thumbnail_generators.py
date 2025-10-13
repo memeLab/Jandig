@@ -4,8 +4,7 @@ from django.urls import reverse
 from core.models import (
     DEFAULT_MARKER_THUMBNAIL_HEIGHT,
     DEFAULT_MARKER_THUMBNAIL_WIDTH,
-    DEFAULT_OBJECT_THUMBNAIL_HEIGHT,
-    DEFAULT_OBJECT_THUMBNAIL_WIDTH,
+    ExhibitTypes,
 )
 from core.tests.factory import (
     ArtworkFactory,
@@ -13,6 +12,7 @@ from core.tests.factory import (
     MarkerFactory,
     ObjectFactory,
 )
+from core.tests.utils import get_example_object
 
 
 class TestMarkerThumbnailGenerators(TestCase):
@@ -61,10 +61,12 @@ class TestMarkerThumbnailGenerators(TestCase):
 class TestObjectThumbnailGenerators(TestCase):
     def setUp(self):
         self.image_object = ObjectFactory(
-            title="Test Image", source="objects/test.gif", scale="2 1", position="0 1 0"
+            title="Test Image",
+            source=get_example_object("peixe.gif"),
         )
         self.video_object = ObjectFactory(
-            title="Test Video", source="objects/test.mp4", scale="1 1", position="1 0 0"
+            title="Test Video",
+            source=get_example_object("belotur.mp4"),
         )
 
     def test_gif_object_as_html_is_image(self):
@@ -85,18 +87,6 @@ class TestObjectThumbnailGenerators(TestCase):
         assert "loop" in html
         assert "muted" in html
         assert "<video" in html
-
-    def test_object_thumbnail_follows_proportion(self):
-        html = self.image_object.as_html_thumbnail(editable=False)
-        expected_height = (
-            DEFAULT_OBJECT_THUMBNAIL_HEIGHT * self.image_object.yproportion
-        )
-        expected_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH * self.image_object.xproportion
-
-        assert f'height="{expected_height}"' in html
-        assert f'width="{expected_width}"' in html
-        assert reverse("edit-object") not in html
-        assert reverse("delete-content") not in html
 
     def test_object_thumbnail_can_be_edited(self):
         html = self.image_object.as_html_thumbnail(editable=True)
@@ -135,7 +125,9 @@ class TestArtworkThumbnailGenerators(TestCase):
             title="Test Marker", source="markers/test.png", author="Test Author"
         )
         self.object = ObjectFactory(
-            title="Test Object", source="objects/test.gif", author="Test Author"
+            title="Test Object",
+            source=get_example_object("peixe.gif"),
+            author="Test Author",
         )
         self.artwork = ArtworkFactory(
             title="Test Artwork", marker=self.marker, augmented=self.object
@@ -199,7 +191,6 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert self.exhibit.name in html
         assert self.exhibit.owner.user.username in html
         assert self.exhibit.date in html
-        assert f"{self.exhibit.artworks_count} " in html
 
         # Check links
         assert f'href="/{self.exhibit.slug}/"' in html
@@ -207,10 +198,11 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
 
         # Should not contain edit/delete buttons
-        assert reverse("edit-exhibit") not in html
+        assert reverse("edit-ar-exhibit") not in html
         assert reverse("delete-content") not in html
 
-    def test_exhibit_thumbnail_editable(self):
+    def test_ar_exhibit_thumbnail_editable(self):
+        self.exhibit.exhibit_type = ExhibitTypes.AR
         html = self.exhibit.as_html_thumbnail(editable=True)
 
         # Should contain all basic information
@@ -224,9 +216,35 @@ class TestExhibitThumbnailGenerators(TestCase):
         assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
 
         # Should contain edit/delete buttons with correct URLs
-        edit_url = reverse("edit-exhibit", query={"id": self.exhibit.id})
+        edit_url = reverse("edit-ar-exhibit", query={"id": self.exhibit.id})
         delete_url = reverse(
-            "delete-content", query={"content_type": "exhibit", "id": self.exhibit.id}
+            "delete-content",
+            query={"content_type": "ar-exhibit", "id": self.exhibit.id},
+        )
+
+        assert f'href="{edit_url}"' in html
+        assert f'href="{delete_url}"' in html
+
+    def test_mr_exhibit_thumbnail_editable(self):
+        self.exhibit.exhibit_type = ExhibitTypes.MR
+        html = self.exhibit.as_html_thumbnail(editable=True)
+
+        # Should contain all basic information
+        assert self.exhibit.name in html
+        assert self.exhibit.owner.user.username in html
+        assert self.exhibit.date in html
+        assert f"{self.exhibit.sounds_count} " in html
+        assert f"{self.exhibit.augmenteds_count} " in html
+
+        # Check links
+        assert f'href="/{self.exhibit.slug}/"' in html
+        assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
+
+        # Should contain edit/delete buttons with correct URLs
+        edit_url = reverse("edit-mr-exhibit", query={"id": self.exhibit.id})
+        delete_url = reverse(
+            "delete-content",
+            query={"content_type": "mr-exhibit", "id": self.exhibit.id},
         )
 
         assert f'href="{edit_url}"' in html

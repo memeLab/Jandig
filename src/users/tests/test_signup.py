@@ -6,7 +6,13 @@ DEFAULT_VALID_PASSWORD = "Aa#12C34d6561"
 
 
 class TestSignup(TestCase):
-    def test_signup(self):
+    def test_signup_get(self):
+        """Signup page should be reachable"""
+        response = self.client.get(reverse("signup"))
+        assert response.status_code == 200
+
+    def test_signup_success_post(self):
+        """Signup with valid data should succeed"""
         response = self.client.post(
             reverse("signup"),
             {
@@ -175,7 +181,7 @@ class TestSignup(TestCase):
         assert response.status_code == 200
         assert "E-mail taken" in response.content.decode()
 
-    def test_case_sentive_email_and_username(self):
+    def test_case_sensitive_email_and_username(self):
         # First signup
         response = self.client.post(
             reverse("signup"),
@@ -203,3 +209,46 @@ class TestSignup(TestCase):
         assert response.status_code == 200
         assert "A user with that username already exists." in response.content.decode()
         assert "E-mail taken" in response.content.decode()
+
+    def test_signup_with_username_with_special_characters(self):
+        response = self.client.post(
+            reverse("signup"),
+            {
+                "username": "test_user!@#",
+                "email": "test_user@example.com",
+                "password1": DEFAULT_VALID_PASSWORD,
+                "password2": DEFAULT_VALID_PASSWORD,
+            },
+        )
+        # Not redirected, should return with 200 to show the form again and errors
+        assert response.status_code == 200
+        assert "Enter a valid username." in response.content.decode()
+
+    def test_signup_with_username_with_20_characters(self):
+        data = {
+            "username": "testuser1234567890123",
+            "email": "testuser@example.com",
+            "password1": DEFAULT_VALID_PASSWORD,
+            "password2": DEFAULT_VALID_PASSWORD,
+        }
+        response = self.client.post(
+            reverse("signup"),
+            data,
+        )
+        # Not redirected, should return with 200 to show the form again and errors
+        assert response.status_code == 200
+        assert (
+            "Ensure this value has at most 20 characters (it has 21)."
+            in response.content.decode()
+        )
+
+        data["username"] = "testuser123456789012"
+        response = self.client.post(
+            reverse("signup"),
+            data,
+        )
+        # Should be successful with 20 characters
+        assert response.status_code == 302
+        user = get_user_model().objects.get(username="testuser123456789012")
+        assert user.email == "testuser@example.com"
+        assert user.check_password(DEFAULT_VALID_PASSWORD)

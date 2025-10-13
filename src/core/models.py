@@ -1,5 +1,4 @@
 import logging
-import re
 
 import pghistory
 from django.core.files.base import ContentFile
@@ -9,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
-from fast_html import a, b, div, h1, img, p, render, video
+from fast_html import a, audio, b, div, h1, img, p, render, span, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
@@ -24,6 +23,8 @@ DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
 DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 
 SCALE_REGEX = r"[\d\.\d]+"
+
+USED_IN = _("Used in")
 
 
 def create_patt(filename, original_filename):
@@ -72,7 +73,7 @@ class ContentMixin:
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {}".format(
-            _("Used in"),
+            USED_IN,
             self.artworks_count,
             _("artworks"),
             _("and in "),
@@ -90,6 +91,120 @@ class ContentMixin:
                 )
             )
         return used_in
+
+
+class SoundExtensions(models.TextChoices):
+    MP3 = "mp3", "MP3"
+    OGG = "ogg", "OGG"
+    WAV = "wav", "WAV"
+
+
+@pghistory.track()
+class Sound(TimeStampedModel, ContentMixin):
+    file = models.FileField(upload_to="sounds/")
+    title = models.CharField(max_length=50, blank=False)
+    author = models.CharField(max_length=60, blank=False)
+    owner = models.ForeignKey(
+        Profile, on_delete=models.DO_NOTHING, related_name="sounds"
+    )
+    # Save the file size of the sound, so we avoid making requests to S3 / MinIO to check for it.
+    file_size = models.IntegerField(default=0)
+    file_name_original = models.CharField(max_length=255)
+    file_extension = models.CharField(
+        max_length=10, db_index=True, choices=SoundExtensions.choices
+    )
+
+    @property
+    def date(self):
+        return self.created.strftime("%d/%m/%Y")
+
+    @property
+    def artworks_count(self):
+        return self.artworks.count()
+
+    @property
+    def augmenteds_count(self):
+        return self.ar_objects.count()
+
+    @property
+    def exhibits_count(self):
+        return self.exhibits.count()
+
+    def is_used_by_other_user(self):
+        """
+        Check if the object is used by another user.
+        This is done by checking if there are artworks that reference this object
+        and if the owner of those artworks is not the current user.
+        """
+        return (
+            self.ar_objects.exclude(owner=self.owner).exists()
+            or self.artworks.exclude(author=self.owner).exists()
+            or self.exhibits.exclude(owner=self.owner).exists()
+        )
+
+    @property
+    def in_use(self):
+        if self.exhibits_count > 0:
+            return True
+        if self.augmenteds_count > 0:
+            return True
+        if self.artworks_count > 0:
+            return True
+        return False
+
+    def used_in_html_string(self):
+        used_in = "{} {} {} {} {} {} {}".format(
+            USED_IN,
+            self.artworks_count,
+            _("artworks"),
+            self.augmenteds_count,
+            _("objects"),
+            self.exhibits_count,
+            _("exhibits"),
+        )
+
+        if self.in_use:
+            return render(
+                a(
+                    used_in,
+                    href=reverse(
+                        "related-content",
+                        query={"id": self.id, "type": self.content_type()},
+                    ),
+                )
+            )
+        return used_in
+
+    def as_html(self):
+        attributes = {
+            "id": self.id,
+            "title": self.title,
+            "src": self.file.url,
+        }
+        return render(
+            audio(
+                **attributes,
+                controls=True,
+            )
+        )
+
+    def as_html_thumbnail(self, editable=False):
+        elements = [
+            span(self.title, style="display:block;"),
+            self.as_html(),
+        ]
+        if editable and not self.is_used_by_other_user():
+            elements.append(self._get_edit_button())
+
+        if editable and not self.in_use:
+            elements.append(self._get_delete_button())
+
+        return render(div(elements, style="margin: 10px auto;"))
+
+
+class ExhibitTypes(models.TextChoices):
+    AR = "AR", "Augmented Reality"
+    MR = "MR", "Mixed Reality"
 
 
 @pghistory.track()
@@ -114,10 +229,6 @@ class Marker(TimeStampedModel, ContentMixin):
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def artworks_list(self):
-        return self.artworks.order_by("-id")
 
     @property
     def in_use(self):
@@ -173,17 +284,29 @@ class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
+    sound = models.ForeignKey(
+        Sound,
+        on_delete=models.DO_NOTHING,
+        related_name="ar_objects",
+        null=True,
+        blank=True,
+    )
+    audio_description = models.FileField(
+        upload_to="audio_descriptions/", null=True, blank=True
+    )
     source = models.FileField(upload_to="objects/")
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
-    scale = models.CharField(default="1 1", max_length=50)
-    position = models.CharField(default="0 0 0", max_length=50)
-    rotation = models.CharField(default="270 0 0", max_length=50)
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0)
     file_name_original = models.CharField(max_length=255)
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=ObjectExtensions.choices
+    )
+    thumbnail = models.ImageField(
+        upload_to="objects/thumbnails/",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -192,10 +315,6 @@ class Object(TimeStampedModel, ContentMixin):
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def artworks_list(self):
-        return self.artworks.order_by("-id")
 
     @property
     def in_use(self):
@@ -212,87 +331,6 @@ class Object(TimeStampedModel, ContentMixin):
         return self.artworks.exclude(author=self.owner).exists()
 
     @property
-    def xproportion(self):
-        """
-        The 'xproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made
-        when a new scale value is entered by the user.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        width = float(a[0])
-        height = float(a[1])
-        if width > height:
-            height = (height * 1.0) / width
-            width = 1
-        else:
-            width = (width * 1.0) / height
-            height = 1
-        return width
-
-    @property
-    def yproportion(self):
-        """
-        The 'yproportion' method is used to always reduce scale
-        to 1:[something], so that new calculations can be made
-        when a new scale value is entered by the user.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        width = float(a[0])
-        height = float(a[1])
-        if width > height:
-            height = (height * 1.0) / width
-            width = 1
-        else:
-            width = (width * 1.0) / height
-            height = 1
-        return height
-
-    @property
-    def xscale(self):
-        """
-        The 'xscale' method returns the original proportion
-        of the Object multiplied by the scale value entered
-        by the user, and thus the Object appears resized in
-        augmented reality.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        return a[0]
-
-    @property
-    def yscale(self):
-        """
-        The 'yscale' method returns the original proportion
-        of the Object multiplied by the scale value entered
-        by the user, and thus the Object appears resized in
-        augmented reality.
-        """
-        a = re.findall(SCALE_REGEX, self.scale)
-        return a[1]
-
-    @property
-    def fullscale(self):
-        """
-        The 'fullscale' method is a workaround to show the
-        users the last scale value entered by them, when
-        they attempt to edit it.
-        """
-        x = self.xscale
-        y = self.yscale
-        if x > y:
-            return x
-        return y
-
-    @property
-    def xposition(self):
-        x = self.position.split(" ")[0]
-        return float(x)
-
-    @property
-    def yposition(self):
-        y = self.position.split(" ")[1]
-        return float(y)
-
-    @property
     def is_video(self):
         """
         checks if the Object is a video by checking the file extension.
@@ -306,7 +344,7 @@ class Object(TimeStampedModel, ContentMixin):
         """
         checks if the Object is a 3D model by checking the file extension.
         """
-        if self.source.name.endswith(".glb"):
+        if self.file_extension in [ObjectExtensions.GLB]:
             return True
         return False
 
@@ -330,11 +368,13 @@ class Object(TimeStampedModel, ContentMixin):
                 )
             )
         elif self.is_3d:
-            # TODO: 3D model preview
-            # no 3d render, return an placeholder svg with a red square
-            attributes["src"] = (
-                "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
-            )
+            if self.thumbnail:
+                attributes["src"] = self.thumbnail.url
+            else:
+                # Fallback to a placeholder if no thumbnail is available
+                attributes["src"] = (
+                    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><rect width='30' height='30' fill='red'/></svg>"
+                )
             return render(
                 img(
                     **attributes,
@@ -344,10 +384,8 @@ class Object(TimeStampedModel, ContentMixin):
             return render(img(**attributes))
 
     def as_html_thumbnail(self, editable=False):
-        thumbnail_height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
-        thumbnail_width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
-        height = thumbnail_height * self.yproportion
-        width = thumbnail_width * self.xproportion
+        height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
+        width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
         to_render = [self.as_html(height, width)]
         if editable and not self.is_used_by_other_user():
             to_render.append(self._get_edit_button())
@@ -369,8 +407,19 @@ class Artwork(TimeStampedModel, ContentMixin):
     augmented = models.ForeignKey(
         Object, on_delete=models.DO_NOTHING, related_name="artworks"
     )
+    sound = models.ForeignKey(
+        Sound,
+        on_delete=models.DO_NOTHING,
+        related_name="artworks",
+        null=True,
+        blank=True,
+    )
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=500, blank=True)
+    scale_x = models.FloatField(default=1.0)
+    scale_y = models.FloatField(default=1.0)
+    position_x = models.FloatField(default=0.0)
+    position_y = models.FloatField(default=0.0)
 
     @property
     def exhibits_count(self):
@@ -388,7 +437,7 @@ class Artwork(TimeStampedModel, ContentMixin):
 
     def used_in_html_string(self):
         used_in = "{} {} {}".format(
-            _("Used in"),
+            USED_IN,
             self.exhibits_count,
             _("Exhibits"),
         )
@@ -430,20 +479,25 @@ class Artwork(TimeStampedModel, ContentMixin):
         return render(div(elements, class_="artwork-elements flex"))
 
 
-@receiver(post_delete, sender=Object)
-@receiver(post_delete, sender=Marker)
-def remove_source_file(sender, instance, **kwargs):
-    instance.source.delete(False)
-
-
 @pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
     name = models.CharField(unique=True, max_length=50)
-    slug = models.CharField(unique=True, max_length=50)
-    artworks = models.ManyToManyField(Artwork, related_name="exhibits")
+    slug = models.SlugField(unique=True, max_length=50)
+    artworks = models.ManyToManyField(Artwork, related_name="exhibits", blank=True)
+    augmenteds = models.ManyToManyField(Object, related_name="exhibits", blank=True)
+    sounds = models.ManyToManyField(Sound, related_name="exhibits", blank=True)
+    exhibit_type = models.CharField(
+        max_length=20,
+        choices=[
+            (ExhibitTypes.AR, "Augmented Reality"),
+            (ExhibitTypes.MR, "Mixed Reality"),
+        ],
+        default=ExhibitTypes.AR,
+        db_index=True,
+    )
 
     def __str__(self):
         return self.name
@@ -453,23 +507,62 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         return self.artworks.count()
 
     @property
+    def augmenteds_count(self):
+        return self.augmenteds.count()
+
+    @property
+    def sounds_count(self):
+        return self.sounds.count()
+
+    @property
     def date(self):
         return self.created.strftime("%d/%m/%Y")
+
+    def content_type(self):
+        if self.exhibit_type == ExhibitTypes.AR:
+            return "ar-exhibit"
+        elif self.exhibit_type == ExhibitTypes.MR:
+            return "mr-exhibit"
+        else:
+            raise ValueError("Invalid exhibit type")
 
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
         exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
-
+        media_stats = []
+        if self.exhibit_type == ExhibitTypes.AR:
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.artworks_count, _("Artwork(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
+        elif self.exhibit_type == ExhibitTypes.MR:
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.augmenteds_count, _("Object(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
+            media_stats.append(
+                p(
+                    a(
+                        "{} {}".format(self.sounds_count, _("Sound(s)")),
+                        href=link_to_exhibit,
+                    ),
+                    class_="exhibit-about",
+                )
+            )
         exhibit_info = [
             p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
             p(self.date, class_="exbDate"),
-            p(
-                a(
-                    "{} {}".format(self.artworks_count, _("Artwork(s)")),
-                    href=link_to_exhibit,
-                ),
-                class_="exhibit-about",
-            ),
+            div(media_stats),
         ]
 
         button_see_this_exhibit = a(
@@ -484,10 +577,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         ]
         if editable:
             exhibit_card_elements.extend(
-                [
-                    self._get_edit_button(),
-                    self._get_delete_button(),
-                ]
+                [div([self._get_delete_button(), self._get_edit_button()])]
             )
         exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
         elements = [
@@ -495,3 +585,16 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
             exhibit_card,
         ]
         return render(elements)
+
+
+@receiver(post_delete, sender=Object)
+@receiver(post_delete, sender=Marker)
+@receiver(post_delete, sender=Sound)
+def remove_source_file(sender, instance, **kwargs):
+    if isinstance(instance, Marker):
+        instance.source.delete(False)
+    if isinstance(instance, Object):
+        instance.source.delete(False)
+        instance.audio_description.delete(False)
+    if isinstance(instance, Sound):
+        instance.file.delete(False)

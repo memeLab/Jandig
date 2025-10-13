@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from factory import Faker, LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, Sound
 from users.tests.factory import ProfileFactory
 
 BASE_COLLECTION_DIR = settings.ROOT_DIR + "collection/"
@@ -52,6 +52,24 @@ def choose_random_marker_file(_):
     )
 
 
+def choose_random_sound_file(_):
+    """
+    Randomly selects a file from the collection/sounds folder.
+    """
+    sounds_dir = os.path.join(BASE_COLLECTION_DIR, "sounds/")
+    files = [
+        f for f in os.listdir(sounds_dir) if os.path.isfile(os.path.join(sounds_dir, f))
+    ]
+    file = random.choice(files)
+    return ContentFile(
+        open(
+            os.path.join(sounds_dir, file),
+            "rb",
+        ).read(),
+        name=file,
+    )
+
+
 def chose_random_patt_file(_):
     """
     Randomly selects a file from the collection/patts folder.
@@ -81,18 +99,10 @@ class ObjectFactory(DjangoModelFactory):
 
     author = Faker("name")
     title = Faker("sentence", nb_words=3)
-    # Scale is a string of 2 floats from 0 to 2, separated by a space
-    scale = LazyAttribute(
-        lambda _: f"{round(random.uniform(0.5, 2), 3)} {round(random.uniform(0.5, 2), 3)}"
-    )
-    position = LazyAttribute(
-        lambda _: f"{round(random.uniform(-1, 1), 3)} {round(random.uniform(-1, 1), 3)} 0"
-    )
 
-    rotation = "270 0 0"
     file_size = Faker("random_int", min=1000, max=1_000_000)
     file_name_original = Faker("slug")
-    file_extension = LazyAttribute(lambda obj: str(obj.source).split(".")[-1])
+    file_extension = LazyAttribute(lambda obj: obj.source.name.split(".")[-1])
 
 
 class MarkerFactory(DjangoModelFactory):
@@ -122,6 +132,11 @@ class ArtworkFactory(DjangoModelFactory):
     title = Faker("sentence", nb_words=3)  # Generate a random title
     description = Faker("text", max_nb_chars=200)  # Generate a random description
 
+    scale_x = LazyAttribute(lambda _: round(random.uniform(0.1, 5), 2))
+    scale_y = LazyAttribute(lambda _: round(random.uniform(0.1, 5), 2))
+    position_x = LazyAttribute(lambda _: round(random.uniform(-2, 2), 2))
+    position_y = LazyAttribute(lambda _: round(random.uniform(-2, 2), 2))
+
 
 class ExhibitFactory(DjangoModelFactory):
     class Meta:
@@ -137,9 +152,12 @@ class ExhibitFactory(DjangoModelFactory):
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         artworks_data = kwargs.pop("artworks", [])
+        augmenteds_data = kwargs.pop("augmenteds", [])
         instance = super()._create(model_class, *args, **kwargs)
         if artworks_data:
             instance.artworks.set(artworks_data)
+        if augmenteds_data:
+            instance.augmenteds.set(augmenteds_data)
         return instance
 
     @post_generation
@@ -152,6 +170,31 @@ class ExhibitFactory(DjangoModelFactory):
             self.artworks.set(
                 [
                     ArtworkFactory(author=self.owner)
-                    for _ in range(random.randint(1, 15))
+                    for _ in range(random.randint(1, 10))
                 ]
             )
+
+    @post_generation
+    def augmenteds(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            self.augmenteds.set(extracted)
+        else:
+            augmented = random.randint(0, 5)
+            self.augmenteds.set(
+                [ObjectFactory(owner=self.owner) for _ in range(augmented)]
+            )
+            if augmented > 0:
+                self.exhibit_type = ExhibitTypes.MR
+                self.save()
+
+
+class SoundFactory(DjangoModelFactory):
+    class Meta:
+        model = Sound
+
+    owner = SubFactory(ProfileFactory)
+    file = LazyAttribute(choose_random_sound_file)
+    title = Faker("sentence", nb_words=3)
+    author = Faker("name")

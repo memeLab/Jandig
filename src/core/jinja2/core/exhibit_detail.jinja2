@@ -11,12 +11,26 @@
             <p class="by">{{_("Created by ")}} <b>{{exhibit.owner.user.username}}</b></p>
             <a href="https://jandig.app/{{exhibit.slug}}" class="gotoExb">{{ _("See this exhibition") }}</a>
         </div>
-        <h1 class="titArt">{{_("Exhibition Artworks")}}</h1>
-        {% with repository_list = artworks, element_type="artwork" %}
-            {% include "core/components/item-list.jinja2" %}
+        {% if artworks %}
+            <h1 class="titArt">{{_("Exhibition Artworks")}}</h1>
+            {% with repository_list = artworks, element_type="artwork" %}
+                {% include "core/components/item-list.jinja2" %}
+            {% endwith %}
 
-        {% endwith %}
+        {% endif %}
+        {% if objects %}
+            <h1 class="titArt">{{_("Exhibition MR Objects")}}</h1>
+            {% with repository_list = objects, element_type="object" %}
+                {% include "core/components/item-list.jinja2" %}
+            {% endwith %}
+        {% endif %}
 
+        {% if sounds %}
+            <h1 class="titArt">{{_("Exhibition Sounds")}}</h1>
+            {% with repository_list = sounds, element_type="sound" %}
+                {% include "core/components/item-list.jinja2" %}
+            {% endwith %}
+        {% endif %}
         <section id="modal" class="modal"></section>
 
     </div>
