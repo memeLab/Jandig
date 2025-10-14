@@ -77,6 +77,7 @@
             <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-4 md:mt-0 md:w-auto">
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-justify w-full" onclick="showSection('exposicao')" data-translate="nav_exhibition">Exposição</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-justify w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum Interativo</a>
+                <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-justify w-full" onclick="showSection('oficina')" data-translate="nav_workshop">Oficina</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-justify w-full" onclick="showSection('making-of')" data-translate="nav_making_of">Making Of</a>
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-justify w-full" onclick="showSection('quem-somos')" data-translate="nav_who_we_are">Quem somos</a>
                 
@@ -309,12 +310,80 @@
             </div>
         </section>
 
+        <!-- Oficina Section -->
+        <section id="oficina" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-justify mb-8 text-[#08B59F]" data-translate="oficina_title">INSCRIÇÃO Oficina Criação de álbum interativo</h1>
+            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-justify" data-translate="oficina_p1">
+                O projeto Mitologia Estendida abre as portas dos bastidores do processo por trás da criação do Álbum Interativo. A oficina é para aqueles que querem contar uma história usando realidade aumentada.
+            </p>
+            <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/oficina1.png') }}"
+                     alt="Interação com a exposição em Ouro Preto, 2019."
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+1';"
+                >
+                <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image1_caption">Legenda imagem 1: Interação com a exposição em Ouro Preto, 2019.</p>
+            </div>
+            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-justify" data-translate="oficina_p2">
+                Ao final do encontro, cada pessoa sairá com uma página própria para a sua narrativa, criada e impressa na oficina, bem como terá uma boa noção de como funciona o álbum interativo como um elemento narrativo transmídia para suas histórias.
+            </p>
+            <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/oficina2.png') }}"
+                     alt="Página do álbum interativo Mitologia Estendida, 2025."
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+2';"
+                >
+                <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image2_caption">Legenda imagem 2: Página do álbum interativo Mitologia Estendida, 2025.</p>
+            </div>
+            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-justify" data-translate="oficina_p3">
+                Elas também terão contato com a JANDIG, uma comunidade de arte em realidade aumentada de código aberto e de onde em 2025 nascem novos rumos com o projeto Mitologia Estendida.
+            </p>
+            <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden">
+                <img src="{{ static('images/icons/me/oficina3.png') }}"
+                     alt="Exposição interativa em São Miguel Paulista, 2019."
+                     class="w-full h-64 md:h-72 object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+3';"
+                >
+                <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image3_caption">Legenda imagem 3: Exposição interativa em São Miguel Paulista, 2019.</p>
+            </div>
+
+            <p class="text-lg font-bold text-gray-800 mb-4" data-translate="oficina_limited_spots">Vagas limitadas!</p>
+            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-justify" data-translate="oficina_info1">
+                A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.
+            </p>
+            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-justify" data-translate="oficina_info2">
+                Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.
+            </p>
+            <p class="text-lg font-bold text-gray-800 mb-2" data-translate="oficina_when">Quando: 29 de novembro, 9h30- 13h30</p>
+            <p class="text-lg font-bold text-gray-800 mb-6" data-translate="oficina_local">Local: Rua Luis Murat, 298, São Paulo, SP</p>
+
+            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-justify" data-translate="oficina_register">
+                Cadastre-se <a href="https://forms.gle/kx754R1ywMhxRgfn7" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a>.
+            </p>
+
+            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-justify" data-translate="oficina_youtube_intro">
+                Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina,veja <a href="https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019.
+            </p>
+            <div class="relative pt-[56.25%] w-full max-w-screen-md mx-auto mb-8">
+                <iframe
+                    class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
+                    src="https://www.youtube.com/embed/jNZps0RegSk?si=2MViH0FYMG03pX77"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    width="100%" height="100%"
+                ></iframe>
+            </div>
+        </section>
+
         <!-- Aprenda a fazer Section (This section was not in the navigation but is kept for content) -->
         <section id="aprender-fazer" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-justify mb-8 text-[#08B59F]" data-translate="learn_title">Aprenda a fazer</h1>
             <div class="text-lg leading-relaxed mb-8 text-gray-700">
                 <p class="mb-4" data-translate="learn_p1">
-                    Desenvolvemos uma série de materiais educativos para complementar a experiência da "Mitologia Estendida" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
+                    Desenvolvemos uma série de materiais educativos para complementar a experiência da \"Mitologia Estendida\" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
                 </p>
                 <p data-translate="learn_p2">
                     Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.
@@ -326,7 +395,7 @@
         <section id="making-of" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-justify mb-8 text-[#08B59F]" data-translate="makingof_title">Making Of: Diário de Desenvolvimento</h1>
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-justify" data-translate="makingof_intro">
-                Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos. Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição. Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação. Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco pelo [contato].
+                Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco pelo <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick="showSection('contato')">CONTATO</a>.
             </p>
             <div class="space-y-12">
                 <!-- Post 1 -->
@@ -568,6 +637,7 @@
             pt: {
                 nav_exhibition: "Exposição",
                 nav_sticker_album: "Álbum Interativo",
+                nav_workshop: "Oficina", // NEW
                 nav_making_of: "Making Of",
                 nav_who_we_are: "Quem somos",
                 home_intro: "Mitologia Estendida é uma experiência imersiva em realidade estendida que nos transporta para o coração das lendas e mitos brasileiros. O projeto é um convite para conhecer algumas narrativas ancestrais como nunca antes, combinando a riqueza da cultura brasileira com a tecnologia de ponta. Prepare-se para uma jornada inesquecível com personagens lendários em diálogo com os desafios que estamos enfrentando hoje em dia.",
@@ -644,21 +714,21 @@
                 makingof_post1_date_value: "03 de Outubro de 2025",
                 makingof_post2_title: "Mapa Narrativo",
                 makingof_post2_p1: "Todos e todas adoramos uma boa história.",
-                makingof_post2_p2: "Todos e todas temos um arsenal de casos para contar! Alguns, inacreditáveis. Outros, que nos transformaram profundamente.",
-                makingof_post2_p3: "Histórias sobre encontros com seres da floresta quase sempre têm um ar de mistério. O desafio está em traduzir em palavras um encontro para além do racional, cheio de sensações.",
-                makingof_post2_p4: "Foi partindo desse cenário que incorporamos no processo do projeto Mitologia Estendida o que viemos a chamar de Mapa Narrativo ou mapa dos personagens.",
-                makingof_post2_p5: "Percebemos que no grupo de trabalho havia uma diversidade de formas de entender e lidar com a ideia de um mito e dar vida, textura e cor a ele novamente usando a tecnologia. Ou seja, para aceitar o desafio de como contar essa história visualmente e através de um roteiro, primeiro precisamos enxergar não só o que sabíamos de cada um dos encantados, mas também o que sentíamos ao evocar a sua presença.",
-                makingof_post2_p6: "Entendemos que só assim trataremos do tema com o respeito que merece, inclusive tomando consciência de que nosso entendimento dos mitos brasileiros está moldado por uma compreensão folclórica ensinada na escola. Muitas vezes imbuído de preconceitos e/ou sobreposição de uma cosmovisão que entende os seres da floresta “apenas como lendas” ou histórias sem fundamento. Sabemos que não é assim e que a raiz das histórias diz das nossas raízes como território e como país.",
-                makingof_post2_p7: "Acreditamos que essa abordagem de 'o que já sabemos' e do que ainda queremos enxergar juntos é útil para contar toda e qualquer história. O Mapa Narrativo é uma ferramenta útil para isso.",
+                makingof_post2_p2: "Todos e todas temos um arsenal de casos para contar! Alguns, inacreditáveis. Outros, que nos transformaram profundamente. ",
+                makingof_post2_p3: "Histórias sobre encontros com seres da floresta quase sempre têm um ar de mistério. O desafio está em traduzir em palavras um encontro para além do racional, cheio de sensações. ",
+                makingof_post2_p4: "Foi partindo desse cenário que incorporamos no processo do projeto Mitologia Estendida o que viemos a chamar de Mapa Narrativo ou mapa dos personagens. ",
+                makingof_post2_p5: "Percebemos que no grupo de trabalho havia uma diversidade de formas de entender e lidar com a ideia de um mito e dar vida, textura e cor a ele novamente usando a tecnologia. Ou seja, para aceitar o desafio de como contar essa história visualmente e através de um roteiro, primeiro precisamos enxergar não só o que sabíamos de cada um dos encantados, mas também o que sentíamos ao evocar a sua presença. ",
+                makingof_post2_p6: "Entendemos que só assim trataremos do tema com o respeito que merece, inclusive tomando consciência de que nosso entendimento dos mitos brasileiros está moldado por uma compreensão folclórica ensinada na escola. Muitas vezes imbuído de preconceitos e/ou sobreposição de uma cosmovisão que entende os seres da floresta “apenas como lendas” ou histórias sem fundamento. Sabemos que não é assim e que a raiz das histórias diz das nossas raízes como território e como país. ",
+                makingof_post2_p7: "Acreditamos que essa abordagem de 'o que já sabemos' e do que ainda queremos enxergar juntos é útil para contar toda e qualquer história. O Mapa Narrativo é uma ferramenta útil para isso. ",
                 makingof_post2_p8: "Compartilhamos aqui com você o resultado das nossas conversas sobre os personagens do projeto Mitologia Estendida. Com o mapa narrativo em mãos, foi possível enxergar melhor como cada personagem se revela no imaginário pessoal e coletivo. Também deu elementos para que as ilustradoras e o restante da equipe tivessem um vocabulário em comum a partir do qual criar imagens, roteiros e cenários. As categorias à esquerda são dinâmicas e podem ter mais ou menos questões. Elas servem principalmente para guiar a conversa e evocar no grupo de trabalho um senso de inteligência coletiva.",
-                makingof_post2_p9: "Deixamos também um Mapa Narrativo em branco para você como forma de estimular a apropriação dessa ferramenta para seu projeto particular. A ideia é dedicar um tempo - individual ou coletivo - para livremente anotar o que vem à mente como resultado de uma compreensão inerente ou como resumo de pesquisas feitas a respeito do tema.",
-                makingof_post2_p10: "Revisite seu mapa narrativo no decorrer do processo. Ele mostrará as primeiras - e importantes - impressões que vão sendo esquecidas nas próximas etapas. Com ele em mãos, as histórias que vamos contar na sequência, na elaboração dos roteiros, contêm maior diversidade.",
+                makingof_post2_p9: "Deixamos também um Mapa Narrativo em branco para você como forma de estimular a apropriação dessa ferramenta para seu projeto particular. A ideia é dedicar um tempo - individual ou coletivo - para livremente anotar o que vem à mente como resultado de uma compreensão inerente ou como resumo de pesquisas feitas a respeito do tema. ",
+                makingof_post2_p10: "Revisite seu mapa narrativo no decorrer do processo. Ele mostrará as primeiras - e importantes - impressões que vão sendo esquecidas nas próximas etapas. Com ele em mãos, as histórias que vamos contar na sequência, na elaboração dos roteiros, contêm maior diversidade. ",
                 makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a>`,
                 makingof_post2_date_label: "Postado em:",
                 makingof_post2_date_value: "10 de Outubro de 2025",
                 exhibition_title: "Exposição",
                 exhibition_h2: "Uma Jornada Imersiva na Arte e Tecnologia",
-                exhibition_p1: "Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos.",
+                exhibition_p1: "Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. ",
                 exhibition_p2: "Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.",
                 exhibition_p3: "A exposição Mitologia Estendida ocupará o Coletivo Digital em dois momentos:",
                 exhibition_p4: "Abertura: <br>27/Nov 18h-19h",
@@ -690,11 +760,26 @@
                 footer_fomento: "Fomento:",
                 footer_producao: "Produção:",
                 footer_realizacao: "Realização:",
-                footer_license: "Alguns direitos reservados."
+                footer_license: "Alguns direitos reservados.",
+                oficina_title: "INSCRIÇÃO Oficina Criação de álbum interativo", // NEW
+                oficina_p1: "O projeto Mitologia Estendida abre as portas dos bastidores do processo por trás da criação do Álbum Interativo. A oficina é para aqueles que querem contar uma história usando realidade aumentada.", // NEW
+                oficina_image1_caption: "Interação com a exposição em Ouro Preto, 2019.", // NEW
+                oficina_p2: "Ao final do encontro, cada pessoa sairá com uma página própria para a sua narrativa, criada e impressa na oficina, bem como terá uma boa noção de como funciona o álbum interativo como um elemento narrativo transmídia para suas histórias.", // NEW
+                oficina_image2_caption: "Página do álbum interativo Mitologia Estendida, 2025.", // NEW
+                oficina_p3: "Elas também terão contato com a JANDIG, uma comunidade de arte em realidade aumentada de código aberto e de onde em 2025 nascem novos rumos com o projeto Mitologia Estendida.", // NEW
+                oficina_image3_caption: "Exposição interativa em São Miguel Paulista, 2019.", // NEW
+                oficina_limited_spots: "Vagas limitadas!", // NEW
+                oficina_info1: "A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.", // NEW
+                oficina_info2: "Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.", // NEW
+                oficina_when: "Quando: 29 de novembro, 9h30- 13h30", // NEW
+                oficina_local: "Local: Rua Luis Murat, 298, São Paulo, SP", // NEW
+                oficina_register: "Cadastre-se <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aqui</a>.", // NEW
+                oficina_youtube_intro: "Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina,veja <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019." // NEW
             },
             en: {
                 nav_exhibition: "Exhibition",
                 nav_sticker_album: "Sticker Album",
+                nav_workshop: "Workshop", // NEW
                 nav_making_of: "Making Of",
                 nav_who_we_are: "Who We Are",
                 home_intro: "Extended Mythology is an immersive experience in extended reality that transports us to the heart of Brazilian legends and myths. The project is an invitation to get to know some ancestral narratives like never before, combining the richness of Brazilian culture with cutting-edge technology. Prepare for an unforgettable journey with legendary characters in dialogue with the challenges we are facing today.",
@@ -788,12 +873,12 @@
                 exhibition_p1: "We are surrounded by invisible energies that help us navigate the complex times we live in.",
                 exhibition_p2: "In a unique mixed reality experience, the Extended Mythology exhibition occupies the exhibition space of Coletivo Digital. The result of an investigation into the relationships between art, technology, and education, the exhibition is an invitation to a ritualistic journey to encounter a slice of Brazilian mythology seen in mixed and augmented reality.",
                 exhibition_p3: "The Extended Mythology exhibition will occupy the Coletivo Digital Cultural Center at two different times:",
-                exhibition_p4: "Mixed reality experience (MR)<br>Opening lecture: <br>Nov 28, 6pm-7pm",
-                exhibition_p5: "Workshop<br>Nov 29, 9:30am-1:30pm",
-                exhibition_p6: "MR Experience<br>Nov 28, 7pm-9pm<br>Nov 29, 9:30am-7pm",
-                exhibition_p7: "Augmented reality exhibition (AR)<br>Nov 28, 7pm-9pm<br>Nov 29, 9:30am-7pm<br>Dec 1-19, 11am-7pm (Monday to Friday)<br>Jan 12-23, 11am-7pm (Monday to Friday)",
+                exhibition_p4: "Opening: <br>Nov 27, 6pm-7pm", // Corrected
+                exhibition_p5: "Mixed reality experience<br>Nov 27, 7pm-9pm <br> Nov 28, 11am-7pm", // Corrected
+                exhibition_p6: "Workshop: Creation of interactive augmented reality publications<br>Nov 29, 9:30am-1:30pm", // Corrected
+                exhibition_p7: "Augmented reality exhibition <br>Dec 1-19<br>Monday to Friday 11am-7pm", // Corrected
                 exhibition_p8: "Engaged in the fight against the privatization of knowledge, Coletivo Digital works to ensure that access to knowledge is recognized as a heritage of humanity and a right for all.",
-                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, Pinheiros, São Paulo - SP",
+                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, Pinheiros, São Paulo - SP <br> FREE AND ACCESSIBLE", // Corrected
                 faq_title: "Help and Frequently Asked Questions (FAQ)",
                 faq1_q: "What is Extended Mythology?",
                 faq1_a: "Extended Mythology is a cultural exhibition in virtual reality that allows users to explore and interact with legends and myths from various cultures in an immersive and educational way.",
@@ -817,11 +902,26 @@
                 footer_fomento: "Funding:",
                 footer_producao: "Production:",
                 footer_realizacao: "Realization:",
-                footer_license: "Some rights reserved."
+                footer_license: "Some rights reserved.",
+                oficina_title: "WORKSHOP REGISTRATION: Interactive Album Creation", // NEW
+                oficina_p1: "The Extended Mythology project opens the doors to the behind-the-scenes process of creating the Interactive Album. The workshop is for those who want to tell a story using augmented reality.", // NEW
+                oficina_image1_caption: "Interaction with the exhibition in Ouro Preto, 2019.", // NEW
+                oficina_p2: "At the end of the workshop, each person will leave with their own page for their narrative, created and printed during the workshop, as well as gaining a good understanding of how the interactive album functions as a transmedia narrative element for their stories.", // NEW
+                oficina_image2_caption: "Page from the Extended Mythology interactive album, 2025.", // NEW
+                oficina_p3: "Participants will also have contact with JANDIG, an open-source augmented reality art community, from which new directions for the Extended Mythology project emerged in 2025.", // NEW
+                oficina_image3_caption: "Interactive exhibition in São Miguel Paulista, 2019.", // NEW
+                oficina_limited_spots: "Limited spots!", // NEW
+                oficina_info1: "The workshop is free. Professionals in the field as well as laypersons are welcome! The target audience includes artists, teachers, researchers, students, and people interested in augmented reality.", // NEW
+                oficina_info2: "We will select participants based on this registration to ensure a diverse and engaged group.", // NEW
+                oficina_when: "When: November 29, 9:30 AM - 1:30 PM", // NEW
+                oficina_local: "Location: Rua Luis Murat, 298, São Paulo, SP", // NEW
+                oficina_register: "Register <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>here</a>.", // NEW
+                oficina_youtube_intro: "If you want to get an idea of the potential of the tool we will be working with in the workshop, see <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>here</a> an exhibition, the result of a workshop with UEMG students, presented at the Marte Festival, in Ouro Preto, 2019." // NEW
             },
             es: {
                 nav_exhibition: "Exposición",
                 nav_sticker_album: "Álbum de Cromos",
+                nav_workshop: "Taller", // NEW
                 nav_making_of: "Making Of",
                 nav_who_we_are: "Quiénes somos",
                 home_intro: "Mitología Extendida es una experiencia inmersiva en realidad extendida que nos transporta al corazón de las leyendas y mitos brasileños. El proyecto es una invitación a conocer algunas narrativas ancestrales como nunca antes, combinando la riqueza de la cultura brasileña con la tecnología de punta. Prepárese para un viaje inolvidable con personajes legendarios en diálogo con los desafíos que enfrentamos hoy en día.",
@@ -904,7 +1004,7 @@
                 makingof_post2_p5: "Nos dimos cuenta de que en el grupo de trabajo había una diversidad de formas de entender y lidiar con la idea de un mito y de darle vida, textura y color de nuevo usando la tecnología. Es decir, para aceptar el desafío de cómo contar esta historia visualmente y a través de un guion, primero necesitamos ver no solo lo que sabíamos de cada uno de los seres encantados, sino también lo que sentíamos al evocar su presencia.",
                 makingof_post2_p6: "Entendemos que solo así trataremos el tema con el respeto que merece, incluso tomando conciencia de que nuestra comprensión de los mitos brasileños está moldeada por una comprensión folclórica enseñada en la escuela. A menudo impregnada de prejuicios y/o la superposición de una cosmovisión que entiende a los seres del bosque 'solo como leyendas' o historias sin fundamento. Sabemos que no es así y que la raíz de las historias habla de nuestras raíces como territorio y como país.",
                 makingof_post2_p7: "Creemos que este enfoque de 'lo que ya sabemos' y de lo que todavía queremos ver juntos es útil para contar cualquier historia. El Mapa Narrativo es una herramienta útil para ello.",
-                makingof_post2_p8: "Compartimos aquí con ustedes el resultado de nuestras conversaciones sobre los personajes del proyecto Mitología Extendida. Con el mapa narrativo en mano, fue posible ver mejor cómo cada personaje se revela en el imaginario personal y colectivo. También proporcionó elementos para que las ilustradoras y el resto del equipo tuvieran un vocabulario común a partir del cual crear imágenes, guiones y escenarios. Las categorías de la izquierda son dinámicas y pueden tener más o menos preguntas. Sirven principalmente para guiar la conversación y evocar un sentido de inteligencia colectiva en el grupo de trabajo.",
+                makingof_post2_p8: "Compartimos aquí con ustedes el resultado de nuestras conversaciones sobre los personajes del proyecto Mitología Extendida. Con el mapa narrativo en mano, fue posible ver mejor cómo cada personaje se revela en el imaginario personal y colectivo. También proporcionó elementos para que las ilustradoras y el resto del equipo tuvieran un vocabulario común a partir del cual crear imágenes, guiones y escenarios. Las categorías de la izquierda son dinámicas y pueden tener más o menos preguntas. Ellas sirven principalmente para guiar la conversación y evocar un sentido de inteligencia colectiva en el grupo de trabajo.",
                 makingof_post2_p9: "También dejamos un Mapa Narrativo en blanco para usted como una forma de fomentar la apropiación de esta herramienta para su proyecto particular. La idea es dedicar un tiempo, individual o colectivo, para anotar libremente lo que viene a la mente como resultado de una comprensión inherente o como un resumen de la investigación realizada sobre el tema.",
                 makingof_post2_p10: "Revise su mapa narrativo a lo largo del proceso. Mostrará las primeras, e importantes, impresiones que se olvidan en las siguientes etapas. Con él en mano, las historias que contaremos a continuación, en la elaboración de los guiones, contendrán una mayor diversidad.",
                 makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a>`,
@@ -915,12 +1015,12 @@
                 exhibition_p1: "Estamos rodeados de energías invisibles que nos ayudan a navegar los tiempos complejos que vivimos.",
                 exhibition_p2: "En una experiencia única de realidad mixta, la exposición Mitología Extendida ocupa el espacio expositivo del Coletivo Digital. Fruto de una investigación sobre las relaciones entre arte, tecnología y educación, la exposición es una invitación a un recorrido ritual para encontrar un recorte de la mitología brasileña vista en realidad mixta y aumentada.",
                 exhibition_p3: "La exposición Mitología Extendida ocupará el Centro Cultural Coletivo Digital en dos momentos:",
-                exhibition_p4: "Experiencia de realidad mixta (MR)<br>Conferencia de apertura: <br>28/Nov 18h-19h",
-                exhibition_p5: "Taller<br>29/Nov 9h30-13h30",
-                exhibition_p6: "Experiencia MR<br>28/Nov 19-21h<br>29/Nov 9h30-19h",
-                exhibition_p7: "Exposición de realidad aumentada (AR)<br>28/Nov 19-21h<br>29/Nov 9h30-19h<br>1-19/Dic 11-19h (lunes a viernes)<br>12-23/Ene 11-19h (lunes a viernes)",
+                exhibition_p4: "Apertura: <br>27/Nov 18h-19h", // Corrected
+                exhibition_p5: "Experiencia en realidad mixta<br>27/Nov 19-21h <br> 28/Nov 11-19h", // Corrected
+                exhibition_p6: "Taller: Creación de publicaciones interactivas en realidad aumentada<br>29/Nov 9:30h-13:30h", // Corrected
+                exhibition_p7: "Exposición en realidad aumentada <br>1-19/Dic<br>lunes a viernes 11-19h", // Corrected
                 exhibition_p8: "Comprometido con la lucha contra la privatización del saber, el Coletivo Digital trabaja para que el acceso al conocimiento sea reconocido como un bien de la humanidad y un derecho de todos.",
-                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, barrio Pinheiros, São Paulo - SP",
+                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, barrio Pinheiros, São Paulo - SP <br> GRATUITO Y ACCESIBLE", // Corrected
                 faq_title: "Ayuda y Preguntas Frecuentes (FAQ)",
                 faq1_q: "¿Qué es Mitología Extendida?",
                 faq1_a: "Mitología Extendida es una exposición cultural en realidad virtual que permite a los usuarios explorar e interactuar con leyendas y mitos de diversas culturas de forma inmersiva y educativa.",
@@ -944,7 +1044,21 @@
                 footer_fomento: "Fomento:",
                 footer_producao: "Producción:",
                 footer_realizacao: "Realización:",
-                footer_license: "Algunos derechos reservados."
+                footer_license: "Algunos derechos reservados.",
+                oficina_title: "INSCRIPCIÓN Taller de Creación de álbum interactivo", // NEW
+                oficina_p1: "El proyecto Mitología Extendida abre las puertas del proceso detrás de la creación del Álbum Interactivo. El taller es para aquellos que quieren contar una historia usando realidad aumentada.", // NEW
+                oficina_image1_caption: "Interacción con la exposición en Ouro Preto, 2019.", // NEW
+                oficina_p2: "Al final del encuentro, cada persona saldrá con una página propia para su narrativa, creada e impresa en el taller, así como tendrá una buena noción de cómo funciona el álbum interactivo como un elemento narrativo transmedia para sus historias.", // NEW
+                oficina_image2_caption: "Página del álbum interactivo Mitología Extendida, 2025.", // NEW
+                oficina_p3: "También tendrán contacto con JANDIG, una comunidad de arte en realidad aumentada de código abierto y de donde en 2025 nacen nuevos rumbos con el proyecto Mitología Extendida.", // NEW
+                oficina_image3_caption: "Exposición interactiva en São Miguel Paulista, 2019.", // NEW
+                oficina_limited_spots: "¡Plazas limitadas!", // NEW
+                oficina_info1: "El taller es gratuito. Tanto profesionales del área como personas no expertas son bienvenidos! El público objetivo son artistas, profesores, investigadores, estudiantes y personas interesadas en realidad aumentada.", // NEW
+                oficina_info2: "Seleccionaremos a los participantes a partir de esta inscripción para garantizar un grupo diverso y comprometido.", // NEW
+                oficina_when: "Cuándo: 29 de noviembre, 9:30h - 13:30h", // NEW
+                oficina_local: "Lugar: Rua Luis Murat, 298, São Paulo, SP", // NEW
+                oficina_register: "Regístrese <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aquí</a>.", // NEW
+                oficina_youtube_intro: "Si quieres hacerte una idea del potencial de la herramienta con la que trabajaremos en el taller, mira <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aquí</a> una exposición, resultado de un taller con los alumnos de la UEMG, presentada en el Festival Marte, en Ouro Preto, 2019." // NEW
             }
         };
 
