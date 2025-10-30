@@ -1,2365 +1,1169 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
-    <!-- Google tag (gtag.js) -->
-
     <script src="https://www.googletagmanager.com/gtag/js?id=G-N598EKHDGJ" xintegrity="sha384-xzfWsescIyZAb5l1Ri09OXD8rYchh21ZvgXvdj8xyfeF/JezpojJ0sjIqIc+Qolw" crossorigin="anonymous"></script>
-
     <script>
-
       window.dataLayer = window.dataLayer || [];
-
       function gtag(){dataLayer.push(arguments);}
-
       gtag('js', new Date());
 
-
-
       gtag('config', 'G-N598EKHDGJ');
-
     </script>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Mitologia Estendida</title>
-
-    <!-- Tailwind CSS CDN -->
-
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Inter -->
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome CDN for social media icons -->
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <style>
-
         body {
-
             font-family: 'Inter', sans-serif;
-
             background-color: #ffffff; /* White background */
-
             color: #333333; /* Dark text for light background */
-
         }
-
         .section {
-
             display: none; /* Hidden by default */
-
         }
-
         .section.active {
-
             display: block; /* Shown when active */
-
         }
-
         /* Custom scrollbar for better aesthetics */
-
         ::-webkit-scrollbar {
-
             width: 8px;
-
         }
-
         ::-webkit-scrollbar-track {
-
             background: #e0e0e0; /* Light gray track */
-
             border-radius: 10px;
-
         }
-
         ::-webkit-scrollbar-thumb {
-
             background: #c0c0c0; /* Medium gray thumb */
-
             border-radius: 10px;
-
         }
-
         ::-webkit-scrollbar-thumb:hover {
-
             background: #a0a0a0; /* Darker gray on hover */
-
         }
-
-
 
         /* Diagonal stripes for sections */
-
         .striped-bg {
-
             background-color: #f8f8f8; /* Fallback for older browsers */
-
             /* Adjusted lighter gray (#f5f5f5) and increased spacing (30px 30px) */
-
             background-image: linear-gradient(45deg, #f8f8f8 25%, #f5f5f5 25%, #f5f5f5 50%, #f8f8f8 50%, #f8f8f8 75%, #f5f5f5 75%, #f5f5f5 100%);
-
             background-size: 30px 30px; /* Adjust size of stripes for more spacing */
-
         }
-
         p {
-
             text-align: start;
-
         }
-
     </style>
-
 </head>
-
 <body class="min-h-screen flex flex-col">
-
-    <!-- Navbar -->
-
     <nav class="bg-white p-4 shadow-lg sticky top-0 z-50 border-b border-gray-200">
-
         <div class="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between">
-
             <div class="flex items-center justify-between w-full md:w-auto">
-
-                <!-- The title now acts as the Home link -->
-
                 <a href="#" class="text-2xl font-bold text-[#08B59F] hover:text-[#05E2D6] transition-colors duration-300" onclick="showSection('home')">Mitologia Estendida</a>
-
                 
-
-                <!-- Mobile menu button -->
-
                 <button id="menu-button" class="text-gray-800 md:hidden focus:outline-none">
-
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-
                 </button>
-
             </div>
-
-
-
-            <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
 
             <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-4 md:mt-0 md:w-auto">
-
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao')" data-translate="nav_exhibition">Exposição</a>
-
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas')" data-translate="nav_sticker_album">Álbum Interativo</a>
-
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('oficina')" data-translate="nav_workshop">Oficina</a>
-
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of')" data-translate="nav_making_of">Making Of</a>
-
                 <a href="#" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos')" data-translate="nav_who_we_are">Quem somos</a>
-
                 
-
-                <!-- Language Switcher -->
-
                 <div class="relative mt-4 md:mt-0 md:ml-4">
-
                     <button id="lang-button" class="flex items-center text-gray-700 hover:text-[#08B59F] transition-colors duration-300 border border-gray-300 px-3 py-1 rounded-md">
-
                         <i class="fas fa-globe mr-2"></i>
-
                         <span id="current-lang">PT</span>
-
                         <svg class="w-4 h-4 ml-1 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                     </button>
-
                     <div id="lang-dropdown" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg hidden z-50 border">
-
                         <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('pt')">Português</a>
-
                         <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('en')">English</a>
-
                         <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('es')">Español</a>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </nav>
 
-
-
-    <!-- Main Content Area -->
-
     <main class="flex-grow container mx-auto p-6">
-
-        <!-- Home Section -->
-
         <section id="home" class="section active striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200 relative overflow-hidden">
-
-            <!-- Banner Section -->
-
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
-
                 <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA9.png') }}"
-
                      alt="Banner: Descubra um mundo de lendas em Realidade Virtual!" 
-
                      class="w-full h-64 md:h-72 object-cover"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/08B59F/ffffff?text=Error+Loading+Banner+Image';"
-
                 >
-
             </div>
-
-            <!-- End Banner Section -->
-
-
-
             <p class="text-lg text-left mb-12 max-w-3xl mx-auto leading-relaxed text-gray-700" data-translate="home_intro">
-
                 Mitologia Estendida é uma experiência imersiva em realidade estendida que nos transporta para o coração das lendas e mitos brasileiros. O projeto é um convite para conhecer algumas narrativas ancestrais como nunca antes, combinando a riqueza da cultura brasileira com a tecnologia de ponta. Prepare-se para uma jornada inesquecível com personagens lendários em diálogo com os desafios que estamos enfrentando hoje em dia.
-
             </p>
-
-
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-
                 
-
-                <!-- ÁLBUM DE FIGURINHAS Box -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">Álbum Interativo</h2>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA5.png') }}"
-
-                         alt="Imagem: Álbum Interativo" 
-
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
-
-                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
-
+                          alt="Imagem: Álbum Interativo" 
+                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                          onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
                     >
-
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box2_p">
-
                         A principal forma de interagir com os mitos é por meio do álbum Interativo. Preparamos uma série de recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas e a tecnologia utilizada. Perfeito para estudantes e entusiastas!
-
                     </p>
-
                     <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('album-figurinhas')" data-translate="home_box2_button">
-
                         Conhecer materiais
-
                     </button>
-
                 </div>
-
                 
-
-                <!-- EXPOSIÇÃO Box -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">Exposição</h2>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
-
-                         alt="Imagem: Exposição" 
-
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
-
-                         onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
-
+                          alt="Imagem: Exposição" 
+                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                          onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0e0e0/333333?text=Error+Loading+Image';"
                     >
-
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
-
                         Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
-
                     </p>
-
                     <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
-
                         Mais informações
-
                     </button>
-
                 </div>
-
                 
-
-
-
-                <!-- QUEM SOMOS Box -->
 
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">Quem Somos</h2>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box3_p">
-
                         Conheça nossa equipe e todo o projeto Jandig.
-
                     </p>
-
                     <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('quem-somos')" data-translate="home_box3_button">
-
                         Veja quem somos
-
                     </button>
-
                 </div>
-
             </div>
-
         </section>
-
-
-
-        <!-- Quem Somos Section -->
 
         <section id="quem-somos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="qs_title">Quem Somos</h1>
-
             <div class="text-lg leading-relaxed text-gray-700 mb-8">
-
                 <p class="mb-4" data-translate="qs_intro">Mitologia Estendida é feito à várias mãos:</p>
-
                 <ul class="list-disc list-inside mb-4 ml-4">
-
                     <li data-translate="qs_list1_li1"><strong>Direção Geral:</strong> Angelo Pixel</li>
-
                     <li data-translate="qs_list1_li2"><strong>Direção Artística:</strong> Cláudio Rodrigues</li>
-
                     <li data-translate="qs_list1_li3"><strong>Direção Pedagógica:</strong> María Eugenia Salcedo Repolês</li>
-
                     <li data-translate="qs_list1_li4"><strong>Direção de Tecnologia:</strong> Pablo Silva</li>
-
                 </ul>
-
                 <ul class="list-disc list-inside mb-4 ml-4">
-
                     <li data-translate="qs_list2_li1"><strong>Concepção:</strong> Angelo Pixel, Cláudio Rodrigues e Demétrio Portugal</li>
-
                     <li data-translate="qs_list2_li2"><strong>Roteiros:</strong> Angelo Pixel e María Eugenia Salcedo Repolês</li>
-
                     <li data-translate="qs_list2_li3"><strong>Ilustrações:</strong> Auá Mendes</li>
-
                     <li data-translate="qs_list2_li4"><strong>Animação 2D:</strong> Enzo Giaquinto e Ulisses Tavares</li>
-
                     <li data-translate="qs_list2_li5"><strong>Modelagem e Animação 3D:</strong> Gabriel Camelo</li>
-
                     <li data-translate="qs_list2_li6"><strong>Cenografia:</strong> Cláudio Rodrigues</li>
-
                     <li data-translate="qs_list2_li7"><strong>Fotografia e Videografia:</strong> Bruna Quevedo</li>
-
                     <li data-translate="qs_list2_li8"><strong>Design de Som:</strong> Lucas Miranda (Oscilloid)</li>
-
                     <li data-translate="qs_list2_li9"><strong>Design Gráfico:</strong> Auá Mendes e Cláudio Rodrigues</li>
-
                     <li data-translate="qs_list2_li10"><strong>Produção Gráfica:</strong> Cláudio Rodrigues</li>
-
                     <li data-translate="qs_list2_li11"><strong>Gerente de Produto:</strong> Angelo Pixel</li>
-
                     <li data-translate="qs_list2_li12"><strong>UX Design:</strong> Raquel Mei</li>
-
                     <li data-translate="qs_list2_li13"><strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan</li>
-
                     <li data-translate="qs_list2_li14"><strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal</li>
-
                     <li data-translate="qs_list2_li15"><strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href="https://clarice.ai">Clarice.ai</a></li>
-
                 </ul>
-
                 
-
                 <h2 class="text-3xl font-bold text-left mt-12 mb-8 text-[#08B59F]" data-translate="qs_jandig_title">JANDIG</h2>
 
-
-
                 <div class="relative pt-[56.25%] w-full max-w-screen-md mx-auto mb-8">
-
                     <iframe
-
                         class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-
                         src="https://www.youtube.com/embed/Oou7uE2XeRo?si=aXKp_PGwZ_Rh_Z8K"
-
                         title="YouTube video player"
-
                         frameborder="0"
-
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-
                         referrerpolicy="strict-origin-when-cross-origin"
-
                         allowfullscreen
-
                         width="100%" height="100%"
-
                     ></iframe>
-
                 </div>
-
                 
-
                 <p class="mb-4" data-translate="qs_jandig_p1">
-
                     O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.
-
                 </p>
-
                 <p class="mb-4" data-translate="qs_jandig_p2">
-
                     Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.
-
                 </p>
-
                 <p class="text-left">
-
                     <a href="https://jandig.app/" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold" data-translate="qs_jandig_link1">Conheça outras exposições e obras de arte da plataforma: https://jandig.app/</a>
-
                 </p>
-
                 <p class="text-left mt-2">
-
                     <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold" data-translate="qs_jandig_link2">Código fonte da plataforma no GitHub.</a>
-
                 </p>
-
             </div>
-
         </section>
-
-
-
-        <!-- Histórias Section (This section was not in the navigation but is kept for content) -->
 
         <section id="historias" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="stories_title">Nossas Histórias</h1>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <!-- Story 1 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="stories_h1">A Lenda do Curupira</h2>
-
                     <img src="{{ static('images/icons/me/JANDIGME_Hotsite_curupira.png') }}" alt="Curupira" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 leading-relaxed" data-translate="stories_p1">
-
                         Mergulhe na floresta amazônica e conheça o Curupira, o guardião das matas com pés virados para trás. Uma aventura que ensina sobre respeito à natureza e suas criaturas.
-
                     </p>
-
                 </div>
-
-                <!-- Story 2 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="stories_h2">O Enigma da Sereia Iara</h2>
-
                     <img src="{{ static('images/icons/me/08JANDIGME_Hotsite_anhanga.png') }}" alt="Iara" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 leading-relaxed" data-translate="stories_p2">
-
                         Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.
-
                     </p>
-
                 </div>
-
-                <!-- Story 3 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="stories_h3">O Segredo do Boto</h2>
-
                     <img src="{{ static('images/icons/me/07JANDIGME_Hotsite_boitata.png') }}" alt="Boto" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 leading-relaxed" data-translate="stories_p3">
-
                         Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.
-
                     </p>
-
                 </div>
-
             </div>
-
         </section>
-
-
-
-        <!-- Álbum de Figurinhas Section -->
 
         <section id="album-figurinhas" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="album_title">Álbum Interativo</h1>
-
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
-
                 <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA8.png') }}"
-
                      alt="Imagem: Álbum de Figurinhas" 
-
                      class="w-full h-64 md:h-72 object-cover"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Error+Loading+Album+Image';"
-
                 >
-
             </div>
-
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="album_intro">
-
                 O álbum interrativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
-
             </p>
-
-
 
             <h2 class="text-3xl font-bold text-left mb-6 text-[#08B59F]" data-translate="album_downloads_title">DOWNLOADS</h2>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-
-                <!-- Álbum de Figurinhas -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-
                     <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl1_title">Álbum de figurinhas</h3>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA2.png') }}" alt="Álbum de Figurinhas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl1_p">Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.</p>
-
                     <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" data-translate="coming_soon">
-
                         Em Breve...
-
                     </a>
-
                 </div>
-
-                <!-- Figurinhas -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-
                     <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl2_title">Figurinhas</h3>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA3.png') }}" alt="Figurinhas Avulsas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl2_p">Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem.</p>
-
                     <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" data-translate="coming_soon">
-
                         Em Breve...
-
                     </a>
-
                 </div>
-
-                <!-- Cartaz -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-
                     <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl3_title">Cartaz</h3>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA6.png') }}" alt="Cartazes Educativos" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl3_p">Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.</p>
-
                     <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" data-translate="coming_soon">
-
                         Em Breve...
-
                     </a>
-
                 </div>
-
-                <!-- Guia do multiplicador -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-
                     <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl4_title">Guia do multiplicador</h3>
-
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA4.png') }}" alt="Guia do Multiplicador" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-
                     <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl4_p">Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada. Também ajuda você a entrar na plataforma da Jandig que abriga a experiência e compreender a tecnologia que está por trás. Preparamos também algumas sugestões para estimular a criatividade e o uso do álbum de figurinhas e os marcadores.</p>
-
                     <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" data-translate="coming_soon">
-
                         Em Breve...
-
                     </a>
-
                 </div>
-
             </div>
-
         </section>
-
-
-
-        <!-- Oficina Section -->
 
         <section id="oficina" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="oficina_title">Oficina Criação de álbum interativo</h1>
-
             <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_p1">
-
                 O projeto Mitologia Estendida abre as portas dos bastidores do processo por trás da criação do Álbum Interativo. A oficina é para aqueles que querem contar uma história usando realidade aumentada.
-
             </p>
-
             <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
-
                 <img src="{{ static('images/icons/me/oficina1.PNG') }}"
-
                      alt="Interação com a exposição em Ouro Preto, 2019."
-
                      class="w-full h-64 md:h-72 object-contain"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+1';"
-
                 >
-
                 <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image1_caption">Legenda imagem 1: Interação com a exposição em Ouro Preto, 2019.</p>
-
             </div>
-
             <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_p2">
-
                 Ao final do encontro, cada pessoa sairá com uma página própria para a sua narrativa, criada e impressa na oficina, bem como terá uma boa noção de como funciona o álbum interativo como um elemento narrativo transmídia para suas histórias.
-
             </p>
-
             <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
-
                 <img src="{{ static('images/icons/me/oficina2.PNG') }}"
-
                      alt="Página do álbum interativo Mitologia Estendida, 2025."
-
                      class="w-full h-64 md:h-72 object-contain"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+2';"
-
                 >
-
                 <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image2_caption">Legenda imagem 2: Página do álbum interativo Mitologia Estendida, 2025.</p>
-
             </div>
-
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_p3">
-
                 Elas também terão contato com a JANDIG, uma comunidade de arte em realidade aumentada de código aberto e de onde em 2025 nascem novos rumos com o projeto Mitologia Estendida.
-
             </p>
-
             <div class="w-full mb-4 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
-
                 <img src="{{ static('images/icons/me/oficina3.PNG') }}"
-
                      alt="Exposição interativa em São Miguel Paulista, 2019."
-
                      class="w-full h-64 md:h-72 object-contain"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+3';"
-
                 >
-
                 <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image3_caption">Legenda imagem 3: Exposição interativa em São Miguel Paulista, 2019.</p>
-
             </div>
-
-
 
             <p class="text-lg font-bold text-gray-800 mb-4" data-translate="oficina_limited_spots">Vagas limitadas!</p>
-
             <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_info1">
-
                 A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.
-
             </p>
-
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_info2">
-
                 Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.
-
             </p>
-
             <p class="text-lg font-bold text-gray-800 mb-2" data-translate="oficina_when">Quando: 29 de novembro, 9h30- 13h30</p>
-
             <p class="text-lg font-bold text-gray-800 mb-6" data-translate="oficina_local">Local: Rua Luis Murat, 298, São Paulo, SP</p>
 
-
-
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_register">
-
                 Cadastre-se <a href="https://forms.gle/kx754R1ywMhxRgfn7" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a>.
-
             </p>
-
-
 
             <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_youtube_intro">
-
                 Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina,veja <a href="https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019.
-
             </p>
-
             <div class="relative pt-[56.25%] w-full max-w-screen-md mx-auto mb-8">
-
                 <iframe
-
                     class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-
                     src="https://www.youtube.com/embed/jNZps0RegSk?si=2MViH0FYMG03pX77"
-
                     title="YouTube video player"
-
                     frameborder="0"
-
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-
                     referrerpolicy="strict-origin-when-cross-origin"
-
                     allowfullscreen
-
                     width="100%" height="100%"
-
                 ></iframe>
-
             </div>
-
         </section>
-
-
-
-        <!-- Aprenda a fazer Section (This section was not in the navigation but is kept for content) -->
 
         <section id="aprender-fazer" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="learn_title">Aprenda a fazer</h1>
-
             <div class="text-lg leading-relaxed mb-8 text-gray-700">
-
                 <p class="mb-4" data-translate="learn_p1">
-
                     Desenvolvemos uma série de materiais educativos para complementar a experiência da \"Mitologia Estendida\" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
-
                 </p>
-
                 <p data-translate="learn_p2">
-
                     Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.
-
                 </p>
-
             </div>
-
         </section>
-
-
-
-        <!-- Making Of Section -->
 
         <section id="making-of" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="makingof_title">Making Of: Diário de Desenvolvimento</h1>
-
             <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="makingof_intro">
-
                 Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick="showSection('contato')">aqui</a>.
-
             </p>
-
             <div class="space-y-12">
-
-                <!-- Post 1 -->
-
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow duration-300">
-
                     <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-
                         <img src="{{ static('images/icons/me/Post 1_Making_of.png') }}" alt="Modelagem 3D" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
-
                         <div class="w-full">
-
                             <div class="flex justify-between items-center mb-3">
-
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post1_title">Mitos vivos</h2>
-
                                 <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                             </div>
-
-                            <!-- Expandable Content -->
-
                             <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
-
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post1_p1">
-
                                     Tem algo no coração da floresta…e faz alguns meses que estamos tateando, pesquisando, de orelha em pé e olhos bem abertos para compreender e traduzir o que as matas nos mostram. Do outro lado, testamos e mergulhamos para esticar os limites da JANDIG - uma comunidade que cria arte em Realidade Aumentada.
-
                                 </p>
-
                                 <p data-translate="makingof_post1_p2">A plataforma Jandig, também criada pela comunidade, permite a criação de exposições em realidade aumentada e mista e até agora funcionou muito para artistas. Agora queremos que professores, educadores e pessoas em geral também entendam como JANDIG pode ser uma ferramenta para expandir a imaginação!</p>
-
                                 <p data-translate="makingof_post1_p3">O projeto Mitologia Estendida se propõe a trazer para nós, em uma experiência interativa, alguns mitos da cultura brasileira. Trata-se de um projeto de arte, educação e tecnologia. Queremos com este processo inspirar educadores como você a acessar e criar conteúdos tecnológicos dentro e fora da sala de aula.</p>
-
                                 <p data-translate="makingof_post1_p4">Para o nosso processo, uma das primeiras questões foi a escolha dos personagens. É sabido que o padre jesuíta José de Anchieta fez uma série de registros em cartas sobre diversos aspectos do Brasil da época. Dentre eles, em 1560, o mesmo faz uma menção de Boitatá, pois podemos imaginar que à medida que ele adentra o território brasileiro, ele encontra lendas, histórias, encantados e uma diversidade imensa cultural ali já presente.</p>
-
                                 <p data-translate="makingof_post1_p5">Curupira, Saci-pererê, Boitatá, boto cor de rosa, mula sem cabeça, Anhangá. A origem de muitas dessas histórias são fruto da vivência e culturas daqueles que estão a mais tempo no território. O que é contado e ouvido se modifica e ganha novos contornos no encontro com outros povos - aqueles que chegam para colonizar e as diversas culturas deslocadas, algumas escravizadas, outras que chegam em ondas de migração. Seja como for, são histórias que contam em cada detalhe o quão profundas são suas raízes na terra, nas matas, nos córregos, no mar e nos pântanos.</p>
-
                                 <p data-translate="makingof_post1_p6">O projeto Mitologia Estendida é sobre isso também: mergulhar na diversidade presente na mitologia brasileira através da tecnologia. Estava lançado o desafio de escolher entre um universo de mitos e lendas aqueles com os quais trabalhar um roteiro e consequentemente fazer animações em 2D.</p>
-
                                 <p data-translate="makingof_post1_p7">Após um mergulho de pesquisa, foi se revelando a ideia de “guardiões da natureza” e sua relação com algumas ameaças contemporâneas. Foi assim que vimos no Boitatá, Anhangá e Curupira a conexão necessária para dar o próximo passo e começar a fazer um mapa dos personagens.</p>
-
                                 <p data-translate="makingof_post1_p8">Você já conhecia algum desses mitos? Tem alguma história com eles? Como você contaria essa história?</p>
-
                                 <p data-translate="makingof_post1_p9">No próximo post, vamos falar mais sobre o mapa de cada um dos seres encantados.</p>
-
                             </div>
-
-                             <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post1_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post1_date_value">03 de Outubro de 2025</span>
-
+                               <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post1_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post1_date_value">03 de Outubro de 2025</span>
                         </div>
-
                     </div>
-
                 </div>
-
-                <!-- Post 2 -->
-
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow duration-300">
-
                     <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-
                         <img src="{{ static('images/icons/me/Captura de Pantalla 2025-10-10 a la(s) 14.53.17.png') }}" alt="Modelagem 3D" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
-
                         <div class="w-full">
-
                             <div class="flex justify-between items-center mb-3">
-
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post2_title">Mapa Narrativo</h2>
-
                                 <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                             </div>
-
-                            <!-- Expandable Content -->
-
                             <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
-
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post2_p1">
-
                                     Todos e todas adoramos uma boa história. 
-
                                 </p>
-
                                 <p data-translate="makingof_post2_p2">Todos e todas temos um arsenal de casos para contar! Alguns, inacreditáveis. Outros, que nos transformaram profundamente. </p>
-
                                 <p data-translate="makingof_post2_p3">Histórias sobre encontros com seres da floresta quase sempre têm um ar de mistério. O desafio está em traduzir em palavras um encontro para além do racional, cheio de sensações. </p>
-
                                 <p data-translate="makingof_post2_p4">Foi partindo desse cenário que incorporamos no processo do projeto Mitologia Estendida o que viemos a chamar de Mapa Narrativo ou mapa dos personagens. </p>
-
                                 <p data-translate="makingof_post2_p5">Percebemos que no grupo de trabalho havia uma diversidade de formas de entender e lidar com a ideia de um mito e dar vida, textura e cor a ele novamente usando a tecnologia. Ou seja, para aceitar o desafio de como contar essa história visualmente e através de um roteiro, primeiro precisamos enxergar não só o que sabíamos de cada um dos encantados, mas também o que sentíamos ao evocar a sua presença. </p>
-
                                 <p data-translate="makingof_post2_p6">Entendemos que só assim trataremos do tema com o respeito que merece, inclusive tomando consciência de que nosso entendimento dos mitos brasileiros está moldado por uma compreensão folclórica ensinada na escola. Muitas vezes imbuído de preconceitos e/ou sobreposição de uma cosmovisão que entende os seres da floresta “apenas como lendas” ou histórias sem fundamento. Sabemos que não é assim e que a raiz das histórias diz das nossas raízes como território e como país. </p>
-
                                 <p data-translate="makingof_post2_p7">Acreditamos que essa abordagem de 'o que já sabemos' e do que ainda queremos enxergar juntos é útil para contar toda e qualquer história. O Mapa Narrativo é uma ferramenta útil para isso. </p>
-
                                 <p data-translate="makingof_post2_p8">Compartilhamos aqui com você o resultado das nossas conversas sobre os personagens do projeto Mitologia Estendida. Com o mapa narrativo em mãos, foi possível enxergar melhor como cada personagem se revela no imaginário pessoal e coletivo. Também deu elementos para que as ilustradoras e o restante da equipe tivessem um vocabulário em comum a partir do qual criar imagens, roteiros e cenários. As categorias à esquerda são dinâmicas e podem ter mais ou menos questões. Elas servem principalmente para guiar a conversa e evocar no grupo de trabalho um senso de inteligência coletiva.</p>
-
                                 <p data-translate="makingof_post2_p9">Deixamos também um Mapa Narrativo em branco para você como forma de estimular a apropriação dessa ferramenta para seu projeto particular. A ideia é dedicar um tempo - individual ou coletivo - para livremente anotar o que vem à mente como resultado de uma compreensão inerente ou como resumo de pesquisas feitas a respeito do tema. </p>
-
                                 <p data-translate="makingof_post2_p10">Revisite seu mapa narrativo no decorrer do processo. Ele mostrará as primeiras - e importantes - impressões que vão sendo esquecidas nas próximas etapas. Com ele em mãos, as histórias que vamos contar na sequência, na elaboração dos roteiros, contêm maior diversidade. </p>
-
                                 <p data-translate="makingof_post2_link"><a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a></p>
-
                             </div>
-
-                             <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post2_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post2_date_value">10 de Outubro de 2025</span>
-
+                               <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post2_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post2_date_value">10 de Outubro de 2025</span>
                         </div>
-
                     </div>
-
                 </div>
-
-                <!-- Post 3 -->
-
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow duration-300">
-
                     <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-
                         <div class="w-full">
-
                             <div class="flex justify-between items-center mb-3">
-
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post3_title">Como contar uma história</h2>
-
                                 <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-
                             </div>
-
-                            <!-- Expandable Content -->
-
                             <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
-
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post3_p1">
-
                                     Uma vez que passamos a entender melhor os seres da floresta com os quais queremos dialogar, precisamos dar voz a eles e entender também o que os move, como eles se movem, com quem e como eles dialogam. Estamos diante do desafio do roteiro.
-
                                 </p>
-
                                 <p data-translate="makingof_post3_p2">Se no mapa narrativo criamos um “toró” de ideias que ajudou a artista Auá Mendes a dar vida aos personagens do álbum interativo, foi igualmente importante entender em qual contexto estes seres se apresentariam. Esta questão nos ajudou a definir duas coisas:</p>
-
                                 <ol>
-
                                     <li data-translate="makingof_post3_li1">
-
                                         Quais outros seres/personagens precisam ser criados para dar vida à Boitatá, Anhangá e Curupira;
-
                                     </li>
-
                                     <li data-translate="makingof_post3_li2">
-
                                         Qual o desafio que cada um desses seres enfrentaria nesta narrativa.
-
                                     </li>
-
                                 </ol>
-
                                 <p data-translate="makingof_post3_p3">Vivemos em tempos complexos. As mudanças climáticas não são mais apenas alguns gráficos em um livro e os efeitos de anos de um sistema exploratório em nível global estão cada vez mais visíveis. Paradoxalmente, são exatamente as pessoas e culturas que mais nos brindam acesso ao universo da mitologia brasileira que estão mais vulneráveis e necessitadas de justiça social. Ou seja, precisamos entender que os impactos das mudanças climáticas afetam de forma desigual as culturas e grupos sociais mais vulneráveis. Estes mesmos, vale lembrar, são os menos responsáveis pelos processos que nos levam à situação atual. </p>
-
                                 <p data-translate="makingof_post3_p4">Ter consciência disso nos ajudou a dar um norte para o processo de roteirização das animações(objetos), textos, marcadores e cenários. Afinal, o roteiro precisa dizer do caráter transmídia do projeto Mitologia Estendida. Transmídia para nós significa que é através de um conjunto de mídias que conseguimos contar uma história. As animações, por mais sedutoras e acessíveis que sejam como linguagem, não dão conta de contar a história toda.</p>
-
                                 <p data-translate="makingof_post3_p5">No projeto Mitologia Estendida optamos por associar cada ser encantado com uma das principais problemáticas da contemporaneidade. O roteiro nasce então do diálogo entre os três personagens mitológicos e os efeitos das nossas escolhas como civilização. Você saberia nomear quais são as problemáticas mais desafiadoras para você? </p>
-
                                 <p data-translate="makingof_post3_link"><a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Roteiro Anhangá</a></p>
-
                                 <p data-translate="makingof_post3_p6">Veja a estrutura de roteiro que utilizamos na imagem que acompanha este post. De um lado identificamos o cenário no qual certas ações aconteceriam. Do outro lado está como cada ser age ativamente e de forma interdependente. É o fato da interdependência entre seres  que nos ajudou a dar vida ao Boitatá, Anhangá e Curupira em diálogo com os inúmeros seres da floresta. Observe que na imagem fica claro que havia mais a ser contado, as histórias se entrelaçam e afinal contar uma história também consiste no gesto de editar o que acaba sendo não dito. Poderíamos (e queremos!) desdobrar cada história em muitas mais!</p>
-
                             </div>
-
-                             <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post3_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post3_date_value">30 de Outubro de 2025</span>
-
+                               <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post3_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post3_date_value">30 de Outubro de 2025</span>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </section>
-
-
-
-        <!-- Exposição Section -->
 
         <section id="exposicao" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 items-center justify-center min-h-[50vh] border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="exhibition_title">Exposição</h1>
-
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
-
                 <img src="{{ static('images/icons/me/JANDIG_CARTAZ.jpg') }}"
-
                      alt="Cartaz."
-
                      class="w-full h-auto md:h-auto object-contain"
-
                      onerror="this.onerror=null;this.src='https://placehold.co/1200x300/e0e0e0/333333?text=Imagem+Oficina+1';"
-
                 >
-
             </div>
-
             
-
             <h2 class="text-3xl font-bold text-left mb-6 text-gray-800" data-translate="exhibition_h2">Uma Jornada Imersiva na Arte e Tecnologia</h2>
-
             <p class="text-lg text-left text-gray-700 mb-4 max-w-2xl mx-auto" data-translate="exhibition_p1">
-
                 Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. 
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-4 max-w-2xl mx-auto" data-translate="exhibition_p2">
-
                 Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p3">
-
                 A exposição Mitologia Estendida ocupará o Centro Cultural Coletivo Digital em dois momentos:
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p4">
-
                 Experiência de realidade mista (MR)<br>Palestra de abertura: <br>28/Nov 18h-19h
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p5">
-
                 Oficina<br>29/Nov 9h30-13h30
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p6">
-
                 Experiência MR<br>28/Nov 19-21h<br>29/Nov 9h30-19h
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p7">
-
                 Exposição de realidade aumentada (AR)<br>28/Nov 19-21h<br>29/Nov 9h30-19h<br>1-19/Dez 11-19h (segunda a sexta)<br>12-23/Jan 11-19h (segunda a sexta)
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p8">
-
                 Engajado na luta contra a privatização dos saberes, o Coletivo Digital atua para que o acesso ao conhecimento seja reconhecido como um bem da humanidade e como um direito de todos.
-
             </p>
-
             <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p9">
-
                 Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP
-
             </p>
-
         </section>
-
-
-
-        <!-- Ajuda Section (FAQ) -->
 
         <section id="ajuda" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="faq_title">Ajuda e Perguntas Frequentes (FAQ)</h1>
-
             <div class="space-y-6">
-
-                <!-- FAQ Item 1 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]" data-translate="faq1_q">O que é Mitologia Estendida?</h2>
-
                     <p class="text-gray-700 leading-relaxed" data-translate="faq1_a">
-
                         Mitologia Estendida é uma exposição cultural em realidade virtual que permite aos usuários explorar e interagir com lendas e mitos de diversas culturas, de uma forma imersiva e educativa.
-
                     </p>
-
                 </div>
-
-                <!-- FAQ Item 2 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]" data-translate="faq2_q">Quais equipamentos de VR são compatíveis?</h2>
-
                     <p class="text-gray-700 leading-relaxed" data-translate="faq2_a">
-
                         Estamos trabalhando para garantir a compatibilidade com os principais headsets de realidade virtual do mercado, como Oculus Quest, HTC Vive e Valve Index. Mais detalhes sobre a compatibilidade serão divulgados em breve.
-
                     </p>
-
                 </div>
-
-                <!-- FAQ Item 3 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]" data-translate="faq3_q">Haverá versões para outras plataformas (PC, console)?</h2>
-
                     <p class="text-gray-700 leading-relaxed" data-translate="faq3_a">
-
                         Nosso foco principal é a experiência em realidade virtual, mas estamos explorando a possibilidade de desenvolver versões adaptadas para PC e consoles no futuro, para que mais pessoas possam desfrutar do conteúdo.
-
                     </p>
-
                 </div>
-
-                <!-- FAQ Item 4 -->
-
                 <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                     <h2 class="text-2xl font-semibold mb-3 text-[#08B59F]" data-translate="faq4_q">Como posso apoiar o projeto?</h2>
-
                     <p class="text-gray-700 leading-relaxed" data-translate="faq4_a">
-
                         Agradecemos muito o seu interesse! Você pode apoiar o projeto divulgando-o para seus amigos, acompanhando nossas atualizações no blog (seção Making Of) e, em breve, teremos informações sobre como contribuir financeiramente ou através de outras formas de parceria.
-
                     </p>
-
                 </div>
-
             </div>
-
         </section>
-
-
-
-        <!-- Contato Section -->
 
         <section id="contato" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="contact_title">Contato</h1>
-
             <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
                 <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="contact_form_title">Envie-nos uma Mensagem</h2>
-
                 <form action="https://formsubmit.co/jandig@memelab.com.br" method="POST">
-
                     <input type="hidden" name="_url" value="https://jandig.app/me">
-
                     <div class="mb-4">
-
                         <label for="name" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_name_label">Nome:</label>
-
                         <input type="text" id="name" name="name" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_name_placeholder" placeholder="Seu nome" required>
-
                     </div>
-
                     <div class="mb-4">
-
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_email_label">Email:</label>
-
                         <input type="email" id="email" name="email" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_email_placeholder" placeholder="seu.email@exemplo.com" required>
-
                     </div>
-
                     <div class="mb-6">
-
                         <label for="message" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_message_label">Mensagem:</label>
-
                         <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_message_placeholder" placeholder="Sua mensagem..." required></textarea>
-
                     </div>
-
                     <div class="flex items-center justify-between">
-
                         <button type="submit" class="bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition-colors duration-300 transform hover:scale-105" data-translate="contact_form_submit">
-
                             Enviar Mensagem
-
                         </button>
-
                     </div>
-
                 </form>
-
             </div>
-
         </section>
-
     </main>
 
-
-
-    <!-- Footer -->
-
     <footer class="bg-white p-6 text-left text-gray-600 mt-auto shadow-inner border-t border-gray-200">
-
         <div class="container mx-auto flex flex-col md:flex-row md:justify-between items-center">
-
             <a href="#" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1" onclick="showSection('contato')" data-translate="footer_contact">CONTATO</a>
-
             <p class="mt-2 text-sm md:mt-0 md:order-2 md:flex-grow md:text-center" data-translate="footer_motto">Desenvolvido com paixão e tecnologia.</p>
-
-            <!-- Social Media Icons -->
-
             <div class="flex space-x-4 mt-4 md:mt-0 md:order-3">
-
                 <a href="https://www.facebook.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
-
                 <a href="https://www.instagram.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300"><i class="fab fa-instagram text-xl"></i></a>
-
                 <a href="https://x.com/JandigArt" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300"><i class="fab fa-twitter text-xl"></i></a>
-
                 <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300"><i class="fab fa-github text-xl"></i></a>
-
                 <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300"><i class="fab fa-telegram text-xl"></i></a>
-
             </div>
-
         </div>
-
         <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-8 px-4">
-
-            <!-- Fomento Section -->
-
             <div class="flex flex-col items-center mx-2 my-2 md:my-0">
-
                 <p class="font-semibold text-gray-700 mb-2" data-translate="footer_fomento">Fomento:</p>
-
                 <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
-
             </div>
 
-
-
-            <!-- Produção Section -->
-
             <div class="flex flex-col items-center mx-2 my-2 md:my-0">
-
                 <p class="font-semibold text-gray-700 mb-2" data-translate="footer_producao">Produção:</p>
-
                 <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 space-y-2 sm:space-y-0">
-
                     <img src="{{ static('images/icons/me/logos_proac/memelab.jpg') }}" alt="Logo memelab" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md">
-
                     <img src="{{ static('images/icons/me/coletivo_digital.png') }}" alt="Logo coletivo digital" class="h-auto max-h-16 w-auto max-w-full object-contain rounded-md">
-
                 </div>
-
             </div>
-
             <div class="flex flex-col items-center mx-2 my-2 md:my-0">
-
                 <p class="font-semibold text-gray-700 mb-2" data-translate="footer_apoio">Apoio:</p>
-
                 <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 space-y-2 sm:space-y-0">
-
                     <img src="{{ static('images/icons/me/logos_proac/Logo-CTR-ECA-USP.png') }}" alt="Logo USP" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md">
-
                     <img src="{{ static('images/icons/me/logos_proac/LOGO_LabArteMidia_letra-preta_fundo-alpha-768x94.png') }}" alt="Logo Labartemidia" class="h-auto max-h-8 w-auto max-w-full object-contain rounded-md">
-
                 </div>
-
             </div>
-
         </div>
-
         <div class="container mx-auto flex flex-col md:flex-row justify-center items-center mt-6 space-y-4 md:space-y-0 md:space-x-8 px-4">
-
-            <!-- Realização Section -->
-
             <div class="flex flex-col items-center mx-2 my-2 md:my-0">
-
                 <p class="font-semibold text-gray-700 mb-2" data-translate="footer_realizacao">Realização:</p>
-
                 <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 space-y-2 sm:space-y-0">
-
                     <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-auto max-h-24 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
-
                     <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria da Cultura, Economia e Indústria Criativa" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-
                     <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo aldir blanc" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-
                     <img src="{{ static('images/icons/me/snc.png') }}" alt="Logo SNC" class="h-auto max-h-20 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-
                     <div class="h-0.5 w-full bg-black md:h-12 md:w-0.5 my-2"></div>
-
                     <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo federal" class="h-auto max-h-28 w-auto max-w-full object-contain rounded-md" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-
                 </div>
-
             </div>
-
         </div>
-
         <div class="container mx-auto flex flex-col items-center mt-6">
-
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-gray-600 hover:text-[#08B59F] transition-colors duration-300">
-
                 <img src="{{ static('images/icons/me/logos_proac/creative_commons.png') }}" alt="Licença Creative Commons CC BY-NC-SA 4.0" class="h-8 w-auto mb-2">
-
                 <p class="text-sm" data-translate="footer_license">Alguns direitos reservados.</p>
-
             </a>
-
         </div>
-
     </footer>
 
-
-
-    <!-- Script para seçao de making of -->
-
     <script>
-
         document.addEventListener('DOMContentLoaded', () => {
-
             const posts = document.querySelectorAll('.post-card');
-
             posts.forEach(post => {
-
                 post.addEventListener('click', () => {
-
                     const content = post.querySelector('.expandable-content');
-
                     const icon = post.querySelector('svg');
-
                     content.classList.toggle('hidden');
-
                     if (icon) {
-
                         icon.classList.toggle('rotate-180');
-
                     }
-
                 });
-
             });
-
         });
-
     </script>
-
     
-
-    <!-- Scripts for Navigation and Language Switching -->
-
     <script>
-
         const translations = {
-
             pt: {
-
                 nav_exhibition: "Exposição",
-
                 nav_sticker_album: "Álbum Interativo",
-
                 nav_workshop: "Oficina", // NEW
-
                 nav_making_of: "Making Of",
-
                 nav_who_we_are: "Quem somos",
-
                 home_intro: "Mitologia Estendida é uma experiência imersiva em realidade estendida que nos transporta para o coração das lendas e mitos brasileiros. O projeto é um convite para conhecer algumas narrativas ancestrais como nunca antes, combinando a riqueza da cultura brasileira com a tecnologia de ponta. Prepare-se para uma jornada inesquecível com personagens lendários em diálogo com os desafios que estamos enfrentando hoje em dia.",
-
                 home_box1_title: "Exposição",
-
                 home_box1_p: "Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.",
-
                 home_box1_button: "Mais informações",
-
                 home_box2_title: "Álbum Interativo",
-
                 home_box2_p: "A principal forma de interagir com os mitos é por meio do álbum Interativo. Preparamos uma série de recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas e a tecnologia utilizada. Perfeito para estudantes e entusiastas!",
-
                 home_box2_button: "Conhecer materiais",
-
                 home_box3_title: "Quem Somos",
-
                 home_box3_p: "Conheça nossa equipe e todo o projeto Jandig.",
-
                 home_box3_button: "Veja quem somos",
-
                 qs_title: "Quem Somos",
-
                 qs_intro: "Mitologia Estendida é feito à várias mãos:",
-
                 qs_list1_li1: "<strong>Direção Geral:</strong> Angelo Pixel",
-
                 qs_list1_li2: "<strong>Direção Artística:</strong> Cláudio Rodrigues",
-
                 qs_list1_li3: "<strong>Direção Pedagógica:</strong> María Eugenia Salcedo Repolês",
-
                 qs_list1_li4: "<strong>Direção de Tecnologia:</strong> Pablo Silva",
-
                 qs_list2_li1: "<strong>Concepção:</strong> Angelo Pixel, Cláudio Rodrigues e Demétrio Portugal",
-
                 qs_list2_li2: "<strong>Roteiros:</strong> Angelo Pixel e María Eugenia Salcedo Repolês",
-
                 qs_list2_li3: "<strong>Ilustrações:</strong> Auá Mendes",
-
                 qs_list2_li4: "<strong>Animação 2D:</strong> Enzo Giaquinto e Ulisses Tavares",
-
                 qs_list2_li5: "<strong>Modelagem e Animação 3D:</strong> Gabriel Camelo",
-
                 qs_list2_li6: "<strong>Cenografia:</strong> Cláudio Rodrigues",
-
                 qs_list2_li7: "<strong>Fotografia e Videografia:</strong> Bruna Quevedo",
-
                 qs_list2_li8: "<strong>Design de Som:</strong> Lucas Miranda (Oscilloid)",
-
                 qs_list2_li9: "<strong>Design Gráfico:</strong> Auá Mendes e Cláudio Rodrigues",
-
                 qs_list2_li10: "<strong>Produção Gráfica:</strong> Cláudio Rodrigues",
-
                 qs_list2_li11: "<strong>Gerente de Produto:</strong> Angelo Pixel",
-
                 qs_list2_li12: "<strong>UX Design:</strong> Raquel Mei",
-
                 qs_list2_li13: "<strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan",
-
                 qs_list2_li14: "<strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal",
-
                 qs_list2_li15: "<strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href='https://clarice.ai'>Clarice.ai</a>",
-
                 qs_jandig_title: "JANDIG",
-
                 qs_jandig_p1: "O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.",
-
                 qs_jandig_p2: "Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.",
-
                 qs_jandig_link1: "Conheça outras exposições e obras de arte da plataforma Jandig",
-
                 qs_jandig_link2: "Código fonte da plataforma no GitHub.",
-
                 stories_title: "Nossas Histórias",
-
                 stories_h1: "A Lenda do Curupira",
-
                 stories_p1: "Mergulhe na floresta amazônica e conheça o Curupira, o guardião das matas com pés virados para trás. Uma aventura que ensina sobre respeito à natureza e suas criaturas.",
-
                 stories_h2: "O Enigma da Sereia Iara",
-
                 stories_p2: "Navegue pelos rios brasileiros e seja seduzido pelo canto de Iara, a bela sereia que atrai os pescadores. Uma história de amor, mistério e os perigos das águas.",
-
                 stories_h3: "O Segredo do Boto",
-
                 stories_p3: "Descubra a transformação noturna do Boto, que se torna um homem elegante para seduzir e encantar. Uma narrativa cheia de magia, dança e os mistérios do folclore amazônico.",
-
                 album_title: "Álbum Interativo",
-
-                album_intro: "O álbum interativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
-
+                album_intro: "O álbum interrativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
                 album_downloads_title: "DOWNLOADS",
-
                 album_dl1_title: "Álbum interativo",
-
                 album_dl1_p: "Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.",
-
                 coming_soon: "Em Breve...",
-
                 album_dl2_title: "Figurinhas",
-
                 album_dl2_p: "Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem.",
-
                 album_dl3_title: "Cartaz",
-
                 album_dl3_p: "Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.",
-
                 album_dl4_title: "Guia do multiplicador",
-
                 album_dl4_p: "Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada. Também ajuda você a entrar na plataforma da Jandig que abriga a experiência e compreender a tecnologia que está por trás. Preparamos também algumas sugestões para estimular a criatividade e o uso do álbum de figurinhas e os marcadores.",
-
                 learn_title: "Aprenda a fazer",
-
                 learn_p1: "Desenvolvemos uma série de materiais educativos para complementar a experiência da \"Mitologia Estendida\" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
-
                 learn_p2: "Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.",
-
                 makingof_title: "Making Of: Diário de Desenvolvimento",
-
                 makingof_intro: "Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick=\"showSection('contato')\">aqui</a>.",
-
                 makingof_post1_title: "Mitos vivos",
-
                 makingof_post1_p1: "Tem algo no coração da floresta…e faz alguns meses que estamos tateando, pesquisando, de orelha em pé e olhos bem abertos para compreender e traduzir o que as matas nos mostram. Do outro lado, testamos e mergulhamos para esticar os limites da JANDIG - uma comunidade que cria arte em Realidade Aumentada.",
-
                 makingof_post1_p2: "A plataforma Jandig, também criada pela comunidade, permite a criação de exposições em realidade aumentada e mista e até agora funcionou muito para artistas. Agora queremos que professores, educadores e pessoas em geral também entendam como JANDIG pode ser uma ferramenta para expandir a imaginação!",
-
                 makingof_post1_p3: "O projeto Mitologia Estendida se propõe a trazer para nós, em uma experiência interativa, alguns mitos da cultura brasileira. Trata-se de um projeto de arte, educação e tecnologia. Queremos com este processo inspirar educadores como você a acessar e criar conteúdos tecnológicos dentro e fora da sala de aula.",
-
                 makingof_post1_p4: "Para o nosso processo, uma das primeiras questões foi a escolha dos personagens. É sabido que o padre jesuíta José de Anchieta fez uma série de registros em cartas sobre diversos aspectos do Brasil da época. Dentre eles, em 1560, o mesmo faz uma menção de Boitatá, pois podemos imaginar que à medida que ele adentra o território brasileiro, ele encontra lendas, histórias, encantados e uma diversidade imensa cultural ali já presente.",
-
                 makingof_post1_p5: "Curupira, Saci-pererê, Boitatá, boto cor de rosa, mula sem cabeça, Anhangá. A origem de muitas dessas histórias são fruto da vivência e culturas daqueles que estão a mais tempo no território. O que é contado e ouvido se modifica e ganha novos contornos no encontro com outros povos - aqueles que chegam para colonizar e as diversas culturas deslocadas, algumas escravizadas, outras que chegam em ondas de migração. Seja como for, são histórias que contam em cada detalhe o quão profundas são suas raízes na terra, nas matas, nos córregos, no mar e nos pântanos.",
-
                 makingof_post1_p6: "O projeto Mitologia Estendida é sobre isso também: mergulhar na diversidade presente na mitologia brasileira através da tecnologia. Estava lançado o desafio de escolher entre um universo de mitos e lendas aqueles com os quais trabalhar um roteiro e consequentemente fazer animações em 2D.",
-
                 makingof_post1_p7: "Após um mergulho de pesquisa, foi se revelando a ideia de “guardiões da natureza” e sua relação com algumas ameaças contemporâneas. Foi assim que vimos no Boitatá, Anhangá e Curupira a conexão necessária para dar o próximo passo e começar a fazer um mapa dos personagens.",
-
                 makingof_post1_p8: "Você já conhecia algum desses mitos? Tem alguma história com eles? Como você contaria essa história?",
-
                 makingof_post1_p9: "No próximo post, vamos falar mais sobre o mapa de cada um dos seres encantados.",
-
                 makingof_post1_date_label: "Postado em:",
-
                 makingof_post1_date_value: "03 de Outubro de 2025",
-
                 makingof_post2_title: "Mapa Narrativo",
-
                 makingof_post2_p1: "Todos e todas adoramos uma boa história.",
-
                 makingof_post2_p2: "Todos e todas temos um arsenal de casos para contar! Alguns, inacreditáveis. Outros, que nos transformaram profundamente. ",
-
                 makingof_post2_p3: "Histórias sobre encontros com seres da floresta quase sempre têm um ar de mistério. O desafio está em traduzir em palavras um encontro para além do racional, cheio de sensações. ",
-
                 makingof_post2_p4: "Foi partindo desse cenário que incorporamos no processo do projeto Mitologia Estendida o que viemos a chamar de Mapa Narrativo ou mapa dos personagens. ",
-
                 makingof_post2_p5: "Percebemos que no grupo de trabalho havia uma diversidade de formas de entender e lidar com a ideia de um mito e dar vida, textura e cor a ele novamente usando a tecnologia. Ou seja, para aceitar o desafio de como contar essa história visualmente e através de um roteiro, primeiro precisamos enxergar não só o que sabíamos de cada um dos encantados, mas também o que sentíamos ao evocar a sua presença. ",
-
                 makingof_post2_p6: "Entendemos que só assim trataremos do tema com o respeito que merece, inclusive tomando consciência de que nosso entendimento dos mitos brasileiros está moldado por uma compreensão folclórica ensinada na escola. Muitas vezes imbuído de preconceitos e/ou sobreposição de uma cosmovisão que entende os seres da floresta “apenas como lendas” ou histórias sem fundamento. Sabemos que não é assim e que a raiz das histórias diz das nossas raízes como território e como país. ",
-
                 makingof_post2_p7: "Acreditamos que essa abordagem de 'o que já sabemos' e do que ainda queremos enxergar juntos é útil para contar toda e qualquer história. O Mapa Narrativo é uma ferramenta útil para isso. ",
-
                 makingof_post2_p8: "Compartilhamos aqui com você o resultado das nossas conversas sobre os personagens do projeto Mitologia Estendida. Com o mapa narrativo em mãos, foi possível enxergar melhor como cada personagem se revela no imaginário pessoal e coletivo. Também deu elementos para que as ilustradoras e o restante da equipe tivessem um vocabulário em comum a partir do qual criar imagens, roteiros e cenários. As categorias à esquerda são dinâmicas e podem ter mais ou menos questões. Elas servem principalmente para guiar a conversa e evocar no grupo de trabalho um senso de inteligência coletiva.",
-
                 makingof_post2_p9: "Deixamos também um Mapa Narrativo em branco para você como forma de estimular a apropriação dessa ferramenta para seu projeto particular. A ideia é dedicar um tempo - individual ou coletivo - para livremente anotar o que vem à mente como resultado de uma compreensão inerente ou como resumo de pesquisas feitas a respeito do tema. ",
-
                 makingof_post2_p10: "Revisite seu mapa narrativo no decorrer do processo. Ele mostrará as primeiras - e importantes - impressões que vão sendo esquecidas nas próximas etapas. Com ele em mãos, as histórias que vamos contar na sequência, na elaboração dos roteiros, contêm maior diversidade. ",
-
                 makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a>`,
-
                 makingof_post2_date_label: "Postado em:",
-
                 makingof_post2_date_value: "10 de Outubro de 2025",
-
+                makingof_post3_title: "Como contar uma história",
+                makingof_post3_p1: "Uma vez que passamos a entender melhor os seres da floresta com os quais queremos dialogar, precisamos dar voz a eles e entender também o que os move, como eles se movem, com quem e como eles dialogam. Estamos diante do desafio do roteiro.",
+                makingof_post3_p2: "Se no mapa narrativo criamos um “toró” de ideias que ajudou a artista Auá Mendes a dar vida aos personagens do álbum interativo, foi igualmente importante entender em qual contexto estes seres se apresentariam. Esta questão nos ajudou a definir duas coisas:",
+                makingof_post3_li1: "Quais outros seres/personagens precisam ser criados para dar vida à Boitatá, Anhangá e Curupira;",
+                makingof_post3_li2: "Qual o desafio que cada um desses seres enfrentaria nesta narrativa.",
+                makingof_post3_p3: "Vivemos em tempos complexos. As mudanças climáticas não são mais apenas alguns gráficos em um livro e os efeitos de anos de um sistema exploratório em nível global estão cada vez mais visíveis. Paradoxalmente, são exatamente as pessoas e culturas que mais nos brindam acesso ao universo da mitologia brasileira que estão mais vulneráveis e necessitadas de justiça social. Ou seja, precisamos entender que os impactos das mudanças climáticas afetam de forma desigual as culturas e grupos sociais mais vulneráveis. Estes mesmos, vale lembrar, são os menos responsáveis pelos processos que nos levam à situação atual. ",
+                makingof_post3_p4: "Ter consciência disso nos ajudou a dar um norte para o processo de roteirização das animações(objetos), textos, marcadores e cenários. Afinal, o roteiro precisa dizer do caráter transmídia do projeto Mitologia Estendida. Transmídia para nós significa que é através de um conjunto de mídias que conseguimos contar uma história. As animações, por mais sedutoras e acessíveis que sejam como linguagem, não dão conta de contar a história toda.",
+                makingof_post3_p5: "No projeto Mitologia Estendida optamos por associar cada ser encantado com uma das principais problemáticas da contemporaneidade. O roteiro nasce então do diálogo entre os três personagens mitológicos e os efeitos das nossas escolhas como civilização. Você saberia nomear quais são as problemáticas mais desafiadoras para você? ",
+                makingof_post3_link: `<a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Roteiro Anhangá</a>`,
+                makingof_post3_p6: "Veja a estrutura de roteiro que utilizamos na imagem que acompanha este post. De um lado identificamos o cenário no qual certas ações aconteceriam. Do outro lado está como cada ser age ativamente e de forma interdependente. É o fato da interdependência entre seres  que nos ajudou a dar vida ao Boitatá, Anhangá e Curupira em diálogo com os inúmeros seres da floresta. Observe que na imagem fica claro que havia mais a ser contado, as histórias se entrelaçam e afinal contar uma história também consiste no gesto de editar o que acaba sendo não dito. Poderíamos (e queremos!) desdobrar cada história em muitas mais!",
+                makingof_post3_date_label: "Postado em:",
+                makingof_post3_date_value: "30 de Outubro de 2025",
                 exhibition_title: "Exposição",
-
                 exhibition_h2: "Uma Jornada Imersiva na Arte e Tecnologia",
-
                 exhibition_p1: "Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. ",
-
                 exhibition_p2: "Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.",
-
                 exhibition_p3: "A exposição Mitologia Estendida ocupará o Coletivo Digital em dois momentos:",
-
-                exhibition_p4: "Abertura: <br>27/Nov 18h-19h",
-
-                exhibition_p5: "Experiencia em realidade mista<br>27/Nov 19-21H <br> 28/Nov 11-19H",
-
-                exhibition_p6: "Oficina: Criação de publicações interativas em realidade aumentada<br>29/Nov 9:30-13:30H",
-
-                exhibition_p7: "Exposição em realidade aumentada <br>1-19/Dez<br>segunda a sexta 11-19h",
-
+                exhibition_p4: "Abertura: <br>27/Nov 18h-19h", // Corrected
+                exhibition_p5: "Experiencia em realidade mista<br>27/Nov 19-21H <br> 28/Nov 11-19H", // Corrected
+                exhibition_p6: "Oficina: Criação de publicações interativas em realidade aumentada<br>29/Nov 9:30-13:30H", // Corrected
+                exhibition_p7: "Exposição em realidade aumentada <br>1-19/Dez<br>segunda a sexta 11-19h", // Corrected
                 exhibition_p8: "Engajado na luta contra a privatização dos saberes, o Coletivo Digital atua para que o acesso ao conhecimento seja reconhecido como um bem da humanidade e como um direito de todos.",
-
-                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP <br> GRATUITO E ACESSIVEL",
-
+                exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP <br> GRATUITO E ACESSIVEL", // Corrected
                 faq_title: "Ajuda e Perguntas Frequentes (FAQ)",
-
                 faq1_q: "O que é Mitologia Estendida?",
-
                 faq1_a: "Mitologia Estendida é uma exposição cultural em realidade virtual que permite aos usuários explorar e interagir com lendas e mitos de diversas culturas, de uma forma imersiva e educativa.",
-
                 faq2_q: "Quais equipamentos de VR são compatíveis?",
-
                 faq2_a: "Estamos trabalhando para garantir a compatibilidade com os principais headsets de realidade virtual do mercado, como Oculus Quest, HTC Vive e Valve Index. Mais detalhes sobre a compatibilidade serão divulgados em breve.",
-
                 faq3_q: "Haverá versões para outras plataformas (PC, console)?",
-
                 faq3_a: "Nosso foco principal é a experiência em realidade virtual, mas estamos explorando a possibilidade de desenvolver versões adaptadas para PC e consoles no futuro, para que mais pessoas possam desfrutar do conteúdo.",
-
                 faq4_q: "Como posso apoiar o projeto?",
-
                 faq4_a: "Agradecemos muito o seu interesse! Você pode apoiar o projeto divulgando-o para seus amigos, acompanhando nossas atualizações no blog (seção Making Of) e, em breve, teremos informações sobre como contribuir financeiramente ou através de outras formas de parceria.",
-
                 contact_title: "Contato",
-
                 contact_form_title: "Envie-nos uma Mensagem",
-
                 contact_form_name_label: "Nome:",
-
                 contact_form_name_placeholder: "Seu nome",
-
                 contact_form_email_label: "Email:",
-
                 contact_form_email_placeholder: "seu.email@exemplo.com",
-
                 contact_form_message_label: "Mensagem:",
-
                 contact_form_message_placeholder: "Sua mensagem...",
-
                 contact_form_submit: "Enviar Mensagem",
-
                 footer_contact: "CONTATO",
-
                 footer_motto: "Desenvolvido com paixão e tecnologia.",
-
                 footer_fomento: "Fomento:",
-
                 footer_producao: "Produção:",
-
                 footer_apoio: "Apoio:",
-
                 footer_realizacao: "Realização:",
-
                 footer_license: "Alguns direitos reservados.",
-
                 oficina_title: "Oficina: Criação de álbum interativo", // NEW
-
                 oficina_p1: "O projeto Mitologia Estendida abre as portas dos bastidores do processo por trás da criação do Álbum Interativo. A oficina é para aqueles que querem contar uma história usando realidade aumentada.", // NEW
-
                 oficina_image1_caption: "Interação com a exposição em Ouro Preto, 2019.", // NEW
-
                 oficina_p2: "Ao final do encontro, cada pessoa sairá com uma página própria para a sua narrativa, criada e impressa na oficina, bem como terá uma boa noção de como funciona o álbum interativo como um elemento narrativo transmídia para suas histórias.", // NEW
-
                 oficina_image2_caption: "Página do álbum interativo Mitologia Estendida, 2025.", // NEW
-
                 oficina_p3: "Elas também terão contato com a JANDIG, uma comunidade de arte em realidade aumentada de código aberto e de onde em 2025 nascem novos rumos com o projeto Mitologia Estendida.", // NEW
-
                 oficina_image3_caption: "Exposição interativa em São Miguel Paulista, 2019.", // NEW
-
                 oficina_limited_spots: "Vagas limitadas!", // NEW
-
                 oficina_info1: "A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.", // NEW
-
                 oficina_info2: "Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.", // NEW
-
                 oficina_when: "Quando: 29 de novembro, 9h30- 13h30", // NEW
-
                 oficina_local: "Local: Rua Luis Murat, 298, São Paulo, SP", // NEW
-
                 oficina_register: "Cadastre-se <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aqui</a>.", // NEW
-
                 oficina_youtube_intro: "Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina,veja <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019." // NEW
-
             },
-
             en: {
-
                 nav_exhibition: "Exhibition",
-
                 nav_sticker_album: "Sticker Album",
-
                 nav_workshop: "Workshop", // NEW
-
                 nav_making_of: "Making Of",
-
                 nav_who_we_are: "Who We Are",
-
                 home_intro: "Extended Mythology is an immersive experience in extended reality that transports us to the heart of Brazilian legends and myths. The project is an invitation to get to know some ancestral narratives like never before, combining the richness of Brazilian culture with cutting-edge technology. Prepare for an unforgettable journey with legendary characters in dialogue with the challenges we are facing today.",
-
                 home_box1_title: "EXHIBITION",
-
                 home_box1_p: "Extended Mythology also unfolds into an exhibition with mixed reality in November 2025.",
-
                 home_box1_button: "Learn More",
-
                 home_box2_title: "STICKER ALBUM",
-
                 home_box2_p: "The main way to interact with the myths is through the sticker album. We have prepared a series of didactic resources and interactive activities to deepen your knowledge of the presented mythologies and the technology used. Perfect for students and enthusiasts!",
-
                 home_box2_button: "Explore Materials",
-
                 home_box3_title: "WHO WE ARE",
-
                 home_box3_p: "Meet our team and the entire Jandig project.",
-
                 home_box3_button: "Meet the Team",
-
                 qs_title: "Who We Are",
-
                 qs_intro: "Extended Mythology is made by many hands:",
-
                 qs_list1_li1: "<strong>General Direction:</strong> Angelo Pixel",
-
                 qs_list1_li2: "<strong>Artistic Direction:</strong> Cláudio Rodrigues",
-
                 qs_list1_li3: "<strong>Pedagogical Direction:</strong> María Eugenia Salcedo Repolês",
-
                 qs_list1_li4: "<strong>Technology Direction:</strong> Pablo Silva",
-
                 qs_list2_li1: "<strong>Conception:</strong> Angelo Pixel, Cláudio Rodrigues, and Demétrio Portugal",
-
                 qs_list2_li2: "<strong>Scripts:</strong> Angelo Pixel and María Eugenia Salcedo Repolês",
-
                 qs_list2_li3: "<strong>Illustrations:</strong> Auá Mendes",
-
                 qs_list2_li4: "<strong>2D Animation:</strong> Enzo Giaquinto and Ulisses Tavares",
-
                 qs_list2_li5: "<strong>3D Modeling and Animation:</strong> Gabriel Camelo",
-
                 qs_list2_li6: "<strong>Set Design:</strong> Cláudio Rodrigues",
-
                 qs_list2_li7: "<strong>Photography and Videography:</strong> Bruna Quevedo",
-
                 qs_list2_li8: "<strong>Sound Design:</strong> Lucas Miranda (Oscilloid)",
-
                 qs_list2_li9: "<strong>Graphic Design:</strong> Auá Mendes and Cláudio Rodrigues",
-
                 qs_list2_li10: "<strong>Graphic Production:</strong> Cláudio Rodrigues",
-
                 qs_list2_li11: "<strong>Product Manager:</strong> Angelo Pixel",
-
                 qs_list2_li12: "<strong>UX Design:</strong> Raquel Mei",
-
                 qs_list2_li13: "<strong>Programming:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira, and Thiago Hersan",
-
                 qs_list2_li14: "<strong>Consulting:</strong> Auá Mendes and Demétrio Portugal",
-
                 qs_list2_li15: "<strong>Acknowledgments:</strong> Almir Almas, Adriana Pedrosa, Max Duarte and <a href='https://clarice.ai'>Clarice.ai</a>",
-
                 qs_jandig_title: "JANDIG",
-
                 qs_jandig_p1: "The Extended Mythology project is part of Jandig - an open-source Augmented Reality art community. The Jandig platform enables exhibitions using augmented and mixed reality.",
-
                 qs_jandig_p2: "With the Extended Mythology project, we take a step towards experimenting with educational resources and exhibitions related to the myths and legends of Brazil.",
-
                 qs_jandig_link1: "Discover other exhibitions and artworks on the platform: https://jandig.app/",
-
                 qs_jandig_link2: "Platform source code on GitHub.",
-
                 stories_title: "Our Stories",
-
                 stories_h1: "The Legend of Curupira",
-
                 stories_p1: "Dive into the Amazon rainforest and meet Curupira, the guardian of the forests with backward feet. An adventure that teaches respect for nature and its creatures.",
-
                 stories_h2: "The Enigma of the Mermaid Iara",
-
                 stories_p2: "Navigate the Brazilian rivers and be seduced by the song of Iara, the beautiful mermaid who lures fishermen. A story of love, mystery, and the dangers of the waters.",
-
                 stories_h3: "The Secret of the Boto",
-
                 stories_p3: "Discover the nightly transformation of the Boto, who becomes an elegant man to seduce and enchant. A narrative full of magic, dance, and the mysteries of Amazonian folklore.",
-
                 album_title: "Sticker Album",
-
                 album_intro: "The sticker album is our way of expanding and democratizing the augmented reality experience and the stories of the three legends that make up the Extended Mythologies project. These materials are ideal for use in the classroom, at home, or in recreational activities, promoting culture and history in an interactive way. Our goal is to make knowledge accessible and fun for all ages, from children to adults.",
-
                 album_downloads_title: "DOWNLOADS",
-
                 album_dl1_title: "Sticker album",
-
                 album_dl1_p: "Ready-to-use layout of the album itself, printable and easy to assemble. It can be printed in color or black and white on any type of printer - home or professional. The album has a brief explanation of its use followed by the three stories of Brazilian myths with scenarios where you will paste the stickers that activate the augmented reality experiences. At the end of the album, you will also find a small glossary of words to help you better understand the stories and the context. The sticker album, for example, can be used to collect and learn about each character.",
-
                 coming_soon: "Coming Soon",
-
                 album_dl2_title: "Stickers",
-
                 album_dl2_p: "This is where the fun happens! We divided the stickers into 8 printable packs to encourage trading among friends inside or outside the classroom. The stickers are the markers that, with the use of a cell phone camera, activate the experiences of Curupira, Boitatá, and Anhangá. The loose stickers can be printed and used in games or collage activities.",
-
                 album_dl3_title: "Poster",
-
                 album_dl3_p: "An extension of the album, the poster is a great resource for decorating educational environments or for use as a visual aid in presentations.",
-
                 album_dl4_title: "Multiplier's guide",
-
                 album_dl4_p: "Our materials were created to be flexible and adaptable. The guide helps educators, parents, and enthusiasts bring this experience to more and more places. The guide is a support material to understand more about the myths presented by the augmented reality experiences. It also helps you to get into the Jandig platform that hosts the experience and understand the technology behind it. We have also prepared some suggestions to stimulate creativity and the use of the sticker album and markers.",
-
                 learn_title: "Learn How",
-
                 learn_p1: "We have developed a series of educational materials to complement the \"Extended Mythology\" experience and deepen learning about Brazilian legends and myths. Our goal is to make knowledge accessible and fun for all ages, from children to adults.",
-
                 learn_p2: "These materials are ideal for use in the classroom, at home, or in recreational activities, promoting culture and history in an interactive way.",
-
                 makingof_title: "Making Of: Development Diary",
-
                 makingof_intro: "Get to know the creative process of the Extended Mythology project. This series of posts aims to encourage educators and people in general to incorporate and create interactive content. We have prepared a kind of 'road map' keeping in mind someone who wants to make their own interactive sticker album (augmented reality markers) and maybe also an exhibition. The making-of posts will help you become a thematic ally and investigate the intersection between art, technology, and education. We also aim to inspire an ever-wider community in the processes of remixing and creation. If you have any questions about any part of the process, contact us <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick=\"showSection('contato')\">here</a>.",
-
                 makingof_post1_title: "Living Myths",
-
                 makingof_post1_p1: "There's something in the heart of the forest... and for a few months, we've been fumbling, researching, with ears pricked and eyes wide open to understand and translate what the woods show us. On the other hand, we tested and dived in to stretch the limits of JANDIG - a community that creates art in Augmented Reality.",
-
                 makingof_post1_p2: "The Jandig platform, also created by the community, allows for the creation of augmented and mixed reality exhibitions and has so far worked very well for artists. Now we want teachers, educators, and people in general to also understand how JANDIG can be a tool to expand the imagination!",
-
                 makingof_post1_p3: "The Extended Mythology project aims to bring to us, in an interactive experience, some myths of Brazilian culture. It is a project of art, education, and technology. With this process, we want to inspire educators like you to access and create technological content inside and outside the classroom.",
-
                 makingof_post1_p4: "For our process, one of the first questions was the choice of characters. It is known that the Jesuit priest José de Anchieta made a series of records in letters about various aspects of Brazil at the time. Among them, in 1560, he mentions Boitatá, as we can imagine that as he entered Brazilian territory, he encountered legends, stories, enchanted beings, and an immense cultural diversity already present there.",
-
                 makingof_post1_p5: "Curupira, Saci-pererê, Boitatá, pink river dolphin, headless mule, Anhangá. The origin of many of these stories is the result of the experience and cultures of those who have been in the territory the longest. What is told and heard is modified and takes on new shapes in the encounter with other peoples - those who come to colonize and the various displaced cultures, some enslaved, others arriving in waves of migration. Whatever the case, they are stories that tell in every detail how deep their roots are in the earth, in the woods, in the streams, in the sea, and in the swamps.",
-
                 makingof_post1_p6: "The Extended Mythology project is also about this: diving into the diversity present in Brazilian mythology through technology. The challenge was launched to choose from a universe of myths and legends those with which to work on a script and consequently make 2D animations.",
-
                 makingof_post1_p7: "After a deep dive into research, the idea of 'guardians of nature' and their relationship with some contemporary threats was revealed. That's how we saw in Boitatá, Anhangá, and Curupira the necessary connection to take the next step and start mapping the characters.",
-
                 makingof_post1_p8: "Did you already know any of these myths? Do you have a story with them? How would you tell this story?",
-
                 makingof_post1_p9: "In the next post, we will talk more about the map of each of the enchanted beings.",
-
                 makingof_post1_date_label: "Posted on:",
-
                 makingof_post1_date_value: "October 03, 2025",
-
                 makingof_post2_title: "Narrative Map",
-
                 makingof_post2_p1: "We all love a good story.",
-
                 makingof_post2_p2: "We all have an arsenal of stories to tell! Some, unbelievable. Others, that have profoundly transformed us.",
-
                 makingof_post2_p3: "Stories about encounters with forest beings almost always have an air of mystery. The challenge is to translate into words an encounter that is beyond the rational, full of sensations.",
-
                 makingof_post2_p4: "It was from this scenario that we incorporated into the process of the Extended Mythology project what we came to call the Narrative Map or character map.",
-
                 makingof_post2_p5: "We realized that in the working group there was a diversity of ways to understand and deal with the idea of a myth and to give it life, texture, and color again using technology. That is, to accept the challenge of how to tell this story visually and through a script, we first need to see not only what we knew about each of the enchanted beings, but also what we felt when evoking their presence.",
-
                 makingof_post2_p6: "We understand that only in this way will we treat the theme with the respect it deserves, including becoming aware that our understanding of Brazilian myths is shaped by a folkloric understanding taught in school. Often imbued with prejudice and/or the superimposition of a worldview that understands forest beings 'just as legends' or baseless stories. We know that this is not the case and that the root of the stories tells of our roots as a territory and as a country.",
-
                 makingof_post2_p7: "We believe that this approach of 'what we already know' and what we still want to see together is useful for telling any and every story. The Narrative Map is a useful tool for this.",
-
                 makingof_post2_p8: "We share with you here the result of our conversations about the characters of the Extended Mythology project. With the narrative map in hand, it was possible to see better how each character is revealed in the personal and collective imagination. It also provided elements for the illustrators and the rest of the team to have a common vocabulary from which to create images, scripts, and scenarios. The categories on the left are dynamic and can have more or fewer questions. They serve mainly to guide the conversation and evoke a sense of collective intelligence in the working group.",
-
                 makingof_post2_p9: "We also leave a blank Narrative Map for you as a way to encourage the appropriation of this tool for your particular project. The idea is to dedicate some time - individually or collectively - to freely note what comes to mind as a result of an inherent understanding or as a summary of research done on the subject.",
-
                 makingof_post2_p10: "Revisit your narrative map throughout the process. It will show the first - and important - impressions that are forgotten in the next stages. With it in hand, the stories we will tell next, in the elaboration of the scripts, will contain greater diversity.",
-
                 makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Narrative Map</a>`,
-
                 makingof_post2_date_label: "Posted on:",
-
                 makingof_post2_date_value: "October 10, 2025",
-
+                makingof_post3_title: "How to tell a story",
+                makingof_post3_p1: "Once we better understand the forest beings with whom we want to dialogue, we need to give them a voice and also understand what moves them, how they move, with whom and how they dialogue. We are facing the challenge of the script.",
+                makingof_post3_p2: "If in the narrative map we created a 'storm' of ideas that helped the artist Auá Mendes bring the characters of the interactive album to life, it was equally important to understand the context in which these beings would present themselves. This question helped us define two things:",
+                makingof_post3_li1: "What other beings/characters need to be created to bring Boitatá, Anhangá, and Curupira to life;",
+                makingof_post3_li2: "What challenge each of these beings would face in this narrative.",
+                makingof_post3_p3: "We live in complex times. Climate change is no longer just a few graphs in a book, and the effects of years of an exploitative system at a global level are increasingly visible. Paradoxically, it is precisely the people and cultures that most give us access to the universe of Brazilian mythology that are most vulnerable and in need of social justice. That is, we need to understand that the impacts of climate change disproportionately affect the most vulnerable cultures and social groups. These same groups, it is worth remembering, are the least responsible for the processes that lead us to the current situation.",
+                makingof_post3_p4: "Being aware of this helped us to guide the scripting process for animations (objects), texts, markers, and scenarios. After all, the script needs to convey the transmedia nature of the Extended Mythology project. Transmedia for us means that it is through a set of media that we can tell a story. Animations, however seductive and accessible as a language, do not fully tell the story.",
+                makingof_post3_p5: "In the Extended Mythology project, we chose to associate each enchanted being with one of the main contemporary problems. The script then arises from the dialogue between the three mythological characters and the effects of our choices as a civilization. Would you be able to name the most challenging problems for you? ",
+                makingof_post3_link: `<a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Anhangá Script</a>`,
+                makingof_post3_p6: "See the script structure we used in the image accompanying this post. On one side, we identify the scenario in which certain actions would take place. On the other side is how each being acts actively and interdependently. It is the interdependence between beings that helped us bring Boitatá, Anhangá, and Curupira to life in dialogue with the countless beings of the forest. Note that in the image it is clear that there was more to be told, the stories intertwine, and after all, telling a story also consists of the act of editing what ends up not being said. We could (and want to!) unfold each story into many more!",
+                makingof_post3_date_label: "Posted on:",
+                makingof_post3_date_value: "October 30, 2025",
                 exhibition_title: "Exhibition",
-
                 exhibition_h2: "An Immersive Journey into Art and Technology",
-
                 exhibition_p1: "We are surrounded by invisible energies that help us navigate the complex times we live in.",
-
                 exhibition_p2: "In a unique mixed reality experience, the Extended Mythology exhibition occupies the exhibition space of Coletivo Digital. The result of an investigation into the relationships between art, technology, and education, the exhibition is an invitation to a ritualistic journey to encounter a slice of Brazilian mythology seen in mixed and augmented reality.",
-
                 exhibition_p3: "The Extended Mythology exhibition will occupy the Coletivo Digital Cultural Center at two different times:",
-
                 exhibition_p4: "Opening: <br>Nov 27, 6pm-7pm", // Corrected
-
                 exhibition_p5: "Mixed reality experience<br>Nov 27, 7pm-9pm <br> Nov 28, 11am-7pm", // Corrected
-
                 exhibition_p6: "Workshop: Creation of interactive augmented reality publications<br>Nov 29, 9:30am-1:30pm", // Corrected
-
                 exhibition_p7: "Augmented reality exhibition <br>Dec 1-19<br>Monday to Friday 11am-7pm", // Corrected
-
                 exhibition_p8: "Engaged in the fight against the privatization of knowledge, Coletivo Digital works to ensure that access to knowledge is recognized as a heritage of humanity and a right for all.",
-
                 exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, Pinheiros, São Paulo - SP <br> FREE AND ACCESSIBLE", // Corrected
-
                 faq_title: "Help and Frequently Asked Questions (FAQ)",
-
                 faq1_q: "What is Extended Mythology?",
-
                 faq1_a: "Extended Mythology is a cultural exhibition in virtual reality that allows users to explore and interact with legends and myths from various cultures in an immersive and educational way.",
-
                 faq2_q: "Which VR headsets are compatible?",
-
                 faq2_a: "We are working to ensure compatibility with the main virtual reality headsets on the market, such as Oculus Quest, HTC Vive, and Valve Index. More details on compatibility will be released soon.",
-
                 faq3_q: "Will there be versions for other platforms (PC, console)?",
-
                 faq3_a: "Our main focus is the virtual reality experience, but we are exploring the possibility of developing adapted versions for PC and consoles in the future, so that more people can enjoy the content.",
-
                 faq4_q: "How can I support the project?",
-
                 faq4_a: "Thank you very much for your interest! You can support the project by sharing it with your friends, following our updates on the blog (Making Of section), and soon we will have information on how to contribute financially or through other forms of partnership.",
-
                 contact_title: "Contact",
-
                 contact_form_title: "Send Us a Message",
-
                 contact_form_name_label: "Name:",
-
                 contact_form_name_placeholder: "Your name",
-
                 contact_form_email_label: "Email:",
-
                 contact_form_email_placeholder: "your.email@example.com",
-
                 contact_form_message_label: "Message:",
-
                 contact_form_message_placeholder: "Your message...",
-
                 contact_form_submit: "Send Message",
-
                 footer_contact: "CONTACT",
-
                 footer_motto: "Crafted with passion and innovation",
-
                 footer_fomento: "Funding:",
-
                 footer_producao: "Production:",
-
                 footer_apoio: "Support:",
-
                 footer_realizacao: "Realization:",
-
                 footer_license: "Some rights reserved.",
-
                 oficina_title: "WORKSHOP REGISTRATION: Interactive Album Creation", // NEW
-
                 oficina_p1: "The Extended Mythology project opens the doors to the behind-the-scenes process of creating the Interactive Album. The workshop is for those who want to tell a story using augmented reality.", // NEW
-
                 oficina_image1_caption: "Interaction with the exhibition in Ouro Preto, 2019.", // NEW
-
                 oficina_p2: "At the end of the workshop, each person will leave with their own page for their narrative, created and printed during the workshop, as well as gaining a good understanding of how the interactive album functions as a transmedia narrative element for their stories.", // NEW
-
                 oficina_image2_caption: "Page from the Extended Mythology interactive album, 2025.", // NEW
-
                 oficina_p3: "Participants will also have contact with JANDIG, an open-source augmented reality art community, from which new directions for the Extended Mythology project emerged in 2025.", // NEW
-
                 oficina_image3_caption: "Interactive exhibition in São Miguel Paulista, 2019.", // NEW
-
                 oficina_limited_spots: "Limited spots!", // NEW
-
                 oficina_info1: "The workshop is free. Professionals in the field as well as laypersons are welcome! The target audience includes artists, teachers, researchers, students, and people interested in augmented reality.", // NEW
-
                 oficina_info2: "We will select participants based on this registration to ensure a diverse and engaged group.", // NEW
-
                 oficina_when: "When: November 29, 9:30 AM - 1:30 PM", // NEW
-
                 oficina_local: "Location: Rua Luis Murat, 298, São Paulo, SP", // NEW
-
                 oficina_register: "Register for the workshop <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>here</a>.", // NEW
-
                 oficina_youtube_intro: "If you want to get an idea of the potential of the tool we will be working with in the workshop, see an exhibition created by students during a workshop and presented at the Marte Festival in Ouro Preto in 2019 <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>here</a>." // NEW
-
             },
-
             es: {
-
                 nav_exhibition: "Exposición",
-
                 nav_sticker_album: "Álbum de Cromos",
-
                 nav_workshop: "Taller", // NEW
-
                 nav_making_of: "Making Of",
-
                 nav_who_we_are: "Quiénes somos",
-
                 home_intro: "Mitología Extendida es una experiencia inmersiva en realidad extendida que nos transporta al corazón de las leyendas y mitos brasileños. El proyecto es una invitación a conocer algunas narrativas ancestrales como nunca antes, combinando la riqueza de la cultura brasileña con la tecnología de punta. Prepárese para un viaje inolvidable con personajes legendarios en diálogo con los desafíos que enfrentamos hoy en día.",
-
                 home_box1_title: "EXPOSICIÓN",
-
                 home_box1_p: "Mitología Extendida también se despliega en una exposición con realidad mixta en noviembre de 2025.",
-
                 home_box1_button: "Más información",
-
                 home_box2_title: "ÁLBUM DE CROMOS",
-
                 home_box2_p: "La principal forma de interactuar con los mitos es a través del álbum de cromos. Hemos preparado una serie de recursos didácticos y actividades interactivas para profundizar su conocimiento sobre las mitologías presentadas y la tecnología utilizada. ¡Perfecto para estudiantes y entusiastas!",
-
                 home_box2_button: "Conocer materiales",
-
                 home_box3_title: "QUIÉNES SOMOS",
-
                 home_box3_p: "Conozca a nuestro equipo y todo el proyecto Jandig.",
-
                 home_box3_button: "Vea quiénes somos",
-
                 qs_title: "Quiénes Somos",
-
                 qs_intro: "Mitología Extendida está hecho a varias manos:",
-
                 qs_list1_li1: "<strong>Dirección General:</strong> Angelo Pixel",
-
                 qs_list1_li2: "<strong>Dirección Artística:</strong> Cláudio Rodrigues",
-
                 qs_list1_li3: "<strong>Dirección Pedagógica:</strong> María Eugenia Salcedo Repolês",
-
                 qs_list1_li4: "<strong>Dirección de Tecnología:</strong> Pablo Silva",
-
                 qs_list2_li1: "<strong>Concepción:</strong> Angelo Pixel, Cláudio Rodrigues y Demétrio Portugal",
-
                 qs_list2_li2: "<strong>Guiones:</strong> Angelo Pixel y María Eugenia Salcedo Repolês",
-
                 qs_list2_li3: "<strong>Ilustraciones:</strong> Auá Mendes",
-
                 qs_list2_li4: "<strong>Animación 2D:</strong> Enzo Giaquinto y Ulisses Tavares",
-
                 qs_list2_li5: "<strong>Modelado y Animación 3D:</strong> Gabriel Camelo",
-
                 qs_list2_li6: "<strong>Escenografía:</strong> Cláudio Rodrigues",
-
                 qs_list2_li7: "<strong>Fotografía y Videografía:</strong> Bruna Quevedo",
-
                 qs_list2_li8: "<strong>Diseño de Sonido:</strong> Lucas Miranda (Oscilloid)",
-
                 qs_list2_li9: "<strong>Diseño Gráfico:</strong> Auá Mendes y Cláudio Rodrigues",
-
                 qs_list2_li10: "<strong>Producción Gráfica:</strong> Cláudio Rodrigues",
-
                 qs_list2_li11: "<strong>Gerente de Producto:</strong> Angelo Pixel",
-
                 qs_list2_li12: "<strong>Diseño UX:</strong> Raquel Mei",
-
                 qs_list2_li13: "<strong>Programación:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira y Thiago Hersan",
-
                 qs_list2_li14: "<strong>Consultoría:</strong> Auá Mendes y Demétrio Portugal",
-
                 qs_list2_li15: "<strong>Agradecimientos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte y <a href='https://clarice.ai'>Clarice.ai</a>",
-
                 qs_jandig_title: "JANDIG",
-
                 qs_jandig_p1: "El proyecto Mitología Extendida forma parte de Jandig, una comunidad de arte en Realidad Aumentada de código abierto. La plataforma Jandig permite la realización de exposiciones con el uso de realidad aumentada y mixta.",
-
                 qs_jandig_p2: "Con el proyecto Mitología Extendida damos un paso en la dirección de experimentar con recursos educativos y exposiciones relacionadas con los mitos y leyendas de Brasil.",
-
                 qs_jandig_link1: "Conozca otras exposiciones y obras de arte de la plataforma: https://jandig.app/",
-
                 qs_jandig_link2: "Código fuente de la plataforma en GitHub.",
-
                 stories_title: "Nuestras Historias",
-
                 stories_h1: "La Leyenda del Curupira",
-
                 stories_p1: "Sumérjase en la selva amazónica y conozca al Curupira, el guardián de los bosques con los pies hacia atrás. Una aventura que enseña sobre el respeto a la naturaleza y sus criaturas.",
-
                 stories_h2: "El Enigma de la Sirena Iara",
-
                 stories_p2: "Navegue por los ríos brasileños y déjese seducir por el canto de Iara, la hermosa sirena que atrae a los pescadores. Una historia de amor, misterio y los peligros de las aguas.",
-
                 stories_h3: "El Secreto del Boto",
-
                 stories_p3: "Descubra la transformación nocturna del Boto, que se convierte en un hombre elegante para seducir y encantar. Una narrativa llena de magia, baile y los misterios del folclore amazónico.",
-
                 album_title: "Álbum de Cromos",
-
                 album_intro: "El álbum de cromos es nuestra forma de ampliar y democratizar la experiencia de realidad aumentada y las historias de las tres leyendas que componen el proyecto Mitologías Extendidas. Estos materiales son ideales para su uso en el aula, en casa o en actividades recreativas, promoviendo la cultura y la historia de forma interactiva. Nuestro objetivo es hacer que el conocimiento sea accesible y divertido para todas las edades, desde niños hasta adultos.",
-
                 album_downloads_title: "DESCARGAS",
-
                 album_dl1_title: "Álbum de cromos",
-
                 album_dl1_p: "Diseño listo del álbum en sí, imprimible y de fácil montaje. Se puede imprimir en color o en blanco y negro en cualquier tipo de impresora, ya sea casera o profesional. El álbum tiene una breve explicación de su uso, seguida de las tres historias de mitos brasileños con escenarios en los que pegarás los cromos que activan las experiencias de realidad aumentada. Al final del álbum también encontrarás un pequeño glosario de palabras para ayudarte a entender mejor las historias y el contexto. El álbum de cromos, por ejemplo, se puede utilizar para coleccionar y aprender sobre cada personaje.",
-
                 coming_soon: "Próximamente...",
-
                 album_dl2_title: "Cromos",
-
                 album_dl2_p: "¡Aquí es donde ocurre la diversión! Dividimos los cromos en 8 paquetes para imprimir para fomentar el intercambio entre amigos dentro o fuera del aula. Los cromos son los marcadores que, con el uso de la cámara del teléfono móvil, activan las experiencias del curupira, boitatá y anhangá. Los cromos sueltos se pueden imprimir y usar en juegos o actividades de collage.",
-
                 album_dl3_title: "Póster",
-
                 album_dl3_p: "Una extensión del álbum, el póster es un gran recurso para decorar ambientes educativos o para ser utilizado como apoyo visual en presentaciones.",
-
                 album_dl4_title: "Guía del multiplicador",
-
                 album_dl4_p: "Nuestros materiales fueron creados para ser flexibles y adaptables. La guía ayuda a educadores, padres y entusiastas a llevar esta experiencia a más lugares. La guía es un material de apoyo para entender más sobre los mitos presentados por las experiencias de realidad aumentada. También te ayuda a entrar en la plataforma de Jandig que alberga la experiencia y a comprender la tecnología que hay detrás. También hemos preparado algunas sugerencias para estimular la creatividad y el uso del álbum de cromos y los marcadores.",
-
                 learn_title: "Aprende a hacerlo",
-
                 learn_p1: "Hemos desarrollado una serie de materiales educativos para complementar la experiencia de \"Mitología Extendida\" y profundizar el aprendizaje sobre las leyendas y mitos brasileños. Nuestro objetivo es hacer que el conocimiento sea accesible y divertido para todas las edades, desde niños hasta adultos.",
-
                 learn_p2: "Estos materiales son ideales para su uso en el aula, en casa o en actividades recreativas, promoviendo la cultura y la historia de forma interactiva.",
-
                 makingof_title: "Making Of: Diario de Desarrollo",
-
                 makingof_intro: "Conozca el proceso creativo del proyecto Mitología Extendida. Esta serie de publicaciones tiene como objetivo animar a educadores y al público en general a incorporar y crear contenido interactivo. Hemos preparado una especie de 'mapa de ruta' pensando en alguien que quiera hacer su propio álbum de cromos interactivo (marcadores de realidad aumentada) y quizás también una exposición. Las publicaciones del 'making of' le ayudarán a convertirse en un aliado temático y a investigar la intersección entre arte, tecnología y educación. También pretendemos inspirar a una comunidad cada vez más amplia en los procesos de remezcla y creación. Si tiene alguna pregunta sobre cualquier parte del proceso, póngase en contacto con nosotros en <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick=\"showSection('contato')\">CONTACTO</a>.",
-
                 makingof_post1_title: "Mitos vivos",
-
                 makingof_post1_p1: "Hay algo en el corazón del bosque... y llevamos unos meses explorando, investigando, con los oídos atentos y los ojos bien abiertos para comprender y traducir lo que los bosques nos muestran. Por otro lado, probamos y nos sumergimos para ampliar los límites de JANDIG, una comunidad que crea arte en Realidad Aumentada.",
-
                 makingof_post1_p2: "La plataforma Jandig, también creada por la comunidad, permite la creación de exposiciones en realidad aumentada y mixta, y hasta ahora ha funcionado muy bien para los artistas. ¡Ahora queremos que los profesores, educadores y el público en general también entiendan cómo JANDIG puede ser una herramienta para expandir la imaginación!",
-
                 makingof_post1_p3: "El proyecto Mitología Extendida se propone traernos, en una experiencia interactiva, algunos mitos de la cultura brasileña. Es un proyecto de arte, educación y tecnología. Con este proceso, queremos inspirar a educadores como usted a acceder y crear contenido tecnológico dentro y fuera del aula.",
-
                 makingof_post1_p4: "Para nuestro proceso, una de las primeras cuestiones fue la elección de los personajes. Es sabido que el sacerdote jesuita José de Anchieta realizó una serie de registros en cartas sobre diversos aspectos del Brasil de la época. Entre ellos, en 1560, menciona a Boitatá, ya que podemos imaginar que a medida que se adentraba en el territorio brasileño, encontraba leyendas, historias, seres encantados y una inmensa diversidad cultural ya presente allí.",
-
                 makingof_post1_p5: "Curupira, Saci-pererê, Boitatá, delfín rosado, mula sin cabeza, Anhangá. El origen de muchas de estas historias es fruto de la vivencia y las culturas de quienes llevan más tiempo en el territorio. Lo que se cuenta y se oye se modifica y adquiere nuevos contornos en el encuentro con otros pueblos: los que llegan para colonizar y las diversas culturas desplazadas, algunas esclavizadas, otras que llegan en oleadas migratorias. Sea como fuere, son historias que cuentan en cada detalle lo profundas que son sus raíces en la tierra, en los bosques, en los arroyos, en el mar y en los pantanos.",
-
                 makingof_post1_p6: "El proyecto Mitología Extendida también trata sobre esto: sumergirse en la diversidad presente en la mitología brasileña a través de la tecnología. Se lanzó el desafío de elegir, entre un universo de mitos y leyendas, aquellos con los que trabajar en un guion y, consecuentemente, realizar animaciones en 2D.",
-
                 makingof_post1_p7: "Tras una inmersión en la investigación, se fue revelando la idea de los 'guardianes de la naturaleza' y su relación con algunas amenazas contemporáneas. Así fue como vimos en Boitatá, Anhangá y Curupira la conexión necesaria para dar el siguiente paso y empezar a hacer un mapa de los personajes.",
-
                 makingof_post1_p8: "¿Ya conocías alguno de estos mitos? ¿Tienes alguna historia con ellos? ¿Cómo contarías esta historia?",
-
                 makingof_post1_p9: "En la próxima publicación, hablaremos más sobre el mapa de cada uno de los seres encantados.",
-
                 makingof_post1_date_label: "Publicado el:",
-
                 makingof_post1_date_value: "03 de Octubre de 2025",
-
                 makingof_post2_title: "Mapa Narrativo",
-
                 makingof_post2_p1: "A todos nos encanta una buena historia.",
-
                 makingof_post2_p2: "¡Todos tenemos un arsenal de historias que contar! Algunas, increíbles. Otras, que nos han transformado profundamente.",
-
                 makingof_post2_p3: "Las historias sobre encuentros con seres del bosque casi siempre tienen un aire de misterio. El desafío es traducir en palabras un encuentro que va más allá de lo racional, lleno de sensaciones.",
-
                 makingof_post2_p4: "Fue a partir de este escenario que incorporamos en el proceso del proyecto Mitología Extendida lo que hemos llamado el Mapa Narrativo o mapa de personajes.",
-
                 makingof_post2_p5: "Nos dimos cuenta de que en el grupo de trabajo había una diversidad de formas de entender y lidiar con la idea de un mito y de darle vida, textura y color de nuevo usando la tecnología. Es decir, para aceptar el desafío de cómo contar esta historia visualmente y a través de un guion, primero necesitamos ver no solo lo que sabíamos de cada uno de los seres encantados, sino también lo que sentíamos al evocar su presencia.",
-
                 makingof_post2_p6: "Entendemos que solo así trataremos el tema con el respeto que merece, incluso tomando conciencia de que nuestra comprensión de los mitos brasileños está moldeada por una comprensión folclórica enseñada en la escuela. A menudo impregnada de prejuicios y/o la superposición de una cosmovisión que entiende a los seres del bosque 'solo como leyendas' o historias sin fundamento. Sabemos que no es así y que la raíz de las historias habla de nuestras raíces como territorio y como país.",
-
                 makingof_post2_p7: "Creemos que este enfoque de 'lo que ya sabemos' y de lo que todavía queremos ver juntos es útil para contar cualquier historia. El Mapa Narrativo es una herramienta útil para ello.",
-
-                makingof_post2_p8: "Compartimos aquí con ustedes el resultado de nuestras conversaciones sobre los personajes del proyecto Mitología Extendida. Con el mapa narrativo en mano, fue posible ver mejor cómo cada personaje se revela en el imaginario personal y colectivo. También proporcionó elementos para que las ilustradoras y el resto del equipo tuvieran un vocabulario común a partir del cual crear imágenes, guiones y escenarios. Las categorías de la izquierda son dinámicas y pueden tener más o menos preguntas. Ellas sirven principalmente para guiar la conversación y evocar un sentido de inteligencia colectiva en el grupo de trabajo.",
-
+                makingof_post2_p8: "Compartimos aquí con ustedes el resultado de nuestras conversaciones sobre los personajes del proyecto Mitología Extendida. Con el mapa narrativo en mano, fue posible ver mejor cómo cada personaje se revela en el imaginario personal y colectivo. También proporcionó elementos para que las ilustradoras y el resto del equipo tuvieran un vocabulario común a partir del cual crear imágenes, guiones y escenarios. Las categorías de la izquierda son dinámicas y pueden tener más o menos preguntas. Ellas sirven principalmente para guiar la conversación y evocar un sentido de inteligencia colectiva.",
                 makingof_post2_p9: "También dejamos un Mapa Narrativo en blanco para usted como una forma de fomentar la apropiación de esta herramienta para su proyecto particular. La idea es dedicar un tiempo, individual o colectivo, para anotar libremente lo que viene a la mente como resultado de una comprensión inherente o como un resumen de la investigación realizada sobre el tema.",
-
                 makingof_post2_p10: "Revise su mapa narrativo a lo largo del proceso. Mostrará las primeras, e importantes, impresiones que se olvidan en las siguientes etapas. Con él en mano, las historias que contaremos a continuación, en la elaboración de los guiones, contendrán una mayor diversidad.",
-
                 makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a>`,
-
                 makingof_post2_date_label: "Publicado el:",
-
                 makingof_post2_date_value: "10 de Octubre de 2025",
-
+                makingof_post3_title: "Cómo contar una historia",
+                makingof_post3_p1: "Una vez que pasamos a entender mejor los seres del bosque con los que queremos dialogar, necesitamos darles voz y también entender qué los mueve, cómo se mueven, con quién y cómo dialogan. Estamos ante el desafío del guion.",
+                makingof_post3_p2: "Si en el mapa narrativo creamos una 'tormenta' de ideas que ayudó a la artista Auá Mendes a dar vida a los personajes del álbum interactivo, fue igualmente importante entender en qué contexto se presentarían estos seres. Esta cuestión nos ayudó a definir dos cosas:",
+                makingof_post3_li1: "Qué otros seres/personajes necesitan ser creados para dar vida a Boitatá, Anhangá y Curupira;",
+                makingof_post3_li2: "Qué desafío enfrentaría cada uno de estos seres en esta narrativa.",
+                makingof_post3_p3: "Vivimos tiempos complejos. El cambio climático ya no son solo unos gráficos en un libro y los efectos de años de un sistema explotador a nivel global son cada vez más visibles. Paradójicamente, son precisamente las personas y culturas que más nos brindan acceso al universo de la mitología brasileña las que están más vulnerables y necesitadas de justicia social. Es decir, necesitamos entender que los impactos del cambio climático afectan de forma desigual a las culturas y grupos sociales más vulnerables. Estos mismos, cabe recordar, son los menos responsables de los procesos que nos llevan a la situación actual. ",
+                makingof_post3_p4: "Tener conciencia de esto nos ayudó a dar un rumbo al proceso de creación de guiones para animaciones (objetos), textos, marcadores y escenarios. Al fin y al cabo, el guion debe reflejar el carácter transmedia del proyecto Mitología Extendida. Transmedia para nosotros significa que es a través de un conjunto de medios que logramos contar una historia. Las animaciones, por muy seductoras y accesibles que sean como lenguaje, no son suficientes para contar toda la historia.",
+                makingof_post3_p5: "En el proyecto Mitología Extendida optamos por asociar cada ser encantado con una de las principales problemáticas de la contemporaneidad. El guion nace entonces del diálogo entre los tres personajes mitológicos y los efectos de nuestras elecciones como civilización. ¿Sabría usted nombrar cuáles son las problemáticas más desafiantes para usted? ",
+                makingof_post3_link: `<a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Guion Anhangá</a>`,
+                makingof_post3_p6: "Vea la estructura del guion que utilizamos en la imagen que acompaña a esta publicación. Por un lado, identificamos el escenario en el que se desarrollarían ciertas acciones. Por otro lado, se describe cómo cada ser actúa activamente y de forma interdependiente. Es el hecho de la interdependencia entre los seres lo que nos ayudó a dar vida a Boitatá, Anhangá y Curupira en diálogo con los innumerables seres del bosque. Observe que en la imagen queda claro que había más que contar, las historias se entrelazan y, al fin y al cabo, contar una historia también consiste en el gesto de editar lo que al final no se dice. ¡Podríamos (y queremos!) desglosar cada historia en muchas más!",
+                makingof_post3_date_label: "Publicado el:",
+                makingof_post3_date_value: "30 de Octubre de 2025",
                 exhibition_title: "Exposición",
-
                 exhibition_h2: "Un Viaje Inmersivo al Arte y la Tecnología",
-
                 exhibition_p1: "Estamos rodeados de energías invisibles que nos ayudan a navegar los tiempos complejos que vivimos.",
-
                 exhibition_p2: "En una experiencia única de realidad mixta, la exposición Mitología Extendida ocupa el espacio expositivo del Coletivo Digital. Fruto de una investigación sobre las relaciones entre arte, tecnología y educación, la exposición es una invitación a un recorrido ritual para encontrar un recorte de la mitología brasileña vista en realidad mixta y aumentada.",
-
                 exhibition_p3: "La exposición Mitología Extendida ocupará el Centro Cultural Coletivo Digital en dos momentos:",
-
                 exhibition_p4: "Apertura: <br>27/Nov 18h-19h", // Corrected
-
                 exhibition_p5: "Experiencia en realidad mixta<br>27/Nov 19-21h <br> 28/Nov 11-19h", // Corrected
-
                 exhibition_p6: "Taller: Creación de publicaciones interactivas en realidad aumentada<br>29/Nov 9:30h-13:30h", // Corrected
-
                 exhibition_p7: "Exposición en realidad aumentada <br>1-19/Dic<br>lunes a viernes 11-19h", // Corrected
-
                 exhibition_p8: "Comprometido con la lucha contra la privatización del saber, el Coletivo Digital trabaja para que el acceso al conocimiento sea reconocido como un bien de la humanidad y un derecho de todos.",
-
                 exhibition_p9: "Coletivo Digital: R. Luís Murat, 298, barrio Pinheiros, São Paulo - SP <br> GRATUITO Y ACCESIBLE", // Corrected
-
                 faq_title: "Ayuda y Preguntas Frecuentes (FAQ)",
-
                 faq1_q: "¿Qué es Mitología Extendida?",
-
                 faq1_a: "Mitología Extendida es una exposición cultural en realidad virtual que permite a los usuarios explorar e interactuar con leyendas y mitos de diversas culturas de forma inmersiva y educativa.",
-
                 faq2_q: "¿Qué equipos de RV son compatibles?",
-
                 faq2_a: "Estamos trabajando para garantizar la compatibilidad con los principales cascos de realidad virtual del mercado, como Oculus Quest, HTC Vive y Valve Index. Próximamente se darán a conocer más detalles sobre la compatibilidad.",
-
                 faq3_q: "¿Habrá versiones para otras plataformas (PC, consola)?",
-
                 faq3_a: "Nuestro enfoque principal es la experiencia en realidad virtual, pero estamos explorando la posibilidad de desarrollar versiones adaptadas para PC y consolas en el futuro, para que más personas puedan disfrutar del contenido.",
-
                 faq4_q: "¿Cómo puedo apoyar el proyecto?",
-
                 faq4_a: "¡Muchas gracias por su interés! Puede apoyar el proyecto difundiéndolo entre sus amigos, siguiendo nuestras actualizaciones en el blog (sección Making Of) y, próximamente, tendremos información sobre cómo contribuir económicamente o a través de otras formas de colaboración.",
-
                 contact_title: "Contacto",
-
                 contact_form_title: "Envíanos un Mensaje",
-
                 contact_form_name_label: "Nombre:",
-
                 contact_form_name_placeholder: "Su nombre",
-
                 contact_form_email_label: "Correo electrónico:",
-
                 contact_form_email_placeholder: "su.email@ejemplo.com",
-
                 contact_form_message_label: "Mensaje:",
-
                 contact_form_message_placeholder: "Su mensaje...",
-
                 contact_form_submit: "Enviar Mensaje",
-
                 footer_contact: "CONTACTO",
-
                 footer_motto: "Desarrollado con pasión y tecnología.",
-
                 footer_fomento: "Fomento:",
-
                 footer_producao: "Producción:",
-
                 footer_realizacao: "Realización:",
-
                 footer_license: "Algunos derechos reservados.",
-
                 oficina_title: "INSCRIPCIÓN Taller de Creación de álbum interactivo", // NEW
-
                 oficina_p1: "El proyecto Mitología Extendida abre las puertas del proceso detrás de la creación del Álbum Interactivo. El taller es para aquellos que quieren contar una historia usando realidad aumentada.", // NEW
-
                 oficina_image1_caption: "Interacción con la exposición en Ouro Preto, 2019.", // NEW
-
                 oficina_p2: "Al final del encuentro, cada persona saldrá con una página propia para su narrativa, creada e impresa en el taller, así como tendrá una buena noción de cómo funciona el álbum interactivo como un elemento narrativo transmedia para sus historias.", // NEW
-
                 oficina_image2_caption: "Página del álbum interactivo Mitología Extendida, 2025.", // NEW
-
                 oficina_p3: "También tendrán contacto con JANDIG, una comunidad de arte en realidad aumentada de código abierto y de donde en 2025 nacen nuevos rumbos con el proyecto Mitología Extendida.", // NEW
-
                 oficina_image3_caption: "Exposición interactiva en São Miguel Paulista, 2019.", // NEW
-
                 oficina_limited_spots: "¡Plazas limitadas!", // NEW
-
                 oficina_info1: "El taller es gratuito. Tanto profesionales del área como personas no expertas son bienvenidos! El público objetivo son artistas, profesores, investigadores, estudiantes y personas interesadas en realidad aumentada.", // NEW
-
                 oficina_info2: "Seleccionaremos a los participantes a partir de esta inscripción para garantizar un grupo diverso y comprometido.", // NEW
-
                 oficina_when: "Cuándo: 29 de noviembre, 9:30h - 13:30h", // NEW
-
                 oficina_local: "Lugar: Rua Luis Murat, 298, São Paulo, SP", // NEW
-
                 oficina_register: "Regístrese <a href='https://forms.gle/kx754R1ywMhxRgfn7' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aquí</a>.", // NEW
-
                 oficina_youtube_intro: "Si quieres hacerte una idea del potencial de la herramienta con la que trabajaremos en el taller, mira <a href='https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77' target='_blank' rel='noopener noreferrer' class='text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold'>aquí</a> una exposición, resultado de un taller con los alumnos de la UEMG, presentada en el Festival Marte, en Ouro Preto, 2019." // NEW
-
             }
-
         };
 
-
-
         // Function to show a specific section and hide others
-
         function showSection(sectionId) {
-
             const sections = document.querySelectorAll('.section');
-
             sections.forEach(section => {
-
                 section.classList.remove('active');
-
             });
-
             const activeSection = document.getElementById(sectionId);
-
             if(activeSection) {
-
                activeSection.classList.add('active');
-
             }
-
             // Scroll to top of the page when changing sections
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-
-
             // Hide mobile menu after selection
-
             const navLinks = document.getElementById('nav-links');
-
             if (!navLinks.classList.contains('hidden')) {
-
                 navLinks.classList.add('hidden');
-
             }
-
         }
-
         
-
         function changeLanguage(lang) {
-
             document.documentElement.lang = lang;
-
             const elements = document.querySelectorAll('[data-translate]');
-
             elements.forEach(el => {
-
                 const key = el.getAttribute('data-translate');
-
                 if (translations[lang] && translations[lang][key]) {
-
                     el.innerHTML = translations[lang][key];
-
                 }
-
             });
-
-
 
             const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
-
             placeholderElements.forEach(el => {
-
                 const key = el.getAttribute('data-translate-placeholder');
-
                 if (translations[lang] && translations[lang][key]) {
-
                     el.placeholder = translations[lang][key];
-
                 }
-
             });
-
-
 
             document.getElementById('current-lang').textContent = lang.toUpperCase();
-
             document.getElementById('lang-dropdown').classList.add('hidden');
-
         }
 
-
-
         // Event listeners
-
         document.addEventListener('DOMContentLoaded', () => {
-
             // Initialize the home section on load
-
             showSection('home');
-
             
-
             // Set initial language
-
             changeLanguage('pt');
 
-
-
             // Toggle mobile menu
-
             document.getElementById('menu-button').addEventListener('click', function() {
-
                 const navLinks = document.getElementById('nav-links');
-
                 navLinks.classList.toggle('hidden');
-
                 navLinks.classList.toggle('flex');
-
             });
-
-
 
             // Language switcher dropdown
-
             const langButton = document.getElementById('lang-button');
-
             const langDropdown = document.getElementById('lang-dropdown');
-
             const langIcon = langButton.querySelector('svg');
 
-
-
             langButton.addEventListener('click', (event) => {
-
                 event.stopPropagation();
-
                 langDropdown.classList.toggle('hidden');
-
                 langIcon.classList.toggle('rotate-180');
-
             });
-
-
 
             document.addEventListener('click', (event) => {
-
                 if (!langButton.contains(event.target) && !langDropdown.contains(event.target)) {
-
                     langDropdown.classList.add('hidden');
-
                     langIcon.classList.remove('rotate-180');
-
                 }
-
             });
-
         });
-
     </script>
-
 </body>
-
 </html>
