@@ -1,0 +1,22 @@
+<div class="modal-container">
+    <div class="modal-content">
+        <div id="modal-header">
+            <button id="close-modal" onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
+            {% if go_back_url %}
+                    <button id="back-modal" hx-get="{{ go_back_url }}" hx-target="#modal" hx-trigger="click"><</button>
+            {% endif %}
+        </div>
+        <h1 id="modal-title">{{ sound.title }}</h1>
+        <p id="element-author">{{ "{} {}".format(_("Author:"),sound.author)}}</p>
+        <p id="element-upload-info">
+                    {{ "{} {}{} {}".format(_("Uploaded by"), sound.owner.user.username,_(", in"), sound.created.strftime("%d/%m/%Y")) }}
+        <p id="element-analytics">
+            {{ sound.used_in_html_string() | safe }}
+        </p>
+            {{ sound.as_html()| safe }}
+        <p id="download"> Download file:</p>
+        <p id="element-download">
+            <a id="png-download" href="{{ sound.file.url }}">{{ "{} ({}KB)".format(_("Download File"), sound.file_size)}}</a>
+        </p>
+    </div>
+</div>

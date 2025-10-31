@@ -6,35 +6,12 @@ services:
       dockerfile: Dockerfile
       context: .
       target: local_dev
+    user: jandig
     ports:
       - 8000:8000
     volumes:
-      - media_data:/jandig/media
-      - static_data:/jandig/static
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /jandig/src/
-
-        - action: sync
-          path: ./locale
-          target: /jandig/locale/
-
-        - action: sync
-          path: ./collection
-          target: /jandig/collection/
-
-        - action: rebuild
-          path: ./uv.lock
-
-        - action: rebuild
-          path: ./run.sh
-
-        - action: rebuild
-          path: ./docs
-          target: /jandig/docs/
-
+      - ./:/jandig
+      - /jandig/minio-binaries/
     env_file:
       - .envs/.example
     environment:

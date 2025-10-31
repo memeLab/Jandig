@@ -1,21 +1,30 @@
-import re
 from io import BytesIO
 
 from django import forms
 from django.core.files.base import ContentFile, File
-from django.forms.widgets import HiddenInput, NumberInput
+from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 from pymarker.core import generate_patt_from_image
 
-from core.models import Marker
+from core.models import Artwork, Marker, ObjectExtensions
 from core.views.api_views import MarkerGeneratorAPIView
 
-from .models import Exhibit, Object
+from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
+
+
+def file_has_changed(new_file, instance_file):
+    new_content = new_file.read()
+    new_file.seek(0)  # Reset file pointer
+
+    instance_content = instance_file.read()
+    instance_file.seek(0)  # Reset file pointer
+
+    return instance_content != new_content
 
 
 class RangeInput(NumberInput):
@@ -23,103 +32,58 @@ class RangeInput(NumberInput):
 
 
 class ExhibitSelectForm(forms.Form):
-    exhibit = forms.ModelChoiceField(queryset=Exhibit.objects.all().order_by("name"))
-
-
-class ExhibitForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    slug = forms.CharField(max_length=50, required=True)
-
-    artworks = forms.CharField(max_length=1000)
-
-    def __init__(self, *args, **kwargs):
-        self.exhibit_id = kwargs.pop("exhibit_id", None)
-        super(ExhibitForm, self).__init__(*args, **kwargs)
-        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
-        self.fields["slug"].widget.attrs["placeholder"] = _(
-            "Complete with your Exhibit URL here"
-        )
-
-    def clean_name(self):
-        name = self.cleaned_data["name"]
-        qs = Exhibit.objects.filter(name=name)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
-        if qs.exists():
-            raise forms.ValidationError(
-                _(
-                    "This name is already being used. Please choose another name for your exhibit."
-                )
-            )
-        return name
-
-    def clean_slug(self):
-        slug = self.cleaned_data["slug"]
-        if not re.match("^[a-zA-Z0-9_-]*$", slug):
-            raise forms.ValidationError(
-                _("Url can't contain spaces or special characters")
-            )
-        qs = Exhibit.objects.filter(slug=slug)
-        if self.exhibit_id:
-            qs = qs.exclude(id=self.exhibit_id)
-        if qs.exists():
-            raise forms.ValidationError(
-                _(
-                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
-                )
-            )
-        return slug
+    exhibit = forms.ModelChoiceField(
+        queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
+    )
 
 
 class ObjectWidget(forms.ClearableFileInput):
     """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
 
     template_name = "core/templates/object_edit_template.jinja2"
+    thumbnail = None
+
+    def __init__(self, thumbnail=None, attrs=None):
+        super().__init__(attrs)
+        self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
+        attrs.update({"accept": ".gif, .mp4, .webm, .glb"})
         context = self.get_context(name, value, attrs)
+        if self.thumbnail:
+            context["widget"]["thumbnail"] = self.thumbnail
+
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
 
 
 class UploadObjectForm(forms.ModelForm):
-    scale = forms.FloatField(
-        min_value=0.1,
-        max_value=5.0,
-        required=True,
-        label=_("Scale (0.1 to 5.0)"),
-        help_text=_(
-            "Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase object to 500%% its size)"
-        ),
-        initial=1.0,
-        widget=RangeInput,
+    selected_sound = forms.ModelChoiceField(
+        queryset=Sound.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
 
     def __init__(self, *args, **kwargs):
         super(UploadObjectForm, self).__init__(*args, **kwargs)
 
-        self.fields["source"].widget = ObjectWidget()
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = (
-            "image/gif, .gif, .mp4, .webm, .glb"
-        )
+        if thumbnail := kwargs.get("initial", {}).get("thumbnail", None):
+            self.fields["source"].widget = ObjectWidget(thumbnail)
+        else:
+            self.fields["source"].widget = ObjectWidget()
+
         self.fields["author"].widget.attrs["placeholder"] = _(
             "declare different author name"
         )
-        self.fields["position"].widget = HiddenInput()
+
         self.fields["title"].widget.attrs["placeholder"] = _("Object's title")
-        self.fields["scale"].widget.attrs["placeholder"] = _("0.1 ~ 5.0")
-        self.fields["scale"].widget.attrs["step"] = 0.1
-        self.fields["scale"].widget.attrs["class"] = "slider"
 
     class Meta:
         model = Object
-        fields = ("source", "author", "title", "scale", "position")
+        fields = ("source", "author", "title", "thumbnail", "audio_description")
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
-        if not file:
-            raise forms.ValidationError(_("This field is required."))
 
         allowed_extensions = ["gif", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
@@ -129,13 +93,7 @@ class UploadObjectForm(forms.ModelForm):
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
-            # Compare if the file changed
-            file_content = file.read()
-            file.seek(0)  # Reset file pointer
-            instance_content = self.instance.source.read()
-            self.instance.source.seek(0)  # Reset instance file pointer
-
-            if instance_content != file_content:
+            if file_has_changed(file, self.instance.source):
                 if self.instance.is_used_by_other_user():
                     raise forms.ValidationError(
                         _(
@@ -145,18 +103,21 @@ class UploadObjectForm(forms.ModelForm):
 
         return file
 
-    def clean_scale(self):
-        scale_val = self.cleaned_data["scale"]
-        if not (0.1 <= scale_val <= 5.0):
-            raise forms.ValidationError(_("Scale must be between 0.1 and 5.0"))
-        # Convert to string for saving
-        return f"{scale_val:.2f} {scale_val:.2f}"
+    def clean_audio_description(self):
+        file = self.cleaned_data.get("audio_description")
+        if not file:
+            return None
+
+        allowed_extensions = ["mp3", "ogg", "wav"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
+            raise forms.ValidationError(
+                _("Only MP3, OGG, and WAV audio files are allowed.")
+            )
+        return file
 
     def save(self, *args, **kwargs):
-        if owner := kwargs.get("owner", None):
-            self.instance.owner = owner
-            del kwargs["owner"]
-
+        self.instance.sound = self.cleaned_data.get("selected_sound", None)
         self.instance.file_size = self.instance.source.size
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
@@ -172,9 +133,6 @@ class UploadMarkerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
-
-        self.fields["source"].widget.attrs["placeholder"] = _("browse file")
-        self.fields["source"].widget.attrs["accept"] = "image/png, image/jpg"
         self.fields["author"].widget.attrs["placeholder"] = _(
             DEFAULT_AUTHOR_PLACEHOLDER
         )
@@ -182,7 +140,7 @@ class UploadMarkerForm(forms.ModelForm):
 
     class Meta:
         model = Marker
-        exclude = ("owner", "created", "patt", "file_size")
+        fields = ("source", "author", "title")
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
@@ -204,33 +162,252 @@ class UploadMarkerForm(forms.ModelForm):
                 save=commit,
             )
 
-            if kwargs.get("owner"):
-                self.instance.owner = kwargs.get("owner")
-                del kwargs["owner"]
-
             return super(UploadMarkerForm, self).save(*args, **kwargs)
 
 
-class ArtworkForm(forms.Form):
-    marker = forms.ImageField(required=False)
-    marker_author = forms.CharField(max_length=12, required=False)
-    augmented = forms.ImageField(required=False)
-    augmented_author = forms.CharField(max_length=12, required=False)
-    existent_marker = forms.IntegerField(min_value=1, required=False)
-    existent_object = forms.IntegerField(min_value=1, required=False)
-    title = forms.CharField(max_length=50)
-    description = forms.CharField(widget=forms.Textarea, max_length=500, required=False)
+class ArtworkForm(forms.ModelForm):
+    selected_marker = forms.ModelChoiceField(
+        queryset=Marker.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    selected_object = forms.ModelChoiceField(
+        queryset=Object.objects.exclude(file_extension=ObjectExtensions.GLB),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    scale = forms.FloatField(
+        min_value=0.1,
+        max_value=5.0,
+        initial=1.0,
+        widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
+    )
+    selected_sound = forms.ModelChoiceField(
+        queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    class Meta:
+        model = Artwork
+        fields = ["title", "description", "position_x", "position_y"]
+        widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": _("Artwork title")}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": _("Artwork description")}
+            ),
+            "position_x": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
+            "position_y": RangeInput(
+                attrs={"class": "slider", "step": "0.1", "min": "-2.0", "max": "2.0"}
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ArtworkForm, self).__init__(*args, **kwargs)
 
-        self.fields["marker_author"].widget.attrs["placeholder"] = _(
-            DEFAULT_AUTHOR_PLACEHOLDER
+        if self.instance.pk:
+            # If editing an existing artwork, prepopulate the fields
+            self.fields["scale"].initial = self.instance.scale_x
+            self.fields["selected_marker"].initial = self.instance.marker
+            self.fields["selected_object"].initial = self.instance.augmented
+            self.fields["selected_sound"].initial = self.instance.sound
+
+    def clean_position_x(self):
+        position_x = self.cleaned_data.get("position_x")
+        if position_x is not None:
+            if position_x < -2.0:
+                raise forms.ValidationError(_("Position X must be at least -2.0"))
+            if position_x > 2.0:
+                raise forms.ValidationError(_("Position X must not exceed 2.0"))
+        return position_x
+
+    def clean_position_y(self):
+        position_y = self.cleaned_data.get("position_y")
+        if position_y is not None:
+            if position_y < -2.0:
+                raise forms.ValidationError(_("Position Y must be at least -2.0"))
+            if position_y > 2.0:
+                raise forms.ValidationError(_("Position Y must not exceed 2.0"))
+        return position_y
+
+    def save(self, commit=True):
+        artwork = super().save(commit=False)
+        artwork.marker = self.cleaned_data["selected_marker"]
+        artwork.augmented = self.cleaned_data["selected_object"]
+        artwork.sound = self.cleaned_data["selected_sound"]
+        artwork.scale_x = self.cleaned_data["scale"]
+        artwork.scale_y = self.cleaned_data["scale"]
+        return artwork
+
+
+class ExhibitForm(forms.ModelForm):
+    artworks = forms.CharField(max_length=1000, required=False)
+    augmenteds = forms.CharField(max_length=1000, required=False)
+    sounds = forms.CharField(max_length=1000, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(ExhibitForm, self).__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
+        self.fields["slug"].widget.attrs["placeholder"] = _(
+            "Complete with your Exhibit URL here"
         )
-        self.fields["augmented_author"].widget.attrs["placeholder"] = _(
-            DEFAULT_AUTHOR_PLACEHOLDER
+
+    class Meta:
+        model = Exhibit
+        fields = ("name", "slug", "artworks", "augmenteds")
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": _("Exhibit Title")}),
+            "slug": forms.TextInput(
+                attrs={"placeholder": _("Complete with your Exhibit URL here")}
+            ),
+        }
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        qs = Exhibit.objects.filter(name=name)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError(
+                _(
+                    "This name is already being used. Please choose another name for your exhibit."
+                )
+            )
+        return name
+
+    def clean_slug(self):
+        slug = self.cleaned_data["slug"]
+        qs = Exhibit.objects.filter(slug=slug)
+        if self.instance.pk:
+            qs = qs.exclude(id=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError(
+                _(
+                    "That exhibit slug is already in use. Please choose another slug for your exhibit."
+                )
+            )
+        return slug
+
+    def clean_artworks(self):
+        artworks_str = self.cleaned_data.get("artworks", "")
+        if not artworks_str:
+            return []
+
+        artwork_ids = [id.strip() for id in artworks_str.split(",") if id.strip()]
+        try:
+            artwork_ids = [int(id) for id in artwork_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid artwork IDs provided."))
+
+        artworks = list(Artwork.objects.filter(id__in=artwork_ids).order_by("-id"))
+        return artworks
+
+    def clean_augmenteds(self):
+        augmenteds_str = self.cleaned_data.get("augmenteds", "")
+        if not augmenteds_str:
+            return []
+
+        augmented_ids = [id.strip() for id in augmenteds_str.split(",") if id.strip()]
+        try:
+            augmented_ids = [int(id) for id in augmented_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid object IDs provided."))
+
+        augmenteds = list(Object.objects.filter(id__in=augmented_ids).order_by("-id"))
+        return augmenteds
+
+    def clean_sounds(self):
+        sounds_str = self.cleaned_data.get("sounds", "")
+        if not sounds_str:
+            return []
+
+        sound_ids = [id.strip() for id in sounds_str.split(",") if id.strip()]
+        try:
+            sound_ids = [int(id) for id in sound_ids]
+        except ValueError:
+            raise forms.ValidationError(_("Invalid sound IDs provided."))
+
+        sounds = list(Sound.objects.filter(id__in=sound_ids).order_by("-id"))
+        return sounds
+
+    def clean(self):
+        cleaned_data = super().clean()
+        artworks = cleaned_data.get("artworks", [])
+        augmenteds = cleaned_data.get("augmenteds", [])
+
+        if not artworks and not augmenteds:
+            raise forms.ValidationError(
+                _("You must select at least one artwork or augmented object.")
+            )
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        exhibit = super().save(commit=False)
+
+        # Set exhibit_type based on augmented objects
+        artworks = self.cleaned_data.get("artworks", [])
+        augmenteds = self.cleaned_data.get("augmenteds", [])
+        sounds = self.cleaned_data.get("sounds", [])
+
+        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+
+        if commit:
+            exhibit.save()
+            exhibit.artworks.set(artworks)
+            exhibit.augmenteds.set(augmenteds)
+            exhibit.sounds.set(sounds)
+
+        return exhibit
+
+
+class SoundForm(forms.ModelForm):
+    class Meta:
+        model = Sound
+        fields = ("title", "file", "author")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["file"].widget.attrs.update(
+            {"accept": ".mp3,.ogg,.wav", "style": "height: auto;"}
         )
-        self.fields["title"].widget.attrs["placeholder"] = _("Artwork title")
-        self.fields["description"].widget.attrs["placeholder"] = _(
-            "Artwork description"
-        )
+
+    def clean_file(self):
+        file = self.cleaned_data.get("file")
+        if not file:
+            raise forms.ValidationError(_("This field is required."))
+
+        allowed_extensions = ["mp3", "ogg", "wav"]
+        extension = getattr(file, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
+            raise forms.ValidationError(
+                _("Only MP3, OGG, and WAV audio files are allowed.")
+            )
+
+        # Sound already exists, we need to check if it's being used by another user
+        if self.instance.pk:
+            if file_has_changed(file, self.instance.file):
+                if self.instance.is_used_by_other_user():
+                    raise forms.ValidationError(
+                        _(
+                            "This sound is being used by another user. You cannot change the source file."
+                        )
+                    )
+
+        return file
+
+    def save(self, *args, **kwargs):
+        if owner := kwargs.get("owner", None):
+            self.instance.owner = owner
+            del kwargs["owner"]
+
+        self.instance.file_size = self.instance.file.size
+        self.instance.file_name_original = self.instance.file.name.split("/")[-1]
+        self.instance.file_extension = self.instance.file.name.split(".")[-1].lower()
+
+        return super(SoundForm, self).save(*args, **kwargs)

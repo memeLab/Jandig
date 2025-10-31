@@ -5,135 +5,208 @@
     <section class="create-artwork container">
         <link rel="stylesheet" href="{{ static('css/warning.css') }}">
         {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="/static/css/marker-creation.css">
+        <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
+        <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
+        <link rel="stylesheet" href="{{ static('css/tooltip.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
         <h1 class="titArt">{{ _('Edit Jandig Artwork') if selected_marker else _('Create Jandig Artwork')}}</h1>
-        <button id="select-marker" class="select-btn">
-            {{ _('Select Marker') }}
-        </button>
-        <button id="select-object" class="select-btn">
-            {{ _('Select Object') }}
-        </button>
-        <div id="form-modal" class="modal">
-            <form name="creation-form" action="" method="post" enctype="multipart/form-data">
-                {{ csrf_input }}
+        
+        <form name="creation-form" action="" method="post" enctype="multipart/form-data">
+            {{ csrf_input }}
+            <div id="artwork-data">
+                <h2>{{ _('About your artwork') }}</h2>
+                <p class="upload-field">
+                    {{ form.visible_fields()[0] }}
+                    {{ form.visible_fields()[0].errors }}
+                </p>
+                <p class="upload-field">
+                    {{ form.visible_fields()[1] }}
+                    {{ form.visible_fields()[1].errors }}
+                </p>
+                
+            </div>
+            <h2>{{ _('Select the content') }}</h2>
+            <button id="select-marker" class="select-btn" type="button">
+                {{ _('Select Marker') }}
+            </button>
+
+            <input id="id_selected_marker" type="hidden" name="selected_marker" onchange="validateSubmit()" {% if selected_marker %} value="{{ selected_marker }}" {% endif %}>
+            {{ form.visible_fields()[4].errors }}
+            
+            <button id="select-object" class="select-btn" type="button">
+                {{ _('Select Object') }}
+            </button>
+
+            <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
+            {{ form.visible_fields()[5].errors }}
+
+            {# Disabled Section of Sounds in Artworks #}
+            {# Even though it is supported by our models, users are confused on uploads of sounds to artworks, we are disabling #}
+            {# <h2>{{ _('Select a Sound') }}</h2>
+            <button id="select-sound" class="select-btn" type="button">
+                        {{ _('Select a Sound') }}
+            </button>
+            <input id="id_selected_sound" type="hidden" name="selected_sound" onchange="validateSubmit()" {% if selected_sound %} value="{{ selected_sound }}" {% endif %}>
+            {{ form.visible_fields()[5].errors }} #}
+
+            <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select Marker (1/3)') }}</h4>
-
-                    <p id="existent-marker">
-                        {{ form.visible_fields()[4].as_hidden() }}
-                        {{ form.visible_fields()[4].errors }}
-                    </p>
-
-                    {% with repository_list = marker_list, element_type = 'marker', selected=selected_marker %}
-                        {% include "core/components/repository-list.jinja2" %}
+                    <h4 class="modal-title">{{ _('Select Marker') }}</h4>
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML" disabled="disabled"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> > </button>
+                    </div>
+                    {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
+                        {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
 
-                    <div class="form-options">
-                        <p>
-                            <input id="marker-agreement-chk" type="checkbox" name="agreement">
-                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
-                        </p>
-                    </div>
-
-                    <button id="next-object" type="button" class="select-btn next-btn" disabled>
-                        {{ _('Next') }}
-                    </button>
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                        {{ _('Okay') }}
+                    </a>
                 </div>
                 <div id="object-modal" class="tab">
                     
-                    <h4 class="modal-title">{{ _('Select Object (2/3)') }}</h4>
-                    <p id="existent-object">
-                        {{ form.visible_fields()[5].as_hidden() }}
-                        {{ form.visible_fields()[5].errors }}
-                    </p>
-
-                    {% with repository_list = object_list, element_type = 'object', selected=selected_object%}
-                        {% include "core/components/repository-list.jinja2" %}
-                    {% endwith%}
-
-                    <div class="form-options">
-                        <p>
-                            <input id="object-agreement-chk" type="checkbox" name="agreement">
-                            {{ _("I agree to share this content under CC BY-SA 4.0 and I'm aware that, once uploaded, I cannot remove it. ") }}
-                        </p>
+                    <h4 class="modal-title">{{ _('Select Object') }}</h4>
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML" disabled="disabled"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
                     </div>
-                    <button id="next-desc" type="button" class="select-btn next-btn" disabled="disabled">
-                        {{ _('Next') }}
-                    </button>
+                    {% with repository_list = object_list, element_type = 'object', htmx="false" %}
+                        {% include "core/components/item-list.jinja2" %}
+                    {% endwith %}
+
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                    </a>
                 </div>
-                <div id="description-modal" class="tab">
-                    <h4 class="modal-title">{{ _('About your artwork (3/3)') }}</h4>
-                    <p class="upload-field">
-                        {{ form.visible_fields()[6] }}
-                        {{ form.visible_fields()[6].errors }}
-                    </p>
-                    <p class="upload-field">
-                        {{ form.visible_fields()[7] }}
-                        {{ form.visible_fields()[7].errors }}
-                    </p>
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
+                <div id="sound-modal" class="tab">
+                    <h4 class="modal-title">{{ _('Select Sound') }}</h4>
+                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML" disabled="disabled"> < </button>
+                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                    </div>
+
+                    {% with repository_list = sound_list, element_type="sound", htmx="false"%}
+                        {% include "core/components/item-list.jinja2" %}
+                    {% endwith %}
+
+                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                        {{ _('Okay') }}
+                    </a>
                 </div>
-            </form>
-        </div>
+            </div>        
+            <h2>{{ _('Position the content') }}</h2>
+
+            <div id="edit_object_attributes">
+
+                <h3 id="scaleTitle">{{_("Adjust scale")}}
+                <span
+                    data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
+                    class="tooltip"
+                >?</span>
+                </h3>
+                        
+                {{ form.visible_fields()[6] }}
+                {{ form.visible_fields()[6].errors }}
+                <p>
+                    <span class="slider-label" id="scale-value">{{ scale }}</span>
+                </p>
+                <h2 id="positionTitle">{{_("Adjust position")}}
+                <span 
+                    data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
+                    class="tooltip"
+                >?</span>
+                </h2>
+
+                <div id="box-shadow-container">
+                    <div id="box-shadow"></div>
+                </div>
+                <h3>Horizontal:</h3>
+                {{ form.visible_fields()[2] }}
+                {{ form.visible_fields()[2].errors }}
+                <p>
+                    <span class="slider-label" id="x-position-value">{{ xposition }}</span>
+                </p>
+                <h3>Vertical:</h3>
+                {{ form.visible_fields()[3] }}
+                {{ form.visible_fields()[3].errors }}
+
+                <p>
+                    <span class="slider-label" id="y-position-value">{{ yposition }}</span>
+                </p>
+            </div>
+            <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
+        </form>
         <script>
-            function showTab(tabNumber){
-                let tabs = $('.tab');
-                tabs.hide();
-                $('#' + tabs[tabNumber].id).show();
+            // Scale slider functionality
+            var scale = document.getElementById("id_scale");
+            var display_scale = document.getElementById("scale-value");
+            display_scale.innerHTML = scale.value; // Display the default slider value
+
+            scale.oninput = function() {
+                display_scale.innerHTML = this.value;
             }
 
-            function checkAgreement(checkbox){
-                return checkbox.prop('checked') == true;
+            var position_x = document.getElementById("id_position_x");
+            var position_y = document.getElementById("id_position_y");
+            var display_position_X = document.getElementById("x-position-value");
+            var display_position_Y = document.getElementById("y-position-value");
+
+            display_position_X.innerHTML = position_x.value; // Display the default slider value
+            display_position_Y.innerHTML = position_y.value; // Display the default slider value
+            position_x.oninput = function() {
+                display_position_X.innerHTML = this.value;
+                updateBoxShadow();
+            }
+            position_y.oninput = function() {
+                display_position_Y.innerHTML = this.value;
+                updateBoxShadow();
+            }
+            
+            // Marker/Object position preview
+            window.onload = function() {
+                updateBoxShadow();
             }
 
-            function validateNextButton(condition, button) {
-                if(condition){
-                    button.prop('disabled', false);
-                }else{
-                    button.prop('disabled', true);
+            function updateBoxShadow() {
+                var horizontal_offset = document.getElementById("id_position_x").value * 100 * -1; // *100 to convert to pixels, -1 to invert the direction (ARToolkit uses inverted x axis)
+                var vertical_offset = document.getElementById("id_position_y").value * 100; // Convert to pixels
+
+                var box_shadow_container = document.getElementById("box-shadow-container");
+                var box_shadow = document.getElementById("box-shadow");
+
+                if(vertical_offset > 0) {
+                    box_shadow_container.style.alignItems = "flex-start";
+                } else {
+                    box_shadow_container.style.alignItems = "flex-end";
                 }
-            } 
 
+                var container_height = 100+Math.abs(vertical_offset);
+                box_shadow_container.style.height = `${container_height}px`;
+
+                box_shadow.style.boxShadow = `${horizontal_offset}px ${vertical_offset}px #d3d3d3`;
+            }
+
+            // Validate submit button based on selected marker and object
             function validateSubmit() {
-                let selected_marker = $("#id_existent_marker");
-                let selected_object = $("#id_existent_object");
-                let unchecked_inputs = $('input[name="agreement"]').not(':checked').length;
-
-                if(unchecked_inputs == 0 && selected_object[0].value && selected_marker[0].value){
+                let selected_marker = $("#id_selected_marker");
+                let selected_object = $("#id_selected_object");
+                
+                if(selected_object[0].value && selected_marker[0].value){
                     $('input[type="submit"]').prop('disabled', false);
                 }else{
                     $('input[type="submit"]').prop('disabled', true);
                 }
             }
+            validateSubmit();
 
-            function validateMarkerTab(){
-                let selected_marker = $("#id_existent_marker");
-                let checkbox = $("#marker-agreement-chk");
-                let nextButton = $('#next-object');
-
-                let tabCondition = checkAgreement(checkbox) && selected_marker[0].value > 0;
-
-                validateNextButton(tabCondition, nextButton);
-                validateSubmit();
-            }
-
-            function validateObjectTab(){
-                let checkbox = $("#object-agreement-chk");
-                let nextButton = $('#next-desc');
-                let selected_object = $("#id_existent_object");
-
-                let tabCondition = checkAgreement(checkbox) && selected_object[0].value > 0;
-
-                validateNextButton(tabCondition, nextButton);
-                validateSubmit();
-            }
-
-            function validateTabs(){
-                validateMarkerTab();
-                validateObjectTab();
+            // Deal with modal tabs visibility
+            function showTab(tabNumber){
+                let tabs = $('.tab');
+                tabs.hide();
+                $('#' + tabs[tabNumber].id).show();
             }
 
             $('#select-marker').click(function(){
@@ -145,35 +218,122 @@
                 $('#form-modal').modal({showClose: false})
                 showTab(1);
             })
-
-            $('#next-object').click(function(){
-                showTab(1);
-            })
-
-            $('#next-desc').click(function(){
+            $('#select-sound').click(function(){
+                $('#form-modal').modal({showClose: false})
                 showTab(2);
-                validateSubmit();
             })
+            page_marker = 1;
+            function get_page_marker(increment) {
+                actual_page = page_marker + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_marker = actual_page;
+                previous_button = document.getElementById("previous-button-marker");
+                next_button = document.getElementById("next-button-marker");
+                if (page_marker == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_marker == {{total_marker_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
 
-            $('#marker-agreement-chk').click(function(){
-                validateMarkerTab();
+                return page_marker
+            }
+            page_object = 1;
+            function get_page_object(increment) {
+                actual_page = page_object + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_object = actual_page;
+                previous_button = document.getElementById("previous-button-object");
+                next_button = document.getElementById("next-button-object");
+                if (page_object == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_object == {{total_object_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
+
+                return page_object
+            }
+            page_sound = 1;
+            function get_page_sound(increment) {
+                actual_page = page_sound + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_sound = actual_page;
+                previous_button = document.getElementById("previous-button-sound");
+                next_button = document.getElementById("next-button-sound");
+                if (page_sound == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_sound == {{total_sound_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
+
+                return page_sound
+            }
+            document.body.addEventListener("htmx:afterSwap", function(evt){
+                update_selected_items();
+                enable_selection();
             });
+            selected_marker = "{{ selected_marker|default('', true) }}";
+            selected_object = "{{ selected_object|default('', true) }}";
+            selected_sound = "{{ selected_sound|default('', true) }}";
 
-            $('#object-agreement-chk').click(function(){
-                validateObjectTab();
+            function update_selected_items(){
+                id_marker = "#marker-" + selected_marker;
+                $('#existent-marker > input').val(selected_marker);
+                $(id_marker).css("border-bottom","3px solid #a6a6a6");
+
+                id_object = "#object-" + selected_object;
+                $('#existent-object > input').val(selected_object);
+                $(id_object).css("border-bottom","3px solid #a6a6a6");
+
+                id_sound = "#sound-" + selected_sound;
+                $('#existent-sound > input').val(selected_sound);
+                $(id_sound).css("border-bottom","3px solid #a6a6a6");
+            }
+            update_selected_items();
+
+            function enable_selection(){
+                $('.repository-item').click(function(){
+                    let elementId = $(this).attr('id');
+                    let sectionId = $(this).parent().attr('id');
+
+                    // reset background
+                    $(this).parent().children().css('border-bottom', 'none')
+                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    id = elementId.split("-")[1];
+                    if(sectionId == 'repo-marker'){
+                        $('#id_selected_marker').val(id);
+                        selected_marker = id;
+                    }else if(sectionId == 'repo-object'){
+                        $('#id_selected_object').val(id);
+                        selected_object = id;
+                    }else{
+                        $('#id_selected_sound').val(id);
+                        selected_sound = id;
+                    }
             });
-
-            {% if selected_marker %}
-                $('#marker-agreement-chk').prop("checked", true);
-                $('input[type="submit"]').prop('disabled', false);
-            {% endif %}
-            {% if selected_object %}
-                $('input[type="submit"]').prop('disabled', false);
-                $('#object-agreement-chk').prop("checked", true);
-            {% endif %}
-
-            validateTabs();
-
+            }
+            enable_selection();
+            
         </script>
     </section>
 {% endblock %}

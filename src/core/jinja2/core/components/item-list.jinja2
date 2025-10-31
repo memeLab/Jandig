@@ -1,11 +1,11 @@
-{% if element_type == "exhibit"%}   
+{% if element_type == "ar-exhibit" or element_type == "mr-exhibit" %}   
     <section id="repo-{{element_type}}" class="exhibit-list flex">
 {% else %}
     <section id="repo-{{element_type}}" class="repository-list flex">
 {% endif %} 
     {% for element in repository_list %}
         <div 
-            {% if element_type != "exhibit" %} 
+            {% if element_type != "ar-exhibit" and element_type != "mr-exhibit" and htmx != "false" %} 
                 hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
                 hx-target="#modal" 
                 hx-trigger="click"

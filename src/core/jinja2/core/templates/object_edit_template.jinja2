@@ -5,9 +5,12 @@
             <source src="{{ widget.value.url }}" type="video/{{ widget.value.url.split('.')[-1] }}">
         </video>
     {% elif widget.value.url.endswith(".glb") %}
-        {#TODO: 3D model preview #}
-        <p>{{ _("3D model preview not implemented yet.") }}</p>
-        <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
+        {% if widget.thumbnail %}
+            <img src="{{ widget.thumbnail.url }}" alt="{{ widget.name }} thumbnail">
+        {% else %}
+            <p>{{ _("Preview is not available") }}</p>
+        {% endif %}
+            <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% else %}
         <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% endif %}
@@ -20,4 +23,5 @@
             {% endif %}
         {% endif %}
     {% endfor %}
->
+style="height: auto;">
+<p style="font-size: small; text-align: left; padding: 0 10px">(.gif, .mp4, .webm, .glb)</p>

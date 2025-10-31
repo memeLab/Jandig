@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "2.0.0"
+version = "2.0.7"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -55,6 +55,7 @@ addopts="-n4"
 
 [tool.coverage.run]
 relative_files=true
+omit=["manage.py","asgi.py","wsgi.py","src/core/migrations/*.py", "src/users/migrations/*.py","src/blog/migrations/*.py", "src/ui_tests/*", "admin.py"]
 
 [tool.ruff]
 exclude = [

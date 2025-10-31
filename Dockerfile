@@ -17,7 +17,8 @@ RUN apt-get update && \
       gettext \
       docutils-common \
       curl \
-      wget \ 
+      wget \
+      git \
   && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${dpkgArch}" -O /usr/local/bin/tini \
   && chmod +x /usr/local/bin/tini && tini --version \ 
@@ -67,6 +68,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 RUN uv run playwright install chromium --with-deps
+
+RUN groupadd -g 1000 jandig && useradd -u 1000 -g 1000 -r -m -d /home/jandig jandig
+RUN chown -R jandig:jandig /jandig
+USER jandig
+
 WORKDIR /jandig
 
-CMD ["/bin/bash", "-c", "/jandig/create_buckets.sh && /jandig/run.sh"]
+CMD ["/bin/bash", "-c", "/jandig/etc/create_buckets.sh && /jandig/run.sh"]

@@ -1,12 +1,9 @@
-import os
-
-from django.conf import settings
-from django.core.files.base import ContentFile
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 
 from src.core.tests.factory import ArtworkFactory, ObjectFactory
+from src.core.tests.utils import get_example_object
 from src.users.tests.factory import ProfileFactory, UserFactory
 from users.models import Profile, User
 
@@ -26,23 +23,11 @@ class TestObjectEdit(TestCase):
         )
         self.profile = Profile.objects.get(user=self.user)
 
-    def get_example_object(self, filename):
-        return ContentFile(
-            open(
-                os.path.join(
-                    os.path.join(settings.ROOT_DIR + "collection/", "objects/"),
-                    filename,
-                ),
-                "rb",
-            ).read(),
-            name=filename,
-        )
-
     def get_example_object1(self):
-        return self.get_example_object("antipodas.gif")
+        return get_example_object("antipodas.gif")
 
     def get_example_object2(self):
-        return self.get_example_object("temaki.gif")
+        return get_example_object("temaki.gif")
 
     def test_edit_object_unauthenticated(self):
         """Test that an unauthenticated user cannot access the edit object page."""
@@ -56,9 +41,7 @@ class TestObjectEdit(TestCase):
         self.client.login(username=self.username, password=self.password)
         obj = ObjectFactory(
             title="Test Image",
-            source="objects/test.gif",
-            scale="2 1",
-            position="0 1 0",
+            source=self.get_example_object1(),
             owner=self.profile,
         )
         url = reverse("edit-object", query={"id": obj.id})
@@ -69,9 +52,7 @@ class TestObjectEdit(TestCase):
         """Test that a user cannot edit an object they do not own."""
         obj = ObjectFactory(
             title="Test Image",
-            source="objects/test.gif",
-            scale="2 1",
-            position="0 1 0",
+            source=self.get_example_object1(),
             owner=self.profile,
         )
 
@@ -100,8 +81,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Old Title",
             source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
             owner=self.profile,
             author="Old Author",
         )
@@ -111,8 +90,6 @@ class TestObjectEdit(TestCase):
             {
                 "title": "New Title",
                 "source": obj.source,
-                "scale": obj.scale.split(" ")[0],
-                "position": obj.position,
                 "author": obj.author,
             },
         )
@@ -124,8 +101,6 @@ class TestObjectEdit(TestCase):
         # Compare two files by size and content
         assert obj.source.size == self.get_example_object1().size
         assert obj.source.read() == self.get_example_object1().read()
-        assert obj.scale == "2.00 2.00"
-        assert obj.position == "0 1 0"
         assert obj.author == "Old Author"
         assert obj.owner == self.profile
 
@@ -136,8 +111,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Old Title",
             source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
             owner=self.profile,
             author="Old Author",
         )
@@ -147,8 +120,6 @@ class TestObjectEdit(TestCase):
             {
                 "title": obj.title,
                 "source": obj.source,
-                "scale": obj.scale.split(" ")[0],
-                "position": obj.position,
                 "author": "New Author",
             },
         )
@@ -162,8 +133,6 @@ class TestObjectEdit(TestCase):
         assert obj.source.size == self.get_example_object1().size
         assert obj.source.read() == self.get_example_object1().read()
 
-        assert obj.scale == "2.00 2.00"
-        assert obj.position == "0 1 0"
         assert obj.owner == self.profile
 
     def test_edit_object_source(self):
@@ -173,8 +142,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Old Title",
             source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
             owner=self.profile,
             author="Old Author",
         )
@@ -185,82 +152,10 @@ class TestObjectEdit(TestCase):
             {
                 "title": obj.title,
                 "source": new_source,
-                "scale": obj.scale.split(" ")[0],
-                "position": obj.position,
                 "author": obj.author,
             },
         )
         assert response.status_code == status.HTTP_302_FOUND
-
-    def test_edit_object_scale(self):
-        """Test that the object scale can be edited."""
-        self.client.login(username=self.username, password=self.password)
-
-        obj = ObjectFactory(
-            title="Old Title",
-            source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
-            owner=self.profile,
-            author="Old Author",
-        )
-        url = reverse("edit-object", query={"id": obj.id})
-        response = self.client.post(
-            url,
-            {
-                "title": obj.title,
-                "source": obj.source,
-                "scale": "3.00",
-                "position": obj.position,
-                "author": obj.author,
-            },
-        )
-        assert (
-            response.status_code == status.HTTP_302_FOUND
-        )  # Redirect after successful edit
-        obj.refresh_from_db()
-        assert obj.scale == "3.00 3.00"
-        assert obj.title == "Old Title"
-        # Compare two files by size and content
-        assert obj.source.size == self.get_example_object1().size
-        assert obj.source.read() == self.get_example_object1().read()
-        assert obj.position == "0 1 0"
-        assert obj.author == "Old Author"
-        assert obj.owner == self.profile
-
-    def test_edit_object_position(self):
-        """Test that the object position can be edited."""
-        self.client.login(username=self.username, password=self.password)
-
-        obj = ObjectFactory(
-            title="Old Title",
-            source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
-            owner=self.profile,
-            author="Old Author",
-        )
-        url = reverse("edit-object", query={"id": obj.id})
-        response = self.client.post(
-            url,
-            {
-                "title": obj.title,
-                "source": obj.source,
-                "scale": obj.scale.split(" ")[0],
-                "position": "1 2 3",
-                "author": obj.author,
-            },
-        )
-        assert response.status_code == status.HTTP_302_FOUND
-        obj.refresh_from_db()
-        assert obj.position == "1 2 3"
-        assert obj.title == "Old Title"
-        # Compare two files by size and content
-        assert obj.source.size == self.get_example_object1().size
-        assert obj.source.read() == self.get_example_object1().read()
-        assert obj.scale == "2.00 2.00"
-        assert obj.author == "Old Author"
-        assert obj.owner == self.profile
 
     def test_edit_object_if_used_by_self(self):
         """Test that an object can be edited if it is used by the user."""
@@ -269,8 +164,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Test Image",
             source=self.get_example_object1(),
-            scale="2 1",
-            position="0 1 0",
             owner=self.profile,
         )
         # Simulate the object being used by the user
@@ -290,8 +183,6 @@ class TestObjectEdit(TestCase):
             {
                 "title": "new title",
                 "source": self.get_example_object2(),
-                "scale": "3.0",
-                "position": "3 2 1",
                 "author": "new author",
             },
         )
@@ -301,8 +192,6 @@ class TestObjectEdit(TestCase):
         assert obj.title == "new title"
         assert obj.source.size == self.get_example_object2().size
         assert obj.source.read() == self.get_example_object2().read()
-        assert obj.scale == "3.00 3.00"
-        assert obj.position == "3 2 1"
         assert obj.author == "new author"
         assert obj.owner == self.profile
 
@@ -311,8 +200,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Test Image",
             source=self.get_example_object1(),
-            scale="2.00 2.00",
-            position="0 1 0",
             owner=self.profile,
             author="Old Author",
         )
@@ -320,7 +207,7 @@ class TestObjectEdit(TestCase):
         # Simulate the object being used by another user
         another_user = UserFactory(username="anotheruser", password="anotherpassword")
         another_profile = ProfileFactory(user=another_user)
-        _ = ArtworkFactory(
+        another_user_artwork = ArtworkFactory(
             title="Test Artwork",
             author=another_profile,
             augmented=obj,
@@ -335,8 +222,6 @@ class TestObjectEdit(TestCase):
             {
                 "title": obj.title,
                 "source": self.get_example_object2(),
-                "scale": obj.scale.split(" ")[0],
-                "position": obj.position,
                 "author": obj.author,
             },
         )
@@ -345,8 +230,25 @@ class TestObjectEdit(TestCase):
         assert obj.source.size == self.get_example_object1().size
         assert obj.source.read() == self.get_example_object1().read()
         assert obj.title == "Test Image"
-        assert obj.scale == "2.00 2.00"
-        assert obj.position == "0 1 0"
+        assert obj.author == "Old Author"
+        assert obj.owner == self.profile
+
+        # After freeing the object, the user should be able to edit it
+        another_user_artwork.delete()
+
+        response = self.client.post(
+            url,
+            {
+                "title": obj.title,
+                "source": self.get_example_object2(),
+                "author": obj.author,
+            },
+        )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.source.size == self.get_example_object2().size
+        assert obj.source.read() == self.get_example_object2().read()
+        assert obj.title == "Test Image"
         assert obj.author == "Old Author"
         assert obj.owner == self.profile
 
@@ -356,8 +258,6 @@ class TestObjectEdit(TestCase):
         obj = ObjectFactory(
             title="Test Image",
             source=self.get_example_object1(),
-            scale="2 1",
-            position="0 1 0",
             owner=self.profile,
         )
 
@@ -380,8 +280,6 @@ class TestObjectEdit(TestCase):
             {
                 "title": "new title",
                 "source": obj.source,
-                "scale": "3.0",
-                "position": "3 2 1",
                 "author": "new author",
             },
         )
@@ -390,7 +288,5 @@ class TestObjectEdit(TestCase):
         assert obj.title == "new title"
         assert obj.source.size == self.get_example_object1().size
         assert obj.source.read() == self.get_example_object1().read()
-        assert obj.scale == "3.00 3.00"
-        assert obj.position == "3 2 1"
         assert obj.author == "new author"
         assert obj.owner == self.profile

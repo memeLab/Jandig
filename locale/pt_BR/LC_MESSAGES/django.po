@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-19 19:49+0000\n"
+"POT-Creation-Date: 2025-10-23 19:17+0000\n"
 "PO-Revision-Date: 2020-02-17 18:13-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,36 +18,87 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: src/config/settings.py:212
+#: src/config/settings.py:219
 msgid "English"
 msgstr "Inglês"
 
-#: src/config/settings.py:213
+#: src/config/settings.py:220
 msgid "Brazilian Portuguese"
 msgstr "Português do Brasil"
 
-#: src/config/settings.py:214
+#: src/config/settings.py:221
 msgid "European Spanish"
 msgstr "Espanhol Europeu"
 
-#: src/core/forms.py:38
+#: src/core/forms.py:76
+msgid "declare different author name"
+msgstr "declarar outro autor"
+
+#: src/core/forms.py:79
+msgid "Object's title"
+msgstr "Título do Objeto"
+
+#: src/core/forms.py:92
+msgid "Only GIF images, MP4, WebM videos, and GLB files are allowed."
+msgstr "Apenas imagens GIF, vídeos MP4, WebM e arquivos GLB são permitidos."
+
+#: src/core/forms.py:100
+msgid ""
+"This object is being used by another user. You cannot change the source file."
+msgstr ""
+"Este objeto está sendo usado por outro usuário. Você não pode alterar o "
+"arquivo principal."
+
+#: src/core/forms.py:115 src/core/forms.py:389
+msgid "Only MP3, OGG, and WAV audio files are allowed."
+msgstr "Apenas arquivos de áudio MP3, OGG e WAV são permitidos."
+
+#: src/core/forms.py:131
+msgid "Add inner border"
+msgstr "Adicionar borda interna"
+
+#: src/core/forms.py:139
+msgid "Marker's title"
+msgstr "Título do Marcador"
+
+#: src/core/forms.py:197
+msgid "Artwork title"
+msgstr "Título da Obra"
+
+#: src/core/forms.py:200
+msgid "Artwork description"
+msgstr "Descrição da Obra"
+
+#: src/core/forms.py:224
+msgid "Position X must be at least -2.0"
+msgstr "Posição X deve ser no mínimo -2.0"
+
+#: src/core/forms.py:226
+msgid "Position X must not exceed 2.0"
+msgstr "Posição X não deve exceder 2.0"
+
+#: src/core/forms.py:233
+msgid "Position Y must be at least -2.0"
+msgstr "Posição Y deve ser no mínimo -2.0"
+
+#: src/core/forms.py:235
+msgid "Position Y must not exceed 2.0"
+msgstr "Posição Y não deve exceder 2.0"
+
+#: src/core/forms.py:255 src/core/forms.py:264
 msgid "Exhibit Title"
 msgstr "Título da Exposição"
 
-#: src/core/forms.py:40
+#: src/core/forms.py:257 src/core/forms.py:266
 msgid "Complete with your Exhibit URL here"
 msgstr "Complete sua URL de exibição aqui"
 
-#: src/core/forms.py:51
+#: src/core/forms.py:278
 msgid ""
 "This name is already being used. Please choose another name for your exhibit."
 msgstr "Este nome de exibição já está em uso. Por favor, escolha outro nome."
 
-#: src/core/forms.py:60
-msgid "Url can't contain spaces or special characters"
-msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
-
-#: src/core/forms.py:68
+#: src/core/forms.py:291
 msgid ""
 "That exhibit slug is already in use. Please choose another slug for your "
 "exhibit."
@@ -55,118 +106,94 @@ msgstr ""
 "Este link de exibição já está sendo utilizado. Por favor escolha outro link "
 "para sua exibição."
 
-#: src/core/forms.py:90
-msgid "Scale (0.1 to 5.0)"
-msgstr "Escala (0.1 a 5.0)"
+#: src/core/forms.py:305
+msgid "Invalid artwork IDs provided."
+msgstr "IDs de obra inválidos fornecidos."
 
-#: src/core/forms.py:92
-#, python-format
-msgid ""
-"Enter a value from 0.1 (reduce object to 10%% its size) to 5.0 (increase "
-"object to 500%% its size)"
-msgstr ""
-"Digite um valor de 0.1 (reduzir objeto para 10%% do seu tamanho) a 5.0 "
-"(aumentar objeto para 500%% do seu tamanho)"
+#: src/core/forms.py:319
+msgid "Invalid object IDs provided."
+msgstr "IDs de objeto inválidos fornecidos."
 
-#: src/core/forms.py:102 src/core/forms.py:172
-msgid "browse file"
-msgstr "procurar arquivo"
+#: src/core/forms.py:333
+msgid "Invalid sound IDs provided."
+msgstr "IDs de som inválidos fornecidos."
 
-#: src/core/forms.py:105
-msgid "declare different author name"
-msgstr "declarar outro autor"
+#: src/core/forms.py:345
+msgid "You must select at least one artwork or augmented object."
+msgstr "Você deve selecionar pelo menos uma obra ou objeto aumentado."
 
-#: src/core/forms.py:108
-msgid "Object's title"
-msgstr "Título do Objeto"
-
-#: src/core/forms.py:109
-msgid "0.1 ~ 5.0"
-msgstr "0.1 ~ 5.0"
-
-#: src/core/forms.py:120
+#: src/core/forms.py:383
 msgid "This field is required."
 msgstr "Este campo é obrigatório."
 
-#: src/core/forms.py:126
-msgid "Only GIF images, MP4, and WebM videos are allowed."
-msgstr "Apenas imagens GIF, vídeos MP4 e WebM são permitidos."
-
-#: src/core/forms.py:140
+#: src/core/forms.py:398
 msgid ""
-"This object is being used by another user. You cannot change the source file."
+"This sound is being used by another user. You cannot change the source file."
 msgstr ""
-"Este objeto está sendo usado por outro usuário. Você não pode alterar o arquivo principal."
+"Este som está sendo usado por outro usuário. Você não pode alterar o arquivo "
+"principal."
 
-#: src/core/forms.py:149
-msgid "Scale must be between 0.1 and 5.0"
-msgstr "Escala deve estar entre 0.1 e 5.0"
+#: src/core/models.py:27
+msgid "Used in"
+msgstr "Usado em"
 
-#: src/core/forms.py:166
-msgid "Add inner border"
-msgstr "Adicionar borda interna"
-
-#: src/core/forms.py:177
-msgid "Marker's title"
-msgstr "Título do Marcador"
-
-#: src/core/forms.py:229
-msgid "Artwork title"
-msgstr "Título da Obra"
-
-#: src/core/forms.py:231
-msgid "Artwork description"
-msgstr "Descrição da Obra"
-
-#: src/core/models.py:56
+#: src/core/models.py:57
 msgid "edit"
 msgstr "editar"
 
-#: src/core/models.py:64
+#: src/core/models.py:65
 msgid "delete"
 msgstr "excluir"
 
-#: src/core/models.py:75 src/core/models.py:360
-msgid "Used in"
-msgstr " Usado em "
-
-#: src/core/models.py:77
+#: src/core/models.py:78 src/core/models.py:159
 msgid "artworks"
 msgstr "obras"
 
-#: src/core/models.py:78
+#: src/core/models.py:79
 msgid "and in "
 msgstr "e em "
 
-#: src/core/models.py:80
+#: src/core/models.py:81 src/core/models.py:163
 msgid "exhibits"
 msgstr "exposições"
 
-#: src/core/models.py:362
+#: src/core/models.py:161
+msgid "objects"
+msgstr "objetos"
+
+#: src/core/models.py:442
 msgid "Exhibits"
 msgstr "Exposições"
 
-#: src/core/models.py:394
+#: src/core/models.py:474
 msgid "preview"
 msgstr "visualizar"
 
-#: src/core/models.py:433
-msgid "Created by "
-msgstr "Criado por "
-
-#: src/core/models.py:437
+#: src/core/models.py:537
 msgid "Artwork(s)"
 msgstr "Obra(s)"
 
-#: src/core/models.py:445
+#: src/core/models.py:547
+msgid "Object(s)"
+msgstr "Objeto(s)"
+
+#: src/core/models.py:556
+msgid "Sound(s)"
+msgstr "Som(s)"
+
+#: src/core/models.py:563
+msgid "Created by "
+msgstr "Criado por "
+
+#: src/core/models.py:569
 msgid "See this Exhibition"
 msgstr "Ver essa Exposição"
 
-#: src/users/forms.py:23 src/users/forms.py:86
+#: src/users/forms.py:23 src/users/forms.py:82
 msgid "Your e-mail address"
 msgstr "Seu endereço de e-mail"
 
-#: src/users/forms.py:28 src/users/forms.py:90
+#: src/users/forms.py:28 src/users/forms.py:86
 msgid "Your username"
 msgstr "Seu nome de usuário"
 
@@ -178,7 +205,7 @@ msgstr "email"
 msgid "chosen username"
 msgstr "nome de usuário escolhido"
 
-#: src/users/forms.py:36 src/users/forms.py:133
+#: src/users/forms.py:36 src/users/forms.py:129
 msgid "password"
 msgstr "senha"
 
@@ -186,59 +213,59 @@ msgstr "senha"
 msgid "confirm password"
 msgstr "confirmar senha"
 
-#: src/users/forms.py:50
+#: src/users/forms.py:46
 msgid "E-mail taken"
 msgstr "E-mail já existente"
 
-#: src/users/forms.py:58
+#: src/users/forms.py:54
 msgid "Old Password"
 msgstr "Senha antiga"
 
-#: src/users/forms.py:59
+#: src/users/forms.py:55
 msgid "New Password"
 msgstr "Nova senha"
 
-#: src/users/forms.py:61
+#: src/users/forms.py:57
 msgid "New Password Again"
 msgstr "Nova senha novamente"
 
-#: src/users/forms.py:79
+#: src/users/forms.py:75
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/users/forms.py:80
+#: src/users/forms.py:76
 msgid "Username"
 msgstr "Usuário"
 
-#: src/users/forms.py:81 src/users/forms.py:97
+#: src/users/forms.py:77 src/users/forms.py:93
 msgid "Personal Bio / Description"
 msgstr "Biografia / Descrição"
 
-#: src/users/forms.py:82 src/users/forms.py:101
+#: src/users/forms.py:78 src/users/forms.py:97
 msgid "Personal Website"
 msgstr "Site pessoal"
 
-#: src/users/forms.py:113
+#: src/users/forms.py:109
 msgid "Username already in use"
 msgstr "Nome de usuário já em uso"
 
-#: src/users/forms.py:124
+#: src/users/forms.py:120
 msgid "Email address must be unique"
 msgstr "O endereço de e-mail deve ser único"
 
-#: src/users/forms.py:132
+#: src/users/forms.py:128
 msgid "username / email"
 msgstr "nome de usuário / email"
 
-#: src/users/forms.py:147
+#: src/users/forms.py:140
 msgid "Username/email not found"
 msgstr "Nome de usuário / email não encontrado"
 
-#: src/users/forms.py:157
+#: src/users/forms.py:150
 msgid "Wrong password!"
 msgstr "Senha errada"
 
-#: src/users/views.py:74
+#: src/users/views.py:80
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly. If you "
@@ -250,10 +277,6 @@ msgstr ""
 "você não receber um e-mail, certifique-se de inserir o endereço que você tem "
 "registrado e verifique sua pasta de spam."
 
-#: src/blog/jinja2/blog/category.jinja2:8 src/blog/jinja2/blog/detail.jinja2:5
-msgid "< Back to Blog"
-msgstr "Página inicial"
-
 #: src/blog/jinja2/blog/clipping.jinja2:12
 #: src/core/jinja2/core/useful_links.jinja2:15
 msgid "Clipping"
@@ -261,7 +284,7 @@ msgstr "Clipping"
 
 #: src/blog/jinja2/blog/clipping.jinja2:14
 msgid "The content below is in the original languages."
-msgstr "Os conteúdos abaixo estão em suas linguas originais"
+msgstr "Os conteúdos abaixo estão em suas línguas originais."
 
 #: src/blog/jinja2/blog/clipping.jinja2:22
 msgid "View as PDF"
@@ -275,9 +298,13 @@ msgstr "Ver como JPG"
 msgid "View File"
 msgstr "Ver Arquivo"
 
+#: src/blog/jinja2/blog/detail.jinja2:5
+msgid "< Back to Blog"
+msgstr "< De volta ao Blog"
+
 #: src/blog/jinja2/blog/detail.jinja2:24
 msgid "Back to Top"
-msgstr "Página inicial"
+msgstr "Voltar ao topo"
 
 #: src/blog/jinja2/blog/index.jinja2:12
 #: src/core/jinja2/core/useful_links.jinja2:12
@@ -296,7 +323,23 @@ msgstr "Ver mais"
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 
-#: src/core/jinja2/core/collection.jinja2:55
+#: src/core/jinja2/core/collection.jinja2:27
+msgid "Jandig AR Exhibits"
+msgstr "Exposições AR Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:29
+msgid "Jandig MR Exhibits"
+msgstr "Exposições MR Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:39
+msgid "All AR Exhibits"
+msgstr "Todas as Exposições AR"
+
+#: src/core/jinja2/core/collection.jinja2:41
+msgid "All MR Exhibits"
+msgstr "Todas as Exposições MR"
+
+#: src/core/jinja2/core/collection.jinja2:71
 msgid "We found no content on your Collection, try uploading an object."
 msgstr "Não encontramos nenhum objeto por aqui :( Tente fazer upload."
 
@@ -321,7 +364,7 @@ msgstr ""
 
 #: src/core/jinja2/core/community.jinja2:12
 msgid "Know More"
-msgstr "Entenda"
+msgstr "Saiba mais"
 
 #: src/core/jinja2/core/community.jinja2:14
 msgid ""
@@ -329,7 +372,7 @@ msgid ""
 "visualize works through augmented reality in urban space. This is a "
 "collaborative digital art project that proposes the creation of Temporary "
 "Autonomous Zones (TAZes) in each space in which it is installed. These TAZes "
-"are formed through markers spread across a space by artists and the public – "
+"are formed through markers spread across a space by artists and the public - "
 "who thus become co-creators of that experience. Users interact with markers, "
 "using mobile devices to open windows in the real world to view digital "
 "creations (provided under a Creative Commons license)"
@@ -339,7 +382,7 @@ msgstr ""
 "urbano. Trata-se de um projeto colaborativo de arte digital que propõe a "
 "criação de Zonas Autônomas Temporárias (TAZes) em cada espaço em que é "
 "instalado. Essas TAZes são formadas através de marcadores espalhados por um "
-"espaço por artistas e pelo público – que assim torna-se co-criador daquela "
+"espaço por artistas e pelo público - que assim torna-se co-criador daquela "
 "experiência. Os usuários interagem com marcadores, utilizando dispositivos "
 "móveis para abrir janelas no mundo real para visualizar criações digitais "
 "(cedidas através de licença Creative Commons)."
@@ -368,7 +411,7 @@ msgstr ""
 "Cada exposição é feita a partir da disposição de diversos marcadores, que "
 "utilizam como suporte adesivos, imagens de stencil, de carimbos, ou outras, "
 "em diferentes tamanhos. Esses suportes são também entregues ao público que "
-"circulam pelo espaço, de modo que possam fazer interferências locais e que "
+"circula pelo espaço, de modo que possam fazer interferências locais e que "
 "seja possível “viralizar” os marcadores enquanto a exposição estiver "
 "disponível, deixando rastros e proporcionando interações entre os "
 "participantes/visitantes."
@@ -379,10 +422,10 @@ msgid ""
 "public must point their devices at the markers, so that the Jandig platform "
 "viewer can read them and show the content in augmented reality."
 msgstr ""
-"Para enxergar através das “janelas” e ver as imagens fabulosas o que elas "
+"Para enxergar através das “janelas” e ver as imagens fabulosas que elas "
 "revelam, o público deverá apontar seus dispositivos para os marcadores, para "
-"que o visualizador da plataforma Jandig ufaça a leitura dos mesmos e mostre "
-"o conteúdo em realidade aumentada."
+"que o visualizador da plataforma Jandig faça a leitura dos mesmos e mostre o "
+"conteúdo em realidade aumentada."
 
 #: src/core/jinja2/core/community.jinja2:26
 msgid ""
@@ -401,7 +444,7 @@ msgstr ""
 "consideração na produção e aplicação dos marcadores."
 
 #: src/core/jinja2/core/edit-marker.jinja2:9
-#: src/core/jinja2/core/upload-object.jinja2:9
+#: src/core/jinja2/core/upload-object.jinja2:15
 msgid "Edit object"
 msgstr "Editar objeto"
 
@@ -419,8 +462,9 @@ msgstr ""
 
 #: src/core/jinja2/core/edit-marker.jinja2:26
 #: src/core/jinja2/core/exhibit_select.jinja2:28
-#: src/core/jinja2/core/upload-marker.jinja2:57
-#: src/core/jinja2/core/upload-object.jinja2:80
+#: src/core/jinja2/core/upload-marker.jinja2:61
+#: src/core/jinja2/core/upload-object.jinja2:87
+#: src/core/jinja2/core/upload-sound.jinja2:55
 #: src/users/jinja2/users/login.jinja2:46
 #: src/users/jinja2/users/password-change.jinja2:26
 #: src/users/jinja2/users/profile-edit.jinja2:36
@@ -428,70 +472,122 @@ msgstr ""
 msgid "Submit"
 msgstr "Enviar"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:13
-msgid "Edit Jandig Exhibition"
-msgstr "Editar Exposição Jandig"
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:13
+msgid "Edit AR Exhibition"
+msgstr "Editar Exposição AR"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:15
-msgid "Create Jandig Exhibition"
-msgstr "Criar Exposição Jandig"
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:15
+#: src/users/jinja2/users/components/createbox.jinja2:19
+msgid "Create AR Exhibition"
+msgstr "Criar Exposição AR"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:18
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:20
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:20
+msgid "About your Exhibit"
+msgstr "Sobre sua Exposição"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:22
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:22
+msgid "Exhibit Name"
+msgstr "Título da Exposição"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:27
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:27
+msgid "Exhibit Link"
+msgstr "Link da Exposição"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:28
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:28
+msgid "Your exhibit URL will look like this"
+msgstr "Sua URL de exposição ficará assim:"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:37
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:38
+#: src/core/jinja2/core/upload-artwork.jinja2:30
+msgid "Select the content"
+msgstr "Escolher Conteúdo"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:39
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:46
 msgid "Select Artworks"
 msgstr "Escolher Obras"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:25
-msgid "Select Artworks (1/2)"
-msgstr "Escolher Obras (1/2)"
-
-#: src/core/jinja2/core/exhibit_create.jinja2:28
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:50
 msgid "Choose from your repository"
 msgstr "Escolha de seu repositório"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:31
-#: src/users/jinja2/users/profile.jinja2:44
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:53
+#: src/users/jinja2/users/profile.jinja2:65
 msgid "You have no Artworks. :c"
 msgstr "Você não tem Obras. :c"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:33
-#: src/users/jinja2/users/profile.jinja2:30
-#: src/users/jinja2/users/profile.jinja2:45
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:55
+#: src/users/jinja2/users/profile.jinja2:23
+#: src/users/jinja2/users/profile.jinja2:40
+#: src/users/jinja2/users/profile.jinja2:57
+#: src/users/jinja2/users/profile.jinja2:74
 msgid "Create one"
 msgstr "Criar"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:49
-#: src/core/jinja2/core/upload-artwork.jinja2:41
-#: src/core/jinja2/core/upload-artwork.jinja2:62
-msgid "Next"
-msgstr "Próximo"
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:65
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:65
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:80
+#: src/core/jinja2/core/upload-artwork.jinja2:66
+#: src/core/jinja2/core/upload-artwork.jinja2:81
+#: src/core/jinja2/core/upload-artwork.jinja2:96
+#: src/core/jinja2/core/upload-object.jinja2:84
+msgid "Okay"
+msgstr "Okay"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:53
-msgid "Exhibit Information (2/2)"
-msgstr "Informações da Exposição (2/2)"
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:70
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:85
+msgid "Publish content"
+msgstr "Publicar conteúdo"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:60
-msgid "Your exhibit URL will look like this"
-msgstr "Sua URL de exibição vai se parecer com isso."
-
-#: src/core/jinja2/core/exhibit_create.jinja2:69
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:73
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:88
 msgid "Edit Exhibit"
 msgstr "Editar Exposição"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:71
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:75
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:90
 msgid "Publish Exhibit"
 msgstr "Publicar Exposição"
 
-#: src/core/jinja2/core/exhibit_create.jinja2:110
-msgid "Urls can't contain spaces or special characters (i.e: .:, /)"
-msgstr "Urls não podem conter espaços ou caracteres especiais (i.e: .:, /)"
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:13
+msgid "Edit MR Exhibition"
+msgstr "Editar Exposição MR"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:15
+#: src/users/jinja2/users/components/createbox.jinja2:22
+msgid "Create MR Exhibition"
+msgstr "Criar Exposição MR"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:41
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:54
+msgid "Select Objects"
+msgstr "Escolher Objetos"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:47
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:69
+msgid "Select Sounds"
+msgstr "Escolher Sons"
 
 #: src/core/jinja2/core/exhibit_detail.jinja2:12
 msgid "See this exhibition"
 msgstr "Ver essa exposição"
 
-#: src/core/jinja2/core/exhibit_detail.jinja2:14
+#: src/core/jinja2/core/exhibit_detail.jinja2:15
 msgid "Exhibition Artworks"
 msgstr "Obras dessa Exposição"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:22
+msgid "Exhibition MR Objects"
+msgstr "Objetos MR dessa Exposição"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:29
+msgid "Exhibition Sounds"
+msgstr "Sons dessa Exposição"
 
 #: src/core/jinja2/core/exhibit_select.jinja2:16
 msgid "Choose the Exhibition you're seeing"
@@ -543,7 +639,7 @@ msgstr "Entrar"
 
 #: src/core/jinja2/core/home.jinja2:39
 msgid "Welcome to Jandig"
-msgstr "Bem vindo ao Jandig"
+msgstr "Bem-vindo ao Jandig"
 
 #: src/core/jinja2/core/home.jinja2:40
 msgid "An Open Source Augmented Reality art community."
@@ -551,7 +647,7 @@ msgstr "Uma comunidade open source de arte em Realidade Aumentada."
 
 #: src/core/jinja2/core/home.jinja2:41
 msgid "To see the Artworks you need to grant camera access to the app."
-msgstr "Para ver as Obras você precisa dar acesso a câmera no aplicativo."
+msgstr "Para ver as obras, você precisa dar acesso à câmera no aplicativo."
 
 #: src/core/jinja2/core/home.jinja2:43
 msgid "Go to camera"
@@ -571,56 +667,65 @@ msgstr "Alterar exposição"
 
 #: src/core/jinja2/core/ui.jinja2:5
 msgid "Back to home"
-msgstr "Página inicial"
+msgstr "Voltar ao início"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:11
+#: src/core/jinja2/core/upload-artwork.jinja2:14
 msgid "Edit Jandig Artwork"
 msgstr "Editar Obra Jandig"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:11
-#: src/users/jinja2/users/components/createbox.jinja2:13
+#: src/core/jinja2/core/upload-artwork.jinja2:14
 msgid "Create Jandig Artwork"
-msgstr "Criar Obra Jandig"
+msgstr "Editar Obra Jandig"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:13
+#: src/core/jinja2/core/upload-artwork.jinja2:19
+msgid "About your artwork"
+msgstr "Sobre sua obra"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:32
+#: src/core/jinja2/core/upload-artwork.jinja2:56
 msgid "Select Marker"
 msgstr "Escolher Marcador"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:16
+#: src/core/jinja2/core/upload-artwork.jinja2:39
+#: src/core/jinja2/core/upload-artwork.jinja2:71
 msgid "Select Object"
 msgstr "Escolher Objeto"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:22
-msgid "Select Marker (1/3)"
-msgstr "Escolher Marcador (1/3)"
+#: src/core/jinja2/core/upload-artwork.jinja2:85
+#: src/core/jinja2/core/upload-object.jinja2:73
+msgid "Select Sound"
+msgstr "Escolher Som"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:36
-#: src/core/jinja2/core/upload-artwork.jinja2:58
+#: src/core/jinja2/core/upload-artwork.jinja2:100
+msgid "Position the content"
+msgstr "Posicionar o conteúdo"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:104
+msgid "Adjust scale"
+msgstr "Ajustar escala"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:106
 msgid ""
-"I agree to share this content under CC BY-SA 4.0 and I'm aware that, once "
-"uploaded, I cannot remove it. "
+"Scale should be adjusted relative to Marker size on the screen. A scale of 2 "
+"will render an Object twice the size of the Marker."
 msgstr ""
-"Concordo em publicar esse conteúdo sob CC BY-SA 4.0 e entendo que, uma vez "
-"publicado, não posso mais removê-lo. "
+"A escala deve ser ajustada relativamente ao tamanho do Marcador na tela. Uma "
+"escala de 2 renderizará um objeto duas vezes maior que o Marcador."
 
-#: src/core/jinja2/core/upload-artwork.jinja2:45
-msgid "Select Object (2/3)"
-msgstr "Selecione Objeto (2/3)"
+#: src/core/jinja2/core/upload-artwork.jinja2:116
+msgid "Adjust position"
+msgstr "Ajustar posição"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:66
-msgid "About your artwork (3/3)"
-msgstr "Sobre sua obra (3/3)"
-
-#: src/core/jinja2/core/upload-artwork.jinja2:75
+#: src/core/jinja2/core/upload-artwork.jinja2:140
 msgid "Edit Artwork"
 msgstr "Editar Obra"
 
-#: src/core/jinja2/core/upload-artwork.jinja2:75
+#: src/core/jinja2/core/upload-artwork.jinja2:140
 msgid "Publish artwork"
 msgstr "Publicar obra"
 
 #: src/core/jinja2/core/upload-marker.jinja2:10
-#: src/users/jinja2/users/components/createbox.jinja2:5
+#: src/users/jinja2/users/components/createbox.jinja2:8
 msgid "Upload Marker"
 msgstr "Enviar Marcador"
 
@@ -630,14 +735,19 @@ msgstr "Escolha o título do seu Marcador"
 
 #: src/core/jinja2/core/upload-marker.jinja2:22
 msgid "Choose Marker image"
-msgstr "Selecione uma imagem de Marcador"
+msgstr "Selecione uma imagem do Marcador"
 
-#: src/core/jinja2/core/upload-marker.jinja2:40
+#: src/core/jinja2/core/upload-marker.jinja2:24
+msgid "Choose the Marker image"
+msgstr "Selecione uma imagem do Marcador"
+
+#: src/core/jinja2/core/upload-marker.jinja2:44
 msgid "I'm this Marker author"
-msgstr "Sou autor/a desse Marcador"
+msgstr "Sou autor(a) deste Marcador"
 
-#: src/core/jinja2/core/upload-marker.jinja2:53
-#: src/core/jinja2/core/upload-object.jinja2:76
+#: src/core/jinja2/core/upload-marker.jinja2:57
+#: src/core/jinja2/core/upload-object.jinja2:68
+#: src/core/jinja2/core/upload-sound.jinja2:51
 msgid ""
 "I agree to have this content under <a target=\"_blank\" href=\"https://"
 "creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> and I'm "
@@ -647,43 +757,79 @@ msgstr ""
 "creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> e estou "
 "ciente que não posso removê-lo depois que outras pessoas o estiverem usando."
 
-#: src/core/jinja2/core/upload-object.jinja2:11
-#: src/users/jinja2/users/components/createbox.jinja2:8
+#: src/core/jinja2/core/upload-object.jinja2:17
+#: src/users/jinja2/users/components/createbox.jinja2:11
 msgid "Upload Object"
 msgstr "Enviar Objeto"
 
-#: src/core/jinja2/core/upload-object.jinja2:18
+#: src/core/jinja2/core/upload-object.jinja2:24
 msgid "Choose Object's title"
 msgstr "Escolha o título do Objeto"
 
-#: src/core/jinja2/core/upload-object.jinja2:24
+#: src/core/jinja2/core/upload-object.jinja2:30
 msgid "Choose Object"
 msgstr "Escolher Objeto"
 
-#: src/core/jinja2/core/upload-object.jinja2:33
-msgid "Adjust scale"
-msgstr "Ajustar escala"
-
 #: src/core/jinja2/core/upload-object.jinja2:37
-msgid ""
-"Scale should be adjusted relative to Marker size on the screen. A scale of 2 "
-"will render an Object twice the size of the Marker."
-msgstr ""
-"A escala deve ser ajustada relativa ao tamanho do Marcador na tela. Uma "
-"escala de 2 irá renderizar um Objeto duas vezes o tamanho do Marcador."
+msgid "Choose a Sound"
+msgstr "Escolher um Som"
 
-#: src/core/jinja2/core/upload-object.jinja2:47
-msgid "Adjust position"
-msgstr "Ajustar posição"
+#: src/core/jinja2/core/upload-object.jinja2:39
+msgid "Select a Sound"
+msgstr "Escolher um Som"
 
-#: src/core/jinja2/core/upload-object.jinja2:66
+#: src/core/jinja2/core/upload-object.jinja2:44
+msgid "Choose Audio Description"
+msgstr "Escolher Descrição de Áudio"
+
+#: src/core/jinja2/core/upload-object.jinja2:46
+msgid "Choose the Audio Description File"
+msgstr "Escolher o Arquivo de Descrição de Áudio"
+
+#: src/core/jinja2/core/upload-object.jinja2:48
+msgid "optional"
+msgstr "opcional"
+
+#: src/core/jinja2/core/upload-object.jinja2:54
 msgid "I'm this Object author"
-msgstr "Sou autor/a desse Objeto"
+msgstr "Sou autor(a) deste objeto"
 
-#: src/core/jinja2/core/upload-object.jinja2:139
-msgid "Invalid file type! Only image or video files are accepted."
+#: src/core/jinja2/core/upload-object.jinja2:209
+msgid ""
+"GLB files are only supported in MR (Meta Quest 3) exhibits. They cannot be "
+"used in AR exhibits or Artworks yet."
 msgstr ""
-"Tipo inválido de arquivo! Somente arquivos de imagem ou vídeo são aceitos."
+
+#: src/core/jinja2/core/upload-object.jinja2:335
+msgid "Invalid file type! Only image, video or GLB files are accepted."
+msgstr ""
+"Tipo de arquivo inválido! Somente arquivos de imagem, vídeo ou GLB são "
+"aceitos."
+
+#: src/core/jinja2/core/upload-sound.jinja2:9
+msgid "Edit Sound"
+msgstr "Editar Som"
+
+#: src/core/jinja2/core/upload-sound.jinja2:11
+#: src/users/jinja2/users/components/createbox.jinja2:4
+msgid "Upload Sound"
+msgstr "Enviar Som"
+
+#: src/core/jinja2/core/upload-sound.jinja2:18
+msgid "Choose Sound's title"
+msgstr "Escolha o título do seu Som"
+
+#: src/core/jinja2/core/upload-sound.jinja2:24
+msgid "Choose Sound"
+msgstr "Escolher Som"
+
+#: src/core/jinja2/core/upload-sound.jinja2:39
+msgid "I'm this Sound's author"
+msgstr "Sou autor(a) deste Som"
+
+#: src/core/jinja2/core/upload-sound.jinja2:99
+msgid "Invalid file type! Only mp3 or ogg files are accepted."
+msgstr "Tipo de arquivo inválido! Somente arquivos mp3 ou ogg são aceitos."
 
 #: src/core/jinja2/core/useful_links.jinja2:5
 msgid "AR Viewer"
@@ -708,23 +854,43 @@ msgstr "Criado por"
 #: src/core/jinja2/core/templates/artwork_modal.jinja2:9
 #: src/core/jinja2/core/templates/marker_modal.jinja2:12
 #: src/core/jinja2/core/templates/object_modal.jinja2:12
+#: src/core/jinja2/core/templates/sound_modal.jinja2:12
 msgid ", in"
 msgstr ", em"
 
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:36
+msgid "Artwork Sound"
+msgstr "Som da Obra"
+
 #: src/core/jinja2/core/templates/marker_modal.jinja2:10
 #: src/core/jinja2/core/templates/object_modal.jinja2:10
+#: src/core/jinja2/core/templates/sound_modal.jinja2:10
 msgid "Author:"
 msgstr "Autor:"
 
 #: src/core/jinja2/core/templates/marker_modal.jinja2:12
 #: src/core/jinja2/core/templates/object_modal.jinja2:12
+#: src/core/jinja2/core/templates/sound_modal.jinja2:12
 msgid "Uploaded by"
 msgstr "Publicado por"
 
 #: src/core/jinja2/core/templates/marker_modal.jinja2:19
-#: src/core/jinja2/core/templates/object_modal.jinja2:19
+#: src/core/jinja2/core/templates/object_modal.jinja2:33
+#: src/core/jinja2/core/templates/sound_modal.jinja2:19
 msgid "Download File"
 msgstr "Baixar Arquivo"
+
+#: src/core/jinja2/core/templates/object_edit_template.jinja2:11
+msgid "Preview is not available"
+msgstr "Pré-visualização não disponível"
+
+#: src/core/jinja2/core/templates/object_modal.jinja2:19
+msgid "Sound:"
+msgstr "Som:"
+
+#: src/core/jinja2/core/templates/object_modal.jinja2:26
+msgid "Audio Description:"
+msgstr "Áudio Descrição"
 
 #: src/users/jinja2/users/login.jinja2:20
 msgid "Login to continue"
@@ -756,62 +922,62 @@ msgstr "Remover conta"
 msgid "Change Password"
 msgstr "Trocar Senha"
 
-#: src/users/jinja2/users/profile.jinja2:19
-msgid "Your Exhibitions"
-msgstr "Suas Exposições"
-
 #: src/users/jinja2/users/profile.jinja2:21
-msgid "Exhibitions"
-msgstr "Exposições"
+msgid "Your MR Exhibitions"
+msgstr "Suas Exposições MR"
 
-#: src/users/jinja2/users/profile.jinja2:29
-msgid "You have no Exhibitions. :c"
-msgstr "Você não tem Exposições. :c"
+#: src/users/jinja2/users/profile.jinja2:31
+msgid "You have no MR Exhibitions. :c"
+msgstr "Você não tem Exposições MR. :c"
 
-#: src/users/jinja2/users/profile.jinja2:34
+#: src/users/jinja2/users/profile.jinja2:38
+msgid "Your AR Exhibitions"
+msgstr "Suas Exposições AR"
+
+#: src/users/jinja2/users/profile.jinja2:48
+msgid "You have no AR Exhibitions. :c"
+msgstr "Você não tem Exposições AR. :c"
+
+#: src/users/jinja2/users/profile.jinja2:55
 msgid "Your Artworks"
 msgstr "Suas Obras"
 
-#: src/users/jinja2/users/profile.jinja2:36
-msgid "Artworks"
-msgstr "Obras"
-
-#: src/users/jinja2/users/profile.jinja2:49
+#: src/users/jinja2/users/profile.jinja2:72
 msgid "Your Markers"
 msgstr "Seus Marcadores"
 
-#: src/users/jinja2/users/profile.jinja2:51
-msgid "Markers"
-msgstr "Marcadores"
-
-#: src/users/jinja2/users/profile.jinja2:59
+#: src/users/jinja2/users/profile.jinja2:82
 msgid "You have no Markers. :c"
 msgstr "Você não tem Marcadores. :c"
 
-#: src/users/jinja2/users/profile.jinja2:60
-#: src/users/jinja2/users/profile.jinja2:75
-msgid "Upload one"
-msgstr "Enviar"
-
-#: src/users/jinja2/users/profile.jinja2:64
+#: src/users/jinja2/users/profile.jinja2:89
 msgid "Your Objects"
 msgstr "Seus Objetos"
 
-#: src/users/jinja2/users/profile.jinja2:66
-msgid "Objects"
-msgstr "Objetos"
+#: src/users/jinja2/users/profile.jinja2:91
+#: src/users/jinja2/users/profile.jinja2:108
+msgid "Upload one"
+msgstr "Enviar"
 
-#: src/users/jinja2/users/profile.jinja2:74
+#: src/users/jinja2/users/profile.jinja2:99
 msgid "You have no Objects. :c"
 msgstr "Você não tem Objetos. :c"
+
+#: src/users/jinja2/users/profile.jinja2:106
+msgid "Your Sounds"
+msgstr "Seus Sons"
+
+#: src/users/jinja2/users/profile.jinja2:116
+msgid "You have no Sounds. :c"
+msgstr "Você não tem Sons. :c"
 
 #: src/users/jinja2/users/components/createbox.jinja2:2
 msgid "Come on! Create new content now!"
 msgstr "Vem cá! Crie conteúdo agora!"
 
 #: src/users/jinja2/users/components/createbox.jinja2:16
-msgid "Create Exhibition"
-msgstr "Criar Exposição"
+msgid "Create Artwork"
+msgstr "Criar Obra"
 
 #: src/users/jinja2/users/components/userbox.jinja2:9
 msgid " marker(s)"
@@ -840,7 +1006,7 @@ msgstr " Obras"
 
 #: src/users/jinja2/users/components/userbox.jinja2:40
 msgid "No Artworks yet."
-msgstr "Sem Obras."
+msgstr "Nenhuma Obra ainda."
 
 #: src/users/jinja2/users/components/userbox.jinja2:44
 #: src/users/jinja2/users/components/userbox.jinja2:62
@@ -857,4 +1023,7 @@ msgstr " Exposições"
 
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
-msgstr "Sem Exposições."
+msgstr "Nenhuma Exposição ainda."
+
+#~ msgid "Select"
+#~ msgstr "Escolher"

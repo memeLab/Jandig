@@ -1,5 +1,3 @@
-import random
-
 from django.core.management.base import BaseCommand
 
 from core.tests.factory import ArtworkFactory, MarkerFactory, ObjectFactory
@@ -25,8 +23,8 @@ class Command(BaseCommand):
         self.stdout.write(f"Using owner: {author.user.username}")
         for i in range(count):
             # Randomly decides if the artwork owner is the same owner of the marker, object, both or none
-            random_choice = random.choice([0, 1, 2, 3])
-            match random_choice:
+            remainder = i % 4
+            match remainder:
                 case 0:
                     self.stdout.write(
                         "This artwork Marker and Object are not owned by the Artwork author"

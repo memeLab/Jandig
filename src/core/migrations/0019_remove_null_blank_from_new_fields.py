@@ -28,16 +28,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='objectevent',
             name='file_extension',
-            field=models.CharField(choices=[('gif', 'GIF'), ('mp4', 'MP4'), ('webm', 'WEBM'), ('glb', 'GLB')], max_length=10),
+            field=models.CharField(choices=[('gif', 'GIF'), ('mp4', 'MP4'), ('webm', 'WEBM'), ('glb', 'GLB')], max_length=10, null=True, blank=True, db_index=True),
         ),
         migrations.AlterField(
             model_name='objectevent',
             name='file_name_original',
-            field=models.CharField(max_length=255),
+            field=models.CharField(max_length=255, null=True, blank=True),
         ),
         migrations.AlterField(
             model_name='objectevent',
             name='file_size',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(default=0, null=True, blank=True),
         ),
     ]

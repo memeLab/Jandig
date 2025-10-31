@@ -29,6 +29,10 @@ migrate:
 	docker compose up -d
 	docker compose exec django python src/manage.py migrate
 
+collectstatic:
+	docker compose up -d
+	docker compose exec django python src/manage.py collectstatic --noinput
+
 gen:
 	uv run playwright codegen -b chromium --target python-pytest localhost:8000
 
