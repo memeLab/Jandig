@@ -1085,26 +1085,52 @@
             }
         };
 
-        // Function to show a specific section and hide others
-        function showSection(sectionId) {
+        // === Functions ===
+        
+        // Function to show a specific section and hide others, with optional URL update
+        function showSection(sectionId, updateHistory = true) {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
                 section.classList.remove('active');
             });
+            
             const activeSection = document.getElementById(sectionId);
-            if(activeSection) {
+            if(activeSection && activeSection.classList.contains('section')) {
                activeSection.classList.add('active');
+               
+               // Update URL history without reloading page
+               if (updateHistory) {
+                   history.pushState(null, null, '#' + sectionId);
+               }
+            } else {
+                // Fallback to home if section not found
+                const homeSection = document.getElementById('home');
+                if (homeSection) homeSection.classList.add('active');
             }
+
             // Scroll to top of the page when changing sections
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Hide mobile menu after selection
+            // Close mobile menu if open
             const navLinks = document.getElementById('nav-links');
             if (!navLinks.classList.contains('hidden')) {
                 navLinks.classList.add('hidden');
+                // Also reset the menu button icon if needed, though currently it doesn't change icon on open/close
             }
         }
         
+        // Function to handle initial load and back/forward browser buttons
+        function handleRouting() {
+            const hash = window.location.hash.substring(1); // Remove the '#'
+            if (hash) {
+                // If there's a hash, try to open that section, don't push new history state
+                showSection(hash, false);
+            } else {
+                // Default to home if no hash
+                showSection('home', false);
+            }
+        }
+
         function changeLanguage(lang) {
             document.documentElement.lang = lang;
             const elements = document.querySelectorAll('[data-translate]');
@@ -1127,22 +1153,34 @@
             document.getElementById('lang-dropdown').classList.add('hidden');
         }
 
-        // Event listeners
+        // === Event Listeners ===
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize the home section on load
-            showSection('home');
+            // Handle initial routing based on URL hash
+            handleRouting();
             
-            // Set initial language
+            // Listen for browser back/forward buttons
+            window.addEventListener('popstate', handleRouting);
+
+            // Initialize language
             changeLanguage('pt');
 
-            // Toggle mobile menu
-            document.getElementById('menu-button').addEventListener('click', function() {
-                const navLinks = document.getElementById('nav-links');
+            // Mobile Menu Toggle
+            const menuButton = document.getElementById('menu-button');
+            const navLinks = document.getElementById('nav-links');
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
                 navLinks.classList.toggle('hidden');
                 navLinks.classList.toggle('flex');
             });
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                 if (!navLinks.classList.contains('hidden') && !navLinks.contains(e.target) && e.target !== menuButton) {
+                    navLinks.classList.add('hidden');
+                    navLinks.classList.remove('flex');
+                }
+            });
 
-            // Language switcher dropdown
+            // Language Dropdown Toggle
             const langButton = document.getElementById('lang-button');
             const langDropdown = document.getElementById('lang-dropdown');
             const langIcon = langButton.querySelector('svg');
@@ -1158,6 +1196,19 @@
                     langDropdown.classList.add('hidden');
                     langIcon.classList.remove('rotate-180');
                 }
+            });
+
+            // Making Of Expandable Posts
+            const posts = document.querySelectorAll('.post-card');
+            posts.forEach(post => {
+                post.addEventListener('click', () => {
+                    const content = post.querySelector('.expandable-content');
+                    const icon = post.querySelector('svg');
+                    content.classList.toggle('hidden');
+                    if (icon) {
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
             });
         });
     </script>
