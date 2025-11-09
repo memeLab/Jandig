@@ -17,7 +17,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome CDN for social media icons (versão 6.5.2 para o ícone X) -->
+    <!-- Font Awesome CDN for social media icons (Atualizado para 6.5.2 para suportar o ícone X-Twitter) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         body {
@@ -80,24 +80,24 @@
             </div>
 
             <!-- Navigation links (hidden on mobile, flex-col by default, flex-row on md and up) -->
-            <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-4 md:mt-0 md:w-auto">
-                <a href="#exposicao" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('exposicao'); return false;" data-translate="nav_exhibition">Exposição</a>
-                <a href="#album-figurinhas" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('album-figurinhas'); return false;" data-translate="nav_sticker_album">Álbum Interativo</a>
-                <a href="#oficina" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('oficina'); return false;" data-translate="nav_workshop">Oficina</a>
-                <a href="#making-of" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('making-of'); return false;" data-translate="nav_making_of">Making Of</a>
-                <a href="#quem-somos" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full" onclick="showSection('quem-somos'); return false;" data-translate="nav_who_we_are">Quem somos</a>
+            <div id="nav-links" class="hidden flex-col items-center w-full mt-4 md:flex md:flex-row md:items-center md:space-x-1 md:mt-0 md:w-auto font-medium">
+                <a href="#exposicao" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full md:w-auto" onclick="showSection('exposicao'); return false;" data-translate="nav_exhibition">Exposição</a>
+                <a href="#album-figurinhas" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full md:w-auto" onclick="showSection('album-figurinhas'); return false;" data-translate="nav_sticker_album">Álbum Interativo</a>
+                <a href="#oficina" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full md:w-auto" onclick="showSection('oficina'); return false;" data-translate="nav_workshop">Oficina</a>
+                <a href="#making-of" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full md:w-auto" onclick="showSection('making-of'); return false;" data-translate="nav_making_of">Making Of</a>
+                <a href="#quem-somos" class="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 hover:text-[#08B59F] transition-colors duration-300 text-center w-full md:w-auto" onclick="showSection('quem-somos'); return false;" data-translate="nav_who_we_are">Quem somos</a>
                 
                 <!-- Language Switcher -->
-                <div class="relative mt-4 md:mt-0 md:ml-4">
-                    <button id="lang-button" class="flex items-center text-gray-700 hover:text-[#08B59F] transition-colors duration-300 border border-gray-300 px-3 py-1 rounded-md">
+                <div class="relative mt-4 md:mt-0 md:ml-4 self-center">
+                    <button id="lang-button" class="flex items-center text-gray-700 hover:text-[#08B59F] transition-colors duration-300 border border-gray-300 px-3 py-1 rounded-md bg-white">
                         <i class="fas fa-globe mr-2"></i>
                         <span id="current-lang">PT</span>
                         <svg class="w-4 h-4 ml-1 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
-                    <div id="lang-dropdown" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg hidden z-50 border">
-                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('pt')">Português</a>
-                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('en')">English</a>
-                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="changeLanguage('es')">Español</a>
+                    <div id="lang-dropdown" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg hidden z-50 border border-gray-100 overflow-hidden">
+                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#08B59F]" onclick="changeLanguage('pt')">Português</a>
+                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#08B59F]" onclick="changeLanguage('en')">English</a>
+                        <a href="javascript:void(0);" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#08B59F]" onclick="changeLanguage('es')">Español</a>
                     </div>
                 </div>
             </div>
@@ -105,62 +105,62 @@
     </nav>
 
     <!-- Main Content Area -->
-    <main class="flex-grow container mx-auto p-6">
+    <main class="flex-grow container mx-auto p-4 md:p-6">
         <!-- Home Section -->
-        <section id="home" class="section active striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200 relative overflow-hidden">
+        <section id="home" class="section active striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200 relative overflow-hidden">
             <!-- Banner Section -->
-            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
+            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden bg-gray-200">
                 <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA9.png') }}"
                      alt="Banner: Descubra um mundo de lendas em Realidade Virtual!" 
-                     class="w-full h-64 md:h-72 object-cover"
+                     class="w-full h-auto md:h-96 object-cover"
                 >
             </div>
             <!-- End Banner Section -->
 
-            <p class="text-lg text-left mb-12 max-w-3xl mx-auto leading-relaxed text-gray-700" data-translate="home_intro">
+            <p class="text-lg text-left mb-12 max-w-4xl mx-auto leading-relaxed text-gray-700" data-translate="home_intro">
                 Mitologia Estendida é uma experiência imersiva em realidade estendida que nos transporta para o coração das lendas e mitos brasileiros. O projeto é um convite para conhecer algumas narrativas ancestrais como nunca antes, combinando a riqueza da cultura brasileira com a tecnologia de ponta. Prepare-se para uma jornada inesquecível com personagens lendários em diálogo com os desafios que estamos enfrentando hoje em dia.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 
                 <!-- ÁLBUM DE FIGURINHAS Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">Álbum Interativo</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA5.png') }}"
                          alt="Imagem: Álbum Interativo" 
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
                     >
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box2_p">
                         A principal forma de interagir com os mitos é por meio do álbum Interativo. Preparamos uma série de recursos didáticos e atividades interativas para aprofundar seu conhecimento sobre as mitologias apresentadas e a tecnologia utilizada. Perfeito para estudantes e entusiastas!
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('album-figurinhas')" data-translate="home_box2_button">
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg" onclick="showSection('album-figurinhas')" data-translate="home_box2_button">
                         Conhecer materiais
                     </button>
                 </div>
                 
                 <!-- EXPOSIÇÃO Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">Exposição</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
                          alt="Imagem: Exposição" 
-                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
+                         class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
                     >
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
                         Mitologia Estendida se desdobra também em uma exposição com realidade mista em novembro de 2025.
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('exposicao')" data-translate="home_box1_button">
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg" onclick="showSection('exposicao')" data-translate="home_box1_button">
                         Mais informações
                     </button>
                 </div>
                 
                 <!-- QUEM SOMOS Box -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">Quem Somos</h2>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-md">
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box3_p">
                         Conheça nossa equipe e todo o projeto Jandig.
                     </p>
-                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto" onclick="showSection('quem-somos')" data-translate="home_box3_button">
+                    <button class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg" onclick="showSection('quem-somos')" data-translate="home_box3_button">
                         Veja quem somos
                     </button>
                 </div>
@@ -168,11 +168,11 @@
         </section>
 
         <!-- Quem Somos Section -->
-        <section id="quem-somos" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+        <section id="quem-somos" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="qs_title">Quem Somos</h1>
             <div class="text-lg leading-relaxed text-gray-700 mb-8">
                 <p class="mb-4" data-translate="qs_intro">Mitologia Estendida é feito à várias mãos:</p>
-                
+                <!-- Única coluna para a equipe -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
                     <ul class="list-disc list-inside mb-4 ml-4">
                         <li data-translate="qs_list1_li1"><strong>Direção Geral:</strong> Angelo Pixel</li>
@@ -195,182 +195,213 @@
                         <li data-translate="qs_list2_li12"><strong>UX Design:</strong> Raquel Mei</li>
                         <li data-translate="qs_list2_li13"><strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan</li>
                         <li data-translate="qs_list2_li14"><strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal</li>
-                        <li data-translate="qs_list2_li15"><strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href="https://clarice.ai" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:underline">Clarice.ai</a></li>
+                        <li data-translate="qs_list2_li15"><strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href="https://clarice.ai" target="_blank" class="text-[#08B59F] hover:underline">Clarice.ai</a></li>
                     </ul>
                 </div>
                 
                 <h2 class="text-3xl font-bold text-left mt-12 mb-8 text-[#08B59F]" data-translate="qs_jandig_title">JANDIG</h2>
 
-                <div class="relative pt-[56.25%] w-full max-w-screen-md mx-auto mb-8">
+                <div class="relative pt-[56.25%] w-full max-w-screen-lg mx-auto mb-8 rounded-xl overflow-hidden shadow-2xl">
                     <iframe
-                        class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
+                        class="absolute top-0 left-0 w-full h-full"
                         src="https://www.youtube.com/embed/Oou7uE2XeRo?si=aXKp_PGwZ_Rh_Z8K"
                         title="YouTube video player"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allowfullscreen
-                        width="100%" height="100%"
                     ></iframe>
                 </div>
                 
-                <p class="mb-4" data-translate="qs_jandig_p1">
-                    O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.
-                </p>
-                <p class="mb-4" data-translate="qs_jandig_p2">
-                    Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.
-                </p>
-                <p class="text-left">
-                    <a href="https://jandig.app/" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold" data-translate="qs_jandig_link1">Conheça outras exposições e obras de arte da plataforma: https://jandig.app/</a>
-                </p>
-                <p class="text-left mt-2">
-                    <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold" data-translate="qs_jandig_link2">Código fonte da plataforma no GitHub.</a>
-                </p>
+                <div class="bg-[#08B59F]/10 p-6 rounded-lg border-l-4 border-[#08B59F]">
+                    <p class="mb-4" data-translate="qs_jandig_p1">
+                        O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.
+                    </p>
+                    <p class="mb-4" data-translate="qs_jandig_p2">
+                        Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.
+                    </p>
+                    <p class="text-left">
+                        <a href="https://jandig.app/" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold flex items-center" data-translate="qs_jandig_link1">
+                            <i class="fas fa-external-link-alt mr-2"></i> Conheça outras exposições e obras de arte da plataforma: https://jandig.app/
+                        </a>
+                    </p>
+                    <p class="text-left mt-2">
+                        <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold flex items-center" data-translate="qs_jandig_link2">
+                             <i class="fab fa-github mr-2"></i> Código fonte da plataforma no GitHub.
+                        </a>
+                    </p>
+                </div>
             </div>
         </section>
 
         <!-- Álbum de Figurinhas Section -->
-        <section id="album-figurinhas" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+        <section id="album-figurinhas" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="album_title">Álbum Interativo</h1>
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
                 <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA8.png') }}"
                      alt="Imagem: Álbum de Figurinhas" 
-                     class="w-full h-64 md:h-72 object-cover"
+                     class="w-full h-auto md:h-80 object-cover"
                 >
             </div>
-            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="album_intro">
+            <p class="text-lg leading-relaxed mb-12 text-gray-700 text-left max-w-4xl mx-auto" data-translate="album_intro">
                 O álbum interativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.
             </p>
 
-            <h2 class="text-3xl font-bold text-left mb-6 text-[#08B59F]" data-translate="album_downloads_title">DOWNLOADS</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <h2 class="text-3xl font-bold text-left mb-8 text-[#08B59F] border-b pb-4" data-translate="album_downloads_title">DOWNLOADS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Álbum de Figurinhas -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl1_title">Álbum de figurinhas</h3>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA2.png') }}" alt="Álbum de Figurinhas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl1_p">Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto text-center" data-translate="coming_soon">
-                        Em Breve...
-                    </a>
+                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F] flex items-center">
+                        <i class="fas fa-book-open mr-3"></i>
+                        <span data-translate="album_dl1_title">Álbum de figurinhas</span>
+                    </h3>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA2.png') }}" alt="Álbum de Figurinhas" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl1_p">Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto.</p>
+                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
+                        <i class="fas fa-clock mr-2"></i> Em Breve...
+                    </button>
                 </div>
                 <!-- Figurinhas -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl2_title">Figurinhas</h3>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA3.png') }}" alt="Figurinhas Avulsas" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl2_p">Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem.</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto text-center" data-translate="coming_soon">
-                        Em Breve...
-                    </a>
+                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F] flex items-center">
+                         <i class="fas fa-sticky-note mr-3"></i>
+                        <span data-translate="album_dl2_title">Figurinhas</span>
+                    </h3>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA3.png') }}" alt="Figurinhas Avulsas" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl2_p">Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá.</p>
+                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
+                        <i class="fas fa-clock mr-2"></i> Em Breve...
+                    </button>
                 </div>
                 <!-- Cartaz -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl3_title">Cartaz</h3>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA6.png') }}" alt="Cartazes Educativos" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl3_p">Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto text-center" data-translate="coming_soon">
-                        Em Breve...
-                    </a>
+                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F] flex items-center">
+                        <i class="fas fa-image mr-3"></i>
+                        <span data-translate="album_dl3_title">Cartaz</span>
+                    </h3>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA6.png') }}" alt="Cartazes Educativos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl3_p">Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.</p>
+                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
+                        <i class="fas fa-clock mr-2"></i> Em Breve...
+                    </button>
                 </div>
                 <!-- Guia do multiplicador -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full">
-                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F]" data-translate="album_dl4_title">Guia do multiplicador</h3>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA4.png') }}" alt="Guia do Multiplicador" class="w-full h-40 object-cover rounded-lg mb-4 shadow-md">
-                    <p class="text-gray-700 mb-4 flex-grow" data-translate="album_dl4_p">Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada. Também ajuda você a entrar na plataforma da Jandig que abriga a experiência e compreender a tecnologia que está por trás. Preparamos também algumas sugestões para estimular a criatividade e o uso do álbum de figurinhas e os marcadores.</p>
-                    <a href="#" class="inline-block bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105 mt-auto text-center" data-translate="coming_soon">
-                        Em Breve...
-                    </a>
+                <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4 text-[#08B59F] flex items-center">
+                        <i class="fas fa-chalkboard-teacher mr-3"></i>
+                        <span data-translate="album_dl4_title">Guia do multiplicador</span>
+                    </h3>
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA4.png') }}" alt="Guia do Multiplicador" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
+                    <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl4_p">Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada.</p>
+                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
+                        <i class="fas fa-clock mr-2"></i> Em Breve...
+                    </button>
                 </div>
             </div>
         </section>
 
         <!-- Oficina Section -->
-        <section id="oficina" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+        <section id="oficina" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="oficina_title">Oficina Criação de álbum interativo</h1>
             
             <!-- Layout intercalado: Texto -> Imagem -> Texto -> Imagem -->
             <div class="mb-12 max-w-4xl mx-auto">
-                <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_p1">
+                <p class="text-lg leading-relaxed mb-6 text-gray-700 text-left" data-translate="oficina_p1">
                     O projeto Mitologia Estendida abre as portas dos bastidores do processo por trás da criação do Álbum Interativo. A oficina é para aqueles que querem contar uma história usando realidade aumentada.
                 </p>
-                <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
+                <div class="w-full rounded-lg shadow-md overflow-hidden bg-gray-100 mb-8">
                     <img src="{{ static('images/icons/me/oficina1.PNG') }}"
                             alt="Interação com a exposição em Ouro Preto, 2019."
                             class="w-full h-auto max-h-96 object-contain mx-auto"
                     >
-                    <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image1_caption">Legenda imagem 1: Interação com a exposição em Ouro Preto, 2019.</p>
+                    <p class="text-xs text-gray-500 p-2 text-center italic bg-white" data-translate="oficina_image1_caption">Legenda imagem 1: Interação com a exposição em Ouro Preto, 2019.</p>
                 </div>
 
-                <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_p2">
+                <p class="text-lg leading-relaxed mb-6 text-gray-700 text-left" data-translate="oficina_p2">
                     Ao final do encontro, cada pessoa sairá com uma página própria para a sua narrativa, criada e impressa na oficina, bem como terá uma boa noção de como funciona o álbum interativo como um elemento narrativo transmídia para suas histórias.
                 </p>
-                <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
+                <div class="w-full rounded-lg shadow-md overflow-hidden bg-gray-100 mb-8">
                     <img src="{{ static('images/icons/me/oficina2.PNG') }}"
                             alt="Página do álbum interativo Mitologia Estendida, 2025."
                             class="w-full h-auto max-h-96 object-contain mx-auto"
                     >
-                    <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image2_caption">Legenda imagem 2: Página do álbum interativo Mitologia Estendida, 2025.</p>
+                    <p class="text-xs text-gray-500 p-2 text-center italic bg-white" data-translate="oficina_image2_caption">Legenda imagem 2: Página do álbum interativo Mitologia Estendida, 2025.</p>
                 </div>
 
-                <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_p3">
+                <p class="text-lg leading-relaxed mb-6 text-gray-700 text-left" data-translate="oficina_p3">
                     Elas também terão contato com a JANDIG, uma comunidade de arte em realidade aumentada de código aberto e de onde em 2025 nascem novos rumos com o projeto Mitologia Estendida.
                 </p>
-                 <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden bg-gray-100 p-4">
+                 <div class="w-full rounded-lg shadow-md overflow-hidden bg-gray-100 mb-12">
                     <img src="{{ static('images/icons/me/oficina3.PNG') }}"
                             alt="Exposição interativa em São Miguel Paulista, 2019."
                             class="w-full h-auto max-h-96 object-contain mx-auto"
                     >
-                    <p class="text-sm text-gray-500 mt-2 text-center" data-translate="oficina_image3_caption">Legenda imagem 3: Exposição interativa em São Miguel Paulista, 2019.</p>
+                    <p class="text-xs text-gray-500 p-2 text-center italic bg-white" data-translate="oficina_image3_caption">Legenda imagem 3: Exposição interativa em São Miguel Paulista, 2019.</p>
                 </div>
             </div>
 
-            <p class="text-lg font-bold text-gray-800 mb-4" data-translate="oficina_limited_spots">Vagas limitadas!</p>
-            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_info1">
-                A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.
-            </p>
-            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_info2">
-                Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.
-            </p>
-            <p class="text-lg font-bold text-gray-800 mb-2" data-translate="oficina_when">Quando: 29 de novembro, 9h30- 13h30</p>
-            <p class="text-lg font-bold text-gray-800 mb-6" data-translate="oficina_local">Local: Rua Luis Murat, 298, São Paulo, SP</p>
+            <div class="bg-[#08B59F] text-white p-8 rounded-xl shadow-lg mb-12 max-w-4xl mx-auto">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-ticket-alt text-3xl mr-4"></i>
+                    <p class="text-2xl font-bold" data-translate="oficina_limited_spots">Vagas limitadas!</p>
+                </div>
+                
+                <p class="text-lg leading-relaxed mb-4 opacity-90" data-translate="oficina_info1">
+                    A oficina é gratuita. Pessoas da área bem como pessoas leigas no assunto são bem-vindas! O público-alvo são artistas, professores, pesquisadores, estudantes e pessoas interessadas em realidade aumentada.
+                </p>
+                <p class="text-lg leading-relaxed mb-8 opacity-90" data-translate="oficina_info2">
+                    Faremos a seleção dos participantes a partir desta inscrição para garantir um grupo diverso e engajado.
+                </p>
+                
+                <div class="bg-white/10 p-4 rounded-lg mb-6">
+                    <p class="text-lg font-bold mb-2 flex items-center"><i class="far fa-calendar-alt mr-3"></i> <span data-translate="oficina_when">Quando: 29 de novembro, 9h30- 13h30</span></p>
+                    <p class="text-lg font-bold flex items-center"><i class="fas fa-map-marker-alt mr-3"></i> <span data-translate="oficina_local">Local: Rua Luis Murat, 298, São Paulo, SP</span></p>
+                </div>
 
-            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="oficina_register">
-                Cadastre-se <a href="https://forms.gle/kx754R1ywMhxRgfn7" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a>.
-            </p>
+                <a href="https://forms.gle/kx754R1ywMhxRgfn7" target="_blank" rel="noopener noreferrer" class="inline-block bg-white text-[#08B59F] font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 shadow-md">
+                    <span data-translate="oficina_register_btn">Inscreva-se aqui</span>
+                </a>
+            </div>
 
-            <p class="text-lg leading-relaxed mb-4 text-gray-700 text-left" data-translate="oficina_youtube_intro">
-                Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina, veja <a href="https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019.
-            </p>
-            <div class="relative pt-[56.25%] w-full mx-auto mb-8">
-                <iframe
-                    class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-                    src="https://www.youtube.com/embed/jNZps0RegSk?si=2MViH0FYMG03pX77"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                ></iframe>
+            <div class="max-w-4xl mx-auto">
+                <p class="text-lg leading-relaxed mb-6 text-gray-700 text-left" data-translate="oficina_youtube_intro">
+                    Quer ter uma ideia da potencialidade da ferramenta com a qual estaremos trabalhando na oficina, veja <a href="https://youtu.be/jNZps0RegSk?si=2MViH0FYMG03pX77" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">aqui</a> uma exposição, resultante de uma oficina com os alunos da UEMG, apresentada no Festival Marte, em Ouro Preto, 2019.
+                </p>
+                <div class="relative pt-[56.25%] w-full rounded-xl overflow-hidden shadow-2xl">
+                    <iframe
+                        class="absolute top-0 left-0 w-full h-full"
+                        src="https://www.youtube.com/embed/jNZps0RegSk?si=2MViH0FYMG03pX77"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    ></iframe>
+                </div>
             </div>
         </section>
 
         <!-- Making Of Section -->
-        <section id="making-of" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+        <section id="making-of" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="makingof_title">Making Of: Diário de Desenvolvimento</h1>
-            <p class="text-lg leading-relaxed mb-8 text-gray-700 text-left" data-translate="makingof_intro">
-                Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick="showSection('contato'); return false;">aqui</a>.
+            <p class="text-lg leading-relaxed mb-12 text-gray-700 text-left" data-translate="makingof_intro">
+                Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br><br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br><br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-[#08B59F] font-semibold hover:underline' onclick="showSection('contato'); return false;">aqui</a>.
             </p>
-            <div class="space-y-12">
+            <!-- Removido max-w-4xl para ocupar todo o espaço horizontal disponível -->
+            <div class="space-y-6 mx-auto">
                 <!-- Post 1 -->
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
-                    <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-                        <img src="{{ static('images/icons/me/Post_1_Making_of_WIDE.png') }}" alt="Imagem Post 1" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
+                    <div class="flex flex-col md:flex-row items-start md:space-x-6">
+                        <img src="{{ static('images/icons/me/Post_1_Making_of_WIDE.png') }}" alt="Imagem Post 1" class="w-full md:w-48 h-32 object-cover rounded-lg mb-4 md:mb-0 shadow-sm flex-shrink-0">
                         <div class="w-full">
-                            <div class="flex justify-between items-center mb-3">
+                            <div class="flex justify-between items-center mb-2">
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post1_title">Mitos vivos</h2>
-                                <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
+                             <p class="text-sm text-gray-500 mb-4"><span data-translate="makingof_post1_date_label">Postado em:</span> <span data-translate="makingof_post1_date_value">03 de Outubro de 2025</span></p>
+
                             <!-- Expandable Content -->
-                            <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
+                            <div class="expandable-content hidden text-gray-600 space-y-4 pt-4 border-t border-gray-100">
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post1_p1">
                                     Tem algo no coração da floresta…e faz alguns meses que estamos tateando, pesquisando, de orelha em pé e olhos bem abertos para compreender e traduzir o que as matas nos mostram. Do outro lado, testamos e mergulhamos para esticar os limites da JANDIG - uma comunidade que cria arte em Realidade Aumentada.
                                 </p>
@@ -381,23 +412,23 @@
                                 <p data-translate="makingof_post1_p6">O projeto Mitologia Estendida é sobre isso também: mergulhar na diversidade presente na mitologia brasileira através da tecnologia. Estava lançado o desafio de escolher entre um universo de mitos e lendas aqueles com os quais trabalhar um roteiro e consequentemente fazer animações em 2D.</p>
                                 <p data-translate="makingof_post1_p7">Após um mergulho de pesquisa, foi se revelando a ideia de “guardiões da natureza” e sua relação com algumas ameaças contemporâneas. Foi assim que vimos no Boitatá, Anhangá e Curupira a conexão necessária para dar o próximo passo e começar a fazer um mapa dos personagens.</p>
                                 <p data-translate="makingof_post1_p8">Você já conhecia algum desses mitos? Tem alguma história com eles? Como você contaria essa história?</p>
-                                <p data-translate="makingof_post1_p9">No próximo post, vamos falar mais sobre o mapa de cada um dos seres encantados.</p>
+                                <p class="font-medium text-[#08B59F]" data-translate="makingof_post1_p9">No próximo post, vamos falar mais sobre o mapa de cada um dos seres encantados.</p>
                             </div>
-                            <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post1_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post1_date_value">03 de Outubro de 2025</span>
                         </div>
                     </div>
                 </div>
                 <!-- Post 2 -->
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
-                    <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-                         <img src="{{ static('images/icons/me/Captura de Pantalla 2025-10-10 a la(s) 14.53.17.png') }}" alt="Imagem Post 2" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
+                    <div class="flex flex-col md:flex-row items-start md:space-x-6">
+                         <img src="{{ static('images/icons/me/Captura de Pantalla 2025-10-10 a la(s) 14.53.17.png') }}" alt="Imagem Post 2" class="w-full md:w-48 h-32 object-cover rounded-lg mb-4 md:mb-0 shadow-sm flex-shrink-0">
                         <div class="w-full">
-                            <div class="flex justify-between items-center mb-3">
+                            <div class="flex justify-between items-center mb-2">
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post2_title">Mapa Narrativo</h2>
-                                <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
-                            <!-- Expandable Content -->
-                            <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-500 mb-4"><span data-translate="makingof_post2_date_label">Postado em:</span> <span data-translate="makingof_post2_date_value">10 de Outubro de 2025</span></p>
+
+                            <div class="expandable-content hidden text-gray-600 space-y-4 pt-4 border-t border-gray-100">
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post2_p1">
                                     Todos e todas adoramos uma boa história. 
                                 </p>
@@ -410,22 +441,23 @@
                                 <p data-translate="makingof_post2_p8">Compartilhamos aqui com você o resultado das nossas conversas sobre os personagens do projeto Mitologia Estendida. Com o mapa narrativo em mãos, foi possível enxergar melhor como cada personagem se revela no imaginário pessoal e coletivo. Também deu elementos para que as ilustradoras e o restante da equipe tivessem um vocabulário em comum a partir do qual criar imagens, roteiros e cenários. As categorias à esquerda são dinâmicas e podem ter mais ou menos questões. Elas servem principalmente para guiar a conversa e evocar no grupo de trabalho um senso de inteligência coletiva.</p>
                                 <p data-translate="makingof_post2_p9">Deixamos também um Mapa Narrativo em branco para você como forma de estimular a apropriação dessa ferramenta para seu projeto particular. A ideia é dedicar um tempo - individual ou coletivo - para livremente anotar o que vem à mente como resultado de uma compreensão inerente ou como resumo de pesquisas feitas a respeito do tema. </p>
                                 <p data-translate="makingof_post2_p10">Revisite seu mapa narrativo no decorrer do processo. Ele mostrará as primeiras - e importantes - impressões que vão sendo esquecidas nas próximas etapas. Com ele em mãos, as histórias que vamos contar na sequência, na elaboração dos roteiros, contêm maior diversidade. </p>
-                                <p data-translate="makingof_post2_link"><a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a></p>
+                                <p data-translate="makingof_post2_link"><a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold flex items-center"><i class="fas fa-file-download mr-2"></i> Baixar Mapa narrativo</a></p>
                             </div>
-                            <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post2_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post2_date_value">10 de Outubro de 2025</span>
                         </div>
                     </div>
                 </div>
                  <!-- Post 3 -->
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
-                    <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
-                         <img src="{{ static('images/icons/me/JANDIGME_HOTSITE mkof3.png') }}" alt="Imagem Post 3" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
+                    <div class="flex flex-col md:flex-row items-start md:space-x-6">
+                         <img src="{{ static('images/icons/me/JANDIGME_HOTSITE mkof3.png') }}" alt="Imagem Post 3" class="w-full md:w-48 h-32 object-cover rounded-lg mb-4 md:mb-0 shadow-sm flex-shrink-0">
                         <div class="w-full">
-                            <div class="flex justify-between items-center mb-3">
+                            <div class="flex justify-between items-center mb-2">
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post3_title">Como contar uma história</h2>
-                                <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
-                            <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
+                             <p class="text-sm text-gray-500 mb-4"><span data-translate="makingof_post3_date_label">Postado em:</span> <span data-translate="makingof_post3_date_value">30 de Outubro de 2025</span></p>
+
+                            <div class="expandable-content hidden text-gray-600 space-y-4 pt-4 border-t border-gray-100">
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post3_p1">
                                     Uma vez que passamos a entender melhor os seres da floresta com os quais queremos dialogar, precisamos dar voz a eles e entender também o que os move, como eles se movem, com quem e como eles dialogam. Estamos diante do desafio do roteiro.
                                 </p>
@@ -441,24 +473,25 @@
                                 <p data-translate="makingof_post3_p3">Vivemos em tempos complexos. As mudanças climáticas não são mais apenas alguns gráficos em um livro e os efeitos de anos de um sistema exploratório em nível global estão cada vez mais visíveis. Paradoxalmente, são exatamente as pessoas e culturas que mais nos brindam acesso ao universo da mitologia brasileira que estão mais vulneráveis e necessitadas de justiça social. Ou seja, precisamos entender que os impactos das mudanças climáticas afetam de forma desigual as culturas e grupos sociais mais vulneráveis. Estes mesmos, vale lembrar, são os menos responsáveis pelos processos que nos levam à situação atual. </p>
                                 <p data-translate="makingof_post3_p4">Ter consciência disso nos ajudou a dar um norte para o processo de roteirização das animações(objetos), textos, marcadores e cenários. Afinal, o roteiro precisa dizer do caráter transmídia do projeto Mitologia Estendida. Transmídia para nós significa que é através de um conjunto de mídias que conseguimos contar uma história. As animações, por mais sedutoras e acessíveis que sejam como linguagem, não dão conta de contar a história toda.</p>
                                 <p data-translate="makingof_post3_p5">No projeto Mitologia Estendida optamos por associar cada ser encantado com uma das principais problemáticas da contemporaneidade. O roteiro nasce então do diálogo entre os três personagens mitológicos e os efeitos das nossas escolhas como civilização. Você saberia nomear quais são as problemáticas mais desafiadoras para você? </p>
-                                <p data-translate="makingof_post3_link"><a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Roteiro Anhangá</a></p>
+                                 <p data-translate="makingof_post3_link"><a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold flex items-center"><i class="fas fa-file-alt mr-2"></i> Ver Roteiro Anhangá</a></p>
                                 <p data-translate="makingof_post3_p6">Veja a estrutura de roteiro que utilizamos na imagem que acompanha este post. De um lado identificamos o cenário no qual certas ações aconteceriam. Do outro lado está como cada ser age ativamente e de forma interdependente. É o fato da interdependência entre seres  que nos ajudou a dar vida ao Boitatá, Anhangá e Curupira em diálogo com os inúmeros seres da floresta. Observe que na imagem fica claro que havia mais a ser contado, as histórias se entrelaçam e afinal contar uma história também consiste no gesto de editar o que acaba sendo não dito. Poderíamos (e queremos!) desdobrar cada história em muitas mais!</p>
                             </div>
-                            <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post3_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post3_date_value">30 de Outubro de 2025</span>
                         </div>
                     </div>
                 </div>
                 <!-- Post 4 -->
                 <div class="post-card bg-white p-6 rounded-lg shadow-md border border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-300">
-                    <div class="flex flex-col md:flex-row items-start md:items-center md:space-x-6">
+                    <div class="flex flex-col md:flex-row items-start md:space-x-6">
                         <!-- Placeholder para a imagem principal do post 4, pois não foi fornecida -->
-                         <img src="{{ static('images/icons/me/mkof_p4_frente.png') }}" alt="Imagem Post 4 - Cenário" class="w-full md:w-1/3 object-cover rounded-lg mb-4 md:mb-0 shadow-md flex-shrink-0">
+                         <img src="{{ static('images/icons/me/mkof_p4_frente.png') }}" alt="Imagem Post 4 - Cenário" class="w-full md:w-48 h-32 object-cover rounded-lg mb-4 md:mb-0 shadow-sm flex-shrink-0">
                         <div class="w-full">
-                            <div class="flex justify-between items-center mb-3">
+                            <div class="flex justify-between items-center mb-2">
                                 <h2 class="text-2xl font-semibold text-[#08B59F]" data-translate="makingof_post4_title">Cenário</h2>
-                                <svg class="w-6 h-6 text-gray-500 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400 transition-transform duration-300 transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
-                            <div class="expandable-content hidden mt-4 text-gray-600 space-y-3 pt-4 border-t border-gray-200">
+                             <p class="text-sm text-gray-500 mb-4"><span data-translate="makingof_post4_date_label">Postado em:</span> <span data-translate="makingof_post4_date_value">05 de Novembro de 2025</span></p>
+
+                            <div class="expandable-content hidden text-gray-600 space-y-4 pt-4 border-t border-gray-100">
                                 <p class="text-gray-700 leading-relaxed" data-translate="makingof_post4_p1">
                                     Uma das inovações que o projeto Mitologia Estendida traz para a comunidade da Jandig é a possibilidade de inserir os marcadores em um contexto narrativo específico. De certa forma, isso já estava no DNA da Jandig, mas, nas experiências até então, foram experimentos nos quais os marcadores ganham contexto no mundo físico — seja um marcador colado em um poste na China ou uma placa-marcador em um local histórico da cidade de Ouro Preto, Minas Gerais.
                                 </p>
@@ -490,9 +523,11 @@
                                 <p data-translate="makingof_post4_p7">
                                     Por enquanto, deixamos algumas das páginas do álbum interativo para você curtir.
                                 </p>
-                                <img src="{{ static('images/icons/me/mkof_p4_3.PNG') }}" alt="Exemplo de Cenário 1" class="rounded-lg shadow-sm">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                                     <!-- Placeholders para exemplos de cenário -->
+                                     <img src="{{ static('images/icons/me/mkof_p4_3.PNG') }}" alt="Exemplo de Cenário 1" class="rounded-lg shadow-sm">
+                                </div>
                             </div>
-                            <span class="text-sm text-gray-500 mt-4 block" data-translate="makingof_post4_date_label">Postado em:</span> <span class="text-sm text-gray-500 mt-4" data-translate="makingof_post4_date_value">05 de Novembro de 2025</span>
                         </div>
                     </div>
                 </div>
@@ -500,130 +535,146 @@
         </section>
 
         <!-- Exposição Section -->
-        <section id="exposicao" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 items-center justify-center min-h-[50vh] border border-gray-200">
+        <section id="exposicao" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="exhibition_title">Exposição</h1>
-            <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
-                <img src="{{ static('images/icons/me/JANDIG_CARTAZ.jpg') }}"
-                     alt="Cartaz."
-                     class="w-full h-auto md:h-auto object-contain"
-                >
-                <img src="{{ static('images/icons/me/JANDIG_CARTAZ.PNG') }}"
-                     alt="Cartaz."
-                     class="w-full h-auto md:h-auto object-contain hidden"
-                >
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-start">
+                <div class="lg:w-1/2 w-full rounded-lg shadow-lg overflow-hidden sticky top-24">
+                    <img src="{{ static('images/icons/me/JANDIG_CARTAZ.jpg') }}"
+                         alt="Cartaz Exposição."
+                         class="w-full h-auto object-cover"
+                    >
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl font-bold text-left mb-6 text-gray-800" data-translate="exhibition_h2">Uma Jornada Imersiva na Arte e Tecnologia</h2>
+                    <p class="text-lg text-left text-gray-700 mb-4 leading-relaxed" data-translate="exhibition_p1">
+                        Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. 
+                    </p>
+                    <p class="text-lg text-left text-gray-700 mb-8 leading-relaxed" data-translate="exhibition_p2">
+                        Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.
+                    </p>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#08B59F] mb-8">
+                        <h3 class="font-bold text-xl mb-4 text-gray-800">Programação</h3>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="far fa-calendar-check mt-1 mr-3 text-[#08B59F]"></i>
+                                <span data-translate="exhibition_p4"><strong>Palestra de abertura:</strong><br>28/Nov 18h-19h</span>
+                            </li>
+                             <li class="flex items-start">
+                                <i class="far fa-eye mt-1 mr-3 text-[#08B59F]"></i>
+                                <span data-translate="exhibition_p6"><strong>Experiência MR:</strong><br>28/Nov 19-21h<br>29/Nov 9h30-19h</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-tools mt-1 mr-3 text-[#08B59F]"></i>
+                                <span data-translate="exhibition_p5"><strong>Oficina:</strong><br>29/Nov 9h30-13h30</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-mobile-alt mt-1 mr-3 text-[#08B59F]"></i>
+                                <span data-translate="exhibition_p7"><strong>Exposição AR (Realidade Aumentada):</strong><br>1-19/Dez, 11-19h (seg-sex)<br>12-23/Jan, 11-19h (seg-sex)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <p class="text-gray-700 mb-6 italic" data-translate="exhibition_p8">
+                        Engajado na luta contra a privatização dos saberes, o Coletivo Digital atua para que o acesso ao conhecimento seja reconhecido como um bem da humanidade e como um direito de todos.
+                    </p>
+                    
+                    <div class="flex items-center text-gray-800 font-semibold bg-gray-100 p-4 rounded-lg">
+                         <i class="fas fa-map-pin text-[#08B59F] text-xl mr-4"></i>
+                        <p data-translate="exhibition_p9">
+                            Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP
+                        </p>
+                    </div>
+                </div>
             </div>
-             
-            <h2 class="text-3xl font-bold text-left mb-6 text-gray-800" data-translate="exhibition_h2">Uma Jornada Imersiva na Arte e Tecnologia</h2>
-            <p class="text-lg text-left text-gray-700 mb-4 max-w-2xl mx-auto" data-translate="exhibition_p1">
-                Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. 
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-4 max-w-2xl mx-auto" data-translate="exhibition_p2">
-                Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p3">
-                A exposição Mitologia Estendida ocupará o Centro Cultural Coletivo Digital em dois momentos:
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p4">
-                Experiência de realidade mista (MR)<br>Palestra de abertura: <br>28/Nov 18h-19h
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p5">
-                Oficina<br>29/Nov 9h30-13h30
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p6">
-                Experiência MR<br>28/Nov 19-21h<br>29/Nov 9h30-19h
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p7">
-                Exposição de realidade aumentada (AR)<br>28/Nov 19-21h<br>29/Nov 9h30-19h<br>1-19/Dez 11-19h (segunda a sexta)<br>12-23/Jan 11-19h (segunda a sexta)
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p8">
-                Engajado na luta contra a privatização dos saberes, o Coletivo Digital atua para que o acesso ao conhecimento seja reconhecido como um bem da humanidade e como um direito de todos.
-            </p>
-            <p class="text-lg text-left text-gray-700 mb-8 max-w-2xl mx-auto" data-translate="exhibition_p9">
-                Coletivo Digital: R. Luís Murat, 298, bairro Pinheiros, São Paulo - SP
-            </p>
         </section>
 
         <!-- Contato Section -->
-        <section id="contato" class="section striped-bg p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
+        <section id="contato" class="section striped-bg p-6 md:p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="contact_title">Contato</h1>
-            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="contact_form_title">Envie-nos uma Mensagem</h2>
-                <form action="https://formsubmit.co/jandig@memelab.com.br" method="POST">
+            <div class="bg-white p-8 rounded-lg shadow-md border border-gray-200 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-semibold mb-6 text-[#08B59F]" data-translate="contact_form_title">Envie-nos uma Mensagem</h2>
+                
+                <!-- Nota: formsubmit.co pode não funcionar perfeitamente dentro do iframe de preview devido a restrições de segurança, mas o código está correto -->
+                <form action="https://formsubmit.co/jandig@memelab.com.br" method="POST" class="space-y-4">
                     <input type="hidden" name="_url" value="https://jandig.app/me">
-                    <div class="mb-4">
+                    <input type="hidden" name="_subject" value="Novo contato via Site Mitologia Estendida">
+                    
+                    <div>
                         <label for="name" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_name_label">Nome:</label>
-                        <input type="text" id="name" name="name" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_name_placeholder" placeholder="Seu nome" required>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#08B59F] focus:bg-white focus:ring-2 focus:ring-[#08B59F]/20 transition-all outline-none" data-translate-placeholder="contact_form_name_placeholder" placeholder="Seu nome" required>
                     </div>
-                    <div class="mb-4">
+                    <div>
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_email_label">Email:</label>
-                        <input type="email" id="email" name="email" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_email_placeholder" placeholder="seu.email@exemplo.com" required>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#08B59F] focus:bg-white focus:ring-2 focus:ring-[#08B59F]/20 transition-all outline-none" data-translate-placeholder="contact_form_email_placeholder" placeholder="seu.email@exemplo.com" required>
                     </div>
-                    <div class="mb-6">
+                    <div>
                         <label for="message" class="block text-gray-700 text-sm font-bold mb-2" data-translate="contact_form_message_label">Mensagem:</label>
-                        <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline bg-gray-50 border-gray-200" data-translate-placeholder="contact_form_message_placeholder" placeholder="Sua mensagem..." required></textarea>
+                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-[#08B59F] focus:bg-white focus:ring-2 focus:ring-[#08B59F]/20 transition-all outline-none resize-y" data-translate-placeholder="contact_form_message_placeholder" placeholder="Sua mensagem..." required></textarea>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <button type="submit" class="bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition-colors duration-300 transform hover:scale-105" data-translate="contact_form_submit">
-                            Enviar Mensagem
-                        </button>
-                    </div>
+                    <button type="submit" class="w-full bg-[#08B59F] hover:bg-[#9500FF] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md flex justify-center items-center" data-translate="contact_form_submit">
+                        <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
+                    </button>
                 </form>
             </div>
         </section>
     </main>
 
-    <!-- Footer - Versão modernizada restaurada -->
+    <!-- Footer - Versão modernizada restaurada com correção do ícone do Twitter (X) -->
     <footer class="bg-white p-8 text-gray-600 mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] border-t border-gray-100">
         <div class="container mx-auto flex flex-col md:flex-row md:justify-between items-center mb-8">
             <a href="#contato" class="text-gray-600 hover:text-[#08B59F] transition-colors duration-300 font-semibold flex items-center md:order-1" onclick="showSection('contato'); return false;">
                 <i class="far fa-envelope mr-2"></i>
-                <span data-translate="footer_contact">CONTATO</span>
+                <span class="ml-2" data-translate="footer_contact">CONTATO</span>
             </a>
             <p class="mt-4 md:mt-0 md:order-2 text-center md:flex-grow font-medium" data-translate="footer_motto">Desenvolvido com paixão e tecnologia.</p>
             <!-- Social Media Icons -->
             <div class="flex space-x-6 mt-4 md:mt-0 md:order-3">
                 <a href="https://www.facebook.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#1877F2] transition-colors duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
                 <a href="https://www.instagram.com/jandig.art" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#E4405F] transition-colors duration-300"><i class="fab fa-instagram text-xl"></i></a>
+                <!-- Ícone X (Twitter) corrigido -->
                 <a href="https://x.com/JandigArt" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-black transition-colors duration-300"><i class="fa-brands fa-x-twitter text-xl"></i></a>
                 <a href="https://github.com/memeLab/Jandig" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-black transition-colors duration-300"><i class="fab fa-github text-xl"></i></a>
                 <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300"><i class="fab fa-telegram-plane text-xl"></i></a>
             </div>
         </div>
         
-        <!-- Logos Area -->
+        <!-- Logos Area (Modernized layout maintained) -->
         <div class="container mx-auto border-t border-gray-100 pt-8">
              <div class="flex flex-wrap justify-center items-start gap-8 md:gap-12 text-center">
                 <!-- Fomento -->
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_fomento">Fomento</p>
-                    <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
+                    <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-12 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
                 </div>
                 <!-- Produção -->
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_producao">Produção</p>
                      <div class="flex gap-4">
-                        <img src="{{ static('images/icons/me/logos_proac/memelab.jpg') }}" alt="Logo memelab" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity">
-                        <img src="{{ static('images/icons/me/coletivo_digital.png') }}" alt="Logo coletivo digital" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity">
+                        <img src="{{ static('images/icons/me/logos_proac/memelab.jpg') }}" alt="Logo memelab" class="h-10 object-contain">
+                        <img src="{{ static('images/icons/me/coletivo_digital.png') }}" alt="Logo coletivo digital" class="h-10 object-contain">
                      </div>
                 </div>
                 <!-- Apoio -->
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_apoio">Apoio</p>
                     <div class="flex gap-4">
-                        <img src="{{ static('images/icons/me/logos_proac/Logo-CTR-ECA-USP.png') }}" alt="Logo USP" class="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity">
-                        <img src="{{ static('images/icons/me/logos_proac/LOGO_LabArteMidia_letra-preta_fundo-alpha-768x94.png') }}" alt="Logo Labartemidia" class="h-8 object-contain opacity-70 hover:opacity-100 transition-opacity self-center">
+                        <img src="{{ static('images/icons/me/logos_proac/Logo-CTR-ECA-USP.png') }}" alt="Logo USP" class="h-12 object-contain">
+                        <img src="{{ static('images/icons/me/logos_proac/LOGO_LabArteMidia_letra-preta_fundo-alpha-768x94.png') }}" alt="Logo Labartemidia" class="h-8 object-contain self-center">
                     </div>
                 </div>
                  <!-- Realização -->
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_realizacao">Realização</p>
                      <div class="flex flex-wrap justify-center gap-4 items-center">
-                        <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
-                        <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-                        <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo Aldir Blanc" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-                        <img src="{{ static('images/icons/me/snc.png') }}" alt="Logo SNC" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
+                        <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo Aldir Blanc" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/snc.png') }}" alt="Logo SNC" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
                         <div class="hidden md:block h-8 w-px bg-gray-300"></div>
-                        <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo Federal" class="h-10 object-contain opacity-70 hover:opacity-100 transition-opacity" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo Federal" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
                     </div>
                 </div>
             </div>
@@ -631,7 +682,7 @@
 
         <div class="container mx-auto flex flex-col items-center mt-12 pt-6 border-t border-gray-100">
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-gray-400 hover:text-[#08B59F] transition-colors duration-300 group">
-                <img src="{{ static('images/icons/me/logos_proac/creative_commons.png') }}" alt="Licença Creative Commons CC BY-NC-SA 4.0" class="h-8 w-auto mb-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                <img src="{{ static('images/icons/me/logos_proac/creative_commons.png') }}" alt="Licença Creative Commons CC BY-NC-SA 4.0" class="h-8 w-auto mb-2">
                 <p class="text-xs" data-translate="footer_license">Alguns direitos reservados (CC BY-NC-SA 4.0).</p>
             </a>
         </div>
@@ -677,7 +728,7 @@
                 qs_list2_li12: "<strong>UX Design:</strong> Raquel Mei",
                 qs_list2_li13: "<strong>Programação:</strong> Luna Aster, Pablo Silva, Rodrigo Oliveira e Thiago Hersan",
                 qs_list2_li14: "<strong>Consultoria:</strong> Auá Mendes e Demétrio Portugal",
-                qs_list2_li15: "<strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href='https://clarice.ai'>Clarice.ai</a>",
+                qs_list2_li15: "<strong>Agradecimentos:</strong> Almir Almas, Adriana Pedrosa, Max Duarte e <a href='https://clarice.ai' target='_blank' class='text-[#08B59F] hover:underline'>Clarice.ai</a>",
                 qs_jandig_title: "JANDIG",
                 qs_jandig_p1: "O projeto Mitologia Estendida faz parte da Jandig - Uma comunidade de arte em Realidade Aumentada de código aberto. A plataforma Jandig viabiliza a realização de exposições com o uso de realidade aumentada e mista.",
                 qs_jandig_p2: "Com o projeto Mitologia Estendida damos um passo na direção de experimentar com recursos educativos e exposições relacionadas aos mitos e lendas do Brasil.",
@@ -693,7 +744,7 @@
                 album_title: "Álbum Interativo",
                 album_intro: "O álbum interativo é a nossa forma de ampliar e democratizar a experiência de realidade aumentada e as histórias das três lendas que compõem o projeto Mitologias Estendidas. Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
                 album_downloads_title: "DOWNLOADS",
-                album_dl1_title: "Álbum de figurinhas",
+                album_dl1_title: "Álbum interativo",
                 album_dl1_p: "Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.",
                 coming_soon: "Em Breve...",
                 album_dl2_title: "Figurinhas",
@@ -706,7 +757,7 @@
                 learn_p1: "Desenvolvemos uma série de materiais educativos para complementar a experiência da \"Mitologia Estendida\" e aprofundar o aprendizado sobre as lendas e mitos brasileiros. Nosso objetivo é tornar o conhecimento acessível e divertido para todas as idades, desde crianças a adultos.",
                 learn_p2: "Esses materiais são ideais para uso em sala de aula, em casa ou em atividades recreativas, promovendo a cultura e a história de forma interativa.",
                 makingof_title: "Making Of: Diário de Desenvolvimento",
-                makingof_intro: "Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br> Os posts de making of auxiliam você a se tornar um aliado temático e a investigar a intersecção entre arte, tecnologia e educação. Almejamos também inspirar uma comunidade cada vez mais ampla nos processos de remix e criação.<br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-gray-600 hover:text-[#08B59F] transition-colors duration-300 mt-2 md:mt-0 md:order-1' onclick=\"showSection('contato')\">aqui</a>.",
+                makingof_intro: "Conheça o processo criativo do projeto Mitologia Estendida. Esta série de posts tem como objetivo incentivar educadores e pessoas em geral a incorporar e criar conteúdos interativos.<br><br> Preparamos uma espécie de “mapa do percurso” tendo em mente alguém que quer fazer seu próprio álbum interativo com figurinhas (marcadores de realidade aumentada) e quem sabe também uma exposição.<br><br> Caso tenha alguma dúvida sobre qualquer parte do processo, entre em contato conosco <a href='#' class='text-[#08B59F] font-semibold hover:underline' onclick=\"showSection('contato'); return false;\">aqui</a>.",
                 makingof_post1_title: "Mitos vivos",
                 makingof_post1_p1: "Tem algo no coração da floresta…e faz alguns meses que estamos tateando, pesquisando, de orelha em pé e olhos bem abertos para compreender e traduzir o que as matas nos mostram. Do outro lado, testamos e mergulhamos para esticar os limites da JANDIG - uma comunidade que cria arte em Realidade Aumentada.",
                 makingof_post1_p2: "A plataforma Jandig, também criada pela comunidade, permite a criação de exposições em realidade aumentada e mista e até agora funcionou muito para artistas. Agora queremos que professores, educadores e pessoas em geral também entendam como JANDIG pode ser uma ferramenta para expandir a imaginação!",
@@ -762,7 +813,6 @@
                 exhibition_h2: "Uma Jornada Imersiva na Arte e Tecnologia",
                 exhibition_p1: "Estamos rodeados por energias invisíveis que nos auxiliam a navegar os tempos complexos que vivemos. ",
                 exhibition_p2: "Em uma experiência única em realidade mista, a exposição Mitologia Estendida ocupa o espaço expositivo do Coletivo Digital. Resultado de uma investigação sobre as relações entre arte, tecnologia e educação, a exposição é um convite para um percurso-ritual para ir ao encontro de um recorte da mitologia brasileira vista em realidade mista e em realidade aumentada.",
-                exhibition_p3: "A exposição Mitologia Estendida ocupará o Centro Cultural Coletivo Digital em dois momentos:",
                 exhibition_p4: "Experiência de realidade mista (MR)<br>Palestra de abertura: <br>28/Nov 18h-19h",
                 exhibition_p5: "Oficina<br>29/Nov 9h30-13h30",
                 exhibition_p6: "Experiência MR<br>28/Nov 19-21h<br>29/Nov 9h30-19h",
@@ -898,7 +948,7 @@
                 makingof_post2_p8: "We share with you here the result of our conversations about the characters of the Extended Mythology project. With the narrative map in hand, it was possible to see better how each character is revealed in the personal and collective imagination. It also provided elements for the illustrators and the rest of the team to have a common vocabulary from which to create images, scripts, and scenarios. The categories on the left are dynamic and can have more or fewer questions. They serve mainly to guide the conversation and evoke a sense of collective intelligence in the working group.",
                 makingof_post2_p9: "We also leave a blank Narrative Map for you as a way to encourage the appropriation of this tool for your particular project. The idea is to dedicate some time - individually or collectively - to freely note what comes to mind as a result of an inherent understanding or as a summary of research done on the subject.",
                 makingof_post2_p10: "Revisit your narrative map throughout the process. It will show the first - and important - impressions that are forgotten in the next stages. With it in hand, the stories we will tell next, in the elaboration of the scripts, will contain greater diversity.",
-                makingof_post2_link: "<a href=\"https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold\">Narrative Map</a>",
+                makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Narrative Map</a>`,
                 makingof_post2_date_label: "Posted on:",
                 makingof_post2_date_value: "October 10, 2025",
                 makingof_post3_title: "How to tell a story",
@@ -909,7 +959,7 @@
                 makingof_post3_p3: "We live in complex times. Climate change is no longer just a few graphs in a book, and the effects of years of an exploitative system at a global level are increasingly visible. Paradoxically, it is precisely the people and cultures that most give us access to the universe of Brazilian mythology that are most vulnerable and in need of social justice. That is, we need to understand that the impacts of climate change disproportionately affect the most vulnerable cultures and social groups. These same groups, it is worth remembering, are the least responsible for the processes that lead us to the current situation.",
                 makingof_post3_p4: "Being aware of this helped us to guide the scripting process for animations (objects), texts, markers, and scenarios. After all, the script needs to convey the transmedia nature of the Extended Mythology project. Transmedia for us means that it is through a set of media that we can tell a story. Animations, however seductive and accessible as a language, do not fully tell the story.",
                 makingof_post3_p5: "In the Extended Mythology project, we chose to associate each enchanted being with one of the main contemporary problems. The script then arises from the dialogue between the three mythological characters and the effects of our choices as a civilization. Would you be able to name the most challenging problems for you? ",
-                makingof_post3_link: "<a href=\"https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold\">Anhangá Script</a>",
+                makingof_post3_link: `<a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Anhangá Script</a>`,
                 makingof_post3_p6: "See the script structure we used in the PDF accompanying this post. On one side, we identify the scenario in which certain actions would take place. On the other side is how each being acts actively and interdependently. It is the interdependence between beings that helped us bring Boitatá, Anhangá, and Curupira to life in dialogue with the countless beings of the forest. Note that in the image it is clear that there was more to be told, the stories intertwine, and after all, telling a story also consists of the act of editing what ends up not being said. We could (and want to!) unfold each story into many more!",
                 makingof_post3_date_label: "Posted on:",
                 makingof_post3_date_value: "October 30, 2025",
@@ -963,7 +1013,7 @@
                 footer_realizacao: "Realization:",
                 footer_license: "Some rights reserved.",
                 oficina_title: "WORKSHOP REGISTRATION: Interactive Album Creation",
-                oficina_p1: "The Extended Mythology project opens the doors to the behind-the-scenes process of creating the Interactive Album. The workshop is for those who want to tell a story using augmented reality.",
+                oficina_p1: "The Extended Mythology project opens the doors to the behind-scenes process of creating the Interactive Album. The workshop is for those who want to tell a story using augmented reality.",
                 oficina_image1_caption: "Interaction with the exhibition in Ouro Preto, 2019.",
                 oficina_p2: "At the end of the workshop, each person will leave with their own page for their narrative, created and printed during the workshop, as well as gaining a good understanding of how the interactive album functions as a transmedia narrative element for their stories.",
                 oficina_image2_caption: "Page from the Extended Mythology interactive album, 2025.",
@@ -979,7 +1029,7 @@
             },
             es: {
                 nav_exhibition: "Exposición",
-                nav_sticker_album: "Álbum Interactivo",
+                nav_sticker_album: "Álbum de Cromos",
                 nav_workshop: "Taller",
                 nav_making_of: "Making Of",
                 nav_who_we_are: "Quiénes somos",
@@ -1066,7 +1116,7 @@
                 makingof_post2_p8: "Compartimos aquí con ustedes el resultado de nuestras conversaciones sobre los personajes del proyecto Mitología Extendida. Con el mapa narrativo en mano, fue posible ver mejor cómo cada personaje se revela en el imaginario personal y colectivo. También proporcionó elementos para que las ilustradoras y el resto del equipo tuvieran un vocabulario común a partir del cual crear imágenes, guiones y escenarios. Las categorías de la izquierda son dinámicas y pueden tener más o menos preguntas. Ellas sirven principalmente para guiar la conversación y evocar un sentido de inteligencia colectiva en el grupo de trabajo.",
                 makingof_post2_p9: "También dejamos un Mapa Narrativo en blanco para usted como una forma de fomentar la apropiación de esta herramienta para su proyecto particular. La idea es dedicar un tiempo, individual o colectivo, para anotar libremente lo que viene a la mente como resultado de una comprensión inherente o como un resumen de la investigación realizada sobre el tema.",
                 makingof_post2_p10: "Revise su mapa narrativo a lo largo del proceso. Mostrará las primeras, e importantes, impresiones que se olvidan en las siguientes etapas. Con él en mano, las historias que contaremos a continuación, en la elaboración de los guiones, contendrán una mayor diversidad.",
-                makingof_post2_link: "<a href=\"https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold\">Mapa narrativo</a>",
+                makingof_post2_link: `<a href="https://drive.google.com/file/d/15aw85LQYRGnVpNQQ4uC0-gXlrX5tNPue/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Mapa narrativo</a>`,
                 makingof_post2_date_label: "Publicado el:",
                 makingof_post2_date_value: "10 de Octubre de 2025",
                 makingof_post3_title: "Cómo contar una historia",
@@ -1077,7 +1127,7 @@
                 makingof_post3_p3: "Vivimos tiempos complejos. El cambio climático ya no son solo unos gráficos en un libro y los efectos de años de un sistema explotador a nivel global son cada vez más visibles. Paradójicamente, son precisamente las personas y culturas que más nos brindan acceso al universo de la mitología brasileña las que están más vulnerables y necesitadas de justicia social. Es decir, necesitamos entender que los impactos del cambio climático afectan de forma desigual a las culturas y grupos sociales más vulnerables. Estos mismos, cabe recordar, son los menos responsables de los procesos que nos llevan a la situación actual. ",
                 makingof_post3_p4: "Tener conciencia de esto nos ayudó a dar un rumbo al proceso de creación de guiones para animaciones (objetos), textos, marcadores y escenarios. Al fin y al cabo, el guion debe reflejar el carácter transmedia del proyecto Mitología Extendida. Transmedia para nosotros significa que es a través de un conjunto de medios que logramos contar una historia. Las animaciones, por muy seductoras y accesibles que sean como lenguaje, no son suficientes para contar toda la historia.",
                 makingof_post3_p5: "En el proyecto Mitología Extendida optamos por asociar cada ser encantado con una de las principales problemáticas de la contemporaneidad. El guion nace entonces del diálogo entre los tres personajes mitológicos y los efectos de nuestras elecciones como civilización. ¿Sabría usted nombrar cuáles son las problemáticas más desafiantes para usted? ",
-                makingof_post3_link: "<a href=\"https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold\">Guion Anhangá</a>",
+                makingof_post3_link: `<a href="https://drive.google.com/file/d/1lRyOdm4RTFcZ5sVae0RxCjeFYJSSR1bx/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-[#08B59F] hover:text-[#9500FF] transition-colors duration-300 font-semibold">Guion Anhangá</a>`,
                 makingof_post3_p6: "Vea la estructura del guion que utilizamos en la PDF que acompaña a esta publicación. Por un lado, identificamos el escenario en el que se desarrollarían ciertas acciones. Por otro lado, se describe cómo cada ser actúa activamente y de forma interdependiente. Es el hecho de la interdependencia entre los seres lo que nos ayudó a dar vida a Boitatá, Anhangá y Curupira en diálogo con los innumerables seres del bosque. Observe que en la imagen queda claro que había más que contar, las historias se entrelazan y, al fin y al cabo, contar una historia también consiste en el gesto de editar lo que al final no se dice. ¡Podríamos (y queremos!) desglosar cada historia en muchas más!",
                 makingof_post3_date_label: "Publicado el:",
                 makingof_post3_date_value: "30 de Octubre de 2025",
@@ -1131,7 +1181,7 @@
                 footer_realizacao: "Realización:",
                 footer_license: "Algunos derechos reservados.",
                 oficina_title: "INSCRIPCIÓN Taller de Creación de álbum interactivo",
-                oficina_p1: "El proyecto Mitología Extendida abre las puertas del proceso detrás de la creación del Álbum Interactivo. El taller es para aquellos que quieren contar una historia usando realidad aumentada.",
+                oficina_p1: "El proyecto Mitología Extendida abre las puertas del proceso detrás de la creación del Álbum Interativo. El taller es para aquellos que quieren contar una historia usando realidad aumentada.",
                 oficina_image1_caption: "Interacción con la exposición en Ouro Preto, 2019.",
                 oficina_p2: "Al final del encuentro, cada persona saldrá con una página propia para su narrativa, creada e impresa en el taller, así como tendrá una buena noción de cómo funciona el álbum interactivo como un elemento narrativo transmedia para sus historias.",
                 oficina_image2_caption: "Página del álbum interactivo Mitología Extendida, 2025.",
