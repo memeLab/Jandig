@@ -23,8 +23,7 @@ Acesse https://jandig.app/markers/upload, faça o upload da imagem (com
 extensão .PNG), atribua um nome e declare o autor. Esta imagem será
 reconhecida pela câmera da Jandig.
 
-Acesse https://jandig.app/objects/upload e faça upload do GIF, vídeo
-(nos formatos WEBM ou MP4) ou 3D (no formato GLB) com a sua animação. O
+Acesse https://jandig.app/objects/upload e faça upload do GIF ou 3D (no formato GLB) com a sua animação. O
 Jandig exibirá esse objeto sobre o marcador na câmera.
 
 Clique em “Criar Obra Jandig”, escolha o Marcador e Objeto
@@ -132,7 +131,7 @@ Objeto.
 
 Embora este formulário de envio seja maior, o processo simplifica-se.
 Selecione e localize o arquivo que você deseja carregar. O Jandig aceita
-os formatos .gif, .webm (inclusive com transparência), .mp4 e .glb.
+os formatos .gif e .glb.
 
 O tamanho, tema, looping e outras especificações são flexíveis, mas
 sugerimos conteúdo com loop perfeito alinhado à temática do Marcador.

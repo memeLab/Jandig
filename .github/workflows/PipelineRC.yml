@@ -62,7 +62,7 @@ jobs:
           name: coverage-report
 
       - name: Run SonarQube Scanner
-        uses: sonarsource/sonarqube-scan-action@v5
+        uses: sonarsource/sonarqube-scan-action@v6
         with:
           projectBaseDir: .
           args: >
