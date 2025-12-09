@@ -13,7 +13,6 @@ dependencies = [
   "django-extensions~=4.0",
   "django-htmx~=1.21",
   "django-storages~=1.14",
-  "django~=5.1",
   "djangorestframework~=3.15",
   "drf-nested-routers~=0.94",
   "gevent~=24.11",
@@ -28,6 +27,7 @@ dependencies = [
   "psycopg[binary,pool]>=3.2.9",
   "django-pghistory>=3.7.0",
   "granian[reload]>=2.5.0",
+  "django~=6.0",
 ]
 
 [dependency-groups]
