@@ -178,3 +178,37 @@ class TestObjectUpload(TestCase):
         response = self.client.get(reverse("object-upload"))
         assert response.status_code == status.HTTP_302_FOUND
         assert "/users/login" in response.url
+
+    def test_upload_object_allows_audiodescription_mp3_file(self):
+        self.client.login(username=self.username, password=self.password)
+        audio_file = SimpleUploadedFile(
+            "audio.mp3", b"fake audio content", content_type="audio/mpeg"
+        )
+        with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
+            data = {
+                "source": image_file,
+                "author": "Test Author",
+                "title": "Test Marker with Audio",
+                "audio_description": audio_file,
+            }
+            response = self.client.post(reverse("object-upload"), data)
+            assert response.status_code == status.HTTP_302_FOUND
+        assert Object.objects.count() == 1
+
+    def test_upload_object_blocks_audiodescription_not_audio_file(self):
+        self.client.login(username=self.username, password=self.password)
+        audio_file = SimpleUploadedFile(
+            "audio.jpg", b"fake audio content", content_type="image/jpeg"
+        )
+        with open(EXAMPLE_OBJECT_PATH, "rb") as image_file:
+            data = {
+                "source": image_file,
+                "author": "Test Author",
+                "title": "Test Marker with Audio",
+                "audio_description": audio_file,
+            }
+            response = self.client.post(reverse("object-upload"), data)
+            assert response.status_code == status.HTTP_200_OK
+
+        assert Object.objects.count() == 0
+        assert b"Only MP3, OGG, and WAV audio files are allowed." in response.content

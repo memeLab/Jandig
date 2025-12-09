@@ -5,6 +5,9 @@
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static('css/warning.css') }}">
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
+        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
         {# The last version of threejs that this works, after 0.127.0 we have an error. After 150+ three.min.js is deprecated for usage as a module #}
         <script src="https://unpkg.com/three@0.127.0/build/three.min.js"></script>
@@ -23,15 +26,28 @@
                         {{ form.visible_fields()[2].errors }}
                     </p>
                     <p class="upload-field" id="source-field">
-                
+
                         <h3>{{_("Choose Object")}}</h3>
                     
-                        {{ form.visible_fields()[0] | safe}}
+                        {{ form.visible_fields()[0] }}
                         {{ form.visible_fields()[0].errors }}
                     </p>
-
                     <div id="content-box"></div>
-                    
+
+                    <h3>{{_("Choose a Sound")}}</h3>
+                    <button id="select-sound" class="select-btn" type="button">
+                        {{ _('Select a Sound') }}
+                    </button>
+                    <input id="id_selected_sound" type="hidden" name="selected_sound" onchange="validateSubmit()" {% if selected_sound %} value="{{ selected_sound }}" {% endif %}>
+                    {{ form.visible_fields()[5].errors }}
+
+                    <h3>{{_("Choose Audio Description")}}</h3>
+                    <div style="display: flex; flex-direction: column;">
+                            <input type="file" name="audio_description" accept="audio/mp3, audio/ogg,audio/wav" title="{{ _('Choose the Audio Description File')}}" id="id_audio_description"
+                            style="height: auto;">
+                            <p style="font-size: small; text-align: left; padding: 0 10px">{{_("optional")}} (.mp3, .ogg, .wav)</p>
+                    </div>
+                    {{ form.visible_fields()[4].errors }}
                     
                     <p class="form-options">
                         <input id="author-chk" type="checkbox" name="author" value="1">
@@ -53,13 +69,87 @@
                             </label>
                         </p>
                     </div>
+                    <div id="form-modal" class="tab">
+                        <h4 class="modal-title">{{ _('Select Sound') }}</h4>
+                        <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML" disabled="disabled"> < </button>
+                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                        </div>
+
+                        {% with repository_list = sounds, element_type="sound", htmx="false"%}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+
+                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
+                            {{ _('Okay') }}
+                        </a>
+                    </div>
                     <input id="submit-btn" class="submit-btn" onclick="updateValues()" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
                 </form>
             </div>
         </section>
 
         <script>
-           
+            // modal events
+            $('#select-sound').click(function(){
+                currentTab = 0;
+                $('#form-modal').modal({showClose: false});
+                showTab(currentTab);
+            })
+            function showTab(tabNumber){
+                let tabs = $('.tab');
+                tabs.hide();
+                $('#' + tabs[tabNumber].id).show();
+            }
+            selected_sound = "{{ selected_sound | default('', true) }}";
+            function update_selected_items(){
+
+                id_sound = "#sound-" + selected_sound;
+                $('#existent-sound > input').val(selected_sound);
+                $(id_sound).css("border-bottom","3px solid #a6a6a6");
+            }
+            update_selected_items();
+
+            function enable_selection(){
+                $('.repository-item').click(function(){
+                    let elementId = $(this).attr('id');
+                    let sectionId = $(this).parent().attr('id');
+
+                    // reset background
+                    $(this).parent().children().css('border-bottom', 'none')
+                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    id = elementId.split("-")[1];
+                    $('#id_selected_sound').val(id);
+                    selected_sound = id;
+            });
+            }
+            enable_selection();
+
+            page_sound = 1;
+            function get_page_sound(increment) {
+                actual_page = page_sound + increment;
+                if (actual_page < 1) {
+                    actual_page = 1;
+                }
+                page_sound = actual_page;
+                update_next_previous_buttons();
+                return page_sound
+            }
+            function update_next_previous_buttons() {
+                previous_button = document.getElementById("previous-button-sound");
+                next_button = document.getElementById("next-button-sound");
+                if (page_sound == 1) {
+                    previous_button.disabled = true;
+                }else {
+                    previous_button.disabled = false;
+                }
+                if (page_sound == {{total_sound_pages}}) {
+                    next_button.disabled = true;
+                }else {
+                    next_button.disabled = false;
+                }
+            }
+            update_next_previous_buttons();
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
                     $('#submit-btn').prop('disabled', false);

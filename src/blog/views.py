@@ -8,7 +8,10 @@ PAGE_SIZE = 4
 
 
 def blog_index(request):
-    page_number = int(request.GET.get("page", "1"))
+    try:
+        page_number = int(request.GET.get("page", "1"))
+    except ValueError:
+        page_number = 1
     paginator = Paginator(
         Post.objects.prefetch_related("categories")
         .filter(status=PostStatus.PUBLISHED)
@@ -34,32 +37,6 @@ def blog_index(request):
         return render(request, "blog/post_preview.jinja2", context)
 
     return render(request, "blog/index.jinja2", context)
-
-
-def blog_category(request, category):
-    actual_page_number = int(request.GET.get("page", "1"))
-    initial_post = 0 + (actual_page_number - 1) * PAGE_SIZE
-    last_post = PAGE_SIZE * actual_page_number
-    posts = (
-        Post.objects.prefetch_related("categories")
-        .filter(categories__name__contains=category)
-        .order_by("-created")[initial_post:last_post]
-    )
-
-    context = {
-        "next_page_number": actual_page_number + 1,
-        "category": category,
-        "posts": posts,
-        "PREVIEW_SIZE": PREVIEW_SIZE,
-        "page_size": PAGE_SIZE,
-        "page_url": request.path,
-        "blog_categories": Category.objects.all(),
-    }
-
-    if request.htmx:
-        return render(request, "blog/post_preview.jinja2", context)
-
-    return render(request, "blog/category.jinja2", context)
 
 
 def post_detail(request, pk):

@@ -11,22 +11,51 @@
 
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
+            <link rel="stylesheet" href="{{ static ('css/create_box.css') }}">
             <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
             <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
             <script src="{{ static('js/modal.js') }}"></script>
-                    <h1 class="titExb">{{_("Your Exhibitions")}}</h1>
-                    {% if exhibits %}
-                        {% with deletable=true, editable=true, repository_list = exhibits, element_type="exhibit"%}
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoExb.png') }}" alt="exhibition icon" class="icon">
+                            <p>{{_("Your MR Exhibitions")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('create-mr-exhibit') }}">{{ _('Create one') }}</a>
+                    </div>
+                    {% if mr_exhibits %}
+                        {% with deletable=true, editable=true, repository_list = mr_exhibits, element_type="mr-exhibit"%}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
-                            <p>{{_("You have no Exhibitions. :c")}}</p>
-                            <a href="{{ url('create-exhibit') }}">{{ _('Create one') }}</a>
+                            <p>{{_("You have no MR Exhibitions. :c")}}</p>
                         </section>
                     {% endif %}
 
-                    <h1 class="titArt">{{_("Your Artworks")}}</h1>
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoExb.png') }}" alt="exhibition icon" class="icon">
+                            <p>{{_("Your AR Exhibitions")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('create-ar-exhibit') }}">{{ _('Create one') }}</a>
+                    </div>
+                    {% if ar_exhibits %}
+                        {% with deletable=true, editable=true, repository_list = ar_exhibits, element_type="ar-exhibit"%}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+                    {% else %}
+                        <section id="repo-{{element_type}}" class="repository-list">
+                            <p>{{_("You have no AR Exhibitions. :c")}}</p>
+                        </section>
+                    {% endif %}
+
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoArt.png') }}" alt="artwork icon" class="icon">
+                            <p>{{_("Your Artworks")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
+                    </div>
                     {% if artworks %}
                         {% with preview=True, deletable=true, editable=true, repository_list = artworks, element_type="artwork" %}
                             {% include "core/components/item-list.jinja2" %}
@@ -34,11 +63,16 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no Artworks. :c")}}</p>
-                            <a href="{{ url('create-artwork') }}">{{ _('Create one') }}</a>
                         </section>
                     {% endif %}
             
-                    <h1 class="titArt">{{_("Your Markers")}}</h1>
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoMrk.png') }}" alt="marker icon" class="icon">
+                            <p>{{_("Your Markers")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('marker-upload') }}">{{ _('Create one') }}</a>
+                    </div>
                     {% if markers %}
                         {% with deletable=true, editable=true, repository_list = markers, element_type="marker"%}
                             {% include "core/components/item-list.jinja2" %}
@@ -46,12 +80,16 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no Markers. :c")}}</p>
-                            <a href="{{ url('marker-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
-
-                    <h1 class="titArt">{{_("Your Objects")}}</h1>
-
+                    
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoObj.png') }}" alt="object icon" class="icon">
+                            <p>{{_("Your Objects")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
+                    </div>
                     {% if objects %}
                         {% with deletable=true, editable=true, repository_list = objects, element_type="object" %}
                             {% include "core/components/item-list.jinja2" %}
@@ -59,9 +97,26 @@
                     {% else %}
                         <section id="repo-{{element_type}}" class="repository-list">
                             <p>{{_("You have no Objects. :c")}}</p>
-                            <a href="{{ url('object-upload') }}">{{ _('Upload one') }}</a>
                         </section>
                     {% endif %}
+
+                    <div class="profile-section-header">
+                        <div class="profile-section-title">
+                            <img class="icon" src="{{ static('images/icons/icoObj.png') }}" alt="sound icon" class="icon">
+                            <p>{{_("Your Sounds")}}</p>
+                        </div>
+                        <a class="create-one-btn" href="{{ url('sound-upload') }}">{{ _('Upload one') }}</a>
+                    </div>
+                    {% if sounds %}
+                        {% with deletable=true, editable=true, repository_list = sounds, element_type="sound" %}
+                            {% include "core/components/item-list.jinja2" %}
+                        {% endwith %}
+                    {% else %}
+                        <section id="repo-{{element_type}}" class="repository-list">
+                            <p>{{_("You have no Sounds. :c")}}</p>
+                        </section>
+                    {% endif %}
+
 
             {% include "users/components/createbox.jinja2" %}
             <section id="modal" class="modal"></section>

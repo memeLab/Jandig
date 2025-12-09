@@ -57,92 +57,6 @@
     background-size: auto;
 }
 
-.upload, .separator, .createArtwork, .createExhibition {
-    height: 40px;
-    margin-bottom: 10px;
-}
-
-.separator {
-    height: 10px;
-    background-color: #05f7ae;
-}
-
-.separator:after {
-    content: '';
-    display: block;
-    height: 0;
-    width: 0;
-    position: relative;
-    top: 10px;
-    left: 35px;
-    border-color: #05f7ae transparent transparent #05f7ae;
-    border-style: solid;
-    border-width: 7px;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.upMrk, .upObj {
-    background-color: #f1f1f1;
-    font-size: 0.85em;
-    flex-basis: calc(50% - 5px);
-    margin: auto 0;
-    height: 40px;
-}
-
-.upMrk:after, .upObj:after {
-    content: '';
-    display: block;
-    height: 0;
-    width: 0;
-    position: relative;
-    top: 0px;
-    left: 50%;
-    border-color: #f1f1f1 transparent transparent #f1f1f1;
-    border-style: solid;
-    border-width: 7px;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.upMrk a.option-link {
-    background: url(../images/icons/icoMrk.png) no-repeat;
-}
-
-.upObj a.option-link {
-    background: url(../images/icons/icoObj.png) no-repeat;
-}
-
-.upMrk a.option-link,
-.upObj a.option-link {
-    background-position: 15px center;
-    background-size: 20px 20px;
-    padding-left: 15px;
-}
-
-.createArtwork {
-    background-color: #cdf0d8;
-}
-
-.createArtwork a.option-link {
-    background: url(../images/icons/icoArt.png) no-repeat;
-}
-
-.createExhibition {
-    background-color: #eccdf0;
-    margin-bottom: 20px;
-}
-
-.createExhibition a.option-link {
-    background: url(../images/icons/icoExb.png) no-repeat;
-}
-
-.createArtwork a.option-link,
-.createExhibition a.option-link {
-    background-position: 15px center;
-    background-size: 30px 30px;
-}
-
 .profile-options-flex {
     display: flex;
     flex-direction: column;
@@ -168,7 +82,37 @@
     color: #03b595;
     background: #e1e1e1;
 }
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 10px solid #f1f1f1;
+}
 
+.profile-section-title {
+  display: flex;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+
+}
+.profile-section-title p {
+    margin: 0;
+}
+.profile-section-title .icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.create-one-btn {
+  flex-basis: 100px;
+  background: #f1f1f1;
+  line-height: 40px;
+  font-size: 0.75em;
+  font-weight: bold;
+  margin: 0 0 1px 0px;
+}
 
 /**** Media Queries *****/
 @media all and (min-width: 800px) {
@@ -195,48 +139,6 @@
     .bdgArt,.bdgCur,.bdgArt.empty, .bdgCur.empty {
         background-position: left center;
         background-size: contain;
-    }
-
-    .upload, .createArtwork, .createExhibition {
-        height: 150px;
-        margin-bottom: 20px;
-        flex-basis: calc(33% - 10px)
-    }
-
-    .upMrk, .upObj {
-        height: 70px;
-        flex-basis: 100%;
-    }
-
-    .upMrk.sm-half.lg-full {
-        margin-bottom: 5px;
-    }
-
-    .separator {
-        min-height: 150px;
-        margin-bottom: 20px;
-        max-width: 10px;
-    }
-
-    .separator:after {
-        top: 50px;
-        left: 10px;
-    }
-
-    .upMrk:after, .upObj:after {
-        top: -30px;
-        left: 100%;
-    }
-
-    .createArtwork a.option-link, .createExhibition a.option-link {
-        background-position: top center;
-        background-size: auto;
-        padding-top: 60px;
-        margin-top: 25px;
-    }
-
-    .upMrk a.option-link, .upObj a.option-link {
-        margin-top: 15px;
     }
 
     .profile-options-flex .userbox .option-link {

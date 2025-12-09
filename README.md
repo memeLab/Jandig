@@ -1,16 +1,18 @@
-# Jandig ARte
+# Jandig 
 
-ARte is a Progressive Web App for augmented reality artworks. Our goal is to give a way for artists share their artworks in a simple and free way.
+Jandig is an open source platform for extended reality. Our goal is to give a way for artists share their artworks in a simple and free way.
 
-You can see these galleries filled with pictures of [exhibitions](http://memelab.com.br/jandig/exposicoes/) created with Jandig. 
+See for yourself in the 1 minute video below (make sure subtitles are on).
+
+[![No words can show it - watch the video! =) ](https://img.youtube.com/vi/Oou7uE2XeRo/0.jpg)](https://www.youtube.com/watch?v=Oou7uE2XeRo&list=PLnqMPRm2VJBjEUmQSHG5VR2w2U1kqq9Gn)
 
 ## How it works
 
-Jandig ARte uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
+Jandig uses image pattern detection to detect [augmented reality markers](https://www.kudan.eu/kudan-news/augmented-reality-fundamentals-markers/) through the camera of a device and render a content (currently a GIF ou video) on the device screen, giving the impression that your device is like a virtual window that you are looking at.
 
 ![usage](https://user-images.githubusercontent.com/12930004/46251341-770de200-c426-11e8-9671-d870d1b9bd5d.jpg)
 
-Jandig ARte is a Progressive Web App, which means you can open in any device with a browser and a camera. You can also add Jandig ARte to your homescreen and it will run like a native app on your device.
+Jandig is a Progressive Web App, which means you can open in any device with a browser and a camera. You can also add Jandig to your homescreen and it will run like a native app on your device.
 
 ### People
 
@@ -37,19 +39,19 @@ We are a small team based in Brazil :D talk to us on [Telegram](https://t.me/joi
 
 ### Collab
 
-We are looking for artists (both illustrators and animators) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
+We are looking for artists (illustrators, 3d modellers, animators, and others) to create great content and help us testing the platform, people to translate our website from Portuguese to English (and vice versa), and developers to help us with the platform, please contact us via the Telegram channel or an issue on GitHub!
 
 ### Clipping
 
-You can find interviews and references to Jandig in the press [here](https://jandig.app/memories/clipping/).
+You can find interviews and references to Jandig in the press [here](https://dev.jandig.app/memories/clipping/).
 
 ## Get Started
 
-To contribute to Jandig ARte, it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
+To contribute to Jandig, it would be awesome if you read [Contributing](https://github.com/memeLab/ARte/blob/master/.github/CONTRIBUTING.md) and our [Code of conduct](https://github.com/memeLab/ARte/blob/master/.github/CODE_OF_CONDUCT.md). After a good read you are ready to move foward!
 
 ### Prerequisites
 
-We use docker and docker compose to ensure a consistent development environment and to make the deploy process as painless as possible, so all you need on your development tools to run Jandig ARte is [Docker](https://www.docker.com/) or [UV](https://docs.astral.sh/uv/)
+We use docker and docker compose to ensure a consistent development environment and to make the deploy process as painless as possible, so all you need on your development tools to run Jandig is [Docker](https://www.docker.com/) or [UV](https://docs.astral.sh/uv/)
 
 ### Installing
 
@@ -60,7 +62,7 @@ On Windows, we recommend you use [WSL2](https://learn.microsoft.com/en-us/window
 
 #### Linux OS
 
-To run Jandig ARte all you need to do is:
+To run Jandig all you need to do is:
 
 * Clone this repo
 * Navigate to the repository folder
@@ -79,15 +81,28 @@ If you get any error saying ``permission denied`` try run the command with sudo 
 sudo docker compose up --watch
 ```
 
-Jandig ARte server will run at localhost. To test modifications you just need to run a web browser and access [http://localhost/](http://localhost/). If you don't want to use docker or needs to update CSS files which are quite messy with Gunicorn + MinIO, you can use UV directly to run Django's development server.
+Jandig server will run at localhost. To test modifications you just need to run a web browser and access [http://localhost/](http://localhost/). If you don't want to use docker or needs to update CSS files which are quite messy with Gunicorn + MinIO, you can use UV directly to run Django's development server.
 
 ```bash
 DJANGO_READ_DOT_ENV_FILE=True uv run python src/manage.py runserver
 ```
 
+If you want to test on a mobile device, you will need a https connection for AR detection, so we recommend [ngrok](https://www.npmjs.com/package/ngrok) to generate an https link for you.
+
+```bash
+sudo snap install ngrok
+ngrok http 8000
+```
+
+ngrok will prompt 3 links:
+
+![usage](https://user-images.githubusercontent.com/12930004/54871980-ab41da00-4d9b-11e9-8b80-bb1d4bec420d.png)
+
+Select the one with `https` at beginning.
+
 #### Windows OS
 
-To run Jandig ARte all you need to do is:
+To run Jandig all you need to do is:
 
 * Install WSL2, Git and Docker
 * Clone this repository

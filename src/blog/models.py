@@ -23,7 +23,7 @@ class Category(models.Model):
 
 class PostImage(models.Model):
     file = models.FileField(storage=default_storage, upload_to=IMAGE_BASE_PATH)
-    description = models.CharField(max_length=500, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True)
 
     def __str__(self):
         return self.file.name.lstrip(IMAGE_BASE_PATH)

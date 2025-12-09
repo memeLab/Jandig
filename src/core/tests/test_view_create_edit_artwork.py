@@ -20,7 +20,7 @@ class TestCreateArtworkView(TestCase):
         self.object = ObjectFactory(author=self.profile)
 
     def test_create_artwork_success_gif(self):
-        object = ObjectFactory(source=get_example_object("peixe.gif"))
+        ar_object = ObjectFactory(source=get_example_object("peixe.gif"))
         url = reverse("create-artwork")
         data = {
             "title": "My Test Artwork",
@@ -29,7 +29,7 @@ class TestCreateArtworkView(TestCase):
             "position_x": 1,
             "position_y": 1,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after creation
@@ -39,16 +39,16 @@ class TestCreateArtworkView(TestCase):
         artwork = Artwork.objects.first()
         assert artwork.title == "My Test Artwork"
         assert artwork.description == "This is a test artwork."
-        assert artwork.scale_x == 1.5
-        assert artwork.scale_y == 1.5
+        self.assertAlmostEqual(artwork.scale_x, 1.5)
+        self.assertAlmostEqual(artwork.scale_y, 1.5)
         assert artwork.position_x == 1
         assert artwork.position_y == 1
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
         assert artwork.author == self.profile
 
     def test_create_artwork_success_mp4(self):
-        object = ObjectFactory(source=get_example_object("belotur.mp4"))
+        ar_object = ObjectFactory(source=get_example_object("belotur.mp4"))
         url = reverse("create-artwork")
         data = {
             "title": "My Test Artwork",
@@ -57,7 +57,7 @@ class TestCreateArtworkView(TestCase):
             "position_x": 1,
             "position_y": 1,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after creation
@@ -67,16 +67,16 @@ class TestCreateArtworkView(TestCase):
         artwork = Artwork.objects.first()
         assert artwork.title == "My Test Artwork"
         assert artwork.description == "This is a test artwork."
-        assert artwork.scale_x == 1.5
-        assert artwork.scale_y == 1.5
+        self.assertAlmostEqual(artwork.scale_x, 1.5)
+        self.assertAlmostEqual(artwork.scale_y, 1.5)
         assert artwork.position_x == 1
         assert artwork.position_y == 1
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
         assert artwork.author == self.profile
 
     def test_create_artwork_success_webm(self):
-        object = ObjectFactory(source=get_example_object("escher.webm"))
+        ar_object = ObjectFactory(source=get_example_object("escher.webm"))
         url = reverse("create-artwork")
         data = {
             "title": "My Test Artwork",
@@ -85,7 +85,7 @@ class TestCreateArtworkView(TestCase):
             "position_x": 1,
             "position_y": 1,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after creation
@@ -95,16 +95,16 @@ class TestCreateArtworkView(TestCase):
         artwork = Artwork.objects.first()
         assert artwork.title == "My Test Artwork"
         assert artwork.description == "This is a test artwork."
-        assert artwork.scale_x == 1.5
-        assert artwork.scale_y == 1.5
+        self.assertAlmostEqual(artwork.scale_x, 1.5)
+        self.assertAlmostEqual(artwork.scale_y, 1.5)
         assert artwork.position_x == 1
         assert artwork.position_y == 1
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
         assert artwork.author == self.profile
 
     def test_create_artwork_with_glb_fails(self):
-        object = ObjectFactory(source=get_example_object("werewolf.glb"))
+        ar_object = ObjectFactory(source=get_example_object("werewolf.glb"))
         url = reverse("create-artwork")
         data = {
             "title": "My Test Artwork",
@@ -113,7 +113,7 @@ class TestCreateArtworkView(TestCase):
             "position_x": 1,
             "position_y": 1,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should not redirect, should show form again
@@ -207,7 +207,7 @@ class TestCreateArtworkView(TestCase):
         form = response.context["form"]
         assert form.fields["title"].initial is None
         assert form.fields["description"].initial is None
-        assert form.fields["scale"].initial == 1.0
+        self.assertAlmostEqual(form.fields["scale"].initial, 1.0)
         assert form.fields["position_x"].initial == 0
         assert form.fields["position_y"].initial == 0
         assert form.fields["selected_marker"].initial is None
@@ -259,8 +259,8 @@ class TestEditArtworkView(TestCase):
         artwork = Artwork.objects.get(id=self.artwork.id)
         assert artwork.title == "Original Artwork"
         assert artwork.description == "Original Description"
-        assert artwork.scale_x == 1.0
-        assert artwork.scale_y == 1.0
+        self.assertAlmostEqual(artwork.scale_x, 1.0)
+        self.assertAlmostEqual(artwork.scale_y, 1.0)
         assert artwork.position_x == 0
         assert artwork.position_y == 0
         assert artwork.marker == self.marker
@@ -281,7 +281,7 @@ class TestEditArtworkView(TestCase):
         assert form.fields["selected_object"].initial == self.object
 
     def test_edit_artwork_success_gif(self):
-        object = ObjectFactory(source=get_example_object("peixe.gif"))
+        ar_object = ObjectFactory(source=get_example_object("peixe.gif"))
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
         data = {
             "title": "Edited Artwork",
@@ -290,7 +290,7 @@ class TestEditArtworkView(TestCase):
             "position_x": 2,
             "position_y": 2,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after editing
@@ -301,15 +301,15 @@ class TestEditArtworkView(TestCase):
         artwork = Artwork.objects.get(id=self.artwork.id)
         assert artwork.title == "Edited Artwork"
         assert artwork.description == "Edited Description"
-        assert artwork.scale_x == 2.0
-        assert artwork.scale_y == 2.0
+        self.assertAlmostEqual(artwork.scale_x, 2.0)
+        self.assertAlmostEqual(artwork.scale_y, 2.0)
         assert artwork.position_x == 2
         assert artwork.position_y == 2
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
 
     def test_edit_artwork_success_mp4(self):
-        object = ObjectFactory(source=get_example_object("belotur.mp4"))
+        ar_object = ObjectFactory(source=get_example_object("belotur.mp4"))
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
         data = {
             "title": "Edited Artwork",
@@ -318,7 +318,7 @@ class TestEditArtworkView(TestCase):
             "position_x": 2,
             "position_y": 2,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after editing
@@ -329,15 +329,15 @@ class TestEditArtworkView(TestCase):
         artwork = Artwork.objects.get(id=self.artwork.id)
         assert artwork.title == "Edited Artwork"
         assert artwork.description == "Edited Description"
-        assert artwork.scale_x == 2.0
-        assert artwork.scale_y == 2.0
+        self.assertAlmostEqual(artwork.scale_x, 2.0)
+        self.assertAlmostEqual(artwork.scale_y, 2.0)
         assert artwork.position_x == 2
         assert artwork.position_y == 2
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
 
     def test_edit_artwork_with_glb_fails(self):
-        object = ObjectFactory(source=get_example_object("werewolf.glb"))
+        ar_object = ObjectFactory(source=get_example_object("werewolf.glb"))
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
         data = {
             "title": "Edited Artwork",
@@ -346,7 +346,7 @@ class TestEditArtworkView(TestCase):
             "position_x": 2,
             "position_y": 2,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after editing
@@ -368,7 +368,7 @@ class TestEditArtworkView(TestCase):
         assert artwork.augmented == self.artwork.augmented
 
     def test_edit_artwork_success_webm(self):
-        object = ObjectFactory(source=get_example_object("escher.webm"))
+        ar_object = ObjectFactory(source=get_example_object("escher.webm"))
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
         data = {
             "title": "Edited Artwork",
@@ -377,7 +377,7 @@ class TestEditArtworkView(TestCase):
             "position_x": 2,
             "position_y": 2,
             "selected_marker": self.marker.id,
-            "selected_object": object.id,
+            "selected_object": ar_object.id,
         }
         response = self.client.post(url, data)
         # Should redirect to profile after editing
@@ -388,12 +388,12 @@ class TestEditArtworkView(TestCase):
         artwork = Artwork.objects.get(id=self.artwork.id)
         assert artwork.title == "Edited Artwork"
         assert artwork.description == "Edited Description"
-        assert artwork.scale_x == 2.0
-        assert artwork.scale_y == 2.0
+        self.assertAlmostEqual(artwork.scale_x, 2.0)
+        self.assertAlmostEqual(artwork.scale_y, 2.0)
         assert artwork.position_x == 2
         assert artwork.position_y == 2
         assert artwork.marker == self.marker
-        assert artwork.augmented == object
+        assert artwork.augmented == ar_object
 
     def test_edit_artwork_invalid_data(self):
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"
@@ -459,7 +459,7 @@ class TestEditArtworkView(TestCase):
         # Should not redirect, should show form again
         assert response.status_code == 200
         assert "form" in response.content.decode()
-        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+        self.assertAlmostEqual(Artwork.objects.get(id=self.artwork.id).scale_x, 1.0)
 
         data = {
             "title": "Edited Artwork",
@@ -474,7 +474,7 @@ class TestEditArtworkView(TestCase):
         # Should not redirect, should show form again
         assert response.status_code == 200
         assert "form" in response.content.decode()
-        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+        self.assertAlmostEqual(Artwork.objects.get(id=self.artwork.id).scale_x, 1.0)
 
         data = {
             "title": "Edited Artwork",
@@ -489,7 +489,7 @@ class TestEditArtworkView(TestCase):
         # Should not redirect, should show form again
         assert response.status_code == 200
         assert "form" in response.content.decode()
-        assert Artwork.objects.get(id=self.artwork.id).scale_x == 1.0
+        self.assertAlmostEqual(Artwork.objects.get(id=self.artwork.id).scale_x, 1.0)
 
     def test_edit_artwork_invalid_position(self):
         url = reverse("edit-artwork") + f"?id={self.artwork.id}"

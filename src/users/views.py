@@ -16,6 +16,8 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
+from core.models import ExhibitTypes
+
 from .forms import (
     PasswordChangeForm,
     ProfileForm,
@@ -28,19 +30,23 @@ log = logging.getLogger(__file__)
 
 User = get_user_model()
 
+INVALID_MESSAGE = "Invalid Request"
+
 
 def signup(request):
     if request.method == "POST":
         if settings.RECAPTCHA_ENABLED:
             recaptcha_token = request.POST.get("g-recaptcha-response")
             if not recaptcha_token:
-                return JsonResponse({"error": "Invalid Request"}, status=400)
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
             assessment = create_assessment(
                 token=recaptcha_token, recaptcha_action="sign_up"
             )
+            if not assessment:
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
             score = assessment.get("riskAnalysis", {}).get("score", -1)
             if score <= BOT_SCORE:
-                return JsonResponse({"error": "Invalid Request"}, status=400)
+                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
 
         form = SignupForm(request.POST)
 
@@ -94,18 +100,28 @@ def profile(request):
         "artworks__augmented",
         "markers__artworks",
         "ar_objects__artworks",
+        "sounds__artworks",
+        "sounds__ar_objects",
+        "sounds__exhibits",
     ).get(user=user)
 
-    exhibits = profile.exhibits.all().order_by("-created")
+    ar_exhibits = (
+        profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
+    )
+    mr_exhibits = (
+        profile.exhibits.filter(exhibit_type=ExhibitTypes.MR).all().order_by("-created")
+    )
     artworks = profile.artworks.all().order_by("-created")
     markers = profile.markers.all().order_by("-created")
     objects = profile.ar_objects.all().order_by("-created")
-
+    sounds = profile.sounds.all().order_by("-created")
     ctx = {
-        "exhibits": exhibits,
+        "ar_exhibits": ar_exhibits,
+        "mr_exhibits": mr_exhibits,
         "artworks": artworks,
         "markers": markers,
         "objects": objects,
+        "sounds": sounds,
     }
     return render(request, "users/profile.jinja2", ctx)
 
@@ -125,7 +141,7 @@ def edit_password(request):
             "form_profile": ProfileForm(instance=profile),
         }
         return render(request, "users/profile-edit.jinja2", ctx)
-    return Http404
+    raise Http404
 
 
 @login_required

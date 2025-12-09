@@ -7,13 +7,14 @@ from rest_framework.renderers import (
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from core.models import Artwork, Exhibit, Marker, Object
+from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.renderers import ModalHTMLRenderer
 from core.serializers import (
     ArtworkSerializer,
     ExhibitSerializer,
     MarkerSerializer,
     ObjectSerializer,
+    SoundSerializer,
 )
 
 
@@ -103,7 +104,7 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
                 "augmenteds__exhibits",
             )
             .all()
-            .order_by("id")
+            .order_by("-id")
         )
         owner_id = self.request.query_params.get("owner")
         search = self.request.query_params.get("search")
@@ -117,3 +118,19 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
                 return queryset.none()
             queryset = queryset.filter(owner=owner_id)
         return queryset
+
+
+class SoundViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = SoundSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
+
+    queryset = Sound.objects.select_related("owner__user").all().order_by("id")
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.accepted_renderer.format == "modal":
+            return Response(
+                {"sound": instance},
+                template_name="core/templates/sound_modal.jinja2",
+            )
+        return super().retrieve(request, *args, **kwargs)

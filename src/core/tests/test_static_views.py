@@ -33,3 +33,19 @@ class TestCoreStaticViews(TestCase):
         assert response.status_code == 200
         response = self.client.get("/ME")
         assert response.status_code == 200
+
+    def test_community(self):
+        response = self.client.get(reverse("community"))
+        assert response.status_code == 200
+
+    def test_documentation(self):
+        response = self.client.get(reverse("documentation"))
+        assert response.status_code == 200
+
+    def test_home(self):
+        response = self.client.get(reverse("home"))
+        assert response.status_code == 200
+
+    def test_marker_generator(self):
+        response = self.client.get(reverse("marker-generator"))
+        assert response.status_code == 200

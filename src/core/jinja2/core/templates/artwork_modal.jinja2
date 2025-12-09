@@ -30,5 +30,20 @@
             {{ artwork.augmented.as_html()| safe }}
             </a>
         </div>
+        {% if artwork.sound %}
+        <br /> 
+        <div class="artwork-content">
+            <h5>{{_("Artwork Sound")}}</h5>
+            <a 
+                hx-get="/api/v1/sounds/{{artwork.sound.id}}/?format=modal&go_back_url=/api/v1/artworks/{{artwork.id}}/?format=modal" 
+                hx-target="#modal" 
+                hx-trigger="click"
+            >
+            <h5>{{artwork.sound.title}}</h5>
+            {{ artwork.sound.as_html()| safe }}
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 </div>

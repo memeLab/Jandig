@@ -1,232 +1,285 @@
-Como publicar conteúdo em realidade aumentada no Jandig
-=======================================================
+**Como publicar conteúdo na Jandig**
+====================================
 
-Bem-vindo ao Jandig ARte!
+Bem-vindo à Jandig Arte!
 
-Para os recém-chegados artistas e utilizadores, gostaríamos de expressar os nossos agradecimentos por terem escolhido esta plataforma como uma ferramenta para expor suas Obras Jandig.
+Neste tutorial, apresentaremos um guia detalhado para a criação de peças
+artísticas utilizando tecnologia de Realidade Aumentada (AR, de
+Augmented Reality). Explicaremos o funcionamento da plataforma Jandig de
+maneira significativa, abordando conceitos centrais para que você
+compreenda cada etapa do processo e sua influência na criação.
+Abordaremos elementos fundamentais como Marcadores e Objetos, sua
+interação na construção de uma Obra Jandig e de uma Exposição.
 
+Vamos direto ao assunto, pois esta é uma leitura rápida e essencial para
+quem deseja utilizar o Jandig para publicar AR.
 
-Neste manual iremos guiá-lo, passo a passo, sobre como criar as suas próprias peças de arte baseadas na tecnologia de Realidade Aumentada. Explicaremos também como o sistema funciona de uma forma significativa, com alguns conceitos centrais, para que conheça todos os passos a dar e como eles influenciam a sua arte. Conceitos tais como Marcadores, Objetos, como eles se co-relacionam para criar uma Obra Jandig e uma Exposição.
+**Tutorial de Iniciação Rápida**
+--------------------------------
 
-Vamos direto ao assunto, pois esta é uma leitura rápida e essencial para aqueles que querem utilizar o Jandig como o seu principal criador de arte AR.
+Acesse “\ `http://jandig.app” <http://jandig.app”>`__ e crie uma conta.
 
-Tutorial de Iniciação Rápida
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Acesse https://jandig.app/markers/upload, faça o upload da imagem (com
+extensão .PNG), atribua um nome e declare o autor. Esta imagem será
+reconhecida pela câmera da Jandig.
 
-Acesse “https://jandig.app/generator”. Faça upload da imagem a ser utilizada no Marcador sem a borda preta (ela será adicionada pelo aplicativo). Baixe o Marcador (Download .PATT Marker) e a imagem (Download image Marker) e guarde os arquivos em um local seguro. Se quiser, baixe PDFs com os Marcadores para impressão. Importante: colocar o Patern Ratio como 0.60.
+Acesse https://jandig.app/objects/upload e faça upload do GIF ou 3D (no formato GLB) com a sua animação. O
+Jandig exibirá esse objeto sobre o marcador na câmera.
 
-Acesse “http://jandig.art” e crie uma conta.
+Clique em “Criar Obra Jandig”, escolha o Marcador e Objeto
+correspondentes que você acabou de enviar. A Obra Jandig vincula o
+Marcador ao Objeto para apresentação em realidade aumentada.
 
-Clique em “Enviar Marcador” e suba a imagem (com extensão “.PNG”) e Marcador (“.PATT”) criadas na etapa anterior. Esta imagem é a que a câmera do Jandig reconhecerá.
+Clique em “Criar Exposição”. Escolha uma ou várias Obras. Dê um título
+ao conjunto e defina sua URL. Com ela, você acessará o conjunto de Obras
+que criar. Por exemplo, se você inserir “expoteste” a URL definitiva
+para acessar sua(s) criações será
+“\ `https://jandig.app/expoteste” <https://jandig.app/expoteste”>`__.
 
-Clique em “Enviar Objeto” e faça upload do GIF ou vídeo (nos formatos WEBM ou MP4) com a sua animação. Esta imagem o Jandig exibirá sobre a da câmera.
+Acesse a URL definitiva que você acabou de criar, aponte a câmera para o
+Marcador e veja a mágica acontecer!
 
-Clique em “Criar Obra Jandig”, escolha o Marcador e Objeto correspondente que você acabou de subir. Uma Obra Jandig é o conjunto do Marcador e Objeto, vinculando para ser apresentado em realidade aumentada.
+**Tutorial - Aprenda o básico**
+-------------------------------
 
-Clique em “Criar Exposição”. Escolha uma ou várias Obras. Dê um título para o conjunto e defina sua URL. Ela será usada para acessar o conjunto de Obras criado por você. Por exemplo, se você inserir “expoteste” a URL definitiva para acessar sua(s) criações será “https://jandig.app/expoteste”.
+Primeiramente, é necessário criar uma conta para distribuição das peças
+pelos artistas. Não é obrigatório para quem deseja somente apreciar uma
+Obra Jandig, mas torna-se essencial aos interessados em trabalhar com a
+plataforma.
 
-Acesse a URL definitiva que você acabou de criar, aponte a câmera para o Marcador e veja a mágica acontecer!
+Para isso, consulte os passos abaixo.
 
-Tutorial - Aprenda o básico
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Acesse o site do Jandig clicando no link apropriado e clique no botão
+      “Sign up”.
 
-Antes de mais, é necessário criar uma conta, para que os artistas possam distribuir as suas peças. Não é necessário para aqueles que apenas desejam apreciar uma Obra Jandig, mas para aqueles que querem trabalhar ativamente com a plataforma, é essencial.
+.. image:: ../docs/images/publishing_tutorial_ptbr/image1.png
+   :width: 3.45833in
+   :height: 3.35417in
 
-Para tal, por favor consulte os passos abaixo.
+Página principal do Jandig
 
-1) Acesso o website do Jandig clicando no `URL`_ apropriado, e clique no botão "Sign up".
+2. Preencha os espaços com as suas informações, conforme mostra a
+      imagem, e submeta-a!
 
-.. _URL: jandig.app
+.. image:: ../docs/images/publishing_tutorial_ptbr/image2.png
+   :width: 3.29028in
+   :height: 3.18611in
 
-.. _imagem: https://jandig.app/users/signup/
+Página de cadastro
 
-.. figure:: ../docs/images/main-page-jandig.png
-   :scale: 50%
-   :alt: Página principal do Jandig
-   :target: jandig.app
-   
-   Página principal do Jandig
+3. Parabéns! Você criou com sucesso a sua conta Jandig e agora pode
+      publicar seu conteúdo em AR!
 
+O próximo passo é produzir (e publicar) a sua primeira obra Jandig.
+Antes de começar, você precisa compreender alguns conceitos
+fundamentais.
 
+Vamos analisá-los.
 
-2) Preencha os espaços com as suas informações, como mostra a `imagem`_, e submeta-a!
+**Marcadores**
+--------------
 
-.. figure:: ../docs/images/sign-up-page.png
-   :scale: 50%
-   :alt: Página de cadastro
-   :target: jandig.app/users/signup
-   
-   Página de cadastro
+Os Marcadores fundamentam seu trabalho artístico. Consistem em uma
+imagem, criada por você ou não, que o Jandig processa para ler e
+apresentar a AR.
 
+Caracteristicamente, eles possuem uma borda preta que é inserida ao
+redor do desenho, que permite ao Jandig reconhecer os Marcadores.
 
-3) Parabéns! Você criou com sucesso a sua conta Jandig ARte e pode agora contribuir ativamente para a comunidade artística com as suas peças baseadas em AR!
+Para criar um Marcador, basta ter uma imagem. Pode ser qualquer coisa,
+uma pintura ou qualquer imagem da internet. O Jandig processará e gerará
+o Marcador automaticamente.
 
-.. figure:: ../docs/images/main-page-logged.png
-   :scale: 50%
-   :alt: Página pós-login
-   :target: jandig.app
+Vá à página principal do aplicativo e na aba minhas criações selecione o
+botão que diz “Enviar Marcador”. Você será recebido por esta tela.
 
-   Página pós-login
+.. image:: ../docs/images/publishing_tutorial_ptbr/image3.png
+   :width: 3.23472in
+   :height: 4.41736in
 
-O passo seguinte seria produzir (e publicar) a sua primeira Obra Jandig. Para que possamos fazer tal tarefa, existem alguns conceitos a serem passados antes de poder começar.
+Página de upload de Marcador.
 
-Vamos dar uma olhada neles.
+Neste campo, envie seu Marcador e preencha as informações como título e
+nome do autor. Você poderá adicionar uma borda branca entre a imagem e a
+borda preta - um elemento estético que não afeta a funcionalidade.
+Selecione do seu dispositivo a imagem apropriada (arquivo .PNG).
+Lembre-se de consultar todas as informações da página.
+
+Voilá! Você criou com sucesso e adicionou um Marcador de AR à sua
+coleção.
+
+**Objetos**
+-----------
 
-Marcadores
-~~~~~~~~~~
-
-Os Marcadores são a própria base de seu futuro trabalho artístico. Eles são essencialmente uma imagem feita por você, ou não, que é processada para que possa ser lida com sucesso pelo Jandig e apresentar sua Obra Jandig. 
-
-Caracteristicamente, eles têm uma borda preta que é inserida ao redor do desenho, e esta borda serve para o Jandig reconhecer os Marcadores. 
-
-Para criar um Marcador, tudo o que você precisa ter com você é sua imagem. Pode ser qualquer coisa, uma pintura ou uma imagem aleatória que você salvou do Google. Jandig fará todo o trabalho de processamento e geração de seu Marcador.
-
-Para isso, vá até esta `página`_, e envie sua imagem para a geração de Marcadores. Dê uma olhada na imagem abaixo para ver como ela se parece, e onde carregar sua imagem.
-
-.. _página: https://jandig.app/generator/
-
-.. figure:: ../docs/images/marker-generator.png
-   :scale: 50%
-   :alt: Página de geração de Marcador
-   :target: https://jandig.app/generator/
-
-   Página de geração de Marcador
-
-Ok, agora que você fez o upload de sua imagem, vá em frente e baixe os dois arquivos que lhe serão fornecidos pelo Jandig, o arquivo .patt Marker e o arquivo image Marker. Por uma questão de brevidade e simplicidade deste manual, o arquivo padrão (.patt) é o arquivo criado e usado pela maioria dos toolkits AR como o padrão que a tecnologia AR irá reconhecer.
-
-
-Armazene estes dois arquivos em um local seguro, por segurança.
-
-Agora tudo o que você precisa fazer é subir o arquivo! Volte à página principal do aplicativo e selecione o botão que diz "Upload Marker". Você será recebido por esta tela.
-
-.. _main: https://jandig.app
-
-.. figure:: ../docs/images/upload-marker.png
-   :scale: 50%
-   :alt: Página de upload de Marcador
-   :target: https://jandig.app/users/markers/upload/
-   
-   Página de upload de Marcador   
-
-É aqui que você enviará seu Marcador, então vá em frente e preencha os espaços com informações como título e nome do autor, caso você não seja o criador do Marcador, além  escolher de seu dispositivo a imagem do Marcador apropriada (aquele arquivo .png de antes) e o padrão do Marcador (aquele arquivo .patt de antes). Não se esqueça de ler todas as informações que a página contém.
-
-Voilá! Você criou com sucesso e adicionou à sua coleção um Marcador de AR. Para o próximo passo, estaremos criando um Objeto!
-
-Objetos
-~~~~~~~
-
-Quando você carregar um Marcador, o aplicativo o redirecionará para a página principal novamente. De lá, procure o botão que diz "Upload Object", que está logo abaixo do botão "Upload Marker". Vá em frente e clique nele, e o aplicativo o levará a esta `página`_.
-
-.. figure:: ../docs/images/upload-object.png
-   :scale: 50%
-   
-   Página de carregamento de Objetos
- 
-Nesta página, você enviará seu Objeto. Em termos  do Jandig, o Objeto é a animação que aparecerá em sua tela quando você ler o Marcador através da câmera do seu dispositivo. É a verdadeira magia da AR e aquela para a qual todo o trabalho anterior servirá. Portanto, vamos dar uma olhada na página e aprender como carregar um Objeto.
-
-Embora este formulário de envio seja maior, o processo é muito mais simples. Antes de preenchê-lo, selecione e localize o arquivo que você deseja carregar. Os formatos suportados atualmente no Jandig são .gif, .webm (inclusive com transparência) e .mp4. 
-
-Não há restrições quanto ao tamanho, tema, looping e outras especificações, mas recomendamos que você escolha um conteúdo que tenha um loop perfeito e seja relacionado à temática do Marcador. Além disso, não se restrinja a usar um arquivo que você tenha encontrado na internet ou em mídias sociais. Vá em frente e use todas as suas habilidades artísticas para criar o seu próprio! 
-
-Agora é o momento de ter em mente que a escala e a posição do Objeto afetará o trabalho artístico. Há dois campos onde você pode preencher com números relacionados a esses dois parâmetros:
-
-1) O parâmetro de escala, que é definido por padrão como 1. Se você quiser que sua imagem seja maior, digamos duas vezes o tamanho, basta mudar este número para 2. Se você quiser que seja três vezes o tamanho original, defina-o para 3, e assim por diante para outros tamanhos. Isto também se aplica para tamanhos menores e decimais, tais como 0,5 será metade do tamanho original do Objeto.
-2) O parâmetro de posição, que deve ser ajustado em relação ao tamanho do Objeto na tela. Este é ainda dividido em outros dois parâmetros diferentes, horizontal e vertical. Estes dois parâmetros podem ser melhor compreendidos levando em consideração um gráfico. Seus valores padrão serão definidos como 0, o que marca o centro do gráfico, onde as linhas horizontais e verticais se interceptam. Vamos dar uma olhada em como manipulá-los:
-   a) Horizontal: Se o valor for positivo e for 2, por exemplo, o centro do Objeto será colocado em uma distância 2 vezes maior do que o tamanho do seu lado Marcador à direita. Se este valor for negativo, digamos -2, será colocado à mesma distância 2 vezes o tamanho do seu lado Marcador para a esquerda.
-   b) Vertical: Se o valor for positivo e for 2, por exemplo, o centro do objeto será colocado a uma distância 2 vezes maior do que o tamanho do seu lado Marcador, acima dele. Se este valor for negativo, digamos -2, será colocado à mesma distância 2 vezes o tamanho do seu lado Marcador, abaixo dele.
-   
-Depois de ter carregado com sucesso sua imagem e definido seus valores, não se esqueça de dar-lhe um título e dizer se você é seu autor ou não. 
-
-Voilá! Você criou com sucesso seu Objeto e agora pode criar sua Obra Jandig! Lembre-se de que estes dois, Marcador e Objeto, ainda não estão ligados um ao outro. Isto acontecerá na próxima etapa.
-
-Obras Jandig
-~~~~~~~~~~~~~
-
-Ok, então agora que já passamos por tudo o que precisávamos para criar uma Obra Jandig, vamos ao processo de criá-la de fato. Uma Obra Jandig é definida pela junção de duas coisas que trabalharão juntas para criar a interação que queremos alcançar.
-
-Você adivinhou bem, precisaremos fazer uso do Marcador e Objeto criados anteriormente. Nesta seção selecionaremos um Marcador e um Objeto para que a magia possa ser feita e uma Arte AR possa ser vista através da câmera de seu dispositivo. Volte à página principal do Jandig mais uma vez e procure por este botão:
-
-.. figure:: ../docs/images/artwork-button.png
-   :scale: 70%
-
-   Botão Create Artwork
-
-Clique nele e você será redirecionado para uma página que se parece com esta:
-
-.. figure:: ../docs/images/artwork-page.png
-   :scale: 60%
-
-   Página de seleção de Marcador e Objeto
-
-
-O processo é simples e direto e praticamente o mesmo para ambos os itens. Você será saudado por um pop-up com muitos Marcadores e Objetos no caso deles, ou nenhum. No caso deste manual ExampleUser, todos os Marcadores e Objetos do caso de teste apareceram. 
-
-Basta selecionar um Marcador, aceitar os termos e pressionar ao lado para selecionar um Objeto. Aqui está um exemplo de Marcador e Objeto selecionados:
-
-.. figure:: ../docs/images/select-marker.png
-   :scale: 50%
-
-   Página de seleção de Marcador 
-
-.. figure:: ../docs/images/select-object.png
-   :scale: 50%
-
-   Página de seleção de objeto 
+Ao carregar um Marcador, o aplicativo redirecionará você para a página
+principal. Na página, localize o botão que diz “Enviar Objeto”, que está
+logo abaixo do botão “Enviar Marcador”. Vá em frente e clique nele, e o
+aplicativo o levará a esta
+`página <https://jandig.app/objects/upload>`__.
+
+.. image:: ../docs/images/publishing_tutorial_ptbr/image4.png
+   :width: 3.28125in
+   :height: 5.53333in
+
+Página de Carregamento de Objetos
+
+Nesta página, você enviará seu Objeto. No contexto do Jandig, o Objeto
+será exibido na tela ao apontar a câmera do seu dispositivo. É a
+verdadeira magia da AR e aquela para a qual todo o trabalho anterior
+servirá. Portanto, vamos explorar a página e aprender como carregar um
+Objeto.
+
+Embora este formulário de envio seja maior, o processo simplifica-se.
+Selecione e localize o arquivo que você deseja carregar. O Jandig aceita
+os formatos .gif e .glb.
+
+O tamanho, tema, looping e outras especificações são flexíveis, mas
+sugerimos conteúdo com loop perfeito alinhado à temática do Marcador.
+Sinta-se à vontade para ir além de arquivos encontrados na internet ou
+mídias sociais - explore suas habilidades artísticas para criar algo
+original!
+
+Agora é o momento de ter em mente que a escala e a posição do objeto
+afetarão o trabalho artístico. Há dois campos onde você pode preencher
+com números relacionados a esses dois parâmetros:
+
+1. O parâmetro de escala tem valor padrão 1. Para aumentar a imagem em
+      duas vezes, ajuste o valor para 2. Para triplicar as dimensões
+      originais, use 3. A mesma lógica se aplica a outras proporções,
+      incluindo reduções com números decimais - por exemplo, 0,5 reduz o
+      objeto à metade do original.
+
+2. O parâmetro de posição requer ajuste conforme o tamanho do objeto na
+      tela, dividindo-se em parâmetros horizontal e vertical. Para
+      melhor compreensão, considere um gráfico onde o valor padrão 0
+      indica o centro, no ponto de interseção das linhas horizontais e
+      verticais. Quanto aos ajustes: a) Horizontal: Com valor positivo
+      2, o centro do objeto posiciona-se a uma distância equivalente ao
+      dobro do tamanho do seu lado Marcador à direita. Com valor
+      negativo -2, posiciona-se à mesma proporção à esquerda. b)
+      Vertical: Com valor positivo 2, o centro do objeto posiciona-se a
+      uma distância equivalente ao dobro do tamanho do seu lado Marcador
+      acima. Com valor negativo -2, posiciona-se na mesma proporção
+      abaixo.
+
+Após carregar a imagem e definir os valores, lembre-se de incluir um
+título e informar se você é o autor.
+
+Voilà! Você criou com sucesso seu Objeto e agora pode criar sua Obra
+Jandig! Lembre-se: o Marcador e Objeto, ainda não estão ligados um ao
+outro. Isto acontecerá na próxima etapa.
+
+**Obras Jandig**
+----------------
+
+Ok, então agora que já passamos por tudo o que precisávamos para criar
+uma Obra Jandig, vamos ao processo de criá-la de fato. Uma Obra Jandig
+combina dois elementos essenciais para gerar a interação desejada.
+
+Você adivinhou bem, precisaremos utilizar o Marcador e Objeto criados
+anteriormente. Nesta seção selecionaremos um Marcador e o Objeto para
+criar a experiência AR, que será visualizada na câmera do seu
+dispositivo. Retorne à página principal do Jandig mais uma vez e procure
+por este botão:
+
+.. image:: ../docs/images/publishing_tutorial_ptbr/image5.png
+   :width: 1.46875in
+   :height: 1.18403in
+
+Botão Criar Obra Jandig
+
+Clique nele para acessar uma página semelhante a esta:
+
+.. image:: ../docs/images/publishing_tutorial_ptbr/image6.png
+   :width: 4.24236in
+   :height: 2.01458in
+
+Página de seleção de Marcador e Objeto
+
+Clique nele para acessar uma página semelhante a esta:
+
+O processo é simples e direto, sendo o mesmo para ambos os itens. Um
+pop-up exibirá muitos Marcadores e Objetos.
+
+Basta escolher um Marcador, aceitar os termos e pressionar próximo para
+indicar um Objeto. Aqui está um exemplo de Marcador e Objeto escolhidos:
+
+.. image:: ../docs/images/publishing_tutorial_ptbr/image7.png
+   :width: 5.12569in
+   :height: 4.19861in
+
+Página de seleção de Marcador
+
+.. image:: ../docs/images/publishing_tutorial_ptbr/image8.png
+   :width: 5.08403in
+   :height: 4.19861in
+
+Página de seleção de objeto
 
 Dê um título e uma descrição e pronto!
 
-.. figure:: ../docs/images/finish-art.png
-   :scale: 50%
+.. image:: ../docs/images/publishing_tutorial_ptbr/image9.png
+   :width: 4.8375in
+   :height: 5.12847in
 
-   Descrição sobre a Obra
+Descrição sobre a Obra
 
-Voilá! Você criou com sucesso sua primeira Obra Jandig e está quase terminando com este manual!
+Voilá! Você criou com sucesso sua primeira Obra Jandig e está quase
+terminando com este manual!
 
+**Exposições**
+--------------
 
-Exposições
-~~~~~~~~~~~~
+Bem-vindo ao último passo! Nesta fase final, mostraremos a você como
+expor sua arte para o mundo através do processo de criação de uma
+Exposição. É por meio das exposições que o público geral, incluindo
+usuários comuns e até artistas, terá acesso e poderá interagir com suas
+Obras.
 
-Bem-vindo ao último passo! Nesta fase final, mostraremos a você como expor sua arte para o mundo, utilizando o processo de criação de uma Exposição. É através das exposições que o público geral, o qual inclui usuários comuns e até artistas, terá acesso e poderá interagir com suas Obras.
+Para começar, basta acessar o ícone “Criar Exposição” .
 
-Para começar, basta acessar o ícone "Create Exhibition" (Criar Exposição).
+.. image:: ../docs/images/publishing_tutorial_ptbr/image10.png
+   :width: 1.55208in
+   :height: 1.23958in
 
-.. figure:: ../docs/images/exhibition-main-page.png
-   :scale: 30%
-   :target: https://jandig.app/users/exhibits/create/
+Ícone da página de criação de Exposição
 
-   Ícone da página de criação de Exposição
+A seguir, confirme que deseja selecionar Obras da coleção.
 
-A seguir, você precisa confirmar que deseja selecionar Obras da coleção.
+.. image:: ../docs/images/publishing_tutorial_ptbr/image11.png
+   :width: 6.47986in
+   :height: 2.32292in
 
-.. figure:: ../docs/images/exhibition-select-artwork-button.png
-   :scale: 30%
-   :target: https://jandig.app/users/exhibits/create/
+Botão Select Artwork
 
-   Botão Select Artwork
+Entre as Obras da coleção, procure e selecione uma ou mais que você
+deseja expôr.
 
+.. image:: ../docs/images/publishing_tutorial_ptbr/image12.png
+   :width: 5.11528in
+   :height: 3.96944in
 
-Entre as Obras da coleção, procure e selecione uma ou mais que você deseja expor.
+Selecione Obras da sua coleção
 
-.. figure:: ../docs/images/exhibition-select-artwork.png
-   :scale: 30%
+Após selecionar uma ou mais Obras, dê um título à sua Exposição e defina
+sua URL. Esta URL permitirá acessar o conjunto de Obras selecionadas na
+exposição. Por exemplo, se você inserir “expos”, a URL definitiva para
+acessar sua criação será
+“\ `https://jandig.app/expos” <https://jandig.app/expos”>`__.
 
-   Selecione Obras da sua coleção
+.. image:: ../docs/images/publishing_tutorial_ptbr/image13.png
+   :width: 5.13611in
+   :height: 4.32361in
 
-Após selecionar uma ou mais Obras, dê um título à sua Exposição e defina sua URL. Esta URL será usada para acessar o conjunto de Obras selecionadas para sua exposição. Por exemplo, se você inserir "expos", a URL definitiva para acessar sua criação será "https://jandig.app/expos".
+Página de detalhes sobre sua Exposição
 
-.. figure:: ../docs/images/exhibition-details.png
-   :scale: 30%
+Acesse a URL final que você acabou de criar, aponte a câmera para o
+Marcador e veja a mágica acontecer!
 
-   Página de detalhes sobre sua Exposição
+Você pode ver todas as suas Exposições no menu “Minhas Criações”. E você
+também pode acessar diretamente de lá, clicando em “Veja esta
+Exposição”.
 
-
-Acesse a URL final que você acabou de criar, aponte a câmera para o Marcador e veja a mágica acontecer!
-
-Você pode ver todas as suas Exposições no menu "My stuff". E você também pode acessar diretamente de lá, clicando em "Veja esta Exposição".
-
-... figura:: ../docs/images/exhibition-created.png
-   escala: 30%
-
-   Página criada da Exposição
-
-E é isso! Se você chegou a este passo, você criou e exibiu com sucesso suas próprias Obras Jandig em AR para o mundo. Parabéns por ter chegado até aqui, e aproveite todas as experiências que o Jandig tem a oferecer!
+E é isso! Se você chegou até aqui, criou e exibiu com sucesso suas
+próprias Obras Jandig em AR para o mundo. Parabéns por ter chegado até
+aqui e aproveite todas as experiências que o Jandig oferece!

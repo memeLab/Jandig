@@ -3,10 +3,6 @@ from django.shortcuts import redirect, render
 from django.templatetags.static import static
 
 
-def ar_viewer(request):
-    return render(request, "core/exhibit.jinja2")
-
-
 def community(request):
     return render(request, "core/community.jinja2")
 
