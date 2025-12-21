@@ -55,7 +55,13 @@ SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.8")
 
 
 def traces_sampler(sampling_context):
-    url = sampling_context["wsgi_environ"]["PATH_INFO"]
+    if wsgi_environ := sampling_context.get("wsgi_environ"):
+        url = wsgi_environ.get("PATH_INFO", "")
+    elif asgi_scope := sampling_context.get("asgi_scope"):
+        url = asgi_scope.get("path", "")
+    else:
+        return SENTRY_TRACES_SAMPLE_RATE
+
     is_health_check = url == f"/{HEALTH_CHECK_URL}"
     is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None
     if is_health_check or is_django_admin:
