@@ -15,7 +15,7 @@ services:
     env_file:
       - .envs/.example
     environment:
-      - USE_GUNICORN=True
+      - USE_GRANIAN=True
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/status || exit 1"]
       interval: 1m30s

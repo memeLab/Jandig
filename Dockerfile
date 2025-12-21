@@ -1,7 +1,6 @@
-FROM debian:bookworm-slim AS base
+FROM debian:trixie-slim AS base
 
-ENV UV_VERSION=0.6.16 \
-    UV_PYTHON_VERSION=3.13.3 \
+ENV UV_PYTHON_VERSION=3.14.2 \
     TINI_VERSION=v0.19.0 \
     UV_COMPILE_BYTECODE=1 \ 
     # Copy from the cache instead of linking since it's a mounted volume
@@ -9,7 +8,7 @@ ENV UV_VERSION=0.6.16 \
     UV_PYTHON_INSTALL_DIR=/python \
     UV_PYTHON_PREFERENCE=only-managed
 
-COPY --from=ghcr.io/astral-sh/uv:0.6.16 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.9.18 /uv /uvx /bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \

@@ -15,7 +15,7 @@ BASE_DIR = ROOT_DIR.path("src")
 
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR.path(".env")))
@@ -169,7 +169,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 USE_POSTGRES = env.bool("USE_POSTGRES", default=True)
 if USE_POSTGRES:
@@ -265,9 +265,9 @@ AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
 AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
 
-USE_GUNICORN = os.getenv("USE_GUNICORN", "true").lower() in ("true", "1")
+USE_GRANIAN = os.getenv("USE_GRANIAN", "true").lower() in ("true", "1")
 
-if not USE_GUNICORN:
+if not USE_GRANIAN:
     USE_MINIO = False
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
@@ -302,7 +302,7 @@ STATICFILES_FINDERS = [
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 
-if USE_GUNICORN:
+if USE_GRANIAN:
     STORAGES = {
         "default": {
             "BACKEND": "config.storage_backends.PublicMediaStorage",
