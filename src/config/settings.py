@@ -51,7 +51,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.7")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.8")
 
 
 def traces_sampler(sampling_context):
@@ -77,26 +77,31 @@ if ENABLE_SENTRY:
         release=SENTRY_RELEASE,
     )
 
-INSTALLED_APPS = [
-    "pghistory.admin",
+EXTERNAL_APPS = [
+    "corsheaders",
+    "django_extensions",
+    "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sessions",
     "django.contrib.staticfiles",
-    "django_extensions",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "rest_framework_simplejwt",
+    "pghistory.admin",
     "pghistory",
     "pgtrigger",
-    "django_htmx",
-    "corsheaders",
-    "users",
-    "core",
-    "blog",
+    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    "rest_framework",
 ]
+
+INTERNAL_APPS = [
+    "blog",
+    "core",
+    "users",
+]
+
+INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
