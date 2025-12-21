@@ -265,6 +265,14 @@ class Marker(TimeStampedModel, ContentMixin):
         # Disabled edit button for now:
         # it only allows to edit the title
         # and it's generating recursive borders on the existing marker.
+        if editable:
+            to_render.extend(
+                a(
+                    _("preview"),
+                    href=reverse("marker-preview", query={"id": self.id}),
+                    class_="preview",
+                )
+            )
         # if editable and not self.is_used_by_other_user():
         #     to_render.append(self._get_edit_button())
         if editable and not self.in_use:

@@ -186,6 +186,24 @@ def object_upload(request):
     )
 
 
+@require_http_methods(["GET"])
+def marker_preview(request):
+    marker_id = request.GET.get("id")
+    marker = Marker.objects.get(id=marker_id)
+    artwork = {
+        "marker": marker,
+        "augmented": marker,
+        "scale_x": 1,
+        "scale_y": 1,
+        "position_x": 0,
+        "position_y": 0,
+    }
+    ctx = {
+        "artworks": [artwork],
+    }
+    return render(request, "core/exhibit.jinja2", ctx)
+
+
 @login_required
 def marker_upload(request):
     if request.method == "POST":
