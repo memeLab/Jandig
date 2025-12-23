@@ -1,9 +1,15 @@
 {% for post in posts %}
     <div class="post">
-        <h3><a href="{{ url('post_detail', args=[post.pk])}}">{{ post.title }}</a></h3>
-        <p>{{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk])}}">{{ _("Read More") }}</a></p>
+        <h3>
+            <a href="{{ url('post_detail', args=[post.pk]) }}">{{ post.title }}</a>
+        </h3>
+        <p>
+            {{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk]) }}">{{ _("Read More") }}</a>
+        </p>
     </div>
 {% endfor %}
 {% if next_page_number <= total_pages %}
-    <button hx-get="{{ page_url }}?page={{ next_page_number }}" hx-trigger="click" hx-swap="outerHTML"> {{_("See more")}}</button>
+    <button hx-get="{{ page_url }}?page={{ next_page_number }}"
+            hx-trigger="click"
+            hx-swap="outerHTML">{{ _("See more") }}</button>
 {% endif %}

@@ -1,64 +1,59 @@
 {% extends '/core/home.jinja2' %}
-
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
-
         {% if edit %}
-            <h2>{{_('Edit Sound')}}</h2>
+            <h2>{{ _("Edit Sound") }}</h2>
         {% else %}
-            <h2>{{ _('Upload Sound') }}</h2>
+            <h2>{{ _("Upload Sound") }}</h2>
         {% endif %}
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="title-field"  id="title-field">
-                        <h3>{{_("Choose Sound's title")}}
-                        {{ form.visible_fields()[0] }}
-                        {{ form.visible_fields()[0].errors }}
-                    </p>
-                    <p class="upload-field" id="source-field">
-                
-                        <h3>{{_("Choose Sound")}}</h3>
-                    
-                        <div style="display: flex; flex-direction: column;">
-                            {{ form.visible_fields()[1] }}
-                            <p style="font-size: small; text-align: left; padding: 0 10px">(.wav, .mp3, .ogg)</p>
-                        </div>
-                        
-                        {{ form.visible_fields()[1].errors }}
-                    </p>
-
-                    <div id="content-box"></div>
-                    
-                    
-                    <p class="form-options">
-                        <input id="author-chk" type="checkbox" name="author" value="1">
-                        <label for="author-chk">{{ _("I'm this Sound's author") }}</label>
-                    </p>
-                    <p class="upload-field" id="author-field">
-                        {{ form.visible_fields()[2] }}
-                        {{ form.visible_fields()[2].errors }}
-                    </p>
-                    
-                    
-                    <div class="form-options">
-                        <p>
-                            <input id="agreement-chk" type="checkbox" name="agreement" value="1">
-                            <label for="agreement-chk">
-                                {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
-                            </label>
+                        <h3>
+                            {{ _("Choose Sound's title") }}
+                            {{ form.visible_fields()[0] }}
+                            {{ form.visible_fields()[0] .errors }}
                         </p>
-                    </div>
-                    <input id="submit-btn" class="submit-btn" onclick="updateValues()" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
-                </form>
-            </div>
-        </section>
-
-        <script>
-           
+                        <p class="upload-field" id="source-field">
+                            <h3>{{ _("Choose Sound") }}</h3>
+                            <div style="display: flex; flex-direction: column;">
+                                {{ form.visible_fields()[1] }}
+                                <p style="font-size: small; text-align: left; padding: 0 10px">(.wav, .mp3, .ogg)</p>
+                            </div>
+                            {{ form.visible_fields()[1] .errors }}
+                        </p>
+                        <div id="content-box"></div>
+                        <p class="form-options">
+                            <input id="author-chk" type="checkbox" name="author" value="1">
+                            <label for="author-chk">{{ _("I'm this Sound's author") }}</label>
+                        </p>
+                        <p class="upload-field" id="author-field">
+                            {{ form.visible_fields()[2] }}
+                            {{ form.visible_fields()[2] .errors }}
+                        </p>
+                        <div class="form-options">
+                            <p>
+                                <input id="agreement-chk" type="checkbox" name="agreement" value="1">
+                                <label for="agreement-chk">
+                                    {{ _('I agree to have this content under <a target="_blank"
+                                        href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
+                                </label>
+                            </p>
+                        </div>
+                        <input id="submit-btn"
+                               class="submit-btn"
+                               onclick="updateValues()"
+                               type="submit"
+                               value="{{ _('Submit') }}"
+                               disabled="disabled" />
+                    </form>
+                </div>
+            </section>
+            <script>
             $('#agreement-chk').click(function(){
                 if($(this).prop('checked') == true) {
                     $('#submit-btn').prop('disabled', false);
@@ -109,6 +104,6 @@
                     reader.readAsDataURL(file);
                 }
             );
-        </script>
-    </section>
-{% endblock %}
+            </script>
+        </section>
+    {% endblock %}

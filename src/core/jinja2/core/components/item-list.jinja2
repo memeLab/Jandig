@@ -1,20 +1,12 @@
-{% if element_type == "ar-exhibit" or element_type == "mr-exhibit" %}   
-    <section id="repo-{{element_type}}" class="exhibit-list flex">
-{% else %}
-    <section id="repo-{{element_type}}" class="repository-list flex">
-{% endif %} 
-    {% for element in repository_list %}
-        <div 
-            {% if element_type != "ar-exhibit" and element_type != "mr-exhibit" and htmx != "false" %} 
-                hx-get="/api/v1/{{element_type}}s/{{element.id}}/?format=modal" 
-                hx-target="#modal" 
-                hx-trigger="click"
-                class="repository-item trigger-modal"
-            {% else %}
-                class="repository-item"
-            {% endif %}
-            id="{{ element_type }}-{{ element.id }}" >
+{% if element_type == "ar-exhibit" or element_type == "mr-exhibit" %}
+    <section id="repo-{{ element_type }}" class="exhibit-list flex">
+    {% else %}
+        <section id="repo-{{ element_type }}" class="repository-list flex">
+        {% endif %}
+        {% for element in repository_list %}
+            <div {% if element_type != "ar-exhibit" and element_type != "mr-exhibit" and htmx != "false" %} hx-get="/api/v1/{{ element_type }}s/{{ element.id }}/?format=modal" hx-target="#modal" hx-trigger="click" class="repository-item trigger-modal" {% else %} class="repository-item" {% endif %}
+                 id="{{ element_type }}-{{ element.id }}">
                 {{ element.as_html_thumbnail(editable=editable) | safe }}
-        </div>
-    {% endfor %}
-</section>
+            </div>
+        {% endfor %}
+    </section>

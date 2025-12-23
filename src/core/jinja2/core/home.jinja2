@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37240876-2"></script>
         <script>
         window.dataLayer = window.dataLayer || [];
@@ -12,40 +12,39 @@
         </script>
         <link id="manifest" rel="manifest" href="/manifest.json">
         <script src="{{ static('js/main.js') }}"></script>
-        <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-
+        <script src="https://unpkg.com/htmx.org@2.0.4"
+                integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+                crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{{ static('css/reset.css') }}">
         <link rel="stylesheet" href="{{ static('css/home.css') }}">
         <title>Jandig ARte</title>
         <meta name="Description" content="Augmented reality artworks!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ static('images/icons/favicon.ico') }}" type="image/x-icon" />
-        {% block extra_css %}
-        {% endblock %}
+        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap"
+              rel="stylesheet">
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
+        {% block extra_css %}{% endblock %}
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     </head>
-
-
     <body>
         {% include "core/header.jinja2" %}
-
         {% include "core/useful_links.jinja2" %}
-  
         {% block content %}
-                <section class="use-guide">
+            <section class="use-guide">
                 <div class="container">
-                    <h2 id="main_title">{{_("Welcome to Jandig")}}</h2>
-                    <blockquote>{{_("An Open Source Augmented Reality art community.")}}</blockquote>
-                    <p>{{_("To see the Artworks you need to grant camera access to the app.")}}</p>
+                    <h2 id="main_title">{{ _("Welcome to Jandig") }}</h2>
+                    <blockquote>
+                        {{ _("An Open Source Augmented Reality art community.") }}
+                    </blockquote>
+                    <p>{{ _("To see the Artworks you need to grant camera access to the app.") }}</p>
                     <div class="go-to-camera">
-                        <a href="/exhibit_select" class="button">{{ _('Go to camera') }}</a>
+                        <a href="/exhibit_select" class="button">{{ _("Go to camera") }}</a>
                     </div>
                 </div>
             </section>
         {% endblock %}
-        
         {% include "core/footer.jinja2" %}
     </body>
 </html>

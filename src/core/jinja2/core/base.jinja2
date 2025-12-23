@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -21,27 +21,24 @@
         <script src="{{ static('artoolkit.three.js') }}" defer></script>
         <script src="{{ static('ar-gif.min.js') }}" defer></script>
         <script src="{{ static('js/rotationLock.js') }}"></script>
-
         <title>Jandig ARte</title>
         <meta name="Description" content="Augmented reality artworks!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap" rel="stylesheet">
-
-        <link rel="shortcut icon" href="{{ static('images/icons/favicon.ico') }}" type="image/x-icon" />
+        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap"
+              rel="stylesheet">
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
     </head>
-
     <body>
         {% if content is defined %}
             {{ content }}
         {% else %}
             {% block content %}
                 {% if content_html %}
-                    <div class="Container">
-                        {{ content_html|safe }}
-                    </div>
+                    <div class="Container">{{ content_html|safe }}</div>
                 {% else %}
-                    <p>{{ _('Please override the "content" block of your template!') }}</p>
+                    <p>{{ _("Please override the \"content\" block of your template!") }}</p>
                 {% endif %}
             {% endblock %}
         {% endif %}
