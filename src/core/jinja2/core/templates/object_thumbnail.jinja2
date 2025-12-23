@@ -1,0 +1,17 @@
+<div hx-get="/api/v1/objects/{{ object.id }}/?format=modal"
+     hx-target="#modal"
+     hx-trigger="click"
+     class="repository-item trigger-modal"
+     id="object-{{ object.id }}">
+    <img id="{{ object.id }}"
+         title="{{ object.title }}"
+         src="{{ object.source.url }}"
+         height="50"
+         width="50">
+    {% if editable %}<a href="/objects/edit/?id={{ object.id }}" class="edit">edit</a>{% endif %}
+    {% if deletable %}
+        <a href="{{ reverse('delete-content', query={'content_type': 'object', 'id': object.id},) }}"
+           onclick="return confirm('Are you sure you want to delete?')"
+           class="delete">delete</a>
+    {% endif %}
+</div>
