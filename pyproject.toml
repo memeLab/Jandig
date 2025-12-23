@@ -33,6 +33,7 @@ dependencies = [
 dev = [
   "dj-inmemorystorage~=2.1",
   "django-debug-toolbar~=5.1",
+  "djlint>=1.36.4",
   "factory-boy~=3.3",
   "numpy>=2.3.1",
   "playwright~=1.49",
@@ -65,4 +66,8 @@ exclude = [
 line-length = 88
 # Assume Python 3.13
 target-version = "py313"
+
+[tool.djlint]
+profile="jinja"
+extension="jinja2"
 
