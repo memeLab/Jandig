@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="{{ static ('css/language-select.css') }}">
+<div class="lang-selector-wrapper">
+    <button id="lang-modal-btn" type="button" class="lang-modal-button">
+        <div class="lang-button-content">
+            <svg class="lang-icon"
+                 width="16"
+                 height="16"
+                 viewBox="0 0 20 20"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 10C19 12.3869 18.0518 14.6761 16.364 16.364C14.6761 18.0518 12.3869 19 10 19M19 10C19 7.61305 18.0518 5.32387 16.364 3.63604C14.6761 1.94821 12.3869 1 10 1M19 10H1M10 19C7.61305 19 5.32387 18.0518 3.63604 16.364C1.94821 14.6761 1 12.3869 1 10M10 19C11.6569 19 13 15.0899 13 10C13 4.91015 11.6569 1 10 1M10 19C8.34315 19 7 15.0899 7 10C7 4.91015 8.34315 1 10 1M10 1C7.61305 1 5.32387 1.94821 3.63604 3.63604C1.94821 5.32387 1 7.61305 1 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+            </svg>
+            <span class="lang-code">{{ request.LANGUAGE_CODE[0:2] }}</span>
+        </div>
+    </button>
+    <div id="lang-list" class="lang-list">
+        <form action="{{ url('set_language') }}" method="post">
+            {{ csrf_input }}
+            <input type="hidden" name="language" id="language-input">
+            <div class="lang-modal-list">
+                {% for language in languages %}
+                    <button type="button"
+                            class="lang-option"
+                            data-lang-code="{{ language['code'] }}">
+                        <span class="lang-name">{{ language['name_local'].capitalize() }}</span>
+                        {% if language["code"] == request.LANGUAGE_CODE %}
+                            <svg class="lang-check"
+                                 width="16"
+                                 height="16"
+                                 viewBox="0 0 16 16"
+                                 fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.33331 7.99984L6.66665 11.3332L13.3333 4.6665" stroke="#535353" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </svg>
+                        {% endif %}
+                    </button>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    (function() {
+        const btn = document.getElementById('lang-modal-btn');
+        const list = document.getElementById('lang-list');
+        const form = list.querySelector('form');
+        const languageInput = document.getElementById('language-input');
+        const options = list.querySelectorAll('.lang-option');
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            list.classList.toggle('show');
+        });
+
+        options.forEach(function(option) {
+            option.addEventListener('click', function() {
+                const langCode = this.getAttribute('data-lang-code');
+                languageInput.value = langCode;
+                form.submit();
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!list.contains(e.target) && e.target !== btn) {
+                list.classList.remove('show');
+            }
+        });
+    })();
+</script>
