@@ -15,10 +15,10 @@
             {% else %}
                 <div class="connect flex">
                     <div class="signup-btn">
-                        <a href=" {{ url("signup") }}">{{ _("Sign up") }}</a>
+                        <a href="{{ url('signup') }}">{{ _("Sign up") }}</a>
                     </div>
                     <div class="login-btn">
-                        <a href="/users/login">{{ _("Log in") }}</a>
+                        <a href="{{ url('login') }}">{{ _("Log in") }}</a>
                     </div>
                 </div>
             {% endif %}

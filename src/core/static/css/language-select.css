@@ -2,6 +2,7 @@
 .lang-selector-wrapper {
     position: relative;
     display: inline-block;
+    height: fit-content;
 }
 
 /* Button styles - using ID and class for maximum specificity */
