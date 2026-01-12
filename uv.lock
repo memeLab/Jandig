@@ -920,15 +920,15 @@ wheels = [
 
 [[package]]
 name = "pymarker"
-version = "1.2.0"
+version = "1.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "pillow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/13/a5/9d8c8959db21ccb498806dc538c7290aef7444d1e7de4e2c707c91f38999/pymarker-1.2.0.tar.gz", hash = "sha256:af285af1326d1f8c1ea74886d51f7e122dc18a7d73bf75675cff43d5ed873781", size = 18357, upload-time = "2025-07-12T18:42:21.622Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/17/175f059f322e6d3f6b84736354362ac7ab86b2a7332f0ba9b525c1596e02/pymarker-1.2.2.tar.gz", hash = "sha256:7c618921baf988f9959e4714e891e962906609ae5cdf552c13a5213037b9154d", size = 18378, upload-time = "2026-01-12T18:43:15.393Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/0c/67c8dbe2e1f67732601a41c7806a738c500d29c6336df61540414fbec215/pymarker-1.2.0-py3-none-any.whl", hash = "sha256:0e80d37ba3b890040674d28fa1a9f13405e2dd71a615444092a831f6fc48dd60", size = 19919, upload-time = "2025-07-12T18:42:20.319Z" },
+    { url = "https://files.pythonhosted.org/packages/85/10/04bae0a211512538f6794eac173bd894549707ff1bdf4512b290b33fc8e2/pymarker-1.2.2-py3-none-any.whl", hash = "sha256:c890a0e5e0f477844aa37b4e3c66eae8a572b20bcfce0c8806ab470587a2e4ee", size = 19945, upload-time = "2026-01-12T18:43:14.123Z" },
 ]
 
 [[package]]
