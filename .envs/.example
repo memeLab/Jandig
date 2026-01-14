@@ -5,7 +5,8 @@ DEBUG_TOOLBAR=True
 DJANGO_SECRET_KEY=change_me
 DJANGO_ADMIN_URL=jandig-admin/
 USE_MINIO=True
-USE_GUNICORN=True
+USE_POSTGRES=False
+USE_GRANIAN=True
 
 # Sentry Variables
 ENABLE_SENTRY=False

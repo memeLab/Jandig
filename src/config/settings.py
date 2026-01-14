@@ -15,7 +15,7 @@ BASE_DIR = ROOT_DIR.path("src")
 
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR.path(".env")))
@@ -51,11 +51,17 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.7")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.8")
 
 
 def traces_sampler(sampling_context):
-    url = sampling_context["wsgi_environ"]["PATH_INFO"]
+    if wsgi_environ := sampling_context.get("wsgi_environ"):
+        url = wsgi_environ.get("PATH_INFO", "")
+    elif asgi_scope := sampling_context.get("asgi_scope"):
+        url = asgi_scope.get("path", "")
+    else:
+        return SENTRY_TRACES_SAMPLE_RATE
+
     is_health_check = url == f"/{HEALTH_CHECK_URL}"
     is_django_admin = re.search(f"^/{DJANGO_ADMIN_URL.strip('/')}/*", url) is not None
     if is_health_check or is_django_admin:
@@ -77,26 +83,31 @@ if ENABLE_SENTRY:
         release=SENTRY_RELEASE,
     )
 
-INSTALLED_APPS = [
-    "pghistory.admin",
+EXTERNAL_APPS = [
+    "corsheaders",
+    "django_extensions",
+    "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sessions",
     "django.contrib.staticfiles",
-    "django_extensions",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "rest_framework_simplejwt",
+    "pghistory.admin",
     "pghistory",
     "pgtrigger",
-    "django_htmx",
-    "corsheaders",
-    "users",
-    "core",
-    "blog",
+    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    "rest_framework",
 ]
+
+INTERNAL_APPS = [
+    "blog",
+    "core",
+    "users",
+]
+
+INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
@@ -169,7 +180,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 USE_POSTGRES = env.bool("USE_POSTGRES", default=True)
 if USE_POSTGRES:
@@ -265,9 +276,9 @@ AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL", None)
 AWS_STATIC_LOCATION = os.getenv("AWS_STATIC_LOCATION", "static")
 AWS_MEDIA_LOCATION = os.getenv("AWS_MEDIA_LOCATION", "media")
 
-USE_GUNICORN = os.getenv("USE_GUNICORN", "true").lower() in ("true", "1")
+USE_GRANIAN = os.getenv("USE_GRANIAN", "true").lower() in ("true", "1")
 
-if not USE_GUNICORN:
+if not USE_GRANIAN:
     USE_MINIO = False
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
@@ -302,7 +313,7 @@ STATICFILES_FINDERS = [
 
 AWS_PUBLIC_MEDIA_LOCATION = "media/public"
 
-if USE_GUNICORN:
+if USE_GRANIAN:
     STORAGES = {
         "default": {
             "BACKEND": "config.storage_backends.PublicMediaStorage",

@@ -1,0 +1,9 @@
+.marker-menu{
+    display: flex;
+    flex-direction: row-reverse;
+    max-width: 130px;
+}
+.marker-menu a{
+    margin:0 !important;
+    position: relative !important;
+}

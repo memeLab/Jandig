@@ -156,7 +156,7 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
     ]
 
     def image_preview(self, obj):
-        return format_html(obj.as_html_thumbnail())
+        return format_html(obj.as_html_thumbnail(), "")
 
 
 @admin.register(Object)
@@ -168,7 +168,7 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
     list_filter = ["file_extension"]
 
     def image_preview(self, obj):
-        return format_html(obj.as_html_thumbnail())
+        return format_html(obj.as_html_thumbnail(), "")
 
 
 @admin.register(Artwork)
@@ -213,13 +213,13 @@ class ArtworkAdmin(admin.ModelAdmin):
     exhibits_count.short_description = "Exhibits Count"
 
     def marker_preview(self, obj):
-        return format_html(obj.marker.as_html_thumbnail())
+        return format_html(obj.marker.as_html_thumbnail(), "")
 
     marker_preview.short_description = "Marker"
     marker_preview.allow_tags = True
 
     def augmented_preview(self, obj):
-        return format_html(obj.augmented.as_html_thumbnail())
+        return format_html(obj.augmented.as_html_thumbnail(), "")
 
     augmented_preview.short_description = "Augmented Object"
     augmented_preview.allow_tags = True
@@ -310,4 +310,4 @@ class SoundAdmin(admin.ModelAdmin):
         return format_html(HTML_LINK, link, obj.owner.user.username)
 
     def preview(self, obj):
-        return format_html(obj.as_html_thumbnail().replace(obj.title, ""))
+        return format_html(obj.as_html_thumbnail().replace(obj.title, ""), "")
