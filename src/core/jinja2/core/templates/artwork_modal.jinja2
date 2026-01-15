@@ -1,49 +1,37 @@
 <div class="modal-container">
     <div class="modal-content">
         <div id="modal-header">
-            <button id="close-modal" onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
+            <button id="close-modal"
+                    onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
         </div>
         <h1 id="modal-title">{{ artwork.title }}</h1>
         <p id="artwork-description">{{ artwork.description }}</p>
         <p id="element-upload-info">
-                    {{ "{} {}{} {}".format(_("Created by"), artwork.author.user.username,_(", in"), artwork.created.strftime("%d/%m/%Y")) }}
-        <p id="element-analytics">
-            {{ artwork.used_in_html_string() | safe }}
-        </p>
-        <div class="artwork-content">
-            <h5>{{artwork.marker.title}}</h5>
-            <a 
-                hx-get="/api/v1/markers/{{artwork.marker.id}}/?format=modal&go_back_url=/api/v1/artworks/{{artwork.id}}/?format=modal" 
-                hx-target="#modal" 
-                hx-trigger="click"
-            >
-                {{ artwork.marker.as_html() | safe }}
-            </a>
+            {{ "{} {}{} {}".format(_("Created by") , artwork.author.user.username,_(", in"), artwork.created.strftime("%d/%m/%Y")) }}
+            <p id="element-analytics">{{ artwork.used_in_html_string() | safe }}</p>
+            <div class="artwork-content">
+                <h5>{{ artwork.marker.title }}</h5>
+                <a hx-get="/api/v1/markers/{{ artwork.marker.id }}/?format=modal&go_back_url=/api/v1/artworks/{{ artwork.id }}/?format=modal"
+                   hx-target="#modal"
+                   hx-trigger="click">{{ artwork.marker.as_html() | safe }}</a>
+            </div>
+            <div class="artwork-content">
+                <h5>{{ artwork.augmented.title }}</h5>
+                <a hx-get="/api/v1/objects/{{ artwork.augmented.id }}/?format=modal&go_back_url=/api/v1/artworks/{{ artwork.id }}/?format=modal"
+                   hx-target="#modal"
+                   hx-trigger="click">{{ artwork.augmented.as_html() | safe }}</a>
+            </div>
+            {% if artwork.sound %}
+                <br />
+                <div class="artwork-content">
+                    <h5>{{ _("Artwork Sound") }}</h5>
+                    <a hx-get="/api/v1/sounds/{{ artwork.sound.id }}/?format=modal&go_back_url=/api/v1/artworks/{{ artwork.id }}/?format=modal"
+                       hx-target="#modal"
+                       hx-trigger="click">
+                        <h5>{{ artwork.sound.title }}</h5>
+                        {{ artwork.sound.as_html() | safe }}
+                    </a>
+                </div>
+            {% endif %}
         </div>
-        <div class="artwork-content">
-            <h5>{{artwork.augmented.title}}</h5>
-            <a 
-                hx-get="/api/v1/objects/{{artwork.augmented.id}}/?format=modal&go_back_url=/api/v1/artworks/{{artwork.id}}/?format=modal" 
-                hx-target="#modal" 
-                hx-trigger="click"
-            >
-            {{ artwork.augmented.as_html()| safe }}
-            </a>
-        </div>
-        {% if artwork.sound %}
-        <br /> 
-        <div class="artwork-content">
-            <h5>{{_("Artwork Sound")}}</h5>
-            <a 
-                hx-get="/api/v1/sounds/{{artwork.sound.id}}/?format=modal&go_back_url=/api/v1/artworks/{{artwork.id}}/?format=modal" 
-                hx-target="#modal" 
-                hx-trigger="click"
-            >
-            <h5>{{artwork.sound.title}}</h5>
-            {{ artwork.sound.as_html()| safe }}
-            </a>
-        </div>
-        {% endif %}
-
     </div>
-</div>

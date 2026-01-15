@@ -1,0 +1,36 @@
+<div class="repository-item" id="mr-exhibit-{{ exhibit.id }}">
+    <a href="{{ url('exhibit-detail', query={'id': exhibit.id}) }}">
+        <h1 class="exhibit-name">{{ exhibit.name }}</h1>
+    </a>
+    <div>
+        <div class="exhibit-elements flex">
+            <p class="by">
+                Created by <b>{{ exhibit.owner.user.username }}</b>
+            </p>
+            <p class="exbDate">{{ exhibit.creation_date }}</p>
+            <div>
+                {% if exhibit.type == "AR" %}
+                    <p class="exhibit-about">
+                        <a href="{{ url('exhibit-detail', query={'id': exhibit.id}) }}">{{ exhibit.artworks_count }} Artwork(s)</a>
+                    </p>
+                {% elif exhibit.type == "MR" %}
+                    <p class="exhibit-about">
+                        <a href="{{ url('exhibit-detail', query={'id': exhibit.id}) }}">{{ exhibit.augmenteds_count }} Object(s)</a>
+                    </p>
+                    <p class="exhibit-about">
+                        <a href="{{ url('exhibit-detail', query={'id': exhibit.id}) }}">{{ exhibit.sounds_count }} Sound(s)</a>
+                    </p>
+                {% endif %}
+            </div>
+            <a href="/{{ exhibit.slug }}/" class="gotoExb">See this Exhibition</a>
+            <div>
+                {% if editable %}<a href="/exhibits/edit-mr/?id={{ exhibit.id }}" class="edit">edit</a>{% endif %}
+                {% if deletable %}
+                    <a href="{{ reverse('delete-content', query={'content_type': exhibit.content_type() , 'id': exhibit.id}, ) }}"
+                       onclick="return confirm('Are you sure you want to delete?')"
+                       class="delete">delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

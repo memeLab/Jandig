@@ -1,83 +1,76 @@
 {% extends '/core/home.jinja2' %}
-
-
 {% block content %}
     <section class="create-exhibit">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
         <link rel="stylesheet" href="{{ static ('css/label.css') }}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
             {% if edit %}
-                <h1 class="titExb">{{ _('Edit AR Exhibition') }}</h1>
+                <h1 class="titExb">{{ _("Edit AR Exhibition") }}</h1>
             {% else %}
-                <h1 class="titExb">{{ _('Create AR Exhibition') }}</h1>
+                <h1 class="titExb">{{ _("Create AR Exhibition") }}</h1>
             {% endif %}
-    
-            <form name="creation-form" action="" method="post" enctype="multipart/form-data">
+            <form name="creation-form"
+                  action=""
+                  method="post"
+                  enctype="multipart/form-data">
                 {{ csrf_input }}
-                <h2>{{ _('About your Exhibit') }}</h2>
-            
-                <h3>{{ _('Exhibit Name') }}</h3>
+                <h2>{{ _("About your Exhibit") }}</h2>
+                <h3>{{ _("Exhibit Name") }}</h3>
                 {{ form.visible_fields()[0] }}
-                {{ form.visible_fields()[0].errors }}
-                
-                
-                <h3>{{ _('Exhibit Link') }}</h3>
-                <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
+                {{ form.visible_fields()[0] .errors }}
+                <h3>{{ _("Exhibit Link") }}</h3>
+                <p class="gallery-title">{{ _("Your exhibit URL will look like this") }}</p>
                 <div style="display: flex; width: 100%">
                     <label class="url-helper">https://jandig.app/</label>
-                    <p id="exhibit-slug-field" style="float: right; width: 65%">
-                        {{ form.visible_fields()[1] }}
-                    </p>
+                    <p id="exhibit-slug-field" style="float: right; width: 65%">{{ form.visible_fields()[1] }}</p>
                 </div>
-                {{ form.visible_fields()[1].errors }}
-                
-                <h2>{{ _('Select the content') }}</h2>
-                <button id="select-artworks" class="select-btn" type="button">
-                    {{ _('Select Artworks') }}
-                </button>
-                {{ form.visible_fields()[2].as_hidden() }}
-                {{ form.visible_fields()[2].errors }}
-
+                {{ form.visible_fields()[1] .errors }}
+                <h2>{{ _("Select the content") }}</h2>
+                <button id="select-artworks" class="select-btn" type="button">{{ _("Select Artworks") }}</button>
+                {{ form.visible_fields()[2] .as_hidden() }}
+                {{ form.visible_fields()[2] .errors }}
                 <div id="form-modal" class="modal">
                     <div id="artwork-modal" class="tab">
-                        <h4 class="modal-title">{{ _('Select Artworks') }}</h4>
-
+                        <h4 class="modal-title">{{ _("Select Artworks") }}</h4>
                         {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
                             {% if repository_list|length > 0 %}
-                                <p class="gallery-title">{{ _('Choose from your repository') }}</p>
+                                <p class="gallery-title">{{ _("Choose from your repository") }}</p>
                             {% else %}
-                                <section id="repo-{{element_type}}" class="repository-list">
-                                    <p>{{_("You have no Artworks. :c")}}</p>
-                                    <a href="{{ url('create-artwork') }}" class="button">
-                                        {{ _('Create one') }}
-                                    </a>
+                                <section id="repo-{{ element_type }}" class="repository-list">
+                                    <p>{{ _("You have no Artworks. :c") }}</p>
+                                    <a href="{{ url('create-artwork') }}" class="button">{{ _("Create one") }}</a>
                                 </section>
                             {% endif %}
-                            {% with repository_list = artworks, element_type="artwork", htmx="false"%}
+                            {% with repository_list = artworks, element_type="artwork", htmx="false" %}
                                 {% include "core/components/item-list.jinja2" %}
                             {% endwith %}
                         {% endwith %}
-
-                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                            {{ _('Okay') }}
-                        </a>
+                        <a type="button"
+                           type="button"
+                           href="#close-modal"
+                           rel="modal:close"
+                           class="button select-btn next-btn"
+                           onclick="validateSubmit()">{{ _("Okay") }}</a>
                     </div>
                 </div>
-
-                <h2>{{ _('Publish content') }}</h2>
+                <h2>{{ _("Publish content") }}</h2>
                 {{ form.non_field_errors() }}
                 {% if edit %}
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Exhibit') }}"/>
+                    <input class="select-btn next-btn"
+                           type="submit"
+                           value="{{ _('Edit Exhibit') }}" />
                 {% else %}
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn"
+                           type="submit"
+                           value="{{ _('Publish Exhibit') }}" />
                 {% endif %}
             </form>
         </div>
         <script>
-
         // modal events
         $('#select-artworks').click(function(){
             currentTab = 0;

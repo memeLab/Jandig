@@ -1,6 +1,4 @@
 {% extends '/core/home.jinja2' %}
-
-
 {% block content %}
     <section class="create-artwork container">
         <link rel="stylesheet" href="{{ static('css/warning.css') }}">
@@ -8,40 +6,41 @@
         <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
         <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
         <link rel="stylesheet" href="{{ static('css/tooltip.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-
-        <h1 class="titArt">{{ _('Edit Jandig Artwork') if selected_marker else _('Create Jandig Artwork')}}</h1>
-        
-        <form name="creation-form" action="" method="post" enctype="multipart/form-data">
+        <h1 class="titArt">{{ _("Edit Jandig Artwork") if selected_marker else _('Create Jandig Artwork') }}</h1>
+        <form name="creation-form"
+              action=""
+              method="post"
+              enctype="multipart/form-data">
             {{ csrf_input }}
             <div id="artwork-data">
-                <h2>{{ _('About your artwork') }}</h2>
+                <h2>{{ _("About your artwork") }}</h2>
                 <p class="upload-field">
                     {{ form.visible_fields()[0] }}
-                    {{ form.visible_fields()[0].errors }}
+                    {{ form.visible_fields()[0] .errors }}
                 </p>
                 <p class="upload-field">
                     {{ form.visible_fields()[1] }}
-                    {{ form.visible_fields()[1].errors }}
+                    {{ form.visible_fields()[1] .errors }}
                 </p>
-                
             </div>
-            <h2>{{ _('Select the content') }}</h2>
-            <button id="select-marker" class="select-btn" type="button">
-                {{ _('Select Marker') }}
-            </button>
-
-            <input id="id_selected_marker" type="hidden" name="selected_marker" onchange="validateSubmit()" {% if selected_marker %} value="{{ selected_marker }}" {% endif %}>
-            {{ form.visible_fields()[4].errors }}
-            
-            <button id="select-object" class="select-btn" type="button">
-                {{ _('Select Object') }}
-            </button>
-
-            <input id="id_selected_object" type="hidden" name="selected_object" onchange="validateSubmit()" {% if selected_object %} value="{{ selected_object }}" {% endif %}>
-            {{ form.visible_fields()[5].errors }}
-
+            <h2>{{ _("Select the content") }}</h2>
+            <button id="select-marker" class="select-btn" type="button">{{ _("Select Marker") }}</button>
+            <input id="id_selected_marker"
+                   type="hidden"
+                   name="selected_marker"
+                   onchange="validateSubmit()"
+                   {% if selected_marker %}value="{{ selected_marker }}"{% endif %}>
+            {{ form.visible_fields()[4] .errors }}
+            <button id="select-object" class="select-btn" type="button">{{ _("Select Object") }}</button>
+            <input id="id_selected_object"
+                   type="hidden"
+                   name="selected_object"
+                   onchange="validateSubmit()"
+                   {% if selected_object %}value="{{ selected_object }}"{% endif %}>
+            {{ form.visible_fields()[5] .errors }}
             {# Disabled Section of Sounds in Artworks #}
             {# Even though it is supported by our models, users are confused on uploads of sounds to artworks, we are disabling #}
             {# <h2>{{ _('Select a Sound') }}</h2>
@@ -49,95 +48,154 @@
                         {{ _('Select a Sound') }}
             </button>
             <input id="id_selected_sound" type="hidden" name="selected_sound" onchange="validateSubmit()" {% if selected_sound %} value="{{ selected_sound }}" {% endif %}>
-            {{ form.visible_fields()[5].errors }} #}
-
+{{ form.visible_fields()[5].errors }} #}
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select Marker') }}</h4>
-                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML" disabled="disabled"> < </button>
-                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-marker" hx-get="/elements/" hx-vals='js:{page: get_page_marker(1), element_type: "marker"}' hx-target="#repo-marker" hx-swap="outerHTML"> > </button>
+                    <h4 class="modal-title">{{ _("Select Marker") }}</h4>
+                    <div id="navigation-buttons"
+                         style="display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 15px">
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="previous-button-marker"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}'
+                                hx-target="#repo-marker"
+                                hx-swap="outerHTML"
+                                disabled="disabled">
+                            <
+                        </button>
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="next-button-marker"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_marker(1), element_type: "marker"}'
+                                hx-target="#repo-marker"
+                                hx-swap="outerHTML">></button>
                     </div>
                     {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
-
-                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                        {{ _('Okay') }}
-                    </a>
+                    <a type="button"
+                       type="button"
+                       href="#close-modal"
+                       rel="modal:close"
+                       class="button select-btn next-btn"
+                       onclick="validateSubmit()">{{ _("Okay") }}</a>
                 </div>
                 <div id="object-modal" class="tab">
-                    
-                    <h4 class="modal-title">{{ _('Select Object') }}</h4>
-                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML" disabled="disabled"> < </button>
-                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-object" hx-get="/elements/" hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                    <h4 class="modal-title">{{ _("Select Object") }}</h4>
+                    <div id="navigation-buttons"
+                         style="display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 15px">
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="previous-button-object"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}'
+                                hx-target="#repo-object"
+                                hx-swap="outerHTML"
+                                disabled="disabled">
+                            <
+                        </button>
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="next-button-object"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}'
+                                hx-target="#repo-object"
+                                hx-swap="outerHTML">></button>
                     </div>
                     {% with repository_list = object_list, element_type = 'object', htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
-
-                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                            {{ _('Okay') }}
-                    </a>
+                    <a type="button"
+                       type="button"
+                       href="#close-modal"
+                       rel="modal:close"
+                       class="button select-btn next-btn"
+                       onclick="validateSubmit()">{{ _("Okay") }}</a>
                 </div>
                 <div id="sound-modal" class="tab">
-                    <h4 class="modal-title">{{ _('Select Sound') }}</h4>
-                    <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML" disabled="disabled"> < </button>
-                        <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sound" hx-get="/elements/" hx-vals='js:{page: get_page_sound(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                    <h4 class="modal-title">{{ _("Select Sound") }}</h4>
+                    <div id="navigation-buttons"
+                         style="display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 15px">
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="previous-button-sound"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}'
+                                hx-target="#repo-sound"
+                                hx-swap="outerHTML"
+                                disabled="disabled">
+                            <
+                        </button>
+                        <button style="width:2.5em;
+                                       font-size: larger;
+                                       margin:0"
+                                id="next-button-sound"
+                                hx-get="/elements/"
+                                hx-vals='js:{page: get_page_sound(1), element_type: "sound"}'
+                                hx-target="#repo-sound"
+                                hx-swap="outerHTML">></button>
                     </div>
-
-                    {% with repository_list = sound_list, element_type="sound", htmx="false"%}
+                    {% with repository_list = sound_list, element_type="sound", htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
-
-                    <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                        {{ _('Okay') }}
-                    </a>
+                    <a type="button"
+                       type="button"
+                       href="#close-modal"
+                       rel="modal:close"
+                       class="button select-btn next-btn"
+                       onclick="validateSubmit()">{{ _("Okay") }}</a>
                 </div>
-            </div>        
-            <h2>{{ _('Position the content') }}</h2>
-
+            </div>
+            <h2>{{ _("Position the content") }}</h2>
             <div id="edit_object_attributes">
-
-                <h3 id="scaleTitle">{{_("Adjust scale")}}
-                <span
-                    data-text="{{_('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.')}}"
-                    class="tooltip"
-                >?</span>
+                <h3 id="scaleTitle">
+                    {{ _("Adjust scale") }}
+                    <span data-text="{{ _('Scale should be adjusted relative to Marker size on the screen. A scale of 2 will render an Object twice the size of the Marker.') }}"
+                          class="tooltip">?</span>
                 </h3>
-                        
                 {{ form.visible_fields()[6] }}
-                {{ form.visible_fields()[6].errors }}
+                {{ form.visible_fields()[6] .errors }}
                 <p>
                     <span class="slider-label" id="scale-value">{{ scale }}</span>
                 </p>
-                <h2 id="positionTitle">{{_("Adjust position")}}
-                <span 
-                    data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
-                    class="tooltip"
-                >?</span>
+                <h2 id="positionTitle">
+                    {{ _("Adjust position") }}
+                    <span data-text="Position should be adjusted relative to the Marker's size on the screen. If horizontal position is 2, the center of the Object will be in a distance 2 times the size of its Marker's side to the right. If it's -1, it will be shown to the left."
+                          class="tooltip">?</span>
                 </h2>
-
                 <div id="box-shadow-container">
                     <div id="box-shadow"></div>
                 </div>
                 <h3>Horizontal:</h3>
                 {{ form.visible_fields()[2] }}
-                {{ form.visible_fields()[2].errors }}
+                {{ form.visible_fields()[2] .errors }}
                 <p>
                     <span class="slider-label" id="x-position-value">{{ xposition }}</span>
                 </p>
                 <h3>Vertical:</h3>
                 {{ form.visible_fields()[3] }}
-                {{ form.visible_fields()[3].errors }}
-
+                {{ form.visible_fields()[3] .errors }}
                 <p>
                     <span class="slider-label" id="y-position-value">{{ yposition }}</span>
                 </p>
             </div>
-            <input class="select-btn next-btn" type="submit" value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}" disabled="disabled" />
+            <input class="select-btn next-btn"
+                   type="submit"
+                   value="{{ _('Edit Artwork') if selected_object else _('Publish artwork') }}"
+                   disabled="disabled" />
         </form>
         <script>
             // Scale slider functionality

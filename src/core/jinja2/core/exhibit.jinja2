@@ -1,7 +1,6 @@
 {% extends '/core/base.jinja2' %}
-
 {% block content %}
-<script>
+    <script>
         window.addEventListener("orientationchange", function() {
             document.location.reload(true)
         });
@@ -15,17 +14,12 @@
             }
         }
     </style>
-
     <ar-scene>
-        {% for artwork in artworks %}
-            <ar-marker patt="/media/public/{{artwork.marker.patt.name}}">
-                <ar-content
-                    src="/media/public/{{artwork.augmented.source.name}}"
-                    scale="{{artwork.scale_x}} {{artwork.scale_y}}"
-                    position="{{artwork.position_x}} {{artwork.position_y}} 0"
-                    rotation="270 0 0">
-                </ar-content>
-            </ar-marker>
-        {% endfor %}
+    {% for artwork in artworks %}
+        <ar-marker patt="/media/public/{{ artwork.marker.patt.name }}">
+        <ar-content src="/media/public/{{ artwork.augmented.source.name }}" scale="{{ artwork.scale_x }} {{ artwork.scale_y }}" position="{{ artwork.position_x }} {{ artwork.position_y }} 0" rotation="270 0 0">
+        </ar-content>
+        </ar-marker>
+    {% endfor %}
     </ar-scene>
 {% endblock %}

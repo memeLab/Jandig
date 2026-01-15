@@ -13,8 +13,11 @@ def environment(**options):
         {
             "static": staticfiles_storage.url,
             "url": reverse,
-            "LANGUAGES": settings.LANGUAGES,
             "CUR_LANGUAGE": translation.get_language(),
+            "languages": [
+                translation.get_language_info(code)
+                for code, _name in settings.LANGUAGES
+            ],
         }
     )
 

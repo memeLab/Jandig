@@ -227,9 +227,9 @@ LOCALE_PATHS = (os.path.join(str(ROOT_DIR), "locale"),)
 LANGUAGE_CODE = "en"
 
 LANGUAGES = (
-    ("en-us", _("English")),
+    ("en", _("English")),
     ("pt-br", _("Brazilian Portuguese")),
-    ("es-es", _("European Spanish")),
+    ("es", _("European Spanish")),
 )
 
 TIME_ZONE = "UTC"

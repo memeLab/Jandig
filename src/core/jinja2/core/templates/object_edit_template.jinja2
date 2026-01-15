@@ -2,7 +2,8 @@
 {% if widget.is_initial %}
     {% if widget.value.url.endswith(".mp4") or widget.value.url.endswith(".webm") %}
         <video controls>
-            <source src="{{ widget.value.url }}" type="video/{{ widget.value.url.split('.')[-1] }}">
+            <source src="{{ widget.value.url }}"
+                    type="video/{{ widget.value.url.split(".")[-1] }}">
         </video>
     {% elif widget.value.url.endswith(".glb") %}
         {% if widget.thumbnail %}
@@ -10,18 +11,16 @@
         {% else %}
             <p>{{ _("Preview is not available") }}</p>
         {% endif %}
-            <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
+        <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% else %}
         <img src="{{ widget.value.url }}" alt="{{ widget.value.name }}">
     {% endif %}
     <br>
 {% endif %}
-<input type="{{ widget.type }}" name="{{ widget.name }}"
-    {% for name, value in widget.attrs.items() %}
-        {% if value %} {{ name }}
-            {% if value != "False" %}="{{ value }}"
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-style="height: auto;">
+<input type="{{ widget.type }}"
+       name="{{ widget.name }}"
+       {% for name, value in widget.attrs.items() %} {% if value %} {{ name }} {% if value != "False" %}="{{ value }}"{% endif %}
+       {% endif %}
+       {% endfor %}
+       style="height: auto">
 <p style="font-size: small; text-align: left; padding: 0 10px">(.gif, .glb)</p>

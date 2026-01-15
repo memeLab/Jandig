@@ -1,0 +1,23 @@
+<div hx-get="/api/v1/markers/{{ marker.id }}/?format=modal"
+     hx-target="#modal"
+     hx-trigger="click"
+     class="repository-item trigger-modal"
+     id="marker-{{ marker.id }}">
+    <img id="{{ marker.id }}"
+         title=""
+         src="{{ marker.source.url }}"
+         height="50"
+         width="50">
+    <div class="marker-menu">
+        {% if deletable %}
+            <a href="{{ reverse('delete-content', query={'content_type': 'marker', 'id': marker.id},) }}"
+               onclick="return confirm('Are you sure you want to delete?')"
+               class="delete">delete</a>
+        {% endif %}
+        {# Disabled by now #}
+        {# {% if editable %}
+            <a href="/markers/edit/?id={{ marker.id }}" class="edit">edit</a>
+        {% endif %} #}
+        {% if previewable %}<a href="/marker/?id={{ marker.id }}" class="preview">preview</a>{% endif %}
+    </div>
+</div>

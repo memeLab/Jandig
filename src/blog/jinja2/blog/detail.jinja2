@@ -1,8 +1,7 @@
 {% extends "blog/index.jinja2" %}
-
 {% block content %}
     <div id="post-area">
-        <a id="back-button" href="{{ url('blog_index') }}">{{ _('< Back to Blog') }}</a>
+        <a id="back-button" href="{{ url('blog_index') }}">{{ _("< Back to Blog") }}</a>
         <br />
         {% block page_title %}
             <h2>{{ post.title }}</h2>
@@ -12,15 +11,11 @@
             {% for image in images %}
                 <div class="post-image">
                     <img class="post-image" src="{{ image.file.url }}" />
-                    {% if image.description %}
-                        <small>{{ image.description }}</small>
-                    {% endif %}
+                    {% if image.description %}<small>{{ image.description }}</small>{% endif %}
                 </div>
             {% endfor %}
         </div>
-
     </div>
     <br />
-    <a href="#" id="back-to-top"> {{_("Back to Top")}}</a>
-
+    <a href="#" id="back-to-top">{{ _("Back to Top") }}</a>
 {% endblock %}

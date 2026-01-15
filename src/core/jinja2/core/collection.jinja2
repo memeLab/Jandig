@@ -1,77 +1,78 @@
 {% extends '/core/home.jinja2' %}
-
-
 {% block content %}
-    {% block subcontent %}
-    {% endblock %}
+    {% block subcontent %}{% endblock %}
     <section class="profile-options-flex">
         <div class="container">
             {# FIXME: maybe this can be improved #}
             <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
             <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
             <script src="{{ static('js/modal.js') }}"></script>
-            
             {% for element_type, repository_list, class_type in [
-                                                        ("mr-exhibit",mr_exhibits, "titExb"),
-                                                        ("ar-exhibit",ar_exhibits, "titExb"),
-                                                        ("artwork",artworks, "titArt"),
-                                                        ("marker",markers, "titMrk"),
-                                                        ("object",objects, "titObj"),
-                                                        ("sound",sounds, "titObj")
-                                                    ] 
-            %}
-                                 
+                ("mr-exhibit",mr_exhibits, "titExb"),
+                ("ar-exhibit",ar_exhibits, "titExb"),
+                ("artwork",artworks, "titArt"),
+                ("marker",markers, "titMrk"),
+                ("object",objects, "titObj"),
+                ("sound",sounds, "titObj")
+                ]
+                %}
                 {% if repository_list %}
-
-                    {% if element_type == "ar-exhibit" %}   
-                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig AR Exhibits")}}</h1>
-                    {% elif element_type == "mr-exhibit" %}   
-                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig MR Exhibits")}}</h1>
+                    {% if element_type == "ar-exhibit" %}
+                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig AR Exhibits") }}
+                        </h1>
+                    {% elif element_type == "mr-exhibit" %}
+                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig MR Exhibits") }}
+                        </h1>
                     {% else %}
-                        <h1 class={{class_type}} style="font-size: 1.5em;">{{_("Jandig " + element_type.capitalize() + "s")}}</h1>
+                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig " + element_type.capitalize() + "s") }}
+                        </h1>
                     {% endif %}
-                    
                     {% with repository_list = repository_list, element_type=element_type %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                        {% if element_type == "ar-exhibit" %}   
-                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All AR Exhibits")}}</a>
+                        {% if element_type == "ar-exhibit" %}
+                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All AR Exhibits") }}</a>
                         {% elif element_type == "mr-exhibit" %}
-                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All MR Exhibits")}}</a>
+                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All MR Exhibits") }}</a>
                         {% else %}
-                            <a href = "/see_all/?which={{element_type}}" class="seeall">{{_("All " + element_type.capitalize() + "s")}}</a>
+                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All " + element_type.capitalize() + "s") }}</a>
                         {% endif %}
                     {% endif %}
                     {% if seeall == True %}
-                        <nav> 
-                        <div class="flex">
-                                {% for page_number in repository_list.adjusted_elided_pages %} 
+                        <nav>
+                            <div class="flex">
+                                {% for page_number in repository_list.adjusted_elided_pages %}
                                     {% if page_number == repository_list.number %}
-                                    <div class="active useful-links">
-                                        <span class="page-link" style="background-color: #05f7ae; color: #fff; padding: 5px;">
-                                        {{ page_number }}
-                                    <span class="sr-only"></span>
-                                    </div> 
-                                    {% else %}
-                                        <div class="useful-links">
-                                            <a class="page-link" 
-                                                href="?which={{element_type}}&page={{ page_number }}">
+                                        <div class="active useful-links">
+                                            <span class="page-link"
+                                                  style="background-color: #05f7ae;
+                                                         color: #fff;
+                                                         padding: 5px">
                                                 {{ page_number }}
-                                            </a>
-                                        </div> 
-                                    {% endif %}
-                                {% endfor %} 
-                        </div>
-                        </nav>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        {% else %}
+                                            <div class="useful-links">
+                                                <a class="page-link"
+                                                   href="?which={{ element_type }}&page={{ page_number }}">
+                                                    {{ page_number }}
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </nav>
+                        {% endif %}
                     {% endif %}
+                {% endfor %}
+                {% if not ar_exhibits and not mr_exhibits and not artworks and not markers and not objects and not sounds %}
+                    <h1 class="titObj" style="font-size: 1em;">
+                        {{ _("We found no content on your Collection, try uploading an object.") }}
+                    </h1>
                 {% endif %}
-            {% endfor %}
-            {% if not ar_exhibits and not mr_exhibits and not artworks and not markers and not objects and not sounds %}
-                    <h1 class="titObj" style="font-size: 1em;">{{_("We found no content on your Collection, try uploading an object.")}}</h1>
-            {% endif %}
-
-            <section id="modal" class="modal"></section>
-        </div>
-    </section>
-{% endblock %}
+                <section id="modal" class="modal">
+                </section>
+            </div>
+        </section>
+    {% endblock %}

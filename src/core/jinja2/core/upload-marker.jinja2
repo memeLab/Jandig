@@ -1,69 +1,74 @@
 {% extends '/core/home.jinja2' %}
-
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
         <script src="/static/js/threex-arpatternfile.js"></script>
-
-        {% if form_type == 'marker' and edit == False %}
-            <h2>{{ _('Upload Marker') }}</h2>
-        {% endif %}
+        {% if form_type == 'marker' and edit == False %}<h2>{{ _("Upload Marker") }}</h2>{% endif %}
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
                     <p class="upload-field" id="source-field">
                         <p class="title-field"  id="title-field">
-                            <h3>{{_("Choose Marker's title")}}
-                            {{ form.visible_fields()[2] }}
-                            {{ form.visible_fields()[2].errors }}
+                            <h3>
+                                {{ _("Choose Marker's title") }}
+                                {{ form.visible_fields()[2] }}
+                                {{ form.visible_fields()[2] .errors }}
+                            </p>
+                            <h3>{{ _("Choose Marker image") }}</h3>
+                            <div style="display: flex; flex-direction: column;">
+                                <input type="file"
+                                       name="source"
+                                       accept="image/png, image/jpg"
+                                       hx-encoding='multipart/form-data'
+                                       hx-post="/api/v1/markergenerator/"
+                                       hx-target="#imageContainer"
+                                       hx-swap="innerHTML"
+                                       hx-vals='js:{inner_border: get_inner_border()}'
+                                       title="{{ _('Choose the Marker image') }}"
+                                       required=""
+                                       id="id_source"
+                                       style="height: auto">
+                                <p style="font-size: small; text-align: left; padding: 0 10px">(.png, .jpg)</p>
+                            </div>
+                            {{ form.visible_fields()[0] .errors }}
                         </p>
-                        <h3>{{ _("Choose Marker image") }}</h3>
-                        <div style="display: flex; flex-direction: column;">
-                            <input type="file" name="source" accept="image/png, image/jpg" hx-encoding='multipart/form-data' hx-post="/api/v1/markergenerator/" hx-target="#imageContainer" hx-swap="innerHTML" hx-vals='js:{inner_border: get_inner_border()}' title="{{ _('Choose the Marker image')}}" required="" id="id_source"
-                            style="height: auto;">
-                            <p style="font-size: small; text-align: left; padding: 0 10px">(.png, .jpg)</p>
+                        <div id="shadow-background">
+                            <div id="imageContainer"></div>
                         </div>
-                        {{ form.visible_fields()[0].errors }}
-                    </p>
-                    <div id="shadow-background">
-                        <div id="imageContainer"></div>
-                    </div>
-
-                    <p class="form-options">
-
-                            <input id="inner_border" type="checkbox" name="inner_border" id="inner-border-chk" onchange="if(document.getElementById('id_source').files.length > 0){document.getElementById('id_source').dispatchEvent(new Event('change', { bubbles: true }));}">
-                            
-                            <label for="inner-border-chk">{{ _("Add inner border") }}</label> 
-                        
-                        <br />
-                        <input id="author-chk" type="checkbox" name="author" value="1">
-                        {% if form_type == 'marker' %}
-                            <label for="author-chk">
-                                {{ _("I'm this Marker author") }}
-                            </label>
-                        {% endif %}
-
-                    </p>
-                    <p class="upload-field" id="author-field">
-                        {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
-                    </p>
-                    <div class="form-options">
-                        <p>
-                            <input id="agreement-chk" type="checkbox" name="agreement" value="1">
-                            <label for="agreement-chk">
-                                {{ _('I agree to have this content under <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
-                            </label>
+                        <p class="form-options">
+                            <input id="inner_border"
+                                   type="checkbox"
+                                   name="inner_border"
+                                   id="inner-border-chk"
+                                   onchange="if(document.getElementById('id_source').files.length > 0){document.getElementById('id_source').dispatchEvent(new Event('change', { bubbles: true }));}">
+                            <label for="inner-border-chk">{{ _("Add inner border") }}</label>
+                            <br />
+                            <input id="author-chk" type="checkbox" name="author" value="1">
+                            {% if form_type == 'marker' %}<label for="author-chk">{{ _("I'm this Marker author") }}</label>{% endif %}
                         </p>
-                    </div>
-                    <input class="submit-btn" type="submit" value="{{ _('Submit') }}" disabled="disabled"/>
-                </form>
-            </div>
-        </section>
-
-        <script>
+                        <p class="upload-field" id="author-field">
+                            {{ form.visible_fields()[1] }}
+                            {{ form.visible_fields()[1] .errors }}
+                        </p>
+                        <div class="form-options">
+                            <p>
+                                <input id="agreement-chk" type="checkbox" name="agreement" value="1">
+                                <label for="agreement-chk">
+                                    {{ _('I agree to have this content under <a target="_blank"
+                                        href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> and I\'m aware that it can\'t be removed after other people are using it.') }}
+                                </label>
+                            </p>
+                        </div>
+                        <input class="submit-btn"
+                               type="submit"
+                               value="{{ _('Submit') }}"
+                               disabled="disabled" />
+                    </form>
+                </div>
+            </section>
+            <script>
             function get_inner_border() {
                 element = document.getElementById("inner_border");
                 if (element === null) {
@@ -90,6 +95,6 @@
                     $('#author-field > input').val("");
                 }
             });
-        </script>
-    </section>
-{% endblock %}
+            </script>
+        </section>
+    {% endblock %}

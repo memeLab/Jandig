@@ -1,5 +1,4 @@
 {% extends '/core/arviewer.jinja2' %}
-
 {% block content %}
     {# FIXME: maybe this can be improved #}
     <style>
@@ -11,42 +10,36 @@
     <div class="connect-modal container">
         <div class="logo">
             <a href="{{ url('home') }}">
-                    <img src="{{ static ('images/icons/header_icon.png') }}">
+                <img src="{{ static ('images/icons/header_icon.png') }}">
             </a>
         </div>
-
         <div class="modal-container">
             <div class="modalMenu flex">
-                <span>{{ _('Login to continue') }}</span>
-                <a href="/users/signup">{{ _('Sign up') }}</a>
+                <span>{{ _("Login to continue") }}</span>
+                <a href="/users/signup">{{ _("Sign up") }}</a>
             </div>
             <div class="login-form">
-                <form name="login-form" action="{{url('login')}}" method="post" enctype="multipart/form-data">
+                <form name="login-form"
+                      action="{{ url('login') }}"
+                      method="post"
+                      enctype="multipart/form-data">
                     {{ csrf_input }}
-                    {% for field in form.visible_fields() %}
-                        <p class="login-field {{field.name}}">
-                            {{ field }}
-                        </p>
-                    {% endfor%}
-					{% if form.non_field_errors() %}
-        				<ul class="errorlist">
-            			{% for error in form.non_field_errors() %}
-                			<li>{{ error }}</li>
-            			{% endfor %}
-        				</ul>
-    				{% endif %}
+                    {% for field in form.visible_fields() %}<p class="login-field {{ field.name }}">{{ field }}</p>{% endfor %}
+                    {% if form.non_field_errors() %}
+                        <ul class="errorlist">
+                            {% for error in form.non_field_errors() %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
                     <div class="form-options">
                         <p>
                             <input id="remember-me-chk" type="checkbox" name="remember" value="1">
-                            <label for="remember-me-chk">
-                                {{ _("Remember me") }}
-                            </label>
+                            <label for="remember-me-chk">{{ _("Remember me") }}</label>
                         </p>
                     </div>
-                    <input class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
+                    <input class="submit-btn" type="submit" value="{{ _('Submit') }}" />
                 </form>
                 <div class="modalMenu recover-password">
-                    <a  href="{{url('reset-password')}}">{{ _('Recover password') }}</a>
+                    <a href="{{ url('reset-password') }}">{{ _("Recover password") }}</a>
                 </div>
             </div>
         </div>
