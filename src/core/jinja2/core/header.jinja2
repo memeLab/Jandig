@@ -1,4 +1,4 @@
-<section class="header">
+<div class="header">
     <div class="container">
         <div class="logo">
             <a href="{{ url('home') }}">
@@ -13,16 +13,14 @@
                     </p>
                 </div>
             {% else %}
-                <div class="connect flex">
-                    <div class="signup-btn">
-                        <a href="{{ url('signup') }}">{{ _("Sign up") }}</a>
-                    </div>
-                    <div class="login-btn">
-                        <a href="{{ url('login') }}">{{ _("Log in") }}</a>
-                    </div>
+                <div class="signup-btn">
+                    <a href="{{ url('signup') }}">{{ _("Sign up") }}</a>
+                </div>
+                <div class="login-btn">
+                    <a href="{{ url('login') }}">{{ _("Log in") }}</a>
                 </div>
             {% endif %}
             {% include "core/language-select.jinja2" %}
         </div>
     </div>
-</section>
+</div>

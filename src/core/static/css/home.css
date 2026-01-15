@@ -1,12 +1,12 @@
 .header .signup-btn, .header .login-btn {
     background-color: black;
     text-align: center;
-    height: 25px;
-    line-height: 25px;
-    margin: 5px 0 0 5px;
+    height: 40px;
+    line-height: 40px;
     padding: 0px 8px;
+    max-width: 70px;
+    min-width: 60px;
 }
-
 
 .header .login-btn {
     background-color: #03b595;
@@ -16,7 +16,6 @@
     font-weight: bold;
     color: white;
     display: block;
-    font-size: 0.75em;
 }
 
 .use-guide {
@@ -48,15 +47,4 @@
         margin-bottom: 30px;
     }
 
-    .header .signup-btn, .header .login-btn {
-        height: 40px;
-        line-height: 40px;
-        width: calc(50% - 5px);
-        margin: 0;
-        margin-left: 10px;
-    }
-
-    .header .signup-btn a, .header .login-btn a {
-        font-size: 1.35em;
-    }
 }
