@@ -8,7 +8,7 @@ admin.site.register(PostImage)
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "status", "created", "updated")
+    list_display = ("title", "status", "created")
     raw_id_fields = ("author",)
 
     def get_queryset(self, request):
@@ -17,5 +17,5 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Clipping)
 class ClippingAdmin(admin.ModelAdmin):
-    list_display = ("title", "id", "created", "updated")
+    list_display = ("title", "id", "created", "modified", "display_date")
     ordering = ("-created",)

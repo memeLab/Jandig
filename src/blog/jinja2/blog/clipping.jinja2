@@ -10,7 +10,7 @@
         {% for clipping in clippings %}
             <div class="clipping">
                 <h3>{{ clipping.title }}</h3>
-                <small>{{ clipping.created.date().strftime('%d %B %Y') }}</small>
+                <small>{{ clipping.display_date.strftime("%d %B %Y") }}</small>
                 <p>{{ clipping.description }}</p>
                 <small><a href="{{ clipping.link }}">{{ clipping.link }}</a></small>
                 {% if clipping.file.url[-3:] == "pdf" %}
