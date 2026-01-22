@@ -16,6 +16,9 @@ test-all:
 	docker compose exec django pytest
 
 lint:
+	uv run djlint ./src/blog/jinja2 --reformat
+	uv run djlint ./src/core/jinja2 --reformat
+	uv run djlint ./src/users/jinja2 --reformat
 	uv run ruff format src 
 	uv run ruff check --extend-select I --fix src
 

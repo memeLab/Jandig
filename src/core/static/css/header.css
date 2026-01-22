@@ -1,0 +1,14 @@
+.aside {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 0px 5px;
+    font-size: 1em;
+    height: 80px;
+}
+
+.logo{
+    height: 80px;
+    display: flex;
+    flex-direction: column-reverse;
+}

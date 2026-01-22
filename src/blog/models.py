@@ -1,5 +1,6 @@
 from django.core.files.storage import default_storage
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
 from users.models import Profile
 
@@ -21,7 +22,7 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
 
-class PostImage(models.Model):
+class PostImage(TimeStampedModel):
     file = models.FileField(storage=default_storage, upload_to=IMAGE_BASE_PATH)
     description = models.CharField(max_length=500, blank=True)
 
@@ -29,20 +30,19 @@ class PostImage(models.Model):
         return self.file.name.lstrip(IMAGE_BASE_PATH)
 
 
-class Clipping(models.Model):
+class Clipping(TimeStampedModel):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=500)
     link = models.URLField()
     file = models.FileField(upload_to="clipping_files/")
-    created = models.DateTimeField(auto_now_add=True, editable=True)
-    updated = models.DateTimeField(auto_now=True, editable=True)
+    display_date = models.DateField(db_index=True)
 
     def __str__(self):
         return self.title
 
 
-class Post(models.Model):
+class Post(TimeStampedModel):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     status = models.CharField(
@@ -56,8 +56,6 @@ class Post(models.Model):
         blank=True,
     )
     body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True, editable=True)
-    updated = models.DateTimeField(auto_now=True, editable=True)
     categories = models.ManyToManyField(Category, related_name="posts", blank=True)
     images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
 

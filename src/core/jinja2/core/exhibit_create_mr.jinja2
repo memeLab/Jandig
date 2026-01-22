@@ -1,93 +1,123 @@
 {% extends '/core/home.jinja2' %}
-
-
 {% block content %}
     <section class="create-exhibit">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
         <link rel="stylesheet" href="{{ static ('css/label.css') }}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
             {% if edit %}
-                <h1 class="titExb">{{ _('Edit MR Exhibition') }}</h1>
+                <h1 class="titExb">{{ _("Edit MR Exhibition") }}</h1>
             {% else %}
-                <h1 class="titExb">{{ _('Create MR Exhibition') }}</h1>
+                <h1 class="titExb">{{ _("Create MR Exhibition") }}</h1>
             {% endif %}
-    
-            <form name="creation-form" action="" method="post" enctype="multipart/form-data">
+            <form name="creation-form"
+                  action=""
+                  method="post"
+                  enctype="multipart/form-data">
                 {{ csrf_input }}
-                <h2>{{ _('About your Exhibit') }}</h2>
-            
-                <h3>{{ _('Exhibit Name') }}</h3>
+                <h2>{{ _("About your Exhibit") }}</h2>
+                <h3>{{ _("Exhibit Name") }}</h3>
                 {{ form.visible_fields()[0] }}
-                {{ form.visible_fields()[0].errors }}
-                
-                
-                <h3>{{ _('Exhibit Link') }}</h3>
-                <p class="gallery-title">{{ _('Your exhibit URL will look like this') }}</p>
+                {{ form.visible_fields()[0] .errors }}
+                <h3>{{ _("Exhibit Link") }}</h3>
+                <p class="gallery-title">{{ _("Your exhibit URL will look like this") }}</p>
                 <div style="display: flex; width: 100%">
                     <label class="url-helper">https://jandig.app/</label>
-                    <p id="exhibit-slug-field" style="float: right; width: 65%">
-                        {{ form.visible_fields()[1] }}
-                            
-                    </p>
+                    <p id="exhibit-slug-field" style="float: right; width: 65%">{{ form.visible_fields()[1] }}</p>
                 </div>
-                {{ form.visible_fields()[1].errors }}
-                
-                <h2>{{ _('Select the content') }}</h2>
-
-                <button id="select-objects" class="select-btn" type="button">
-                    {{ _('Select Objects') }}
-                </button>
-                {{ form.visible_fields()[3].as_hidden() }}
-                {{ form.visible_fields()[3].errors }}
-
-                <button id="select-sounds" class="select-btn" type="button">
-                    {{ _('Select Sounds') }}
-                </button>
-                {{ form.visible_fields()[4].as_hidden() }}
-                {{ form.visible_fields()[4].errors }}
-
+                {{ form.visible_fields()[1] .errors }}
+                <h2>{{ _("Select the content") }}</h2>
+                <button id="select-objects" class="select-btn" type="button">{{ _("Select Objects") }}</button>
+                {{ form.visible_fields()[3] .as_hidden() }}
+                {{ form.visible_fields()[3] .errors }}
+                <button id="select-sounds" class="select-btn" type="button">{{ _("Select Sounds") }}</button>
+                {{ form.visible_fields()[4] .as_hidden() }}
+                {{ form.visible_fields()[4] .errors }}
                 <div id="form-modal" class="modal">
                     <div id="object-modal" class="tab">
-                        <h4 class="modal-title">{{ _('Select Objects') }}</h4>
-                        <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-objects" hx-get="/elements/" hx-vals='js:{page: get_page_objects(-1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> < </button>
-                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-objects" hx-get="/elements/" hx-vals='js:{page: get_page_objects(1), element_type: "object"}' hx-target="#repo-object" hx-swap="outerHTML"> > </button>
+                        <h4 class="modal-title">{{ _("Select Objects") }}</h4>
+                        <div id="navigation-buttons"
+                             style="display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 15px">
+                            <button style="width:2.5em;
+                                           font-size: larger;
+                                           margin:0"
+                                    id="previous-button-objects"
+                                    hx-get="/elements/"
+                                    hx-vals='js:{page: get_page_objects(-1), element_type: "object"}'
+                                    hx-target="#repo-object"
+                                    hx-swap="outerHTML">
+                                <
+                            </button>
+                            <button style="width:2.5em;
+                                           font-size: larger;
+                                           margin:0"
+                                    id="next-button-objects"
+                                    hx-get="/elements/"
+                                    hx-vals='js:{page: get_page_objects(1), element_type: "object"}'
+                                    hx-target="#repo-object"
+                                    hx-swap="outerHTML">></button>
                         </div>
-
-                        {% with repository_list = objects, element_type="object", htmx="false"%}
+                        {% with repository_list = objects, element_type="object", htmx="false" %}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
-
-                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                            {{ _('Okay') }}
-                        </a>
+                        <a type="button"
+                           type="button"
+                           href="#close-modal"
+                           rel="modal:close"
+                           class="button select-btn next-btn"
+                           onclick="validateSubmit()">{{ _("Okay") }}</a>
                     </div>
                     <div id="sound-modal" class="tab">
-                        <h4 class="modal-title">{{ _('Select Sounds') }}</h4>
-                        <div id="navigation-buttons" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <button style="width:2.5em; font-size: larger; margin:0" id="previous-button-sounds" hx-get="/elements/" hx-vals='js:{page: get_page_sounds(-1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> < </button>
-                            <button style="width:2.5em; font-size: larger; margin:0" id="next-button-sounds" hx-get="/elements/" hx-vals='js:{page: get_page_sounds(1), element_type: "sound"}' hx-target="#repo-sound" hx-swap="outerHTML"> > </button>
+                        <h4 class="modal-title">{{ _("Select Sounds") }}</h4>
+                        <div id="navigation-buttons"
+                             style="display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 15px">
+                            <button style="width:2.5em;
+                                           font-size: larger;
+                                           margin:0"
+                                    id="previous-button-sounds"
+                                    hx-get="/elements/"
+                                    hx-vals='js:{page: get_page_sounds(-1), element_type: "sound"}'
+                                    hx-target="#repo-sound"
+                                    hx-swap="outerHTML">
+                                <
+                            </button>
+                            <button style="width:2.5em;
+                                           font-size: larger;
+                                           margin:0"
+                                    id="next-button-sounds"
+                                    hx-get="/elements/"
+                                    hx-vals='js:{page: get_page_sounds(1), element_type: "sound"}'
+                                    hx-target="#repo-sound"
+                                    hx-swap="outerHTML">></button>
                         </div>
-
-                        {% with repository_list = sounds, element_type="sound", htmx="false"%}
+                        {% with repository_list = sounds, element_type="sound", htmx="false" %}
                             {% include "core/components/item-list.jinja2" %}
                         {% endwith %}
-
-                        <a type="button" type="button" href="#close-modal" rel="modal:close" class="button select-btn next-btn" onclick="validateSubmit()">
-                            {{ _('Okay') }}
-                        </a>
+                        <a type="button"
+                           type="button"
+                           href="#close-modal"
+                           rel="modal:close"
+                           class="button select-btn next-btn"
+                           onclick="validateSubmit()">{{ _("Okay") }}</a>
                     </div>
                 </div>
-
-                <h2>{{ _('Publish content') }}</h2>
+                <h2>{{ _("Publish content") }}</h2>
                 {{ form.non_field_errors() }}
                 {% if edit %}
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Edit Exhibit') }}"/>
+                    <input class="select-btn next-btn"
+                           type="submit"
+                           value="{{ _('Edit Exhibit') }}" />
                 {% else %}
-                    <input class="select-btn next-btn" type="submit" value="{{ _('Publish Exhibit') }}"/>
+                    <input class="select-btn next-btn"
+                           type="submit"
+                           value="{{ _('Publish Exhibit') }}" />
                 {% endif %}
             </form>
         </div>

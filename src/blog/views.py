@@ -48,6 +48,6 @@ def post_detail(request, pk):
 
 
 def clipping(request):
-    clippings = Clipping.objects.all().order_by("-created")
+    clippings = Clipping.objects.all().order_by("-display_date")
     context = {"clippings": clippings}
     return render(request, "blog/clipping.jinja2", context)

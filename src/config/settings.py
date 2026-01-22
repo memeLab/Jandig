@@ -51,7 +51,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.8")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.9")
 
 
 def traces_sampler(sampling_context):
@@ -227,9 +227,9 @@ LOCALE_PATHS = (os.path.join(str(ROOT_DIR), "locale"),)
 LANGUAGE_CODE = "en"
 
 LANGUAGES = (
-    ("en-us", _("English")),
+    ("en", _("English")),
     ("pt-br", _("Brazilian Portuguese")),
-    ("es-es", _("European Spanish")),
+    ("es", _("European Spanish")),
 )
 
 TIME_ZONE = "UTC"

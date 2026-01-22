@@ -1,37 +1,38 @@
 {% extends '/core/home.jinja2' %}
-
 {% block content %}
     <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
     <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
     <script src="{{ static('js/modal.js') }}"></script>
     <div class="exhibit-detail container ">
         <div class="exhibit-detail-box flex">
-            <h1 class="exhibit-name">{{exhibit.name}}</h1>
-            <p class="url">https://jandig.app/<span>{{exhibit.slug}}</span></p>
-            <p class="by">{{_("Created by ")}} <b>{{exhibit.owner.user.username}}</b></p>
-            <a href="https://jandig.app/{{exhibit.slug}}" class="gotoExb">{{ _("See this exhibition") }}</a>
+            <h1 class="exhibit-name">{{ exhibit.name }}</h1>
+            <p class="url">
+                https://jandig.app/<span>{{ exhibit.slug }}</span>
+            </p>
+            <p class="by">
+                {{ _("Created by ") }} <b>{{ exhibit.owner.user.username }}</b>
+            </p>
+            <a href="https://jandig.app/{{ exhibit.slug }}" class="gotoExb">{{ _("See this exhibition") }}</a>
         </div>
         {% if artworks %}
-            <h1 class="titArt">{{_("Exhibition Artworks")}}</h1>
+            <h1 class="titArt">{{ _("Exhibition Artworks") }}</h1>
             {% with repository_list = artworks, element_type="artwork" %}
                 {% include "core/components/item-list.jinja2" %}
             {% endwith %}
-
         {% endif %}
         {% if objects %}
-            <h1 class="titArt">{{_("Exhibition MR Objects")}}</h1>
+            <h1 class="titArt">{{ _("Exhibition MR Objects") }}</h1>
             {% with repository_list = objects, element_type="object" %}
                 {% include "core/components/item-list.jinja2" %}
             {% endwith %}
         {% endif %}
-
         {% if sounds %}
-            <h1 class="titArt">{{_("Exhibition Sounds")}}</h1>
+            <h1 class="titArt">{{ _("Exhibition Sounds") }}</h1>
             {% with repository_list = sounds, element_type="sound" %}
                 {% include "core/components/item-list.jinja2" %}
             {% endwith %}
         {% endif %}
-        <section id="modal" class="modal"></section>
-
+        <section id="modal" class="modal">
+        </section>
     </div>
 {% endblock %}

@@ -1,0 +1,33 @@
+<div hx-get="/api/v1/artworks/{{ artwork.id }}/?format=modal"
+     hx-target="#modal"
+     hx-trigger="click"
+     class="repository-item trigger-modal"
+     id="artwork-{{ artwork.id }}">
+    <div class="artwork-elements flex">
+        <img id="{{ artwork.marker.id }}"
+             title="{{ artwork.marker.title }}"
+             src="{{ artwork.marker.source.url }}"
+             height="50"
+             width="50">
+        <div class="separator"></div>
+        <video autoplay=""
+               loop=""
+               muted=""
+               id="{{ artwork.augmented.id }}"
+               title="{{ artwork.augmented.title }}"
+               src="{{ artwork.augmented.source.url }}"
+               height="50"
+               width="50">
+        </video>
+        {% if editable %}<a href="/artworks/edit/?id={{ artwork.id }}" class="edit">edit</a>{% endif %}
+        {% if deletable %}
+            <a href="{{ reverse('delete-content', query={'content_type': 'artwork', 'id': artwork.id},) }}"
+               onclick="return confirm('Are you sure you want to delete?')"
+               class="delete">delete</a>
+        {% endif %}
+        {% if previewable %}
+            <a href="{{ url('artwork-preview', query={'id': artwork.id}) }}"
+               class="preview">preview</a>
+        {% endif %}
+    </div>
+</div>

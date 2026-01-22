@@ -1,10 +1,6 @@
 {% extends '/core/arviewer.jinja2' %}
-
-{% block extra_css%}
-    <link rel="stylesheet" href="{{ static ('css/signup.css') }}">
-{% endblock %}
-
-{% block extra_js%}
+{% block extra_css %}<link rel="stylesheet" href="{{ static ('css/signup.css') }}">{% endblock %}
+{% block extra_js %}
     <!-- Google Recaptcha -->
     {% if recaptcha_enabled %}
         <script src="https://www.google.com/recaptcha/enterprise.js?render={{recaptcha_site_key}}"></script>
@@ -16,24 +12,25 @@
         </script>
     {% endif %}
 {% endblock %}
-
 {% block content %}
     <div class="signup-modal container">
         <div class="logo">
             <a href="{{ url('home') }}">
-                    <img src="{{ static ('images/icons/header_icon.png') }}">
+                <img src="{{ static ('images/icons/header_icon.png') }}">
             </a>
         </div>
-
         <div class="modalMenu flex">
-            <span>{{ _('Sign up') }}</span>
-            <a href="/users/login">{{ _('Log in') }}</a>
+            <span>{{ _("Sign up") }}</span>
+            <a href="/users/login">{{ _("Log in") }}</a>
         </div>
         <div class="signup-form">
-            <form id="signup-form" action="{{url('signup')}}" method="post" enctype="multipart/form-data">
+            <form id="signup-form"
+                  action="{{ url('signup') }}"
+                  method="post"
+                  enctype="multipart/form-data">
                 {{ csrf_input }}
                 {% for field in form.visible_fields() %}
-                    <p class="signup-field {{field.name}}">
+                    <p class="signup-field {{ field.name }}">
                         {{ field }}
                         {{ field.errors }}
                     </p>
@@ -41,10 +38,13 @@
                 <div class="form-options">
                     <p>
                         <input type="checkbox" name="remember" value="1" id="remember-me-checkbox">
-                        <label for="remember-me-checkbox">{{ _('Remember me') }}</label>
+                        <label for="remember-me-checkbox">{{ _("Remember me") }}</label>
                     </p>
                 </div>
-                <button class="submit-btn g-recaptcha" data-sitekey="{{recaptcha_site_key}}" data-callback='onSubmit' data-action='sign_up'>{{ _('Submit') }}</button>
+                <button class="submit-btn g-recaptcha"
+                        data-sitekey="{{ recaptcha_site_key }}"
+                        data-callback='onSubmit'
+                        data-action='sign_up'>{{ _("Submit") }}</button>
             </form>
         </div>
     </div>

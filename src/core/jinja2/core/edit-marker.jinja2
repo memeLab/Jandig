@@ -1,35 +1,30 @@
-
 {% extends '/core/home.jinja2' %}
-
 {% block content %}
     <section class="upload container">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
-
-        <h2>{{_('Edit object')}}</h2>
-
+        <h2>{{ _("Edit object") }}</h2>
         <section class="upload-form">
             <div class="container">
                 <form name="upload-form" method="post" enctype="multipart/form-data">
                     {{ csrf_input }}
-                        <h3>{{_("Edit Marker's title")}}</h3>
-                        {{ form.visible_fields()[2] }}
-                        {{ form.visible_fields()[2].errors }}
-
-                        <h3>{{_("You can't edit the marker patt and the png for now, but hopefully soon enough it will be possible!")}}</h3>
-
+                    <h3>{{ _("Edit Marker's title") }}</h3>
+                    {{ form.visible_fields()[2] }}
+                    {{ form.visible_fields()[2] .errors }}
+                    <h3>{{ _("You can't edit the marker patt and the png for now, but hopefully soon enough it will be possible!") }}</h3>
                     <p class="upload-field" id="author-field" hidden>
                         {{ form.visible_fields()[1] }}
-                        {{ form.visible_fields()[1].errors }}
+                        {{ form.visible_fields()[1] .errors }}
                     </p>
-                    </div>
-                    <input onclick="updateValues()" class="submit-btn" type="submit" value="{{ _('Submit') }}"/>
-                </form>
-            </div>
-        </section>
-
-        <script>
-
+                </div>
+                <input onclick="updateValues()"
+                       class="submit-btn"
+                       type="submit"
+                       value="{{ _('Submit') }}" />
+            </form>
+        </div>
+    </section>
+    <script>
             $("#id_source").change(
                 function(e) {
                     for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
@@ -47,6 +42,6 @@
                     }
                 }
             );
-        </script>
-    </section>
+    </script>
+</section>
 {% endblock %}

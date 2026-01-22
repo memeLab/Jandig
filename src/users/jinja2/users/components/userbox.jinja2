@@ -2,65 +2,63 @@
 {% set objects_qty = objects|length %}
 {% set exhibits_qty = exhibits|length %}
 {% set artworks_qty = artworks|length %}
-
 <section class="userbox flex">
     <div class="countMrk sm-half lg-one-third">
-        {%if markers_qty %}
-            {{ markers_qty }} {{ _(' marker(s)') }}
+        {% if markers_qty %}
+            {{ markers_qty }} {{ _(" marker(s)") }}
         {% else %}
-            {{ _('No uploads yet.')}}
+            {{ _("No uploads yet.") }}
         {% endif %}
     </div>
     <div class="countObj sm-half lg-one-third">
-        {%if objects_qty %}
-            {{ objects_qty }} {{ _(' Object(s)') }}
+        {% if objects_qty %}
+            {{ objects_qty }} {{ _(" Object(s)") }}
         {% else %}
-            {{ _('No uploads yet.')}}
+            {{ _("No uploads yet.") }}
         {% endif %}
     </div>
     <div class="editProf sm-full lg-one-third">
-        <a class="option-link" href="{{ url('edit-profile')}}">{{ _('Edit profile') }}</a>
-        <form id="logout-form" method="post" action="{{ url('logout') }}" style="display: none;">
-             {{ csrf_input }}
+        <a class="option-link" href="{{ url('edit-profile') }}">{{ _("Edit profile") }}</a>
+        <form id="logout-form"
+              method="post"
+              action="{{ url('logout') }}"
+              style="display: none">
+            {{ csrf_input }}
         </form>
-        <a href="#" class="option-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            {{ _('Log out') }}
-        </a>
+        <a href="#"
+           class="option-link"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ _("Log out") }}</a>
     </div>
-        {%if artworks_qty %}
-            <div class="bdgArt half">
-                <b>
-                {{ _('Jandig Artist')}}
-                </b>
-                <br />
-                {{ artworks_qty }} {{ _(' Artworks') }}
+    {% if artworks_qty %}
+        <div class="bdgArt half">
+            <b>
+                {{ _("Jandig Artist") }}
+            </b>
+            <br />
+            {{ artworks_qty }} {{ _(" Artworks") }}
         {% else %}
             <div class="bdgArt empty half">
                 <b>
-                {{ _('No Artworks yet.')}}
+                    {{ _("No Artworks yet.") }}
                 </b>
                 <br />
-                <a class="" href="{{ url('create-artwork') }}">
-                    {{ _('Create your first!')}}
-                </a>
-        {% endif %}
-            </div>
-        {%if exhibits_qty %}
+                <a class="" href="{{ url('create-artwork') }}">{{ _("Create your first!") }}</a>
+            {% endif %}
+        </div>
+        {% if exhibits_qty %}
             <div class="bdgCur half">
                 <b>
-                {{ _('Jandig Curator')}}
+                    {{ _("Jandig Curator") }}
                 </b>
                 <br />
-                {{ exhibits_qty }} {{ _(' Exhibits') }}
-        {% else %}
-            <div class="bdgCur empty half">
-                <b>
-                {{ _('No Exhibitions yet.')}}
-                </b>
-                <br />
-                <a class="" href="{{ url('create-ar-exhibit') }}">
-                    {{ _('Create your first!')}}
-                </a>
-        {% endif %}
-    </div>
-</section>
+                {{ exhibits_qty }} {{ _(" Exhibits") }}
+            {% else %}
+                <div class="bdgCur empty half">
+                    <b>
+                        {{ _("No Exhibitions yet.") }}
+                    </b>
+                    <br />
+                    <a class="" href="{{ url('create-ar-exhibit') }}">{{ _("Create your first!") }}</a>
+                {% endif %}
+            </div>
+        </section>
