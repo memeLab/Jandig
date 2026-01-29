@@ -257,9 +257,10 @@
                     </h3>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA2.png') }}" alt="Álbum de Figurinhas" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl1_p">Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto.</p>
-                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
-                        <i class="fas fa-clock mr-2"></i> Em Breve...
-                    </button>
+                    <a href="{{ static('files/album.pdf') }}" download class="w-full bg-[#08B59F] hover:bg-[#05E2D6] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>
+                        <span data-translate="album_dl1_button">Baixar Álbum</span>
+                    </a>
                 </div>
                 <!-- Figurinhas -->
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
@@ -269,9 +270,10 @@
                     </h3>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA3.png') }}" alt="Figurinhas Avulsas" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl2_p">Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá.</p>
-                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
-                        <i class="fas fa-clock mr-2"></i> Em Breve...
-                    </button>
+                    <a href="{{ static('files/figurinhas.pdf') }}" download class="w-full bg-[#08B59F] hover:bg-[#05E2D6] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>
+                        <span data-translate="album_dl2_button">Baixar Figurinhas</span>
+                    </a>
                 </div>
                 <!-- Cartaz -->
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
@@ -281,9 +283,10 @@
                     </h3>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA6.png') }}" alt="Cartazes Educativos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="album_dl3_p">Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.</p>
-                    <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-full cursor-not-allowed mt-auto flex items-center justify-center" data-translate="coming_soon">
-                        <i class="fas fa-clock mr-2"></i> Em Breve...
-                    </button>
+                    <a href="{{ static('files/cartaz.pdf') }}" download class="w-full bg-[#08B59F] hover:bg-[#05E2D6] text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mt-auto shadow-md hover:shadow-lg flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>
+                        <span data-translate="album_dl3_button">Baixar Cartaz</span>
+                    </a>
                 </div>
                 <!-- Guia do multiplicador -->
                 <div class="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 flex flex-col h-full hover:shadow-lg transition-shadow">
@@ -796,11 +799,13 @@
                 album_downloads_title: "DOWNLOADS",
                 album_dl1_title: "Álbum interativo",
                 album_dl1_p: "Layout pronto do álbum em si, imprimível e de fácil montagem. Pode ser impresso a cores ou em preto e branco em qualquer tipo de impressora - caseira ou gráfica rápida. O álbum tem uma breve explicação do uso seguido das três histórias de mitos brasileiros com cenários nos quais você vai colar as figurinhas que ativam as experiências de realidade aumentada. Ao final do álbum você encontra também um pequeno glossário de palavras para ajudar você a entender melhor as histórias e o contexto. O álbum de figurinhas, por exemplo, pode ser usado para colecionar e aprender sobre cada personagem.",
+                album_dl1_button: "Baixar álbum",
                 coming_soon: "Em Breve...",
                 album_dl2_title: "Figurinhas",
                 album_dl2_p: "Aqui é onde a diversão acontece! Dividimos as figurinhas em 8 pacotes para impressão para estimular a troca entre amigos dentro ou fora da sala de aula. As figurinhas são os marcadores que com o uso da câmera do celular ativam as experiências do curupira, boitatá e anhangá. As figurinhas avulsas podem ser impressas e usadas em jogos ou atividades de colagem.",
                 album_dl3_title: "Cartaz",
                 album_dl3_p: "Um desdobramento do álbum, o cartaz é um ótimo recurso para decorar ambientes educativos ou para serem usados como apoio visual em apresentações.",
+                album_dl3_button: "Baixar cartaz",
                 album_dl4_title: "Guia do multiplicador",
                 album_dl4_p: "Nossos materiais foram criados para serem flexíveis e adaptáveis. O guia ajuda educadores, pais e entusiastas a levar esta experiência a cada vez mais lugares. O guia é um material de apoio para entender mais dos mitos apresentados pelas experiências de realidade aumentada. Também ajuda você a entrar na plataforma da Jandig que abriga a experiência e compreender a tecnologia que está por trás. Preparamos também algumas sugestões para estimular a criatividade e o uso do álbum de figurinhas e os marcadores.",
                 learn_title: "Aprenda a fazer",
@@ -975,11 +980,14 @@
                 album_downloads_title: "DOWNLOADS",
                 album_dl1_title: "Sticker album",
                 album_dl1_p: "Ready-to-use layout of the album itself, printable and easy to assemble. It can be printed in color or black and white. The album has a brief explanation of its use followed by the three stories of Brazilian myths with scenarios where you will paste the stickers that activate the augmented reality experiences. At the end of the album, you will also find a small glossary of words to help you better understand the stories and the context. The sticker album, for example, can be used to collect and learn about each character.",
+                album_dl1_button: "Download Album",
                 coming_soon: "Coming Soon...",
                 album_dl2_title: "Stickers",
                 album_dl2_p: "This is where the fun happens! We divided the stickers into 8 printable packs to encourage trading among friends. The stickers are the markers that, with the use of a cell phone camera, activate the experiences of Curupira, Boitatá, and Anhangá. The loose stickers can be printed and used in games or collage activities.",
+                album_dl2_button: "Download Stickers",
                 album_dl3_title: "Poster",
                 album_dl3_p: "An extension of the album, the poster is a great resource for decorating educational environments or for use as a visual aid in presentations.",
+                album_dl3_button: "Download Poster",
                 album_dl4_title: "Multiplier's guide",
                 album_dl4_p: "Our materials were created to be flexible and adaptable. The guide helps educators, parents, and enthusiasts bring this experience to more and more places. The guide is a support material to understand more about the myths presented by the augmented reality experiences. It also helps you to get into the Jandig platform that hosts the experience and understand the technology behind it. We have also prepared some suggestions to stimulate creativity and the use of the sticker album and markers.",
                 learn_title: "Learn How",
@@ -1156,11 +1164,14 @@
                 album_downloads_title: "DESCARGAS",
                 album_dl1_title: "Álbum de cromos",
                 album_dl1_p: "Diseño listo del álbum en sí, imprimible y de fácil montaje. Se puede imprimir en color o en blanco y negro en cualquier tipo de impresora, ya sea casera o profesional. El álbum tiene una breve explicación de su uso, seguida de las tres historias de mitos brasileños con escenarios en los que pegarás los cromos que activan las experiencias de realidad aumentada. Al final del álbum también encontrarás un pequeño glosario de palabras para ayudarte a entender mejor las historias y el contexto. El álbum de cromos, por ejemplo, se puede utilizar para coleccionar y aprender sobre cada personaje.",
+                album_dl1_button: "Descargar Álbum",
                 coming_soon: "Próximamente",
                 album_dl2_title: "Cromos",
                 album_dl2_p: "¡Aquí es donde ocurre la diversión! Dividimos los cromos en 8 paquetes para imprimir para fomentar el intercambio entre amigos dentro o fuera del aula. Los cromos son los marcadores que, con el uso de la cámara del teléfono móvil, activan las experiencias del curupira, boitatá y anhangá. Los cromos sueltos se pueden imprimir y usar en juegos o actividades de collage.",
+                album_dl2_button: "Descargar Cromos",
                 album_dl3_title: "Póster",
                 album_dl3_p: "Una extensión del álbum, el póster es un gran recurso para decorar ambientes educativos o para ser utilizado como apoyo visual en presentaciones.",
+                album_dl3_button: "Descargar Póster",
                 album_dl4_title: "Guía del multiplicador",
                 album_dl4_p: "Nuestros materiales fueron creados para ser flexibles y adaptables. La guía ayuda a educadores, padres y entusiastas a llevar esta experiencia a más lugares. La guía es un material de apoyo para entender más sobre los mitos presentados por las experiencias de realidad aumentada. También te ayuda a entrar en la plataforma de Jandig que alberga la experiencia y a comprender la tecnología que hay detrás. También hemos preparado algunas sugerencias para estimular la creatividad y el uso del álbum de cromos y los marcadores.",
                 learn_title: "Aprende a hacerlo",
