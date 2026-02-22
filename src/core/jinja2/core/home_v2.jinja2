@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37240876-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37240876-2');
+        </script>
+        <link id="manifest" rel="manifest" href="/manifest.json">
+        <script src="{{ static('js/main.js') }}"></script>
+        <script src="https://unpkg.com/htmx.org@2.0.4"
+                integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+                crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{ static('css/reset.css') }}">
+        <link rel="stylesheet" href="{{ static('css/home_v2.css') }}">
+        <link rel="stylesheet" href="{{ static ('css/header.css') }}">
+        <title>Jandig ARte</title>
+        <meta name="Description" content="Augmented reality artworks!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap"
+              rel="stylesheet">
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
+        {% block extra_css %}{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        {% include "core/header.jinja2" %}
+        {% include "core/useful_links.jinja2" %}
+        {% block content %}
+            <div class="home-container stripped-bg">
+                <section class="home-section home-highlight">
+                    <div>
+                        <h2 id="main_title">{{ _("Welcome to Jandig") }}</h2>
+                        <blockquote>
+                            {{ _("Uma comunidade de código aberto de arte em Realidade Estendida, que viabiliza a produção de exposições e obras unindo arte e tecnologia.") }}
+                        </blockquote>
+                    </div>
+                </section>
+                <section class="home-section">
+                    <p>{{ _("No vídeo abaixo, apresentamos o que é a Jandig, o conceito da plataforma e suas possibilidades.") }}</p>
+                    <div class="video-container">
+                        <iframe width="560"
+                                height="315"
+                                referrerpolicy='strict-origin-when-cross-origin'
+                                src="https://www.youtube.com/embed/Oou7uE2XeRo"
+                                frameborder="0"
+                                allow="autoplay; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                    </div>
+                </section>
+                <section class="home-section">
+                    <p>
+                        {{ _("Se você se identificou com a Jandig e acredita que a plataforma é útil para você criar seu projeto com realidade aumentada (seja ele uma exposição, cartaz, adesivo, mural, livro ou o que mais sua imaginação puder criar), deixamos para você um passo a passo de como utilizá-la. Ele explica o processo para subir seu conteúdo ou remixar o conteúdo já existente na plataforma.") }}
+                    </p>
+                    <div class="video-container" style="margin-bottom:50px">
+                        <iframe width="560"
+                                height="315"
+                                referrerpolicy='strict-origin-when-cross-origin'
+                                src="https://www.youtube.com/embed/rMpzwP967V4"
+                                frameborder="0"
+                                allow="autoplay; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <p>
+                        {{ _("Para acompanhar o passo a passo e colocar em prática,") }}
+                        <a href="{{ url('signup') }}">{{ _("faça seu cadastro") }}</a>
+                        {{ _("antes de começar a assistir. Depois, volte aqui e dê play no vídeo.
+                                                Se você preferir, também pode acessar o") }}
+                        <a href="https://jandig.app/docs/publicando-obras-portugues.html">{{ _("passo a passo por texto.") }}</a>
+                        {{ _("Além disso, no site da Jandig, na área de") }}
+                        <a href="https://jandig.app/docs/index.html">{{ _("Ajuda") }}</a>,
+                        {{ _("há outros tutoriais que podem ser úteis. Não deixe de consultá-los se sentir que é necessário.") }}
+                    </p>
+                    <p>
+                        {{ _("Esperamos ver suas obras e exposições na Jandig! Se você criar algo, não deixe de compartilhar conosco. Temos um") }}
+                        <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ">{{ _("canal no Telegram") }}</a>
+                        {{ _("voltado para a comunidade, onde é possível tirar dúvidas e compartilhar suas criações e experiências.") }}
+                    </p>
+                </section>
+            </div>
+        {% endblock %}
+        {% include "core/footer.jinja2" %}
+    </body>
+</html>

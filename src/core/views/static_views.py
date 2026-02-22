@@ -24,7 +24,7 @@ def me_hotsite(request, _):
 
 
 def home(request):
-    return render(request, "core/home.jinja2", {})
+    return render(request, "core/home_v2.jinja2", {})
 
 
 def manifest(request):

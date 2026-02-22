@@ -1,0 +1,97 @@
+.header .signup-btn, .header .login-btn {
+    background-color: black;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    padding: 0px 8px;
+    max-width: 70px;
+    min-width: 60px;
+}
+
+.header .login-btn {
+    background-color: #03b595;
+}
+
+.header .signup-btn a, .header .login-btn a {
+    font-weight: bold;
+    color: white;
+    display: block;
+}
+
+
+.home-section {
+    padding: 20px;
+    max-width: 80%;
+    margin: 0 auto;
+    
+}
+.home-highlight {
+    max-width: 80%;
+    min-width: 30%;
+}
+.home-highlight blockquote:after, .home-highlight blockquote:before {
+    background: #03b5951a;
+}
+
+.use-guide .authorize-camera {
+    background-color: black;
+    text-align: center;
+    max-width: 280px;
+    height: 35px;
+    margin: auto;
+    padding-top: 6%;
+}
+
+.stripped-bg {
+  background-color: #f8f8f8;
+  background-image: linear-gradient(45deg, #f8f8f8 25%, #f5f5f5 25%, #f5f5f5 50%, #f8f8f8 50%, #f8f8f8 75%, #f5f5f5 75%, #f5f5f5 100%);
+  background-size: 30px 30px;
+}
+
+.home-container {
+    border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+    border-width: 1px;
+    --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    box-shadow: 0 0 #0000, 0 0 #0000, var(--tw-shadow);
+    border-style: solid;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    max-width: 1000px;
+}
+
+.home-container p
+{
+    font-family: "Istok Web", serif;
+    text-align: justify;
+    font-size: 1.125rem;
+    color: rgb(55 65 81);
+}
+
+.home-container a {
+    color: #03b595;
+}
+
+/* https://stackoverflow.com/questions/35814653/automatic-height-when-embedding-a-youtube-video */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+/* Desktops */
+@media(min-width: 800px) {
+    .home-highlight {
+        max-width: 60%;
+        min-width: 30%;
+    }
+
+}
