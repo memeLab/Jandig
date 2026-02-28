@@ -6,7 +6,8 @@ from core.views.static_views import (
     documentation,
     favicon,
     health_check,
-    home,
+    home_new,
+    home_old,
     manifest,
     marker_generator,
     me_hotsite,
@@ -37,7 +38,8 @@ from core.views.views import (
 )
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", home_new, name="home"),
+    path("arviewer/", home_old, name="home-old"),
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),

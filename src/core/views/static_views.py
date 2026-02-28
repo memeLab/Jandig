@@ -23,8 +23,12 @@ def me_hotsite(request, _):
     return render(request, "core/ME/hotsite.html", {})
 
 
-def home(request):
+def home_new(request):
     return render(request, "core/home_v2.jinja2", {})
+
+
+def home_old(request):
+    return render(request, "core/home.jinja2", {})
 
 
 def manifest(request):
