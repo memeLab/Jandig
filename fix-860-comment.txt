@@ -1,0 +1,21 @@
+## Resolution ✅
+
+This critical security issue has been RESOLVED and committed to the develop branch.
+
+### What was fixed:
+- Vulnerability: reCAPTCHA Enterprise API key was exposed in HTTP request URL query parameter
+- Risk: API key visible in server logs and browser history
+- Impact: CRITICAL - Complete compromise of reCAPTCHA API key
+
+### Solution Applied:
+Moved the API key from URL query parameter to HTTP request X-API-Key header.
+
+### Changes Made:
+- Removed API key from URL (?key=...)
+- Added X-API-Key header to request
+- Added security-focused comment in code
+- Commit: fix(#860): Move reCAPTCHA API key from URL to request header
+
+**Status:** RESOLVED
+**Branch:** develop
+**Commit:** a525b53
