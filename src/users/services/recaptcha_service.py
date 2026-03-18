@@ -31,9 +31,16 @@ def create_assessment(token: str, recaptcha_action: str):
         }
     }
 
+    # Move API key from URL query parameter to Authorization header
+    # to prevent exposure in server logs, browser history, and monitoring tools
+    headers = {
+        "X-API-Key": settings.RECAPTCHA_GCLOUD_API_KEY,
+    }
+
     response = requests.post(
-        f"https://recaptchaenterprise.googleapis.com/v1/projects/{settings.RECAPTCHA_PROJECT_ID}/assessments?key={settings.RECAPTCHA_GCLOUD_API_KEY}",
+        f"https://recaptchaenterprise.googleapis.com/v1/projects/{settings.RECAPTCHA_PROJECT_ID}/assessments",
         json=payload,
+        headers=headers,
     )
     response_data = response.json()
     logger.info(response.json())
