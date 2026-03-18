@@ -21,7 +21,7 @@ def create_assessment(token: str, recaptcha_action: str):
         logger.error(
             "The token is missing. Recaptcha may be enabled but not configured correctly."
         )
-        return
+        return None
 
     payload = {
         "event": {
@@ -38,34 +38,44 @@ def create_assessment(token: str, recaptcha_action: str):
     response_data = response.json()
     logger.info(response.json())
 
+    # Guard against unexpected API response format (e.g. network errors, API changes).
+    try:
+        token_properties = response_data["tokenProperties"]
+    except KeyError:
+        logger.error(
+            "Unexpected reCAPTCHA API response format — 'tokenProperties' key missing: %s",
+            response_data,
+        )
+        return None
+
     # Check if the token is valid.
-    if not response_data["tokenProperties"]["valid"]:
+    if not token_properties.get("valid"):
         logger.info(
             "The CreateAssessment call failed because the token was "
             + "invalid for the following reasons: "
-            + str(response_data["tokenProperties"]["invalidReason"])
+            + str(token_properties.get("invalidReason"))
         )
-        return {}
+        return None
 
     # Check if the expected action was executed.
-    if response_data["tokenProperties"]["action"] != recaptcha_action:
+    if token_properties.get("action") != recaptcha_action:
         logger.info(
             "The action attribute in your reCAPTCHA tag does"
             + "not match the action you are expecting to score"
         )
-        return
-    else:
-        # Get the risk score and the reason(s).
-        # For more information on interpreting the assessment, see:
-        # https://cloud.google.com/recaptcha-enterprise/docs/interpret-assessment
+        return None
 
-        for reason in response_data["riskAnalysis"].get("reasons", []):
-            logger.info(reason)
-        logger.info(
-            "The reCAPTCHA score for this token is: "
-            + str(response_data["riskAnalysis"]["score"])
-        )
-        # Get the assessment name (id). Use this to annotate the assessment.
-        assessment_name = response_data["name"].split("/")[-1]
-        logger.info(f"Assessment name: {assessment_name}")
+    # Get the risk score and the reason(s).
+    # For more information on interpreting the assessment, see:
+    # https://cloud.google.com/recaptcha-enterprise/docs/interpret-assessment
+    for reason in response_data["riskAnalysis"].get("reasons", []):
+        logger.info(reason)
+    logger.info(
+        "The reCAPTCHA score for this token is: "
+        + str(response_data["riskAnalysis"]["score"])
+    )
+    # Get the assessment name (id). Use this to annotate the assessment.
+    assessment_name = response_data["name"].split("/")[-1]
+    logger.info(f"Assessment name: {assessment_name}")
+
     return response_data
