@@ -190,7 +190,7 @@ if USE_POSTGRES:
             "HOST": env("POSTGRES_HOST", default="localhost"),
             "NAME": env("POSTGRES_DB", default="jandig"),
             "USER": env("POSTGRES_USER", default="jandig"),
-            "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
+            "PASSWORD": env("POSTGRES_PASSWORD"),
         },
         "OPTIONS": {
             "pool": True,
@@ -253,7 +253,7 @@ EMAIL_HOST = env("SMTP_SERVER", default="mailpit")
 EMAIL_USE_TLS = env("SMTP_USE_TLS", default=False)
 EMAIL_PORT = env("SMTP_PORT", default=1025)
 EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
-EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="password")
+EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="")
 EMAIL_USE_SSL = False
 
 # Recaptcha
