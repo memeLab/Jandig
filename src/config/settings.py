@@ -295,7 +295,7 @@ if USE_MINIO:
     AWS_S3_URL_PROTOCOL = "http:"
 
 else:
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_STATIC_URL", "cdn.jandig.app")
     AWS_S3_URL_PROTOCOL = "https:"
 
 # Static configuration
