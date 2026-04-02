@@ -8,6 +8,7 @@ from socket import gethostbyname, gethostname
 import environ
 import sentry_sdk
 from django.utils.translation import gettext_lazy as _
+from django_prose_editor.config import html_tags
 from sentry_sdk.integrations.django import DjangoIntegration
 
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
@@ -99,6 +100,7 @@ EXTERNAL_APPS = [
     "rest_framework_simplejwt",
     "rest_framework.authtoken",
     "rest_framework",
+    "django_prose_editor",
 ]
 
 INTERNAL_APPS = [
@@ -111,6 +113,19 @@ INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
+
+
+DJANGO_PROSE_EDITOR_EXTENSIONS = [
+    {
+        "js": ["/static/js/prose_image.js"],
+        "extensions": {
+            "AddImage": html_tags(
+                tags=["img"],
+                attributes={"img": ["src", "alt", "title", "width", "height"]},
+            )
+        },
+    },
+]
 
 
 def debug(_):
