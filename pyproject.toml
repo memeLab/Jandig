@@ -27,6 +27,7 @@ dependencies = [
   "pymarker~=1.2",
   "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
+  "django-tinymce>=5.0.0",
 ]
 
 [dependency-groups]

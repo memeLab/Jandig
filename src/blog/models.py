@@ -1,7 +1,7 @@
 from django.core.files.storage import default_storage
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
+from tinymce.models import HTMLField
 from users.models import Profile
 
 IMAGE_BASE_PATH = "post_images/"
@@ -55,7 +55,8 @@ class Post(TimeStampedModel):
         null=True,
         blank=True,
     )
-    body = models.TextField()
+    exerpt = models.TextField()
+    formatted_body = HTMLField(default="")
     categories = models.ManyToManyField(Category, related_name="posts", blank=True)
     images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
 

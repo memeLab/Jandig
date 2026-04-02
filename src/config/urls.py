@@ -44,6 +44,7 @@ urlpatterns = [
     path("memories/", include("blog.urls")),
     re_path("^docs/(?P<path>.*)$", serve, {"document_root": settings.DOCS_ROOT}),
     path("", include("core.urls")),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if not settings.USE_GRANIAN:

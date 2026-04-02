@@ -99,6 +99,7 @@ EXTERNAL_APPS = [
     "rest_framework_simplejwt",
     "rest_framework.authtoken",
     "rest_framework",
+    "tinymce",
 ]
 
 INTERNAL_APPS = [
@@ -106,6 +107,19 @@ INTERNAL_APPS = [
     "core",
     "users",
 ]
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+}
+
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
