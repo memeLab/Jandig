@@ -27,6 +27,7 @@ dependencies = [
   "pymarker~=1.2",
   "sentry-sdk[django]~=2.20",
   "Sphinx~=8.1",
+  "django-prose-editor[sanitize]>=0.25.1",
 ]
 
 [dependency-groups]
