@@ -57,6 +57,8 @@ class Post(TimeStampedModel):
         blank=True,
     )
     excerpt = models.TextField()
+    categories = models.ManyToManyField(Category, related_name="posts", blank=True)
+    images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
     formatted_body = ProseEditorField(
         default="",
         extensions={
@@ -65,15 +67,12 @@ class Post(TimeStampedModel):
             "Italic": True,
             "Strike": True,
             "Underline": True,
-            # "HardBreak": True,
             "AddImage": True,
             # Structure
-            "Heading": {
-                "levels": [1, 2, 3]  # Only allow h1, h2, h3
-            },
+            "Heading": {"levels": [1, 2, 3]},
             "BulletList": True,
             "OrderedList": True,
-            "ListItem": True,  # Used by BulletList and OrderedList
+            "ListItem": True,
             "Blockquote": True,
             # Advanced extensions
             "Link": {
@@ -87,8 +86,6 @@ class Post(TimeStampedModel):
         },
         sanitize=True,
     )
-    categories = models.ManyToManyField(Category, related_name="posts", blank=True)
-    images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
 
     def __str__(self):
         return self.title
