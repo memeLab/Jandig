@@ -8,6 +8,7 @@ from socket import gethostbyname, gethostname
 import environ
 import sentry_sdk
 from django.utils.translation import gettext_lazy as _
+from django_prose_editor.config import html_tags
 from sentry_sdk.integrations.django import DjangoIntegration
 
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
@@ -51,7 +52,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.9")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.10")
 
 
 def traces_sampler(sampling_context):
@@ -99,6 +100,7 @@ EXTERNAL_APPS = [
     "rest_framework_simplejwt",
     "rest_framework.authtoken",
     "rest_framework",
+    "django_prose_editor",
 ]
 
 INTERNAL_APPS = [
@@ -111,6 +113,19 @@ INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": "config.settings.debug"}
 TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR", False)
+
+
+DJANGO_PROSE_EDITOR_EXTENSIONS = [
+    {
+        "js": ["/static/js/prose_image.js"],
+        "extensions": {
+            "AddImage": html_tags(
+                tags=["img"],
+                attributes={"img": ["src", "alt", "title", "width", "height"]},
+            )
+        },
+    },
+]
 
 
 def debug(_):
@@ -190,7 +205,7 @@ if USE_POSTGRES:
             "HOST": env("POSTGRES_HOST", default="localhost"),
             "NAME": env("POSTGRES_DB", default="jandig"),
             "USER": env("POSTGRES_USER", default="jandig"),
-            "PASSWORD": env("POSTGRES_PASSWORD", default="secret"),
+            "PASSWORD": env("POSTGRES_PASSWORD"),
         },
         "OPTIONS": {
             "pool": True,
@@ -253,7 +268,7 @@ EMAIL_HOST = env("SMTP_SERVER", default="mailpit")
 EMAIL_USE_TLS = env("SMTP_USE_TLS", default=False)
 EMAIL_PORT = env("SMTP_PORT", default=1025)
 EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
-EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="password")
+EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="")
 EMAIL_USE_SSL = False
 
 # Recaptcha

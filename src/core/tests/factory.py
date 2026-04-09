@@ -23,13 +23,9 @@ def choose_random_object_file(_):
         if os.path.isfile(os.path.join(objects_dir, f))
     ]
     file = random.choice(files)
-    return ContentFile(
-        open(
-            os.path.join(objects_dir, file),
-            "rb",
-        ).read(),
-        name=file,
-    )
+    file_path = os.path.join(objects_dir, file)
+    with open(file_path, "rb") as f:
+        return ContentFile(f.read(), name=file)
 
 
 def choose_random_marker_file(_):
@@ -43,13 +39,9 @@ def choose_random_marker_file(_):
         if os.path.isfile(os.path.join(markers_dir, f))
     ]
     file = random.choice(files)
-    return ContentFile(
-        open(
-            os.path.join(markers_dir, file),
-            "rb",
-        ).read(),
-        name=file,
-    )
+    file_path = os.path.join(markers_dir, file)
+    with open(file_path, "rb") as f:
+        return ContentFile(f.read(), name=file)
 
 
 def choose_random_sound_file(_):
@@ -61,13 +53,9 @@ def choose_random_sound_file(_):
         f for f in os.listdir(sounds_dir) if os.path.isfile(os.path.join(sounds_dir, f))
     ]
     file = random.choice(files)
-    return ContentFile(
-        open(
-            os.path.join(sounds_dir, file),
-            "rb",
-        ).read(),
-        name=file,
-    )
+    file_path = os.path.join(sounds_dir, file)
+    with open(file_path, "rb") as f:
+        return ContentFile(f.read(), name=file)
 
 
 def chose_random_patt_file(_):
@@ -79,13 +67,9 @@ def chose_random_patt_file(_):
         f for f in os.listdir(patts_dir) if os.path.isfile(os.path.join(patts_dir, f))
     ]
     file = random.choice(files)
-    return ContentFile(
-        open(
-            os.path.join(patts_dir, file),
-            "rb",
-        ).read(),
-        name=file,
-    )
+    file_path = os.path.join(patts_dir, file)
+    with open(file_path, "rb") as f:
+        return ContentFile(f.read(), name=file)
 
 
 class ObjectFactory(DjangoModelFactory):

@@ -14,7 +14,8 @@ class TestBlogIndex(TestCase):
         for i in range(0, 10):
             Post.objects.create(
                 title=f"Test Post {i}",
-                body=f"This is the body of test post {i}.",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
                 status=PostStatus.PUBLISHED,
             )
         response = self.client.get(reverse("blog_index"))
@@ -39,7 +40,8 @@ class TestBlogIndex(TestCase):
         for i in range(0, 10):
             Post.objects.create(
                 title=f"Test Post {i}",
-                body=f"This is the body of test post {i}.",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
                 status=PostStatus.PUBLISHED,
             )
         # Request with a negative page number should return the first page
@@ -62,7 +64,8 @@ class TestBlogIndex(TestCase):
         for i in range(0, 10):
             Post.objects.create(
                 title=f"Test Post {i}",
-                body=f"This is the body of test post {i}.",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
                 status=PostStatus.PUBLISHED,
             )
         # Request with an invalid page number should return the first page
@@ -85,7 +88,8 @@ class TestBlogIndex(TestCase):
         for i in range(0, 10):
             Post.objects.create(
                 title=f"Test Post {i}",
-                body=f"This is the body of test post {i}.",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
                 status=PostStatus.PUBLISHED,
             )
         response = self.client.get(

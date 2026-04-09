@@ -11,7 +11,10 @@ class TestPostDetails(TestCase):
         """
         # Create a sample post
         post = Post.objects.create(
-            title="Test Post", body="This is a test post.", status=PostStatus.PUBLISHED
+            title="Test Post",
+            excerpt="This is a test post.",
+            formatted_body="This is the body of the test post.",
+            status=PostStatus.PUBLISHED,
         )
         # Create a sample image for the post
         image_1 = PostImage.objects.create(

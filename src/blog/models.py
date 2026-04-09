@@ -1,6 +1,7 @@
 from django.core.files.storage import default_storage
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from django_prose_editor.fields import ProseEditorField
 
 from users.models import Profile
 
@@ -55,9 +56,36 @@ class Post(TimeStampedModel):
         null=True,
         blank=True,
     )
-    body = models.TextField()
+    excerpt = models.TextField()
     categories = models.ManyToManyField(Category, related_name="posts", blank=True)
     images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
+    formatted_body = ProseEditorField(
+        default="",
+        extensions={
+            # Core text formatting
+            "Bold": True,
+            "Italic": True,
+            "Strike": True,
+            "Underline": True,
+            "AddImage": True,
+            # Structure
+            "Heading": {"levels": [1, 2, 3]},
+            "BulletList": True,
+            "OrderedList": True,
+            "ListItem": True,
+            "Blockquote": True,
+            # Advanced extensions
+            "Link": {
+                "enableTarget": True,  # Enable "open in new window"
+                "protocols": ["http", "https"],  # Limit protocols
+            },
+            # Editor capabilities
+            "History": True,  # Enables undo/redo
+            "HTML": True,  # Allows HTML view
+            "Typographic": True,  # Enables typographic chars
+        },
+        sanitize=True,
+    )
 
     def __str__(self):
         return self.title

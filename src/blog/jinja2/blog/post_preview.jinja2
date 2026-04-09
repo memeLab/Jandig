@@ -4,7 +4,7 @@
             <a href="{{ url('post_detail', args=[post.pk]) }}">{{ post.title }}</a>
         </h3>
         <p>
-            {{ post.body[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk]) }}">{{ _("Read More") }}</a>
+            {{ post.excerpt[:PREVIEW_SIZE] | safe }}... <a href="{{ url('post_detail', args=[post.pk]) }}">{{ _("Read More") }}</a>
         </p>
     </div>
 {% endfor %}
