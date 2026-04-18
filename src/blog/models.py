@@ -1,5 +1,6 @@
 from django.core.files.storage import default_storage
 from django.db import models
+from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from django_prose_editor.fields import ProseEditorField
 
@@ -91,4 +92,9 @@ class Post(TimeStampedModel):
         return self.title
 
     def get_absolute_url(self):
-        return f"/memories/{self.slug}/"
+        # Post has no slug field; the only detail route that exists is
+        # `blog/post/<int:pk>/` (registered as `post_detail`). The previous
+        # `f"/memories/{self.slug}/"` raised AttributeError on every call.
+        # Use reverse() so get_absolute_url() stays correct if the URL
+        # conf is ever renamed or remounted. See #855.
+        return reverse("post_detail", kwargs={"pk": self.pk})
