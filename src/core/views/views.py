@@ -226,7 +226,14 @@ def marker_upload(request):
 @login_required
 def edit_marker(request):
     index = request.GET.get("id", "-1")
-    model = Marker.objects.get(id=index)
+    try:
+        index = int(index)
+    except (TypeError, ValueError):
+        raise Http404
+    model = get_object_or_404(Marker, id=index)
+
+    if model.owner != request.user.profile:
+        raise Http404
 
     model_data = {
         "source": model.source,
@@ -235,9 +242,6 @@ def edit_marker(request):
         "patt": model.patt,
         "title": model.title,
     }
-
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
 
     if request.method == "POST":
         form = UploadMarkerForm(request.POST, request.FILES, instance=model)
@@ -263,7 +267,14 @@ def edit_marker(request):
 @login_required
 def edit_object(request):
     index = request.GET.get("id", "-1")
-    model = Object.objects.get(id=index)
+    try:
+        index = int(index)
+    except (TypeError, ValueError):
+        raise Http404
+    model = get_object_or_404(Object, id=index)
+
+    if model.owner != request.user.profile:
+        raise Http404
 
     model_data = {
         "source": model.source,
@@ -272,8 +283,6 @@ def edit_object(request):
         "title": model.title,
         "thumbnail": model.thumbnail,
     }
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
 
     if request.method == "POST":
         form = UploadObjectForm(request.POST, request.FILES, instance=model)
