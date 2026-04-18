@@ -189,7 +189,14 @@ def object_upload(request):
 @require_http_methods(["GET"])
 def marker_preview(request):
     marker_id = request.GET.get("id")
-    marker = Marker.objects.get(id=marker_id)
+    # ?id= comes off the query string as either None or a raw string.
+    # Marker.id is an integer PK, so coerce + 404 instead of letting a
+    # missing/garbage value surface as ValueError or DoesNotExist.
+    try:
+        marker_id = int(marker_id)
+    except (TypeError, ValueError):
+        raise Http404
+    marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
         "augmented": marker,
