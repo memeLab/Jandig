@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -88,22 +88,34 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-    user = request.GET.get("user")
+    user_param = request.GET.get("user")
 
-    if not user:
+    if not user_param:
         user = request.user
+    else:
+        # ?user=... refers to a User primary key. Anything else is a bad
+        # link, not a server error, so coerce + 404 instead of letting the
+        # ORM raise ValueError / DoesNotExist up into a 500.
+        try:
+            user_id = int(user_param)
+        except (TypeError, ValueError):
+            raise Http404
+        user = get_object_or_404(User, pk=user_id)
 
-    profile = Profile.objects.prefetch_related(
-        "exhibits__artworks",
-        "artworks__exhibits",
-        "artworks__marker",
-        "artworks__augmented",
-        "markers__artworks",
-        "ar_objects__artworks",
-        "sounds__artworks",
-        "sounds__ar_objects",
-        "sounds__exhibits",
-    ).get(user=user)
+    profile = get_object_or_404(
+        Profile.objects.prefetch_related(
+            "exhibits__artworks",
+            "artworks__exhibits",
+            "artworks__marker",
+            "artworks__augmented",
+            "markers__artworks",
+            "ar_objects__artworks",
+            "sounds__artworks",
+            "sounds__ar_objects",
+            "sounds__exhibits",
+        ),
+        user=user,
+    )
 
     ar_exhibits = (
         profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
