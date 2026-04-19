@@ -201,6 +201,13 @@ class Sound(TimeStampedModel, ContentMixin):
 
         return render(div(elements, style="margin: 10px auto;"))
 
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
+
 
 class ExhibitTypes(models.TextChoices):
     AR = "AR", "Augmented Reality"
@@ -283,6 +290,13 @@ class Marker(TimeStampedModel, ContentMixin):
             lower_menu = div(lower_menu_items, class_="marker-menu")
             to_render.append(lower_menu)
         return render(to_render)
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
 
 
 class ObjectExtensions(models.TextChoices):
@@ -408,6 +422,13 @@ class Object(TimeStampedModel, ContentMixin):
 
         return render(to_render)
 
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
+
 
 @pghistory.track()
 class Artwork(TimeStampedModel, ContentMixin):
@@ -490,6 +511,13 @@ class Artwork(TimeStampedModel, ContentMixin):
                 )
             )
         return render(div(elements, class_="artwork-elements flex"))
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
 
 
 @pghistory.track()
@@ -598,6 +626,14 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
             exhibit_card,
         ]
         return render(elements)
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+            models.Index(fields=["exhibit_type", "-created"]),
+        ]
 
 
 @receiver(post_delete, sender=Object)
