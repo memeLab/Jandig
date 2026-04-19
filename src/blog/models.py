@@ -30,6 +30,13 @@ class PostImage(TimeStampedModel):
     def __str__(self):
         return self.file.name.lstrip(IMAGE_BASE_PATH)
 
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
+
 
 class Clipping(TimeStampedModel):
     id = models.BigAutoField(primary_key=True)
@@ -41,6 +48,13 @@ class Clipping(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
 
 
 class Post(TimeStampedModel):
@@ -92,3 +106,10 @@ class Post(TimeStampedModel):
 
     def get_absolute_url(self):
         return f"/memories/{self.slug}/"
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"]),
+            models.Index(fields=["-modified"]),
+        ]
