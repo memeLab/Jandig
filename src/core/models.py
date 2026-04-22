@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
@@ -178,7 +179,7 @@ class Sound(TimeStampedModel, ContentMixin):
     def as_html(self):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.file.url,
         }
         return render(
@@ -190,7 +191,7 @@ class Sound(TimeStampedModel, ContentMixin):
 
     def as_html_thumbnail(self, editable=False):
         elements = [
-            span(self.title, style="display:block;"),
+            span(escape(self.title), style="display:block;"),
             self.as_html(),
         ]
         if editable and not self.is_used_by_other_user():
@@ -254,7 +255,7 @@ class Marker(TimeStampedModel, ContentMixin):
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.source.url,
         }
         return render(
@@ -378,7 +379,7 @@ class Object(TimeStampedModel, ContentMixin):
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.source.url,
         }
         if height:
@@ -569,7 +570,9 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 
     def as_html_thumbnail(self, editable=False):
         link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
-        exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
+        exhibit_title = a(
+            h1(escape(self.name), class_="exhibit-name"), href=link_to_exhibit
+        )
         media_stats = []
         if self.exhibit_type == ExhibitTypes.AR:
             media_stats.append(
@@ -601,14 +604,17 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
                 )
             )
         exhibit_info = [
-            p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
+            p(
+                [{_("Created by ")}, b(escape(self.owner.user.username))],
+                class_="by",
+            ),
             p(self.date, class_="exbDate"),
             div(media_stats),
         ]
 
         button_see_this_exhibit = a(
             _("See this Exhibition"),
-            href=f"/{self.slug}/",
+            href=f"/{escape(self.slug)}/",
             class_="gotoExb",
         )
 
