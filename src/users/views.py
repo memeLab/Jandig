@@ -88,11 +88,6 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 @require_http_methods(["GET"])
 def profile(request):
-    user = request.GET.get("user")
-
-    if not user:
-        user = request.user
-
     profile = Profile.objects.prefetch_related(
         "exhibits__artworks",
         "artworks__exhibits",
@@ -103,7 +98,7 @@ def profile(request):
         "sounds__artworks",
         "sounds__ar_objects",
         "sounds__exhibits",
-    ).get(user=user)
+    ).get(user=request.user)
 
     ar_exhibits = (
         profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
