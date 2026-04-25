@@ -1,12 +1,15 @@
 from io import BytesIO
+from os.path import basename, splitext
 
+import cairosvg
 from django import forms
 from django.core.files.base import ContentFile, File
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from pymarker.core import generate_patt_from_image
 
 from core.models import Artwork, Marker, ObjectExtensions
@@ -15,6 +18,7 @@ from core.views.api_views import MarkerGeneratorAPIView
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
+SVG_RASTER_WIDTH = 1024  # px; pymarker handles square inputs at any size
 
 
 def file_has_changed(new_file, instance_file):
@@ -130,6 +134,11 @@ class UploadMarkerForm(forms.ModelForm):
         required=False,
         label=_("Add inner border"),
     )
+    # Override the model's ImageField with a plain FileField. ImageField
+    # would reject anything Pillow can't open (notably SVG); we want to
+    # accept SVG and rasterise it ourselves before the rest of the
+    # pipeline runs.
+    source = forms.FileField()
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
@@ -141,6 +150,45 @@ class UploadMarkerForm(forms.ModelForm):
     class Meta:
         model = Marker
         fields = ("source", "author", "title")
+
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        if file is None:
+            raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
+
+        stem, extension = splitext(file.name)
+        extension = extension.lower().lstrip(".")
+
+        if extension == "svg":
+            try:
+                file.seek(0)
+                png_bytes = cairosvg.svg2png(
+                    bytestring=file.read(),
+                    output_width=SVG_RASTER_WIDTH,
+                )
+            except Exception:
+                raise forms.ValidationError(
+                    _("Could not render SVG. Make sure the file is a valid SVG.")
+                )
+            return SimpleUploadedFile(
+                name=f"{stem}.png",
+                content=png_bytes,
+                content_type="image/png",
+            )
+
+        try:
+            file.seek(0)
+            with Image.open(file) as image:
+                image.verify()
+            file.seek(0)
+        except (UnidentifiedImageError, OSError):
+            raise forms.ValidationError(
+                _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
+            )
+
+        return file
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
