@@ -154,6 +154,10 @@ class TestCreateARExhibitView(TestCase):
         )
 
     def test_create_exhibit_with_artworks_and_objects(self):
+        # Posting a payload that mixes artworks + augmenteds against the
+        # AR route saves an AR exhibit (the route picks the type now,
+        # not the data). The augmenteds value is accepted into the row
+        # but the exhibit is treated as AR.
         url = reverse("create-ar-exhibit")
         data = {
             "name": "My Test Exhibit with Artworks and Objects",
@@ -162,14 +166,12 @@ class TestCreateARExhibitView(TestCase):
             "augmenteds": f"{self.object1.id},{self.object2.id}",
         }
         response = self.client.post(url, data)
-        # Should redirect to profile after creation
         assert response.status_code == 302
-        # Exhibit should be created
         assert Exhibit.objects.count() == 1
         exhibit = Exhibit.objects.get(name="My Test Exhibit with Artworks and Objects")
         assert exhibit.owner == self.profile
         assert exhibit.slug == "my-test-exhibit-art-objects"
-        assert exhibit.exhibit_type == ExhibitTypes.MR
+        assert exhibit.exhibit_type == ExhibitTypes.AR
         self.assertSetEqual(
             set(exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id, self.artwork2.id},
@@ -376,39 +378,37 @@ class TestEditExhibitView(TestCase):
             {self.object1.id, self.object2.id},
         )
 
-    def test_edit_exhibit_type_changes_correctly(self):
-        # Initially, the exhibit has artworks only
+    def test_edit_ar_exhibit_keeps_type_regardless_of_augmenteds(self):
+        # Editing through the /edit-ar/ route saves an AR exhibit; the
+        # type does not flip based on whether augmenteds are present
+        # (route-authoritative behaviour, #853).
         url = reverse("edit-ar-exhibit", query={"id": self.exhibit.id})
         data = {
             "name": "Exhibit with Artworks",
             "slug": "exhibit-with-artworks",
             "artworks": f"{self.artwork1.id},{self.artwork2.id}",
-            "augmenteds": "",
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
         }
         response = self.client.post(url, data)
         assert response.status_code == 302
         self.exhibit.refresh_from_db()
         assert self.exhibit.exhibit_type == ExhibitTypes.AR
 
-        # Now add objects to change it to MR
-        data["augmenteds"] = f"{self.object1.id},{self.object2.id}"
+    def test_edit_ar_exhibit_rejects_empty_artworks(self):
+        # AR route requires at least one artwork. Posting only
+        # augmenteds returns a validation error (no redirect).
+        url = reverse("edit-ar-exhibit", query={"id": self.exhibit.id})
+        data = {
+            "name": "Exhibit with only objects",
+            "slug": "exhibit-with-only-objects",
+            "artworks": "",
+            "augmenteds": f"{self.object1.id},{self.object2.id}",
+        }
         response = self.client.post(url, data)
-        assert response.status_code == 302
-        self.exhibit.refresh_from_db()
-        assert self.exhibit.exhibit_type == ExhibitTypes.MR
-
-        data["artworks"] = ""
-        response = self.client.post(url, data)
-        assert response.status_code == 302
-        self.exhibit.refresh_from_db()
-        assert self.exhibit.exhibit_type == ExhibitTypes.MR  # Should remain MR even
-
-        data["augmenteds"] = ""
-        data["artworks"] = f"{self.artwork1.id},{self.artwork2.id}"
-        response = self.client.post(url, data)
-        assert response.status_code == 302
-        self.exhibit.refresh_from_db()
-        assert self.exhibit.exhibit_type == ExhibitTypes.AR  # Should change back to AR
+        assert response.status_code == 200
+        assert "AR exhibits require at least one artwork" in (
+            response.context["form"].non_field_errors()[0]
+        )
 
     def test_edit_ar_exhibit_comes_filled_with_current_data(self):
         self.exhibit.artworks.set([self.artwork1, self.artwork2])

@@ -250,12 +250,17 @@ class ExhibitForm(forms.ModelForm):
     augmenteds = forms.CharField(max_length=1000, required=False)
     sounds = forms.CharField(max_length=1000, required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, exhibit_type=None, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
+        # The route picks the exhibit type for create; for edit, the
+        # existing instance's type is authoritative.
+        if exhibit_type is None and self.instance.pk:
+            exhibit_type = self.instance.exhibit_type
+        self.exhibit_type = exhibit_type
 
     class Meta:
         model = Exhibit
@@ -337,10 +342,27 @@ class ExhibitForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks", [])
-        augmenteds = cleaned_data.get("augmenteds", [])
+        artworks = cleaned_data.get("artworks") or []
+        augmenteds = cleaned_data.get("augmenteds") or []
 
-        if not artworks and not augmenteds:
+        # The route (/exhibits/create-ar/ vs /create-mr/) selected the
+        # exhibit type. Validate the relevant content list — AR requires
+        # artworks, MR requires augmented objects.
+        if self.exhibit_type == ExhibitTypes.AR and not artworks:
+            raise forms.ValidationError(
+                _("AR exhibits require at least one artwork.")
+            )
+        if self.exhibit_type == ExhibitTypes.MR and not augmenteds:
+            raise forms.ValidationError(
+                _("MR exhibits require at least one augmented object.")
+            )
+        # Fallback for callers that didn't pass exhibit_type — keep
+        # the old "you must pick at least something" guard.
+        if (
+            self.exhibit_type is None
+            and not artworks
+            and not augmenteds
+        ):
             raise forms.ValidationError(
                 _("You must select at least one artwork or augmented object.")
             )
@@ -350,12 +372,20 @@ class ExhibitForm(forms.ModelForm):
     def save(self, commit=True):
         exhibit = super().save(commit=False)
 
-        # Set exhibit_type based on augmented objects
         artworks = self.cleaned_data.get("artworks", [])
         augmenteds = self.cleaned_data.get("augmenteds", [])
         sounds = self.cleaned_data.get("sounds", [])
 
-        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+        # The exhibit type comes from the route (create) or the existing
+        # row (edit), set in __init__. Only fall back to inferring from
+        # the data if no type was supplied — protects against callers
+        # that haven't been updated.
+        if self.exhibit_type is not None:
+            exhibit.exhibit_type = self.exhibit_type
+        else:
+            exhibit.exhibit_type = (
+                ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+            )
 
         if commit:
             exhibit.save()
