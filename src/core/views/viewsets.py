@@ -1,5 +1,6 @@
 from django.db.models import Count
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.renderers import (
     BrowsableAPIRenderer,
     JSONRenderer,
@@ -16,6 +17,19 @@ from core.serializers import (
     ObjectSerializer,
     SoundSerializer,
 )
+
+
+class ExhibitListPagination(LimitOffsetPagination):
+    """Cap the exhibit list endpoint at 20 results per request.
+
+    The MR/AR app feed pages through this endpoint; rendering all
+    exhibits at once is expensive on the device. 20 is the explicit
+    cap requested in #717 — both the default and the maximum, so a
+    client passing ?limit=999 still gets 20.
+    """
+
+    default_limit = 20
+    max_limit = 20
 
 
 class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
@@ -91,6 +105,7 @@ class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ExhibitSerializer
+    pagination_class = ExhibitListPagination
 
     def get_queryset(self):
         queryset = (
