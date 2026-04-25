@@ -337,8 +337,27 @@ class ExhibitForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks", [])
-        augmenteds = cleaned_data.get("augmenteds", [])
+        artworks = cleaned_data.get("artworks") or []
+        augmenteds = cleaned_data.get("augmenteds") or []
+        sounds = cleaned_data.get("sounds") or []
+
+        # On edit, the artworks/augmenteds/sounds CharFields are hidden
+        # inputs only populated by JS when the user clicks items in the
+        # selection modal. If the user just edits the name/URL and saves,
+        # those fields arrive empty in POST and would clobber the
+        # existing M2M data — and the validation below would refuse the
+        # save outright. Preserve the instance's current selections when
+        # nothing was submitted.
+        if self.instance.pk:
+            if not artworks:
+                artworks = list(self.instance.artworks.all())
+                cleaned_data["artworks"] = artworks
+            if not augmenteds:
+                augmenteds = list(self.instance.augmenteds.all())
+                cleaned_data["augmenteds"] = augmenteds
+            if not sounds:
+                sounds = list(self.instance.sounds.all())
+                cleaned_data["sounds"] = sounds
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
