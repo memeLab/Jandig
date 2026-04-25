@@ -18,7 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = "Jandig ARte Help"
-copyright = "2019, pablodiegoss, rodrigocam, vjpixel, hvalois"
+copyright = (
+    "Conteúdo sob licenciamento "
+    '<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, '
+    "a não ser quando explicitado o contrário."
+)
 author = "pablodiegoss, rodrigocam, vjpixel, hvalois"
 
 
