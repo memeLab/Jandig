@@ -608,6 +608,7 @@ def remove_source_file(sender, instance, **kwargs):
         instance.source.delete(False)
     if isinstance(instance, Object):
         instance.source.delete(False)
-        instance.audio_description.delete(False)
+        if instance.audio_description:
+            instance.audio_description.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)
