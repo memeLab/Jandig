@@ -19,7 +19,7 @@ def health_check(_):
     return JsonResponse({"status": "ok"}, status=200)
 
 
-def me_hotsite(request, _):
+def me_hotsite(request):
     return render(request, "core/ME/hotsite.html", {})
 
 
