@@ -36,19 +36,17 @@
                 <div id="form-modal" class="modal">
                     <div id="artwork-modal" class="tab">
                         <h4 class="modal-title">{{ _("Select Artworks") }}</h4>
-                        {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
-                            {% if repository_list|length > 0 %}
-                                <p class="gallery-title">{{ _("Choose from your repository") }}</p>
-                            {% else %}
-                                <section id="repo-{{ element_type }}" class="repository-list">
-                                    <p>{{ _("You have no Artworks. :c") }}</p>
-                                    <a href="{{ url('create-artwork') }}" class="button">{{ _("Create one") }}</a>
-                                </section>
-                            {% endif %}
-                            {% with repository_list = artworks, element_type="artwork", htmx="false" %}
+                        {% if artworks %}
+                            <p class="gallery-title">{{ _("Choose from your repository") }}</p>
+                            {% with repository_list = artworks, element_type="artwork", htmx="false", selected=selected_artworks %}
                                 {% include "core/components/item-list.jinja2" %}
                             {% endwith %}
-                        {% endwith %}
+                        {% else %}
+                            <section id="repo-artwork" class="repository-list">
+                                <p>{{ _("You have no Artworks. :c") }}</p>
+                                <a href="{{ url('create-artwork') }}" class="button">{{ _("Create one") }}</a>
+                            </section>
+                        {% endif %}
                         <a type="button"
                            type="button"
                            href="#close-modal"
