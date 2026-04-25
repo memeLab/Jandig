@@ -660,7 +660,7 @@ def related_content(request):
             .distinct()
         )
 
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
+        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall": False}
 
     elif element_type == "artwork":
         element = Artwork.objects.prefetch_related(
@@ -669,7 +669,7 @@ def related_content(request):
 
         exhibits = element.exhibits.all()
 
-        ctx = {"exhibits": exhibits, "seeall:": False}
+        ctx = {"exhibits": exhibits, "seeall": False}
 
     elif element_type == "sound":
         element = Sound.objects.prefetch_related(
