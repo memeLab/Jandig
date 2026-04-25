@@ -349,20 +349,14 @@ class ExhibitForm(forms.ModelForm):
         # exhibit type. Validate the relevant content list — AR requires
         # artworks, MR requires augmented objects.
         if self.exhibit_type == ExhibitTypes.AR and not artworks:
-            raise forms.ValidationError(
-                _("AR exhibits require at least one artwork.")
-            )
+            raise forms.ValidationError(_("AR exhibits require at least one artwork."))
         if self.exhibit_type == ExhibitTypes.MR and not augmenteds:
             raise forms.ValidationError(
                 _("MR exhibits require at least one augmented object.")
             )
         # Fallback for callers that didn't pass exhibit_type — keep
         # the old "you must pick at least something" guard.
-        if (
-            self.exhibit_type is None
-            and not artworks
-            and not augmenteds
-        ):
+        if self.exhibit_type is None and not artworks and not augmenteds:
             raise forms.ValidationError(
                 _("You must select at least one artwork or augmented object.")
             )
@@ -383,9 +377,7 @@ class ExhibitForm(forms.ModelForm):
         if self.exhibit_type is not None:
             exhibit.exhibit_type = self.exhibit_type
         else:
-            exhibit.exhibit_type = (
-                ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
-            )
+            exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
 
         if commit:
             exhibit.save()

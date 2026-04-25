@@ -406,8 +406,9 @@ class TestEditExhibitView(TestCase):
         }
         response = self.client.post(url, data)
         assert response.status_code == 200
-        assert "AR exhibits require at least one artwork" in (
-            response.context["form"].non_field_errors()[0]
+        assert (
+            "AR exhibits require at least one artwork"
+            in (response.context["form"].non_field_errors()[0])
         )
 
     def test_edit_ar_exhibit_comes_filled_with_current_data(self):
