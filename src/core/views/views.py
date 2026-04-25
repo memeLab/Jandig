@@ -189,7 +189,7 @@ def object_upload(request):
 @require_http_methods(["GET"])
 def marker_preview(request):
     marker_id = request.GET.get("id")
-    marker = Marker.objects.get(id=marker_id)
+    marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
         "augmented": marker,
