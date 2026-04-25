@@ -6,7 +6,7 @@ from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from pymarker.core import generate_patt_from_image
 
 from core.models import Artwork, Marker, ObjectExtensions
@@ -121,6 +121,20 @@ class UploadObjectForm(forms.ModelForm):
         self.instance.file_size = self.instance.source.size
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
+
+        # Phase 1 of #690: capture native pixel dimensions for raster
+        # uploads. Pillow opens GIF natively. Video (mp4/webm) and GLB
+        # need other tools and are deferred to follow-up phases.
+        if self.instance.file_extension == "gif":
+            try:
+                self.instance.source.seek(0)
+                with Image.open(self.instance.source) as image:
+                    self.instance.width, self.instance.height = image.size
+                self.instance.source.seek(0)
+            except (UnidentifiedImageError, OSError):
+                # clean_source already validated the extension; if Pillow
+                # can't open it for some reason, leave dimensions null.
+                pass
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
 

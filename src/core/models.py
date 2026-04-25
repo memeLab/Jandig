@@ -321,6 +321,11 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
         null=True,
     )
+    # Native pixel dimensions (when known). Populated on upload for
+    # raster formats; nullable for legacy rows and for formats we
+    # don't yet probe (mp4, webm, glb — see #690 phase 2/3).
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.source.name
