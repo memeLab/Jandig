@@ -256,6 +256,20 @@ class ExhibitForm(forms.ModelForm):
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
+        # On edit, pre-populate the hidden M2M inputs with the current
+        # selections so a user who only changes name/URL doesn't end
+        # up posting empty strings that clobber the data. The JS in
+        # exhibit_create_*.jinja2 still rewrites the input on click.
+        if self.instance.pk:
+            self.fields["artworks"].initial = ",".join(
+                str(a.id) for a in self.instance.artworks.all()
+            )
+            self.fields["augmenteds"].initial = ",".join(
+                str(o.id) for o in self.instance.augmenteds.all()
+            )
+            self.fields["sounds"].initial = ",".join(
+                str(s.id) for s in self.instance.sounds.all()
+            )
 
     class Meta:
         model = Exhibit
@@ -339,25 +353,6 @@ class ExhibitForm(forms.ModelForm):
         cleaned_data = super().clean()
         artworks = cleaned_data.get("artworks") or []
         augmenteds = cleaned_data.get("augmenteds") or []
-        sounds = cleaned_data.get("sounds") or []
-
-        # On edit, the artworks/augmenteds/sounds CharFields are hidden
-        # inputs only populated by JS when the user clicks items in the
-        # selection modal. If the user just edits the name/URL and saves,
-        # those fields arrive empty in POST and would clobber the
-        # existing M2M data — and the validation below would refuse the
-        # save outright. Preserve the instance's current selections when
-        # nothing was submitted.
-        if self.instance.pk:
-            if not artworks:
-                artworks = list(self.instance.artworks.all())
-                cleaned_data["artworks"] = artworks
-            if not augmenteds:
-                augmenteds = list(self.instance.augmenteds.all())
-                cleaned_data["augmenteds"] = augmenteds
-            if not sounds:
-                sounds = list(self.instance.sounds.all())
-                cleaned_data["sounds"] = sounds
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
