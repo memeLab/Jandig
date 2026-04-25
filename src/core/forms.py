@@ -184,7 +184,7 @@ class ArtworkForm(forms.ModelForm):
         widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
     )
     selected_sound = forms.ModelChoiceField(
-        queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
+        queryset=Sound.objects.all(),
         required=False,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
