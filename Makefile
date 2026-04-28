@@ -1,5 +1,7 @@
 RUNNING_CONTAINER := $(shell docker compose ps --services --filter "status=running" | grep django )
 
+.PHONY: test test-ui test-all lint check migrations migrate collectstatic gen translate_es translate_pt
+
 test:
 	@if [ -n "${RUNNING_CONTAINER}" ]; then \
 		docker compose exec django pytest src/core src/users src/blog; \
