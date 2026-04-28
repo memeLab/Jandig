@@ -443,7 +443,9 @@ def _handle_exhibit_form(
     is_edit = exhibit_instance is not None
 
     if request.method == "POST":
-        form = ExhibitForm(request.POST, instance=exhibit_instance)
+        form = ExhibitForm(
+            request.POST, instance=exhibit_instance, exhibit_type=exhibit_type
+        )
         form.full_clean()
 
         if form.is_valid():
@@ -458,7 +460,7 @@ def _handle_exhibit_form(
             context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
             return render(request, "core/exhibit_create_ar.jinja2", context)
     else:
-        form = ExhibitForm(instance=exhibit_instance)
+        form = ExhibitForm(instance=exhibit_instance, exhibit_type=exhibit_type)
         if exhibit_type == ExhibitTypes.MR:
             context = _get_mr_exhibit_context_data(form, edit=is_edit)
             return render(request, "core/exhibit_create_mr.jinja2", context)
