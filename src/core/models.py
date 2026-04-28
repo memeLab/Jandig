@@ -608,6 +608,12 @@ def remove_source_file(sender, instance, **kwargs):
         instance.source.delete(False)
     if isinstance(instance, Object):
         instance.source.delete(False)
-        instance.audio_description.delete(False)
+        # audio_description is FileField(null=True, blank=True). An Object
+        # created without one can surface as None here (or as a FieldFile
+        # with an empty name), and calling .delete() on that raises
+        # AttributeError and aborts the rest of the cleanup, orphaning the
+        # source file we just removed. See #849.
+        if instance.audio_description:
+            instance.audio_description.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)
