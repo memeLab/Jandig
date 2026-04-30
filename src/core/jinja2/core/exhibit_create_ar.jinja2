@@ -25,7 +25,7 @@
                 <h3>{{ _("Exhibit Link") }}</h3>
                 <p class="gallery-title">{{ _("Your exhibit URL will look like this") }}</p>
                 <div style="display: flex; width: 100%">
-                    <label class="url-helper">https://jandig.app/</label>
+                    <label class="url-helper">{{ request.scheme }}://{{ request.get_host() }}/</label>
                     <p id="exhibit-slug-field" style="float: right; width: 65%">{{ form.visible_fields()[1] }}</p>
                 </div>
                 {{ form.visible_fields()[1] .errors }}
