@@ -7,7 +7,6 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
 from PIL import Image
 from pymarker.core import generate_marker_from_image, generate_patt_from_image
@@ -100,7 +99,7 @@ class SoundExtensions(models.TextChoices):
 
 
 @pghistory.track()
-class Sound(TimeStampedModel, ContentMixin):
+class Sound(models.Model, ContentMixin):
     file = models.FileField(upload_to="sounds/")
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=60, blank=False)
@@ -113,6 +112,15 @@ class Sound(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=SoundExtensions.choices
     )
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="sound_created_desc_idx"),
+            models.Index(fields=["-modified"], name="sound_modified_desc_idx"),
+        ]
 
     @property
     def date(self):
@@ -208,7 +216,7 @@ class ExhibitTypes(models.TextChoices):
 
 
 @pghistory.track()
-class Marker(TimeStampedModel, ContentMixin):
+class Marker(models.Model, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
@@ -219,6 +227,15 @@ class Marker(TimeStampedModel, ContentMixin):
 
     # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="marker_created_desc_idx"),
+            models.Index(fields=["-modified"], name="marker_modified_desc_idx"),
+        ]
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -293,7 +310,7 @@ class ObjectExtensions(models.TextChoices):
 
 
 @pghistory.track()
-class Object(TimeStampedModel, ContentMixin):
+class Object(models.Model, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
@@ -321,6 +338,15 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
         null=True,
     )
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="object_created_desc_idx"),
+            models.Index(fields=["-modified"], name="object_modified_desc_idx"),
+        ]
 
     def __str__(self):
         return self.source.name
@@ -410,7 +436,7 @@ class Object(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Artwork(TimeStampedModel, ContentMixin):
+class Artwork(models.Model, ContentMixin):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -433,6 +459,15 @@ class Artwork(TimeStampedModel, ContentMixin):
     scale_y = models.FloatField(default=1.0)
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="artwork_created_desc_idx"),
+            models.Index(fields=["-modified"], name="artwork_modified_desc_idx"),
+        ]
 
     @property
     def exhibits_count(self):
@@ -493,7 +528,7 @@ class Artwork(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Exhibit(TimeStampedModel, ContentMixin, models.Model):
+class Exhibit(models.Model, ContentMixin):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
@@ -511,6 +546,19 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         default=ExhibitTypes.AR,
         db_index=True,
     )
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="exhibit_created_desc_idx"),
+            models.Index(fields=["-modified"], name="exhibit_modified_desc_idx"),
+            models.Index(
+                fields=["exhibit_type", "-created"],
+                name="exhibit_type_created_idx",
+            ),
+        ]
 
     def __str__(self):
         return self.name

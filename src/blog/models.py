@@ -1,6 +1,5 @@
 from django.core.files.storage import default_storage
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
 
 from users.models import Profile
 
@@ -22,27 +21,45 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
 
-class PostImage(TimeStampedModel):
+class PostImage(models.Model):
     file = models.FileField(storage=default_storage, upload_to=IMAGE_BASE_PATH)
     description = models.CharField(max_length=500, blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="postimage_created_desc_idx"),
+            models.Index(fields=["-modified"], name="postimage_modified_desc_idx"),
+        ]
 
     def __str__(self):
         return self.file.name.lstrip(IMAGE_BASE_PATH)
 
 
-class Clipping(TimeStampedModel):
+class Clipping(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=500)
     link = models.URLField()
     file = models.FileField(upload_to="clipping_files/")
     display_date = models.DateField(db_index=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="clipping_created_desc_idx"),
+            models.Index(fields=["-modified"], name="clipping_modified_desc_idx"),
+        ]
 
     def __str__(self):
         return self.title
 
 
-class Post(TimeStampedModel):
+class Post(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     status = models.CharField(
@@ -58,6 +75,15 @@ class Post(TimeStampedModel):
     body = models.TextField()
     categories = models.ManyToManyField(Category, related_name="posts", blank=True)
     images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="created")
+    modified = models.DateTimeField(auto_now=True, verbose_name="modified")
+
+    class Meta:
+        get_latest_by = "modified"
+        indexes = [
+            models.Index(fields=["-created"], name="post_created_desc_idx"),
+            models.Index(fields=["-modified"], name="post_modified_desc_idx"),
+        ]
 
     def __str__(self):
         return self.title
