@@ -256,6 +256,20 @@ class ExhibitForm(forms.ModelForm):
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
+        # On edit, pre-populate the hidden M2M inputs with the current
+        # selections so a user who only changes name/URL doesn't end
+        # up posting empty strings that clobber the data. The JS in
+        # exhibit_create_*.jinja2 still rewrites the input on click.
+        if self.instance.pk:
+            self.fields["artworks"].initial = ",".join(
+                str(a.id) for a in self.instance.artworks.all()
+            )
+            self.fields["augmenteds"].initial = ",".join(
+                str(o.id) for o in self.instance.augmenteds.all()
+            )
+            self.fields["sounds"].initial = ",".join(
+                str(s.id) for s in self.instance.sounds.all()
+            )
 
     class Meta:
         model = Exhibit
@@ -337,8 +351,8 @@ class ExhibitForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks", [])
-        augmenteds = cleaned_data.get("augmenteds", [])
+        artworks = cleaned_data.get("artworks") or []
+        augmenteds = cleaned_data.get("augmenteds") or []
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
