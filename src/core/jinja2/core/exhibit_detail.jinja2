@@ -7,12 +7,12 @@
         <div class="exhibit-detail-box flex">
             <h1 class="exhibit-name">{{ exhibit.name }}</h1>
             <p class="url">
-                https://jandig.app/<span>{{ exhibit.slug }}</span>
+                {{ request.scheme }}://{{ request.get_host() }}/<span>{{ exhibit.slug }}</span>
             </p>
             <p class="by">
                 {{ _("Created by ") }} <b>{{ exhibit.owner.user.username }}</b>
             </p>
-            <a href="https://jandig.app/{{ exhibit.slug }}" class="gotoExb">{{ _("See this exhibition") }}</a>
+            <a href="/{{ exhibit.slug }}" class="gotoExb">{{ _("See this exhibition") }}</a>
         </div>
         {% if artworks %}
             <h1 class="titArt">{{ _("Exhibition Artworks") }}</h1>
