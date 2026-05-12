@@ -1,4 +1,8 @@
-/* Change manifest href to use ios-manifest.json on IOS devices */
+/* Change manifest href to use ios-manifest.json on iOS devices.
+ * Safe to load on every page; the AR-only browser-compatibility
+ * warning lives in safari-only-warning.js and is loaded only by
+ * arviewer.jinja2.
+ */
 
 // Detects if device is on iOS
 const isIos = () => {
@@ -8,13 +12,4 @@ const isIos = () => {
 
 if (isIos()) {
     document.getElementById("manifest").href = "/static/ios-manifest.json";
-    const browser = bowser.getParser(window.navigator.userAgent)
-    const isValidBrowser = browser.satisfies({
-      safari: ">=9"
-    })
-    if(!isValidBrowser) {
-        alert(
-          "Desculpe, este aplicativo funciona apenas no navegador Safari :("
-        )
-    }
 }
