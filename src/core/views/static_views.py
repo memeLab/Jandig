@@ -11,6 +11,10 @@ def documentation(request):
     return render(request, "core/documentation.jinja2", {})
 
 
+def privacy_policy(request):
+    return render(request, "core/privacy.jinja2", {})
+
+
 def favicon(_):
     return redirect(static("images/icons/favicon.ico"))
 

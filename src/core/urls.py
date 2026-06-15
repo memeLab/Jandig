@@ -11,6 +11,7 @@ from core.views.static_views import (
     manifest,
     marker_generator,
     me_hotsite,
+    privacy_policy,
     robots_txt,
     service_worker,
 )
@@ -47,6 +48,7 @@ urlpatterns = [
     path("community/", community, name="community"),
     path("content/delete/", delete, name="delete-content"),
     path("documentation/", documentation, name="documentation"),
+    path("privacy/", privacy_policy, name="privacy-policy"),
     path("exhibit_select/", exhibit_select, name="exhibit_select"),
     path("exhibit/", exhibit_detail, name="exhibit-detail"),
     path("exhibits/create-ar/", create_or_edit_ar_exhibit, name="create-ar-exhibit"),
