@@ -8,6 +8,7 @@ requires-python = ">=3.13"
 dependencies = [
   "babel~=2.16",
   "boto3~=1.36",
+  "cairosvg~=2.7",
   "django-cors-headers~=4.7",
   "django-environ~=0.12",
   "django-extensions~=4.0",
