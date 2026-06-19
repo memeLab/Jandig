@@ -1,4 +1,5 @@
 from io import BytesIO
+from os.path import basename
 
 from django import forms
 from django.core.files.base import ContentFile, File
@@ -84,6 +85,8 @@ class UploadObjectForm(forms.ModelForm):
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
+        if file is not None and getattr(file, "name", None):
+            file.name = basename(file.name)
 
         allowed_extensions = ["gif", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
@@ -107,6 +110,8 @@ class UploadObjectForm(forms.ModelForm):
         file = self.cleaned_data.get("audio_description")
         if not file:
             return None
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
 
         allowed_extensions = ["mp3", "ogg", "wav"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
@@ -141,6 +146,12 @@ class UploadMarkerForm(forms.ModelForm):
     class Meta:
         model = Marker
         fields = ("source", "author", "title")
+
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        if file is not None and getattr(file, "name", None):
+            file.name = basename(file.name)
+        return file
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
@@ -395,6 +406,8 @@ class SoundForm(forms.ModelForm):
         file = self.cleaned_data.get("file")
         if not file:
             raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
 
         allowed_extensions = ["mp3", "ogg", "wav"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
