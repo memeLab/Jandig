@@ -41,10 +41,41 @@ def marker_generator(request):
     return render(request, "core/generator.html", {})
 
 
-def robots_txt(_):
+def robots_txt(request):
+    # Block bots entirely on dev/staging hosts so dev.jandig.app stops
+    # showing up in search results.
+    host = request.get_host().lower()
+    if host.startswith("dev.") or "staging" in host:
+        lines = ["User-Agent: *", "Disallow: /"]
+        return HttpResponse("\n".join(lines), content_type="text/plain")
+
+    # Production: allow only the public CMS/blog surface. Block API,
+    # exhibit detail pages (bots feed random ids and cause 500s), and
+    # auth-gated CMS edit/upload paths.
     lines = [
         "User-Agent: *",
-        "Disallow: ",
+        "Allow: /$",
+        "Allow: /collection/",
+        "Allow: /community/",
+        "Allow: /documentation/",
+        "Allow: /memories/",
+        "Allow: /docs/",
+        "Allow: /see_all/",
+        "Disallow: /api/",
+        "Disallow: /admin/",
+        "Disallow: /users/",
+        "Disallow: /exhibit/",
+        "Disallow: /exhibits/",
+        "Disallow: /artwork/",
+        "Disallow: /artworks/",
+        "Disallow: /marker/",
+        "Disallow: /markers/",
+        "Disallow: /objects/",
+        "Disallow: /sounds/",
+        "Disallow: /generator/",
+        "Disallow: /content/delete/",
+        "Disallow: /elements/",
+        "Disallow: /exhibit_select/",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
