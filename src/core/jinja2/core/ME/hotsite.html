@@ -4,8 +4,8 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N598EKHDGJ"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      globalThis.dataLayer = globalThis.dataLayer || [];
+      function gtag(){globalThis.dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-N598EKHDGJ');
@@ -127,7 +127,7 @@
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box2_title">Álbum Interativo</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA5.png') }}"
-                         alt="Imagem: Álbum Interativo" 
+                         alt="Álbum Interativo" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
                     >
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box2_p">
@@ -142,7 +142,7 @@
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box1_title">Exposição</h2>
                     <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA.png') }}"
-                         alt="Imagem: Exposição" 
+                         alt="Exposição" 
                          class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
                     >
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box1_p">
@@ -156,7 +156,7 @@
                 <!-- QUEM SOMOS Box -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 lg:col-span-1 md:col-span-2 flex flex-col h-full hover:-translate-y-1">
                     <h2 class="text-2xl font-semibold mb-4 text-[#08B59F]" data-translate="home_box3_title">Quem Somos</h2>
-                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Imagem: Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
+                    <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA7.png') }}" alt="Quem Somos" class="w-full h-48 object-cover rounded-lg mb-4 shadow-sm">
                     <p class="text-gray-700 mb-6 flex-grow" data-translate="home_box3_p">
                         Conheça nossa equipe e todo o projeto Jandig.
                     </p>
@@ -213,7 +213,6 @@
                         class="absolute top-0 left-0 w-full h-full"
                         src="https://www.youtube.com/embed/Oou7uE2XeRo?si=aXKp_PGwZ_Rh_Z8K"
                         title="YouTube video player"
-                        frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allowfullscreen
@@ -246,7 +245,7 @@
             <h1 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="album_title">Álbum Interativo</h1>
             <div class="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
                 <img src="{{ static('images/icons/me/JANDIGME_HOTSITE ALTA8.png') }}"
-                     alt="Imagem: Álbum de Figurinhas" 
+                     alt="Álbum de Figurinhas" 
                      class="w-full h-auto md:h-80 object-cover"
                 >
             </div>
@@ -268,17 +267,17 @@
                 <li data-translate="album_intro4_l3">▶️ Aula 3: Um passo a passo de como publicar os seus próprios conteúdos educacionais no ecossistema da Jandig.</li>
                 <li data-translate="album_intro4_l4">▶️ Aula 4: Estratégias para expandir a experiência e transformar seus alunos em co-criadores de narrativas em Realidade Estendida.</li>
             </ul>
-            <!-- <div class="video-container" style="position: relative;padding-bottom: 56.25%;height: 0;"> -->
+
                         <iframe width="560"
                                 height="315"
                                 referrerpolicy='strict-origin-when-cross-origin'
                                 src="https://www.youtube.com/embed/videoseries?si=ee6-7n2NkqeKJ8TY&amp;list=PLnqMPRm2VJBg1CR8j6nhCspJgeEAKKM1O"
-                                frameborder="0";
+                                title="Curso de Realidade Estendida (XR) aplicada à educação"
                                 style="margin: auto; margin-bottom: 40px;"
                                 allow="autoplay; gyroscope; picture-in-picture"
                                 allowfullscreen>
                         </iframe>
-            <!-- </div> -->
+  
             <h2 class="text-3xl font-bold text-left mb-8 text-[#08B59F] border-b pb-4" data-translate="album_downloads_title">DOWNLOADS</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Álbum de Figurinhas -->
@@ -347,16 +346,16 @@
                 </p>
             </div>
                 <h2 class="text-4xl font-extrabold text-left mb-8 text-[#08B59F]" data-translate="oficina_title2">Algumas fotos da oficina</h2>
-                <img src="{{ static('images/icons/me/oficina_me_1.jpg') }}"
+                <img alt="Oficina ME 1" src="{{ static('images/icons/me/oficina_me_1.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/oficina_me_2.jpg') }}"
+                <img alt="Oficina ME 2" src="{{ static('images/icons/me/oficina_me_2.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/oficina_me_3.jpg') }}"
+                <img alt="Oficina ME 3" src="{{ static('images/icons/me/oficina_me_3.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/oficina_me_5.jpg') }}"
+                <img alt="Oficina ME 5" src="{{ static('images/icons/me/oficina_me_5.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
         </section>
@@ -370,7 +369,6 @@
                         class="absolute top-0 left-0 w-full h-full"
                         src="https://www.youtube.com/embed/PY3vV_Vy0aQ?si=IhEw3D7KP2rKwiii"
                         title="YouTube video player"
-                        frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin"
                         allowfullscreen
@@ -410,19 +408,19 @@
                 </div>
             </div>
             <h2 class="text-4xl font-extrabold text-left mb-8 mt-10 text-[#08B59F]" data-translate="exhibition_title2">Algumas fotos da exposição</h2>
-                <img src="{{ static('images/icons/me/abertura_me_1.jpg') }}"
+                <img alt="Abertura ME 1" src="{{ static('images/icons/me/abertura_me_1.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/abertura_me_7.jpg') }}"
+                <img alt="Abertura ME 7" src="{{ static('images/icons/me/abertura_me_7.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/abertura_me_8.jpg') }}"
+                <img alt="Abertura ME 8" src="{{ static('images/icons/me/abertura_me_8.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/abertura_me_9.jpg') }}"
+                <img alt="Abertura ME 9" src="{{ static('images/icons/me/abertura_me_9.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
-                <img src="{{ static('images/icons/me/abertura_me_10.jpg') }}"
+                <img alt="Abertura ME 10" src="{{ static('images/icons/me/abertura_me_10.jpg') }}"
                         class="w-full h-auto max-h-96 object-contain mx-auto"
                 >
 
@@ -484,7 +482,7 @@
                 <!-- Fomento -->
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_fomento">Fomento</p>
-                    <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-12 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+PROAC';">
+                    <img src="{{ static('images/icons/me/logos_proac/proac.png') }}" alt="Logo PROAC" class="h-12 object-contain">
                 </div>
                 <!-- Produção -->
                 <div class="flex flex-col items-center">
@@ -506,12 +504,12 @@
                 <div class="flex flex-col items-center">
                     <p class="font-semibold text-gray-500 text-sm mb-3 uppercase tracking-wider" data-translate="footer_realizacao">Realização</p>
                      <div class="flex flex-wrap justify-center gap-4 items-center">
-                        <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/200x90/e0e0e0/333333?text=Logo+CultSP';">
-                        <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-                        <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo Aldir Blanc" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
-                        <img src="{{ static('images/icons/me/snc.png') }}" alt="Logo SNC" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/logos_proac/_preto.png') }}" alt="Logo CultSP" class="h-10 object-contain">
+                        <img src="{{ static('images/icons/me/logos_proac/4-vertical-slogan.png') }}" alt="Logo Secretaria" class="h-10 object-contain">
+                        <img src="{{ static('images/icons/me/logos_proac/rgb-vertical_preferencial.png') }}" alt="Logo Aldir Blanc" class="h-10 object-contain">
+                        <img src="{{ static('images/icons/me/snc.png') }}" alt="Logo SNC" class="h-10 object-contain">
                         <div class="hidden md:block h-8 w-px bg-gray-300"></div>
-                        <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo Federal" class="h-10 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/250x100/e0e0e0/333333?text=Logo+Secretaria';">
+                        <img src="{{ static('images/icons/me/logos_proac/logofederal.png') }}" alt="Logo Federal" class="h-10 object-contain">
                     </div>
                 </div>
             </div>
@@ -1136,7 +1134,7 @@
             document.documentElement.lang = lang;
             const elements = document.querySelectorAll('[data-translate]');
             elements.forEach(el => {
-                const key = el.getAttribute('data-translate');
+                const key = el.dataset.translate;
                 if (translations[lang] && translations[lang][key]) {
                     el.innerHTML = translations[lang][key];
                 }
@@ -1144,7 +1142,7 @@
 
             const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
             placeholderElements.forEach(el => {
-                const key = el.getAttribute('data-translate-placeholder');
+                const key = el.dataset.translatePlaceholder;
                 if (translations[lang] && translations[lang][key]) {
                     el.placeholder = translations[lang][key];
                 }
@@ -1160,7 +1158,7 @@
             handleRouting();
             
             // Listen for browser back/forward buttons
-            window.addEventListener('popstate', handleRouting);
+            globalThis.addEventListener('popstate', handleRouting);
 
             // Initialize language
             changeLanguage('pt');
