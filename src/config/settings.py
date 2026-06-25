@@ -52,7 +52,7 @@ HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
 SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.10")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.11")
 
 
 def traces_sampler(sampling_context):
@@ -271,11 +271,10 @@ EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
 EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="")
 EMAIL_USE_SSL = False
 
-# Recaptcha
-RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
-RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
-RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
-RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
+# Turnstile
+TURNSTILE_ENABLED = env("TURNSTILE_ENABLED", default=False)
+TURNSTILE_SITE_KEY = env("TURNSTILE_SITE_KEY", default="")
+TURNSTILE_SECRET_KEY = env("TURNSTILE_SECRET_KEY", default="")
 
 ###########################
 #### Storage settings  ####

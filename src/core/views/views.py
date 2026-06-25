@@ -189,7 +189,14 @@ def object_upload(request):
 @require_http_methods(["GET"])
 def marker_preview(request):
     marker_id = request.GET.get("id")
-    marker = Marker.objects.get(id=marker_id)
+    # ?id= comes off the query string as either None or a raw string.
+    # Marker.id is an integer PK, so coerce + 404 instead of letting a
+    # missing/garbage value surface as ValueError or DoesNotExist.
+    try:
+        marker_id = int(marker_id)
+    except (TypeError, ValueError):
+        raise Http404
+    marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
         "augmented": marker,
@@ -226,7 +233,14 @@ def marker_upload(request):
 @login_required
 def edit_marker(request):
     index = request.GET.get("id", "-1")
-    model = Marker.objects.get(id=index)
+    try:
+        index = int(index)
+    except (TypeError, ValueError):
+        raise Http404
+    model = get_object_or_404(Marker, id=index)
+
+    if model.owner != request.user.profile:
+        raise Http404
 
     model_data = {
         "source": model.source,
@@ -235,9 +249,6 @@ def edit_marker(request):
         "patt": model.patt,
         "title": model.title,
     }
-
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
 
     if request.method == "POST":
         form = UploadMarkerForm(request.POST, request.FILES, instance=model)
@@ -263,7 +274,14 @@ def edit_marker(request):
 @login_required
 def edit_object(request):
     index = request.GET.get("id", "-1")
-    model = Object.objects.get(id=index)
+    try:
+        index = int(index)
+    except (TypeError, ValueError):
+        raise Http404
+    model = get_object_or_404(Object, id=index)
+
+    if model.owner != request.user.profile:
+        raise Http404
 
     model_data = {
         "source": model.source,
@@ -272,8 +290,6 @@ def edit_object(request):
         "title": model.title,
         "thumbnail": model.thumbnail,
     }
-    if not model or model.owner != Profile.objects.get(user=request.user):
-        raise Http404
 
     if request.method == "POST":
         form = UploadObjectForm(request.POST, request.FILES, instance=model)
@@ -660,7 +676,7 @@ def related_content(request):
             .distinct()
         )
 
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall:": False}
+        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall": False}
 
     elif element_type == "artwork":
         element = Artwork.objects.prefetch_related(
@@ -669,7 +685,7 @@ def related_content(request):
 
         exhibits = element.exhibits.all()
 
-        ctx = {"exhibits": exhibits, "seeall:": False}
+        ctx = {"exhibits": exhibits, "seeall": False}
 
     elif element_type == "sound":
         element = Sound.objects.prefetch_related(

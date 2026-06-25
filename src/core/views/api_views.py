@@ -61,7 +61,7 @@ class MarkerGeneratorAPIView(APIView):
             base64_encoded_result_str = base64_encoded_result_bytes.decode("ascii")
 
             # Create an HTML image tag with the base64 data
-            transformed_image = f"data:image/jpeg;base64,{base64_encoded_result_str}"
+            transformed_image = f"data:image/png;base64,{base64_encoded_result_str}"
 
             return HttpResponse(
                 render(

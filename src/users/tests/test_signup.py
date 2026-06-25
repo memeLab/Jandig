@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 DEFAULT_VALID_PASSWORD = "Aa#12C34d6561"
 
 
+@override_settings(TURNSTILE_ENABLED=False)
 class TestSignup(TestCase):
     def test_signup_get(self):
         """Signup page should be reachable"""

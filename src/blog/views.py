@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from blog.models import Category, Clipping, Post, PostStatus
 
@@ -40,7 +40,10 @@ def blog_index(request):
 
 
 def post_detail(request, pk):
-    post = Post.objects.prefetch_related("images", "categories").get(pk=pk)
+    post = get_object_or_404(
+        Post.objects.prefetch_related("images", "categories"),
+        pk=pk,
+    )
 
     context = {"post": post, "images": post.images.all()}
 

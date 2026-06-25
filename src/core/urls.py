@@ -63,7 +63,7 @@ urlpatterns = [
     path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),
     re_path(
-        r"^(me|ME)\/?$",
+        r"^(?:me|ME)\/?$",
         me_hotsite,
         name="mitologia-extendida",
     ),
