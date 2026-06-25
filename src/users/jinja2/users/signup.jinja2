@@ -1,14 +1,15 @@
 {% extends '/core/arviewer.jinja2' %}
 {% block extra_css %}<link rel="stylesheet" href="{{ static ('css/signup.css') }}">{% endblock %}
 {% block extra_js %}
-    <!-- Google Recaptcha -->
-    {% if recaptcha_enabled %}
-        <script src="https://www.google.com/recaptcha/enterprise.js?render={{recaptcha_site_key}}"></script>
+    <!-- Cloudflare Turnstile -->
+    {% if turnstile_enabled %}
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                async
+                defer></script>
         <script>
-            function onSubmit(token) {
-                console.log(token)
-                document.getElementById("signup-form").submit();
-            }
+        function enableSubmit() {
+            document.getElementById("submit-button").disabled = false;
+        }
         </script>
     {% endif %}
 {% endblock %}
@@ -41,10 +42,15 @@
                         <label for="remember-me-checkbox">{{ _("Remember me") }}</label>
                     </p>
                 </div>
-                <button class="submit-btn g-recaptcha"
-                        data-sitekey="{{ recaptcha_site_key }}"
-                        data-callback='onSubmit'
-                        data-action='sign_up'>{{ _("Submit") }}</button>
+                {% if turnstile_enabled %}
+                    <!-- Turnstile widget -->
+                    <div class="cf-turnstile"
+                         data-sitekey="{{ turnstile_site_key }}"
+                         data-callback="enableSubmit"></div>
+                    <button class="submit-btn" type="submit" id="submit-button" disabled>{{ _("Submit") }}</button>
+                {% else %}
+                    <button class="submit-btn" type="submit">{{ _("Submit") }}</button>
+                {% endif %}
             </form>
         </div>
     </div>

@@ -24,7 +24,7 @@ from .forms import (
     SignupForm,
 )
 from .models import Profile
-from .services import BOT_SCORE, create_assessment
+from .services.turnstile_service import verify_turnstile
 
 log = logging.getLogger(__file__)
 
@@ -35,17 +35,11 @@ INVALID_MESSAGE = "Invalid Request"
 
 def signup(request):
     if request.method == "POST":
-        if settings.RECAPTCHA_ENABLED:
-            recaptcha_token = request.POST.get("g-recaptcha-response")
-            if not recaptcha_token:
+        if settings.TURNSTILE_ENABLED:
+            turnstile_token = request.POST.get("cf-turnstile-response")
+            if not turnstile_token:
                 return JsonResponse({"error": INVALID_MESSAGE}, status=400)
-            assessment = create_assessment(
-                token=recaptcha_token, recaptcha_action="sign_up"
-            )
-            if not assessment:
-                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
-            score = assessment.get("riskAnalysis", {}).get("score", -1)
-            if score <= BOT_SCORE:
+            if not verify_turnstile(turnstile_token):
                 return JsonResponse({"error": INVALID_MESSAGE}, status=400)
 
         form = SignupForm(request.POST)
@@ -66,8 +60,8 @@ def signup(request):
         "users/signup.jinja2",
         {
             "form": form,
-            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
-            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+            "turnstile_enabled": settings.TURNSTILE_ENABLED,
+            "turnstile_site_key": settings.TURNSTILE_SITE_KEY,
         },
     )
 
