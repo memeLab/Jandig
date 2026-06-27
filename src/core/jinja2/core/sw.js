@@ -1,4 +1,4 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.4.1/workbox-sw.js');
 
 // Activate the new SW immediately so existing users stop being served
 // HTML from the old "cache everything" version (see #506).
@@ -20,22 +20,22 @@ if (workbox) {
 
   workbox.routing.registerRoute(
     /.*\.(?:png|jpg|jpeg|svg|gif|patt|webp|ico)$/,
-    workbox.strategies.networkFirst()
+    new workbox.strategies.NetworkFirst()
   );
 
   workbox.routing.registerRoute(
     /.*\.(?:js|css)$/,
-    workbox.strategies.networkFirst()
+    new workbox.strategies.NetworkFirst()
   );
 
   workbox.routing.registerRoute(
     /.*\.(?:woff|woff2|ttf|eot|otf)$/,
-    workbox.strategies.cacheFirst()
+    new workbox.strategies.CacheFirst()
   );
 
   workbox.routing.registerRoute(
-    'https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js',
-    workbox.strategies.networkFirst()
+    'https://storage.googleapis.com/workbox-cdn/releases/7.4.1/workbox-sw.js',
+    new workbox.strategies.NetworkFirst()
   );
 
 } else {
