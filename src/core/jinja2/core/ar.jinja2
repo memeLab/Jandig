@@ -29,9 +29,9 @@
           <canvas id="ar-canvas" {% if not debug %}hidden{% endif %}></canvas>
           <canvas id="three-canvas"></canvas>
         </div>
-        {% for artwork in artworks %}
-        <ar-marker src="{{ artwork.marker.source.url }}">
-          <ar-content src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
+        {% for id, artwork in enumerate(artworks) %}
+        <ar-marker id="marker-{{id}}" src="{{ artwork.marker.source.url }}">
+          <ar-content id="content-{{id}}" src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
         </ar-marker>
         {% endfor %}
     </body>
