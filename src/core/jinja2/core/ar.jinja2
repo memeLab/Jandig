@@ -13,6 +13,7 @@
             }
         }
         </script>
+        <script src="{{ static('js/ar-elements.js') }}"></script>
         <script src="{{ static('js/ar-utils.js') }}"></script>
         <script src="{{ static('js/ar.js') }}"></script>
         <script async src="{{ static('libs/opencv-4.13.0.js') }}" onload="CheckOpenCvIsReady();" type="text/javascript"></script>
@@ -22,5 +23,10 @@
           <video id="camera" autoplay="" playsinline="" muted=""></video>
           <canvas id="three-canvas"></canvas>
         </div>
+        {% for artwork in artworks %}
+        <ar-marker src="{{ artwork.marker.source.url }}">
+          <ar-content src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
+        </ar-marker>
+        {% endfor %}
     </body>
 </html>

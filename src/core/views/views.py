@@ -702,4 +702,6 @@ def related_content(request):
     return render(request, COLLECTION_PAGE, ctx)
 
 def ar_view(request):
-    return render(request, "core/ar.jinja2", {})
+    artwork = Artwork.objects.get(id=1)
+    ctx = {"artworks": [artwork]}
+    return render(request, "core/ar.jinja2", ctx)
