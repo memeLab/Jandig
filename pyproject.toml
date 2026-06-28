@@ -72,3 +72,5 @@ target-version = "py313"
 profile="jinja"
 extension="jinja2"
 
+[tool.uv]
+exclude-newer="1 week"
