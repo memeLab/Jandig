@@ -220,6 +220,9 @@ function pruneStaleTracks() {
 function clearmarkerCache() {
     for (const marker of globalThis.markerCache) {
         marker.mat.delete();
+        for (const rot of marker.rotations) {
+            rot.mat.delete();
+        }
     }
     globalThis.markerCache = [];
 }
@@ -245,9 +248,23 @@ function getExhibitMarkers() {
         }
 
         cv.resize(markerMat, markerMat, new cv.Size(config.warpSize, config.warpSize));
+
+        const rot90 = new cv.Mat();
+        cv.rotate(markerMat, rot90, cv.ROTATE_90_CLOCKWISE);
+        const rot180 = new cv.Mat();
+        cv.rotate(markerMat, rot180, cv.ROTATE_180);
+        const rot270 = new cv.Mat();
+        cv.rotate(markerMat, rot270, cv.ROTATE_90_COUNTERCLOCKWISE);
+
         globalThis.markerCache.push({
             id: markerEl.markerId,
-            mat: markerMat
+            mat: markerMat,
+            rotations: [
+                { candidateDeg: 0,   mat: markerMat },
+                { candidateDeg: 90,  mat: rot270 },
+                { candidateDeg: 180, mat: rot180 },
+                { candidateDeg: 270, mat: rot90 },
+            ]
         });
     }
 
@@ -280,13 +297,12 @@ function findBestMarkerMatch(markerMat) {
         return null;
     }
 
-    const rotations = buildRotations(markerMat);
     let bestMatch = null;
 
     for (const marker of markers) {
-        for (const rotation of rotations) {
+        for (const rot of marker.rotations) {
             const matchResult = new cv.Mat();
-            cv.matchTemplate(rotation.mat, marker.mat, matchResult, cv.TM_CCOEFF_NORMED);
+            cv.matchTemplate(markerMat, rot.mat, matchResult, cv.TM_CCOEFF_NORMED);
             const confidence = matchResult.data32F[0];
             matchResult.delete();
 
@@ -298,14 +314,10 @@ function findBestMarkerMatch(markerMat) {
                 bestMatch = {
                     markerId: marker.id,
                     confidence,
-                    rotationDeg: rotation.degrees
+                    rotationDeg: rot.candidateDeg
                 };
             }
         }
-    }
-
-    for (const rotation of rotations) {
-        rotation.mat.delete();
     }
 
     return bestMatch;
@@ -316,22 +328,17 @@ function updateRotationForMarker(markerMat, templateId) {
     const template = templates.find(t => t.id === templateId);
     if (!template) return null;
 
-    const rotations = buildRotations(markerMat);
     let bestRotation = null;
 
-    for (const rotation of rotations) {
+    for (const rot of template.rotations) {
         const matchResult = new cv.Mat();
-        cv.matchTemplate(rotation.mat, template.mat, matchResult, cv.TM_CCOEFF_NORMED);
+        cv.matchTemplate(markerMat, rot.mat, matchResult, cv.TM_CCOEFF_NORMED);
         const confidence = matchResult.data32F[0];
         matchResult.delete();
 
         if (confidence >= globalThis.config.matchConfidenceThreshold && (!bestRotation || confidence > bestRotation.confidence)) {
-            bestRotation = { rotationDeg: rotation.degrees, confidence };
+            bestRotation = { rotationDeg: rot.candidateDeg, confidence };
         }
-    }
-
-    for (const rotation of rotations) {
-        rotation.mat.delete();
     }
 
     return bestRotation;
