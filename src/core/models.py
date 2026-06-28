@@ -1,7 +1,6 @@
 import logging
 
 import pghistory
-from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -9,10 +8,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
-from PIL import Image
-from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from config.storage_backends import PublicMediaStorage
 from users.models import Profile
 
 log = logging.getLogger()
@@ -25,27 +21,6 @@ DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
 SCALE_REGEX = r"[\d\.\d]+"
 
 USED_IN = _("Used in")
-
-
-def create_patt(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        patt_str = generate_patt_from_image(image)
-        patt_file = filestorage.save(
-            "patts/" + original_filename + ".patt",
-            ContentFile(patt_str.encode("utf-8")),
-        )
-        return patt_file
-
-
-def create_marker(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        marker_image = generate_marker_from_image(image)
-        marker_image.name = original_filename
-        marker_image.__commited = False
-        return marker_image
-
 
 class ContentMixin:
     def content_type(self):

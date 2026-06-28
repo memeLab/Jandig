@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <link rel="shortcut icon"
               href="{{ static('images/icons/favicon.ico') }}"
               type="image/x-icon" />
@@ -20,22 +21,27 @@
             window.arOverlay = { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks };
         </script>
         <script src="{{ static('js/ar.js') }}"></script>
-        <script async src="{{ static('libs/opencv-4.13.0.js') }}" onload="MarkOpenCvReady();" type="text/javascript"></script>
+        <script async
+                src="{{ static('libs/opencv-4.13.0.js') }}"
+                onload="MarkOpenCvReady();"
+                type="text/javascript"></script>
     </head>
     <body>
         <div id="video-container">
-        
-          <video id="camera" autoplay="" playsinline="" muted="" {% if debug %}hidden{% endif %}></video>
-          <canvas id="ar-canvas" {% if not debug %}hidden{% endif %}></canvas>
-          <canvas id="three-canvas"></canvas>
+            <video id="camera"
+                   autoplay=""
+                   playsinline=""
+                   muted=""
+                   {% if debug %}hidden{% endif %}>
+            </video>
+            <canvas id="ar-canvas" {% if not debug %}hidden{% endif %}></canvas>
+            <canvas id="three-canvas"></canvas>
         </div>
         {% for id, artwork in enumerate(artworks) %}
-        <ar-marker id="marker-{{id}}" src="{{ artwork.marker.source.url }}">
-          <ar-content id="content-{{id}}" src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
-        </ar-marker>
+            <ar-marker id="marker-{{ id }}" src="{{ artwork.marker.source.url }}">
+            <ar-content id="content-{{ id }}" src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
+            </ar-marker>
         {% endfor %}
     </body>
-    <script>
-        initializePipeline();
-    </script>
+    <script>initializePipeline();</script>
 </html>
