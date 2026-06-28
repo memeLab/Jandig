@@ -700,3 +700,6 @@ def related_content(request):
         }
 
     return render(request, COLLECTION_PAGE, ctx)
+
+def ar_view(request):
+    return render(request, "core/ar.jinja2", {})

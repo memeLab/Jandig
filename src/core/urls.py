@@ -15,6 +15,7 @@ from core.views.static_views import (
     service_worker,
 )
 from core.views.views import (
+    ar_view,
     artwork_preview,
     collection,
     create_artwork,
@@ -39,6 +40,7 @@ from core.views.views import (
 
 urlpatterns = [
     path("", home_new, name="home"),
+    path("ar/", ar_view, name="ar-view"),
     path("arviewer/", home_old, name="home-old"),
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("artworks/create/", create_artwork, name="create-artwork"),

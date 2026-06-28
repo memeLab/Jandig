@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
+        <link rel="stylesheet" href="{{ static('css/ar.css') }}" />
+        <script type="importmap">
+        {
+            "imports": {
+                "three": "{{ static('libs/three-js/three-0.184.0.js') }}"
+            }
+        }
+        </script>
+        <script src="{{ static('js/ar-utils.js') }}"></script>
+        <script src="{{ static('js/ar.js') }}"></script>
+        <script async src="{{ static('libs/opencv-4.13.0.js') }}" onload="CheckOpenCvIsReady();" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="video-container">
+          <video id="camera" autoplay="" playsinline="" muted=""></video>
+          <canvas id="three-canvas"></canvas>
+        </div>
+    </body>
+</html>
