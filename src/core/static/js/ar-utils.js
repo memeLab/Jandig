@@ -1,7 +1,7 @@
 async function startCamera() {
     const userCamera = document.getElementById('camera');
     try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", height: {min: 480, ideal: 720,max: 1080 }}, audio: false });
         userCamera.srcObject = mediaStream;
         await userCamera.play();
         await waitForVideoMetadata(userCamera);
