@@ -703,5 +703,6 @@ def related_content(request):
 
 def ar_view(request):
     artwork = Artwork.objects.get(id=1)
-    ctx = {"artworks": [artwork]}
+    debug = request.GET.get("debug", "false").lower() == "true"
+    ctx = {"artworks": [artwork], "debug": debug}
     return render(request, "core/ar.jinja2", ctx)
