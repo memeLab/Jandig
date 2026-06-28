@@ -52,11 +52,13 @@ function setCameraProjection(w, h, f) {
 }
 
 function getMarkerElement(markerId) {
-    const markerEls = document.querySelectorAll('ar-marker');
-    for (const el of markerEls) {
-        if (el.markerId === markerId) return el;
-    }
-    return null;
+    const markerEl = document.getElementById(markerId);
+    return markerEl || null;
+}
+function getContentElement(markerId) {
+    const id = markerId.replace('marker-', 'content-');
+    const contentEl = document.getElementById(id);
+    return contentEl || null;
 }
 
 function getOrCreateTexture(markerId) {
@@ -64,17 +66,24 @@ function getOrCreateTexture(markerId) {
         return textureCache.get(markerId);
     }
 
-    const markerEl = getMarkerElement(markerId);
-    if (!markerEl) return null;
+    const contentEl = getContentElement(markerId);
+    if (!contentEl) return null;
+
 
     let texture;
 
-    if (markerEl._contentType === 'video' && markerEl._contentVideo) {
-        texture = new THREE.VideoTexture(markerEl._contentVideo);
+    if (contentEl.type === 'video') {
+        texture = new THREE.VideoTexture(contentEl.video);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
+    } else if (contentEl.type === 'spritesheet' && contentEl.metadata) {
+        const meta = contentEl.metadata;
+        texture.repeat.set(1 / meta.columns, 1 / meta.rows);
+        texture.offset.set(0, 1 - (1 / meta.rows)); // start at top-left frame
     } else {
+        const markerEl = getMarkerElement(markerId);
+        if (!markerEl) return null;
         const imgEl = markerEl._contentImg || markerEl._markerImg;
         if (!imgEl) return null;
 
@@ -83,45 +92,38 @@ function getOrCreateTexture(markerId) {
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
-
-        // For spritesheets, set up UV repeat to show a single frame
-        if (markerEl._contentType === 'spritesheet' && markerEl._contentMetadata) {
-            const meta = markerEl._contentMetadata;
-            texture.repeat.set(1 / meta.columns, 1 / meta.rows);
-            texture.offset.set(0, 1 - (1 / meta.rows)); // start at top-left frame
-        }
     }
 
     textureCache.set(markerId, texture);
     return texture;
 }
 
-function getOrCreateMesh(trackId, templateId) {
+function getOrCreateMesh(trackId, markerId) {
     if (overlayMeshes.has(trackId)) {
         return overlayMeshes.get(trackId);
     }
 
-    const markerEl = getMarkerElement(templateId);
-    if (!markerEl) return null;
+    const contentEl = getContentElement(markerId);
+    if (!contentEl) return null;
 
-    const texture = getOrCreateTexture(templateId);
+    const texture = getOrCreateTexture(markerId);
     if (!texture) return null;
 
     // Set up spritesheet animation state if needed
-    if (markerEl._contentType === 'spritesheet' && markerEl._contentMetadata) {
+    if (contentEl.type === 'spritesheet' && contentEl.metadata) {
         spritesheetState.set(trackId, {
-            markerId: templateId,
-            meta: markerEl._contentMetadata,
+            markerId: markerId,
+            meta: contentEl.metadata,
             lastFrameTime: performance.now(),
             currentFrame: 0,
         });
     }
 
     // Set up video state if needed
-    if (markerEl._contentType === 'video' && markerEl._contentVideo) {
+    if (contentEl.type === 'video' && contentEl.video) {
         videoState.set(trackId, {
-            markerId: templateId,
-            video: markerEl._contentVideo,
+            markerId: markerId,
+            video: contentEl.video,
             playing: false,
         });
     }
@@ -186,7 +188,7 @@ export function hideOverlayMesh(trackId) {
 export function updateOverlayPose(trackId, track, w, h) {
     if (!track.match) return;
 
-    const mesh = getOrCreateMesh(trackId, track.match.templateId);
+    const mesh = getOrCreateMesh(trackId, track.match.markerId);
     if (!mesh) return;
 
     mesh.visible = true;

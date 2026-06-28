@@ -12,44 +12,42 @@ class ARMarkerElement extends HTMLElement {
             this._markerImg.crossOrigin = 'anonymous';
             this._markerImg.src = src;
         }
-
-        // Find the ar-content child for the overlay
-        const contentEl = this.querySelector('ar-content');
-        if (contentEl) {
-            const contentSrc = contentEl.getAttribute('src');
-            const contentType = contentEl.getAttribute('type') || 'img';
-            const metadataUrl = contentEl.getAttribute('metadata');
-
-            this._contentType = contentType;
-            this._contentMetadata = null;
-
-            if (contentType === 'video' && contentSrc) {
-                this._contentVideo = document.createElement('video');
-                this._contentVideo.crossOrigin = 'anonymous';
-                this._contentVideo.src = contentSrc;
-                this._contentVideo.loop = true;
-                this._contentVideo.muted = true;
-                this._contentVideo.playsInline = true;
-                this._contentVideo.preload = 'auto';
-            } else if (contentSrc) {
-                this._contentImg = new Image();
-                this._contentImg.crossOrigin = 'anonymous';
-                this._contentImg.src = contentSrc;
-            }
-
-            if (contentType === 'spritesheet' && metadataUrl) {
-                fetch(metadataUrl)
-                    .then(r => r.json())
-                    .then(meta => { this._contentMetadata = meta; })
-                    .catch(e => console.warn('Failed to load spritesheet metadata:', e));
-            }
-        }
     }
 }
 
 class ARContentElement extends HTMLElement {
     connectedCallback() {
         this.style.display = 'none';
+        this.type = this.getAttribute('type');
+        this.metadata = this.getAttribute('metadata') || null;
+        this.src = this.getAttribute('src');
+
+        if (this.type === 'video') {
+            this.video = document.createElement('video');
+            this.video.crossOrigin = 'anonymous';
+            this.video.src = this.getAttribute('src');
+            this.video.loop = true;
+            this.video.muted = true;
+            this.video.playsInline = true;
+            this.video.preload = 'auto';
+        } else if (this.type === 'spritesheet') {
+            this.spritesheet = document.createElement('img');
+            this.spritesheet.crossOrigin = 'anonymous';
+            this.spritesheet.src = this.getAttribute('src');
+            if (this.metadata) {
+                fetch(this.metadata)
+                    .then(r => r.json())
+                    .then(meta => { this.spritesheetMetadata = meta; })
+                    .catch(e => console.warn('Failed to load spritesheet metadata:', e));
+            } else{
+                console.warn('Spritesheet metadata not provided for', this);
+            }
+
+        } else {
+            this.image = document.createElement('img');
+            this.image.crossOrigin = 'anonymous';
+            this.image.src = this.getAttribute('src');
+        }
     }
 }
 

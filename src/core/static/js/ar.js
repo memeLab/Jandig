@@ -155,7 +155,7 @@ function processFrame() {
 
     // Update Three.js overlays for confirmed tracks
     if (window.arOverlay) {
-        for (const track of tracks.values()) {
+        for (const track of globalThis.tracks.values()) {
             if (track.lastSeen === globalThis.frameNumber && track.consecutive >= globalThis.config.temporalConfirmFrames && track.match) {
                 window.arOverlay.updateOverlayPose(track.id, track, globalThis.canvas.width, globalThis.canvas.height);
             } else {
