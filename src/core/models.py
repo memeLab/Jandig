@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
@@ -219,9 +220,21 @@ class Marker(TimeStampedModel, ContentMixin):
 
     # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "marker"
+            slug = base_slug
+            counter = 1
+            while Marker.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("marker-detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.source.name
@@ -321,6 +334,21 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
         null=True,
     )
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "object"
+            slug = base_slug
+            counter = 1
+            while Object.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("object-detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.source.name
@@ -433,6 +461,21 @@ class Artwork(TimeStampedModel, ContentMixin):
     scale_y = models.FloatField(default=1.0)
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "artwork"
+            slug = base_slug
+            counter = 1
+            while Artwork.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("artwork-detail", kwargs={"slug": self.slug})
 
     @property
     def exhibits_count(self):
@@ -514,6 +557,9 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("exhibit", kwargs={"slug": self.slug})
 
     @property
     def artworks_count(self):

@@ -404,6 +404,27 @@ def artwork_preview(request):
     return render(request, "core/exhibit.jinja2", ctx)
 
 
+@require_http_methods(["GET"])
+def marker_detail(request, slug):
+    marker = get_object_or_404(Marker, slug=slug)
+    ctx = {"marker": marker}
+    return render(request, "core/marker_detail.jinja2", ctx)
+
+
+@require_http_methods(["GET"])
+def object_detail(request, slug):
+    obj = get_object_or_404(Object, slug=slug)
+    ctx = {"object": obj}
+    return render(request, "core/object_detail.jinja2", ctx)
+
+
+@require_http_methods(["GET"])
+def artwork_detail(request, slug):
+    artwork = get_object_or_404(Artwork, slug=slug)
+    ctx = {"artwork": artwork}
+    return render(request, "core/artwork_detail.jinja2", ctx)
+
+
 @login_required
 def get_element(request):
     if request.htmx:
