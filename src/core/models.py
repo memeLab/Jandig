@@ -232,8 +232,10 @@ class Marker(TimeStampedModel, ContentMixin):
         self,
         height: int = DEFAULT_MARKER_PREVIEW_HEIGHT,
         width: int = DEFAULT_MARKER_PREVIEW_WIDTH,
+        thumbnail: bool = False,
     ):
-        src = self.print_img.url
+        image = self.thumb_img if thumbnail else self.print_img
+        src = image.url + f"?v={int(self.modified.timestamp())}"
         attributes = {
             "id": self.id,
             "title": self.title,
@@ -250,10 +252,7 @@ class Marker(TimeStampedModel, ContentMixin):
     def as_html_thumbnail(self, editable: bool = False):
         height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
         width = DEFAULT_MARKER_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height=height, width=width)]
-        # Disabled edit button for now:
-        # it only allows to edit the title
-        # and it's generating recursive borders on the existing marker.
+        to_render = [self.as_html(height=height, width=width, thumbnail=True)]
         if editable:
             lower_menu_items = []
             if not self.in_use:

@@ -3,8 +3,8 @@ from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from core.marker_utils import generate_marker_variants
 
+from core.marker_utils import generate_marker_variants
 from core.models import Artwork, Marker, ObjectExtensions
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
