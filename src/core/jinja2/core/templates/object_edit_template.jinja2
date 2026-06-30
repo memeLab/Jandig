@@ -3,7 +3,7 @@
     {% if widget.value.url.endswith(".mp4") or widget.value.url.endswith(".webm") %}
         <video controls>
             <source src="{{ widget.value.url }}"
-                    type="video/{{ widget.value.url.split(".")[-1] }}">
+                    type="video/{{ widget.value.url.split('.')[-1] }}">
         </video>
     {% elif widget.value.url.endswith(".glb") %}
         {% if widget.thumbnail %}
