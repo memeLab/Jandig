@@ -35,7 +35,11 @@
                             {{ form.visible_fields()[0] .errors }}
                         </p>
                         <div id="shadow-background">
-                            <div id="imageContainer"></div>
+                            <div id="imageContainer">
+                                {% if edit %}
+                                    <img src="{{ model.print_img.url }}?v={{ model.modified.timestamp() | int }}" />
+                                {% endif %}
+                            </div>
                         </div>
                         <p class="form-options">
                             <input id="inner_border"
@@ -46,7 +50,7 @@
                             <label for="inner-border-chk">{{ _("Add inner border") }}</label>
                             <br />
                             <input id="author-chk" type="checkbox" name="author" value="1">
-                            {% if form_type == 'marker' %}<label for="author-chk">{{ _("I'm this Marker author") }}</label>{% endif %}
+                            <label for="author-chk">{{ _("I'm this Marker author") }}</label>
                         </p>
                         <p class="upload-field" id="author-field">
                             {{ form.visible_fields()[1] }}

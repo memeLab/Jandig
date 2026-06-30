@@ -258,8 +258,8 @@ class Marker(TimeStampedModel, ContentMixin):
             if not self.in_use:
                 lower_menu_items.append(self._get_delete_button())
 
-            # if not self.is_used_by_other_user():
-            #     to_render.append(self._get_edit_button())
+            if not self.is_used_by_other_user():
+                lower_menu_items.append(self._get_edit_button())
 
             lower_menu_items.append(
                 a(
