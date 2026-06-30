@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
 
+from core.marker_utils import delete_marker_files
 from users.models import Profile
 
 log = logging.getLogger()
@@ -25,6 +26,7 @@ DEFAULT_MARKER_PREVIEW_WIDTH = 320
 SCALE_REGEX = r"[\d\.\d]+"
 
 USED_IN = _("Used in")
+
 
 class ContentMixin:
     def content_type(self):
@@ -226,7 +228,11 @@ class Marker(TimeStampedModel, ContentMixin):
         """
         return self.artworks.exclude(author=self.owner).exists()
 
-    def as_html(self, height: int = DEFAULT_MARKER_PREVIEW_HEIGHT, width: int = DEFAULT_MARKER_PREVIEW_WIDTH):
+    def as_html(
+        self,
+        height: int = DEFAULT_MARKER_PREVIEW_HEIGHT,
+        width: int = DEFAULT_MARKER_PREVIEW_WIDTH,
+    ):
         src = self.print_img.url
         attributes = {
             "id": self.id,
@@ -587,7 +593,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 @receiver(post_delete, sender=Sound)
 def remove_source_file(sender, instance, **kwargs):
     if isinstance(instance, Marker):
-        instance.source.delete(False)
+        delete_marker_files(instance)
     if isinstance(instance, Object):
         instance.source.delete(False)
         # audio_description is FileField(null=True, blank=True). An Object

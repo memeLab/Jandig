@@ -13,6 +13,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
+from core.marker_utils import generate_marker_variants
 from core.models import (
     Artwork,
     Exhibit,
@@ -219,6 +220,11 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            generate_marker_variants(
+                marker,
+                inner_border=form.cleaned_data.get("inner_border", False),
+            )
             return redirect("profile")
     else:
         form = UploadMarkerForm()
@@ -700,6 +706,7 @@ def related_content(request):
         }
 
     return render(request, COLLECTION_PAGE, ctx)
+
 
 def ar_view(request):
     artwork = Artwork.objects.get(id=1)

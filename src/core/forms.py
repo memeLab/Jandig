@@ -1,16 +1,11 @@
-from io import BytesIO
-
 from django import forms
-from django.core.files.base import ContentFile, File
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
-from pymarker.core import generate_patt_from_image
+from core.marker_utils import generate_marker_variants
 
 from core.models import Artwork, Marker, ObjectExtensions
-from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
@@ -144,25 +139,13 @@ class UploadMarkerForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
-
-        with Image.open(self.instance.source) as image:
-            pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=self.cleaned_data.get("inner_border", False)
+        instance = super(UploadMarkerForm, self).save(*args, **kwargs)
+        if commit:
+            generate_marker_variants(
+                instance,
+                inner_border=self.cleaned_data.get("inner_border", False),
             )
-            blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            filename = self.instance.source.name
-            self.instance.file_size = self.instance.source.size
-            self.instance.source.save(filename, File(blob), save=commit)
-            patt_str = generate_patt_from_image(image)
-
-            self.instance.patt.save(
-                f"{filename}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=commit,
-            )
-
-            return super(UploadMarkerForm, self).save(*args, **kwargs)
+        return instance
 
 
 class ArtworkForm(forms.ModelForm):
