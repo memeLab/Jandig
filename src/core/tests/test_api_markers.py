@@ -10,7 +10,6 @@ from core.serializers import MarkerSerializer
 from core.tests.factory import MarkerFactory
 from users.models import User
 
-fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
 
 
 class TestMarkerAPI(TestCase):
@@ -29,7 +28,9 @@ class TestMarkerAPI(TestCase):
 
     def test_api_markers_lists_one_marker(self):
         # Create a marker
-        marker = Marker.objects.create(owner=self.profile, source=fake_file)
+        marker =  MarkerFactory(
+            title="Test Marker", author="Test Author"
+        )
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -57,7 +58,7 @@ class TestMarkerAPI(TestCase):
 
     def test_api_markers_lists_multiple_markers(self):
         for _ in range(0, settings.PAGE_SIZE + 1):
-            Marker.objects.create(owner=self.profile, source=fake_file)
+            MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
 
         response = self.client.get("/api/v1/markers/")
         self.assertEqual(response.status_code, 200)
@@ -72,7 +73,7 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker(self):
         # Create a marker
-        marker = Marker.objects.create(owner=self.profile, source=fake_file)
+        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -87,7 +88,7 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker_as_modal(self):
         # Create a marker
-        marker = MarkerFactory.create(owner=self.profile, source=fake_file)
+        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -97,7 +98,7 @@ class TestMarkerAPI(TestCase):
         html = response.content.decode("utf-8")
 
         assert annotated_marker.title in html
-        assert annotated_marker.source.url in html
+        assert annotated_marker.print_img.url in html
         assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html
@@ -106,7 +107,7 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker_as_modal_with_go_back_button(self):
         # Create a marker
-        marker = MarkerFactory.create(owner=self.profile, source=fake_file)
+        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -120,7 +121,7 @@ class TestMarkerAPI(TestCase):
         html = response.content.decode("utf-8")
 
         assert annotated_marker.title in html
-        assert annotated_marker.source.url in html
+        assert annotated_marker.print_img.url in html
         assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html

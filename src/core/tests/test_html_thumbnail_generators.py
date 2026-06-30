@@ -122,7 +122,7 @@ class TestObjectThumbnailGenerators(TestCase):
 class TestArtworkThumbnailGenerators(TestCase):
     def setUp(self):
         self.marker = MarkerFactory(
-            title="Test Marker", source="markers/test.png", author="Test Author"
+            title="Test Marker", author="Test Author"
         )
         self.object = ObjectFactory(
             title="Test Object",
@@ -137,7 +137,7 @@ class TestArtworkThumbnailGenerators(TestCase):
         html = self.artwork.as_html_thumbnail(editable=False)
 
         # Should contain marker and object thumbnails
-        assert self.marker.source.url in html
+        assert self.marker.thumb_img.url in html
         assert self.object.source.url in html
 
         # Should not contain edit/delete buttons
@@ -149,7 +149,7 @@ class TestArtworkThumbnailGenerators(TestCase):
         html = self.artwork.as_html_thumbnail(editable=True)
 
         # Should contain marker and object thumbnails
-        assert self.marker.source.url in html
+        assert self.marker.thumb_img.url in html
         assert self.object.source.url in html
 
         # Should contain edit/delete/preview buttons with correct URLs
