@@ -17,9 +17,7 @@ from core.tests.utils import get_example_object
 
 class TestMarkerThumbnailGenerators(TestCase):
     def setUp(self):
-        self.marker = MarkerFactory(
-            title="Test Marker", source="markers/test.png", author="Test Author"
-        )
+        self.marker = MarkerFactory(title="Test Marker", author="Test Author")
 
     def test_marker_as_html(self):
         html = self.marker.as_html(height=100, width=200)
@@ -27,7 +25,7 @@ class TestMarkerThumbnailGenerators(TestCase):
         assert 'width="200"' in html
         assert f'id="{self.marker.id}"' in html
         assert f'title="{self.marker.title}"' in html
-        assert self.marker.source.url in html
+        assert self.marker.print_img.url in html
         assert "<img" in html
 
     def test_marker_thumbnail_not_editable(self):
@@ -37,17 +35,16 @@ class TestMarkerThumbnailGenerators(TestCase):
         assert reverse("edit-marker") not in html
         assert reverse("delete-content") not in html
 
-    # Editing markers is being disabled for now, since they only allow to edit the title and its generating a bug after editing the file.
-    # def test_marker_thumbnail_editable(self):
-    #     html = self.marker.as_html_thumbnail(editable=True)
+    def test_marker_thumbnail_editable(self):
+        html = self.marker.as_html_thumbnail(editable=True)
 
-    #     edit_url = reverse("edit-marker", query={"id": self.marker.id})
-    #     delete_url = reverse(
-    #         "delete-content", query={"content_type": "marker", "id": self.marker.id}
-    #     )
+        edit_url = reverse("edit-marker", query={"id": self.marker.id})
+        delete_url = reverse(
+            "delete-content", query={"content_type": "marker", "id": self.marker.id}
+        )
 
-    #     assert f'href="{edit_url}"' in html
-    #     assert f'href="{delete_url}"' in html
+        assert f'href="{edit_url}"' in html
+        assert f'href="{delete_url}"' in html
 
     def test_marker_in_use_cant_be_edited(self):
         # Create an artwork using this marker to mark it as "in use"
@@ -121,9 +118,7 @@ class TestObjectThumbnailGenerators(TestCase):
 
 class TestArtworkThumbnailGenerators(TestCase):
     def setUp(self):
-        self.marker = MarkerFactory(
-            title="Test Marker", author="Test Author"
-        )
+        self.marker = MarkerFactory(title="Test Marker", author="Test Author")
         self.object = ObjectFactory(
             title="Test Object",
             source=get_example_object("peixe.gif"),

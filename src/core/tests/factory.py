@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from factory import Faker, LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
+
 from core.marker_utils import generate_marker_variants
 from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, Sound
 from users.tests.factory import ProfileFactory

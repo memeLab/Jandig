@@ -1,7 +1,6 @@
 """Test using the marker API for Jandig Markers"""
 
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models import Count
 from django.test import TestCase
 
@@ -9,7 +8,6 @@ from core.models import Marker
 from core.serializers import MarkerSerializer
 from core.tests.factory import MarkerFactory
 from users.models import User
-
 
 
 class TestMarkerAPI(TestCase):
@@ -28,9 +26,7 @@ class TestMarkerAPI(TestCase):
 
     def test_api_markers_lists_one_marker(self):
         # Create a marker
-        marker =  MarkerFactory(
-            title="Test Marker", author="Test Author"
-        )
+        marker = MarkerFactory(title="Test Marker", author="Test Author")
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -58,7 +54,9 @@ class TestMarkerAPI(TestCase):
 
     def test_api_markers_lists_multiple_markers(self):
         for _ in range(0, settings.PAGE_SIZE + 1):
-            MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
+            MarkerFactory.create(
+                owner=self.profile, title="Test Marker", author="Test Author"
+            )
 
         response = self.client.get("/api/v1/markers/")
         self.assertEqual(response.status_code, 200)
@@ -73,7 +71,9 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker(self):
         # Create a marker
-        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
+        marker = MarkerFactory.create(
+            owner=self.profile, title="Test Marker", author="Test Author"
+        )
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -88,7 +88,9 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker_as_modal(self):
         # Create a marker
-        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
+        marker = MarkerFactory.create(
+            owner=self.profile, title="Test Marker", author="Test Author"
+        )
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
@@ -107,7 +109,9 @@ class TestMarkerAPI(TestCase):
 
     def test_retrieve_marker_as_modal_with_go_back_button(self):
         # Create a marker
-        marker = MarkerFactory.create(owner=self.profile, title="Test Marker", author="Test Author")
+        marker = MarkerFactory.create(
+            owner=self.profile, title="Test Marker", author="Test Author"
+        )
         # Annotate the marker to include the exhibit count
         annotated_marker = Marker.objects.annotate(
             exhibits_count=Count("artworks__exhibits", distinct=True)
