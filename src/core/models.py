@@ -13,10 +13,14 @@ from users.models import Profile
 
 log = logging.getLogger()
 
-DEFAULT_MARKER_THUMBNAIL_HEIGHT = 50
-DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
-DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
-DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
+DEFAULT_MARKER_THUMBNAIL_HEIGHT = 64
+DEFAULT_MARKER_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 64
+DEFAULT_OBJECT_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_PREVIEW_HEIGHT = 320
+DEFAULT_OBJECT_PREVIEW_WIDTH = 320
+DEFAULT_MARKER_PREVIEW_HEIGHT = 320
+DEFAULT_MARKER_PREVIEW_WIDTH = 320
 
 SCALE_REGEX = r"[\d\.\d]+"
 
@@ -188,6 +192,9 @@ class Marker(TimeStampedModel, ContentMixin):
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
     source = models.ImageField(upload_to="markers/")
+    marker_img = models.ImageField(upload_to="markers/", blank=True)
+    print_img = models.ImageField(upload_to="markers/", blank=True)
+    thumb_img = models.ImageField(upload_to="markers/", blank=True)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     patt = models.FileField(upload_to="patts/")
@@ -219,11 +226,12 @@ class Marker(TimeStampedModel, ContentMixin):
         """
         return self.artworks.exclude(author=self.owner).exists()
 
-    def as_html(self, height: int = None, width: int = None):
+    def as_html(self, height: int = DEFAULT_MARKER_PREVIEW_HEIGHT, width: int = DEFAULT_MARKER_PREVIEW_WIDTH):
+        src = self.print_img.url
         attributes = {
             "id": self.id,
             "title": self.title,
-            "src": self.source.url,
+            "src": src,
         }
         return render(
             img(
@@ -342,10 +350,9 @@ class Object(TimeStampedModel, ContentMixin):
             "title": self.title,
             "src": self.source.url,
         }
-        if height:
-            attributes["height"] = height
-        if width:
-            attributes["width"] = width
+        attributes["height"] = height if height else DEFAULT_OBJECT_PREVIEW_HEIGHT
+        attributes["width"] = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
+
         if self.is_video:
             return render(
                 video(
