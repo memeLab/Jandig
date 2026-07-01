@@ -1,6 +1,6 @@
 {% set markers_qty = markers|length %}
 {% set objects_qty = objects|length %}
-{% set exhibits_qty = exhibits|length %}
+{% set exhibits_qty = ar_exhibits|length + mr_exhibits|length%}
 {% set artworks_qty = artworks|length %}
 <section class="userbox flex">
     <div class="countMrk sm-half lg-one-third">
@@ -52,13 +52,13 @@
                 </b>
                 <br />
                 {{ exhibits_qty }} {{ _(" Exhibits") }}
-            {% else %}
+        {% else %}
                 <div class="bdgCur empty half">
                     <b>
                         {{ _("No Exhibitions yet.") }}
                     </b>
                     <br />
                     <a class="" href="{{ url('create-ar-exhibit') }}">{{ _("Create your first!") }}</a>
-                {% endif %}
+        {% endif %}
             </div>
         </section>
