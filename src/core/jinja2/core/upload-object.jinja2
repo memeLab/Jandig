@@ -30,6 +30,16 @@
                             {{ form.visible_fields()[0] }}
                             {{ form.visible_fields()[0] .errors }}
                         </p>
+                        <div id="spritesheet-result"
+                             hx-post="{{ url('convert-spritesheet') }}"
+                             hx-trigger="change from:#id_source"
+                             hx-include="#id_source"
+                             hx-encoding="multipart/form-data"
+                             hx-swap="innerHTML"
+                             hx-indicator="#spritesheet-loading"></div>
+                        <span id="spritesheet-loading"
+                              class="htmx-indicator"
+                              style="font-size: small">{{ _("Processing GIF...") }}</span>
                         <div id="content-box"></div>
                         <h3>{{ _("Choose a Sound") }}</h3>
                         <button id="select-sound" class="select-btn" type="button">{{ _("Select a Sound") }}</button>
@@ -179,12 +189,44 @@
                 }
             }
             update_next_previous_buttons();
-            $('#agreement-chk').click(function(){
-                if($(this).prop('checked') == true) {
-                    $('#submit-btn').prop('disabled', false);
-                } else {
-                    $('#submit-btn').prop('disabled', true);
+
+            // Track whether a spritesheet conversion is in progress
+            var spritesheetProcessing = false;
+
+            function updateSubmitState() {
+                var agreementChecked = $('#agreement-chk').prop('checked');
+                $('#submit-btn').prop('disabled', !agreementChecked || spritesheetProcessing);
+            }
+
+            // Listen for HTMX spritesheet conversion lifecycle
+            document.getElementById('spritesheet-result').addEventListener('htmx:beforeRequest', function() {
+                spritesheetProcessing = true;
+                updateSubmitState();
+            });
+            document.getElementById('spritesheet-result').addEventListener('htmx:afterRequest', function() {
+                spritesheetProcessing = false;
+                updateSubmitState();
+
+                // Show GIF preview in content-box after spritesheet processing
+                var sourceInput = document.getElementById('id_source');
+                if (sourceInput && sourceInput.files.length > 0) {
+                    var file = sourceInput.files[0];
+                    if (file.type === 'image/gif') {
+                        var reader = new FileReader();
+                        reader.onloadend = function() {
+                            document.getElementById('content-box').innerHTML = '';
+                            var img = document.createElement('img');
+                            img.src = reader.result;
+                            img.id = 'img-preview';
+                            document.getElementById('content-box').appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
                 }
+            });
+
+            $('#agreement-chk').click(function(){
+                updateSubmitState();
             });
 
             $('#author-chk').click(function(){
@@ -215,6 +257,9 @@
                             image_preview.muted = "muted";
                             document.getElementById("content-box").appendChild(image_preview);
                         }
+                    } else if(file.type === "image/gif") {
+                        // GIF preview is deferred until spritesheet processing completes
+                        document.getElementById("content-box").innerHTML = "";
                     } else if(file.type.includes("image/")) {
                         document.getElementById("content-box").innerHTML = "";
                         image_preview = document.createElement("img");

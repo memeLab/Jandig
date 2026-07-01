@@ -230,6 +230,14 @@ def object_upload(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.owner = request.user.profile
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+
             obj.save()
             return redirect("profile")
     else:
@@ -364,7 +372,16 @@ def edit_object(request):
 
         form.full_clean()
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+
+            obj.save()
             return redirect("profile")
     else:
         form = UploadObjectForm(initial=model_data)

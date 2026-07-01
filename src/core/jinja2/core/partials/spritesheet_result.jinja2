@@ -1,0 +1,8 @@
+{% if error %}
+    <div class="spritesheet-error" style="color: red; font-size: small;">{{ error }}</div>
+{% else %}
+    <input type="hidden" name="spritesheet_path" value="{{ spritesheet_path }}">
+    <input type="hidden"
+           name="spritesheet_metadata_path"
+           value="{{ spritesheet_metadata_path }}">
+{% endif %}
