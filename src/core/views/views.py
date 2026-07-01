@@ -1,9 +1,15 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
+
+from src.core.spritesheet_converter import gif_to_spritesheet
 
 from core.forms import (
     ArtworkForm,
@@ -158,6 +164,62 @@ def delete(request):
     elif content_type == "sound":
         delete_content(Sound, request.user, request.GET.get("id", -1))
     return redirect("profile")
+
+
+@login_required
+@require_http_methods(["POST"])
+def convert_gif_to_spritesheet(request):
+    """HTMX endpoint: convert an uploaded GIF to a PNG spritesheet."""
+    source_file = request.FILES.get("source")
+    if not source_file:
+        return TemplateResponse(
+            request,
+            "core/partials/spritesheet_result.jinja2",
+            {"error": "No file provided."},
+        )
+
+    extension = source_file.name.rsplit(".", 1)[-1].lower() if "." in source_file.name else ""
+    if extension != "gif":
+        # Not a GIF — return empty partial (no conversion needed)
+        return TemplateResponse(
+            request,
+            "core/partials/spritesheet_result.jinja2",
+            {"not_gif": True},
+        )
+
+    try:
+        png_bytes, metadata = gif_to_spritesheet(source_file)
+    except ValueError as e:
+        return TemplateResponse(
+            request,
+            "core/partials/spritesheet_result.jinja2",
+            {"error": str(e)},
+        )
+
+    # Store the spritesheet and metadata via Django's file storage
+    base_name = source_file.name.rsplit(".", 1)[0]
+    spritesheet_name = base_name + "_spritesheet.png"
+    metadata_name = base_name + "_spritesheet.json"
+    from django.core.files.storage import default_storage
+
+    saved_spritesheet_path = default_storage.save(
+        f"objects/spritesheets/{spritesheet_name}",
+        ContentFile(png_bytes),
+    )
+    saved_metadata_path = default_storage.save(
+        f"objects/spritesheets/{metadata_name}",
+        ContentFile(json.dumps(metadata).encode("utf-8")),
+    )
+
+    return TemplateResponse(
+        request,
+        "core/partials/spritesheet_result.jinja2",
+        {
+            "spritesheet_path": saved_spritesheet_path,
+            "spritesheet_metadata_path": saved_metadata_path,
+            "preview_url": source_file.name,
+        },
+    )
 
 
 @login_required
@@ -709,7 +771,8 @@ def related_content(request):
 
 
 def ar_view(request):
-    artwork = Artwork.objects.get(id=1)
+    exhibit = Exhibit.objects.get(id=4)
+
     debug = request.GET.get("debug", "false").lower() == "true"
-    ctx = {"artworks": [artwork], "debug": debug}
+    ctx = {"artworks": exhibit.artworks.all(), "debug": debug}
     return render(request, "core/ar.jinja2", ctx)
