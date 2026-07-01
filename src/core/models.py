@@ -357,10 +357,30 @@ class Object(TimeStampedModel, ContentMixin):
         Called after initial save (when pk is available) to ensure files
         live at their ID-based path. Safe to call multiple times — skips
         files that are already in the correct location.
+
+        Also cleans up stale files from previous uploads (e.g. source.webm
+        when the new file is source.glb).
         """
 
         storage = self.source.storage
         changed = False
+
+        def _cleanup_stale(keep_path, prefix):
+            """Delete files matching prefix.* in the object folder, except keep_path."""
+            folder = f"objects/{self.pk}"
+            try:
+                _, files = storage.listdir(folder)
+            except Exception:
+                return
+            base = prefix  # e.g. "source"
+            for f in files:
+                if f.split(".")[0] == base:
+                    full_path = f"{folder}/{f}"
+                    if full_path != keep_path:
+                        try:
+                            storage.delete(full_path)
+                        except Exception:
+                            pass
 
         def _move(field, target_path):
             nonlocal changed
@@ -385,31 +405,46 @@ class Object(TimeStampedModel, ContentMixin):
             field.name = target_path
             changed = True
 
+        # Source file
         ext = (
             self.source.name.rsplit(".", 1)[-1].lower()
             if "." in self.source.name
             else ""
         )
-        _move(self.source, f"objects/{self.pk}/source.{ext}")
+        source_target = f"objects/{self.pk}/source.{ext}"
+        _move(self.source, source_target)
+        _cleanup_stale(source_target, "source")
 
+        # Audio description
         if self.audio_description:
             ad_ext = (
                 self.audio_description.name.rsplit(".", 1)[-1].lower()
                 if "." in self.audio_description.name
                 else ""
             )
-            _move(
-                self.audio_description, f"objects/{self.pk}/audio_description.{ad_ext}"
-            )
+            ad_target = f"objects/{self.pk}/audio_description.{ad_ext}"
+            _move(self.audio_description, ad_target)
+            _cleanup_stale(ad_target, "audio_description")
+        else:
+            _cleanup_stale(None, "audio_description")
 
+        # Thumbnail — only GLB objects have thumbnails
         if self.thumbnail:
             _move(self.thumbnail, f"objects/{self.pk}/thumbnail.png")
+        else:
+            _cleanup_stale(None, "thumbnail")
 
+        # Spritesheet — only GIF objects have spritesheets
         if self.spritesheet_file:
             _move(self.spritesheet_file, f"objects/{self.pk}/spritesheet.png")
+        else:
+            _cleanup_stale(None, "spritesheet")
 
+        # Metadata — only GIF objects have metadata
         if self.spritesheet_metadata:
             _move(self.spritesheet_metadata, f"objects/{self.pk}/metadata.json")
+        else:
+            _cleanup_stale(None, "metadata")
 
         if changed:
             self.save()

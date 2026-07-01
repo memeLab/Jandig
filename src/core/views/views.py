@@ -378,6 +378,14 @@ def edit_object(request):
             if spritesheet_path and spritesheet_metadata_path:
                 obj.spritesheet_file.name = spritesheet_path
                 obj.spritesheet_metadata.name = spritesheet_metadata_path
+            else:
+                # Clear spritesheet fields if not provided (source is no longer GIF)
+                obj.spritesheet_file = None
+                obj.spritesheet_metadata = None
+
+            # Clear thumbnail if new source is not GLB
+            if obj.file_extension != ObjectExtensions.GLB:
+                obj.thumbnail = None
 
             obj.save()
             # Move all files to objects/<pk>/ folder
