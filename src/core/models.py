@@ -1,6 +1,7 @@
 import logging
 
 import pghistory
+from django.core.files.base import ContentFile as CF
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -280,6 +281,33 @@ class ObjectExtensions(models.TextChoices):
     GLB = "glb", "GLB"
 
 
+def object_source_path(instance, filename):
+    """Upload path: objects/<id>/source.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/source.{ext}"
+
+
+def object_audio_description_path(instance, filename):
+    """Upload path: objects/<id>/audio_description.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/audio_description.{ext}"
+
+
+def object_thumbnail_path(instance, filename):
+    """Upload path: objects/<id>/thumbnail.png"""
+    return f"objects/{instance.pk}/thumbnail.png"
+
+
+def object_spritesheet_path(instance, filename):
+    """Upload path: objects/<id>/spritesheet.png"""
+    return f"objects/{instance.pk}/spritesheet.png"
+
+
+def object_spritesheet_metadata_path(instance, filename):
+    """Upload path: objects/<id>/metadata.json"""
+    return f"objects/{instance.pk}/metadata.json"
+
+
 @pghistory.track()
 class Object(TimeStampedModel, ContentMixin):
     owner = models.ForeignKey(
@@ -293,9 +321,9 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
     )
     audio_description = models.FileField(
-        upload_to="audio_descriptions/", null=True, blank=True
+        upload_to=object_audio_description_path, null=True, blank=True
     )
-    source = models.FileField(upload_to="objects/")
+    source = models.FileField(upload_to=object_source_path)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
@@ -305,23 +333,86 @@ class Object(TimeStampedModel, ContentMixin):
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
     thumbnail = models.ImageField(
-        upload_to="objects/thumbnails/",
+        upload_to=object_thumbnail_path,
         blank=True,
         null=True,
     )
     spritesheet_file = models.FileField(
-        upload_to="objects/spritesheets/",
+        upload_to=object_spritesheet_path,
         blank=True,
         null=True,
     )
     spritesheet_metadata = models.FileField(
-        upload_to="objects/spritesheets/",
+        upload_to=object_spritesheet_metadata_path,
         blank=True,
         null=True,
     )
 
     def __str__(self):
         return self.source.name
+
+    def relocate_files(self):
+        """Move all files to the canonical objects/<pk>/ folder.
+
+        Called after initial save (when pk is available) to ensure files
+        live at their ID-based path. Safe to call multiple times — skips
+        files that are already in the correct location.
+        """
+
+        storage = self.source.storage
+        changed = False
+
+        def _move(field, target_path):
+            nonlocal changed
+            if not field.name:
+                return
+            if field.name == target_path:
+                return
+            content = field.read()
+            field.close()
+            old_path = field.name
+            try:
+                if storage.exists(old_path):
+                    storage.delete(old_path)
+            except Exception:
+                pass
+            try:
+                if storage.exists(target_path):
+                    storage.delete(target_path)
+            except Exception:
+                pass
+            storage.save(target_path, CF(content))
+            field.name = target_path
+            changed = True
+
+        ext = (
+            self.source.name.rsplit(".", 1)[-1].lower()
+            if "." in self.source.name
+            else ""
+        )
+        _move(self.source, f"objects/{self.pk}/source.{ext}")
+
+        if self.audio_description:
+            ad_ext = (
+                self.audio_description.name.rsplit(".", 1)[-1].lower()
+                if "." in self.audio_description.name
+                else ""
+            )
+            _move(
+                self.audio_description, f"objects/{self.pk}/audio_description.{ad_ext}"
+            )
+
+        if self.thumbnail:
+            _move(self.thumbnail, f"objects/{self.pk}/thumbnail.png")
+
+        if self.spritesheet_file:
+            _move(self.spritesheet_file, f"objects/{self.pk}/spritesheet.png")
+
+        if self.spritesheet_metadata:
+            _move(self.spritesheet_metadata, f"objects/{self.pk}/metadata.json")
+
+        if changed:
+            self.save()
 
     @property
     def artworks_count(self):

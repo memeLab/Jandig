@@ -59,6 +59,8 @@ class TestObjectUpload(TestCase):
 
         assert ar_object.file_name_original == "example_object.gif"
         assert ar_object.file_extension == ObjectExtensions.GIF
+        # Files are stored in objects/<pk>/ folder
+        assert ar_object.source.name == f"objects/{ar_object.pk}/source.gif"
 
     def test_upload_object_mp4_authenticated(self):
         with open(EXAMPLE_MP4_OBJECT_PATH, "rb") as video_file:
@@ -81,6 +83,7 @@ class TestObjectUpload(TestCase):
         assert ar_object.file_size == 2222838  # Size in bytes of the example mp4
         assert ar_object.file_name_original == "belotur.mp4"
         assert ar_object.file_extension == ObjectExtensions.MP4
+        assert ar_object.source.name == f"objects/{ar_object.pk}/source.mp4"
 
     def test_upload_object_webm_authenticated(self):
         with open(EXAMPLE_WEBM_OBJECT_PATH, "rb") as video_file:
@@ -103,6 +106,7 @@ class TestObjectUpload(TestCase):
         assert ar_object.file_size == 1509266  # Size in bytes of the example webm
         assert ar_object.file_name_original == "escher.webm"
         assert ar_object.file_extension == ObjectExtensions.WEBM
+        assert ar_object.source.name == f"objects/{ar_object.pk}/source.webm"
 
     def test_upload_object_glb_authenticated(self):
         with open(EXAMPLE_GLB_OBJECT_PATH, "rb") as glb_file:
@@ -125,6 +129,7 @@ class TestObjectUpload(TestCase):
         assert ar_object.file_size == 10782148  # Size in bytes of the example glb
         assert ar_object.file_name_original == "werewolf.glb"
         assert ar_object.file_extension == ObjectExtensions.GLB
+        assert ar_object.source.name == f"objects/{ar_object.pk}/source.glb"
 
     def test_upload_object_get_authenticated(self):
         self.client.login(username=self.username, password=self.password)
