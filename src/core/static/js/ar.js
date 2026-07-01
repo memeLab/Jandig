@@ -318,12 +318,8 @@ function findBestMarkerMatch(markerMat) {
                     confidence,
                     rotationDeg: rot.candidateDeg
                 };
-                console.log('Best match found for marker:', marker.id, 'rotation:', rot.candidateDeg, 'confidence:', confidence.toFixed(3));
             }
         }
-    }
-    if (!bestMatch) {
-        console.log('No marker match found above confidence threshold.');
     }
 
     return bestMatch;

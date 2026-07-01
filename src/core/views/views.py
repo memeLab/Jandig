@@ -173,7 +173,7 @@ def convert_gif_to_spritesheet(request):
     if not source_file:
         return TemplateResponse(
             request,
-            "core/partials/spritesheet_result.jinja2",
+            "core/templates/spritesheet_result.jinja2",
             {"error": "No file provided."},
         )
 
@@ -188,7 +188,7 @@ def convert_gif_to_spritesheet(request):
     except ValueError as e:
         return TemplateResponse(
             request,
-            "core/partials/spritesheet_result.jinja2",
+            "core/templates/spritesheet_result.jinja2",
             {"error": str(e)},
         )
 
@@ -209,7 +209,7 @@ def convert_gif_to_spritesheet(request):
 
     return TemplateResponse(
         request,
-        "core/partials/spritesheet_result.jinja2",
+        "core/templates/spritesheet_result.jinja2",
         {
             "spritesheet_path": saved_spritesheet_path,
             "spritesheet_metadata_path": saved_metadata_path,
@@ -268,16 +268,17 @@ def marker_preview(request):
     marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
-        "augmented": marker,
+        "augmented": {"file_extension": 'png', "source": marker.print_img},
         "scale_x": 1,
         "scale_y": 1,
         "position_x": 0,
         "position_y": 0,
+        "type": "marker"
     }
     ctx = {
         "artworks": [artwork],
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @login_required
@@ -493,7 +494,7 @@ def artwork_preview(request):
     ctx = {
         "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @login_required
@@ -724,7 +725,7 @@ def exhibit(request, slug):
         "exhibit": exhibit,
         "artworks": artworks,
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @require_http_methods(["GET"])

@@ -32,9 +32,10 @@ def home_old(request):
 
 
 def manifest(request):
-    return render(
-        request, "core/manifest.json", content_type="application/x-javascript"
-    )
+    agent = request.META.get("HTTP_USER_AGENT", "")
+    if any(device in agent.lower() for device in ["ipad", "iphone", "mac"]):
+        return redirect(static("files/ios-manifest.json"))
+    return redirect(static("files/manifest.json"))
 
 
 def marker_generator(request):
@@ -50,4 +51,4 @@ def robots_txt(_):
 
 
 def service_worker(request):
-    return render(request, "core/sw.js", content_type="application/x-javascript")
+    return redirect(static("js/sw.js"))

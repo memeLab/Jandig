@@ -93,7 +93,6 @@ function getOrCreateTexture(markerId) {
         // For spritesheets, set up UV repeat to show a single frame
         if (contentEl.type === 'spritesheet' && contentEl.metadata) {
             const meta = contentEl.metadata;
-            console.log(meta.columns, meta.rows, meta.frames, meta.frameDurationMs);
             texture.repeat.set(1 / meta.columns, 1 / meta.rows);
             texture.offset.set(0, 1 - (1 / meta.rows)); // start at top-left frame
         }
