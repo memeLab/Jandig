@@ -33,7 +33,10 @@ def home_old(request):
 
 def manifest(request):
     agent = request.META.get("HTTP_USER_AGENT", "")
-    if any(device in agent.lower() for device in ["ipad", "iphone", "mac"]):
+    if any(
+        device in agent.lower()
+        for device in ["ipad", "iphone", "mac", "safari", "ios", "apple"]
+    ):
         return redirect(static("files/ios-manifest.json"))
     return redirect(static("files/manifest.json"))
 
