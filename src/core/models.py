@@ -309,6 +309,16 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
         null=True,
     )
+    spritesheet_file = models.FileField(
+        upload_to="objects/spritesheets/",
+        blank=True,
+        null=True,
+    )
+    spritesheet_metadata = models.FileField(
+        upload_to="objects/spritesheets/",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.source.name
@@ -602,5 +612,9 @@ def remove_source_file(sender, instance, **kwargs):
         # source file we just removed. See #849.
         if instance.audio_description:
             instance.audio_description.delete(False)
+        if instance.spritesheet_file:
+            instance.spritesheet_file.delete(False)
+        if instance.spritesheet_metadata:
+            instance.spritesheet_metadata.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)
