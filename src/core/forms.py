@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from core.marker_utils import generate_marker_variants
+from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
@@ -118,6 +119,13 @@ class UploadObjectForm(forms.ModelForm):
         self.instance.file_size = self.instance.source.size
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
+
+        thumbnail = self.cleaned_data.get("thumbnail") or self.instance.thumbnail
+        dims = extract_dimensions(
+            self.instance.source, self.instance.file_extension, thumbnail
+        )
+        if dims:
+            self.instance.width, self.instance.height = dims
 
         return super(UploadObjectForm, self).save(*args, **kwargs)
 

@@ -347,6 +347,8 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
         null=True,
     )
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.source.name
@@ -491,8 +493,16 @@ class Object(TimeStampedModel, ContentMixin):
             "title": self.title,
             "src": self.source.url,
         }
-        attributes["height"] = height if height else DEFAULT_OBJECT_PREVIEW_HEIGHT
-        attributes["width"] = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
+        max_w = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
+        max_h = height if height else DEFAULT_OBJECT_PREVIEW_HEIGHT
+
+        if self.width and self.height:
+            ratio = min(max_w / self.width, max_h / self.height)
+            attributes["width"] = int(self.width * ratio)
+            attributes["height"] = int(self.height * ratio)
+        else:
+            attributes["width"] = max_w
+            attributes["height"] = max_h
 
         if self.is_video:
             return render(

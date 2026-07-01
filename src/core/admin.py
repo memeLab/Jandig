@@ -10,6 +10,7 @@ from PIL import Image
 from pymarker import remove_borders_from_image
 
 from core.marker_utils import generate_marker_variants
+from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.spritesheet_converter import gif_to_spritesheet
 from core.utils import get_admin_url
@@ -213,13 +214,44 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
     ]
     search_fields = ["title", "id"]
     list_filter = ["file_extension", SpritesheetFilter]
-    actions = [generate_spritesheets]
+    actions = [generate_spritesheets, "populate_dimensions"]
 
     def image_preview(self, obj):
         return format_html(obj.as_html_thumbnail(), "")
 
     def has_spritesheet(self, obj):
         return bool(obj.spritesheet_file and obj.spritesheet_metadata)
+
+    @admin.action(description="Populate width/height dimensions for selected objects")
+    def populate_dimensions(self, request, queryset):
+        updated = 0
+        for obj in queryset:
+            try:
+                thumbnail = obj.thumbnail if obj.is_3d else None
+                with obj.source.open("rb") as f:
+                    thumb_file = None
+                    if thumbnail:
+                        try:
+                            thumb_file = thumbnail.open("rb")
+                        except Exception:
+                            thumb_file = None
+
+                    dims = extract_dimensions(f, obj.file_extension, thumb_file)
+
+                    if thumb_file:
+                        thumb_file.close()
+
+                if dims:
+                    obj.width, obj.height = dims
+                    obj.save(update_fields=["width", "height"])
+                    updated += 1
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Failed for Object {obj.pk}: {e}",
+                    level="error",
+                )
+        self.message_user(request, f"Updated dimensions for {updated} object(s).")
 
 
 @admin.register(Artwork)
