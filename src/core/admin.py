@@ -7,11 +7,12 @@ from django.core.files.base import ContentFile
 from django.db.models import Count
 from django.utils.html import format_html
 from PIL import Image
-from pymarker import generate_patt_from_image, remove_borders_from_image
+from pymarker import remove_borders_from_image
 
+from core.marker_utils import generate_marker_variants
 from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.spritesheet_converter import gif_to_spritesheet
-from core.views.api_views import MarkerGeneratorAPIView
+from core.utils import get_admin_url
 
 HTML_LINK = '<a href="{}">{}</a>'
 
@@ -93,7 +94,8 @@ def regenerate_marker_white_border(modeladmin, request, queryset):
     Regenerate markers with white inner border.
     This action will regenerate the marker images with a white inner border.
     """
-    regenerate_marker(queryset, inner_border=True)
+    for marker in queryset:
+        generate_marker_variants(marker, inner_border=True)
 
 
 @admin.action(description="Regenerate Marker Without Inner Border")
@@ -101,51 +103,24 @@ def regenerate_marker_no_inner_border(modeladmin, request, queryset):
     """Regenerate markers without inner border.
     This action will regenerate the marker images without a white inner border.
     """
-    regenerate_marker(queryset, inner_border=False)
+    for marker in queryset:
+        generate_marker_variants(marker, inner_border=False)
 
 
 @admin.action(description="Remove Border")
 def remove_border(modeladmin, request, queryset):
-    """Remove border from markers.
-    This action will regenerate the marker images without any borders.
+    """Remove border from markers and regenerate all variants.
+    This action will strip borders from the current source, save as original,
+    then regenerate all variants.
     """
     for marker in queryset:
         with Image.open(marker.source) as image:
             pil_image = remove_borders_from_image(image)
             blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            uuid = generate_uuid_name()
-            filename = f"{uuid}.jpg"
-            marker.file_size = marker.source.size
+            pil_image.save(blob, "PNG")
+            filename = f"markers/{marker.pk}/original.png"
             marker.source.save(filename, File(blob), save=True)
-            patt_str = generate_patt_from_image(pil_image)
-            marker.patt.save(
-                f"{uuid}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=True,
-            )
-        marker.save()
-
-
-def regenerate_marker(queryset, inner_border=False):
-    for marker in queryset:
-        with Image.open(marker.source) as image:
-            pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=inner_border
-            )
-            blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            uuid = generate_uuid_name()
-            filename = f"{uuid}.jpg"
-            marker.file_size = marker.source.size
-            marker.source.save(filename, File(blob), save=True)
-            patt_str = generate_patt_from_image(image)
-            marker.patt.save(
-                f"{uuid}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=True,
-            )
-        marker.save()
+        generate_marker_variants(marker, inner_border=False)
 
 
 @admin.register(Marker)
@@ -177,15 +152,13 @@ def generate_spritesheets(modeladmin, request, queryset):
             with obj.source.open("rb") as f:
                 png_bytes, metadata = gif_to_spritesheet(f)
 
-            base_name = obj.source.name.rsplit(".", 1)[0].split("/")[-1]
-
-            # Save spritesheet PNG (overwrite if exists)
-            spritesheet_path = f"objects/spritesheets/{base_name}_spritesheet.png"
+            # Save spritesheet PNG to objects/<pk>/spritesheet.png
+            spritesheet_path = f"objects/{obj.pk}/spritesheet.png"
             _save_to_storage(storage, spritesheet_path, png_bytes)
             obj.spritesheet_file.name = spritesheet_path
 
-            # Save metadata JSON (overwrite if exists)
-            metadata_path = f"objects/spritesheets/{base_name}_spritesheet.json"
+            # Save metadata JSON to objects/<pk>/metadata.json
+            metadata_path = f"objects/{obj.pk}/metadata.json"
             _save_to_storage(
                 storage, metadata_path, json.dumps(metadata).encode("utf-8")
             )
