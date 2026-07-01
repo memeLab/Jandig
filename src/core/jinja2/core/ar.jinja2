@@ -40,7 +40,7 @@
         {% for id, artwork in enumerate(artworks) %}
             <ar-marker id="marker-{{ id }}" src="{{ artwork.marker.marker_img.url }}">
             {% if artwork.augmented.file_extension == 'gif' %}
-                <ar-content id="content-{{ id }}" src="{{ artwork.augmented.spritesheet_file.url }}" type="spritesheet" metadata="{{artwork.augmented.spritesheet_metadata.url }}"></ar-content>
+                <ar-content id="content-{{ id }}" src="{{ artwork.augmented.spritesheet_file.url }}" type="spritesheet" metadata="{{ artwork.augmented.spritesheet_metadata.url }}"></ar-content>
             {% elif artwork.augmented.file_extension == 'mp4' %}
                 <ar-content id="content-{{ id }}" src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
             {% elif artwork.augmented.file_extension == 'png' %}
