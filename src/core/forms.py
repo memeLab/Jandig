@@ -43,7 +43,7 @@ class ObjectWidget(forms.ClearableFileInput):
         self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
-        attrs.update({"accept": ".gif, .mp4, .webm, .glb"})
+        attrs.update({"accept": ".gif, .png, .mp4, .webm, .glb"})
         context = self.get_context(name, value, attrs)
         if self.thumbnail:
             context["widget"]["thumbnail"] = self.thumbnail
@@ -80,11 +80,13 @@ class UploadObjectForm(forms.ModelForm):
     def clean_source(self):
         file = self.cleaned_data.get("source")
 
-        allowed_extensions = ["gif", "mp4", "webm", "glb"]
+        allowed_extensions = ["gif", "png", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
         if extension not in allowed_extensions:
             raise forms.ValidationError(
-                _("Only GIF images, MP4, WebM videos, and GLB files are allowed.")
+                _(
+                    "Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
+                )
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:

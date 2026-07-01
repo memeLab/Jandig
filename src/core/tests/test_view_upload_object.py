@@ -7,6 +7,7 @@ from core.models import Object, ObjectExtensions
 from users.models import Profile, User
 
 EXAMPLE_OBJECT_PATH = "src/core/tests/test_files/example_object.gif"
+EXAMPLE_PNG_OBJECT_PATH = "collection/objects/run.png"
 EXAMPLE_MP4_OBJECT_PATH = "collection/objects/belotur.mp4"
 EXAMPLE_WEBM_OBJECT_PATH = "collection/objects/escher.webm"
 EXAMPLE_GLB_OBJECT_PATH = "collection/objects/werewolf.glb"
@@ -108,6 +109,28 @@ class TestObjectUpload(TestCase):
         assert ar_object.file_extension == ObjectExtensions.WEBM
         assert ar_object.source.name == f"objects/{ar_object.pk}/source.webm"
 
+    def test_upload_object_png_authenticated(self):
+        with open(EXAMPLE_PNG_OBJECT_PATH, "rb") as png_file:
+            data = {
+                "source": png_file,
+                "author": "Test Author",
+                "title": "Test PNG",
+            }
+
+            self.client.login(username=self.username, password=self.password)
+            response = self.client.post(reverse("object-upload"), data)
+            assert (
+                response.status_code == status.HTTP_302_FOUND
+            )  # Redirect to home page
+        # Verify that a Object instance was created
+        assert Object.objects.count() == 1
+        ar_object = Object.objects.first()
+        assert ar_object.title == "Test PNG"
+        assert ar_object.author == "Test Author"
+        assert ar_object.file_name_original == "run.png"
+        assert ar_object.file_extension == ObjectExtensions.PNG
+        assert ar_object.source.name == f"objects/{ar_object.pk}/source.png"
+
     def test_upload_object_glb_authenticated(self):
         with open(EXAMPLE_GLB_OBJECT_PATH, "rb") as glb_file:
             data = {
@@ -174,7 +197,7 @@ class TestObjectUpload(TestCase):
         # Should fail validation or be rejected by the form
         assert response.status_code == 200
         assert (
-            b"Only GIF images, MP4, WebM videos, and GLB files are allowed."
+            b"Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
             in response.content
         )
         assert Object.objects.count() == 0

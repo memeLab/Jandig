@@ -268,12 +268,12 @@ def marker_preview(request):
     marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
-        "augmented": {"file_extension": 'png', "source": marker.print_img},
+        "augmented": {"file_extension": "png", "source": marker.print_img},
         "scale_x": 1,
         "scale_y": 1,
         "position_x": 0,
         "position_y": 0,
-        "type": "marker"
+        "type": "marker",
     }
     ctx = {
         "artworks": [artwork],

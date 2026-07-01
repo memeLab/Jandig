@@ -275,6 +275,7 @@ class Marker(TimeStampedModel, ContentMixin):
 
 class ObjectExtensions(models.TextChoices):
     GIF = "gif", "GIF"
+    PNG = "png", "PNG"
     MP4 = "mp4", "MP4"
     WEBM = "webm", "WEBM"
     GLB = "glb", "GLB"
