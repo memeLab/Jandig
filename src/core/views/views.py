@@ -4,12 +4,10 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
-
-from src.core.spritesheet_converter import gif_to_spritesheet
 
 from core.forms import (
     ArtworkForm,
@@ -29,6 +27,7 @@ from core.models import (
     ObjectExtensions,
     Sound,
 )
+from core.spritesheet_converter import gif_to_spritesheet
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
@@ -178,14 +177,11 @@ def convert_gif_to_spritesheet(request):
             {"error": "No file provided."},
         )
 
-    extension = source_file.name.rsplit(".", 1)[-1].lower() if "." in source_file.name else ""
+    extension = (
+        source_file.name.rsplit(".", 1)[-1].lower() if "." in source_file.name else ""
+    )
     if extension != "gif":
-        # Not a GIF — return empty partial (no conversion needed)
-        return TemplateResponse(
-            request,
-            "core/partials/spritesheet_result.jinja2",
-            {"not_gif": True},
-        )
+        return HttpResponse(status=204)
 
     try:
         png_bytes, metadata = gif_to_spritesheet(source_file)

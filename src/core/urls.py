@@ -62,7 +62,11 @@ urlpatterns = [
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
-    path("objects/convert-spritesheet/", convert_gif_to_spritesheet, name="convert-spritesheet"),
+    path(
+        "objects/convert-spritesheet/",
+        convert_gif_to_spritesheet,
+        name="convert-spritesheet",
+    ),
     path("sounds/edit/", edit_sound, name="edit-sound"),
     path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),

@@ -3,11 +3,10 @@
 import io
 import math
 
-from PIL import Image
-
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from PIL import Image
 
 from src.core.spritesheet_converter import gif_to_spritesheet
 from users.models import Profile, User
@@ -92,9 +91,7 @@ class TestGifToSpritesheet(TestCase):
         assert metadata["frameWidth"] > 0
         assert metadata["frameHeight"] > 0
         assert metadata["columns"] == math.ceil(math.sqrt(metadata["frames"]))
-        assert metadata["rows"] == math.ceil(
-            metadata["frames"] / metadata["columns"]
-        )
+        assert metadata["rows"] == math.ceil(metadata["frames"] / metadata["columns"])
         assert metadata["sheetWidth"] == metadata["columns"] * metadata["frameWidth"]
         assert metadata["sheetHeight"] == metadata["rows"] * metadata["frameHeight"]
         assert isinstance(metadata["frameDurationMs"], int)
@@ -188,7 +185,11 @@ class TestConvertSpritesheetEndpoint(TestCase):
         gif_file = _make_gif(frames_count=4, frame_size=(10, 10))
         response = self.client.post(
             self.url,
-            {"source": SimpleUploadedFile("test.gif", gif_file.read(), content_type="image/gif")},
+            {
+                "source": SimpleUploadedFile(
+                    "test.gif", gif_file.read(), content_type="image/gif"
+                )
+            },
         )
         assert response.status_code == 302
         assert "/users/login" in response.url
@@ -198,26 +199,31 @@ class TestConvertSpritesheetEndpoint(TestCase):
         gif_file = _make_gif(frames_count=4, frame_size=(10, 10))
         response = self.client.post(
             self.url,
-            {"source": SimpleUploadedFile("test.gif", gif_file.read(), content_type="image/gif")},
+            {
+                "source": SimpleUploadedFile(
+                    "test.gif", gif_file.read(), content_type="image/gif"
+                )
+            },
         )
         assert response.status_code == 200
         content = response.content.decode()
         assert 'name="spritesheet_path"' in content
         assert 'name="spritesheet_metadata_path"' in content
 
-    def test_non_gif_returns_empty(self):
+    def test_non_gif_returns_204(self):
         self.client.login(username=self.username, password=self.password)
         png_buf = io.BytesIO()
         Image.new("RGB", (10, 10)).save(png_buf, format="PNG")
         png_buf.seek(0)
         response = self.client.post(
             self.url,
-            {"source": SimpleUploadedFile("test.png", png_buf.read(), content_type="image/png")},
+            {
+                "source": SimpleUploadedFile(
+                    "test.png", png_buf.read(), content_type="image/png"
+                )
+            },
         )
-        assert response.status_code == 200
-        content = response.content.decode()
-        assert 'name="spritesheet_path"' not in content
-        assert "error" not in content.lower() or "not_gif" in content.lower()
+        assert response.status_code == 204
 
     def test_no_file_returns_error(self):
         self.client.login(username=self.username, password=self.password)
