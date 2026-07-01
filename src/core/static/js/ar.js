@@ -124,11 +124,13 @@ function processFrame() {
                 }
                 
             } else {
-                // Update rotation on tracking
-                const rotUpdate = updateRotationForMarker(warped_marker, marker.match.markerId);
-                if (rotUpdate) {
-                    marker.match.rotationDeg = rotUpdate.rotationDeg;
-                    marker.match.confidence = rotUpdate.confidence;
+                // Update marker best rotation on tracking every 20th frame to reduce computation
+                if (globalThis.frameNumber % 20 === 0) {
+                    const rotUpdate = updateRotationForMarker(warped_marker, marker.match.markerId);
+                    if (rotUpdate) {
+                        marker.match.rotationDeg = rotUpdate.rotationDeg;
+                        marker.match.confidence = rotUpdate.confidence;
+                    }
                 }
             }
             warped_marker.delete();
@@ -316,8 +318,12 @@ function findBestMarkerMatch(markerMat) {
                     confidence,
                     rotationDeg: rot.candidateDeg
                 };
+                console.log('Best match found for marker:', marker.id, 'rotation:', rot.candidateDeg, 'confidence:', confidence.toFixed(3));
             }
         }
+    }
+    if (!bestMatch) {
+        console.log('No marker match found above confidence threshold.');
     }
 
     return bestMatch;
