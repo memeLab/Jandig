@@ -18,8 +18,12 @@ logger = logging.getLogger(__name__)
 
 def generate_variants_for_existing_markers(apps, schema_editor):
     """
-    Data migration: For each existing marker, extract the original image
-    (by removing borders), then generate all 4 variants.
+    Data migration: For each existing marker, move the original file (with borders)
+    into the organized folder as source, then extract the interior by removing
+    borders and generate the 3 variants from that.
+
+    The source file is preserved as-is (with borders) so it can be used for
+    manual recovery if remove_borders_from_image over-crops.
     """
 
     Marker = apps.get_model("core", "Marker")
@@ -40,10 +44,13 @@ def generate_variants_for_existing_markers(apps, schema_editor):
 
         try:
             storage = marker.source.storage
+            old_source_path = marker.source.name
 
             with marker.source.open("rb") as f:
-                current_image = Image.open(f)
-                current_image.load()
+                file_bytes = f.read()
+
+            current_image = Image.open(BytesIO(file_bytes))
+            current_image.load()
 
             if current_image.mode == "RGBA":
                 background = Image.new("RGB", current_image.size, (255, 255, 255))
@@ -52,18 +59,26 @@ def generate_variants_for_existing_markers(apps, schema_editor):
             elif current_image.mode != "RGB":
                 current_image = current_image.convert("RGB")
 
-            original_image = remove_borders_from_image(current_image)
+            # Move source file into organized folder
+            ext = old_source_path.rsplit(".", 1)[-1].lower() if "." in old_source_path else "png"
+            new_source_path = f"markers/{marker.pk}/source.{ext}"
+            _save_to_storage(storage, new_source_path, file_bytes)
+            marker.source.name = new_source_path
 
-            # 1. Save original
-            original_blob = BytesIO()
-            original_image.save(original_blob, "PNG")
-            original_path = f"markers/{marker.pk}/original.png"
-            _save_to_storage(storage, original_path, original_blob.getvalue())
-            marker.source.name = original_path
+            # Delete old file at the previous path
+            if old_source_path != new_source_path:
+                try:
+                    if storage.exists(old_source_path):
+                        storage.delete(old_source_path)
+                except Exception:
+                    pass
+
+            # Extract interior by removing borders for variant generation
+            interior_image = remove_borders_from_image(current_image)
 
             # 2. Generate marker image (black border only, 256x256)
             marker_full = generate_marker_from_image(
-                original_image,
+                interior_image,
                 black_border_percentage=BLACK_BORDER_PERCENTAGE,
                 white_border_percentage=0,
             )
@@ -76,7 +91,7 @@ def generate_variants_for_existing_markers(apps, schema_editor):
 
             # 3. Generate print image (black + white border, original size)
             print_image = generate_marker_from_image(
-                original_image,
+                interior_image,
                 black_border_percentage=BLACK_BORDER_PERCENTAGE,
                 white_border_percentage=WHITE_BORDER_PERCENTAGE,
             )
