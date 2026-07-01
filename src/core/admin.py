@@ -1,3 +1,4 @@
+import json
 from io import BytesIO
 
 from django.contrib import admin
@@ -9,7 +10,7 @@ from PIL import Image
 from pymarker import generate_patt_from_image, remove_borders_from_image
 
 from core.models import Artwork, Exhibit, Marker, Object, Sound
-from core.utils import generate_uuid_name, get_admin_url
+from core.spritesheet_converter import gif_to_spritesheet
 from core.views.api_views import MarkerGeneratorAPIView
 
 HTML_LINK = '<a href="{}">{}</a>'
@@ -159,16 +160,93 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
         return format_html(obj.as_html_thumbnail(), "")
 
 
+@admin.action(description="Generate spritesheets for selected GIF objects")
+def generate_spritesheets(modeladmin, request, queryset):
+    """Generate (or regenerate) PNG spritesheets and metadata JSON for GIF objects.
+
+    Running this action twice replaces the existing spritesheet and metadata
+    files, keeping only the original GIF source unchanged.
+    """
+    for obj in queryset.filter(file_extension="gif"):
+        if not obj.source:
+            continue
+
+        try:
+            storage = obj.source.storage
+
+            with obj.source.open("rb") as f:
+                png_bytes, metadata = gif_to_spritesheet(f)
+
+            base_name = obj.source.name.rsplit(".", 1)[0].split("/")[-1]
+
+            # Save spritesheet PNG (overwrite if exists)
+            spritesheet_path = f"objects/spritesheets/{base_name}_spritesheet.png"
+            _save_to_storage(storage, spritesheet_path, png_bytes)
+            obj.spritesheet_file.name = spritesheet_path
+
+            # Save metadata JSON (overwrite if exists)
+            metadata_path = f"objects/spritesheets/{base_name}_spritesheet.json"
+            _save_to_storage(
+                storage, metadata_path, json.dumps(metadata).encode("utf-8")
+            )
+            obj.spritesheet_metadata.name = metadata_path
+
+            obj.save()
+        except Exception as e:
+            modeladmin.message_user(
+                request,
+                f"Failed to generate spritesheet for Object {obj.pk}: {e}",
+                level="error",
+            )
+
+
+def _save_to_storage(storage, path, content_bytes):
+    """Save content to storage, deleting existing file first for idempotency."""
+    try:
+        if storage.exists(path):
+            storage.delete(path)
+    except Exception:
+        pass
+    storage.save(path, ContentFile(content_bytes))
+
+
+class SpritesheetFilter(admin.SimpleListFilter):
+    title = "spritesheet status"
+    parameter_name = "has_spritesheet"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("yes", "Has spritesheet"),
+            ("no", "Missing spritesheet (GIF only)"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.exclude(spritesheet_file="").exclude(spritesheet_file=None)
+        if self.value() == "no":
+            from django.db.models import Q
+
+            return queryset.filter(file_extension="gif").filter(
+                Q(spritesheet_file="") | Q(spritesheet_file=None)
+            )
+        return queryset
+
+
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + [
         "file_extension",
+        "has_spritesheet",
     ]
     search_fields = ["title", "id"]
-    list_filter = ["file_extension"]
+    list_filter = ["file_extension", SpritesheetFilter]
+    actions = [generate_spritesheets]
 
     def image_preview(self, obj):
         return format_html(obj.as_html_thumbnail(), "")
+
+    def has_spritesheet(self, obj):
+        return bool(obj.spritesheet_file and obj.spritesheet_metadata)
 
 
 @admin.register(Artwork)
