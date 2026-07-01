@@ -2,7 +2,7 @@ from io import BytesIO
 
 from django.core.files.base import ContentFile
 from PIL import Image
-from pymarker import generate_marker_from_image, generate_patt_from_image
+from pymarker import generate_marker_from_image
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -79,13 +79,7 @@ def generate_marker_variants(marker, inner_border=False):
     _save_to_storage(storage, thumb_img_path, thumb_blob.getvalue())
     marker.thumb_img.name = thumb_img_path
 
-    # 5. Generate patt from original image (no borders)
-    patt_str = generate_patt_from_image(original_image)
-    patt_path = f"markers/{marker.pk}/marker.patt"
-    _save_to_storage(storage, patt_path, patt_str.encode("utf-8"))
-    marker.patt.name = patt_path
-
-    # 6. Update file_size (size of print image for download reference)
+    # 5. Update file_size (size of print image for download reference)
     marker.file_size = len(print_blob.getvalue())
 
     # Save updated fields
@@ -95,7 +89,6 @@ def generate_marker_variants(marker, inner_border=False):
             "marker_img",
             "print_img",
             "thumb_img",
-            "patt",
             "file_size",
         ]
     )
@@ -116,7 +109,6 @@ def delete_marker_files(marker):
         marker.marker_img,
         marker.print_img,
         marker.thumb_img,
-        marker.patt,
     ]
     for field in fields:
         try:

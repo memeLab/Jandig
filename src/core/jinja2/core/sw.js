@@ -19,7 +19,7 @@ if (workbox) {
   // so they're safe to cache; let HTML always go to the network.
 
   workbox.routing.registerRoute(
-    /.*\.(?:png|jpg|jpeg|svg|gif|patt|webp|ico)$/,
+    /.*\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
     new workbox.strategies.NetworkFirst()
   );
 

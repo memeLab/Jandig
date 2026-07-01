@@ -50,7 +50,6 @@ class TestMarkerAPI(TestCase):
         self.assertIn("created", first_result)
         self.assertIn("author", first_result)
         self.assertIn("title", first_result)
-        self.assertIn("patt", first_result)
 
     def test_api_markers_lists_multiple_markers(self):
         for _ in range(0, settings.PAGE_SIZE + 1):

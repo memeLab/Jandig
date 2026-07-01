@@ -320,7 +320,6 @@ def edit_marker(request):
         "source": model.source,
         "created": model.created,
         "author": model.author,
-        "patt": model.patt,
         "title": model.title,
     }
 

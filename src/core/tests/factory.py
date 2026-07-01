@@ -59,20 +59,6 @@ def choose_random_sound_file(_):
         return ContentFile(f.read(), name=file)
 
 
-def chose_random_patt_file(_):
-    """
-    Randomly selects a file from the collection/patts folder.
-    """
-    patts_dir = os.path.join(BASE_COLLECTION_DIR, "patts/")
-    files = [
-        f for f in os.listdir(patts_dir) if os.path.isfile(os.path.join(patts_dir, f))
-    ]
-    file = random.choice(files)
-    file_path = os.path.join(patts_dir, file)
-    with open(file_path, "rb") as f:
-        return ContentFile(f.read(), name=file)
-
-
 class ObjectFactory(DjangoModelFactory):
     class Meta:
         model = Object
@@ -99,7 +85,6 @@ class MarkerFactory(DjangoModelFactory):
 
     # Randomly select a file from the test_files folder for the source field
     source = LazyAttribute(choose_random_marker_file)
-    patt = LazyAttribute(chose_random_patt_file)
 
     title = Faker("sentence", nb_words=3)
     author = Faker("name")

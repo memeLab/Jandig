@@ -45,7 +45,6 @@ class MarkerSerializer(ModelSerializer):
             "created",
             "author",
             "title",
-            "patt",
             "file_size",
             "artworks_count",
             "exhibits_count",

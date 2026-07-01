@@ -41,7 +41,6 @@ class TestMarkerVariantGeneration(TestCase):
             author="Test Author",
             title="Test Marker",
             source=ContentFile(image_content.read(), name="test_image.jpg"),
-            patt=ContentFile(b"placeholder", name="test.patt"),
         )
         return marker
 
@@ -57,14 +56,12 @@ class TestMarkerVariantGeneration(TestCase):
         assert marker.marker_img.name == f"markers/{marker.pk}/marker.png"
         assert marker.print_img.name == f"markers/{marker.pk}/print.png"
         assert marker.thumb_img.name == f"markers/{marker.pk}/thumb.png"
-        assert marker.patt.name == f"markers/{marker.pk}/marker.patt"
 
         # Files should exist in storage
         assert default_storage.exists(marker.source.name)
         assert default_storage.exists(marker.marker_img.name)
         assert default_storage.exists(marker.print_img.name)
         assert default_storage.exists(marker.thumb_img.name)
-        assert default_storage.exists(marker.patt.name)
 
     def test_generate_variants_marker_dimensions(self):
         """marker.png should be 256x256."""
@@ -127,21 +124,6 @@ class TestMarkerVariantGeneration(TestCase):
         marker.refresh_from_db()
 
         assert marker.file_size > 0
-
-    def test_generate_variants_patt_generated(self):
-        """Patt file should be generated from the original image."""
-        marker = self._create_marker_with_source()
-        generate_marker_variants(marker)
-        marker.refresh_from_db()
-
-        with marker.patt.open("rb") as f:
-            patt_content = f.read()
-
-        # Patt files have a specific format (text-based with color values)
-        assert len(patt_content) > 0
-        # Should be text content (patt format)
-        patt_text = patt_content.decode("utf-8")
-        assert len(patt_text.strip()) > 0
 
 
 class TestMarkerUploadWithVariants(TestCase):
@@ -238,7 +220,6 @@ class TestMarkerDeletion(TestCase):
             author="Test Author",
             title="Delete Test",
             source=ContentFile(image_content.read(), name="delete_test.jpg"),
-            patt=ContentFile(b"placeholder", name="test.patt"),
         )
         generate_marker_variants(marker)
         marker.refresh_from_db()
@@ -248,14 +229,12 @@ class TestMarkerDeletion(TestCase):
         marker_img_path = marker.marker_img.name
         print_img_path = marker.print_img.name
         thumb_img_path = marker.thumb_img.name
-        patt_path = marker.patt.name
 
         # Verify files exist before deletion
         assert default_storage.exists(source_path)
         assert default_storage.exists(marker_img_path)
         assert default_storage.exists(print_img_path)
         assert default_storage.exists(thumb_img_path)
-        assert default_storage.exists(patt_path)
 
         # Delete via the view
         delete_url = reverse("delete-content") + f"?content_type=marker&id={marker.pk}"
@@ -269,7 +248,6 @@ class TestMarkerDeletion(TestCase):
         assert not default_storage.exists(marker_img_path)
         assert not default_storage.exists(print_img_path)
         assert not default_storage.exists(thumb_img_path)
-        assert not default_storage.exists(patt_path)
 
     def test_delete_marker_via_model(self):
         """Direct model deletion also removes all files."""
@@ -279,7 +257,6 @@ class TestMarkerDeletion(TestCase):
             author="Test Author",
             title="Model Delete Test",
             source=ContentFile(image_content.read(), name="model_delete.jpg"),
-            patt=ContentFile(b"placeholder", name="test.patt"),
         )
         generate_marker_variants(marker)
         marker.refresh_from_db()
