@@ -72,26 +72,31 @@ function getOrCreateTexture(markerId) {
 
     let texture;
 
-    if (contentEl.type === 'video') {
+    if (contentEl.type === 'video' && contentEl.video) {
         texture = new THREE.VideoTexture(contentEl.video);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
-    } else if (contentEl.type === 'spritesheet' && contentEl.metadata) {
-        const meta = contentEl.metadata;
-        texture.repeat.set(1 / meta.columns, 1 / meta.rows);
-        texture.offset.set(0, 1 - (1 / meta.rows)); // start at top-left frame
     } else {
-        const markerEl = getMarkerElement(markerId);
-        if (!markerEl) return null;
-        const imgEl = markerEl._contentImg || markerEl._markerImg;
-        if (!imgEl) return null;
+        const imgEl = contentEl.image || contentEl.spritesheet;
+        if (!imgEl) {
+            console.warn('No image or spritesheet found for content element', contentEl);
+            return null;
+        }
 
         texture = new THREE.Texture(imgEl);
         texture.needsUpdate = true;
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
+
+        // For spritesheets, set up UV repeat to show a single frame
+        if (contentEl.type === 'spritesheet' && contentEl.metadata) {
+            const meta = contentEl.metadata;
+            console.log(meta.columns, meta.rows, meta.frames, meta.frameDurationMs);
+            texture.repeat.set(1 / meta.columns, 1 / meta.rows);
+            texture.offset.set(0, 1 - (1 / meta.rows)); // start at top-left frame
+        }
     }
 
     textureCache.set(markerId, texture);

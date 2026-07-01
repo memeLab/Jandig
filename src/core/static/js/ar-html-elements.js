@@ -19,7 +19,7 @@ class ARContentElement extends HTMLElement {
     connectedCallback() {
         this.style.display = 'none';
         this.type = this.getAttribute('type');
-        this.metadata = this.getAttribute('metadata') || null;
+        this.metadata_url = this.getAttribute('metadata') || null;
         this.src = this.getAttribute('src');
 
         if (this.type === 'video') {
@@ -34,10 +34,10 @@ class ARContentElement extends HTMLElement {
             this.spritesheet = document.createElement('img');
             this.spritesheet.crossOrigin = 'anonymous';
             this.spritesheet.src = this.getAttribute('src');
-            if (this.metadata) {
-                fetch(this.metadata)
+            if (this.metadata_url) {
+                fetch(this.metadata_url)
                     .then(r => r.json())
-                    .then(meta => { this.spritesheetMetadata = meta; })
+                    .then(meta => { this.metadata = meta; })
                     .catch(e => console.warn('Failed to load spritesheet metadata:', e));
             } else{
                 console.warn('Spritesheet metadata not provided for', this);
