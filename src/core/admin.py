@@ -13,7 +13,7 @@ from core.marker_utils import generate_marker_variants
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.spritesheet_converter import gif_to_spritesheet
-from core.utils import get_admin_url
+from core.utils import filesizeformat, get_admin_url
 
 HTML_LINK = '<a href="{}">{}</a>'
 
@@ -75,10 +75,8 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
     exhibits_count.admin_order_field = "_exhibits_count"
 
     def filesize(self, obj):
-        """File size in MB"""
-        if obj.file_size > 0:
-            return f"{obj.file_size / 1024 / 1024:.2f} MB"
-        return obj.file_size
+        """File size in human-readable format"""
+        return filesizeformat(obj.file_size)
 
     filesize.short_description = "File Size"
     filesize.admin_order_field = "file_size"

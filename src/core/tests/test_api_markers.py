@@ -7,6 +7,7 @@ from django.test import TestCase
 from core.models import Marker
 from core.serializers import MarkerSerializer
 from core.tests.factory import MarkerFactory
+from core.utils import filesizeformat
 from users.models import User
 
 
@@ -103,7 +104,7 @@ class TestMarkerAPI(TestCase):
         assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html
-        assert str(annotated_marker.file_size) in html
+        assert filesizeformat(annotated_marker.file_size) in html
         assert annotated_marker.used_in_html_string() in html
 
     def test_retrieve_marker_as_modal_with_go_back_button(self):
@@ -128,6 +129,6 @@ class TestMarkerAPI(TestCase):
         assert annotated_marker.created.strftime("%d/%m/%Y") in html
         assert annotated_marker.author in html
         assert annotated_marker.owner.user.username in html
-        assert str(annotated_marker.file_size) in html
+        assert filesizeformat(annotated_marker.file_size) in html
         assert annotated_marker.used_in_html_string() in html
         assert go_back_url in html
