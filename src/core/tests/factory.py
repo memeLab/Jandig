@@ -1,3 +1,4 @@
+import json
 import os
 import random
 
@@ -62,6 +63,7 @@ def choose_random_sound_file(_):
 class ObjectFactory(DjangoModelFactory):
     class Meta:
         model = Object
+        skip_postgeneration_save = True
 
     owner = SubFactory(ProfileFactory)
 
@@ -74,6 +76,23 @@ class ObjectFactory(DjangoModelFactory):
     file_size = Faker("random_int", min=1000, max=1_000_000)
     file_name_original = Faker("slug")
     file_extension = LazyAttribute(lambda obj: obj.source.name.split(".")[-1])
+
+    @post_generation
+    def generate_spritesheet(obj, create, extracted, **kwargs):
+        """Generate fake spritesheet files for GIF objects."""
+        if not create:
+            return
+        if obj.file_extension == "gif":
+            fake_png = ContentFile(b"\x89PNG\r\n\x1a\n", name="spritesheet.png")
+            obj.spritesheet_file.save(
+                f"objects/{obj.pk}/spritesheet.png", fake_png, save=False
+            )
+            metadata = {"frames": 4, "frameWidth": 100, "frameHeight": 100}
+            fake_meta = ContentFile(json.dumps(metadata).encode(), name="metadata.json")
+            obj.spritesheet_metadata.save(
+                f"objects/{obj.pk}/metadata.json", fake_meta, save=False
+            )
+        obj.save()
 
 
 class MarkerFactory(DjangoModelFactory):
