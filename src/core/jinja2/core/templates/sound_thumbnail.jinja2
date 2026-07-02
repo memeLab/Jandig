@@ -1,0 +1,15 @@
+<span style="display:block;">{{ sound.title }}</span>
+<audio id="sound-audio-{{ sound.id }}"
+       title="{{ sound.title }}"
+       src="{{ sound.file.url }}"
+       controls>
+</audio>
+{% if editable %}
+    {% set can_edit = not sound.is_used_by_other_user() %}
+    {% set can_delete = not sound.in_use %}
+    {% set edit_reason = _("This sound is used by other users and cannot be edited.") %}
+    {% set delete_reason = _("This sound is in use and cannot be deleted.") %}
+    {% with element=sound, element_type="sound", has_preview=false, can_edit=can_edit, can_delete=can_delete, edit_reason=edit_reason, delete_reason=delete_reason %}
+        {% include "core/components/action-menu.jinja2" %}
+    {% endwith %}
+{% endif %}

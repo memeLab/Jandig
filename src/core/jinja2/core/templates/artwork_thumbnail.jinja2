@@ -1,33 +1,48 @@
-<div hx-get="/api/v1/artworks/{{ artwork.id }}/?format=modal"
-     hx-target="#modal"
-     hx-trigger="click"
-     class="repository-item trigger-modal"
-     id="artwork-{{ artwork.id }}">
-    <div class="artwork-elements flex">
-        <img id="{{ artwork.marker.id }}"
-             title="{{ artwork.marker.title }}"
-             src="{{ artwork.marker.source.url }}"
-             height="50"
-             width="50">
-        <div class="separator"></div>
-        <video autoplay=""
-               loop=""
-               muted=""
-               id="{{ artwork.augmented.id }}"
+<div class="artwork-elements flex">
+    <img id="artwork-marker-{{ artwork.marker.id }}"
+         title="{{ artwork.marker.title }}"
+         src="{{ artwork.marker.thumb_img.url }}?v={{ artwork.marker.modified.timestamp() |int }}"
+         height="50"
+         width="50">
+    <div class="separator"></div>
+    {% if artwork.augmented.is_video %}
+        <video autoplay
+               loop
+               muted
+               id="artwork-object-{{ artwork.augmented.id }}"
                title="{{ artwork.augmented.title }}"
                src="{{ artwork.augmented.source.url }}"
                height="50"
                width="50">
         </video>
-        {% if editable %}<a href="/artworks/edit/?id={{ artwork.id }}" class="edit">edit</a>{% endif %}
-        {% if deletable %}
-            <a href="{{ reverse('delete-content', query={'content_type': 'artwork', 'id': artwork.id},) }}"
-               onclick="return confirm('Are you sure you want to delete?')"
-               class="delete">delete</a>
+    {% elif artwork.augmented.is_3d %}
+        {% if artwork.augmented.thumbnail %}
+            <img id="artwork-object-{{ artwork.augmented.id }}"
+                 title="{{ artwork.augmented.title }}"
+                 src="{{ artwork.augmented.thumbnail.url }}"
+                 height="50"
+                 width="50">
+        {% else %}
+            <img id="artwork-object-{{ artwork.augmented.id }}"
+                 title="{{ artwork.augmented.title }}"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50'><rect width='50' height='50' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='10' fill='%23666'>3D</text></svg>"
+                 height="50"
+                 width="50">
+            {% endif %}
+        {% else %}
+            <img id="artwork-object-{{ artwork.augmented.id }}"
+                 title="{{ artwork.augmented.title }}"
+                 src="{{ artwork.augmented.source.url }}"
+                 height="50"
+                 width="50">
         {% endif %}
-        {% if previewable %}
-            <a href="{{ url('artwork-preview', query={'id': artwork.id}) }}"
-               class="preview">preview</a>
+        {% if editable %}
+            {% set can_edit = true %}
+            {% set can_delete = not artwork.in_use %}
+            {% set edit_reason = "" %}
+            {% set delete_reason = _("This artwork is used in exhibits and cannot be deleted.") %}
+            {% with element=artwork, element_type="artwork", has_preview=true, can_edit=can_edit, can_delete=can_delete, edit_reason=edit_reason, delete_reason=delete_reason %}
+                {% include "core/components/action-menu.jinja2" %}
+            {% endwith %}
         {% endif %}
     </div>
-</div>

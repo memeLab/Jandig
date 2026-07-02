@@ -1,17 +1,40 @@
-<div hx-get="/api/v1/objects/{{ object.id }}/?format=modal"
-     hx-target="#modal"
-     hx-trigger="click"
-     class="repository-item trigger-modal"
-     id="object-{{ object.id }}">
-    <img id="{{ object.id }}"
-         title="{{ object.title }}"
-         src="{{ object.source.url }}"
-         height="50"
-         width="50">
-    {% if editable %}<a href="/objects/edit/?id={{ object.id }}" class="edit">edit</a>{% endif %}
-    {% if deletable %}
-        <a href="{{ reverse('delete-content', query={'content_type': 'object', 'id': object.id},) }}"
-           onclick="return confirm('Are you sure you want to delete?')"
-           class="delete">delete</a>
+{% if object.is_video %}
+    <video autoplay
+           loop
+           muted
+           id="object-media-{{ object.id }}"
+           title="{{ object.title }}"
+           src="{{ object.source.url }}"
+           height="64"
+           width="64">
+    </video>
+{% elif object.is_3d %}
+    {% if object.thumbnail %}
+        <img id="object-media-{{ object.id }}"
+             title="{{ object.title }}"
+             src="{{ object.thumbnail.url }}"
+             height="64"
+             width="64">
+    {% else %}
+        <img id="object-media-{{ object.id }}"
+             title="{{ object.title }}"
+             src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='10' fill='%23666'>3D</text></svg>"
+             height="64"
+             width="64">
+        {% endif %}
+    {% else %}
+        <img id="object-media-{{ object.id }}"
+             title="{{ object.title }}"
+             src="{{ object.source.url }}"
+             height="64"
+             width="64">
     {% endif %}
-</div>
+    {% if editable %}
+        {% set can_edit = not object.is_used_by_other_user() %}
+        {% set can_delete = not object.in_use %}
+        {% set edit_reason = _("This object is used by other users and cannot be edited.") %}
+        {% set delete_reason = _("This object is used in artworks and cannot be deleted.") %}
+        {% with element=object, element_type="object", has_preview=false, can_edit=can_edit, can_delete=can_delete, edit_reason=edit_reason, delete_reason=delete_reason %}
+            {% include "core/components/action-menu.jinja2" %}
+        {% endwith %}
+    {% endif %}

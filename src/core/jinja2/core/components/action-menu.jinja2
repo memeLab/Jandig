@@ -1,0 +1,43 @@
+{# Three-dot action menu component.
+   Variables:
+     - element: the model instance
+     - element_type: string like "marker", "object", "artwork", "sound", "ar-exhibit", "mr-exhibit"
+     - can_edit: boolean
+     - can_delete: boolean
+     - has_preview: boolean (only markers and artworks)
+     - edit_reason: string explaining why edit is disabled (optional)
+     - delete_reason: string explaining why delete is disabled (optional)
+#}
+<div class="action-menu-container">
+    <button type="button"
+            class="action-menu-trigger"
+            aria-label="{{ _('Actions') }}">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="3" r="1.5" /><circle cx="8" cy="8" r="1.5" /><circle cx="8" cy="13" r="1.5" />
+        </svg>
+    </button>
+    <div class="action-menu-dropdown">
+        {% if element_type == "ar-exhibit" or element_type == "mr-exhibit" %}
+            {% set edit_url = url('edit-' ~ element_type) ~ '?id=' ~ element.id %}
+        {% else %}
+            {% set edit_url = url('edit-' ~ element_type) ~ '?id=' ~ element.id %}
+        {% endif %}
+        <a class="action-menu-item{% if not can_edit %} disabled{% endif %}"
+           {% if can_edit %} href="{{ edit_url }}" {% else %} href="#" data-disabled="true" data-reason="{{ edit_reason }}" {% endif %}>
+            {{ _("Edit") }}
+        </a>
+        {% if has_preview %}
+            {% if element_type == "marker" %}
+                {% set preview_url = url('marker-preview') ~ '?id=' ~ element.id %}
+            {% elif element_type == "artwork" %}
+                {% set preview_url = url('artwork-preview') ~ '?id=' ~ element.id %}
+            {% endif %}
+            <a class="action-menu-item" href="{{ preview_url }}">{{ _("Preview") }}</a>
+        {% endif %}
+        {% set delete_url = url('delete-content') ~ '?content_type=' ~ element_type ~ '&id=' ~ element.id %}
+        <a class="action-menu-item action-menu-delete{% if not can_delete %} disabled{% endif %}"
+           {% if can_delete %} href="{{ delete_url }}" data-confirm="{{ _('Are you sure you want to delete this item?') }}" {% else %} href="#" data-disabled="true" data-reason="{{ delete_reason }}" {% endif %}>
+            {{ _("Delete") }}
+        </a>
+    </div>
+</div>

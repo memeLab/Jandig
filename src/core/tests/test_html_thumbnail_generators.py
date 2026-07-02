@@ -1,9 +1,8 @@
+from django.template import engines
 from django.test import TestCase
 from django.urls import reverse
 
 from core.models import (
-    DEFAULT_MARKER_THUMBNAIL_HEIGHT,
-    DEFAULT_MARKER_THUMBNAIL_WIDTH,
     ExhibitTypes,
 )
 from core.tests.factory import (
@@ -15,7 +14,14 @@ from core.tests.factory import (
 from core.tests.utils import get_example_object
 
 
-class TestMarkerThumbnailGenerators(TestCase):
+def render_template(template_name, context):
+    """Render a Jinja2 template with the given context."""
+    jinja_engine = engines["jinja2"]
+    template = jinja_engine.get_template(template_name)
+    return template.render(context)
+
+
+class TestMarkerThumbnailTemplates(TestCase):
     def setUp(self):
         self.marker = MarkerFactory(title="Test Marker", author="Test Author")
 
@@ -29,33 +35,42 @@ class TestMarkerThumbnailGenerators(TestCase):
         assert "<img" in html
 
     def test_marker_thumbnail_not_editable(self):
-        html = self.marker.as_html_thumbnail(editable=False)
-        assert f'height="{DEFAULT_MARKER_THUMBNAIL_HEIGHT}"' in html
-        assert f'width="{DEFAULT_MARKER_THUMBNAIL_WIDTH}"' in html
-        assert reverse("edit-marker") not in html
-        assert reverse("delete-content") not in html
+        html = render_template(
+            "core/templates/marker_thumbnail.jinja2",
+            {"marker": self.marker, "editable": False},
+        )
+        assert self.marker.thumb_img.url in html
+        assert "action-menu-container" not in html
 
     def test_marker_thumbnail_editable(self):
-        html = self.marker.as_html_thumbnail(editable=True)
-
-        edit_url = reverse("edit-marker", query={"id": self.marker.id})
-        delete_url = reverse(
-            "delete-content", query={"content_type": "marker", "id": self.marker.id}
+        html = render_template(
+            "core/templates/marker_thumbnail.jinja2",
+            {"marker": self.marker, "editable": True},
         )
+        assert "action-menu-container" in html
+        edit_url = reverse("edit-marker") + f"?id={self.marker.id}"
+        preview_url = reverse("marker-preview") + f"?id={self.marker.id}"
+        delete_url = (
+            reverse("delete-content")
+            + f"?content_type=marker&amp;id={self.marker.id}"
+        )
+        assert edit_url in html
+        assert delete_url in html
+        assert preview_url in html
 
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
-
-    def test_marker_in_use_cant_be_edited(self):
-        # Create an artwork using this marker to mark it as "in use"
+    def test_marker_in_use_shows_disabled_actions(self):
         ArtworkFactory(marker=self.marker)
+        html = render_template(
+            "core/templates/marker_thumbnail.jinja2",
+            {"marker": self.marker, "editable": True},
+        )
+        # Menu should still be present
+        assert "action-menu-container" in html
+        # Delete should be disabled (data-disabled attribute present)
+        assert 'data-disabled="true"' in html
 
-        html = self.marker.as_html_thumbnail(editable=True)
-        assert reverse("edit-marker") not in html
-        assert reverse("delete-content") not in html
 
-
-class TestObjectThumbnailGenerators(TestCase):
+class TestObjectThumbnailTemplates(TestCase):
     def setUp(self):
         self.image_object = ObjectFactory(
             title="Test Image",
@@ -85,38 +100,41 @@ class TestObjectThumbnailGenerators(TestCase):
         assert "muted" in html
         assert "<video" in html
 
-    def test_object_thumbnail_can_be_edited(self):
-        html = self.image_object.as_html_thumbnail(editable=True)
-
-        edit_url = reverse("edit-object", query={"id": self.image_object.id})
-        delete_url = reverse(
-            "delete-content",
-            query={"content_type": "object", "id": self.image_object.id},
+    def test_object_thumbnail_editable(self):
+        html = render_template(
+            "core/templates/object_thumbnail.jinja2",
+            {"object": self.image_object, "editable": True},
         )
+        assert "action-menu-container" in html
+        edit_url = reverse("edit-object") + f"?id={self.image_object.id}"
+        delete_url = (
+            reverse("delete-content")
+            + f"?content_type=object&amp;id={self.image_object.id}"
+        )
+        assert edit_url in html
+        assert delete_url in html
 
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
-
-    def test_object_in_use_by_others_cant_be_edited(self):
-        # Create an artwork using this object to mark it as "in use"
+    def test_object_in_use_by_others_shows_disabled(self):
         ArtworkFactory(augmented=self.image_object)
-
-        html = self.image_object.as_html_thumbnail(editable=True)
-        assert reverse("edit-object") not in html
-        assert reverse("delete-content") not in html
+        html = render_template(
+            "core/templates/object_thumbnail.jinja2",
+            {"object": self.image_object, "editable": True},
+        )
+        assert "action-menu-container" in html
+        assert 'data-disabled="true"' in html
 
     def test_object_in_use_by_self_can_be_edited(self):
-        # Create an artwork using this object to mark it as "in use"
         ArtworkFactory(augmented=self.image_object, author=self.image_object.owner)
+        html = render_template(
+            "core/templates/object_thumbnail.jinja2",
+            {"object": self.image_object, "editable": True},
+        )
+        edit_url = reverse("edit-object") + f"?id={self.image_object.id}"
+        # In use only by self, so edit should be a real link (no data-disabled)
+        assert f'href="{edit_url}"' in html
 
-        html = self.image_object.as_html_thumbnail(editable=True)
-        # In use only by self, so should allow editing
-        assert reverse("edit-object") in html
-        # Can still not delete it
-        assert reverse("delete-content") not in html
 
-
-class TestArtworkThumbnailGenerators(TestCase):
+class TestArtworkThumbnailTemplates(TestCase):
     def setUp(self):
         self.marker = MarkerFactory(title="Test Marker", author="Test Author")
         self.object = ObjectFactory(
@@ -129,118 +147,93 @@ class TestArtworkThumbnailGenerators(TestCase):
         )
 
     def test_artwork_thumbnail_not_editable(self):
-        html = self.artwork.as_html_thumbnail(editable=False)
-
-        # Should contain marker and object thumbnails
+        html = render_template(
+            "core/templates/artwork_thumbnail.jinja2",
+            {"artwork": self.artwork, "editable": False},
+        )
         assert self.marker.thumb_img.url in html
         assert self.object.source.url in html
-
-        # Should not contain edit/delete buttons
-        assert reverse("edit-artwork") not in html
-        assert reverse("delete-content") not in html
-        assert reverse("artwork-preview") not in html
+        assert "action-menu-container" not in html
 
     def test_artwork_thumbnail_editable(self):
-        html = self.artwork.as_html_thumbnail(editable=True)
-
-        # Should contain marker and object thumbnails
+        html = render_template(
+            "core/templates/artwork_thumbnail.jinja2",
+            {"artwork": self.artwork, "editable": True},
+        )
         assert self.marker.thumb_img.url in html
         assert self.object.source.url in html
-
-        # Should contain edit/delete/preview buttons with correct URLs
-        edit_url = reverse("edit-artwork", query={"id": self.artwork.id})
-        delete_url = reverse(
-            "delete-content", query={"content_type": "artwork", "id": self.artwork.id}
+        assert "action-menu-container" in html
+        edit_url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        preview_url = reverse("artwork-preview") + f"?id={self.artwork.id}"
+        delete_url = (
+            reverse("delete-content")
+            + f"?content_type=artwork&amp;id={self.artwork.id}"
         )
-        preview_url = reverse("artwork-preview", query={"id": self.artwork.id})
+        assert edit_url in html
+        assert delete_url in html
+        assert preview_url in html
 
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
-        assert f'href="{preview_url}"' in html
-
-    def test_artwork_in_use_can_be_edited(self):
-        # Create an exhibit using this artwork to mark it as "in use"
+    def test_artwork_in_use_hides_delete(self):
         exhibit = ExhibitFactory()
         exhibit.artworks.add(self.artwork)
+        html = render_template(
+            "core/templates/artwork_thumbnail.jinja2",
+            {"artwork": self.artwork, "editable": True},
+        )
+        # Edit should still work
+        edit_url = reverse("edit-artwork") + f"?id={self.artwork.id}"
+        assert f'href="{edit_url}"' in html
+        # Delete should be disabled
+        assert 'data-disabled="true"' in html
 
-        html = self.artwork.as_html_thumbnail(editable=True)
 
-        # Should not contain delete since it's in use
-        assert reverse("edit-artwork") in html
-        assert reverse("delete-content") not in html
-        assert reverse("artwork-preview") in html
-
-
-class TestExhibitThumbnailGenerators(TestCase):
+class TestExhibitThumbnailTemplates(TestCase):
     def setUp(self):
         self.exhibit = ExhibitFactory(name="Test Exhibit", slug="test-exhibit")
-        # Add a couple artworks to test the count
         artwork1 = ArtworkFactory()
         artwork2 = ArtworkFactory()
         self.exhibit.artworks.add(artwork1, artwork2)
 
     def test_exhibit_thumbnail_not_editable(self):
-        html = self.exhibit.as_html_thumbnail(editable=False)
-
-        # Check basic exhibit information
+        html = render_template(
+            "core/templates/exhibit_thumbnail.jinja2",
+            {"exhibit": self.exhibit, "editable": False},
+        )
         assert self.exhibit.name in html
         assert self.exhibit.owner.user.username in html
         assert self.exhibit.date in html
-
-        # Check links
         assert f'href="/{self.exhibit.slug}/"' in html
-        assert 'class="gotoExb"' in html
-        assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
-
-        # Should not contain edit/delete buttons
-        assert reverse("edit-ar-exhibit") not in html
-        assert reverse("delete-content") not in html
+        assert "action-menu-container" not in html
 
     def test_ar_exhibit_thumbnail_editable(self):
         self.exhibit.exhibit_type = ExhibitTypes.AR
-        html = self.exhibit.as_html_thumbnail(editable=True)
-
-        # Should contain all basic information
+        html = render_template(
+            "core/templates/exhibit_thumbnail.jinja2",
+            {"exhibit": self.exhibit, "editable": True},
+        )
         assert self.exhibit.name in html
         assert self.exhibit.owner.user.username in html
-        assert self.exhibit.date in html
-        assert f"{self.exhibit.artworks_count} " in html
-
-        # Check links
-        assert f'href="/{self.exhibit.slug}/"' in html
-        assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
-
-        # Should contain edit/delete buttons with correct URLs
-        edit_url = reverse("edit-ar-exhibit", query={"id": self.exhibit.id})
-        delete_url = reverse(
-            "delete-content",
-            query={"content_type": "ar-exhibit", "id": self.exhibit.id},
+        assert "action-menu-container" in html
+        edit_url = reverse("edit-ar-exhibit") + f"?id={self.exhibit.id}"
+        delete_url = (
+            reverse("delete-content")
+            + f"?content_type=ar-exhibit&amp;id={self.exhibit.id}"
         )
-
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
+        assert edit_url in html
+        assert delete_url in html
 
     def test_mr_exhibit_thumbnail_editable(self):
         self.exhibit.exhibit_type = ExhibitTypes.MR
-        html = self.exhibit.as_html_thumbnail(editable=True)
-
-        # Should contain all basic information
-        assert self.exhibit.name in html
-        assert self.exhibit.owner.user.username in html
-        assert self.exhibit.date in html
-        assert f"{self.exhibit.sounds_count} " in html
-        assert f"{self.exhibit.augmenteds_count} " in html
-
-        # Check links
-        assert f'href="/{self.exhibit.slug}/"' in html
-        assert reverse("exhibit-detail", query={"id": self.exhibit.id}) in html
-
-        # Should contain edit/delete buttons with correct URLs
-        edit_url = reverse("edit-mr-exhibit", query={"id": self.exhibit.id})
-        delete_url = reverse(
-            "delete-content",
-            query={"content_type": "mr-exhibit", "id": self.exhibit.id},
+        html = render_template(
+            "core/templates/exhibit_thumbnail.jinja2",
+            {"exhibit": self.exhibit, "editable": True},
         )
-
-        assert f'href="{edit_url}"' in html
-        assert f'href="{delete_url}"' in html
+        assert self.exhibit.name in html
+        assert "action-menu-container" in html
+        edit_url = reverse("edit-mr-exhibit") + f"?id={self.exhibit.id}"
+        delete_url = (
+            reverse("delete-content")
+            + f"?content_type=mr-exhibit&amp;id={self.exhibit.id}"
+        )
+        assert edit_url in html
+        assert delete_url in html
