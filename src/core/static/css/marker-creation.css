@@ -11,6 +11,10 @@
     flex: 0 1 calc(20% - 16px);
 }
 
+.modal.modal #repo-artwork .repository-item {
+    flex: 0 1 calc(50% - 10px);
+}
+
 .form-options{
     font-size: 12px;
     text-align: left;
@@ -29,4 +33,27 @@
 
 .tab {
     display: none;
+}
+
+.modal-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px 0;
+}
+
+.modal-nav-header .modal-title {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    font-size: 1.4em;
+}
+
+.modal-nav-btn {
+    width: 2.5em;
+    height: 2.5em;
+    font-size: larger;
+    margin: 0;
+    flex-shrink: 0;
 }

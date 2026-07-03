@@ -38,7 +38,6 @@
                     <div id="artwork-modal" class="tab">
                         <h4 class="modal-title">{{ _("Select Artworks") }}</h4>
                         {% if artworks %}
-                            <p class="gallery-title">{{ _("Choose from your repository") }}</p>
                             {% with repository_list = artworks, element_type="artwork", htmx="false", selected=selected_artworks %}
                                 {% include "core/components/item-list.jinja2" %}
                             {% endwith %}
