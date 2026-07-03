@@ -34,7 +34,7 @@
             {% endif %}
             <p id="element-download">
                 <p id="download">Download file:</p>
-                <a id="png-download" href="{{ ar_object.source.url }}">{{ "{} ({}KB)".format(_("Download File") , ar_object.file_size)}}</a>
+                <a id="png-download" href="{{ ar_object.source.url }}" download>{{ "{} ({})".format(_("Download File") , ar_object.file_size | filesizeformat)}}</a>
             </p>
         </div>
     </div>

@@ -9,14 +9,15 @@ from core.views.static_views import (
     home_new,
     home_old,
     manifest,
-    marker_generator,
     me_hotsite,
     robots_txt,
     service_worker,
 )
 from core.views.views import (
+    ar_view,
     artwork_preview,
     collection,
+    convert_gif_to_spritesheet,
     create_artwork,
     create_or_edit_ar_exhibit,
     create_or_edit_mr_exhibit,
@@ -39,6 +40,7 @@ from core.views.views import (
 
 urlpatterns = [
     path("", home_new, name="home"),
+    path("ar/", ar_view, name="ar-view"),
     path("arviewer/", home_old, name="home-old"),
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("artworks/create/", create_artwork, name="create-artwork"),
@@ -53,12 +55,16 @@ urlpatterns = [
     path("exhibits/edit-ar/", create_or_edit_ar_exhibit, name="edit-ar-exhibit"),
     path("exhibits/create-mr/", create_or_edit_mr_exhibit, name="create-mr-exhibit"),
     path("exhibits/edit-mr/", create_or_edit_mr_exhibit, name="edit-mr-exhibit"),
-    path("generator/", marker_generator, name="marker-generator"),
     path("marker/", marker_preview, name="marker-preview"),
     path("markers/edit/", edit_marker, name="edit-marker"),
     path("markers/upload/", marker_upload, name="marker-upload"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
+    path(
+        "objects/convert-spritesheet/",
+        convert_gif_to_spritesheet,
+        name="convert-spritesheet",
+    ),
     path("sounds/edit/", edit_sound, name="edit-sound"),
     path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),

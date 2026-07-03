@@ -20,7 +20,7 @@
             {{ sound.as_html() | safe }}
             <p id="download">Download file:</p>
             <p id="element-download">
-                <a id="png-download" href="{{ sound.file.url }}">{{ "{} ({}KB)".format(_("Download File") , sound.file_size)}}</a>
+                <a id="png-download" href="{{ sound.file.url }}" download>{{ "{} ({})".format(_("Download File") , sound.file_size | filesizeformat)}}</a>
             </p>
         </div>
     </div>

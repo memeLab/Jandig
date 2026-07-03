@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
+        <link rel="stylesheet" href="{{ static('css/ar.css') }}" />
+        <script type="importmap">
+        {
+            "imports": {
+                "three": "{{ static('libs/three-0.184.0.js') }}"
+            }
+        }
+        </script>
+        <script src="{{ static('js/ar-html-elements.js') }}"></script>
+        <script src="{{ static('js/ar-utils.js') }}"></script>
+        <script type="module">
+            import { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks } from '{{ static("js/ar-three-overlay.js") }}';
+            window.arOverlay = { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks };
+        </script>
+        <script src="{{ static('js/ar.js') }}"></script>
+        <script async
+                src="{{ static('libs/opencv-4.13.0.js') }}"
+                onload="MarkOpenCvReady();"
+                type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="video-container">
+            <video id="camera"
+                   autoplay=""
+                   playsinline=""
+                   muted=""
+                   {% if debug %}hidden{% endif %}>
+            </video>
+            <canvas id="ar-canvas" {% if not debug %}hidden{% endif %}></canvas>
+            <canvas id="three-canvas"></canvas>
+        </div>
+        {% for id, artwork in enumerate(artworks) %}
+            <ar-marker id="marker-{{ id }}" src="{{ artwork.marker.marker_img.url }}">
+            {% if artwork.augmented.file_extension == 'gif' %}
+                <ar-content id="content-{{ id }}" src="{{ artwork.augmented.spritesheet_file.url }}" type="spritesheet" metadata="{{ artwork.augmented.spritesheet_metadata.url }}"></ar-content>
+            {% elif artwork.augmented.file_extension == 'mp4' %}
+                <ar-content id="content-{{ id }}" src="{{ artwork.augmented.source.url }}" type="video"></ar-content>
+            {% elif artwork.augmented.file_extension == 'png' %}
+                <ar-content id="content-{{ id }}" src="{{ artwork.augmented.source.url }}" type="image"></ar-content>
+            {% endif %}
+            </ar-marker>
+        {% endfor %}
+    </body>
+    <script>initializePipeline();</script>
+</html>

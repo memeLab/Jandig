@@ -1,7 +1,7 @@
 import logging
 
 import pghistory
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile as CF
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -9,42 +9,24 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, b, div, h1, img, p, render, span, video
-from PIL import Image
-from pymarker.core import generate_marker_from_image, generate_patt_from_image
 
-from config.storage_backends import PublicMediaStorage
+from core.marker_utils import delete_marker_files
 from users.models import Profile
 
 log = logging.getLogger()
 
-DEFAULT_MARKER_THUMBNAIL_HEIGHT = 50
-DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
-DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
-DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
+DEFAULT_MARKER_THUMBNAIL_HEIGHT = 64
+DEFAULT_MARKER_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 64
+DEFAULT_OBJECT_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_PREVIEW_HEIGHT = 320
+DEFAULT_OBJECT_PREVIEW_WIDTH = 320
+DEFAULT_MARKER_PREVIEW_HEIGHT = 320
+DEFAULT_MARKER_PREVIEW_WIDTH = 320
 
 SCALE_REGEX = r"[\d\.\d]+"
 
 USED_IN = _("Used in")
-
-
-def create_patt(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        patt_str = generate_patt_from_image(image)
-        patt_file = filestorage.save(
-            "patts/" + original_filename + ".patt",
-            ContentFile(patt_str.encode("utf-8")),
-        )
-        return patt_file
-
-
-def create_marker(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        marker_image = generate_marker_from_image(image)
-        marker_image.name = original_filename
-        marker_image.__commited = False
-        return marker_image
 
 
 class ContentMixin:
@@ -213,9 +195,11 @@ class Marker(TimeStampedModel, ContentMixin):
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
     source = models.ImageField(upload_to="markers/")
+    marker_img = models.ImageField(upload_to="markers/", blank=True)
+    print_img = models.ImageField(upload_to="markers/", blank=True)
+    thumb_img = models.ImageField(upload_to="markers/", blank=True)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
-    patt = models.FileField(upload_to="patts/")
 
     # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
@@ -244,11 +228,18 @@ class Marker(TimeStampedModel, ContentMixin):
         """
         return self.artworks.exclude(author=self.owner).exists()
 
-    def as_html(self, height: int = None, width: int = None):
+    def as_html(
+        self,
+        height: int = DEFAULT_MARKER_PREVIEW_HEIGHT,
+        width: int = DEFAULT_MARKER_PREVIEW_WIDTH,
+        thumbnail: bool = False,
+    ):
+        image = self.thumb_img if thumbnail else self.print_img
+        src = image.url + f"?v={int(self.modified.timestamp())}"
         attributes = {
             "id": self.id,
             "title": self.title,
-            "src": self.source.url,
+            "src": src,
         }
         return render(
             img(
@@ -261,17 +252,14 @@ class Marker(TimeStampedModel, ContentMixin):
     def as_html_thumbnail(self, editable: bool = False):
         height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
         width = DEFAULT_MARKER_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height=height, width=width)]
-        # Disabled edit button for now:
-        # it only allows to edit the title
-        # and it's generating recursive borders on the existing marker.
+        to_render = [self.as_html(height=height, width=width, thumbnail=True)]
         if editable:
             lower_menu_items = []
             if not self.in_use:
                 lower_menu_items.append(self._get_delete_button())
 
-            # if not self.is_used_by_other_user():
-            #     to_render.append(self._get_edit_button())
+            if not self.is_used_by_other_user():
+                lower_menu_items.append(self._get_edit_button())
 
             lower_menu_items.append(
                 a(
@@ -287,9 +275,37 @@ class Marker(TimeStampedModel, ContentMixin):
 
 class ObjectExtensions(models.TextChoices):
     GIF = "gif", "GIF"
+    PNG = "png", "PNG"
     MP4 = "mp4", "MP4"
     WEBM = "webm", "WEBM"
     GLB = "glb", "GLB"
+
+
+def object_source_path(instance, filename):
+    """Upload path: objects/<id>/source.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/source.{ext}"
+
+
+def object_audio_description_path(instance, filename):
+    """Upload path: objects/<id>/audio_description.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/audio_description.{ext}"
+
+
+def object_thumbnail_path(instance, filename):
+    """Upload path: objects/<id>/thumbnail.png"""
+    return f"objects/{instance.pk}/thumbnail.png"
+
+
+def object_spritesheet_path(instance, filename):
+    """Upload path: objects/<id>/spritesheet.png"""
+    return f"objects/{instance.pk}/spritesheet.png"
+
+
+def object_spritesheet_metadata_path(instance, filename):
+    """Upload path: objects/<id>/metadata.json"""
+    return f"objects/{instance.pk}/metadata.json"
 
 
 @pghistory.track()
@@ -305,9 +321,9 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
     )
     audio_description = models.FileField(
-        upload_to="audio_descriptions/", null=True, blank=True
+        upload_to=object_audio_description_path, null=True, blank=True
     )
-    source = models.FileField(upload_to="objects/")
+    source = models.FileField(upload_to=object_source_path)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
@@ -317,13 +333,123 @@ class Object(TimeStampedModel, ContentMixin):
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
     thumbnail = models.ImageField(
-        upload_to="objects/thumbnails/",
+        upload_to=object_thumbnail_path,
         blank=True,
         null=True,
     )
+    spritesheet_file = models.FileField(
+        upload_to=object_spritesheet_path,
+        blank=True,
+        null=True,
+    )
+    spritesheet_metadata = models.FileField(
+        upload_to=object_spritesheet_metadata_path,
+        blank=True,
+        null=True,
+    )
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.source.name
+
+    def relocate_files(self):
+        """Move all files to the canonical objects/<pk>/ folder.
+
+        Called after initial save (when pk is available) to ensure files
+        live at their ID-based path. Safe to call multiple times — skips
+        files that are already in the correct location.
+
+        Also cleans up stale files from previous uploads (e.g. source.webm
+        when the new file is source.glb).
+        """
+
+        storage = self.source.storage
+        changed = False
+
+        def _cleanup_stale(keep_path, prefix):
+            """Delete files matching prefix.* in the object folder, except keep_path."""
+            folder = f"objects/{self.pk}"
+            try:
+                _, files = storage.listdir(folder)
+            except Exception:
+                return
+            base = prefix  # e.g. "source"
+            for f in files:
+                if f.split(".")[0] == base:
+                    full_path = f"{folder}/{f}"
+                    if full_path != keep_path:
+                        try:
+                            storage.delete(full_path)
+                        except Exception:
+                            pass
+
+        def _move(field, target_path):
+            nonlocal changed
+            if not field.name:
+                return
+            if field.name == target_path:
+                return
+            content = field.read()
+            field.close()
+            old_path = field.name
+            try:
+                if storage.exists(old_path):
+                    storage.delete(old_path)
+            except Exception:
+                pass
+            try:
+                if storage.exists(target_path):
+                    storage.delete(target_path)
+            except Exception:
+                pass
+            storage.save(target_path, CF(content))
+            field.name = target_path
+            changed = True
+
+        # Source file
+        ext = (
+            self.source.name.rsplit(".", 1)[-1].lower()
+            if "." in self.source.name
+            else ""
+        )
+        source_target = f"objects/{self.pk}/source.{ext}"
+        _move(self.source, source_target)
+        _cleanup_stale(source_target, "source")
+
+        # Audio description
+        if self.audio_description:
+            ad_ext = (
+                self.audio_description.name.rsplit(".", 1)[-1].lower()
+                if "." in self.audio_description.name
+                else ""
+            )
+            ad_target = f"objects/{self.pk}/audio_description.{ad_ext}"
+            _move(self.audio_description, ad_target)
+            _cleanup_stale(ad_target, "audio_description")
+        else:
+            _cleanup_stale(None, "audio_description")
+
+        # Thumbnail — only GLB objects have thumbnails
+        if self.thumbnail:
+            _move(self.thumbnail, f"objects/{self.pk}/thumbnail.png")
+        else:
+            _cleanup_stale(None, "thumbnail")
+
+        # Spritesheet — only GIF objects have spritesheets
+        if self.spritesheet_file:
+            _move(self.spritesheet_file, f"objects/{self.pk}/spritesheet.png")
+        else:
+            _cleanup_stale(None, "spritesheet")
+
+        # Metadata — only GIF objects have metadata
+        if self.spritesheet_metadata:
+            _move(self.spritesheet_metadata, f"objects/{self.pk}/metadata.json")
+        else:
+            _cleanup_stale(None, "metadata")
+
+        if changed:
+            self.save()
 
     @property
     def artworks_count(self):
@@ -367,10 +493,17 @@ class Object(TimeStampedModel, ContentMixin):
             "title": self.title,
             "src": self.source.url,
         }
-        if height:
-            attributes["height"] = height
-        if width:
-            attributes["width"] = width
+        max_w = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
+        max_h = height if height else DEFAULT_OBJECT_PREVIEW_HEIGHT
+
+        if self.width and self.height:
+            ratio = min(max_w / self.width, max_h / self.height)
+            attributes["width"] = int(self.width * ratio)
+            attributes["height"] = int(self.height * ratio)
+        else:
+            attributes["width"] = max_w
+            attributes["height"] = max_h
+
         if self.is_video:
             return render(
                 video(
@@ -605,7 +738,7 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 @receiver(post_delete, sender=Sound)
 def remove_source_file(sender, instance, **kwargs):
     if isinstance(instance, Marker):
-        instance.source.delete(False)
+        delete_marker_files(instance)
     if isinstance(instance, Object):
         instance.source.delete(False)
         # audio_description is FileField(null=True, blank=True). An Object
@@ -615,5 +748,9 @@ def remove_source_file(sender, instance, **kwargs):
         # source file we just removed. See #849.
         if instance.audio_description:
             instance.audio_description.delete(False)
+        if instance.spritesheet_file:
+            instance.spritesheet_file.delete(False)
+        if instance.spritesheet_metadata:
+            instance.spritesheet_metadata.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)

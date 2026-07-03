@@ -1,8 +1,12 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
 
 from core.forms import (
@@ -13,6 +17,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
+from core.marker_utils import generate_marker_variants
 from core.models import (
     Artwork,
     Exhibit,
@@ -22,6 +27,7 @@ from core.models import (
     ObjectExtensions,
     Sound,
 )
+from core.spritesheet_converter import gif_to_spritesheet
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
@@ -160,6 +166,59 @@ def delete(request):
 
 
 @login_required
+@require_http_methods(["POST"])
+def convert_gif_to_spritesheet(request):
+    """HTMX endpoint: convert an uploaded GIF to a PNG spritesheet."""
+    source_file = request.FILES.get("source")
+    if not source_file:
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": "No file provided."},
+        )
+
+    extension = (
+        source_file.name.rsplit(".", 1)[-1].lower() if "." in source_file.name else ""
+    )
+    if extension != "gif":
+        return HttpResponse(status=204)
+
+    try:
+        png_bytes, metadata = gif_to_spritesheet(source_file)
+    except ValueError as e:
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": str(e)},
+        )
+
+    # Store the spritesheet and metadata via Django's file storage
+    base_name = source_file.name.rsplit(".", 1)[0]
+    spritesheet_name = base_name + "_spritesheet.png"
+    metadata_name = base_name + "_spritesheet.json"
+    from django.core.files.storage import default_storage
+
+    saved_spritesheet_path = default_storage.save(
+        f"objects/spritesheets/{spritesheet_name}",
+        ContentFile(png_bytes),
+    )
+    saved_metadata_path = default_storage.save(
+        f"objects/spritesheets/{metadata_name}",
+        ContentFile(json.dumps(metadata).encode("utf-8")),
+    )
+
+    return TemplateResponse(
+        request,
+        "core/templates/spritesheet_result.jinja2",
+        {
+            "spritesheet_path": saved_spritesheet_path,
+            "spritesheet_metadata_path": saved_metadata_path,
+            "preview_url": source_file.name,
+        },
+    )
+
+
+@login_required
 def object_upload(request):
     """Upload an object file and generate a thumbnail if it's a GLB file."""
     if request.method == "POST":
@@ -168,6 +227,16 @@ def object_upload(request):
             obj = form.save(commit=False)
             obj.owner = request.user.profile
             obj.save()
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+
+            # Move all files to objects/<pk>/ folder
+            obj.relocate_files()
             return redirect("profile")
     else:
         form = UploadObjectForm()
@@ -199,16 +268,17 @@ def marker_preview(request):
     marker = get_object_or_404(Marker, id=marker_id)
     artwork = {
         "marker": marker,
-        "augmented": marker,
+        "augmented": {"file_extension": "png", "source": marker.print_img},
         "scale_x": 1,
         "scale_y": 1,
         "position_x": 0,
         "position_y": 0,
+        "type": "marker",
     }
     ctx = {
         "artworks": [artwork],
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @login_required
@@ -219,6 +289,11 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            generate_marker_variants(
+                marker,
+                inner_border=form.cleaned_data.get("inner_border", False),
+            )
             return redirect("profile")
     else:
         form = UploadMarkerForm()
@@ -246,7 +321,6 @@ def edit_marker(request):
         "source": model.source,
         "created": model.created,
         "author": model.author,
-        "patt": model.patt,
         "title": model.title,
     }
 
@@ -296,7 +370,26 @@ def edit_object(request):
 
         form.full_clean()
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+            else:
+                # Clear spritesheet fields if not provided (source is no longer GIF)
+                obj.spritesheet_file = None
+                obj.spritesheet_metadata = None
+
+            # Clear thumbnail if new source is not GLB
+            if obj.file_extension != ObjectExtensions.GLB:
+                obj.thumbnail = None
+
+            obj.save()
+            # Move all files to objects/<pk>/ folder
+            obj.relocate_files()
             return redirect("profile")
     else:
         form = UploadObjectForm(initial=model_data)
@@ -401,7 +494,7 @@ def artwork_preview(request):
     ctx = {
         "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @login_required
@@ -632,7 +725,7 @@ def exhibit(request, slug):
         "exhibit": exhibit,
         "artworks": artworks,
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @require_http_methods(["GET"])
@@ -669,23 +762,41 @@ def related_content(request):
         # Get all exhibits that have artworks related to the object or marker
         # Use values_list to get a list of artwork IDs
         # Use distinct to avoid duplicates exhibits
-        exhibits = (
-            Exhibit.objects.filter(artworks__id__in=element.artworks.values_list("id"))
+        ar_exhibits = (
+            Exhibit.objects.filter(
+                artworks__id__in=element.artworks.values_list("id"),
+                exhibit_type=ExhibitTypes.AR,
+            )
+            .select_related("owner", "owner__user")
+            .prefetch_related("artworks")
+            .distinct()
+        )
+        mr_exhibits = (
+            Exhibit.objects.filter(
+                artworks__id__in=element.artworks.values_list("id"),
+                exhibit_type=ExhibitTypes.MR,
+            )
             .select_related("owner", "owner__user")
             .prefetch_related("artworks")
             .distinct()
         )
 
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall": False}
+        ctx = {
+            "artworks": artworks,
+            "ar_exhibits": ar_exhibits,
+            "mr_exhibits": mr_exhibits,
+            "seeall": False,
+        }
 
     elif element_type == "artwork":
         element = Artwork.objects.prefetch_related(
             "exhibits__artworks", "exhibits__owner__user"
         ).get(id=element_id)
 
-        exhibits = element.exhibits.all()
+        ar_exhibits = element.exhibits.filter(exhibit_type=ExhibitTypes.AR).all()
+        mr_exhibits = element.exhibits.filter(exhibit_type=ExhibitTypes.MR).all()
 
-        ctx = {"exhibits": exhibits, "seeall": False}
+        ctx = {"ar_exhibits": ar_exhibits, "mr_exhibits": mr_exhibits, "seeall": False}
 
     elif element_type == "sound":
         element = Sound.objects.prefetch_related(
@@ -693,10 +804,19 @@ def related_content(request):
         ).get(id=element_id)
 
         ctx = {
-            "exhibits": element.exhibits.all(),
+            "ar_exhibits": element.exhibits.filter(exhibit_type=ExhibitTypes.AR).all(),
+            "mr_exhibits": element.exhibits.filter(exhibit_type=ExhibitTypes.MR).all(),
             "artworks": element.artworks.all(),
             "objects": element.ar_objects.all(),
             "seeall": False,
         }
 
     return render(request, COLLECTION_PAGE, ctx)
+
+
+def ar_view(request):
+    exhibit = Exhibit.objects.get(id=4)
+
+    debug = request.GET.get("debug", "false").lower() == "true"
+    ctx = {"artworks": exhibit.artworks.all(), "debug": debug}
+    return render(request, "core/ar.jinja2", ctx)

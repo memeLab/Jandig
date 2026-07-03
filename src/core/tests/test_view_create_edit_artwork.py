@@ -16,8 +16,8 @@ class TestCreateArtworkView(TestCase):
         self.user = UserFactory(username="testuser")
         self.profile = ProfileFactory(user=self.user)
         self.client.force_login(self.user)
-        self.marker = MarkerFactory(author=self.profile)
-        self.object = ObjectFactory(author=self.profile)
+        self.marker = MarkerFactory(owner=self.profile)
+        self.object = ObjectFactory(owner=self.profile)
 
     def test_create_artwork_success_gif(self):
         ar_object = ObjectFactory(source=get_example_object("peixe.gif"))
@@ -221,8 +221,8 @@ class TestEditArtworkView(TestCase):
         self.user = UserFactory(username="testuser")
         self.profile = ProfileFactory(user=self.user)
         self.client.force_login(self.user)
-        self.marker = MarkerFactory(author=self.profile)
-        self.object = ObjectFactory(author=self.profile)
+        self.marker = MarkerFactory(owner=self.profile)
+        self.object = ObjectFactory(owner=self.profile)
         self.artwork = ArtworkFactory(
             author=self.profile,
             marker=self.marker,

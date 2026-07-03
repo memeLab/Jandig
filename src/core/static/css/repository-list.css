@@ -29,6 +29,11 @@
     padding: 20px 0px;
 }
 
+.repository-item img,
+.repository-item video {
+    object-fit: contain;
+}
+
 .exhibit-list .repository-item, #repo-artwork .repository-item {
     flex: 0 1 calc(50% - 10px);
 }

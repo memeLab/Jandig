@@ -1,3 +1,4 @@
+import json
 from io import BytesIO
 
 from django.contrib import admin
@@ -6,11 +7,13 @@ from django.core.files.base import ContentFile
 from django.db.models import Count
 from django.utils.html import format_html
 from PIL import Image
-from pymarker import generate_patt_from_image, remove_borders_from_image
+from pymarker import remove_borders_from_image
 
+from core.marker_utils import generate_marker_variants
+from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Exhibit, Marker, Object, Sound
-from core.utils import generate_uuid_name, get_admin_url
-from core.views.api_views import MarkerGeneratorAPIView
+from core.spritesheet_converter import gif_to_spritesheet
+from core.utils import filesizeformat, get_admin_url
 
 HTML_LINK = '<a href="{}">{}</a>'
 
@@ -72,10 +75,8 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
     exhibits_count.admin_order_field = "_exhibits_count"
 
     def filesize(self, obj):
-        """File size in MB"""
-        if obj.file_size > 0:
-            return f"{obj.file_size / 1024 / 1024:.2f} MB"
-        return obj.file_size
+        """File size in human-readable format"""
+        return filesizeformat(obj.file_size)
 
     filesize.short_description = "File Size"
     filesize.admin_order_field = "file_size"
@@ -92,7 +93,8 @@ def regenerate_marker_white_border(modeladmin, request, queryset):
     Regenerate markers with white inner border.
     This action will regenerate the marker images with a white inner border.
     """
-    regenerate_marker(queryset, inner_border=True)
+    for marker in queryset:
+        generate_marker_variants(marker, inner_border=True)
 
 
 @admin.action(description="Regenerate Marker Without Inner Border")
@@ -100,51 +102,24 @@ def regenerate_marker_no_inner_border(modeladmin, request, queryset):
     """Regenerate markers without inner border.
     This action will regenerate the marker images without a white inner border.
     """
-    regenerate_marker(queryset, inner_border=False)
+    for marker in queryset:
+        generate_marker_variants(marker, inner_border=False)
 
 
 @admin.action(description="Remove Border")
 def remove_border(modeladmin, request, queryset):
-    """Remove border from markers.
-    This action will regenerate the marker images without any borders.
+    """Remove border from markers and regenerate all variants.
+    This action will strip borders from the current source, save as original,
+    then regenerate all variants.
     """
     for marker in queryset:
         with Image.open(marker.source) as image:
             pil_image = remove_borders_from_image(image)
             blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            uuid = generate_uuid_name()
-            filename = f"{uuid}.jpg"
-            marker.file_size = marker.source.size
+            pil_image.save(blob, "PNG")
+            filename = f"markers/{marker.pk}/original.png"
             marker.source.save(filename, File(blob), save=True)
-            patt_str = generate_patt_from_image(pil_image)
-            marker.patt.save(
-                f"{uuid}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=True,
-            )
-        marker.save()
-
-
-def regenerate_marker(queryset, inner_border=False):
-    for marker in queryset:
-        with Image.open(marker.source) as image:
-            pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=inner_border
-            )
-            blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            uuid = generate_uuid_name()
-            filename = f"{uuid}.jpg"
-            marker.file_size = marker.source.size
-            marker.source.save(filename, File(blob), save=True)
-            patt_str = generate_patt_from_image(image)
-            marker.patt.save(
-                f"{uuid}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=True,
-            )
-        marker.save()
+        generate_marker_variants(marker, inner_border=False)
 
 
 @admin.register(Marker)
@@ -159,16 +134,122 @@ class MarkerAdmin(BaseMarkerObjectAdmin):
         return format_html(obj.as_html_thumbnail(), "")
 
 
+@admin.action(description="Generate spritesheets for selected GIF objects")
+def generate_spritesheets(modeladmin, request, queryset):
+    """Generate (or regenerate) PNG spritesheets and metadata JSON for GIF objects.
+
+    Running this action twice replaces the existing spritesheet and metadata
+    files, keeping only the original GIF source unchanged.
+    """
+    for obj in queryset.filter(file_extension="gif"):
+        if not obj.source:
+            continue
+
+        try:
+            storage = obj.source.storage
+
+            with obj.source.open("rb") as f:
+                png_bytes, metadata = gif_to_spritesheet(f)
+
+            # Save spritesheet PNG to objects/<pk>/spritesheet.png
+            spritesheet_path = f"objects/{obj.pk}/spritesheet.png"
+            _save_to_storage(storage, spritesheet_path, png_bytes)
+            obj.spritesheet_file.name = spritesheet_path
+
+            # Save metadata JSON to objects/<pk>/metadata.json
+            metadata_path = f"objects/{obj.pk}/metadata.json"
+            _save_to_storage(
+                storage, metadata_path, json.dumps(metadata).encode("utf-8")
+            )
+            obj.spritesheet_metadata.name = metadata_path
+
+            obj.save()
+        except Exception as e:
+            modeladmin.message_user(
+                request,
+                f"Failed to generate spritesheet for Object {obj.pk}: {e}",
+                level="error",
+            )
+
+
+def _save_to_storage(storage, path, content_bytes):
+    """Save content to storage, deleting existing file first for idempotency."""
+    try:
+        if storage.exists(path):
+            storage.delete(path)
+    except Exception:
+        pass
+    storage.save(path, ContentFile(content_bytes))
+
+
+class SpritesheetFilter(admin.SimpleListFilter):
+    title = "spritesheet status"
+    parameter_name = "has_spritesheet"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("yes", "Has spritesheet"),
+            ("no", "Missing spritesheet (GIF only)"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.exclude(spritesheet_file="").exclude(spritesheet_file=None)
+        if self.value() == "no":
+            from django.db.models import Q
+
+            return queryset.filter(file_extension="gif").filter(
+                Q(spritesheet_file="") | Q(spritesheet_file=None)
+            )
+        return queryset
+
+
 @admin.register(Object)
 class ObjectAdmin(BaseMarkerObjectAdmin):
     list_display = BaseMarkerObjectAdmin.list_display + [
         "file_extension",
+        "has_spritesheet",
     ]
     search_fields = ["title", "id"]
-    list_filter = ["file_extension"]
+    list_filter = ["file_extension", SpritesheetFilter]
+    actions = [generate_spritesheets, "populate_dimensions"]
 
     def image_preview(self, obj):
         return format_html(obj.as_html_thumbnail(), "")
+
+    def has_spritesheet(self, obj):
+        return bool(obj.spritesheet_file and obj.spritesheet_metadata)
+
+    @admin.action(description="Populate width/height dimensions for selected objects")
+    def populate_dimensions(self, request, queryset):
+        updated = 0
+        for obj in queryset:
+            try:
+                thumbnail = obj.thumbnail if obj.is_3d else None
+                with obj.source.open("rb") as f:
+                    thumb_file = None
+                    if thumbnail:
+                        try:
+                            thumb_file = thumbnail.open("rb")
+                        except Exception:
+                            thumb_file = None
+
+                    dims = extract_dimensions(f, obj.file_extension, thumb_file)
+
+                    if thumb_file:
+                        thumb_file.close()
+
+                if dims:
+                    obj.width, obj.height = dims
+                    obj.save(update_fields=["width", "height"])
+                    updated += 1
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Failed for Object {obj.pk}: {e}",
+                    level="error",
+                )
+        self.message_user(request, f"Updated dimensions for {updated} object(s).")
 
 
 @admin.register(Artwork)

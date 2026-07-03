@@ -1,6 +1,6 @@
 [project]
 name = "Jandig"
-version = "2.0.11"
+version = "3.0.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -22,6 +22,7 @@ dependencies = [
   "granian[reload]>=2.5.0",
   "jinja2~=3.1",
   "markupsafe~=3.0",
+  "av>=14.0.0",
   "pillow~=12.2",
   "psycopg[binary,pool]>=3.2.9",
   "pymarker~=1.2",
@@ -38,12 +39,14 @@ dev = [
   "factory-boy~=3.3",
   "numpy>=2.3.1",
   "playwright~=1.49",
+  "pyopenssl>=26.3.0",
   "pytest-cov>=6.1.1",
   "pytest-django~=4.9",
   "pytest-playwright~=0.4",
   "pytest-xdist~=3.6",
   "pytest~=9.0",
   "ruff>=0.11.4",
+  "werkzeug>=3.1.8",
 ]
 
 
@@ -52,7 +55,7 @@ DJANGO_SETTINGS_MODULE = "config.test_settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 testpaths = ["src/core", "src/users", "src/blog", "src/ui_tests"]
 pythonpath = "src"
-addopts="-n4"
+addopts="-n16"
 
 [tool.coverage.run]
 relative_files=true
@@ -72,3 +75,5 @@ target-version = "py313"
 profile="jinja"
 extension="jinja2"
 
+[tool.uv]
+exclude-newer="1 week"
