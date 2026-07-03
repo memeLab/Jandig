@@ -144,7 +144,7 @@
 
                 id_sound = "#sound-" + selected_sound;
                 $('#existent-sound > input').val(selected_sound);
-                $(id_sound).css("border-bottom","3px solid #a6a6a6");
+                $(id_sound).css("border-bottom","3px solid #05f7ae");
             }
             update_selected_items();
 
@@ -155,7 +155,7 @@
 
                     // reset background
                     $(this).parent().children().css('border-bottom', 'none')
-                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    $(this).css("border-bottom","3px solid #05f7ae");
                     id = elementId.split("-")[1];
                     $('#id_selected_sound').val(id);
                     selected_sound = id;
