@@ -8,8 +8,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-        {# Three.js is loaded on-demand by glb-viewer.js when a GLB file is selected #}
-        <script src="{{ static('js/glb-viewer.js') }}"></script>
         {% if edit %}
             <h2>{{ _("Edit object") }}</h2>
         {% else %}
@@ -297,19 +295,24 @@
                         document.getElementById("content-box").appendChild(viewerContainer);
                         document.getElementById("content-box").appendChild(blockquote);
 
-                        GLBViewer.init(viewerContainer, URL.createObjectURL(file), {
-                            onAnimationsFound: function(count) {
-                                const animationInfo = document.createElement("div");
-                                animationInfo.style.cssText = "margin: 10px 0; padding: 10px; background: #d4edda; border-radius: 5px; font-size: 14px;";
-                                animationInfo.innerHTML = `<strong>Animations:</strong> ${count} animation(s) found and playing`;
-                                document.getElementById("content-box").appendChild(animationInfo);
-                            },
-                            onThumbnailReady: function(renderer, scene, camera) {
-                                generateThumbnail(renderer, scene, camera);
-                            },
-                            onError: function(error) {
-                                console.error('Error loading GLB file:', error);
-                            }
+                        (window.GLBViewer
+                            ? Promise.resolve(window.GLBViewer)
+                            : import("{{ static('js/glb-viewer.js') }}").then(function(m) { window.GLBViewer = m.GLBViewer; return m.GLBViewer; })
+                        ).then(function(GLBViewer) {
+                            GLBViewer.init(viewerContainer, URL.createObjectURL(file), {
+                                onAnimationsFound: function(count) {
+                                    const animationInfo = document.createElement("div");
+                                    animationInfo.style.cssText = "margin: 10px 0; padding: 10px; background: #d4edda; border-radius: 5px; font-size: 14px;";
+                                    animationInfo.innerHTML = `<strong>Animations:</strong> ${count} animation(s) found and playing`;
+                                    document.getElementById("content-box").appendChild(animationInfo);
+                                },
+                                onThumbnailReady: function(renderer, scene, camera) {
+                                    generateThumbnail(renderer, scene, camera);
+                                },
+                                onError: function(error) {
+                                    console.error('Error loading GLB file:', error);
+                                }
+                            });
                         });
                     } else {
                         console.log("Invalid file type: " + file.type);

@@ -62,10 +62,10 @@
                     if (window.GLBViewer) {
                         startViewer();
                     } else {
-                        var script = document.createElement('script');
-                        script.src = "{{ static('js/glb-viewer.js') }}";
-                        script.onload = startViewer;
-                        document.head.appendChild(script);
+                        import("{{ static('js/glb-viewer.js') }}").then(function(module) {
+                            window.GLBViewer = module.GLBViewer;
+                            startViewer();
+                        });
                     }
                 })();
                 </script>
