@@ -242,14 +242,14 @@ def object_upload(request):
         form = UploadObjectForm()
 
     sounds = Sound.objects.all().order_by("-created")
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
     return render(
         request,
         "core/upload-object.jinja2",
         {
             "form": form,
             "edit": False,
-            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+            "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
             "total_sound_pages": paginator_sounds.num_pages,
         },
     )
@@ -395,7 +395,7 @@ def edit_object(request):
         form = UploadObjectForm(initial=model_data)
 
     sounds = Sound.objects.all().order_by("-created")
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
 
     return render(
         request,
@@ -404,7 +404,7 @@ def edit_object(request):
             "form": form,
             "model": model,
             "edit": True,
-            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+            "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
             "selected_sound": model.sound.id if model.sound else None,
             "total_sound_pages": paginator_sounds.num_pages,
         },
@@ -438,14 +438,14 @@ def _get_artwork_context_data(form, artwork_instance=None):
     )
     sound_list = Sound.objects.all().order_by("-created")
     paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
-    paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
-    paginator_sound = Paginator(sound_list, settings.MODAL_PAGE_SIZE)
+    paginator_object = Paginator(object_list, settings.OBJECT_MODAL_PAGE_SIZE)
+    paginator_sound = Paginator(sound_list, settings.OBJECT_MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
-        "sound_list": sound_list[: settings.MODAL_PAGE_SIZE],
+        "sound_list": sound_list[: settings.OBJECT_MODAL_PAGE_SIZE],
         "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
-        "object_list": object_list[: settings.MODAL_PAGE_SIZE],
+        "object_list": object_list[: settings.OBJECT_MODAL_PAGE_SIZE],
         "total_marker_pages": paginator_marker.num_pages,
         "total_object_pages": paginator_object.num_pages,
         "total_sound_pages": paginator_sound.num_pages,
@@ -513,7 +513,7 @@ def get_element(request):
             case _:
                 raise Http404("Invalid element type")
 
-        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
+        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE if element_type != "object" and element_type != "sound" else settings.OBJECT_MODAL_PAGE_SIZE)
         if page > paginator.num_pages:
             page = paginator.num_pages
 
@@ -564,13 +564,13 @@ def _get_mr_exhibit_context_data(form, edit=False):
     objects = Object.objects.all().order_by("-created")
     sounds = Sound.objects.all().order_by("-created")
 
-    paginator_objects = Paginator(objects, settings.MODAL_PAGE_SIZE)
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_objects = Paginator(objects, settings.OBJECT_MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
-        "objects": objects[: settings.MODAL_PAGE_SIZE],
-        "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+        "objects": objects[: settings.OBJECT_MODAL_PAGE_SIZE],
+        "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
         "total_object_pages": paginator_objects.num_pages,
         "total_sound_pages": paginator_sounds.num_pages,
     }

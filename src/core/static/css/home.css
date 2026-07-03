@@ -19,11 +19,13 @@
 }
 
 .use-guide {
-    max-width: 300px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
     margin-bottom: 20px;
     padding: 20px;
     background: url(../images/icons/fill.png), #e6e6e6;
+    box-sizing: border-box;
 }
 
 .use-guide blockquote:after, .use-guide blockquote:before {
