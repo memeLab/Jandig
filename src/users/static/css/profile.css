@@ -1,60 +1,65 @@
 .userbox {
-    margin-bottom: 20px;
+    margin-bottom: 35px;
     background: #f1f1f1;
-    padding: 20px;
-}
-
-.countMrk, .countObj, .editProf {
-    height: 20px;
-    line-height: 20px;
-    margin: 0;
-    margin-bottom: 20px;
+    padding: 15px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .countMrk, .countObj {
-    font-size: 0.75em;
-    line-height: 1.75em;
-    padding-left: 27px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0;
+    flex: 1 1 calc(50% - 40px);
+    min-width: 0;
+    font-size: 0.8em;
+    padding-left: 32px;
     text-align: left;
-    flex-basis: calc(50% - 30px);
+    box-sizing: border-box;
 }
 
 .countMrk {
     background: url('../images/icons/icoMrk.png') no-repeat center left;
-    background-size: contain;
+    background-size: 24px 24px;
 }
 
 .countObj {
     background: url('../images/icons/icoObj.png') no-repeat center left;
-    background-size: contain;
+    background-size: 24px 24px;
 }
 
 .bdgArt, .bdgCur {
-    text-align: center;
-    height: 50px;
-    padding-top: 60px;
-    line-height: 25px;
-    font-size: 0.85em;
+    flex: 1 1 calc(50% - 40px);
+    min-width: 0;
+    text-align: left;
+    height: 28px;
+    padding-left: 32px;
+    line-height: 14px;
+    font-size: 0.8em;
     margin-bottom: 0;
     white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .bdgArt {
     background: url('../images/icons/bdgArt.png') no-repeat;
-    background-position: center top;
-    background-size: auto;
+    background-position: left center;
+    background-size: 24px 24px;
 }
 
 .bdgCur {
     background: url('../images/icons/bdgCur.png') no-repeat;
-    background-position: center top;
-    background-size: auto;
+    background-position: left center;
+    background-size: 24px 24px;
 }
 
 .bdgArt.empty, .bdgCur.empty {
     background: url('../images/icons/icoEpt.png') no-repeat;
-    background-position: center top;
-    background-size: auto;
+    background-position: left center;
+    background-size: 24px 24px;
 }
 
 .profile-options-flex {
@@ -126,29 +131,41 @@
 
 /**** Media Queries *****/
 @media all and (min-width: 800px) {
-    .countMrk, .countObj {
-        flex-basis: calc(30% - 20px);
+    .userbox {
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
     }
 
-    .countMrk, .countObj, .editProf {
-        margin-bottom: 20px;
+    .profile-section-title {
+        font-size: 1.2em;
+    }
+
+    .profile-section-title .icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .countMrk, .countObj {
+        flex: none;
+        font-size: 0.85em;
+        padding-left: 32px;
     }
 
     .bdgArt, .bdgCur {
+        flex: none;
         text-align: left;
-        height: 50px;
-        padding-left: 65px;
+        height: 28px;
+        padding-left: 32px;
         padding-top: 0px;
-        line-height: 25px;
+        line-height: 14px;
         font-size: 0.85em;
         margin-bottom: 0;
-        flex-basis: calc(50% - 70px);
         white-space: nowrap; 
     }
 
     .bdgArt,.bdgCur,.bdgArt.empty, .bdgCur.empty {
         background-position: left center;
-        background-size: contain;
+        background-size: 24px 24px;
     }
 
     .profile-options-flex .userbox .option-link {
