@@ -7,10 +7,20 @@
         </div>
         <div class="aside">
             {% if request.user.is_authenticated %}
-                <div class="welcome">
-                    <p>
-                        {{ _("Welcome, ") }}<a href="{{ url('profile') }}">{{ request.user.username }}</a>
-                    </p>
+                <div class="user-menu-wrapper">
+                    <span class="welcome-text">{{ _("Welcome,") }}</span>
+                    <button id="user-menu-btn" type="button" class="user-menu-button">{{ request.user.username }} ▾</button>
+                    <div id="user-menu-list" class="user-menu-list">
+                        <a href="{{ url('profile') }}" class="user-menu-option">{{ _("My Creations") }}</a>
+                        <a href="{{ url('edit-profile') }}" class="user-menu-option">{{ _("Edit profile") }}</a>
+                        <form id="logout-form"
+                              method="post"
+                              action="{{ url('logout') }}"
+                              style="margin:0">
+                            {{ csrf_input }}
+                            <button type="submit" class="user-menu-option">{{ _("Log out") }}</button>
+                        </form>
+                    </div>
                 </div>
             {% else %}
                 <div class="signup-btn">
@@ -24,3 +34,21 @@
         </div>
     </div>
 </div>
+<script>
+    (function() {
+        const btn = document.getElementById('user-menu-btn');
+        const list = document.getElementById('user-menu-list');
+        if (!btn || !list) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            list.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!list.contains(e.target) && e.target !== btn) {
+                list.classList.remove('show');
+            }
+        });
+    })();
+</script>
