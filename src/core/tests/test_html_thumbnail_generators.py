@@ -51,8 +51,7 @@ class TestMarkerThumbnailTemplates(TestCase):
         edit_url = reverse("edit-marker") + f"?id={self.marker.id}"
         preview_url = reverse("marker-preview") + f"?id={self.marker.id}"
         delete_url = (
-            reverse("delete-content")
-            + f"?content_type=marker&amp;id={self.marker.id}"
+            reverse("delete-content") + f"?content_type=marker&amp;id={self.marker.id}"
         )
         assert edit_url in html
         assert delete_url in html

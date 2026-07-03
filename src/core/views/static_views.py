@@ -23,11 +23,7 @@ def me_hotsite(request):
     return render(request, "core/ME/hotsite.html", {})
 
 
-def home_new(request):
-    return render(request, "core/home_v2.jinja2", {})
-
-
-def home_old(request):
+def home(request):
     return render(request, "core/home.jinja2", {})
 
 

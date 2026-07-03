@@ -513,7 +513,12 @@ def get_element(request):
             case _:
                 raise Http404("Invalid element type")
 
-        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE if element_type != "object" and element_type != "sound" else settings.OBJECT_MODAL_PAGE_SIZE)
+        paginator = Paginator(
+            qs,
+            settings.MODAL_PAGE_SIZE
+            if element_type != "object" and element_type != "sound"
+            else settings.OBJECT_MODAL_PAGE_SIZE,
+        )
         if page > paginator.num_pages:
             page = paginator.num_pages
 
