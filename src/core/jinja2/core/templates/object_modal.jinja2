@@ -11,13 +11,67 @@
                     <
                 </button>
             {% endif %}
+            <h1 id="modal-title">{{ ar_object.title }}</h1>
         </div>
-        <h1 id="modal-title">{{ ar_object.title }}</h1>
         <p id="element-author">{{ "{} {}".format(_("Author:") ,ar_object.author)}}</p>
         <p id="element-upload-info">
             {{ "{} {}{} {}".format(_("Uploaded by") , ar_object.owner.user.username,_(", in"), ar_object.created.strftime("%d/%m/%Y")) }}
             <p id="element-analytics">{{ ar_object.used_in_html_string() | safe }}</p>
-            {{ ar_object.as_html() | safe }}
+            {% if ar_object.is_3d %}
+                <div id="glb-viewer-container"
+                     style="width: 100%;
+                            max-width: 600px;
+                            min-width: 300px;
+                            aspect-ratio: 1;
+                            margin: 10px auto"></div>
+                <div style="margin: 10px 0;
+                            padding: 10px;
+                            background: #e8f4fd;
+                            border-radius: 5px;
+                            font-size: 14px">
+                    <strong>3D Controls:</strong> Left click + drag to rotate, Right click + drag to pan, Scroll to zoom
+                </div>
+                <script>
+                (function() {
+                    function startViewer() {
+                        var container = document.getElementById('glb-viewer-container');
+                        var viewer = GLBViewer.init(container, "{{ ar_object.source.url }}", {
+                            onError: function() {
+                                container.innerHTML = '<p style="text-align:center; padding:20px;">Failed to load 3D model.</p>';
+                            }
+                        });
+
+                        // Cleanup on modal close button
+                        var closeBtn = document.getElementById('close-modal');
+                        if (closeBtn) {
+                            var originalOnclick = closeBtn.onclick;
+                            closeBtn.onclick = function() {
+                                viewer.dispose();
+                                if (originalOnclick) originalOnclick.call(this);
+                            };
+                        }
+
+                        // Cleanup on HTMX swap (e.g. navigating away or reopening modal)
+                        document.body.addEventListener('htmx:beforeSwap', function(evt) {
+                            if (evt.detail.target && evt.detail.target.id === 'modal') {
+                                viewer.dispose();
+                            }
+                        });
+                    }
+
+                    if (window.GLBViewer) {
+                        startViewer();
+                    } else {
+                        import("{{ static('js/glb-viewer.js') }}").then(function(module) {
+                            window.GLBViewer = module.GLBViewer;
+                            startViewer();
+                        });
+                    }
+                })();
+                </script>
+            {% else %}
+                {{ ar_object.as_html() | safe }}
+            {% endif %}
             {% if ar_object.sound %}
                 <br>
                 <p>{{ _("Sound:") }}</p>
@@ -33,7 +87,6 @@
                 </audio>
             {% endif %}
             <p id="element-download">
-                <p id="download">Download file:</p>
                 <a id="png-download" href="{{ ar_object.source.url }}" download>{{ "{} ({})".format(_("Download File") , ar_object.file_size | filesizeformat)}}</a>
             </p>
         </div>

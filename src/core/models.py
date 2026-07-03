@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
-from fast_html import a, audio, b, div, h1, img, p, render, span, video
+from fast_html import a, audio, img, render, video
 
 from core.marker_utils import delete_marker_files
 from users.models import Profile
@@ -32,26 +32,6 @@ USED_IN = _("Used in")
 class ContentMixin:
     def content_type(self):
         return self.__class__.__name__.lower()
-
-    def _get_edit_button(self):
-        content_type = self.content_type()
-        return a(
-            _("edit"),
-            href=reverse(f"edit-{content_type}", query={"id": self.id}),
-            class_="edit",
-        )
-
-    def _get_delete_button(self):
-        content_type = self.content_type()
-        return a(
-            _("delete"),
-            href=reverse(
-                "delete-content",
-                query={"content_type": content_type, "id": self.id},
-            ),
-            onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-            class_="delete",
-        )
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {}".format(
@@ -170,19 +150,6 @@ class Sound(TimeStampedModel, ContentMixin):
             )
         )
 
-    def as_html_thumbnail(self, editable=False):
-        elements = [
-            span(self.title, style="display:block;"),
-            self.as_html(),
-        ]
-        if editable and not self.is_used_by_other_user():
-            elements.append(self._get_edit_button())
-
-        if editable and not self.in_use:
-            elements.append(self._get_delete_button())
-
-        return render(div(elements, style="margin: 10px auto;"))
-
 
 class ExhibitTypes(models.TextChoices):
     AR = "AR", "Augmented Reality"
@@ -248,29 +215,6 @@ class Marker(TimeStampedModel, ContentMixin):
                 width=width,
             )
         )
-
-    def as_html_thumbnail(self, editable: bool = False):
-        height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
-        width = DEFAULT_MARKER_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height=height, width=width, thumbnail=True)]
-        if editable:
-            lower_menu_items = []
-            if not self.in_use:
-                lower_menu_items.append(self._get_delete_button())
-
-            if not self.is_used_by_other_user():
-                lower_menu_items.append(self._get_edit_button())
-
-            lower_menu_items.append(
-                a(
-                    _("preview"),
-                    href=reverse("marker-preview", query={"id": self.id}),
-                    class_="preview",
-                )
-            )
-            lower_menu = div(lower_menu_items, class_="marker-menu")
-            to_render.append(lower_menu)
-        return render(to_render)
 
 
 class ObjectExtensions(models.TextChoices):
@@ -529,18 +473,6 @@ class Object(TimeStampedModel, ContentMixin):
         else:
             return render(img(**attributes))
 
-    def as_html_thumbnail(self, editable=False):
-        height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
-        width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height, width)]
-        if editable and not self.is_used_by_other_user():
-            to_render.append(self._get_edit_button())
-
-        if editable and not self.in_use:
-            to_render.append(self._get_delete_button())
-
-        return render(to_render)
-
 
 @pghistory.track()
 class Artwork(TimeStampedModel, ContentMixin):
@@ -599,31 +531,6 @@ class Artwork(TimeStampedModel, ContentMixin):
             )
         return used_in
 
-    def as_html_thumbnail(self, editable=False):
-        elements = [
-            self.marker.as_html_thumbnail(),
-            div(class_="separator"),
-            self.augmented.as_html_thumbnail(),
-        ]
-        if editable:
-            elements.extend(
-                [
-                    self._get_edit_button(),
-                ]
-            )
-            if not self.in_use:
-                elements.append(self._get_delete_button())
-
-        if editable:
-            elements.extend(
-                a(
-                    _("preview"),
-                    href=reverse("artwork-preview", query={"id": self.id}),
-                    class_="preview",
-                )
-            )
-        return render(div(elements, class_="artwork-elements flex"))
-
 
 @pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
@@ -671,66 +578,6 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
             return "mr-exhibit"
         else:
             raise ValueError("Invalid exhibit type")
-
-    def as_html_thumbnail(self, editable=False):
-        link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
-        exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
-        media_stats = []
-        if self.exhibit_type == ExhibitTypes.AR:
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.artworks_count, _("Artwork(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-        elif self.exhibit_type == ExhibitTypes.MR:
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.augmenteds_count, _("Object(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.sounds_count, _("Sound(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-        exhibit_info = [
-            p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
-            p(self.date, class_="exbDate"),
-            div(media_stats),
-        ]
-
-        button_see_this_exhibit = a(
-            _("See this Exhibition"),
-            href=f"/{self.slug}/",
-            class_="gotoExb",
-        )
-
-        exhibit_card_elements = [
-            exhibit_info,
-            button_see_this_exhibit,
-        ]
-        if editable:
-            exhibit_card_elements.extend(
-                [div([self._get_delete_button(), self._get_edit_button()])]
-            )
-        exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
-        elements = [
-            exhibit_title,
-            exhibit_card,
-        ]
-        return render(elements)
 
 
 @receiver(post_delete, sender=Object)

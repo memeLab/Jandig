@@ -1,11 +1,12 @@
 .repository-list {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 20px;
     max-width: 100%;
     padding: 0;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .repository-list > p {
@@ -25,55 +26,60 @@
 }
 
 .repository-item {
-    flex: 0 1 calc(25% - 10px);
-    padding: 20px 0px;
+    flex: 0 1 calc(25% - 15px);
+    padding: 0;
+    padding-bottom: 10px;
+    min-width: 0;
+    position: relative;
+}
+
+/* Item title label above thumbnails */
+.item-title {
+    display: block;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #0c0c0c;
+    line-height: 30px;
+    height: 30px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 6px;
+    margin: 0;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .repository-item img,
 .repository-item video {
     object-fit: contain;
+    max-width: 100%;
+    height: auto;
 }
 
-.exhibit-list .repository-item, #repo-artwork .repository-item {
-    flex: 0 1 calc(50% - 10px);
+#repo-sound .repository-item {
+    flex: 0 1 calc(33.33% - 14px);
 }
 
-.repository-item a.edit, .repository-item a.delete, .repository-item a.preview {
-    float: right;
-    background-size: contain;
-    width: 20px;
-    height: 20px;
-    text-indent: -99999px;
-    border: 8px solid #fff;
-    opacity: 1;
-    display: block;
-    margin: 10px 10px -20px auto;
+#repo-sound .repository-item audio {
+    width: 100%;
+    max-width: 100%;
+    height: 36px;
 }
 
-.repository-item a.edit:hover, .repository-item a.delete:hover, .repository-item a.preview:hover {
-    opacity: 0.7;
+.exhibit-list .repository-item {
+    flex: 0 1 calc(33.33% - 14px);
 }
 
-.repository-item a.edit {
-    background: url(../images/icons/edit.png) no-repeat center center;
-    background-size: contain;
-}
-
-.repository-item a.delete{
-    background: url(../images/icons/delete.png) no-repeat center center;
-    background-size: contain;
-}
-
-.repository-item a.preview {
-    background: url(../images/icons/preview.png) no-repeat center center;
-    background-size: contain;
-}
 
 #repo-artwork .repository-item {
-    flex: 0 1 calc(33% - 10px);
+    flex: 0 1 calc(25% - 15px);
     background: url(../images/icons/fill.png);
     background-position: 100% 20%;
-    margin-bottom: 30px;
+    margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .exhibit-list .repository-item, .exhibit-detail-box {
@@ -89,33 +95,26 @@
 
 #repo-marker.repository-list.flex .repository-item,
 #repo-object.repository-list.flex .repository-item {
-    flex: 0 1 calc(25%);
+    flex: 0 1 calc(25% - 15px);
 }
 
-#repo-marker .repository-item a.delete, #repo-object .repository-item a.delete {
-    margin: -20px 0 0 85px;
-    position: absolute;
+#repo-object .repository-item img,
+#repo-object .repository-item video {
+    display: block;
+    margin: 0 auto;
+    min-height: 128px;
+    max-height: 128px;
+    object-fit: contain;
+    object-position: center;
 }
 
-#repo-marker .repository-item a.edit, #repo-object .repository-item a.edit {
-    margin: -20px 0 -30px 40px;
-    position: absolute;
-}
-
-.artwork-elements a.edit, .artwork-elements a.delete, .artwork-elements a.preview {
-    margin: 10px 10px -40px auto;
-}
-
-.artwork-elements a.delete {
-    margin: 10px 10px -40px 0;
-}
 
 h1.exhibit-name {
     margin: 0 0 10px 0;
     padding: 0 15px;
     max-width: calc(100% - 30px);
     max-height: 50px;
-    font-size: 0.85em;
+    font-size: 0.95em;
     font-weight: bold;
     color: #5b0058;
     background: #b019a650;
@@ -129,7 +128,7 @@ h1.exhibit-name:hover {
     color: #af00a9;
 }
 
-p.exhibit-slug, a.edit, a.delete{
+p.exhibit-slug {
     font-size: 0.65em;
 }
 
@@ -138,6 +137,9 @@ p.by {
     display: block;
     width: 100%;
     margin: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 p.by, p.exbDate, p.exhibit-about {
@@ -194,7 +196,16 @@ p.exhibit-about {
 }
 
 .artwork-elements.flex {
+    flex-wrap: nowrap;
     justify-content: space-evenly;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.artwork-elements img,
+.artwork-elements video {
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 a.seeall  {
@@ -226,6 +237,41 @@ p.url span {
 }
 
 /********* Media Queries ***********/
+@media all and (max-width: 479px) {
+    #repo-artwork .repository-item {
+        flex: 0 1 100%;
+    }
+
+    .exhibit-list .repository-item {
+        flex: 0 1 100%;
+    }
+
+    #repo-sound .repository-item {
+        flex: 0 1 100%;
+    }
+
+    #repo-marker.repository-list.flex .repository-item,
+    #repo-object.repository-list.flex .repository-item,
+    .repository-item {
+        flex: 0 1 calc(50% - 10px);
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 1024px) {
+    #repo-artwork .repository-item {
+        flex: 0 1 calc(50% - 10px);
+    }
+
+    .exhibit-list .repository-item {
+        flex: 0 1 calc(50% - 10px);
+    }
+
+    #repo-marker.repository-list.flex .repository-item,
+    #repo-object.repository-list.flex .repository-item {
+        flex: 0 1 calc(33.33% - 14px);
+    }
+}
+
 @media all and (min-width: 800px) {
     p.by {
         flex-basis: calc(75% - 55px);

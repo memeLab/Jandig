@@ -2,6 +2,7 @@
 {% block content %}
     <section class="create-artwork container">
         <link rel="stylesheet" href="{{ static('css/warning.css') }}">
+        <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
         {# FIXME: maybe this can be improved #}
         <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
         <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
@@ -51,14 +52,8 @@
 {{ form.visible_fields()[5].errors }} #}
             <div id="form-modal" class="modal">
                 <div id="marker-modal" class="tab">
-                    <h4 class="modal-title">{{ _("Select Marker") }}</h4>
-                    <div id="navigation-buttons"
-                         style="display: flex;
-                                justify-content: space-between;
-                                margin-bottom: 15px">
-                        <button style="width:2.5em;
-                                       font-size: larger;
-                                       margin:0"
+                    <div class="modal-nav-header">
+                        <button class="modal-nav-btn"
                                 id="previous-button-marker"
                                 hx-get="/elements/"
                                 hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}'
@@ -67,14 +62,14 @@
                                 disabled="disabled">
                             <
                         </button>
-                        <button style="width:2.5em;
-                                       font-size: larger;
-                                       margin:0"
+                        <h4 class="modal-title">{{ _("Select Marker") }}</h4>
+                        <button class="modal-nav-btn"
                                 id="next-button-marker"
                                 hx-get="/elements/"
                                 hx-vals='js:{page: get_page_marker(1), element_type: "marker"}'
                                 hx-target="#repo-marker"
-                                hx-swap="outerHTML">></button>
+                                hx-swap="outerHTML"
+                                {% if total_marker_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                     </div>
                     {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
@@ -87,14 +82,8 @@
                        onclick="validateSubmit()">{{ _("Okay") }}</a>
                 </div>
                 <div id="object-modal" class="tab">
-                    <h4 class="modal-title">{{ _("Select Object") }}</h4>
-                    <div id="navigation-buttons"
-                         style="display: flex;
-                                justify-content: space-between;
-                                margin-bottom: 15px">
-                        <button style="width:2.5em;
-                                       font-size: larger;
-                                       margin:0"
+                    <div class="modal-nav-header">
+                        <button class="modal-nav-btn"
                                 id="previous-button-object"
                                 hx-get="/elements/"
                                 hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}'
@@ -103,14 +92,14 @@
                                 disabled="disabled">
                             <
                         </button>
-                        <button style="width:2.5em;
-                                       font-size: larger;
-                                       margin:0"
+                        <h4 class="modal-title">{{ _("Select Object") }}</h4>
+                        <button class="modal-nav-btn"
                                 id="next-button-object"
                                 hx-get="/elements/"
                                 hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}'
                                 hx-target="#repo-object"
-                                hx-swap="outerHTML">></button>
+                                hx-swap="outerHTML"
+                                {% if total_object_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                     </div>
                     {% with repository_list = object_list, element_type = 'object', htmx="false" %}
                         {% include "core/components/item-list.jinja2" %}
@@ -357,15 +346,15 @@
             function update_selected_items(){
                 id_marker = "#marker-" + selected_marker;
                 $('#existent-marker > input').val(selected_marker);
-                $(id_marker).css("border-bottom","3px solid #a6a6a6");
+                $(id_marker).css("border-bottom","3px solid #05f7ae");
 
                 id_object = "#object-" + selected_object;
                 $('#existent-object > input').val(selected_object);
-                $(id_object).css("border-bottom","3px solid #a6a6a6");
+                $(id_object).css("border-bottom","3px solid #05f7ae");
 
                 id_sound = "#sound-" + selected_sound;
                 $('#existent-sound > input').val(selected_sound);
-                $(id_sound).css("border-bottom","3px solid #a6a6a6");
+                $(id_sound).css("border-bottom","3px solid #05f7ae");
             }
             update_selected_items();
 
@@ -376,7 +365,7 @@
 
                     // reset background
                     $(this).parent().children().css('border-bottom', 'none')
-                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    $(this).css("border-bottom","3px solid #05f7ae");
                     id = elementId.split("-")[1];
                     if(sectionId == 'repo-marker'){
                         $('#id_selected_marker').val(id);

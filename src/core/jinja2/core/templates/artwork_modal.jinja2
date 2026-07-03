@@ -3,9 +3,11 @@
         <div id="modal-header">
             <button id="close-modal"
                     onclick="document.querySelector('#modal').classList.toggle('show-modal');">x</button>
+            <h1 id="modal-title">{{ artwork.title }}</h1>
         </div>
-        <h1 id="modal-title">{{ artwork.title }}</h1>
-        <p id="artwork-description">{{ artwork.description }}</p>
+        {% if artwork.description %}
+            <p id="artwork-description">{{ artwork.description }}</p>
+        {% endif %}
         <p id="element-upload-info">
             {{ "{} {}{} {}".format(_("Created by") , artwork.author.user.username,_(", in"), artwork.created.strftime("%d/%m/%Y")) }}
             <p id="element-analytics">{{ artwork.used_in_html_string() | safe }}</p>

@@ -61,7 +61,7 @@ label#buttonUpload {
 }
 
 div#imageContainer {
-  max-width: 320px;
+  max-width: 100%;
   height: 320px;
   margin: 25px auto;
   background: url(../images/icons/icoEptG.png) no-repeat center center;

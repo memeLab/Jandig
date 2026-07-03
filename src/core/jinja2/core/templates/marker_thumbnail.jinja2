@@ -1,23 +1,15 @@
-<div hx-get="/api/v1/markers/{{ marker.id }}/?format=modal"
-     hx-target="#modal"
-     hx-trigger="click"
-     class="repository-item trigger-modal"
-     id="marker-{{ marker.id }}">
-    <img id="{{ marker.id }}"
-         title=""
-         src="{{ marker.source.url }}"
-         height="50"
-         width="50">
-    <div class="marker-menu">
-        {% if deletable %}
-            <a href="{{ reverse('delete-content', query={'content_type': 'marker', 'id': marker.id},) }}"
-               onclick="return confirm('Are you sure you want to delete?')"
-               class="delete">delete</a>
-        {% endif %}
-        {# Disabled by now #}
-        {# {% if editable %}
-            <a href="/markers/edit/?id={{ marker.id }}" class="edit">edit</a>
-        {% endif %} #}
-        {% if previewable %}<a href="/marker/?id={{ marker.id }}" class="preview">preview</a>{% endif %}
-    </div>
-</div>
+<span class="item-title">{{ marker.title }}</span>
+<img id="marker-img-{{ marker.id }}"
+     title="{{ marker.title }}"
+     src="{{ marker.thumb_img.url }}?v={{ marker.modified.timestamp() |int }}"
+     height="128"
+     width="128">
+{% if editable %}
+    {% set can_edit = not marker.is_used_by_other_user() %}
+    {% set can_delete = not marker.in_use %}
+    {% set edit_reason = _("This marker is used by other users and cannot be edited.") %}
+    {% set delete_reason = _("This marker is used in artworks and cannot be deleted.") %}
+    {% with element=marker, element_type="marker", has_preview=true, can_edit=can_edit, can_delete=can_delete, edit_reason=edit_reason, delete_reason=delete_reason %}
+        {% include "core/components/action-menu.jinja2" %}
+    {% endwith %}
+{% endif %}

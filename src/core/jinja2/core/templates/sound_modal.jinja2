@@ -11,14 +11,13 @@
                     <
                 </button>
             {% endif %}
+            <h1 id="modal-title">{{ sound.title }}</h1>
         </div>
-        <h1 id="modal-title">{{ sound.title }}</h1>
         <p id="element-author">{{ "{} {}".format(_("Author:") ,sound.author)}}</p>
         <p id="element-upload-info">
             {{ "{} {}{} {}".format(_("Uploaded by") , sound.owner.user.username,_(", in"), sound.created.strftime("%d/%m/%Y")) }}
             <p id="element-analytics">{{ sound.used_in_html_string() | safe }}</p>
             {{ sound.as_html() | safe }}
-            <p id="download">Download file:</p>
             <p id="element-download">
                 <a id="png-download" href="{{ sound.file.url }}" download>{{ "{} ({})".format(_("Download File") , sound.file_size | filesizeformat)}}</a>
             </p>
