@@ -334,7 +334,7 @@ if USE_GRANIAN:
             "BACKEND": "config.storage_backends.PublicMediaStorage",
         },
         "staticfiles": {
-            "BACKEND": "config.storage_backends.StaticStorage",
+            "BACKEND": "config.storage_backends.ManifestStaticStorage",
         },
     }
 
