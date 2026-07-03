@@ -33,7 +33,7 @@ ol {
 
 section,
 form {
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 }
 
 a,
@@ -260,10 +260,17 @@ input[type="radio" i] {
 
 /* Structure */
 .container {
-  max-width: 320px;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
+  width: 80%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header .container {
   width: 100%;
+  padding: 0 10px;
 }
 
 .colorful .container {
@@ -309,24 +316,12 @@ a.jandigIco {
 }
 
 .aside {
-  max-width: 120px;
-  float: right;
   background: #fff;
 }
 
 .logo {
   text-align: left;
-  width: 100%;
-  float: left;
-  background-image: linear-gradient(
-    to top,
-    #77777766,
-    #77777766 50%,
-    transparent 50%,
-    transparent
-  );
-  background-position: 100% 10%;
-  background-size: 100% 200%;
+
 }
 
 .logo a {
@@ -457,6 +452,14 @@ div.contCam:before {
   column-gap: 1.5em;
 }
 
+.useful-links .container > div:not(.contCam) {
+  margin-left: auto;
+}
+
+.useful-links .container > div:not(.contCam) ~ div:not(.contCam) {
+  margin-left: 1.5em;
+}
+
 .useful-links a,
 .footer a.useful {
   padding: 0 5px;
@@ -514,7 +517,7 @@ h1.titObj {
 }
 
 .footer .container {
-  height: 25px;
+  min-height: 25px;
   margin-bottom: 20px;
 }
 
@@ -634,9 +637,18 @@ a.sq-github {
 }
 
 /* Media Queries */
+@media all and (min-width: 480px) {
+  .container {
+    width: 80%;
+    max-width: 600px;
+    padding: 0;
+  }
+}
+
 @media all and (min-width: 800px) {
   .container {
-    max-width: 600px;
+    width: 80%;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -646,8 +658,7 @@ a.sq-github {
   }
 
   .aside {
-    max-width: 250px;
-    min-width: 250px;
+    flex-shrink: 0;
   }
 
   .half {
@@ -668,17 +679,6 @@ a.sq-github {
 
   .logo {
     text-align: left;
-    width: 350px;
-    float: left;
-    background-image: linear-gradient(
-      to top,
-      #77777766,
-      #77777766 50%,
-      transparent 50%,
-      transparent
-    );
-    background-position: 100% 10%;
-    background-size: 100% 200%;
   }
 
   .welcome,
@@ -763,7 +763,7 @@ a.sq-github {
   }
 
   .footer .container {
-    height: 30px;
+    min-height: 30px;
     margin-bottom: 40px;
   }
 

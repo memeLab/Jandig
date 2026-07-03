@@ -1,8 +1,9 @@
+<span class="item-title">{{ marker.title }}</span>
 <img id="marker-img-{{ marker.id }}"
      title="{{ marker.title }}"
      src="{{ marker.thumb_img.url }}?v={{ marker.modified.timestamp() |int }}"
-     height="64"
-     width="64">
+     height="128"
+     width="128">
 {% if editable %}
     {% set can_edit = not marker.is_used_by_other_user() %}
     {% set can_delete = not marker.in_use %}

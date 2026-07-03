@@ -7,8 +7,8 @@
 }
 
 .action-menu-trigger {
-    background: #ffffff;
-    border: 1px solid #000;
+    background: rgba(0,0,0,0);
+    border: 1px solid rgba(0,0,0,0);
     border-radius: 0;
     width: 28px;
     height: 28px;
@@ -18,6 +18,7 @@
     cursor: pointer;
     color: #000;
     padding: 0;
+    margin: 1px 0;
     transition: background 0.2s ease;
 }
 
@@ -164,9 +165,4 @@
 
 .action-modal-btn-ok:hover {
     background: #3d003b;
-}
-
-/* Ensure repository-item has relative positioning for action menu */
-.repository-item {
-    position: relative;
 }

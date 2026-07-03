@@ -86,26 +86,36 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 10px solid #f1f1f1;
+  gap: 10px;
 }
 
 .profile-section-title {
   display: flex;
-  font-size: 1.2em;
+  align-items: center;
+  font-size: 1.1em;
   font-weight: bold;
-  text-align: center;
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .profile-section-title p {
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .profile-section-title .icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 .create-one-btn {
+  flex-shrink: 0;
   flex-basis: 100px;
   background: #f1f1f1;
   line-height: 40px;

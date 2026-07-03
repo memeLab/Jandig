@@ -1,9 +1,10 @@
+<span class="item-title">{{ artwork.title }}</span>
 <div class="artwork-elements flex">
     <img id="artwork-marker-{{ artwork.marker.id }}"
          title="{{ artwork.marker.title }}"
          src="{{ artwork.marker.thumb_img.url }}?v={{ artwork.marker.modified.timestamp() |int }}"
-         height="50"
-         width="50">
+         height="80"
+         width="80">
     <div class="separator"></div>
     {% if artwork.augmented.is_video %}
         <video autoplay
@@ -12,29 +13,29 @@
                id="artwork-object-{{ artwork.augmented.id }}"
                title="{{ artwork.augmented.title }}"
                src="{{ artwork.augmented.source.url }}"
-               height="50"
-               width="50">
+               height="80"
+               width="80">
         </video>
     {% elif artwork.augmented.is_3d %}
         {% if artwork.augmented.thumbnail %}
             <img id="artwork-object-{{ artwork.augmented.id }}"
                  title="{{ artwork.augmented.title }}"
                  src="{{ artwork.augmented.thumbnail.url }}"
-                 height="50"
-                 width="50">
+                 height="80"
+                 width="80">
         {% else %}
             <img id="artwork-object-{{ artwork.augmented.id }}"
                  title="{{ artwork.augmented.title }}"
-                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50'><rect width='50' height='50' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='10' fill='%23666'>3D</text></svg>"
-                 height="50"
-                 width="50">
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='12' fill='%23666'>3D</text></svg>"
+                 height="80"
+                 width="80">
             {% endif %}
         {% else %}
             <img id="artwork-object-{{ artwork.augmented.id }}"
                  title="{{ artwork.augmented.title }}"
                  src="{{ artwork.augmented.source.url }}"
-                 height="50"
-                 width="50">
+                 height="80"
+                 width="80">
         {% endif %}
         {% if editable %}
             {% set can_edit = true %}

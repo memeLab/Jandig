@@ -1,3 +1,4 @@
+<span class="item-title">{{ object.title }}</span>
 {% if object.is_video %}
     <video autoplay
            loop
@@ -5,29 +6,29 @@
            id="object-media-{{ object.id }}"
            title="{{ object.title }}"
            src="{{ object.source.url }}"
-           height="64"
-           width="64">
+           height="128"
+           width="128">
     </video>
 {% elif object.is_3d %}
     {% if object.thumbnail %}
         <img id="object-media-{{ object.id }}"
              title="{{ object.title }}"
              src="{{ object.thumbnail.url }}"
-             height="64"
-             width="64">
+             height="128"
+             width="128">
     {% else %}
         <img id="object-media-{{ object.id }}"
              title="{{ object.title }}"
-             src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='10' fill='%23666'>3D</text></svg>"
-             height="64"
-             width="64">
+             src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128'><rect width='128' height='128' fill='%23ccc'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='14' fill='%23666'>3D</text></svg>"
+             height="128"
+             width="128">
         {% endif %}
     {% else %}
         <img id="object-media-{{ object.id }}"
              title="{{ object.title }}"
              src="{{ object.source.url }}"
-             height="64"
-             width="64">
+             height="128"
+             width="128">
     {% endif %}
     {% if editable %}
         {% set can_edit = not object.is_used_by_other_user() %}

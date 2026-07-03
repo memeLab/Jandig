@@ -1,8 +1,14 @@
 .modal.modal {
     border-radius: 0;
     width: 100%;
+    max-width: 800px;
     text-align: center;
     padding: 3%;
+    padding-top: 0;
+}
+
+.modal.modal .repository-item {
+    flex: 0 1 calc(20% - 16px);
 }
 
 .form-options{
