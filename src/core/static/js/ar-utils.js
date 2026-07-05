@@ -23,6 +23,30 @@ function waitForVideoMetadata(video) {
     });
 }
 
+// CSS `object-fit: cover` shows only the center portion of the camera frame that matches
+// the screen's aspect ratio. Return that visible rectangle (in source video pixels) so the
+// pipeline can process just what the user actually sees.
+function computeVisibleCrop(videoW, videoH, viewW, viewH) {
+    const viewAspect = viewW / viewH;
+    const videoAspect = videoW / videoH;
+
+    let cropW;
+    let cropH;
+    if (videoAspect > viewAspect) {
+        // Camera is wider than the screen -> crop the left/right edges.
+        cropH = videoH;
+        cropW = Math.round(videoH * viewAspect);
+    } else {
+        // Camera is taller than the screen -> crop the top/bottom edges.
+        cropW = videoW;
+        cropH = Math.round(videoW / viewAspect);
+    }
+
+    const cropX = Math.round((videoW - cropW) / 2);
+    const cropY = Math.round((videoH - cropH) / 2);
+    return { x: cropX, y: cropY, width: cropW, height: cropH };
+}
+
 let _opencvResolve;
 const opencvReady = new Promise((resolve) => { _opencvResolve = resolve; });
 function MarkOpenCvReady() {

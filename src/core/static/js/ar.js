@@ -49,10 +49,16 @@ async function initializePipeline() {
     const threeCanvas = document.getElementById('three-canvas');
 
     const ctx = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
 
-    globalThis.arOverlay.initThreeOverlay(threeCanvas, video.videoWidth, video.videoHeight);
+    // Only the center portion of the camera frame is visible on screen (CSS object-fit:
+    // cover). Size every processing surface to that crop so we don't process pixels the
+    // user never sees and the overlay intrinsics match the displayed image.
+    const crop = computeVisibleCrop(video.videoWidth, video.videoHeight, window.innerWidth, window.innerHeight);
+    globalThis.crop = crop;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+
+    globalThis.arOverlay.initThreeOverlay(threeCanvas, crop.width, crop.height);
 
     // Phase 3: prewarm Three.js textures and force GPU uploads.
     globalThis.arOverlay.prewarmOverlayCache(phaseProgress(WEIGHTS.three, 'Caching animations…'));
@@ -65,6 +71,18 @@ async function initializePipeline() {
     globalThis.canvas = canvas;
     globalThis.ctx = ctx;
     globalThis.threeCanvas = threeCanvas;
+
+    // Recompute the visible crop when the viewport changes (e.g. device rotation).
+    globalThis.addEventListener('resize', () => {
+        if (!globalThis.video || !globalThis.video.videoWidth) return;
+        const nextCrop = computeVisibleCrop(globalThis.video.videoWidth, globalThis.video.videoHeight, window.innerWidth, window.innerHeight);
+        globalThis.crop = nextCrop;
+        globalThis.canvas.width = nextCrop.width;
+        globalThis.canvas.height = nextCrop.height;
+        if (globalThis.arOverlay && globalThis.arOverlay.resizeThreeOverlay) {
+            globalThis.arOverlay.resizeThreeOverlay(nextCrop.width, nextCrop.height);
+        }
+    });
 
     requestAnimationFrame(processFrame);
 }
@@ -85,8 +103,13 @@ function hideLoading() {
 function processFrame() {
     globalThis.frameNumber += 1;
 
-    // Draw the current video frame on the processing canvas
-    globalThis.ctx.drawImage(globalThis.video, 0, 0, globalThis.canvas.width, globalThis.canvas.height);
+    // Draw the visible (cropped) portion of the video frame onto the processing canvas.
+    const crop = globalThis.crop;
+    globalThis.ctx.drawImage(
+        globalThis.video,
+        crop.x, crop.y, crop.width, crop.height,
+        0, 0, globalThis.canvas.width, globalThis.canvas.height
+    );
 
     const frame = globalThis.ctx.getImageData(0, 0, globalThis.canvas.width, globalThis.canvas.height);
     const src = cv.matFromImageData(frame);
