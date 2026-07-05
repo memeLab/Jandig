@@ -219,11 +219,12 @@ function processFrame() {
                 // Update marker best rotation on tracking periodically to reduce computation.
                 // Offset by the track's phase so only a subset of markers recompute per frame.
                 if ((globalThis.frameNumber + (marker.rotationPhase || 0)) % 20 === 0) {
-                    const rotUpdate = updateRotationForMarker(warped_marker, marker.match.markerId);
-                    if (rotUpdate) {
-                        marker.match.rotationDeg = rotUpdate.rotationDeg;
-                        marker.match.confidence = rotUpdate.confidence;
-                    }
+                    // Disabled for now, periodic rotation updates are too expensive on mobile and not worth the stutter.
+                    // const rotUpdate = updateRotationForMarker(warped_marker, marker.match.markerId);
+                    // if (rotUpdate) {
+                    //     marker.match.rotationDeg = rotUpdate.rotationDeg;
+                    //     marker.match.confidence = rotUpdate.confidence;
+                    // }
                 }
             }
             warped_marker.delete();
