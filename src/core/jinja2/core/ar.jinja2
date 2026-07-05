@@ -17,8 +17,8 @@
         <script src="{{ static('js/ar-html-elements.js') }}"></script>
         <script src="{{ static('js/ar-utils.js') }}"></script>
         <script type="module">
-            import { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks } from '{{ static("js/ar-three-overlay.js") }}';
-            window.arOverlay = { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks };
+            import { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks, prewarmOverlayCache } from '{{ static("js/ar-three-overlay.js") }}';
+            window.arOverlay = { initThreeOverlay, renderThreeOverlay, resizeThreeOverlay, updateOverlayPose, removeOverlayMesh, hideOverlayMesh, cleanupStaleTracks, prewarmOverlayCache };
         </script>
         <script src="{{ static('js/ar.js') }}"></script>
         <script async
@@ -27,6 +27,15 @@
                 type="text/javascript"></script>
     </head>
     <body>
+        <div id="ar-loading">
+            <div id="ar-loading-content">
+                <div id="ar-loading-title">{{ _("Loading exhibit…") }}</div>
+                <div id="ar-loading-track">
+                    <div id="ar-loading-bar"></div>
+                </div>
+                <div id="ar-loading-label"></div>
+            </div>
+        </div>
         <div id="video-container">
             <video id="camera"
                    autoplay=""

@@ -6,7 +6,7 @@ let focalLength = 0;
 
 const overlayMeshes = new Map(); // trackId -> THREE.Mesh
 const textureCache = new Map(); // markerId -> THREE.Texture
-const spritesheetState = new Map(); // trackId -> { meta, lastFrameTime, currentFrame }
+const spritesheetState = new Map(); // markerId -> { meta, lastFrameTime, currentFrame }
 const videoState = new Map(); // trackId -> { markerId, video, playing }
 
 export function initThreeOverlay(threeCanvas, width, height) {
@@ -35,8 +35,6 @@ function setCameraProjection(w, h, f) {
     // Near/far clipping planes
     const near = 0.1;
     const far = 1000;
-    const cx = w / 2;
-    const cy = h / 2;
 
     // OpenGL NDC projection from pinhole camera intrinsics
     // Maps camera-space (x-right, y-down, z-forward) to clip space
@@ -113,14 +111,18 @@ function getOrCreateMesh(trackId, markerId) {
     const texture = getOrCreateTexture(markerId);
     if (!texture) return null;
 
-    // Set up spritesheet animation state if needed
+    // Set up spritesheet animation state if needed. Keyed by markerId so that multiple
+    // detected instances of the same marker share one synchronized animation and one
+    // texture offset (avoids instances clobbering each other's frame).
     if (contentEl.type === 'spritesheet' && contentEl.metadata) {
-        spritesheetState.set(trackId, {
-            markerId: markerId,
-            meta: contentEl.metadata,
-            lastFrameTime: performance.now(),
-            currentFrame: 0,
-        });
+        if (!spritesheetState.has(markerId)) {
+            spritesheetState.set(markerId, {
+                markerId: markerId,
+                meta: contentEl.metadata,
+                lastFrameTime: performance.now(),
+                currentFrame: 0,
+            });
+        }
     }
 
     // Set up video state if needed
@@ -153,6 +155,45 @@ function getOrCreateMesh(trackId, markerId) {
     return mesh;
 }
 
+/**
+ * Prewarm the overlay caches for every exhibit marker before the AR pipeline starts.
+ * Creates (and GPU-uploads) one shared texture per markerId so the first detection does
+ * not incur a decode/upload stall. Reports fractional progress and logs per-content timing.
+ *
+ * @param {(fraction: number) => void} [onProgress]
+ */
+export function prewarmOverlayCache(onProgress) {
+    const markerEls = Array.from(document.querySelectorAll('ar-marker'));
+    const total = markerEls.length;
+    let done = 0;
+
+    for (const markerEl of markerEls) {
+        const markerId = markerEl.markerId;
+        const start = performance.now();
+
+        const texture = getOrCreateTexture(markerId);
+        if (texture) {
+            // Force the GPU upload now instead of on first render.
+            if (renderer) {
+                try {
+                    renderer.initTexture(texture);
+                } catch (e) {
+                    // initTexture is best-effort (e.g. empty video frame); ignore failures.
+                }
+            }
+            const contentEl = getContentElement(markerId);
+            const type = contentEl ? contentEl.type : 'unknown';
+            const contentId = markerId.replace('marker-', 'content-');
+            console.log(`[AR] ${contentId} (${type}) three cache ready in ${Math.round(performance.now() - start)}ms`);
+        } else {
+            console.warn(`[AR] no content texture for ${markerId}`);
+        }
+
+        done += 1;
+        if (onProgress) onProgress(done / total);
+    }
+}
+
 export function removeOverlayMesh(trackId) {
     const mesh = overlayMeshes.get(trackId);
     if (mesh) {
@@ -161,7 +202,8 @@ export function removeOverlayMesh(trackId) {
         mesh.material.dispose();
         overlayMeshes.delete(trackId);
     }
-    spritesheetState.delete(trackId);
+    // Spritesheet state is shared per-markerId across instances, so it is kept for the
+    // session lifetime and not removed here.
     const vs = videoState.get(trackId);
     if (vs) {
         vs.video.pause();
@@ -334,10 +376,10 @@ function orderPointsFromApprox(approx) {
 export function renderThreeOverlay() {
     if (!renderer) return;
 
-    // Advance spritesheet animations
+    // Advance spritesheet animations (one shared state per markerId)
     const now = performance.now();
-    for (const [trackId, state] of spritesheetState) {
-        const { meta, lastFrameTime, currentFrame, markerId } = state;
+    for (const [markerId, state] of spritesheetState) {
+        const { meta, lastFrameTime, currentFrame } = state;
         const elapsed = now - lastFrameTime;
         if (elapsed >= meta.frameDurationMs) {
             const framesToAdvance = Math.floor(elapsed / meta.frameDurationMs);

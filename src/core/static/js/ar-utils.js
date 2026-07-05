@@ -1,3 +1,5 @@
+let mediaStream;
+
 async function startCamera() {
     const userCamera = document.getElementById('camera');
     try {
@@ -24,11 +26,26 @@ function waitForVideoMetadata(video) {
 let _opencvResolve;
 const opencvReady = new Promise((resolve) => { _opencvResolve = resolve; });
 function MarkOpenCvReady() {
-    if (!window.cv) {
+    if (!globalThis.cv) {
         console.error('OpenCV failed to load.');
         return;
     }
-    _opencvResolve();
+    // The script `onload` fires when the JS is parsed, but the WASM runtime may not
+    // be initialized yet (cv.Mat and friends are undefined until then). Wait for the
+    // runtime before resolving so callers can safely construct cv.Mat / call cv.imread.
+    if (typeof cv.then === 'function') {
+        // Modularized build: `cv` is a promise resolving to the ready module.
+        cv.then((readyCv) => {
+            globalThis.cv = readyCv;
+            _opencvResolve();
+        });
+    } else if (typeof cv.Mat === 'function') {
+        // Runtime already initialized.
+        _opencvResolve();
+    } else {
+        // Classic build: resolve once the WASM runtime finishes initializing.
+        cv['onRuntimeInitialized'] = () => _opencvResolve();
+    }
 }
 
 function getSideRatio(approx) {
@@ -40,8 +57,7 @@ function getSideRatio(approx) {
         const y2 = approx.data32S[((i + 1) % 4) * 2 + 1];
         const dx = x2 - x1;
         const dy = y2 - y1;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        sides.push(dist);
+        sides.push(Math.hypot(dx, dy));
     }
     const minSide = Math.min(...sides);
     const maxSide = Math.max(...sides);
@@ -91,9 +107,7 @@ function findNearestTrackId(center, claimedTrackIds) {
 }
 
 function centerDistance(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    return Math.sqrt(dx * dx + dy * dy);
+    return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
 function makeMarkerId() {

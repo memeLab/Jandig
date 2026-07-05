@@ -1,7 +1,4 @@
 async function initializePipeline() {
-    await startCamera();
-    await opencvReady;
-
     const DEFAULTS = {
             warpSize: 128,
             borderSize: 26,
@@ -16,9 +13,36 @@ async function initializePipeline() {
             binaryThreshold: 160,
             useOtsu: true,
             maxSideRatio: 2.0,
-            edgeMarginPx: 10
+            edgeMarginPx: 10,
+            rotationMatchSize: 48
     };
     globalThis.config = { ...DEFAULTS };
+    globalThis.frameNumber = 0;
+    globalThis.tracks = new Map();
+    globalThis.markerCache = [];
+
+    // Weighted phases drive a single monotonic 0-100% loading bar.
+    const WEIGHTS = { assets: 0.5, opencv: 0.25, three: 0.25 };
+    let progressBase = 0;
+    const phaseProgress = (weight, label) => (fraction) => {
+        setLoadingProgress((progressBase + weight * fraction) * 100, label);
+    };
+
+    setLoadingProgress(0, 'Preparing exhibit…');
+
+    // OpenCV runtime must be ready before we can build the marker cache.
+    await opencvReady;
+
+    // Phase 1: download every marker + content asset for this exhibit.
+    await waitForExhibitAssets(phaseProgress(WEIGHTS.assets, 'Downloading assets…'));
+    progressBase += WEIGHTS.assets;
+
+    // Phase 2: build the OpenCV template cache (image + 4 rotations per marker).
+    buildMarkerCache(phaseProgress(WEIGHTS.opencv, 'Building marker cache…'));
+    progressBase += WEIGHTS.opencv;
+
+    // Camera + rendering surfaces (camera starts only after assets are cached).
+    await startCamera();
 
     const video = document.getElementById('camera');
     const canvas = document.getElementById('ar-canvas');
@@ -28,22 +52,34 @@ async function initializePipeline() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    window.arOverlay.initThreeOverlay(threeCanvas, video.videoWidth, video.videoHeight);
-    
-    let mediaStream = null;
-    let animationId = null;
-    let started = false;
+    globalThis.arOverlay.initThreeOverlay(threeCanvas, video.videoWidth, video.videoHeight);
 
-    globalThis.frameNumber = 0;
+    // Phase 3: prewarm Three.js textures and force GPU uploads.
+    globalThis.arOverlay.prewarmOverlayCache(phaseProgress(WEIGHTS.three, 'Caching animations…'));
+    progressBase += WEIGHTS.three;
+
+    setLoadingProgress(100, 'Ready');
+    hideLoading();
+
     globalThis.video = video;
     globalThis.canvas = canvas;
     globalThis.ctx = ctx;
     globalThis.threeCanvas = threeCanvas;
-    globalThis.tracks = new Map();
 
-    globalThis.markerCache = [];
+    requestAnimationFrame(processFrame);
+}
 
-    animationId = requestAnimationFrame(processFrame);
+function setLoadingProgress(pct, label) {
+    const bar = document.getElementById('ar-loading-bar');
+    const text = document.getElementById('ar-loading-label');
+    const clamped = Math.max(0, Math.min(100, Math.round(pct)));
+    if (bar) bar.style.width = clamped + '%';
+    if (text && label) text.textContent = label;
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('ar-loading');
+    if (overlay) overlay.hidden = true;
 }
 
 function processFrame() {
@@ -118,14 +154,20 @@ function processFrame() {
                 const bestMatch = findBestMarkerMatch(warped_marker);
                 if (bestMatch) {
                     marker.match = bestMatch;
+                    // Give each track a distinct phase so periodic rotation updates are
+                    // spread across frames instead of all firing on the same frame
+                    // (a synchronized burst caused a periodic stutter on mobile).
+                    globalThis.rotationPhaseCounter = (globalThis.rotationPhaseCounter || 0) + 1;
+                    marker.rotationPhase = globalThis.rotationPhaseCounter;
                     console.log(
                         `Best match for track ${trackId}: ${bestMatch.markerId} rot=${bestMatch.rotationDeg} conf=${bestMatch.confidence.toFixed(3)}`
                     );
                 }
                 
             } else {
-                // Update marker best rotation on tracking every 20th frame to reduce computation
-                if (globalThis.frameNumber % 20 === 0) {
+                // Update marker best rotation on tracking periodically to reduce computation.
+                // Offset by the track's phase so only a subset of markers recompute per frame.
+                if ((globalThis.frameNumber + (marker.rotationPhase || 0)) % 20 === 0) {
                     const rotUpdate = updateRotationForMarker(warped_marker, marker.match.markerId);
                     if (rotUpdate) {
                         marker.match.rotationDeg = rotUpdate.rotationDeg;
@@ -156,16 +198,16 @@ function processFrame() {
     }
 
     // Update Three.js overlays for confirmed tracks
-    if (window.arOverlay) {
+    if (globalThis.arOverlay) {
         for (const track of globalThis.tracks.values()) {
             if (track.lastSeen === globalThis.frameNumber && track.consecutive >= globalThis.config.temporalConfirmFrames && track.match) {
-                window.arOverlay.updateOverlayPose(track.id, track, globalThis.canvas.width, globalThis.canvas.height);
+                globalThis.arOverlay.updateOverlayPose(track.id, track, globalThis.canvas.width, globalThis.canvas.height);
             } else {
-                window.arOverlay.hideOverlayMesh(track.id);
+                globalThis.arOverlay.hideOverlayMesh(track.id);
             }
         }
-        window.arOverlay.cleanupStaleTracks(new Set(tracks.keys()));
-        window.arOverlay.renderThreeOverlay();
+        globalThis.arOverlay.cleanupStaleTracks(new Set(tracks.keys()));
+        globalThis.arOverlay.renderThreeOverlay();
     }
 
 
@@ -212,8 +254,8 @@ function pruneStaleTracks() {
         if (globalThis.frameNumber - track.lastSeen > globalThis.config.trackStaleFrames) {
             track.approx.delete();
             globalThis.tracks.delete(key);
-            if (window.arOverlay) {
-                window.arOverlay.removeOverlayMesh(key);
+            if (globalThis.arOverlay) {
+                globalThis.arOverlay.removeOverlayMesh(key);
             }
         }
     }
@@ -225,49 +267,85 @@ function clearmarkerCache() {
         for (const rot of marker.rotations) {
             rot.mat.delete();
         }
+        if (marker.matchRotations) {
+            for (const rot of marker.matchRotations) {
+                rot.mat.delete();
+            }
+        }
     }
     globalThis.markerCache = [];
 }
 
 function getExhibitMarkers() {
-    if (globalThis.markerCache.length > 0) {
-        return globalThis.markerCache;
+    if (globalThis.markerCache.length === 0) {
+        buildMarkerCache();
     }
+    return globalThis.markerCache;
+}
 
+function buildMarkerCache(onProgress) {
     clearmarkerCache();
 
-    const imageElements = Array.from(document.querySelectorAll('ar-marker'));
-    console.log(`Found ${imageElements.length} ar-marker elements for exhibit markers.`);
-    for (const markerEl of imageElements) {
-        console.log('Registering marker:', markerEl.markerId, 'src:', markerEl.getAttribute('src'));
-        const imgEl = markerEl._markerImg;
-        if (!imgEl || !imgEl.complete || imgEl.naturalWidth === 0) continue;
+    const markerElements = Array.from(document.querySelectorAll('ar-marker'));
+    const total = markerElements.length;
+    let done = 0;
 
-        const markerMat = cv.imread(imgEl, cv.IMREAD_COLOR);
-        if (markerMat.empty()) {
-            markerMat.delete();
-            continue;
+    for (const markerEl of markerElements) {
+        const start = performance.now();
+        const imgEl = markerEl._markerImg;
+
+        if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+            const markerMat = cv.imread(imgEl, cv.IMREAD_COLOR);
+            if (markerMat.empty()) {
+                markerMat.delete();
+                console.warn(`[AR] ${markerEl.markerId} marker image empty, skipped`);
+            } else {
+                cv.resize(markerMat, markerMat, new cv.Size(config.warpSize, config.warpSize));
+
+                const rot90 = new cv.Mat();
+                cv.rotate(markerMat, rot90, cv.ROTATE_90_CLOCKWISE);
+                const rot180 = new cv.Mat();
+                cv.rotate(markerMat, rot180, cv.ROTATE_180);
+                const rot270 = new cv.Mat();
+                cv.rotate(markerMat, rot270, cv.ROTATE_90_COUNTERCLOCKWISE);
+
+                // Downscaled copies of each rotation used only for the cheap periodic
+                // rotation re-check while tracking (full-size mats stay for initial match).
+                const matchSize = new cv.Size(config.rotationMatchSize, config.rotationMatchSize);
+                const smallBase = new cv.Mat();
+                cv.resize(markerMat, smallBase, matchSize);
+                const small90 = new cv.Mat();
+                cv.resize(rot270, small90, matchSize);
+                const small180 = new cv.Mat();
+                cv.resize(rot180, small180, matchSize);
+                const small270 = new cv.Mat();
+                cv.resize(rot90, small270, matchSize);
+
+                globalThis.markerCache.push({
+                    id: markerEl.markerId,
+                    mat: markerMat,
+                    rotations: [
+                        { candidateDeg: 0,   mat: markerMat },
+                        { candidateDeg: 90,  mat: rot270 },
+                        { candidateDeg: 180, mat: rot180 },
+                        { candidateDeg: 270, mat: rot90 },
+                    ],
+                    matchRotations: [
+                        { candidateDeg: 0,   mat: smallBase },
+                        { candidateDeg: 90,  mat: small90 },
+                        { candidateDeg: 180, mat: small180 },
+                        { candidateDeg: 270, mat: small270 },
+                    ]
+                });
+
+                console.log(`[AR] ${markerEl.markerId} OpenCV cache ready in ${Math.round(performance.now() - start)}ms`);
+            }
+        } else {
+            console.warn(`[AR] ${markerEl.markerId} marker image not loaded, skipped`);
         }
 
-        cv.resize(markerMat, markerMat, new cv.Size(config.warpSize, config.warpSize));
-
-        const rot90 = new cv.Mat();
-        cv.rotate(markerMat, rot90, cv.ROTATE_90_CLOCKWISE);
-        const rot180 = new cv.Mat();
-        cv.rotate(markerMat, rot180, cv.ROTATE_180);
-        const rot270 = new cv.Mat();
-        cv.rotate(markerMat, rot270, cv.ROTATE_90_COUNTERCLOCKWISE);
-
-        globalThis.markerCache.push({
-            id: markerEl.markerId,
-            mat: markerMat,
-            rotations: [
-                { candidateDeg: 0,   mat: markerMat },
-                { candidateDeg: 90,  mat: rot270 },
-                { candidateDeg: 180, mat: rot180 },
-                { candidateDeg: 270, mat: rot90 },
-            ]
-        });
+        done += 1;
+        if (onProgress) onProgress(done / total);
     }
 
     return globalThis.markerCache;
@@ -300,13 +378,13 @@ function findBestMarkerMatch(markerMat) {
     }
 
     let bestMatch = null;
+    if (!globalThis._matchResultScratch) globalThis._matchResultScratch = new cv.Mat();
+    const matchResult = globalThis._matchResultScratch;
 
     for (const marker of markers) {
         for (const rot of marker.rotations) {
-            const matchResult = new cv.Mat();
             cv.matchTemplate(markerMat, rot.mat, matchResult, cv.TM_CCOEFF_NORMED);
             const confidence = matchResult.data32F[0];
-            matchResult.delete();
 
             if (confidence < globalThis.config.matchConfidenceThreshold) {
                 continue;
@@ -330,13 +408,21 @@ function updateRotationForMarker(markerMat, templateId) {
     const template = templates.find(t => t.id === templateId);
     if (!template) return null;
 
-    let bestRotation = null;
+    const size = globalThis.config.rotationMatchSize;
+    if (!globalThis._rotMatchSrc) globalThis._rotMatchSrc = new cv.Mat();
+    if (!globalThis._matchResultScratch) globalThis._matchResultScratch = new cv.Mat();
+    const small = globalThis._rotMatchSrc;
+    const matchResult = globalThis._matchResultScratch;
 
-    for (const rot of template.rotations) {
-        const matchResult = new cv.Mat();
-        cv.matchTemplate(markerMat, rot.mat, matchResult, cv.TM_CCOEFF_NORMED);
+    // Downscale the warped marker once, then compare against the matched template's four
+    // downscaled rotations. Smaller templates + reused scratch Mats keep this light enough
+    // to run while tracking without dropping frames on mobile.
+    cv.resize(markerMat, small, new cv.Size(size, size));
+
+    let bestRotation = null;
+    for (const rot of template.matchRotations) {
+        cv.matchTemplate(small, rot.mat, matchResult, cv.TM_CCOEFF_NORMED);
         const confidence = matchResult.data32F[0];
-        matchResult.delete();
 
         if (confidence >= globalThis.config.matchConfidenceThreshold && (!bestRotation || confidence > bestRotation.confidence)) {
             bestRotation = { rotationDeg: rot.candidateDeg, confidence };
