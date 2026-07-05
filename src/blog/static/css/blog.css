@@ -2,7 +2,7 @@
 #blog-area,
 #clipping-area,
 #posts-area{
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 .post{
@@ -31,7 +31,7 @@
 /* Post Detail Page */
 #post,
 #post-area{
-    max-width: 100%;
+    max-width: 1200px;
     margin: 1.5em auto;
 }
 #post{
