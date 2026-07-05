@@ -102,7 +102,10 @@ function processFrame() {
     cv.findContours(gray, contours, hierarchies, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
     cv.cvtColor(gray, dst, cv.COLOR_GRAY2RGBA);
 
-    const probableMarkers = {};
+    // First pass: collect every 4-sided convex contour that passes the geometric
+    // filters, remembering each candidate's parent contour index.
+    const quadApprox = {};   // contourIndex -> approx Mat
+    const quadParent = {};   // contourIndex -> parent contour index
 
     for (let i = 0; i < contours.size(); ++i) {
         const contour = contours.get(i);
@@ -122,15 +125,40 @@ function processFrame() {
 
         if (approx.rows === 4 && cv.contourArea(approx) > globalThis.config.minArea && cv.isContourConvex(approx) && getSideRatio(approx) <= globalThis.config.maxSideRatio && !touchesBorder) {
             
-            const parent = hierarchies.intPtr(0, i)[3];
-            if (parent in probableMarkers) {
-                // probableMarkers[parent].delete();
-                // delete probableMarkers[parent];
-            }else{
-                probableMarkers[i] = approx;
-            }
+            quadApprox[i] = approx;
+            quadParent[i] = hierarchies.intPtr(0, i)[3];
         } else {
             approx.delete();
+        }
+    }
+
+    // A marker's black border yields two nested quads (its outer and inner edges).
+    // An extra printed white border adds a third, outer-most quad. In every case the
+    // edge we want is the OUTER edge of the black border, i.e. the parent quad of the
+    // inner-most (leaf) quad:
+    //   - 2 nested quads (black border only)    -> pick the outer one
+    //   - 3 nested quads (white + black border) -> pick the middle one
+    // A leaf quad with no quad parent (a lone contour) falls back to itself.
+    const hasQuadChild = {};
+    for (const idx in quadApprox) {
+        const parentIdx = quadParent[idx];
+        if (parentIdx in quadApprox) {
+            hasQuadChild[parentIdx] = true;
+        }
+    }
+
+    const probableMarkers = {};
+    for (const idx in quadApprox) {
+        if (hasQuadChild[idx]) continue; // not an inner-most quad
+        const parentIdx = quadParent[idx];
+        const markerIdx = (parentIdx in quadApprox) ? parentIdx : idx;
+        probableMarkers[markerIdx] = quadApprox[markerIdx];
+    }
+
+    // Release quad mats that were not selected as marker candidates.
+    for (const idx in quadApprox) {
+        if (!(idx in probableMarkers)) {
+            quadApprox[idx].delete();
         }
     }
 
