@@ -13,10 +13,14 @@
   background-size: 100% 200%;
 }
 
+.header .container .logo {
+    margin-right: auto;
+}
+
 .aside {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
+    align-items: center;
     gap: 0px 5px;
     font-size: 1em;
     flex-shrink: 0;
@@ -25,6 +29,29 @@
 .logo{
     display: flex;
     align-items: center;
+}
+.logo-full {
+    display: none;
+    max-height: 55px;
+    height: auto;
+    margin: auto;
+}
+
+.logo-mobile {
+    display: block;
+    height: 35px;
+    max-height: 35px;
+    width: auto;
+    padding: 10px 0 10px 10px;
+}
+
+@media all and (min-width: 480px) {
+    .logo-full {
+        display: block;
+    }
+    .logo-mobile {
+        display: none;
+    }
 }
 
 /* User menu dropdown */
@@ -36,8 +63,15 @@
 }
 
 .welcome-text {
+    display: none;
     color: #777;
     font-size: 1.2em;
+}
+
+@media all and (min-width: 480px) {
+    .welcome-text {
+        display: inline;
+    }
 }
 
 button#user-menu-btn.user-menu-button {

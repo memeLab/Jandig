@@ -1,0 +1,142 @@
+/* Nav Menu Wrapper */
+.nav-menu-wrapper {
+    position: relative;
+    display: inline-block;
+    height: fit-content;
+}
+
+/* Hamburger button - same style as language select */
+button#nav-menu-btn.nav-menu-button {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 8px 12px;
+    background-color: #ffffff;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+button#nav-menu-btn.nav-menu-button:hover {
+    background-color: #f5f5f5;
+    border-color: #858585;
+}
+
+button#nav-menu-btn.nav-menu-button:active {
+    background-color: #e8e8e8;
+}
+
+.nav-menu-icon {
+    display: block;
+    color: #000000;
+    flex-shrink: 0;
+}
+
+/* Slide-in panel from left */
+.nav-menu-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 2000;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.nav-menu-panel.open {
+    transform: translateX(0);
+}
+
+/* Overlay */
+.nav-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1999;
+}
+
+.nav-menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Panel header with close button */
+.nav-menu-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 16px;
+}
+
+.nav-menu-close {
+    all: unset;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-menu-close:hover {
+    color: #000;
+}
+
+/* Navigation content */
+.nav-menu-content {
+    padding: 0 24px 16px 20px;
+    font-family: 'Open Sans', sans-serif;
+    text-align: left;
+}
+
+.nav-menu-section-title {
+    color: #03b595;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 24px 0 8px 0;
+    padding: 0;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.nav-menu-content .nav-menu-section-title:first-child {
+    margin-top: 0;
+}
+
+.nav-menu-panel .nav-menu-link,
+.nav-menu-panel .nav-menu-link:visited {
+    display: block;
+    padding: 8px 0 8px 0px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+    background-image: none;
+    background-color: transparent;
+}
+
+.nav-menu-panel .nav-menu-link:hover {
+    color: #03b595;
+    background-image: none;
+    background-color: transparent;
+}

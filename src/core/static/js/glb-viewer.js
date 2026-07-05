@@ -18,9 +18,9 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
 
 function init(container, sourceUrl, options) {
     options = options || {};
-    var renderer = null;
-    var animationFrameId = null;
-    var disposed = false;
+    let renderer = null;
+    let animationFrameId = null;
+    let disposed = false;
 
     function dispose() {
         if (disposed) return;
@@ -36,43 +36,43 @@ function init(container, sourceUrl, options) {
         }
     }
 
-    var width = container.clientWidth || 600;
-    var height = container.clientHeight || width;
+    const width = container.clientWidth || 600;
+    const height = container.clientHeight || width;
 
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf0f0f0);
 
-    var camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(0, 0, 5);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    var controls = new OrbitControls(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enableZoom = true;
     controls.enablePan = true;
     controls.enableRotate = true;
 
-    var ambientLight = new THREE.AmbientLight(0xFFFDD0, 3.5);
+    const ambientLight = new THREE.AmbientLight(0xFFFDD0, 3.5);
     scene.add(ambientLight);
 
-    var mixer = null;
-    var timer = new THREE.Timer();
+    let mixer = null;
+    const timer = new THREE.Timer();
 
     function animate() {
         if (disposed) return;
         animationFrameId = requestAnimationFrame(animate);
         timer.update();
-        var delta = timer.getDelta();
+        const delta = timer.getDelta();
         if (mixer) mixer.update(delta);
         controls.update();
         renderer.render(scene, camera);
     }
 
-    var loader = new GLTFLoader();
+    const loader = new GLTFLoader();
     loader.load(
         sourceUrl,
         function (gltf) {
@@ -90,17 +90,17 @@ function init(container, sourceUrl, options) {
             }
 
             // Auto-scale and center the model
-            var box = new THREE.Box3().setFromObject(gltf.scene);
-            var center = box.getCenter(new THREE.Vector3());
-            var size = box.getSize(new THREE.Vector3());
+            const box = new THREE.Box3().setFromObject(gltf.scene);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
 
             gltf.scene.position.sub(center);
 
-            var maxDim = Math.max(size.x, size.y, size.z);
-            var scale = 5 / maxDim;
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 5 / maxDim;
             gltf.scene.scale.setScalar(scale);
 
-            var distance = Math.max(3, maxDim * 2);
+            const distance = Math.max(3, maxDim * 2);
             camera.position.set(distance, distance * 0.5, distance);
             camera.lookAt(0, 0, 0);
 
@@ -129,4 +129,4 @@ function init(container, sourceUrl, options) {
     return { dispose: dispose };
 }
 
-export var GLBViewer = { init: init };
+export const GLBViewer = { init: init };

@@ -313,6 +313,19 @@ a.jandigIco {
 
 .header {
   font-size: 75%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+}
+
+/* Firefox mobile: compensate for toolbar overlap on sticky header */
+@-moz-document url-prefix() {
+  @media all and (max-width: 479px) {
+    .header {
+      padding-top: 15px;
+    }
+  }
 }
 
 .aside {
@@ -326,12 +339,6 @@ a.jandigIco {
 
 .logo a {
   display: block;
-}
-
-.logo img {
-  max-height: 55px;
-  height: auto;
-  margin: auto;
 }
 
 .welcome,
@@ -427,40 +434,6 @@ div.contCam:before {
 
 
 
-.useful-links a.cambtn {
-  width: 40px;
-  height: 40px;
-  margin: 0;
-  padding: 0;
-  display: block;
-  text-indent: -999999px;
-  background: url(../images/icons/icoARV.png) no-repeat;
-  background-position: center center;
-  background-size: contain;
-}
-
-.useful-links {
-  margin-bottom: 20px;
-  font-size: 0.75em;
-  font-weight: bold;
-  clear: both;
-}
-
-.useful-links .container {
-  height: 50px;
-  margin: auto;
-  column-gap: 1.5em;
-}
-
-.useful-links .container > div:not(.contCam) {
-  margin-left: auto;
-}
-
-.useful-links .container > div:not(.contCam) ~ div:not(.contCam) {
-  margin-left: 1.5em;
-}
-
-.useful-links a,
 .footer a.useful {
   padding: 0 5px;
   background-image: linear-gradient(
@@ -712,7 +685,6 @@ a.sq-github {
     font-size: 2.5em;
   }
 
-  .useful-links a,
   a.useful {
     padding: 5px;
     background-image: linear-gradient(
@@ -724,38 +696,6 @@ a.sq-github {
     );
     background-position: 100% 15%;
     background-size: 100% 200%;
-  }
-  .useful-links .container {
-    column-gap: 0;
-  }
-  .contCam {
-    min-width: 250px;
-  }
-
-  div.contCam:before {
-    top: -10px;
-    left: 125px;
-    border-width: 10px;
-  }
-
-  .animCam {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-    margin-top: -20px;
-    background: #03b595;
-  }
-
-  .useful-links a.cambtn {
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    padding: 0;
-    display: block;
-    text-indent: -999999px;
-    background: url(../images/icons/icoARV.png) no-repeat;
-    background-position: center center;
-    background-size: contain;
   }
 
   .footer {
@@ -801,7 +741,6 @@ a.sq-github {
 }
 
 /* Hover Elements */
-.useful-links a,
 .footer a.useful,
 .account-options a,
 .header .logo img,
@@ -819,7 +758,6 @@ a.jandigIco,
   transition: all 0.2s ease-in;
 }
 
-.useful-links a:hover,
 .footer a.useful:hover,
 .account-options a:hover {
   color: #fff;

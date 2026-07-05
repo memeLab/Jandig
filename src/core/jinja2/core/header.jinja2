@@ -1,11 +1,14 @@
 <div class="header">
     <div class="container">
+        {% include "core/nav-menu.jinja2" %}
         <div class="logo">
             <a href="{{ url('home') }}">
-                <img src="{{ static ('images/icons/header_icon.png') }}">
+                <img class="logo-full" src="{{ static ('images/icons/header_icon.png') }}">
+                <img class="logo-mobile" src="{{ static ('images/logo.svg') }}">
             </a>
         </div>
         <div class="aside">
+            {% include "core/language-select.jinja2" %}
             {% if request.user.is_authenticated %}
                 <div class="user-menu-wrapper">
                     <span class="welcome-text">{{ _("Welcome,") }}</span>
@@ -30,7 +33,6 @@
                     <a href="{{ url('login') }}">{{ _("Log in") }}</a>
                 </div>
             {% endif %}
-            {% include "core/language-select.jinja2" %}
         </div>
     </div>
 </div>
