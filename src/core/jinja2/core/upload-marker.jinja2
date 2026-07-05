@@ -90,7 +90,7 @@
 
             $('#author-chk').click(function(){
                 if($(this).prop('checked') == true){
-                    let user = $('div.welcome > p > a')[0].innerText;
+                    let user = $('#user-menu-btn')[0].innerText.replace('▾', '').trim();
                     $('#author-field > input').val(user);
                     $('#author-field > input').prop('readonly', true);
                 }else{
