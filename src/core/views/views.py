@@ -8,6 +8,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
+from sentry_sdk import metrics
 
 from core.forms import (
     ArtworkForm,
@@ -237,6 +238,14 @@ def object_upload(request):
 
             # Move all files to objects/<pk>/ folder
             obj.relocate_files()
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": f"object_{obj.file_extension}",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = UploadObjectForm()
@@ -266,6 +275,15 @@ def marker_preview(request):
     except (TypeError, ValueError):
         raise Http404
     marker = get_object_or_404(Marker, id=marker_id)
+
+    metrics.count(
+        "marker_preview_requests",
+        1,
+        attributes={
+            "marker_id": marker.id,
+            "user": request.user.username if request.user.is_authenticated else "anonymous",
+        },
+    )
     artwork = {
         "marker": marker,
         "augmented": {"file_extension": "png", "source": marker.print_img},
@@ -293,6 +311,14 @@ def marker_upload(request):
             generate_marker_variants(
                 marker,
                 inner_border=form.cleaned_data.get("inner_border", False),
+            )
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": "marker",
+                    "user": request.user.username,
+                },
             )
             return redirect("profile")
     else:
@@ -421,6 +447,14 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
             artwork = form.save(commit=False)
             artwork.author = user_profile
             artwork.save()
+            metrics.count(
+                "creation",
+                1,
+                attributes={
+                    "type": "artwork",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = ArtworkForm(instance=artwork_instance)
@@ -490,6 +524,14 @@ def edit_artwork(request):
 @require_http_methods(["GET"])
 def artwork_preview(request):
     artwork_id = request.GET.get("id")
+    metrics.count(
+        "artwork_preview_requests",
+        1,
+        attributes={
+            "artwork_id": artwork_id,
+            "user": request.user.username if request.user.is_authenticated else "anonymous",
+        },
+    )
 
     ctx = {
         "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
@@ -548,6 +590,15 @@ def _handle_exhibit_form(
             exhibit = form.save(commit=False)
             exhibit.owner = user_profile
             form.save()
+            if not is_edit:
+                metrics.count(
+                    "creation",
+                    1,
+                    attributes={
+                        "type": f"exhibit_{exhibit_type.value}",
+                        "user": request.user.username,
+                    },
+                )
             return redirect("profile")
         else:
             if exhibit_type == ExhibitTypes.MR:
@@ -679,6 +730,14 @@ def sound_upload(request):
             sound = form.save(commit=False)
             sound.owner = request.user.profile
             sound.save()
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": "sound",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = SoundForm()
@@ -722,6 +781,15 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit(request, slug):
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
+    metrics.count(
+        "exhibit_requests",
+        1,
+        attributes={
+            "exhibit_id": exhibit.id,
+            "user": request.user.username if request.user.is_authenticated else "anonymous",
+            "slug": slug,
+        },
+    )
     artworks = exhibit.artworks.select_related("marker", "augmented").all()
     if not artworks:
         raise Http404("No artworks found for this exhibit.")

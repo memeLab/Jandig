@@ -4,15 +4,16 @@ import re
 import sys
 from datetime import timedelta
 from socket import gethostbyname, gethostname
-
 import environ
 import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from django_prose_editor.config import html_tags
 from sentry_sdk.integrations.django import DjangoIntegration
+import tomllib
 
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
 BASE_DIR = ROOT_DIR.path("src")
+
 
 env = environ.Env()
 
@@ -46,13 +47,16 @@ ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 
 
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
+
+with open(ROOT_DIR.path("pyproject.toml"), "rb") as f:
+    data = tomllib.load(f)
+    version = data["project"]["version"]
 # Sentry configuration
 ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
-SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="3.0.0")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default=version)
 
 
 def traces_sampler(sampling_context):
@@ -80,7 +84,6 @@ if ENABLE_SENTRY:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         traces_sampler=traces_sampler,
-        profiles_sample_rate=SENTRY_PROFILES_SAMPLE_RATE,
         release=SENTRY_RELEASE,
     )
 
