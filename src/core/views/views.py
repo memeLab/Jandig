@@ -281,7 +281,9 @@ def marker_preview(request):
         1,
         attributes={
             "marker_id": marker.id,
-            "user": request.user.username if request.user.is_authenticated else "anonymous",
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
         },
     )
     artwork = {
@@ -529,7 +531,9 @@ def artwork_preview(request):
         1,
         attributes={
             "artwork_id": artwork_id,
-            "user": request.user.username if request.user.is_authenticated else "anonymous",
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
         },
     )
 
@@ -786,7 +790,9 @@ def exhibit(request, slug):
         1,
         attributes={
             "exhibit_id": exhibit.id,
-            "user": request.user.username if request.user.is_authenticated else "anonymous",
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
             "slug": slug,
         },
     )

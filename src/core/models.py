@@ -94,8 +94,6 @@ class Sound(TimeStampedModel, ContentMixin):
     def exhibits_count(self):
         return self.exhibits.count()
 
-
-
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {} {}".format(
             USED_IN,
@@ -606,23 +604,35 @@ def artwork_post_save(sender, instance, **kwargs):
     old_marker_id = getattr(instance, "_old_marker_id", None)
     if old_marker_id and old_marker_id != instance.marker_id:
         if not Artwork.objects.filter(marker_id=old_marker_id).exists():
-            Marker.objects.filter(pk=old_marker_id).update(in_use=False, is_used_by_other_user=False)
+            Marker.objects.filter(pk=old_marker_id).update(
+                in_use=False, is_used_by_other_user=False
+            )
         else:
             old_marker = Marker.objects.get(pk=old_marker_id)
-            still_used_by_other = old_marker.artworks.exclude(author=old_marker.owner).exists()
+            still_used_by_other = old_marker.artworks.exclude(
+                author=old_marker.owner
+            ).exists()
             if not still_used_by_other:
-                Marker.objects.filter(pk=old_marker_id).update(is_used_by_other_user=False)
+                Marker.objects.filter(pk=old_marker_id).update(
+                    is_used_by_other_user=False
+                )
 
     # If object changed, check if the old one is still in use
     old_augmented_id = getattr(instance, "_old_augmented_id", None)
     if old_augmented_id and old_augmented_id != instance.augmented_id:
         if not Artwork.objects.filter(augmented_id=old_augmented_id).exists():
-            Object.objects.filter(pk=old_augmented_id).update(in_use=False, is_used_by_other_user=False)
+            Object.objects.filter(pk=old_augmented_id).update(
+                in_use=False, is_used_by_other_user=False
+            )
         else:
             old_object = Object.objects.get(pk=old_augmented_id)
-            still_used_by_other = old_object.artworks.exclude(author=old_object.owner).exists()
+            still_used_by_other = old_object.artworks.exclude(
+                author=old_object.owner
+            ).exists()
             if not still_used_by_other:
-                Object.objects.filter(pk=old_augmented_id).update(is_used_by_other_user=False)
+                Object.objects.filter(pk=old_augmented_id).update(
+                    is_used_by_other_user=False
+                )
 
     # If sound changed, check if the old one is still in use
     old_sound_id = getattr(instance, "_old_sound_id", None)
@@ -634,14 +644,18 @@ def artwork_post_save(sender, instance, **kwargs):
 def artwork_post_delete(sender, instance, **kwargs):
     """When an artwork is deleted, check if its marker/object/sound are still in use."""
     if not Artwork.objects.filter(marker_id=instance.marker_id).exists():
-        Marker.objects.filter(pk=instance.marker_id).update(in_use=False, is_used_by_other_user=False)
+        Marker.objects.filter(pk=instance.marker_id).update(
+            in_use=False, is_used_by_other_user=False
+        )
     else:
         marker = Marker.objects.get(pk=instance.marker_id)
         if not marker.artworks.exclude(author=marker.owner).exists():
             Marker.objects.filter(pk=marker.pk).update(is_used_by_other_user=False)
 
     if not Artwork.objects.filter(augmented_id=instance.augmented_id).exists():
-        Object.objects.filter(pk=instance.augmented_id).update(in_use=False, is_used_by_other_user=False)
+        Object.objects.filter(pk=instance.augmented_id).update(
+            in_use=False, is_used_by_other_user=False
+        )
     else:
         obj = Object.objects.get(pk=instance.augmented_id)
         if not obj.artworks.exclude(author=obj.owner).exists():
@@ -659,9 +673,7 @@ def _recalculate_sound_flags(sound_id):
         return
 
     is_in_use = (
-        sound.artworks.exists()
-        or sound.ar_objects.exists()
-        or sound.exhibits.exists()
+        sound.artworks.exists() or sound.ar_objects.exists() or sound.exhibits.exists()
     )
     used_by_other = (
         sound.artworks.exclude(author=sound.owner).exists()

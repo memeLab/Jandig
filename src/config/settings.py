@@ -2,14 +2,15 @@ import logging
 import os
 import re
 import sys
+import tomllib
 from datetime import timedelta
 from socket import gethostbyname, gethostname
+
 import environ
 import sentry_sdk
 from django.utils.translation import gettext_lazy as _
 from django_prose_editor.config import html_tags
 from sentry_sdk.integrations.django import DjangoIntegration
-import tomllib
 
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
 BASE_DIR = ROOT_DIR.path("src")
