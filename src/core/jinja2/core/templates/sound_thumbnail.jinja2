@@ -5,7 +5,7 @@
        controls>
 </audio>
 {% if editable %}
-    {% set can_edit = not sound.is_used_by_other_user() %}
+    {% set can_edit = not sound.is_used_by_other_user %}
     {% set can_delete = not sound.in_use %}
     {% set edit_reason = _("This sound is used by other users and cannot be edited.") %}
     {% set delete_reason = _("This sound is in use and cannot be deleted.") %}

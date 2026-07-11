@@ -3,7 +3,7 @@ import logging
 import pghistory
 from django.core.files.base import ContentFile as CF
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -75,6 +75,8 @@ class Sound(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=SoundExtensions.choices
     )
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
 
     @property
     def date(self):
@@ -92,27 +94,7 @@ class Sound(TimeStampedModel, ContentMixin):
     def exhibits_count(self):
         return self.exhibits.count()
 
-    def is_used_by_other_user(self):
-        """
-        Check if the object is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return (
-            self.ar_objects.exclude(owner=self.owner).exists()
-            or self.artworks.exclude(author=self.owner).exists()
-            or self.exhibits.exclude(owner=self.owner).exists()
-        )
 
-    @property
-    def in_use(self):
-        if self.exhibits_count > 0:
-            return True
-        if self.augmenteds_count > 0:
-            return True
-        if self.artworks_count > 0:
-            return True
-        return False
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {} {}".format(
@@ -581,7 +563,7 @@ def remove_source_file(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Artwork)
 def artwork_pre_save(sender, instance, **kwargs):
-    """Capture the previous marker/object before an artwork is updated."""
+    """Capture the previous marker/object/sound before an artwork is updated."""
     if not instance.pk:
         return
     try:
@@ -590,14 +572,17 @@ def artwork_pre_save(sender, instance, **kwargs):
         return
     instance._old_marker_id = old.marker_id
     instance._old_augmented_id = old.augmented_id
+    instance._old_sound_id = old.sound_id
 
 
 @receiver(post_save, sender=Artwork)
 def artwork_post_save(sender, instance, **kwargs):
-    """Mark the current marker/object as in_use; check if old ones are still used."""
+    """Mark the current marker/object/sound as in_use; check if old ones are still used."""
     # Mark current references as in use
     Marker.objects.filter(pk=instance.marker_id, in_use=False).update(in_use=True)
     Object.objects.filter(pk=instance.augmented_id, in_use=False).update(in_use=True)
+    if instance.sound_id:
+        Sound.objects.filter(pk=instance.sound_id, in_use=False).update(in_use=True)
 
     # Update is_used_by_other_user for current marker/object
     marker = Marker.objects.get(pk=instance.marker_id)
@@ -609,6 +594,13 @@ def artwork_post_save(sender, instance, **kwargs):
     if instance.author_id != augmented.owner_id:
         if not augmented.is_used_by_other_user:
             Object.objects.filter(pk=augmented.pk).update(is_used_by_other_user=True)
+
+    # Update is_used_by_other_user for current sound
+    if instance.sound_id:
+        sound = Sound.objects.get(pk=instance.sound_id)
+        if instance.author_id != sound.owner_id:
+            if not sound.is_used_by_other_user:
+                Sound.objects.filter(pk=sound.pk).update(is_used_by_other_user=True)
 
     # If marker changed, check if the old one is still in use
     old_marker_id = getattr(instance, "_old_marker_id", None)
@@ -632,10 +624,15 @@ def artwork_post_save(sender, instance, **kwargs):
             if not still_used_by_other:
                 Object.objects.filter(pk=old_augmented_id).update(is_used_by_other_user=False)
 
+    # If sound changed, check if the old one is still in use
+    old_sound_id = getattr(instance, "_old_sound_id", None)
+    if old_sound_id and old_sound_id != instance.sound_id:
+        _recalculate_sound_flags(old_sound_id)
+
 
 @receiver(post_delete, sender=Artwork)
 def artwork_post_delete(sender, instance, **kwargs):
-    """When an artwork is deleted, check if its marker/object are still in use."""
+    """When an artwork is deleted, check if its marker/object/sound are still in use."""
     if not Artwork.objects.filter(marker_id=instance.marker_id).exists():
         Marker.objects.filter(pk=instance.marker_id).update(in_use=False, is_used_by_other_user=False)
     else:
@@ -649,3 +646,78 @@ def artwork_post_delete(sender, instance, **kwargs):
         obj = Object.objects.get(pk=instance.augmented_id)
         if not obj.artworks.exclude(author=obj.owner).exists():
             Object.objects.filter(pk=obj.pk).update(is_used_by_other_user=False)
+
+    if instance.sound_id:
+        _recalculate_sound_flags(instance.sound_id)
+
+
+def _recalculate_sound_flags(sound_id):
+    """Recalculate in_use and is_used_by_other_user for a Sound."""
+    try:
+        sound = Sound.objects.get(pk=sound_id)
+    except Sound.DoesNotExist:
+        return
+
+    is_in_use = (
+        sound.artworks.exists()
+        or sound.ar_objects.exists()
+        or sound.exhibits.exists()
+    )
+    used_by_other = (
+        sound.artworks.exclude(author=sound.owner).exists()
+        or sound.ar_objects.exclude(owner=sound.owner).exists()
+        or sound.exhibits.exclude(owner=sound.owner).exists()
+    )
+    Sound.objects.filter(pk=sound_id).update(
+        in_use=is_in_use, is_used_by_other_user=used_by_other
+    )
+
+
+@receiver(pre_save, sender=Object)
+def object_pre_save(sender, instance, **kwargs):
+    """Capture the previous sound before an object is updated."""
+    if not instance.pk:
+        return
+    try:
+        old = Object.objects.get(pk=instance.pk)
+    except Object.DoesNotExist:
+        return
+    instance._old_sound_id = old.sound_id
+
+
+@receiver(post_save, sender=Object)
+def object_post_save(sender, instance, **kwargs):
+    """Update sound flags when an object's sound FK changes."""
+    if instance.sound_id:
+        sound = Sound.objects.get(pk=instance.sound_id)
+        updates = {}
+        if not sound.in_use:
+            updates["in_use"] = True
+        if instance.owner_id != sound.owner_id and not sound.is_used_by_other_user:
+            updates["is_used_by_other_user"] = True
+        if updates:
+            Sound.objects.filter(pk=sound.pk).update(**updates)
+
+    old_sound_id = getattr(instance, "_old_sound_id", None)
+    if old_sound_id and old_sound_id != instance.sound_id:
+        _recalculate_sound_flags(old_sound_id)
+
+
+@receiver(post_delete, sender=Object)
+def object_post_delete_sound(sender, instance, **kwargs):
+    """When an object is deleted, recalculate its sound's flags."""
+    if instance.sound_id:
+        _recalculate_sound_flags(instance.sound_id)
+
+
+@receiver(m2m_changed, sender=Exhibit.sounds.through)
+def exhibit_sounds_changed(sender, instance, action, pk_set, **kwargs):
+    """Update sound flags when exhibits add/remove sounds."""
+    if action in ("post_add", "post_remove", "post_clear"):
+        if pk_set:
+            for sound_id in pk_set:
+                _recalculate_sound_flags(sound_id)
+        elif action == "post_clear":
+            # post_clear doesn't provide pk_set; recalculate all sounds
+            for sound in Sound.objects.filter(in_use=True):
+                _recalculate_sound_flags(sound.pk)
