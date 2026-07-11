@@ -5,7 +5,7 @@
      height="128"
      width="128">
 {% if editable %}
-    {% set can_edit = not marker.is_used_by_other_user() %}
+    {% set can_edit = not marker.is_used_by_other_user %}
     {% set can_delete = not marker.in_use %}
     {% set edit_reason = _("This marker is used by other users and cannot be edited.") %}
     {% set delete_reason = _("This marker is used in artworks and cannot be deleted.") %}

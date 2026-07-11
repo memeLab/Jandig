@@ -59,6 +59,7 @@ class TestMarkerThumbnailTemplates(TestCase):
 
     def test_marker_in_use_shows_disabled_actions(self):
         ArtworkFactory(marker=self.marker)
+        self.marker.refresh_from_db()
         html = render_template(
             "core/templates/marker_thumbnail.jinja2",
             {"marker": self.marker, "editable": True},
@@ -115,6 +116,7 @@ class TestObjectThumbnailTemplates(TestCase):
 
     def test_object_in_use_by_others_shows_disabled(self):
         ArtworkFactory(augmented=self.image_object)
+        self.image_object.refresh_from_db()
         html = render_template(
             "core/templates/object_thumbnail.jinja2",
             {"object": self.image_object, "editable": True},

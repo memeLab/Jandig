@@ -3,7 +3,7 @@ import logging
 import pghistory
 from django.core.files.base import ContentFile as CF
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -170,6 +170,8 @@ class Marker(TimeStampedModel, ContentMixin):
 
     # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -180,20 +182,6 @@ class Marker(TimeStampedModel, ContentMixin):
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def in_use(self):
-        if self.artworks_count > 0:
-            return True
-        return False
-
-    def is_used_by_other_user(self):
-        """
-        Check if the Marker is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return self.artworks.exclude(author=self.owner).exists()
 
     def as_html(
         self,
@@ -276,6 +264,8 @@ class Object(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
     thumbnail = models.ImageField(
         upload_to=object_thumbnail_path,
         blank=True,
@@ -398,20 +388,6 @@ class Object(TimeStampedModel, ContentMixin):
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def in_use(self):
-        if self.artworks_count > 0:
-            return True
-        return False
-
-    def is_used_by_other_user(self):
-        """
-        Check if the object is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return self.artworks.exclude(author=self.owner).exists()
 
     @property
     def is_video(self):
@@ -601,3 +577,75 @@ def remove_source_file(sender, instance, **kwargs):
             instance.spritesheet_metadata.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)
+
+
+@receiver(pre_save, sender=Artwork)
+def artwork_pre_save(sender, instance, **kwargs):
+    """Capture the previous marker/object before an artwork is updated."""
+    if not instance.pk:
+        return
+    try:
+        old = Artwork.objects.get(pk=instance.pk)
+    except Artwork.DoesNotExist:
+        return
+    instance._old_marker_id = old.marker_id
+    instance._old_augmented_id = old.augmented_id
+
+
+@receiver(post_save, sender=Artwork)
+def artwork_post_save(sender, instance, **kwargs):
+    """Mark the current marker/object as in_use; check if old ones are still used."""
+    # Mark current references as in use
+    Marker.objects.filter(pk=instance.marker_id, in_use=False).update(in_use=True)
+    Object.objects.filter(pk=instance.augmented_id, in_use=False).update(in_use=True)
+
+    # Update is_used_by_other_user for current marker/object
+    marker = Marker.objects.get(pk=instance.marker_id)
+    if instance.author_id != marker.owner_id:
+        if not marker.is_used_by_other_user:
+            Marker.objects.filter(pk=marker.pk).update(is_used_by_other_user=True)
+
+    augmented = Object.objects.get(pk=instance.augmented_id)
+    if instance.author_id != augmented.owner_id:
+        if not augmented.is_used_by_other_user:
+            Object.objects.filter(pk=augmented.pk).update(is_used_by_other_user=True)
+
+    # If marker changed, check if the old one is still in use
+    old_marker_id = getattr(instance, "_old_marker_id", None)
+    if old_marker_id and old_marker_id != instance.marker_id:
+        if not Artwork.objects.filter(marker_id=old_marker_id).exists():
+            Marker.objects.filter(pk=old_marker_id).update(in_use=False, is_used_by_other_user=False)
+        else:
+            old_marker = Marker.objects.get(pk=old_marker_id)
+            still_used_by_other = old_marker.artworks.exclude(author=old_marker.owner).exists()
+            if not still_used_by_other:
+                Marker.objects.filter(pk=old_marker_id).update(is_used_by_other_user=False)
+
+    # If object changed, check if the old one is still in use
+    old_augmented_id = getattr(instance, "_old_augmented_id", None)
+    if old_augmented_id and old_augmented_id != instance.augmented_id:
+        if not Artwork.objects.filter(augmented_id=old_augmented_id).exists():
+            Object.objects.filter(pk=old_augmented_id).update(in_use=False, is_used_by_other_user=False)
+        else:
+            old_object = Object.objects.get(pk=old_augmented_id)
+            still_used_by_other = old_object.artworks.exclude(author=old_object.owner).exists()
+            if not still_used_by_other:
+                Object.objects.filter(pk=old_augmented_id).update(is_used_by_other_user=False)
+
+
+@receiver(post_delete, sender=Artwork)
+def artwork_post_delete(sender, instance, **kwargs):
+    """When an artwork is deleted, check if its marker/object are still in use."""
+    if not Artwork.objects.filter(marker_id=instance.marker_id).exists():
+        Marker.objects.filter(pk=instance.marker_id).update(in_use=False, is_used_by_other_user=False)
+    else:
+        marker = Marker.objects.get(pk=instance.marker_id)
+        if not marker.artworks.exclude(author=marker.owner).exists():
+            Marker.objects.filter(pk=marker.pk).update(is_used_by_other_user=False)
+
+    if not Artwork.objects.filter(augmented_id=instance.augmented_id).exists():
+        Object.objects.filter(pk=instance.augmented_id).update(in_use=False, is_used_by_other_user=False)
+    else:
+        obj = Object.objects.get(pk=instance.augmented_id)
+        if not obj.artworks.exclude(author=obj.owner).exists():
+            Object.objects.filter(pk=obj.pk).update(is_used_by_other_user=False)

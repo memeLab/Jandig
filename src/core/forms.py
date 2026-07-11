@@ -92,7 +92,7 @@ class UploadObjectForm(forms.ModelForm):
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.source):
-                if self.instance.is_used_by_other_user():
+                if self.instance.is_used_by_other_user:
                     raise forms.ValidationError(
                         _(
                             "This object is being used by another user. You cannot change the source file."
