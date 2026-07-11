@@ -1,8 +1,9 @@
 {% extends '/core/focused_layout.jinja2' %}
-{% block content %}
-    {# FIXME: maybe this can be improved #}
+{% block extra_css %}
     <link rel="stylesheet" href="{{ static ('css/signup.css') }}">
     <link rel="stylesheet" href="{{ static ('css/exhibit-detail.css') }}">
+{% endblock %}
+{% block content %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="signup-modal container flex">

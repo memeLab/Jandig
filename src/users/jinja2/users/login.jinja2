@@ -1,12 +1,13 @@
 {% extends '/core/focused_layout.jinja2' %}
-{% block content %}
-    {# FIXME: maybe this can be improved #}
+{% block extra_css %}
     <style>
         ul {
             list-style-type: none;
         }
     </style>
     <link rel="stylesheet" href="{{ static ('css/signup.css') }}">
+{% endblock %}
+{% block content %}
     <div class="connect-modal container">
         <div class="logo">
             <a href="{{ url('home') }}">
@@ -24,7 +25,9 @@
                       method="post"
                       enctype="multipart/form-data">
                     {{ csrf_input }}
-                    {% for field in form.visible_fields() %}<p class="login-field {{ field.name }}">{{ field }}</p>{% endfor %}
+                    {% for field in form.visible_fields() %}
+                        <p class="login-field {{ field.name }}">{{ field }}</p>
+                    {% endfor %}
                     {% if form.non_field_errors() %}
                         <ul class="errorlist">
                             {% for error in form.non_field_errors() %}<li>{{ error }}</li>{% endfor %}

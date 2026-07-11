@@ -1,8 +1,9 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
+{% endblock %}
 {% block content %}
     <section class="upload container">
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="{{ static ('css/upload.css') }}">
         {% if edit %}
             <h2>{{ _("Edit Sound") }}</h2>
         {% else %}

@@ -1,19 +1,21 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/create_box.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/action-menu.css') }}">
+    <script src="{{ static('js/modal.js') }}"></script>
+    <script src="{{ static('js/action-menu.js') }}"></script>
+{% endblock %}
 {% block content %}
-    {% block subcontent %}{% endblock %}
+    {% block subcontent %}
+    {% endblock %}
     <section class="profile-options-flex">
         <div class="container">
             {% with markers=markers, objects=objects, exhibits=exhibits, artworks=artworks %}
                 {% include "users/components/userbox.jinja2" %}
             {% endwith %}
-            {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/create_box.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/action-menu.css') }}">
-            <script src="{{ static('js/modal.js') }}"></script>
-            <script src="{{ static('js/action-menu.js') }}"></script>
             <div class="profile-section-header">
                 <div class="profile-section-title">
                     <img class="icon"

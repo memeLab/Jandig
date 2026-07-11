@@ -1,15 +1,16 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static('css/warning.css') }}">
+    <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
+    <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
+    <link rel="stylesheet" href="{{ static('css/tooltip.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+{% endblock %}
 {% block content %}
     <section class="create-artwork container">
-        <link rel="stylesheet" href="{{ static('css/warning.css') }}">
-        <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
-        <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
-        <link rel="stylesheet" href="{{ static('css/tooltip.css') }}">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <h1 class="titArt">{{ _("Edit Jandig Artwork") if selected_marker else _('Create Jandig Artwork') }}</h1>
         <form name="creation-form"
               action=""
