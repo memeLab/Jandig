@@ -27,7 +27,9 @@ dependencies = [
   "psycopg[binary,pool]>=3.2.9",
   "pymarker~=1.2",
   "sentry-sdk[django]~=2.20",
-  "Sphinx~=8.1",
+  "mkdocs~=1.6",
+  "mkdocs-material~=9.5",
+  "mkdocs-static-i18n~=1.3",
   "django-prose-editor[sanitize]>=0.25.1",
 ]
 

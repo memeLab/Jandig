@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.templatetags.static import static
+from django.views.static import serve as static_serve
 
 
 def community(request):
@@ -51,3 +53,9 @@ def robots_txt(_):
 
 def service_worker(request):
     return redirect(static("js/sw.js"))
+
+
+def serve_docs(request, path):
+    if not path or path.endswith("/"):
+        path += "index.html"
+    return static_serve(request, path, document_root=settings.DOCS_ROOT)
