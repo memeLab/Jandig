@@ -74,7 +74,6 @@ exclude_docs: |
   installation-guide.md
   prototype.md
   vision-document.md
-  real_docs/
   old hotsite/
   jandig_prototype.fig
   Tutorial de Exportação em GIF.pdf
