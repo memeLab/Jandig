@@ -3,6 +3,11 @@
 This document contains tecnical, aesthetics and good practices
 guidelines to the production of Tags of augmented reality Jandig.
 
+You don't need to create a marker file with specific borders, margins or
+thicknesses. Just upload any image (PNG or JPG) on the Marker upload
+page and Jandig automatically adds the black border needed for
+recognition, showing you a preview of the result before you save it.
+
 ## Borders
 
 The borders are graphic elements that trigger the recognition of the
@@ -10,22 +15,23 @@ object associated with each tag. For this reason, one should not cover
 them and them must always be seen completely by the camera. Put the
 finger over the border or approach the camera too close to the tag will
 derail the recognition, for example. This feature should be always taken
-into account in the production and application of the tags.
+into account in the application of the tags.
 
-We use by default 20% of width from the border in the Jandig tags, that
-is in a tag with 10 centimeters of width, we will have a border of 2
-centimeters of width.
+The black border is automatically added by the platform around the
+image you upload, so there's no need to draw it, measure it, or leave
+margin for it in your original image.
 
-The central image of the Tag should not touch the borders. The minimum
-distance of the imagen to the internal margin of the border should be 2%
-of the total width of the Tag.
+If your image has dark edges or low contrast against black, check the
+"Add inner border" option when uploading the marker: it inserts a thin
+white ring between the image and the black border, making the boundary
+between them easier for the camera to detect.
 
-Although little texts (exhibition name, app url) can be applied over the
-border without prejudice in the recognition, is recomended the height of
-the text never overtake the total porcentage of the border.
+## Square format
 
-<img src="../images/MarkerGuide.png" class="align-center" width="320"
-alt="image" />
+Jandig tags are always square. If you upload a rectangular image, it
+will be resized to fit a square, which can distort its content
+(stretching it horizontally or vertically). To avoid distortion, prefer
+using images that are already square (width equal to height).
 
 ## Symmetry
 
@@ -37,12 +43,10 @@ image.
 
 ## Colors and gradient
 
-To ensure endless possibilities of application of the Tags, we dont use
-colors or gradients in the central images. The only color used is 100%
-black, without utilization of tones.
-
-This is not a limitation of the system. It is possible to use any image
-as a Tag, following other recomedations of this document.
+Colored images and gradients are fully supported: recognition compares
+the central image in color, not just black and white. For more reliable
+recognition, try to keep good contrast between your image's colors and
+the black border around it.
 
 ## Printing and about that
 
@@ -51,10 +55,10 @@ recognized as a Tag. So that thay are recognized more easily by the
 system, they should utilize opaque paints and materials in them
 production.
 
-It's important that the external and internal margins of the border be
-always well delimited. In case of stickers or background application
-more dark, guarantee a white margin around the black border. This
-reservation of space must be at least 3% of the total marker width.
+When you download the marker for printing (the "print" version), it
+already comes with a white safety margin around the black border, ready
+for stickers or application over dark backgrounds — there's no need to
+add this margin manually.
 
 ## Illumination
 

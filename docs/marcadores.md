@@ -3,6 +3,12 @@
 Esse documento contém orientações técnicas, estéticas e boas práticas
 para a produção de marcadores de realidade aumentada Jandig.
 
+Você não precisa criar um arquivo de marcador com bordas, margens ou
+espessuras específicas. Basta enviar qualquer imagem (PNG ou JPG) na
+página de upload de Marcador que a Jandig adiciona automaticamente a
+borda preta necessária para o reconhecimento, e você já vê uma prévia do
+resultado antes de salvar.
+
 ## Bordas
 
 As bordas são os elementos gráficos que engatilham o reconhecimento do
@@ -10,24 +16,24 @@ objeto associado a cada marcador. Por esse motivo, não se deve cobri-las
 e elas devem sempre ser vistas completamente pela câmera. Colocar o dedo
 sobre uma das bordas ou aproximar demais a câmera do marcador
 inviabiliza o reconhecimento, por exemplo. Essa característica deve
-sempre ser levada em consideração na produção e aplicação dos
-marcadores.
+sempre ser levada em consideração na aplicação dos marcadores.
 
-Utilizamos, por padrão, 20% de largura de borda nos marcadores Jandig.
-Ou seja, para um marcador com 10 centímetros de largura, teremos uma
-borda de 2 cm de largura.
+A borda preta é adicionada automaticamente pela plataforma ao redor da
+imagem que você enviar, então não é preciso desenhá-la, medi-la ou
+deixar margem para ela na sua imagem original.
 
-A imagem central do marcador não deve tocar as bordas. A distância
-mínima dessa imagem para a margem interna da borda deve ser de 2% da
-largura total do marcador.
+Se a sua imagem tiver bordas escuras ou com baixo contraste em relação
+ao preto, marque a opção "Adicionar borda interna" ao enviar o
+marcador: ela insere um fino anel branco entre a imagem e a borda
+preta, facilitando a identificação do limite entre os dois pela câmera.
 
-Embora pequenas massas de texto (nome da exposição, url do app) possam
-ser aplicadas sobre a borda sem prejuízo ao reconhecimento da obra, é
-recomendado que a altura deste texto jamais ultrapasse ¼ da largura
-total da borda.
+## Formato quadrado
 
-<img src="images/MarkerGuide.png" class="align-center" width="320"
-alt="image" />
+Os marcadores Jandig são sempre quadrados. Se você enviar uma imagem
+retangular, ela será redimensionada para caber num quadrado, o que pode
+distorcer o conteúdo (esticando-o na horizontal ou na vertical). Para
+evitar distorções, prefira usar imagens já quadradas (largura igual à
+altura).
 
 ## Simetria
 
@@ -39,12 +45,10 @@ exibir a imagem.
 
 ## Cores e gradientes
 
-Para garantir infinitas possibilidades de aplicação dos marcadores, não
-utilizamos cores ou gradientes nas imagens centrais. A única cor
-utilizada é preto 100%, sem a utilização de tons.
-
-Essa não é uma limitação do sistema. É possível utilizar qualquer imagem
-como marcador, seguindo as outras recomendações nesse documento.
+Imagens coloridas e com gradientes são totalmente suportadas: o
+reconhecimento compara a imagem central em cores, não apenas em preto e
+branco. Para um reconhecimento mais confiável, procure manter um bom
+contraste entre as cores da sua imagem e a borda preta ao redor dela.
 
 ## Impressão e afins
 
@@ -53,10 +57,10 @@ marcadores sejam reconhecidos como tal. Para que sejam mais facilmente
 identificados pelo sistema, devem-se utilizar tintas e materiais opacos
 na sua produção.
 
-É importante que as margens externas e internas da borda estejam sempre
-bem delimitadas. No caso de adesivos ou de aplicação em fundo mais
-escuros, garanta uma margem branca ao redor borda preta. Essa reserva de
-espaço deve ter, ao menos, 3% da largura total do marcador.
+Ao baixar o marcador para impressão (versão "print"), ele já vem com uma
+margem branca de segurança ao redor da borda preta, pronta para adesivos
+ou aplicação sobre fundos escuros — não é necessário adicionar essa
+margem manualmente.
 
 ## Iluminação
 
