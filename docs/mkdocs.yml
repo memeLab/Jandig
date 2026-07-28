@@ -50,9 +50,16 @@ plugins:
           name: Português
           default: true
           build: true
+          site_name: Ajuda da Jandig ARte
         - locale: en
           name: English
           build: true
+          site_name: Jandig ARte Help
+          nav_translations:
+            Ajuda: Help
+            Animações: Animations
+            Marcadores: Markers
+            Publicando obras: Publishing artworks
         - locale: es
           name: Español
           build: false
