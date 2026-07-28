@@ -1,5 +1,4 @@
-Dicas para produzir animações
-=============================
+# Dicas para produzir animações
 
 Esse documento contém orientações técnicas e boas práticas para a
 produção de animações em realidade aumentada para o Jandig. Muitas
@@ -11,13 +10,11 @@ recomendamos que seja produzida uma versão “ideal”, que pode ser
 utilizada em ambientes controlados e/ou no futuro (quanto essas
 limitações vão diminuir).
 
-Formato de arquivo
-~~~~~~~~~~~~~~~~~~
+## Formato de arquivo
 
 Atualmente, o único formato de arquivo suportado é GIF.
 
-Detalhes
-~~~~~~~~
+## Detalhes
 
 Utilize o mínimo de detalhes e de elementos pequenos que for possível,
 pois eles podem não ser identificados pelo público.
@@ -27,8 +24,7 @@ Uma maneira de testar aqui é salvar as imagens do storyboard em
 importante lembrar que o público pode ver a animação à distância, de
 modo que ela fique bem pequena na tela do telefone.
 
-Quantidade de cores
-~~~~~~~~~~~~~~~~~~~
+## Quantidade de cores
 
 A recomendação é diminuir o máximo possível, de maneira a não
 comprometer as cores originais.
@@ -40,8 +36,7 @@ Uma técnica para planejar esse uso antes de produzir a animação, é
 exportar as imagens do storyboard em GIF com diferentes quantidades de
 cores.
 
-Resolução
-~~~~~~~~~
+## Resolução
 
 Para aumentar a compatibilidade de dispositivos, limitamos a resolução
 do quadro de exibição (que aparece em tela cheia no smartphone) em
@@ -52,28 +47,24 @@ Caso haja um problema na visualização de detalhes, pode-se chegar até a
 400x400px, mas atualmente o ganho de uma resolução maior é quase
 imperceptível (enquanto onera bastante o tamanho do arquivo).
 
-Framerate
-~~~~~~~~~
+## Framerate
 
 A taxa de frames (medida em frames por segundo, ou quadros por segundo)
 recomendada é de, no máximo, 12 fps.
 
-Loop
-~~~~
+## Loop
 
 Para criar a ilusão de continuidade, a animação deve estar em loop. Ou
 seja, a transição do último ao primeiro frame deve ser imperceptível.
 
-Tempo
-~~~~~
+## Tempo
 
 Quanto mais curta a animação, melhor. Isso vai permitir melhor qualidade
 de imagens e garantir que o público assista todo o material. Até o
 momento, a animação mais longa feita para o Jandig tem aproximadamente
 20 segundos. A recomendação é que tenha até 15 segundos.
 
-Tamanho de arquivo
-~~~~~~~~~~~~~~~~~~
+## Tamanho de arquivo
 
 Enquanto os parâmetros a seguir têm flexibilidade quanto às orientações,
 esse é o mais rígido. Os arquivos devem ter idealmente até 500 kB e no
@@ -87,8 +78,7 @@ queremos onerar o plano de dados do público. - Arquivos menores são mais
 leves necessitam de menor quantidade de processamento, tornando a
 plataforma compatível com um maior número de telefones.
 
-Conclusão
-~~~~~~~~~
+## Conclusão
 
 Para se chegar a um resultado ótimo o ideal é testar os parâmetros em
 conjunto.
@@ -108,5 +98,5 @@ versão em alta resolução. Aqui a recomendação é salvar com 1000x1000px e
 24 fps.
 
 Caso você use Adobe Media encoder, há um tutorial que foi desenvolvido
-pela UEMG para `download em
-PDF <https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf>`__.
+pela UEMG para [download em
+PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).

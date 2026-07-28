@@ -1,0 +1,73 @@
+site_name: Jandig ARte Help
+site_description: Documentação de ajuda da Jandig ARte
+copyright: >
+  Conteúdo sob licenciamento
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
+  a não ser quando explicitado o contrário.
+
+docs_dir: .
+site_dir: ../build
+
+repo_url: https://github.com/memeLab/Jandig
+repo_name: GitHub
+edit_uri: edit/develop/docs/
+
+# Keep flat *.html output (index.html per language root only) so the existing
+# Django `serve()` view + DOCS_ROOT setting keep working without changes.
+use_directory_urls: false
+
+theme:
+  name: material
+  logo: _static/logo.png
+  favicon: _static/logo.png
+  palette:
+    primary: teal
+    accent: teal
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Ajuda: index.md
+  - Animações: animacoes.md
+  - Marcadores: marcadores.md
+  - Publicando obras: publicando-obras.md
+
+plugins:
+  - search:
+      lang: [pt, en]
+  - i18n:
+      docs_structure: suffix
+      reconfigure_material: true
+      languages:
+        - locale: pt-BR
+          name: Português
+          default: true
+          build: true
+        - locale: en
+          name: English
+          build: true
+        - locale: es
+          name: Español
+          build: false
+
+# Files/folders that live under docs/ but are internal engineering notes,
+# not part of the published help site.
+exclude_docs: |
+  mkdocs.yml
+  architecture-document.md
+  fix-code-smells.md
+  installation-guide.md
+  prototype.md
+  vision-document.md
+  real_docs/
+  old hotsite/
+  jandig_prototype.fig
+  Tutorial de Exportação em GIF.pdf
+  prototype_png_files/
