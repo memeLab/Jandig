@@ -24,7 +24,7 @@ Although little texts (exhibition name, app url) can be applied over the
 border without prejudice in the recognition, is recomended the height of
 the text never overtake the total porcentage of the border.
 
-<img src="images/MarkerGuide.png" class="align-center" width="320"
+<img src="../images/MarkerGuide.png" class="align-center" width="320"
 alt="image" />
 
 ## Symmetry

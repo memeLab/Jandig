@@ -57,7 +57,7 @@ To do that, please refer to the steps below.
     [URL](https://jandig.app), and click the "Sign up" button.
 
 <figure>
-<img src="images/main-page-jandig.png"
+<img src="../images/main-page-jandig.png"
 alt="images/main-page-jandig.png" />
 <figcaption>Jandig main screen</figcaption>
 </figure>
@@ -66,7 +66,7 @@ alt="images/main-page-jandig.png" />
     [image](https://jandig.app/users/signup/), and submit it!
 
 <figure>
-<img src="images/sign-up-page.png"
+<img src="../images/sign-up-page.png"
 alt="images/sign-up-page.png" />
 <figcaption>Sign up page</figcaption>
 </figure>
@@ -76,7 +76,7 @@ alt="images/sign-up-page.png" />
     your AR-based pieces!
 
 <figure>
-<img src="images/main-page-logged.png"
+<img src="../images/main-page-logged.png"
 alt="images/main-page-logged.png" />
 <figcaption>Post-login page</figcaption>
 </figure>
@@ -106,7 +106,7 @@ submit your image for Marker generation. Take a look at the imagem down
 below to see what it looks like, and where to upload your image.
 
 <figure>
-<img src="images/marker-generator.png"
+<img src="../images/marker-generator.png"
 alt="images/marker-generator.png" />
 <figcaption>Marker generator page</figcaption>
 </figure>
@@ -124,7 +124,7 @@ Now all you have to do is upload the file! Go back to the application's
 Marker". You will be greeted by this screen.
 
 <figure>
-<img src="images/upload-marker.png"
+<img src="../images/upload-marker.png"
 alt="images/upload-marker.png" />
 <figcaption>Marker upload page</figcaption>
 </figure>
@@ -148,7 +148,7 @@ and the application will lead you to this
 [page](https://jandig.app/generator/) right here.
 
 <figure>
-<img src="images/upload-object.png"
+<img src="../images/upload-object.png"
 alt="images/upload-object.png" />
 <figcaption>Object upload page</figcaption>
 </figure>
@@ -220,7 +220,7 @@ through your device's camera. Head back to Jandig's main page once again
 and look for this button:
 
 <figure>
-<img src="images/artwork-button.png"
+<img src="../images/artwork-button.png"
 alt="images/artwork-button.png" />
 <figcaption>Create Artwork button</figcaption>
 </figure>
@@ -228,7 +228,7 @@ alt="images/artwork-button.png" />
 Click it, and you will be redirected to a page that looks like this:
 
 <figure>
-<img src="images/artwork-page.png"
+<img src="../images/artwork-page.png"
 alt="images/artwork-page.png" />
 <figcaption>Select Marker and Object page</figcaption>
 </figure>
@@ -242,13 +242,13 @@ Simply select one Marker, aggree to the terms and go press next to
 select one Object. Here's an example of selected Marker and Object:
 
 <figure>
-<img src="images/select-marker.png"
+<img src="../images/select-marker.png"
 alt="images/select-marker.png" />
 <figcaption>Select Marker from collection page</figcaption>
 </figure>
 
 <figure>
-<img src="images/select-object.png"
+<img src="../images/select-object.png"
 alt="images/select-object.png" />
 <figcaption>Select Object from collection page</figcaption>
 </figure>
@@ -256,7 +256,7 @@ alt="images/select-object.png" />
 Give a title and a description and you're done!
 
 <figure>
-<img src="images/finish-art.png"
+<img src="../images/finish-art.png"
 alt="images/finish-art.png" />
 <figcaption>Description about Artwork page</figcaption>
 </figure>
@@ -275,7 +275,7 @@ able to interact with your Artworks.
 To get started, simply access the "Create Exhibition" icon.
 
 <figure>
-<img src="images/exhibition-main-page.png"
+<img src="../images/exhibition-main-page.png"
 alt="images/exhibition-main-page.png" />
 <figcaption>Create Exhibition icon page</figcaption>
 </figure>
@@ -284,7 +284,7 @@ Next, you need to confirm that you want to select Artwork from the
 collection.
 
 <figure>
-<img src="images/exhibition-select-artwork-button.png"
+<img src="../images/exhibition-select-artwork-button.png"
 alt="images/exhibition-select-artwork-button.png" />
 <figcaption>Select Artwork button</figcaption>
 </figure>
@@ -293,7 +293,7 @@ Among the Artworks in the collection, search for and select one or more
 that you want to expose.
 
 <figure>
-<img src="images/exhibition-select-artwork.png"
+<img src="../images/exhibition-select-artwork.png"
 alt="images/exhibition-select-artwork.png" />
 <figcaption>Select Artworks from collection</figcaption>
 </figure>
@@ -305,7 +305,7 @@ definitive URL to access your creation will be
 "<https://jandig.app/expos>".
 
 <figure>
-<img src="images/exhibition-details.png"
+<img src="../images/exhibition-details.png"
 alt="images/exhibition-details.png" />
 <figcaption>Details about your exhibition page</figcaption>
 </figure>
@@ -317,7 +317,7 @@ You can see all your Exhibitions in the "My stuff" menu. And you can
 also access directly from there, clicking in "See this Exhibition".
 
 <figure>
-<img src="images/exhibition-created.png"
+<img src="../images/exhibition-created.png"
 alt="images/exhibition-created.png" />
 <figcaption>Exhibition created page</figcaption>
 </figure>
