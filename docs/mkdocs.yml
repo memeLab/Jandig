@@ -24,7 +24,6 @@ theme:
     primary: teal
     accent: teal
   features:
-    - navigation.tabs
     - navigation.top
     - search.suggest
     - search.highlight
@@ -35,6 +34,7 @@ extra_css:
 
 nav:
   - Ajuda: index.md
+  - Início Rápido: inicio-rapido.md
   - Animações: animacoes.md
   - Marcadores: marcadores.md
   - Publicando obras: publicando-obras.md
@@ -50,13 +50,14 @@ plugins:
           name: Português
           default: true
           build: true
-          site_name: Ajuda da Jandig ARte
+          site_name: Jandig ARte
         - locale: en
           name: English
           build: true
-          site_name: Jandig ARte Help
+          site_name: Jandig ARte
           nav_translations:
             Ajuda: Help
+            Início Rápido: Quick Start
             Animações: Animations
             Marcadores: Markers
             Publicando obras: Publishing artworks

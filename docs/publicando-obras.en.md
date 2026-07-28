@@ -16,33 +16,9 @@ Artwork and an Exhibition.
 Let's get right to it, for this is a quick and essential read for those
 who want to use Jandig as their main AR art creator.
 
-## Quickstart tutorial
-
-1\) Go to "<https://jandig.app/generator>". Upload the image to be used
-in the Marker without the black border (it will be added by the
-application). Download the Marker (Download .PATT Marker) and the image
-(Download image Marker) and store the files in a safe place. If you
-want, download PDFs with Markers for printing. Important: set the Patern
-Ratio to 0.60.
-
-2)  Go to "<http://jandig.art>" and create an account.
-3)  Click on "Upload Marker" and upload the image (with extension
-    ".PNG") and Marker (".PATT") created in the previous step. This
-    image is the one that the Jandig camera will recognize.
-4)  Click on "Upload Object" and upload the GIF or video (WEBM or MP4
-    format) with your animation. This image Jandig will display over the
-    camera.
-5)  Click on "Create Jandig Artwork", choose the corresponding Marker
-    and Object you just uploaded. An Artwork is the set of Marker and
-    Object, linking to be presented in augmented reality.
-6)  Click on "Create Exhibition". Choose one or several works. Give the
-    set a title and define its URL. It will be used to access the set of
-    Artworks created. For example, if you enter "expotest" the
-    definitive URL to access your creations will be
-    "<https://jandig.app/expotest>".
-
-Access the final URL you just created, point the camera at the Marker
-and watch the magic happen!
+If you just want the direct step-by-step, see the [Quick
+Start](inicio-rapido.en.md) page. Below, we'll go through each step in
+detail.
 
 ## Tutorial - Learn the basics
 
