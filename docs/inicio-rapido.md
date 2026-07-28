@@ -2,22 +2,21 @@
 
 1.  Acesse [https://jandig.app](https://jandig.app) e crie uma conta.
 
-2.  Acesse [https://jandig.app/markers/upload](https://jandig.app/markers/upload),
-    faça o upload da imagem (com extensão .PNG), atribua um nome e declare o
-    autor. Esta imagem será reconhecida pela câmera da Jandig.
+2.  Clique em "Criar Obra Jandig". Você não precisa enviar seu próprio
+    Marcador ou Objeto agora — escolha um Marcador e um Objeto já
+    existentes na plataforma para testar rapidamente como funciona. A
+    Obra Jandig vincula o Marcador ao Objeto para apresentação em
+    realidade aumentada.
 
-3.  Acesse [https://jandig.app/objects/upload](https://jandig.app/objects/upload)
-    e faça upload do GIF ou 3D (no formato GLB) com a sua animação. O Jandig
-    exibirá esse objeto sobre o marcador na câmera.
+3.  Na sua lista de Obras, abra o menu de ações (ícone de três pontos)
+    da Obra que você acabou de criar e clique em "Preview". Isso abre a
+    câmera e mostra como a Obra vai aparecer, sem precisar criar uma
+    Exposição.
 
-4.  Clique em "Criar Obra Jandig", escolha o Marcador e Objeto correspondentes
-    que você acabou de enviar. A Obra Jandig vincula o Marcador ao Objeto para
-    apresentação em realidade aumentada.
+Aponte a câmera para o Marcador escolhido e veja a mágica acontecer!
 
-5.  Clique em "Criar Exposição". Escolha uma ou várias Obras. Dê um título ao
-    conjunto e defina sua URL. Com ela, você acessará o conjunto de Obras que
-    criar. Por exemplo, se você inserir "expoteste" a URL definitiva para
-    acessar sua(s) criações será `https://jandig.app/expoteste`.
+Quando estiver pronto para publicar de verdade, envie o seu próprio
+Marcador e Objeto e crie uma Exposição para compartilhar suas Obras com
+o público — veja o passo a passo completo em [Como publicar conteúdo na
+Jandig](publicando-obras.md).
 
-Acesse a URL definitiva que você acabou de criar, aponte a câmera para o
-Marcador e veja a mágica acontecer!
