@@ -35,7 +35,7 @@ extra_css:
 nav:
   - Ajuda: index.md
   - Início Rápido: inicio-rapido.md
-  - Animações: animacoes.md
+  - Mídia: media.md
   - Marcadores: marcadores.md
   - Publicando obras: publicando-obras.md
 
@@ -58,7 +58,7 @@ plugins:
           nav_translations:
             Ajuda: Help
             Início Rápido: Quick Start
-            Animações: Animations
+            Mídia: Media
             Marcadores: Markers
             Publicando obras: Publishing artworks
         - locale: es
