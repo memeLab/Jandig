@@ -41,6 +41,7 @@ nav:
   - Mídia: media.md
   - Marcadores: marcadores.md
   - Publicando obras: publicando-obras.md
+  - Perguntas Frequentes: faq.md
 
 plugins:
   - search:
@@ -64,6 +65,7 @@ plugins:
             Mídia: Media
             Marcadores: Markers
             Publicando obras: Publishing artworks
+            Perguntas Frequentes: FAQ
         - locale: es
           name: Español
           build: false

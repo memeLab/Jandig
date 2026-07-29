@@ -8,3 +8,4 @@ publicar suas obras de realidade aumentada na plataforma.
 - [Dicas para produzir mídia](media.md)
 - [Dicas para produzir marcadores](marcadores.md)
 - [Como publicar conteúdo na Jandig](publicando-obras.md)
+- [Perguntas Frequentes](faq.md)
