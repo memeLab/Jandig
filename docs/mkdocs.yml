@@ -1,5 +1,5 @@
-site_name: Jandig ARte Help
-site_description: Documentação de ajuda da Jandig ARte
+site_name: Jandig ARte
+site_description: Documentação da Jandig ARte
 copyright: >
   Conteúdo sob licenciamento
   <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
@@ -31,6 +31,9 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+  homepage: /
 
 nav:
   - Ajuda: index.md
