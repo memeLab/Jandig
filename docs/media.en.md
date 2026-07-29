@@ -15,7 +15,9 @@ in the future (as these limitations decrease).
 
 When uploading an Object, the currently accepted formats are:
 
-- **GIF** — simple animations, with good compatibility.
+- **GIF** — simple animations, with good compatibility and support for
+  transparent backgrounds, allowing the animation to blend well into
+  the augmented reality scene.
 - **PNG** — static image (no animation).
 - **MP4** and **WebM** — video, including transparency support in
   WebM. Recommended for longer or more detailed animations, since video
@@ -122,3 +124,6 @@ the future.
 If you use Adobe Media Encoder, there's a tutorial developed by UEMG
 available for [download as a
 PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
+
+We also prepared a tutorial on how to export GIFs with a transparent
+background: [download the PDF](files/como_exportar_gifs_com_transparencia.pdf).

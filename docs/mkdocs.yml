@@ -65,15 +65,5 @@ plugins:
           name: Español
           build: false
 
-# Files/folders that live under docs/ but are internal engineering notes,
-# not part of the published help site.
 exclude_docs: |
   mkdocs.yml
-  architecture-document.md
-  fix-code-smells.md
-  installation-guide.md
-  prototype.md
-  vision-document.md
-  jandig_prototype.fig
-  Tutorial de Exportação em GIF.pdf
-  prototype_png_files/

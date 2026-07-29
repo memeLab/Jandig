@@ -15,7 +15,9 @@ essas limitações forem diminuindo).
 
 Ao enviar um Objeto, os formatos aceitos atualmente são:
 
-- **GIF** — animações simples, com boa compatibilidade.
+- **GIF** — animações simples, com boa compatibilidade e suporte a
+  fundo transparente, o que permite que a animação se integre bem à
+  cena de realidade aumentada.
 - **PNG** — imagem estática (sem animação).
 - **MP4** e **WebM** — vídeos, incluindo suporte a transparência no
   WebM. Recomendado para animações mais longas ou com mais detalhe, já
@@ -125,3 +127,6 @@ futuro.
 Caso você use Adobe Media Encoder, há um tutorial que foi desenvolvido
 pela UEMG para [download em
 PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
+
+Também preparamos um tutorial de como exportar GIFs com fundo
+transparente: [baixe o PDF](files/como_exportar_gifs_com_transparencia.pdf).
