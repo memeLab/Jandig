@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Istok+Web:400,400i,700,700i&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap');
 
 :root > * {
-  --md-text-font: "Istok Web", sans-serif;
+  --md-text-font: "Inter", sans-serif;
 }
