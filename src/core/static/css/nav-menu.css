@@ -101,7 +101,8 @@ button#nav-menu-btn.nav-menu-button:active {
 /* Navigation content */
 .nav-menu-content {
     padding: 0 24px 16px 20px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
     text-align: left;
 }
 
@@ -114,7 +115,8 @@ button#nav-menu-btn.nav-menu-button:active {
     margin: 24px 0 8px 0;
     padding: 0;
     text-align: left;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
 }
 
 .nav-menu-content .nav-menu-section-title:first-child {
@@ -130,7 +132,8 @@ button#nav-menu-btn.nav-menu-button:active {
     text-decoration: none;
     transition: color 0.2s ease;
     text-align: left;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
     background-image: none;
     background-color: transparent;
 }

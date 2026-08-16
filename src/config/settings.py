@@ -263,8 +263,8 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-# Sphinx docs
-DOCS_ROOT = "/jandig/build/"
+# MkDocs help site (built from docs/mkdocs.yml into build/)
+DOCS_ROOT = os.path.join(str(ROOT_DIR), "build")
 
 
 DEFAULT_FROM_EMAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
