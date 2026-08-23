@@ -93,6 +93,62 @@
                         {{ _("voltado para a comunidade, onde é possível tirar dúvidas e compartilhar suas criações e experiências.") }}
                     </p>
                 </section>
+                <section class="home-section try-section">
+                    <h2 class="try-title">{{ _("Try Jandig Now!") }}</h2>
+                    <div class="try-content">
+                        <a href="{{ url('try-jandig-preview') }}" class="qr-card">
+                            <img src="{{ static('images/try-jandig-qr-code.svg') }}"
+                                 alt="QR Code"
+                                 class="qr-image">
+                            <p class="qr-label">{{ _("Scan to view the artwork") }}</p>
+                            <p class="qr-description">
+                                {{ _("Scan the QR Code, then point your device at the image to see it in AR") }}
+                            </p>
+                        </a>
+                        <span class="try-arrow">→</span>
+                        <a href="{{ url('try-jandig-preview') }}" class="try-img-group">
+                            <img src="{{ static('images/try_jandig_marker.png') }}"
+                                 alt="Marker"
+                                 class="try-img">
+                            <p class="try-img-label">{{ _("Tokusatsu Marker by Hebert Valois, 2019.") }}</p>
+                        </a>
+                        <a href="{{ url('try-jandig-preview') }}" class="try-img-group">
+                            <img src="{{ static('images/try_jandig_object.gif') }}"
+                                 alt="Object"
+                                 class="try-img">
+                            <p class="try-img-label">{{ _("Tokusatsu Object by Gustavo Athayde, 2019.") }}</p>
+                        </a>
+                    </div>
+                </section>
+                <section class="home-section how-section">
+                    <h2 class="how-title">{{ _("How it works") }}</h2>
+                    <div class="how-content">
+                        <div class="how-item">
+                            <img src="{{ static('images/how_it_works_marker.png') }}"
+                                 alt="Marker"
+                                 class="how-img">
+                            <p class="how-label">{{ _("Marker") }}</p>
+                        </div>
+                        <span class="how-operator">+</span>
+                        <div class="how-item">
+                            <img src="{{ static('images/how_it_works_object.png') }}"
+                                 alt="Media"
+                                 class="how-img">
+                            <p class="how-label">{{ _("Media") }}</p>
+                        </div>
+                        <span class="how-operator">=</span>
+                        <div class="how-item">
+                            <img src="{{ static('images/how_it_works_artwork.png') }}"
+                                 alt="AR Artwork"
+                                 class="how-img">
+                            <p class="how-label">{{ _("Artwork") }}</p>
+                        </div>
+                        <div class="how-cta">
+                            <a href="{{ url('create-artwork') }}" class="btn-create">{{ _("Create artwork") }}</a>
+                            <p class="how-cta-sub">{{ _("Totally free, no trial.") }}</p>
+                        </div>
+                    </div>
+                </section>
             </div>
         {% endblock %}
         {% include "core/footer.jinja2" %}

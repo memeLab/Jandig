@@ -35,6 +35,7 @@ from core.views.views import (
     related_content,
     see_all,
     sound_upload,
+    try_jandig_preview,
 )
 
 urlpatterns = [
@@ -43,6 +44,7 @@ urlpatterns = [
     path("artwork/", artwork_preview, name="artwork-preview"),
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),
+    path("artworks/try_jandig/", try_jandig_preview, name="try-jandig-preview"),
     path("collection/", collection, name="collection"),
     path("community/", community, name="community"),
     path("content/delete/", delete, name="delete-content"),

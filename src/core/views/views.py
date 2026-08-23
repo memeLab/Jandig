@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse
@@ -539,6 +540,49 @@ def artwork_preview(request):
 
     ctx = {
         "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
+    }
+    return render(request, "core/ar.jinja2", ctx)
+
+
+@require_http_methods(["GET"])
+def try_jandig_preview(request):
+    """AR preview using static collection assets instead of a DB Artwork, for the homepage demo."""
+    metrics.count(
+        "try_jandig_requests",
+        1,
+        attributes={
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
+        },
+    )
+
+    artwork = {
+        "marker": {
+            "marker_img": {
+                "url": staticfiles_storage.url("images/try_jandig_marker.png")
+            }
+        },
+        "augmented": {
+            "file_extension": "gif",
+            "spritesheet_file": {
+                "url": staticfiles_storage.url(
+                    "images/try_jandig_object_spritesheet.png"
+                )
+            },
+            "spritesheet_metadata": {
+                "url": staticfiles_storage.url(
+                    "images/try_jandig_object_spritesheet.json"
+                )
+            },
+        },
+        "scale_x": 1,
+        "scale_y": 1,
+        "position_x": 0,
+        "position_y": 0,
+    }
+    ctx = {
+        "artworks": [artwork],
     }
     return render(request, "core/ar.jinja2", ctx)
 

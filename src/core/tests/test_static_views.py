@@ -54,3 +54,5 @@ class TestCoreStaticViews(TestCase):
     def test_home(self):
         response = self.client.get(reverse("home"))
         assert response.status_code == 200
+        assert b"try-section" in response.content
+        assert b"how-section" in response.content

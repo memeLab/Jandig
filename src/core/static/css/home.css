@@ -114,3 +114,126 @@
 }
 
 }
+
+/* ===================== TRY JANDIG NOW ===================== */
+.try-section {
+    text-align: center;
+}
+
+.try-title,
+.how-title {
+    color: #03b595;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.try-content {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.qr-card,
+.try-img-group {
+    display: block;
+    max-width: 220px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.qr-image {
+    width: 140px;
+    height: 140px;
+}
+
+.try-img {
+    max-width: 180px;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.qr-label {
+    font-weight: 700;
+    margin: 10px 0 4px;
+}
+
+.qr-description,
+.try-img-label {
+    font-size: 0.85em;
+    color: #777;
+}
+
+.try-arrow {
+    font-size: 2em;
+    color: #03b595;
+}
+
+/* ===================== HOW IT WORKS ===================== */
+.how-section {
+    text-align: center;
+}
+
+.how-content {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.how-item {
+    max-width: 150px;
+}
+
+.how-img {
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: contain;
+}
+
+.how-label {
+    margin-top: 8px;
+}
+
+.how-operator {
+    font-size: 1.8em;
+    color: #03b595;
+}
+
+.how-cta {
+    margin-left: 20px;
+}
+
+/* Higher specificity than `.home-container a` so the white text isn't overridden */
+.how-cta .btn-create {
+    display: inline-block;
+    background-color: #5b0058;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.how-cta .btn-create:hover {
+    background-color: #3d003b;
+}
+
+.how-cta-sub {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 8px;
+}
+
+@media all and (max-width: 480px) {
+    .try-content,
+    .how-content {
+        flex-direction: column;
+    }
+
+    .how-cta {
+        margin-left: 0;
+    }
+}
