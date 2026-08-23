@@ -1,26 +1,84 @@
-<section class="footer">
-    <div class="container flex">
-        <a href="{{ url('community') }}" class="useful">{{ _("About Us") }}</a>
-        <div class="social flex">
-            <a href="https://www.instagram.com/jandig.art/"
-               class="instagram"
-               target="_blank">{{ _("Jandig on Instagram") }}</a>
-            <a href="https://twitter.com/JandigArt/" class="twitter" target="_blank">{{ _("Jandig on Twitter") }}</a>
-            <a href="https://www.facebook.com/jandig.art/"
-               class="facebook"
-               target="_blank">{{ _("Jandig on Facebook") }}</a>
-            <a href="https://github.com/memeLab/ARte/"
-               class="sq-github"
-               target="_blank">{{ _("Jandig on Github") }}</a>
-            <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ"
-               class="telegram"
-               target="_blank">{{ _("Jandig on Telegram") }}</a>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI"
+      crossorigin="anonymous">
+<link rel="stylesheet" href="{{ static('css/footer.css') }}">
+<footer class="footer-section">
+    <div class="footer-container">
+        <div class="footer-col footer-brand">
+            <a href="{{ url('home') }}">
+                <img class="footer-logo"
+                     src="{{ static('images/icons/header_icon.png') }}"
+                     alt="Jandig">
+            </a>
+            <p class="footer-tagline">{{ _("Augmented Reality Art") }}</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode"
+               class="footer-license"
+               target="_blank"
+               rel="noopener noreferrer">{{ _("CC BY-SA 4.0") }}</a>
+            <p class="footer-rights">{{ _("Some rights reserved.") }}</p>
+        </div>
+
+        <div class="footer-col">
+            <h6 class="footer-heading">{{ _("Collections") }}</h6>
+            <ul class="footer-links">
+                <li><a href="/see_all/marker/">{{ _("Markers") }}</a></li>
+                <li><a href="/see_all/object/">{{ _("Objects") }}</a></li>
+                <li><a href="/see_all/artwork/">{{ _("Artworks") }}</a></li>
+                <li><a href="/see_all/ar-exhibit/">{{ _("AR Exhibits") }}</a></li>
+                <li><a href="/see_all/mr-exhibit/">{{ _("MR Exhibits") }}</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h6 class="footer-heading">{{ _("Resources") }}</h6>
+            <ul class="footer-links">
+                <li><a href="{{ url('blog_index') }}">{{ _("Blog") }}</a></li>
+                <li><a href="{{ url('documentation') }}">{{ _("Tutorials") }}</a></li>
+                <li><a href="/docs/faq.html">{{ _("FAQ") }}</a></li>
+                <li><a href="{{ url('clipping') }}">{{ _("News") }}</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h6 class="footer-heading">{{ _("Project") }}</h6>
+            <ul class="footer-links">
+                <li><a href="{{ url('community') }}">{{ _("About Us") }}</a></li>
+                <li><a href="#">{{ _("Terms of Use") }}</a></li>
+                <li><a href="#">{{ _("Privacy Policy") }}</a></li>
+                <li><a href="#">{{ _("Contact us") }}</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h6 class="footer-heading">{{ _("Follow Us") }}</h6>
+            <ul class="footer-links footer-social">
+                <li>
+                    <a href="https://www.facebook.com/jandig.art/" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-facebook" aria-hidden="true"></i> Jandig
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/jandig.art/" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-instagram" aria-hidden="true"></i> @jandig.art
+                    </a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/JandigArt/" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i> @jandig
+                    </a>
+                </li>
+                <li>
+                    <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-telegram" aria-hidden="true"></i> @jandig.community
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/memeLab/ARte/" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-github" aria-hidden="true"></i> @memeLab/jandig
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-    <div class="container flex">
-        <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode"
-           class="license"
-           target="_blank">{{ _("Content under CC BY-SA 4.0 unless otherwise noted.") }}</a>
-        <a href="http://memelab.com.br" class="memelab" target="_blank">memelab</a>
-    </div>
-</section>
+</footer>

@@ -436,19 +436,6 @@ div.contCam:before {
 
 
 
-.footer a.useful {
-  padding: 0 5px;
-  background-image: linear-gradient(
-    to top,
-    #05f7ae,
-    #05f7ae 50%,
-    transparent 50%,
-    transparent
-  );
-  background-position: 100% 15%;
-  background-size: 100% 200%;
-}
-
 .fill {
   background: url(../images/icons/fill.png), #e6e6e6;
   padding: 20px;
@@ -485,98 +472,6 @@ h1.titMrk {
 
 h1.titObj {
   background-image: url(../images/icons/icoObj.png);
-}
-
-.footer {
-  min-height: 90px;
-}
-
-.footer .container {
-  min-height: 25px;
-  margin-bottom: 20px;
-}
-
-.footer a {
-  font-size: 75%;
-  line-height: 25px;
-  margin: auto;
-}
-
-.footer a.useful {
-  margin: 0;
-  line-height: 25px;
-}
-
-a.github {
-  background-image: url(../images/icons/bulGit.png);
-  background-size: contain;
-  background-position: left center;
-  background-repeat: no-repeat;
-  color: #03b595;
-  padding-left: 35px;
-}
-
-a.license {
-  background-image: url(../images/icons/license.png);
-  background-size: contain;
-  background-position: left center;
-  background-repeat: no-repeat;
-  padding-left: 65px;
-  font-size: 0.5em;
-  line-height: 20px;
-  margin-left: 0;
-  text-align: left;
-  white-space: nowrap;
-  max-width: calc(100% - 160px);
-  overflow: inherit;
-  text-indent: -9999999px;
-}
-
-a.memelab {
-  background-image: url(../images/icons/memelab.png);
-  background-size: contain;
-  background-position: left center;
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  text-indent: -99999px;
-  max-width: 35px;
-  margin: 0;
-}
-
-a.instagram,
-a.twitter,
-a.facebook,
-a.telegram,
-a.sq-github {
-  background-size: contain;
-  background-position: left center;
-  background-repeat: no-repeat;
-  width: 25px;
-  height: 25px;
-  text-indent: -99999px;
-  max-width: 35px;
-  margin: 5px 0px 5px 5px;
-}
-
-a.instagram {
-  background-image: url(../images/icons/icoIst.png);
-}
-
-a.twitter {
-  background-image: url(../images/icons/icoTwt.png);
-}
-
-a.facebook {
-  background-image: url(../images/icons/icoFcb.png);
-}
-
-a.telegram {
-  background-image: url(../images/icons/icoTel.png);
-}
-
-a.sq-github {
-  background-image: url(../images/icons/icoGit.png);
 }
 
 .form-options {
@@ -669,9 +564,9 @@ a.sq-github {
   }
 
   .header .logo img {
-    max-height: 75px;
+    max-height: 45px;
     height: auto;
-    margin: auto;
+    margin: 10px auto 15px 15px;
   }
 
   .icon-menu a {
@@ -687,80 +582,22 @@ a.sq-github {
     font-size: 2.5em;
   }
 
-  a.useful {
-    padding: 5px;
-    background-image: linear-gradient(
-      to top,
-      #05f7ae,
-      #05f7ae 50%,
-      transparent 50%,
-      transparent
-    );
-    background-position: 100% 15%;
-    background-size: 100% 200%;
-  }
-
-  .footer {
-    min-height: 100px;
-  }
-
-  .footer .container {
-    min-height: 30px;
-    margin-bottom: 40px;
-  }
-
-  .footer a {
-    line-height: 30px;
-  }
-
-  a.instagram,
-  a.twitter,
-  a.facebook,
-  a.telegram,
-  a.sq-github {
-    width: 30px;
-    height: 30px;
-  }
-
-  a.github {
-    padding-left: 40px;
-  }
-
-  a.license {
-    padding-left: 100px;
-    height: 30px;
-    line-height: 30px;
-    font-size: 0.75em;
-    text-indent: 0;
-  }
-
-  a.memelab {
-    width: 30px;
-    height: 30px;
-    max-width: 40px;
-  }
-
 }
 
 /* Hover Elements */
-.footer a.useful,
 .account-options a,
 .header .logo img,
 .animCam,
-.memelab,
-.social a,
 .editProf a.option-link,
 .welcome a,
 a.changeExb,
 a.jandigIco,
 .signup-btn,
 .login-btn,
-.trigger-lang-modal,
-.license {
+.trigger-lang-modal {
   transition: all 0.2s ease-in;
 }
 
-.footer a.useful:hover,
 .account-options a:hover {
   color: #fff;
   background-position: 0 100%;
@@ -768,14 +605,11 @@ a.jandigIco,
 
 .header .logo img:hover,
 .animCam:hover,
-.memelab:hover,
-.social a:hover,
 a.changeExb:hover,
 a.jandigIco:hover,
 .signup-btn:hover,
 .login-btn:hover,
-.trigger-lang-modal:hover,
-.license:hover {
+.trigger-lang-modal:hover {
   opacity: 0.7;
 }
 

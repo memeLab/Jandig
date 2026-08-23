@@ -32,9 +32,9 @@
 }
 .logo-full {
     display: none;
-    max-height: 55px;
+    max-height: 45px;
     height: auto;
-    margin: auto;
+    margin: 10px auto 15px 15px;
 }
 
 .logo-mobile {
