@@ -1,8 +1,12 @@
+import logging
 from io import BytesIO
 
+from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.base import ContentFile
 from PIL import Image
 from pymarker import generate_marker_from_image
+
+log = logging.getLogger(__name__)
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -93,13 +97,21 @@ def generate_marker_variants(marker, inner_border=False):
         ]
     )
 
-    # Clean up the old source file if it moved to a new path
+    # Clean up the old source file if it moved to a new path.
+    # This is not merely tidying: until it is gone, the object sits in public
+    # storage under the name the uploader chose, so a failure here has to be
+    # visible rather than swallowed. It still must not fail the upload.
     if old_source_name and old_source_name != marker.source.name:
         try:
             if storage.exists(old_source_name):
                 storage.delete(old_source_name)
-        except Exception:
-            pass  # Non-critical cleanup
+        except (OSError, SuspiciousFileOperation):
+            log.exception(
+                "Could not delete the pre-rename marker source %s for marker %s; "
+                "it is still in storage under the uploader's own filename",
+                old_source_name,
+                marker.pk,
+            )
 
 
 def delete_marker_files(marker):
