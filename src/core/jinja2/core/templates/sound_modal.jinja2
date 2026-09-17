@@ -15,7 +15,9 @@
         </div>
         <p id="element-author">{{ "{} {}".format(_("Author:") ,sound.author)}}</p>
         <p id="element-upload-info">
-            {{ "{} {}{} {}".format(_("Uploaded by") , sound.owner.user.username,_(", in"), sound.created.strftime("%d/%m/%Y")) }}
+            {{ _("Uploaded by") }}
+            {% set author_username = sound.owner.user.username %}
+            {% if author_username %}<a href="{{ url('public-profile', kwargs={'username': author_username}) }}">{{ author_username }}</a>{% else %}{{ author_username }}{% endif %}{{ _(", in") }} {{ sound.created.strftime("%d/%m/%Y") }}
             <p id="element-analytics">{{ sound.used_in_html_string() | safe }}</p>
             {{ sound.as_html() | safe }}
             <p id="element-download">

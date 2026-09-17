@@ -9,7 +9,9 @@
             <p id="artwork-description">{{ artwork.description }}</p>
         {% endif %}
         <p id="element-upload-info">
-            {{ "{} {}{} {}".format(_("Created by") , artwork.author.user.username,_(", in"), artwork.created.strftime("%d/%m/%Y")) }}
+            {{ _("Created by") }}
+            {% set author_username = artwork.author.user.username %}
+            {% if author_username %}<a href="{{ url('public-profile', kwargs={'username': author_username}) }}">{{ author_username }}</a>{% else %}{{ author_username }}{% endif %}{{ _(", in") }} {{ artwork.created.strftime("%d/%m/%Y") }}
             <p id="element-analytics">{{ artwork.used_in_html_string() | safe }}</p>
             <div class="artwork-content">
                 <h5>{{ artwork.marker.title }}</h5>
