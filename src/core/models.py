@@ -78,6 +78,11 @@ class Sound(TimeStampedModel, ContentMixin):
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
 
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
+
     @property
     def date(self):
         return self.created.strftime("%d/%m/%Y")
@@ -152,6 +157,11 @@ class Marker(TimeStampedModel, ContentMixin):
     file_size = models.IntegerField(default=0, blank=True, null=True)
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
+
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -263,6 +273,11 @@ class Object(TimeStampedModel, ContentMixin):
     )
     width = models.PositiveIntegerField(null=True, blank=True)
     height = models.PositiveIntegerField(null=True, blank=True)
+
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
 
     def __str__(self):
         return self.source.name
@@ -455,6 +470,11 @@ class Artwork(TimeStampedModel, ContentMixin):
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
 
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
+
     @property
     def exhibits_count(self):
         return self.exhibits.count()
@@ -506,6 +526,11 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         ],
         default=ExhibitTypes.AR,
         db_index=True,
+    )
+
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
     )
 
     def __str__(self):
