@@ -119,3 +119,7 @@ docker compose up --watch
 ### Prototype
 
 The Jandig platform count with a High-Fidelity Prototype which aims the development and documentation of improvements related to usability. To acess and contribute with the prototype, follow the instructions in [Prototype Documentation](/docs/prototype.md).
+
+### API
+
+Jandig exposes a read-only HTTP API under `/api/v1/`, used by the AR viewer and by the Meta Quest app. See the [API Reference](/development/api-reference.md) for endpoints, authentication, pagination and filtering.
