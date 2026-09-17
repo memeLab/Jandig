@@ -49,6 +49,11 @@
                                    onchange="if(document.getElementById('id_source').files.length > 0){document.getElementById('id_source').dispatchEvent(new Event('change', { bubbles: true }));}">
                             <label for="inner-border-chk">{{ _("Add inner border") }}</label>
                             <br />
+                            <input id="remove-existing-border-chk"
+                                   type="checkbox"
+                                   name="remove_existing_border">
+                            <label for="remove-existing-border-chk">{{ _("Remove existing border") }}</label>
+                            <br />
                             <input id="author-chk" type="checkbox" name="author" value="1">
                             <label for="author-chk">{{ _("I'm this Marker author") }}</label>
                         </p>

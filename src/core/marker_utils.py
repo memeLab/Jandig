@@ -1,8 +1,11 @@
+import logging
 from io import BytesIO
 
 from django.core.files.base import ContentFile
 from PIL import Image
-from pymarker import generate_marker_from_image
+from pymarker import generate_marker_from_image, remove_borders_from_image
+
+log = logging.getLogger(__name__)
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -125,3 +128,25 @@ def _save_to_storage(storage, path, content_bytes):
     except Exception:
         pass
     storage.save(path, ContentFile(content_bytes))
+
+
+def strip_existing_border(marker):
+    """Remove a border the uploaded image already has, before generating ours.
+
+    Without this, an image that is already a marker gets a second border drawn
+    around the first one. Uses `FieldFile.save` rather than writing to storage
+    directly, so the field's cached file handle is replaced — otherwise
+    `generate_marker_variants` reopens the original upload and the strip is
+    silently lost.
+
+    The caller is expected to run `generate_marker_variants` afterwards, which
+    moves the result to its canonical path and cleans up this intermediate.
+    """
+    with Image.open(marker.source) as image:
+        stripped = remove_borders_from_image(image)
+        blob = BytesIO()
+        stripped.save(blob, "PNG")
+    blob.seek(0)
+    marker.source.save(
+        f"markers/{marker.pk}/stripped.png", ContentFile(blob.getvalue()), save=True
+    )

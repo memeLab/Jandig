@@ -4,7 +4,7 @@ from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import generate_marker_variants, strip_existing_border
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
 
@@ -135,6 +135,14 @@ class UploadMarkerForm(forms.ModelForm):
         required=False,
         label=_("Add inner border"),
     )
+    remove_existing_border = forms.BooleanField(
+        required=False,
+        label=_("Remove existing border"),
+        help_text=_(
+            "Tick this if your image already has a marker border, so a second "
+            "one is not drawn around it."
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
@@ -151,6 +159,8 @@ class UploadMarkerForm(forms.ModelForm):
         commit = kwargs.get("commit", True)
         instance = super(UploadMarkerForm, self).save(*args, **kwargs)
         if commit:
+            if self.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(instance)
             generate_marker_variants(
                 instance,
                 inner_border=self.cleaned_data.get("inner_border", False),
