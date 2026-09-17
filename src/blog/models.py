@@ -1,8 +1,8 @@
 from django.core.files.storage import default_storage
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
 from django_prose_editor.fields import ProseEditorField
 
+from core.timestamps import TimeStampedModel
 from users.models import Profile
 
 IMAGE_BASE_PATH = "post_images/"
@@ -86,6 +86,15 @@ class Post(TimeStampedModel):
         },
         sanitize=True,
     )
+
+    class Meta(TimeStampedModel.Meta):
+        indexes = [
+            # blog_index() filters on status and then orders by "-created".
+            models.Index(
+                fields=["status", "-created"],
+                name="blog_post_status_created_idx",
+            ),
+        ]
 
     def __str__(self):
         return self.title
