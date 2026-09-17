@@ -41,23 +41,23 @@ def collection(request):
         .prefetch_related("artworks")
         .filter(exhibit_type=ExhibitTypes.AR)
         .all()
-        .order_by("-created")[:4]
+        .order_by("-highlighted", "-created")[:4]
     )
     mr_exhibits = (
         Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .filter(exhibit_type=ExhibitTypes.MR)
         .all()
-        .order_by("-created")[:4]
+        .order_by("-highlighted", "-created")[:4]
     )
     artworks = (
         Artwork.objects.select_related("author", "author__user", "marker", "augmented")
         .all()
-        .order_by("-created")[:6]
+        .order_by("-highlighted", "-created")[:6]
     )
-    markers = Marker.objects.all().order_by("-created")[:8]
-    objects = Object.objects.all().order_by("-created")[:8]
-    sounds = Sound.objects.all().order_by("-created")[:8]
+    markers = Marker.objects.all().order_by("-highlighted", "-created")[:8]
+    objects = Object.objects.all().order_by("-highlighted", "-created")[:8]
+    sounds = Sound.objects.all().order_by("-highlighted", "-created")[:8]
 
     ctx = {
         "artworks": artworks,
@@ -97,22 +97,22 @@ def see_all(request, which=""):
         page = 1
 
     data_types = {
-        "object": Object.objects.all().order_by("-created"),
-        "marker": Marker.objects.all().order_by("-created"),
+        "object": Object.objects.all().order_by("-highlighted", "-created"),
+        "marker": Marker.objects.all().order_by("-highlighted", "-created"),
         "artwork": Artwork.objects.prefetch_related("marker", "augmented")
         .all()
-        .order_by("-created"),
+        .order_by("-highlighted", "-created"),
         "ar-exhibit": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .filter(exhibit_type=ExhibitTypes.AR)
         .all()
-        .order_by("-created"),
+        .order_by("-highlighted", "-created"),
         "mr-exhibit": Exhibit.objects.select_related("owner", "owner__user")
         .prefetch_related("artworks")
         .filter(exhibit_type=ExhibitTypes.MR)
         .all()
-        .order_by("-created"),
-        "sound": Sound.objects.all().order_by("-created"),
+        .order_by("-highlighted", "-created"),
+        "sound": Sound.objects.all().order_by("-highlighted", "-created"),
     }
 
     data = data_types.get(request_type)
@@ -250,7 +250,7 @@ def object_upload(request):
     else:
         form = UploadObjectForm()
 
-    sounds = Sound.objects.all().order_by("-created")
+    sounds = Sound.objects.all().order_by("-highlighted", "-created")
     paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
     return render(
         request,
@@ -422,7 +422,7 @@ def edit_object(request):
     else:
         form = UploadObjectForm(initial=model_data)
 
-    sounds = Sound.objects.all().order_by("-created")
+    sounds = Sound.objects.all().order_by("-highlighted", "-created")
     paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
 
     return render(
@@ -466,13 +466,13 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
 
 def _get_artwork_context_data(form, artwork_instance=None):
     """Helper function to prepare context data for artwork templates."""
-    marker_list = Marker.objects.all().order_by("-created")
+    marker_list = Marker.objects.all().order_by("-highlighted", "-created")
     object_list = (
         Object.objects.exclude(file_extension=ObjectExtensions.GLB)
         .all()
-        .order_by("-created")
+        .order_by("-highlighted", "-created")
     )
-    sound_list = Sound.objects.all().order_by("-created")
+    sound_list = Sound.objects.all().order_by("-highlighted", "-created")
     paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
     paginator_object = Paginator(object_list, settings.OBJECT_MODAL_PAGE_SIZE)
     paginator_sound = Paginator(sound_list, settings.OBJECT_MODAL_PAGE_SIZE)
@@ -549,13 +549,13 @@ def get_element(request):
         page = int(request.GET.get("page", "1"))
         match element_type := request.GET.get("element_type"):
             case "object":
-                qs = Object.objects.all().order_by("-created")
+                qs = Object.objects.all().order_by("-highlighted", "-created")
                 if request.GET.get("exclude_glb", "false") == "true":
                     qs = qs.exclude(file_extension=ObjectExtensions.GLB)
             case "marker":
-                qs = Marker.objects.all().order_by("-created")
+                qs = Marker.objects.all().order_by("-highlighted", "-created")
             case "sound":
-                qs = Sound.objects.all().order_by("-created")
+                qs = Sound.objects.all().order_by("-highlighted", "-created")
             case _:
                 raise Http404("Invalid element type")
 
@@ -621,8 +621,8 @@ def _handle_exhibit_form(
 
 def _get_mr_exhibit_context_data(form, edit=False):
     """Helper method to prepare context data for exhibit templates."""
-    objects = Object.objects.all().order_by("-created")
-    sounds = Sound.objects.all().order_by("-created")
+    objects = Object.objects.all().order_by("-highlighted", "-created")
+    sounds = Sound.objects.all().order_by("-highlighted", "-created")
 
     paginator_objects = Paginator(objects, settings.OBJECT_MODAL_PAGE_SIZE)
     paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
