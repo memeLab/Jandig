@@ -15,7 +15,9 @@
         </div>
         <p id="element-author">{{ "{} {}".format(_("Author:") ,ar_object.author)}}</p>
         <p id="element-upload-info">
-            {{ "{} {}{} {}".format(_("Uploaded by") , ar_object.owner.user.username,_(", in"), ar_object.created.strftime("%d/%m/%Y")) }}
+            {{ _("Uploaded by") }}
+            {% set author_username = ar_object.owner.user.username %}
+            {% if author_username %}<a href="{{ url('public-profile', kwargs={'username': author_username}) }}">{{ author_username }}</a>{% else %}{{ author_username }}{% endif %}{{ _(", in") }} {{ ar_object.created.strftime("%d/%m/%Y") }}
             <p id="element-analytics">{{ ar_object.used_in_html_string() | safe }}</p>
             {% if ar_object.is_3d %}
                 <div id="glb-viewer-container"
