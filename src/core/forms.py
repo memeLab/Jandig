@@ -53,6 +53,12 @@ class ObjectWidget(forms.ClearableFileInput):
         return mark_safe(template)
 
 
+# Markers are rasterised and uploaded to the AR viewer as textures, so an
+# upload far larger than a 4K texture costs storage and marker-generation time
+# without improving detection. Both sides are capped at this value.
+MAX_MARKER_DIMENSION = 4096
+
+
 class UploadObjectForm(forms.ModelForm):
     selected_sound = forms.ModelChoiceField(
         queryset=Sound.objects.all(),
@@ -146,6 +152,32 @@ class UploadMarkerForm(forms.ModelForm):
     class Meta:
         model = Marker
         fields = ("source", "author", "title")
+
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        # Django's ImageField attaches the parsed PIL image to files it has
+        # just validated, so this is only set for a fresh upload. Editing a
+        # marker without replacing the file leaves it unset, and there is
+        # nothing new to check in that case.
+        image = getattr(file, "image", None)
+        if image is None:
+            return file
+
+        width, height = image.size
+        if width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION:
+            raise forms.ValidationError(
+                _(
+                    "This image is %(width)sx%(height)s pixels. Markers are limited "
+                    "to %(limit)sx%(limit)s pixels, so please resize it before "
+                    "uploading."
+                ),
+                params={
+                    "width": width,
+                    "height": height,
+                    "limit": MAX_MARKER_DIMENSION,
+                },
+            )
+        return file
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
