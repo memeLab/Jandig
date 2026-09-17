@@ -26,6 +26,7 @@
     margin: 0;
     text-align: center;
     background: #FFFFFF00;
+    font-size: 1.5em;
 }
 
 .modal-content {
@@ -72,22 +73,33 @@
 }
 
 #modal-header {
-    display:flex;
-    flex-direction: row-reverse;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
-    justify-content: space-between;
+    position: relative;
+}
+
+#modal-header #modal-title {
+    margin: 0;
+    text-align: center;
+    flex: 1;
 }
 
 #back-modal{
     font-size: larger;
     margin: 0;
     width: 2.5em;
+    position: absolute;
+    left: 10px;
 }
 
 #close-modal{
     font-size: larger;
     width: 2.5em;
     margin: 0;
+    position: absolute;
+    right: 10px;
 }
 
 #artwork-description{

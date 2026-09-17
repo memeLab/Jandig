@@ -1,7 +1,7 @@
 import os
 
 from django.conf import settings
-from django.conf.urls.static import serve, static
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework_nested.routers import DefaultRouter
@@ -12,6 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from core.views.api_views import MarkerGeneratorAPIView
+from core.views.static_views import serve_docs
 from core.views.viewsets import (
     ArtworkViewset,
     ExhibitViewset,
@@ -42,7 +43,7 @@ urlpatterns = [
     path("api/v1/auth/refresh/", TokenRefreshView().as_view(), name="refresh"),
     path("users/", include("users.urls")),
     path("memories/", include("blog.urls")),
-    re_path("^docs/(?P<path>.*)$", serve, {"document_root": settings.DOCS_ROOT}),
+    re_path("^docs/(?P<path>.*)$", serve_docs),
     path("", include("core.urls")),
 ]
 

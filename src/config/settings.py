@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import sys
+import tomllib
 from datetime import timedelta
 from socket import gethostbyname, gethostname
 
@@ -13,6 +14,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 ROOT_DIR = environ.Path(__file__) - 3  # three folders back (/jandig/src/config)
 BASE_DIR = ROOT_DIR.path("src")
+
 
 env = environ.Env()
 
@@ -46,13 +48,16 @@ ALLOWED_HOSTS += CUSTOM_ALLOWED_HOSTS
 
 
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
+
+with open(ROOT_DIR.path("pyproject.toml"), "rb") as f:
+    data = tomllib.load(f)
+    version = data["project"]["version"]
 # Sentry configuration
 ENABLE_SENTRY = env("ENABLE_SENTRY", default=False)
 HEALTH_CHECK_URL = env("HEALTH_CHECK_URL", default="api/v1/status/")
 SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE", default=0.1)
-SENTRY_PROFILES_SAMPLE_RATE = env("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="")
-SENTRY_RELEASE = env("SENTRY_RELEASE", default="2.0.10")
+SENTRY_RELEASE = env("SENTRY_RELEASE", default=version)
 
 
 def traces_sampler(sampling_context):
@@ -80,7 +85,6 @@ if ENABLE_SENTRY:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True,
         traces_sampler=traces_sampler,
-        profiles_sample_rate=SENTRY_PROFILES_SAMPLE_RATE,
         release=SENTRY_RELEASE,
     )
 
@@ -154,6 +158,7 @@ ROOT_URLCONF = "config.urls"
 
 PAGE_SIZE = 20
 MODAL_PAGE_SIZE = 40
+OBJECT_MODAL_PAGE_SIZE = 16
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
@@ -258,8 +263,8 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-# Sphinx docs
-DOCS_ROOT = "/jandig/build/"
+# MkDocs help site (built from docs/mkdocs.yml into build/)
+DOCS_ROOT = os.path.join(str(ROOT_DIR), "build")
 
 
 DEFAULT_FROM_EMAIL = env("SMTP_SENDER_MAIL", default="jandig@memelab.com.br")
@@ -271,11 +276,10 @@ EMAIL_HOST_USER = env("SMTP_USER", default="jandig@jandig.com")
 EMAIL_HOST_PASSWORD = env("SMTP_PASSWORD", default="")
 EMAIL_USE_SSL = False
 
-# Recaptcha
-RECAPTCHA_ENABLED = env("RECAPTCHA_ENABLED", default=False)
-RECAPTCHA_SITE_KEY = env("RECAPTCHA_SITE_KEY", default="")
-RECAPTCHA_PROJECT_ID = env("RECAPTCHA_PROJECT_ID", default="")
-RECAPTCHA_GCLOUD_API_KEY = env("RECAPTCHA_GCLOUD_API_KEY", default="")
+# Turnstile
+TURNSTILE_ENABLED = env("TURNSTILE_ENABLED", default=False)
+TURNSTILE_SITE_KEY = env("TURNSTILE_SITE_KEY", default="")
+TURNSTILE_SECRET_KEY = env("TURNSTILE_SECRET_KEY", default="")
 
 ###########################
 #### Storage settings  ####
@@ -334,7 +338,7 @@ if USE_GRANIAN:
             "BACKEND": "config.storage_backends.PublicMediaStorage",
         },
         "staticfiles": {
-            "BACKEND": "config.storage_backends.StaticStorage",
+            "BACKEND": "config.storage_backends.ManifestStaticStorage",
         },
     }
 

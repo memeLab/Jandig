@@ -1,16 +1,12 @@
-from io import BytesIO
-
 from django import forms
-from django.core.files.base import ContentFile, File
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
-from pymarker.core import generate_patt_from_image
 
+from core.marker_utils import generate_marker_variants
+from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
-from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
@@ -48,7 +44,7 @@ class ObjectWidget(forms.ClearableFileInput):
         self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
-        attrs.update({"accept": ".gif, .mp4, .webm, .glb"})
+        attrs.update({"accept": ".gif, .png, .mp4, .webm, .glb"})
         context = self.get_context(name, value, attrs)
         if self.thumbnail:
             context["widget"]["thumbnail"] = self.thumbnail
@@ -85,16 +81,18 @@ class UploadObjectForm(forms.ModelForm):
     def clean_source(self):
         file = self.cleaned_data.get("source")
 
-        allowed_extensions = ["gif", "mp4", "webm", "glb"]
+        allowed_extensions = ["gif", "png", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
         if extension not in allowed_extensions:
             raise forms.ValidationError(
-                _("Only GIF images, MP4, WebM videos, and GLB files are allowed.")
+                _(
+                    "Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
+                )
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.source):
-                if self.instance.is_used_by_other_user():
+                if self.instance.is_used_by_other_user:
                     raise forms.ValidationError(
                         _(
                             "This object is being used by another user. You cannot change the source file."
@@ -122,6 +120,13 @@ class UploadObjectForm(forms.ModelForm):
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
 
+        thumbnail = self.cleaned_data.get("thumbnail") or self.instance.thumbnail
+        dims = extract_dimensions(
+            self.instance.source, self.instance.file_extension, thumbnail
+        )
+        if dims:
+            self.instance.width, self.instance.height = dims
+
         return super(UploadObjectForm, self).save(*args, **kwargs)
 
 
@@ -144,25 +149,13 @@ class UploadMarkerForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
-
-        with Image.open(self.instance.source) as image:
-            pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=self.cleaned_data.get("inner_border", False)
+        instance = super(UploadMarkerForm, self).save(*args, **kwargs)
+        if commit:
+            generate_marker_variants(
+                instance,
+                inner_border=self.cleaned_data.get("inner_border", False),
             )
-            blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            filename = self.instance.source.name
-            self.instance.file_size = self.instance.source.size
-            self.instance.source.save(filename, File(blob), save=commit)
-            patt_str = generate_patt_from_image(image)
-
-            self.instance.patt.save(
-                f"{filename}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=commit,
-            )
-
-            return super(UploadMarkerForm, self).save(*args, **kwargs)
+        return instance
 
 
 class ArtworkForm(forms.ModelForm):
@@ -184,7 +177,7 @@ class ArtworkForm(forms.ModelForm):
         widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
     )
     selected_sound = forms.ModelChoiceField(
-        queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
+        queryset=Sound.objects.all(),
         required=False,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
@@ -256,6 +249,20 @@ class ExhibitForm(forms.ModelForm):
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
+        # On edit, pre-populate the hidden M2M inputs with the current
+        # selections so a user who only changes name/URL doesn't end
+        # up posting empty strings that clobber the data. The JS in
+        # exhibit_create_*.jinja2 still rewrites the input on click.
+        if self.instance.pk:
+            self.fields["artworks"].initial = ",".join(
+                str(a.id) for a in self.instance.artworks.all()
+            )
+            self.fields["augmenteds"].initial = ",".join(
+                str(o.id) for o in self.instance.augmenteds.all()
+            )
+            self.fields["sounds"].initial = ",".join(
+                str(s.id) for s in self.instance.sounds.all()
+            )
 
     class Meta:
         model = Exhibit
@@ -337,8 +344,8 @@ class ExhibitForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        artworks = cleaned_data.get("artworks", [])
-        augmenteds = cleaned_data.get("augmenteds", [])
+        artworks = cleaned_data.get("artworks") or []
+        augmenteds = cleaned_data.get("augmenteds") or []
 
         if not artworks and not augmenteds:
             raise forms.ValidationError(
@@ -392,7 +399,7 @@ class SoundForm(forms.ModelForm):
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.file):
-                if self.instance.is_used_by_other_user():
+                if self.instance.is_used_by_other_user:
                     raise forms.ValidationError(
                         _(
                             "This sound is being used by another user. You cannot change the source file."

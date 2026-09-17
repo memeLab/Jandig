@@ -18,7 +18,24 @@ from core.serializers import (
 )
 
 
-class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class ModalRetrieveOnlyMixin:
+    """Allow ModalHTMLRenderer only for the `retrieve` action.
+
+    The modal templates expect a single instance (`marker`, `object`, ...).
+    Letting ?format=modal through to `list` produces an HTTP 500 because no
+    template is associated with the paginated response.
+    """
+
+    def get_renderers(self):
+        renderers = super().get_renderers()
+        if getattr(self, "action", None) == "list":
+            return [r for r in renderers if not isinstance(r, ModalHTMLRenderer)]
+        return renderers
+
+
+class MarkerViewset(
+    ModalRetrieveOnlyMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet
+):
     serializer_class = MarkerSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
@@ -39,7 +56,9 @@ class MarkerViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return super().retrieve(request, *args, **kwargs)
 
 
-class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class ObjectViewset(
+    ModalRetrieveOnlyMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet
+):
     serializer_class = ObjectSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
@@ -63,7 +82,9 @@ class ObjectViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return super().retrieve(request, *args, **kwargs)
 
 
-class ArtworkViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class ArtworkViewset(
+    ModalRetrieveOnlyMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet
+):
     serializer_class = ArtworkSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
     queryset = (
@@ -120,7 +141,9 @@ class ExhibitViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return queryset
 
 
-class SoundViewset(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class SoundViewset(
+    ModalRetrieveOnlyMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet
+):
     serializer_class = SoundSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer, ModalHTMLRenderer]
 

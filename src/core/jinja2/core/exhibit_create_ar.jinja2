@@ -1,12 +1,14 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/label.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+{% endblock %}
 {% block content %}
     <section class="create-exhibit">
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
-        <link rel="stylesheet" href="{{ static ('css/label.css') }}">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
             {% if edit %}
                 <h1 class="titExb">{{ _("Edit AR Exhibition") }}</h1>
@@ -25,7 +27,7 @@
                 <h3>{{ _("Exhibit Link") }}</h3>
                 <p class="gallery-title">{{ _("Your exhibit URL will look like this") }}</p>
                 <div style="display: flex; width: 100%">
-                    <label class="url-helper">https://jandig.app/</label>
+                    <label class="url-helper">{{ request.scheme }}://{{ request.get_host() }}/</label>
                     <p id="exhibit-slug-field" style="float: right; width: 65%">{{ form.visible_fields()[1] }}</p>
                 </div>
                 {{ form.visible_fields()[1] .errors }}
@@ -36,19 +38,16 @@
                 <div id="form-modal" class="modal">
                     <div id="artwork-modal" class="tab">
                         <h4 class="modal-title">{{ _("Select Artworks") }}</h4>
-                        {% with repository_list = artworks, element_type="artwork", selected=selected_artworks %}
-                            {% if repository_list|length > 0 %}
-                                <p class="gallery-title">{{ _("Choose from your repository") }}</p>
-                            {% else %}
-                                <section id="repo-{{ element_type }}" class="repository-list">
-                                    <p>{{ _("You have no Artworks. :c") }}</p>
-                                    <a href="{{ url('create-artwork') }}" class="button">{{ _("Create one") }}</a>
-                                </section>
-                            {% endif %}
-                            {% with repository_list = artworks, element_type="artwork", htmx="false" %}
+                        {% if artworks %}
+                            {% with repository_list = artworks, element_type="artwork", htmx="false", selected=selected_artworks %}
                                 {% include "core/components/item-list.jinja2" %}
                             {% endwith %}
-                        {% endwith %}
+                        {% else %}
+                            <section id="repo-artwork" class="repository-list">
+                                <p>{{ _("You have no Artworks. :c") }}</p>
+                                <a href="{{ url('create-artwork') }}" class="button">{{ _("Create one") }}</a>
+                            </section>
+                        {% endif %}
                         <a type="button"
                            type="button"
                            href="#close-modal"
@@ -105,7 +104,7 @@
             
             selected_artworks.split(",").forEach(function(id){
                 artworks[id] = id
-                $("#artwork-"+id).css("border-bottom","3px solid #a6a6a6");
+                $("#artwork-"+id).css("border-bottom","3px solid #05f7ae");
             });
             
         }
@@ -128,7 +127,7 @@
                     else
                         console.error("Unknown item type: " + item_type);
                 }else{
-                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    $(this).css("border-bottom","3px solid #05f7ae");
                     if (item_type === "artwork")
                         artworks[item_id] = item_id;
                     else

@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.templatetags.static import static
+from django.views.static import serve as static_serve
 
 
 def community(request):
@@ -19,22 +21,22 @@ def health_check(_):
     return JsonResponse({"status": "ok"}, status=200)
 
 
-def me_hotsite(request, _):
+def me_hotsite(request):
     return render(request, "core/ME/hotsite.html", {})
 
 
-def home_new(request):
-    return render(request, "core/home_v2.jinja2", {})
-
-
-def home_old(request):
+def home(request):
     return render(request, "core/home.jinja2", {})
 
 
 def manifest(request):
-    return render(
-        request, "core/manifest.json", content_type="application/x-javascript"
-    )
+    agent = request.META.get("HTTP_USER_AGENT", "")
+    if any(
+        device in agent.lower()
+        for device in ["ipad", "iphone", "mac", "safari", "ios", "apple"]
+    ):
+        return redirect(static("files/ios-manifest.json"))
+    return redirect(static("files/manifest.json"))
 
 
 def marker_generator(request):
@@ -50,4 +52,10 @@ def robots_txt(_):
 
 
 def service_worker(request):
-    return render(request, "core/sw.js", content_type="application/x-javascript")
+    return redirect(static("js/sw.js"))
+
+
+def serve_docs(request, path):
+    if not path or path.endswith("/"):
+        path += "index.html"
+    return static_serve(request, path, document_root=settings.DOCS_ROOT)

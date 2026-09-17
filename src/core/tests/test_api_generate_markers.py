@@ -30,6 +30,6 @@ class TestGenerateMarkerAPI(TestCase):
             data = {"source": image_file, "inner_border": "true"}
             response = self.client.post(reverse("markergenerator"), data)
         assert response.status_code == 200
-        assert "data:image/jpeg;base64," in response.content.decode()
+        assert "data:image/png;base64," in response.content.decode()
         assert len(response.content) > 1000  # Ensure some content is returned
         assert response.content.decode().startswith("<img src=")
