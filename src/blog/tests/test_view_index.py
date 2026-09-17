@@ -116,12 +116,13 @@ class TestBlogIndex(TestCase):
         assert posts[0].title == "Test Post 1"
         assert posts[1].title == "Test Post 0"
 
-    def test_last_page_flag_is_true_only_on_the_final_page(self):
+    def test_context_does_not_carry_an_unused_last_page_flag(self):
         """
-        `last_page` must report whether the current page is the final one.
+        `last_page` was removed: nothing read it.
 
-        It used to be set from `page.has_previous()`, which is the inverse:
-        False on page 1 and True on every other page.
+        It had been set from `page.has_previous()`, the inverse of what the
+        name promised, and no template, view or test ever consumed it. This
+        guards against reintroducing a flag with no reader.
         """
         for i in range(10):
             Post.objects.create(
@@ -131,27 +132,7 @@ class TestBlogIndex(TestCase):
                 status=PostStatus.PUBLISHED,
             )
 
-        first = self.client.get(reverse("blog_index"))
-        total_pages = first.context["total_pages"]
-        assert total_pages > 2, "this test needs at least three pages to be meaningful"
-        assert first.context["last_page"] is False
-
-        middle = self.client.get(reverse("blog_index"), {"page": total_pages - 1})
-        assert middle.context["last_page"] is False
-
-        last = self.client.get(reverse("blog_index"), {"page": total_pages})
-        assert last.context["last_page"] is True
-
-    def test_last_page_flag_is_true_when_all_posts_fit_in_one_page(self):
-        """A single page of results is also the last page."""
-        Post.objects.all().delete()
-        Post.objects.create(
-            title="Only Post",
-            excerpt="Excerpt.",
-            formatted_body="Body.",
-            status=PostStatus.PUBLISHED,
-        )
         response = self.client.get(reverse("blog_index"))
 
-        assert response.context["total_pages"] == 1
-        assert response.context["last_page"] is True
+        assert "last_page" not in response.context
+        assert response.context["total_pages"] > 1
