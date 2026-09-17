@@ -1,4 +1,5 @@
 import logging
+from uuid import uuid4
 
 import pghistory
 from django.core.files.base import ContentFile as CF
@@ -61,9 +62,26 @@ class SoundExtensions(models.TextChoices):
     WAV = "wav", "WAV"
 
 
+def sound_file_path(instance, filename):
+    """Upload path: sounds/<uuid>.<ext>
+
+    Sound filenames come straight from the user, and names carrying spaces,
+    accents or reserved characters have caused "file not found" errors once
+    S3 and Django disagree about how to escape them. The original name is
+    still recorded on Sound.file_name_original.
+
+    A uuid is used rather than the <pk>/<role> layout that objects and markers
+    use, because the primary key does not exist yet when the upload path is
+    generated for a new row.
+    """
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    name = uuid4().hex
+    return f"sounds/{name}.{ext}" if ext else f"sounds/{name}"
+
+
 @pghistory.track()
 class Sound(TimeStampedModel, ContentMixin):
-    file = models.FileField(upload_to="sounds/")
+    file = models.FileField(upload_to=sound_file_path)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=60, blank=False)
     owner = models.ForeignKey(
