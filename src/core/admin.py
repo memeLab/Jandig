@@ -11,7 +11,7 @@ from pymarker import remove_borders_from_image
 
 from core.marker_utils import generate_marker_variants
 from core.media_dimensions import extract_dimensions
-from core.models import Artwork, Exhibit, Marker, Object, Sound
+from core.models import Artwork, Exhibit, Feedback, Marker, Object, Sound
 from core.spritesheet_converter import gif_to_spritesheet
 from core.utils import filesizeformat, get_admin_url
 
@@ -392,3 +392,12 @@ class SoundAdmin(admin.ModelAdmin):
 
     def preview(self, obj):
         return format_html(obj.as_html(), "")
+
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "kind", "email", "handled", "created"]
+    list_filter = ["kind", "handled"]
+    list_editable = ["handled"]
+    search_fields = ["description", "email"]
+    readonly_fields = ["kind", "description", "email", "attachment", "created"]

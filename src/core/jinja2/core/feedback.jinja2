@@ -1,0 +1,28 @@
+{% extends "core/base.jinja2" %}
+{% block content %}
+    <main class="container feedback">
+        {% if submitted %}
+            <h1>{{ _("Thank you!") }}</h1>
+            <p>{{ _("Your report was received. If you left an e-mail, we may get back to you.") }}</p>
+            <a class="button" href="{{ url('home') }}">{{ _("Back to Jandig") }}</a>
+        {% else %}
+            <h1>{{ _("Report a bug or request a feature") }}</h1>
+            <p>
+                {{ _("Found something broken, or missing? Tell us here — no GitHub account needed.") }}
+            </p>
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {{ csrf_input }}
+                {% for field in form %}
+                    <div class="form-field">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                {{ form.non_field_errors() }}
+                <button type="submit" class="button">{{ _("Send") }}</button>
+            </form>
+        {% endif %}
+    </main>
+{% endblock content %}
