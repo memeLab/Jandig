@@ -26,7 +26,9 @@ class TestSoundUploadPath(TestCase):
         return self.client.post(
             reverse("sound-upload"),
             {
-                "file": SimpleUploadedFile(filename, payload, content_type="audio/mpeg"),
+                "file": SimpleUploadedFile(
+                    filename, payload, content_type="audio/mpeg"
+                ),
                 "title": filename,
                 "author": "Test Author",
             },
