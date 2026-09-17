@@ -7,10 +7,10 @@ from django.db.models.signals import m2m_changed, post_delete, post_save, pre_sa
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
 
 from core.marker_utils import delete_marker_files
+from core.timestamps import TimeStampedModel
 from users.models import Profile
 
 log = logging.getLogger()
@@ -507,6 +507,17 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         default=ExhibitTypes.AR,
         db_index=True,
     )
+
+    class Meta(TimeStampedModel.Meta):
+        indexes = [
+            # collection() and see_all() filter by exhibit_type and then order
+            # by "-created"; the single-column index on created cannot serve
+            # both, so keep a composite one.
+            models.Index(
+                fields=["exhibit_type", "-created"],
+                name="core_exhibit_type_created_idx",
+            ),
+        ]
 
     def __str__(self):
         return self.name
