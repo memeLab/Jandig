@@ -1,0 +1,14 @@
+{% extends '/core/base.jinja2' %}
+{% block content %}
+<div class="Container">
+    <h1>{{ artwork.title }}</h1>
+    <p>{{ _("Author") }}: {{ artwork.author }}</p>
+    {% if artwork.marker %}
+        <p>{{ _("Marker") }}: <a href="{{ artwork.marker.get_absolute_url() }}">{{ artwork.marker.title }}</a></p>
+    {% endif %}
+    {% if artwork.augmented %}
+        <p>{{ _("Object") }}: <a href="{{ artwork.augmented.get_absolute_url() }}">{{ artwork.augmented.title }}</a></p>
+    {% endif %}
+    <p>{{ _("Uploaded") }}: {{ artwork.uploaded_at }}</p>
+</div>
+{% endblock %}
