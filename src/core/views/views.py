@@ -1,9 +1,14 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
+from sentry_sdk import metrics
 
 from core.forms import (
     ArtworkForm,
@@ -13,6 +18,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
+from core.marker_utils import generate_marker_variants
 from core.models import (
     Artwork,
     Exhibit,
@@ -22,6 +28,7 @@ from core.models import (
     ObjectExtensions,
     Sound,
 )
+from core.spritesheet_converter import gif_to_spritesheet
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
@@ -160,6 +167,59 @@ def delete(request):
 
 
 @login_required
+@require_http_methods(["POST"])
+def convert_gif_to_spritesheet(request):
+    """HTMX endpoint: convert an uploaded GIF to a PNG spritesheet."""
+    source_file = request.FILES.get("source")
+    if not source_file:
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": "No file provided."},
+        )
+
+    extension = (
+        source_file.name.rsplit(".", 1)[-1].lower() if "." in source_file.name else ""
+    )
+    if extension != "gif":
+        return HttpResponse(status=204)
+
+    try:
+        png_bytes, metadata = gif_to_spritesheet(source_file)
+    except ValueError as e:
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": str(e)},
+        )
+
+    # Store the spritesheet and metadata via Django's file storage
+    base_name = source_file.name.rsplit(".", 1)[0]
+    spritesheet_name = base_name + "_spritesheet.png"
+    metadata_name = base_name + "_spritesheet.json"
+    from django.core.files.storage import default_storage
+
+    saved_spritesheet_path = default_storage.save(
+        f"objects/spritesheets/{spritesheet_name}",
+        ContentFile(png_bytes),
+    )
+    saved_metadata_path = default_storage.save(
+        f"objects/spritesheets/{metadata_name}",
+        ContentFile(json.dumps(metadata).encode("utf-8")),
+    )
+
+    return TemplateResponse(
+        request,
+        "core/templates/spritesheet_result.jinja2",
+        {
+            "spritesheet_path": saved_spritesheet_path,
+            "spritesheet_metadata_path": saved_metadata_path,
+            "preview_url": source_file.name,
+        },
+    )
+
+
+@login_required
 def object_upload(request):
     """Upload an object file and generate a thumbnail if it's a GLB file."""
     if request.method == "POST":
@@ -168,19 +228,37 @@ def object_upload(request):
             obj = form.save(commit=False)
             obj.owner = request.user.profile
             obj.save()
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+
+            # Move all files to objects/<pk>/ folder
+            obj.relocate_files()
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": f"object_{obj.file_extension}",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = UploadObjectForm()
 
     sounds = Sound.objects.all().order_by("-created")
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
     return render(
         request,
         "core/upload-object.jinja2",
         {
             "form": form,
             "edit": False,
-            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+            "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
             "total_sound_pages": paginator_sounds.num_pages,
         },
     )
@@ -197,18 +275,30 @@ def marker_preview(request):
     except (TypeError, ValueError):
         raise Http404
     marker = get_object_or_404(Marker, id=marker_id)
+
+    metrics.count(
+        "marker_preview_requests",
+        1,
+        attributes={
+            "marker_id": marker.id,
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
+        },
+    )
     artwork = {
         "marker": marker,
-        "augmented": marker,
+        "augmented": {"file_extension": "png", "source": marker.print_img},
         "scale_x": 1,
         "scale_y": 1,
         "position_x": 0,
         "position_y": 0,
+        "type": "marker",
     }
     ctx = {
         "artworks": [artwork],
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @login_required
@@ -219,6 +309,19 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            generate_marker_variants(
+                marker,
+                inner_border=form.cleaned_data.get("inner_border", False),
+            )
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": "marker",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = UploadMarkerForm()
@@ -246,7 +349,6 @@ def edit_marker(request):
         "source": model.source,
         "created": model.created,
         "author": model.author,
-        "patt": model.patt,
         "title": model.title,
     }
 
@@ -296,13 +398,32 @@ def edit_object(request):
 
         form.full_clean()
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+
+            # Attach spritesheet if provided by HTMX conversion step
+            spritesheet_path = request.POST.get("spritesheet_path")
+            spritesheet_metadata_path = request.POST.get("spritesheet_metadata_path")
+            if spritesheet_path and spritesheet_metadata_path:
+                obj.spritesheet_file.name = spritesheet_path
+                obj.spritesheet_metadata.name = spritesheet_metadata_path
+            else:
+                # Clear spritesheet fields if not provided (source is no longer GIF)
+                obj.spritesheet_file = None
+                obj.spritesheet_metadata = None
+
+            # Clear thumbnail if new source is not GLB
+            if obj.file_extension != ObjectExtensions.GLB:
+                obj.thumbnail = None
+
+            obj.save()
+            # Move all files to objects/<pk>/ folder
+            obj.relocate_files()
             return redirect("profile")
     else:
         form = UploadObjectForm(initial=model_data)
 
     sounds = Sound.objects.all().order_by("-created")
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
 
     return render(
         request,
@@ -311,7 +432,7 @@ def edit_object(request):
             "form": form,
             "model": model,
             "edit": True,
-            "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+            "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
             "selected_sound": model.sound.id if model.sound else None,
             "total_sound_pages": paginator_sounds.num_pages,
         },
@@ -328,6 +449,14 @@ def _handle_artwork_form(request, user_profile, artwork_instance=None):
             artwork = form.save(commit=False)
             artwork.author = user_profile
             artwork.save()
+            metrics.count(
+                "creation",
+                1,
+                attributes={
+                    "type": "artwork",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = ArtworkForm(instance=artwork_instance)
@@ -345,14 +474,14 @@ def _get_artwork_context_data(form, artwork_instance=None):
     )
     sound_list = Sound.objects.all().order_by("-created")
     paginator_marker = Paginator(marker_list, settings.MODAL_PAGE_SIZE)
-    paginator_object = Paginator(object_list, settings.MODAL_PAGE_SIZE)
-    paginator_sound = Paginator(sound_list, settings.MODAL_PAGE_SIZE)
+    paginator_object = Paginator(object_list, settings.OBJECT_MODAL_PAGE_SIZE)
+    paginator_sound = Paginator(sound_list, settings.OBJECT_MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
-        "sound_list": sound_list[: settings.MODAL_PAGE_SIZE],
+        "sound_list": sound_list[: settings.OBJECT_MODAL_PAGE_SIZE],
         "marker_list": marker_list[: settings.MODAL_PAGE_SIZE],
-        "object_list": object_list[: settings.MODAL_PAGE_SIZE],
+        "object_list": object_list[: settings.OBJECT_MODAL_PAGE_SIZE],
         "total_marker_pages": paginator_marker.num_pages,
         "total_object_pages": paginator_object.num_pages,
         "total_sound_pages": paginator_sound.num_pages,
@@ -397,11 +526,21 @@ def edit_artwork(request):
 @require_http_methods(["GET"])
 def artwork_preview(request):
     artwork_id = request.GET.get("id")
+    metrics.count(
+        "artwork_preview_requests",
+        1,
+        attributes={
+            "artwork_id": artwork_id,
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
+        },
+    )
 
     ctx = {
         "artworks": Artwork.objects.filter(id=artwork_id).order_by("-id"),
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @require_http_methods(["GET"])
@@ -441,7 +580,12 @@ def get_element(request):
             case _:
                 raise Http404("Invalid element type")
 
-        paginator = Paginator(qs, settings.MODAL_PAGE_SIZE)
+        paginator = Paginator(
+            qs,
+            settings.MODAL_PAGE_SIZE
+            if element_type != "object" and element_type != "sound"
+            else settings.OBJECT_MODAL_PAGE_SIZE,
+        )
         if page > paginator.num_pages:
             page = paginator.num_pages
 
@@ -471,6 +615,15 @@ def _handle_exhibit_form(
             exhibit = form.save(commit=False)
             exhibit.owner = user_profile
             form.save()
+            if not is_edit:
+                metrics.count(
+                    "creation",
+                    1,
+                    attributes={
+                        "type": f"exhibit_{exhibit_type.value}",
+                        "user": request.user.username,
+                    },
+                )
             return redirect("profile")
         else:
             if exhibit_type == ExhibitTypes.MR:
@@ -492,13 +645,13 @@ def _get_mr_exhibit_context_data(form, edit=False):
     objects = Object.objects.all().order_by("-created")
     sounds = Sound.objects.all().order_by("-created")
 
-    paginator_objects = Paginator(objects, settings.MODAL_PAGE_SIZE)
-    paginator_sounds = Paginator(sounds, settings.MODAL_PAGE_SIZE)
+    paginator_objects = Paginator(objects, settings.OBJECT_MODAL_PAGE_SIZE)
+    paginator_sounds = Paginator(sounds, settings.OBJECT_MODAL_PAGE_SIZE)
 
     context = {
         "form": form,
-        "objects": objects[: settings.MODAL_PAGE_SIZE],
-        "sounds": sounds[: settings.MODAL_PAGE_SIZE],
+        "objects": objects[: settings.OBJECT_MODAL_PAGE_SIZE],
+        "sounds": sounds[: settings.OBJECT_MODAL_PAGE_SIZE],
         "total_object_pages": paginator_objects.num_pages,
         "total_sound_pages": paginator_sounds.num_pages,
     }
@@ -602,6 +755,14 @@ def sound_upload(request):
             sound = form.save(commit=False)
             sound.owner = request.user.profile
             sound.save()
+            metrics.count(
+                "upload",
+                1,
+                attributes={
+                    "type": "sound",
+                    "user": request.user.username,
+                },
+            )
             return redirect("profile")
     else:
         form = SoundForm()
@@ -645,6 +806,17 @@ def exhibit_select(request):
 @require_http_methods(["GET"])
 def exhibit(request, slug):
     exhibit = get_object_or_404(Exhibit.objects.prefetch_related("artworks"), slug=slug)
+    metrics.count(
+        "exhibit_requests",
+        1,
+        attributes={
+            "exhibit_id": exhibit.id,
+            "user": request.user.username
+            if request.user.is_authenticated
+            else "anonymous",
+            "slug": slug,
+        },
+    )
     artworks = exhibit.artworks.select_related("marker", "augmented").all()
     if not artworks:
         raise Http404("No artworks found for this exhibit.")
@@ -653,7 +825,7 @@ def exhibit(request, slug):
         "exhibit": exhibit,
         "artworks": artworks,
     }
-    return render(request, "core/exhibit.jinja2", ctx)
+    return render(request, "core/ar.jinja2", ctx)
 
 
 @require_http_methods(["GET"])
@@ -690,23 +862,41 @@ def related_content(request):
         # Get all exhibits that have artworks related to the object or marker
         # Use values_list to get a list of artwork IDs
         # Use distinct to avoid duplicates exhibits
-        exhibits = (
-            Exhibit.objects.filter(artworks__id__in=element.artworks.values_list("id"))
+        ar_exhibits = (
+            Exhibit.objects.filter(
+                artworks__id__in=element.artworks.values_list("id"),
+                exhibit_type=ExhibitTypes.AR,
+            )
+            .select_related("owner", "owner__user")
+            .prefetch_related("artworks")
+            .distinct()
+        )
+        mr_exhibits = (
+            Exhibit.objects.filter(
+                artworks__id__in=element.artworks.values_list("id"),
+                exhibit_type=ExhibitTypes.MR,
+            )
             .select_related("owner", "owner__user")
             .prefetch_related("artworks")
             .distinct()
         )
 
-        ctx = {"artworks": artworks, "exhibits": exhibits, "seeall": False}
+        ctx = {
+            "artworks": artworks,
+            "ar_exhibits": ar_exhibits,
+            "mr_exhibits": mr_exhibits,
+            "seeall": False,
+        }
 
     elif element_type == "artwork":
         element = Artwork.objects.prefetch_related(
             "exhibits__artworks", "exhibits__owner__user"
         ).get(id=element_id)
 
-        exhibits = element.exhibits.all()
+        ar_exhibits = element.exhibits.filter(exhibit_type=ExhibitTypes.AR).all()
+        mr_exhibits = element.exhibits.filter(exhibit_type=ExhibitTypes.MR).all()
 
-        ctx = {"exhibits": exhibits, "seeall": False}
+        ctx = {"ar_exhibits": ar_exhibits, "mr_exhibits": mr_exhibits, "seeall": False}
 
     elif element_type == "sound":
         element = Sound.objects.prefetch_related(
@@ -714,10 +904,19 @@ def related_content(request):
         ).get(id=element_id)
 
         ctx = {
-            "exhibits": element.exhibits.all(),
+            "ar_exhibits": element.exhibits.filter(exhibit_type=ExhibitTypes.AR).all(),
+            "mr_exhibits": element.exhibits.filter(exhibit_type=ExhibitTypes.MR).all(),
             "artworks": element.artworks.all(),
             "objects": element.ar_objects.all(),
             "seeall": False,
         }
 
     return render(request, COLLECTION_PAGE, ctx)
+
+
+def ar_view(request):
+    exhibit = Exhibit.objects.get(id=4)
+
+    debug = request.GET.get("debug", "false").lower() == "true"
+    ctx = {"artworks": exhibit.artworks.all(), "debug": debug}
+    return render(request, "core/ar.jinja2", ctx)

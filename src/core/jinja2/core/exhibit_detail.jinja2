@@ -1,8 +1,10 @@
 {% extends '/core/home.jinja2' %}
-{% block content %}
+{% block extra_css %}
     <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
     <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
     <script src="{{ static('js/modal.js') }}"></script>
+{% endblock %}
+{% block content %}
     <div class="exhibit-detail container ">
         <div class="exhibit-detail-box flex">
             <h1 class="exhibit-name">{{ exhibit.name }}</h1>

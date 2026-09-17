@@ -67,15 +67,9 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.sources=src/
-            -Dsonar.exclusions=**/migrations/**
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.coverage.exclusions=**/migrations/**,**/tests/**,**/wsgi.py,**/admin.py,**/asgi.py,**/manage.py,**/ui_tests/**,**/*.css,**/*.js,**/*.jinja2
-            -Dsonar.cpd.exclusions=**/migrations/**
-            -Dsonar.python.version=3.13
 
   # Job 3: Build and Deploy
   build-and-deploy:

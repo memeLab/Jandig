@@ -1,76 +1,38 @@
 import logging
 
 import pghistory
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile as CF
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
-from fast_html import a, audio, b, div, h1, img, p, render, span, video
-from PIL import Image
-from pymarker.core import generate_marker_from_image, generate_patt_from_image
+from fast_html import a, audio, img, render, video
 
-from config.storage_backends import PublicMediaStorage
+from core.marker_utils import delete_marker_files
 from users.models import Profile
 
 log = logging.getLogger()
 
-DEFAULT_MARKER_THUMBNAIL_HEIGHT = 50
-DEFAULT_MARKER_THUMBNAIL_WIDTH = 50
-DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 50
-DEFAULT_OBJECT_THUMBNAIL_WIDTH = 50
+DEFAULT_MARKER_THUMBNAIL_HEIGHT = 64
+DEFAULT_MARKER_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_THUMBNAIL_HEIGHT = 64
+DEFAULT_OBJECT_THUMBNAIL_WIDTH = 64
+DEFAULT_OBJECT_PREVIEW_HEIGHT = 320
+DEFAULT_OBJECT_PREVIEW_WIDTH = 320
+DEFAULT_MARKER_PREVIEW_HEIGHT = 320
+DEFAULT_MARKER_PREVIEW_WIDTH = 320
 
 SCALE_REGEX = r"[\d\.\d]+"
 
 USED_IN = _("Used in")
 
 
-def create_patt(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        patt_str = generate_patt_from_image(image)
-        patt_file = filestorage.save(
-            "patts/" + original_filename + ".patt",
-            ContentFile(patt_str.encode("utf-8")),
-        )
-        return patt_file
-
-
-def create_marker(filename, original_filename):
-    filestorage = PublicMediaStorage()
-    with Image.open(filestorage.open(filename)) as image:
-        marker_image = generate_marker_from_image(image)
-        marker_image.name = original_filename
-        marker_image.__commited = False
-        return marker_image
-
-
 class ContentMixin:
     def content_type(self):
         return self.__class__.__name__.lower()
-
-    def _get_edit_button(self):
-        content_type = self.content_type()
-        return a(
-            _("edit"),
-            href=reverse(f"edit-{content_type}", query={"id": self.id}),
-            class_="edit",
-        )
-
-    def _get_delete_button(self):
-        content_type = self.content_type()
-        return a(
-            _("delete"),
-            href=reverse(
-                "delete-content",
-                query={"content_type": content_type, "id": self.id},
-            ),
-            onclick=f"return confirm('{_('Are you sure you want to delete?')}')",
-            class_="delete",
-        )
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {}".format(
@@ -114,6 +76,8 @@ class Sound(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=SoundExtensions.choices
     )
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
 
     @property
     def date(self):
@@ -130,28 +94,6 @@ class Sound(TimeStampedModel, ContentMixin):
     @property
     def exhibits_count(self):
         return self.exhibits.count()
-
-    def is_used_by_other_user(self):
-        """
-        Check if the object is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return (
-            self.ar_objects.exclude(owner=self.owner).exists()
-            or self.artworks.exclude(author=self.owner).exists()
-            or self.exhibits.exclude(owner=self.owner).exists()
-        )
-
-    @property
-    def in_use(self):
-        if self.exhibits_count > 0:
-            return True
-        if self.augmenteds_count > 0:
-            return True
-        if self.artworks_count > 0:
-            return True
-        return False
 
     def used_in_html_string(self):
         used_in = "{} {} {} {} {} {} {}".format(
@@ -189,19 +131,6 @@ class Sound(TimeStampedModel, ContentMixin):
             )
         )
 
-    def as_html_thumbnail(self, editable=False):
-        elements = [
-            span(self.title, style="display:block;"),
-            self.as_html(),
-        ]
-        if editable and not self.is_used_by_other_user():
-            elements.append(self._get_edit_button())
-
-        if editable and not self.in_use:
-            elements.append(self._get_delete_button())
-
-        return render(div(elements, style="margin: 10px auto;"))
-
 
 class ExhibitTypes(models.TextChoices):
     AR = "AR", "Augmented Reality"
@@ -214,12 +143,16 @@ class Marker(TimeStampedModel, ContentMixin):
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
     source = models.ImageField(upload_to="markers/")
+    marker_img = models.ImageField(upload_to="markers/", blank=True)
+    print_img = models.ImageField(upload_to="markers/", blank=True)
+    thumb_img = models.ImageField(upload_to="markers/", blank=True)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
-    patt = models.FileField(upload_to="patts/")
 
     # Save the file size of the Marker, so we avoid making requests to S3 / MinIO to check for it.
     file_size = models.IntegerField(default=0, blank=True, null=True)
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
     slug = models.SlugField(unique=True, blank=True, max_length=80)
 
     def save(self, *args, **kwargs):
@@ -243,25 +176,18 @@ class Marker(TimeStampedModel, ContentMixin):
     def artworks_count(self):
         return self.artworks.count()
 
-    @property
-    def in_use(self):
-        if self.artworks_count > 0:
-            return True
-        return False
-
-    def is_used_by_other_user(self):
-        """
-        Check if the Marker is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return self.artworks.exclude(author=self.owner).exists()
-
-    def as_html(self, height: int = None, width: int = None):
+    def as_html(
+        self,
+        height: int = DEFAULT_MARKER_PREVIEW_HEIGHT,
+        width: int = DEFAULT_MARKER_PREVIEW_WIDTH,
+        thumbnail: bool = False,
+    ):
+        image = self.thumb_img if thumbnail else self.print_img
+        src = image.url + f"?v={int(self.modified.timestamp())}"
         attributes = {
             "id": self.id,
             "title": self.title,
-            "src": self.source.url,
+            "src": src,
         }
         return render(
             img(
@@ -271,38 +197,40 @@ class Marker(TimeStampedModel, ContentMixin):
             )
         )
 
-    def as_html_thumbnail(self, editable: bool = False):
-        height = DEFAULT_MARKER_THUMBNAIL_HEIGHT
-        width = DEFAULT_MARKER_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height=height, width=width)]
-        # Disabled edit button for now:
-        # it only allows to edit the title
-        # and it's generating recursive borders on the existing marker.
-        if editable:
-            lower_menu_items = []
-            if not self.in_use:
-                lower_menu_items.append(self._get_delete_button())
-
-            # if not self.is_used_by_other_user():
-            #     to_render.append(self._get_edit_button())
-
-            lower_menu_items.append(
-                a(
-                    _("preview"),
-                    href=reverse("marker-preview", query={"id": self.id}),
-                    class_="preview",
-                )
-            )
-            lower_menu = div(lower_menu_items, class_="marker-menu")
-            to_render.append(lower_menu)
-        return render(to_render)
-
 
 class ObjectExtensions(models.TextChoices):
     GIF = "gif", "GIF"
+    PNG = "png", "PNG"
     MP4 = "mp4", "MP4"
     WEBM = "webm", "WEBM"
     GLB = "glb", "GLB"
+
+
+def object_source_path(instance, filename):
+    """Upload path: objects/<id>/source.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/source.{ext}"
+
+
+def object_audio_description_path(instance, filename):
+    """Upload path: objects/<id>/audio_description.<ext>"""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    return f"objects/{instance.pk}/audio_description.{ext}"
+
+
+def object_thumbnail_path(instance, filename):
+    """Upload path: objects/<id>/thumbnail.png"""
+    return f"objects/{instance.pk}/thumbnail.png"
+
+
+def object_spritesheet_path(instance, filename):
+    """Upload path: objects/<id>/spritesheet.png"""
+    return f"objects/{instance.pk}/spritesheet.png"
+
+
+def object_spritesheet_metadata_path(instance, filename):
+    """Upload path: objects/<id>/metadata.json"""
+    return f"objects/{instance.pk}/metadata.json"
 
 
 @pghistory.track()
@@ -318,9 +246,9 @@ class Object(TimeStampedModel, ContentMixin):
         blank=True,
     )
     audio_description = models.FileField(
-        upload_to="audio_descriptions/", null=True, blank=True
+        upload_to=object_audio_description_path, null=True, blank=True
     )
-    source = models.FileField(upload_to="objects/")
+    source = models.FileField(upload_to=object_source_path)
     author = models.CharField(max_length=60, blank=False)
     title = models.CharField(max_length=60, default="")
     # Save the file size of the object, so we avoid making requests to S3 / MinIO to check for it.
@@ -329,11 +257,25 @@ class Object(TimeStampedModel, ContentMixin):
     file_extension = models.CharField(
         max_length=10, db_index=True, choices=ObjectExtensions.choices
     )
+    in_use = models.BooleanField(default=False)
+    is_used_by_other_user = models.BooleanField(default=False)
     thumbnail = models.ImageField(
-        upload_to="objects/thumbnails/",
+        upload_to=object_thumbnail_path,
         blank=True,
         null=True,
     )
+    spritesheet_file = models.FileField(
+        upload_to=object_spritesheet_path,
+        blank=True,
+        null=True,
+    )
+    spritesheet_metadata = models.FileField(
+        upload_to=object_spritesheet_metadata_path,
+        blank=True,
+        null=True,
+    )
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True, max_length=80)
 
     def save(self, *args, **kwargs):
@@ -353,23 +295,107 @@ class Object(TimeStampedModel, ContentMixin):
     def __str__(self):
         return self.source.name
 
+    def relocate_files(self):
+        """Move all files to the canonical objects/<pk>/ folder.
+
+        Called after initial save (when pk is available) to ensure files
+        live at their ID-based path. Safe to call multiple times — skips
+        files that are already in the correct location.
+
+        Also cleans up stale files from previous uploads (e.g. source.webm
+        when the new file is source.glb).
+        """
+
+        storage = self.source.storage
+        changed = False
+
+        def _cleanup_stale(keep_path, prefix):
+            """Delete files matching prefix.* in the object folder, except keep_path."""
+            folder = f"objects/{self.pk}"
+            try:
+                _, files = storage.listdir(folder)
+            except Exception:
+                return
+            base = prefix  # e.g. "source"
+            for f in files:
+                if f.split(".")[0] == base:
+                    full_path = f"{folder}/{f}"
+                    if full_path != keep_path:
+                        try:
+                            storage.delete(full_path)
+                        except Exception:
+                            pass
+
+        def _move(field, target_path):
+            nonlocal changed
+            if not field.name:
+                return
+            if field.name == target_path:
+                return
+            content = field.read()
+            field.close()
+            old_path = field.name
+            try:
+                if storage.exists(old_path):
+                    storage.delete(old_path)
+            except Exception:
+                pass
+            try:
+                if storage.exists(target_path):
+                    storage.delete(target_path)
+            except Exception:
+                pass
+            storage.save(target_path, CF(content))
+            field.name = target_path
+            changed = True
+
+        # Source file
+        ext = (
+            self.source.name.rsplit(".", 1)[-1].lower()
+            if "." in self.source.name
+            else ""
+        )
+        source_target = f"objects/{self.pk}/source.{ext}"
+        _move(self.source, source_target)
+        _cleanup_stale(source_target, "source")
+
+        # Audio description
+        if self.audio_description:
+            ad_ext = (
+                self.audio_description.name.rsplit(".", 1)[-1].lower()
+                if "." in self.audio_description.name
+                else ""
+            )
+            ad_target = f"objects/{self.pk}/audio_description.{ad_ext}"
+            _move(self.audio_description, ad_target)
+            _cleanup_stale(ad_target, "audio_description")
+        else:
+            _cleanup_stale(None, "audio_description")
+
+        # Thumbnail — only GLB objects have thumbnails
+        if self.thumbnail:
+            _move(self.thumbnail, f"objects/{self.pk}/thumbnail.png")
+        else:
+            _cleanup_stale(None, "thumbnail")
+
+        # Spritesheet — only GIF objects have spritesheets
+        if self.spritesheet_file:
+            _move(self.spritesheet_file, f"objects/{self.pk}/spritesheet.png")
+        else:
+            _cleanup_stale(None, "spritesheet")
+
+        # Metadata — only GIF objects have metadata
+        if self.spritesheet_metadata:
+            _move(self.spritesheet_metadata, f"objects/{self.pk}/metadata.json")
+        else:
+            _cleanup_stale(None, "metadata")
+
+        if changed:
+            self.save()
+
     @property
     def artworks_count(self):
         return self.artworks.count()
-
-    @property
-    def in_use(self):
-        if self.artworks_count > 0:
-            return True
-        return False
-
-    def is_used_by_other_user(self):
-        """
-        Check if the object is used by another user.
-        This is done by checking if there are artworks that reference this object
-        and if the owner of those artworks is not the current user.
-        """
-        return self.artworks.exclude(author=self.owner).exists()
 
     @property
     def is_video(self):
@@ -395,10 +421,17 @@ class Object(TimeStampedModel, ContentMixin):
             "title": self.title,
             "src": self.source.url,
         }
-        if height:
-            attributes["height"] = height
-        if width:
-            attributes["width"] = width
+        max_w = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
+        max_h = height if height else DEFAULT_OBJECT_PREVIEW_HEIGHT
+
+        if self.width and self.height:
+            ratio = min(max_w / self.width, max_h / self.height)
+            attributes["width"] = int(self.width * ratio)
+            attributes["height"] = int(self.height * ratio)
+        else:
+            attributes["width"] = max_w
+            attributes["height"] = max_h
+
         if self.is_video:
             return render(
                 video(
@@ -423,18 +456,6 @@ class Object(TimeStampedModel, ContentMixin):
             )
         else:
             return render(img(**attributes))
-
-    def as_html_thumbnail(self, editable=False):
-        height = DEFAULT_OBJECT_THUMBNAIL_HEIGHT
-        width = DEFAULT_OBJECT_THUMBNAIL_WIDTH
-        to_render = [self.as_html(height, width)]
-        if editable and not self.is_used_by_other_user():
-            to_render.append(self._get_edit_button())
-
-        if editable and not self.in_use:
-            to_render.append(self._get_delete_button())
-
-        return render(to_render)
 
 
 @pghistory.track()
@@ -509,31 +530,6 @@ class Artwork(TimeStampedModel, ContentMixin):
             )
         return used_in
 
-    def as_html_thumbnail(self, editable=False):
-        elements = [
-            self.marker.as_html_thumbnail(),
-            div(class_="separator"),
-            self.augmented.as_html_thumbnail(),
-        ]
-        if editable:
-            elements.extend(
-                [
-                    self._get_edit_button(),
-                ]
-            )
-            if not self.in_use:
-                elements.append(self._get_delete_button())
-
-        if editable:
-            elements.extend(
-                a(
-                    _("preview"),
-                    href=reverse("artwork-preview", query={"id": self.id}),
-                    class_="preview",
-                )
-            )
-        return render(div(elements, class_="artwork-elements flex"))
-
 
 @pghistory.track()
 class Exhibit(TimeStampedModel, ContentMixin, models.Model):
@@ -585,73 +581,13 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         else:
             raise ValueError("Invalid exhibit type")
 
-    def as_html_thumbnail(self, editable=False):
-        link_to_exhibit = reverse("exhibit-detail", query={"id": self.id})
-        exhibit_title = a(h1(self.name, class_="exhibit-name"), href=link_to_exhibit)
-        media_stats = []
-        if self.exhibit_type == ExhibitTypes.AR:
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.artworks_count, _("Artwork(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-        elif self.exhibit_type == ExhibitTypes.MR:
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.augmenteds_count, _("Object(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-            media_stats.append(
-                p(
-                    a(
-                        "{} {}".format(self.sounds_count, _("Sound(s)")),
-                        href=link_to_exhibit,
-                    ),
-                    class_="exhibit-about",
-                )
-            )
-        exhibit_info = [
-            p([{_("Created by ")}, b(self.owner.user.username)], class_="by"),
-            p(self.date, class_="exbDate"),
-            div(media_stats),
-        ]
-
-        button_see_this_exhibit = a(
-            _("See this Exhibition"),
-            href=f"/{self.slug}/",
-            class_="gotoExb",
-        )
-
-        exhibit_card_elements = [
-            exhibit_info,
-            button_see_this_exhibit,
-        ]
-        if editable:
-            exhibit_card_elements.extend(
-                [div([self._get_delete_button(), self._get_edit_button()])]
-            )
-        exhibit_card = div(div(exhibit_card_elements, class_="exhibit-elements flex"))
-        elements = [
-            exhibit_title,
-            exhibit_card,
-        ]
-        return render(elements)
-
 
 @receiver(post_delete, sender=Object)
 @receiver(post_delete, sender=Marker)
 @receiver(post_delete, sender=Sound)
 def remove_source_file(sender, instance, **kwargs):
     if isinstance(instance, Marker):
-        instance.source.delete(False)
+        delete_marker_files(instance)
     if isinstance(instance, Object):
         instance.source.delete(False)
         # audio_description is FileField(null=True, blank=True). An Object
@@ -661,5 +597,185 @@ def remove_source_file(sender, instance, **kwargs):
         # source file we just removed. See #849.
         if instance.audio_description:
             instance.audio_description.delete(False)
+        if instance.spritesheet_file:
+            instance.spritesheet_file.delete(False)
+        if instance.spritesheet_metadata:
+            instance.spritesheet_metadata.delete(False)
     if isinstance(instance, Sound):
         instance.file.delete(False)
+
+
+@receiver(pre_save, sender=Artwork)
+def artwork_pre_save(sender, instance, **kwargs):
+    """Capture the previous marker/object/sound before an artwork is updated."""
+    if not instance.pk:
+        return
+    try:
+        old = Artwork.objects.get(pk=instance.pk)
+    except Artwork.DoesNotExist:
+        return
+    instance._old_marker_id = old.marker_id
+    instance._old_augmented_id = old.augmented_id
+    instance._old_sound_id = old.sound_id
+
+
+@receiver(post_save, sender=Artwork)
+def artwork_post_save(sender, instance, **kwargs):
+    """Mark the current marker/object/sound as in_use; check if old ones are still used."""
+    # Mark current references as in use
+    Marker.objects.filter(pk=instance.marker_id, in_use=False).update(in_use=True)
+    Object.objects.filter(pk=instance.augmented_id, in_use=False).update(in_use=True)
+    if instance.sound_id:
+        Sound.objects.filter(pk=instance.sound_id, in_use=False).update(in_use=True)
+
+    # Update is_used_by_other_user for current marker/object
+    marker = Marker.objects.get(pk=instance.marker_id)
+    if instance.author_id != marker.owner_id:
+        if not marker.is_used_by_other_user:
+            Marker.objects.filter(pk=marker.pk).update(is_used_by_other_user=True)
+
+    augmented = Object.objects.get(pk=instance.augmented_id)
+    if instance.author_id != augmented.owner_id:
+        if not augmented.is_used_by_other_user:
+            Object.objects.filter(pk=augmented.pk).update(is_used_by_other_user=True)
+
+    # Update is_used_by_other_user for current sound
+    if instance.sound_id:
+        sound = Sound.objects.get(pk=instance.sound_id)
+        if instance.author_id != sound.owner_id:
+            if not sound.is_used_by_other_user:
+                Sound.objects.filter(pk=sound.pk).update(is_used_by_other_user=True)
+
+    # If marker changed, check if the old one is still in use
+    old_marker_id = getattr(instance, "_old_marker_id", None)
+    if old_marker_id and old_marker_id != instance.marker_id:
+        if not Artwork.objects.filter(marker_id=old_marker_id).exists():
+            Marker.objects.filter(pk=old_marker_id).update(
+                in_use=False, is_used_by_other_user=False
+            )
+        else:
+            old_marker = Marker.objects.get(pk=old_marker_id)
+            still_used_by_other = old_marker.artworks.exclude(
+                author=old_marker.owner
+            ).exists()
+            if not still_used_by_other:
+                Marker.objects.filter(pk=old_marker_id).update(
+                    is_used_by_other_user=False
+                )
+
+    # If object changed, check if the old one is still in use
+    old_augmented_id = getattr(instance, "_old_augmented_id", None)
+    if old_augmented_id and old_augmented_id != instance.augmented_id:
+        if not Artwork.objects.filter(augmented_id=old_augmented_id).exists():
+            Object.objects.filter(pk=old_augmented_id).update(
+                in_use=False, is_used_by_other_user=False
+            )
+        else:
+            old_object = Object.objects.get(pk=old_augmented_id)
+            still_used_by_other = old_object.artworks.exclude(
+                author=old_object.owner
+            ).exists()
+            if not still_used_by_other:
+                Object.objects.filter(pk=old_augmented_id).update(
+                    is_used_by_other_user=False
+                )
+
+    # If sound changed, check if the old one is still in use
+    old_sound_id = getattr(instance, "_old_sound_id", None)
+    if old_sound_id and old_sound_id != instance.sound_id:
+        _recalculate_sound_flags(old_sound_id)
+
+
+@receiver(post_delete, sender=Artwork)
+def artwork_post_delete(sender, instance, **kwargs):
+    """When an artwork is deleted, check if its marker/object/sound are still in use."""
+    if not Artwork.objects.filter(marker_id=instance.marker_id).exists():
+        Marker.objects.filter(pk=instance.marker_id).update(
+            in_use=False, is_used_by_other_user=False
+        )
+    else:
+        marker = Marker.objects.get(pk=instance.marker_id)
+        if not marker.artworks.exclude(author=marker.owner).exists():
+            Marker.objects.filter(pk=marker.pk).update(is_used_by_other_user=False)
+
+    if not Artwork.objects.filter(augmented_id=instance.augmented_id).exists():
+        Object.objects.filter(pk=instance.augmented_id).update(
+            in_use=False, is_used_by_other_user=False
+        )
+    else:
+        obj = Object.objects.get(pk=instance.augmented_id)
+        if not obj.artworks.exclude(author=obj.owner).exists():
+            Object.objects.filter(pk=obj.pk).update(is_used_by_other_user=False)
+
+    if instance.sound_id:
+        _recalculate_sound_flags(instance.sound_id)
+
+
+def _recalculate_sound_flags(sound_id):
+    """Recalculate in_use and is_used_by_other_user for a Sound."""
+    try:
+        sound = Sound.objects.get(pk=sound_id)
+    except Sound.DoesNotExist:
+        return
+
+    is_in_use = (
+        sound.artworks.exists() or sound.ar_objects.exists() or sound.exhibits.exists()
+    )
+    used_by_other = (
+        sound.artworks.exclude(author=sound.owner).exists()
+        or sound.ar_objects.exclude(owner=sound.owner).exists()
+        or sound.exhibits.exclude(owner=sound.owner).exists()
+    )
+    Sound.objects.filter(pk=sound_id).update(
+        in_use=is_in_use, is_used_by_other_user=used_by_other
+    )
+
+
+@receiver(pre_save, sender=Object)
+def object_pre_save(sender, instance, **kwargs):
+    """Capture the previous sound before an object is updated."""
+    if not instance.pk:
+        return
+    try:
+        old = Object.objects.get(pk=instance.pk)
+    except Object.DoesNotExist:
+        return
+    instance._old_sound_id = old.sound_id
+
+
+@receiver(post_save, sender=Object)
+def object_post_save(sender, instance, **kwargs):
+    """Update sound flags when an object's sound FK changes."""
+    if instance.sound_id:
+        sound = Sound.objects.get(pk=instance.sound_id)
+        updates = {}
+        if not sound.in_use:
+            updates["in_use"] = True
+        if instance.owner_id != sound.owner_id and not sound.is_used_by_other_user:
+            updates["is_used_by_other_user"] = True
+        if updates:
+            Sound.objects.filter(pk=sound.pk).update(**updates)
+
+    old_sound_id = getattr(instance, "_old_sound_id", None)
+    if old_sound_id and old_sound_id != instance.sound_id:
+        _recalculate_sound_flags(old_sound_id)
+
+
+@receiver(post_delete, sender=Object)
+def object_post_delete_sound(sender, instance, **kwargs):
+    """When an object is deleted, recalculate its sound's flags."""
+    if instance.sound_id:
+        _recalculate_sound_flags(instance.sound_id)
+
+
+@receiver(m2m_changed, sender=Exhibit.sounds.through)
+def exhibit_sounds_changed(sender, instance, action, pk_set, **kwargs):
+    """Update sound flags when exhibits add/remove sounds."""
+    if action in ("post_add", "post_remove", "post_clear"):
+        if pk_set:
+            for sound_id in pk_set:
+                _recalculate_sound_flags(sound_id)
+        elif action == "post_clear":
+            # post_clear doesn't provide pk_set; recalculate all sounds
+            for sound in Sound.objects.filter(in_use=True):
+                _recalculate_sound_flags(sound.pk)

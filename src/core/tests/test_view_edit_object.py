@@ -1,14 +1,18 @@
+from django.core.files.storage import default_storage
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 
+from core.models import Object, ObjectExtensions
 from src.core.tests.factory import ArtworkFactory, ObjectFactory
 from src.core.tests.utils import get_example_object
 from src.users.tests.factory import ProfileFactory, UserFactory
 from users.models import Profile, User
 
-EXAMPLE_OBJECT_PATH = "src/users/tests/test_files/example_object.gif"
+EXAMPLE_OBJECT_PATH = "src/core/tests/test_files/example_object.gif"
 EXAMPLE_OBJECT_SIZE = 70122  # Size in bytes of the example object gif
+EXAMPLE_GLB_PATH = "collection/objects/werewolf.glb"
+EXAMPLE_MP4_PATH = "collection/objects/belotur.mp4"
 
 
 class TestObjectEdit(TestCase):
@@ -290,3 +294,250 @@ class TestObjectEdit(TestCase):
         assert obj.source.read() == self.get_example_object1().read()
         assert obj.author == "new author"
         assert obj.owner == self.profile
+
+
+class TestObjectEditCrossType(TestCase):
+    """Test that editing an object from one type to another cleans up type-specific files."""
+
+    def setUp(self):
+        self.username = "testuser"
+        self.password = "testpassword"
+        self.user = User.objects.create_user(
+            username=self.username,
+            password=self.password,
+        )
+        self.profile = Profile.objects.get(user=self.user)
+        self.client.login(username=self.username, password=self.password)
+
+    def _files_in_folder(self, pk):
+        """List all files in the object's storage folder."""
+        try:
+            _, files = default_storage.listdir(f"objects/{pk}")
+        except Exception:
+            files = []
+        return set(files)
+
+    def _upload_gif_with_spritesheet(self):
+        """Upload a GIF object with spritesheet via the upload view."""
+        import json
+
+        from django.core.files.base import ContentFile
+
+        from core.spritesheet_converter import gif_to_spritesheet
+
+        with open(EXAMPLE_OBJECT_PATH, "rb") as f:
+            gif_bytes = f.read()
+
+        # Pre-generate spritesheet and metadata in storage (simulates HTMX step)
+        png_bytes, metadata = gif_to_spritesheet(
+            ContentFile(gif_bytes, name="test.gif")
+        )
+
+        spritesheet_path = default_storage.save(
+            "objects/spritesheets/test_spritesheet.png", ContentFile(png_bytes)
+        )
+        metadata_path = default_storage.save(
+            "objects/spritesheets/test_metadata.json",
+            ContentFile(json.dumps(metadata).encode()),
+        )
+
+        with open(EXAMPLE_OBJECT_PATH, "rb") as f:
+            response = self.client.post(
+                reverse("object-upload"),
+                {
+                    "source": f,
+                    "author": "Author",
+                    "title": "GIF Object",
+                    "spritesheet_path": spritesheet_path,
+                    "spritesheet_metadata_path": metadata_path,
+                },
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj = Object.objects.get(title="GIF Object")
+        assert obj.file_extension == ObjectExtensions.GIF
+        assert obj.spritesheet_file
+        assert obj.spritesheet_metadata
+        return obj
+
+    def _upload_glb_with_thumbnail(self):
+        """Upload a GLB object with thumbnail via the upload view."""
+        import io
+
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from PIL import Image
+
+        # Create a valid minimal PNG for thumbnail
+        img = Image.new("RGBA", (4, 4), (255, 0, 0, 255))
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        thumbnail = SimpleUploadedFile(
+            "thumbnail.png", buf.getvalue(), content_type="image/png"
+        )
+
+        with open(EXAMPLE_GLB_PATH, "rb") as f:
+            response = self.client.post(
+                reverse("object-upload"),
+                {
+                    "source": f,
+                    "author": "Author",
+                    "title": "GLB Object",
+                    "thumbnail": thumbnail,
+                },
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj = Object.objects.get(title="GLB Object")
+        assert obj.file_extension == ObjectExtensions.GLB
+        assert obj.thumbnail
+        return obj
+
+    def test_edit_gif_to_glb_cleans_spritesheet(self):
+        """Editing a GIF object to GLB should remove spritesheet and metadata files."""
+        obj = self._upload_gif_with_spritesheet()
+        pk = obj.pk
+
+        # Verify spritesheet files exist
+        files_before = self._files_in_folder(pk)
+        assert "spritesheet.png" in files_before
+        assert "metadata.json" in files_before
+
+        # Edit: change source to GLB (no spritesheet, no thumbnail)
+        url = reverse("edit-object", query={"id": pk})
+        with open(EXAMPLE_GLB_PATH, "rb") as f:
+            response = self.client.post(
+                url,
+                {"source": f, "author": "Author", "title": "Now GLB"},
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.file_extension == ObjectExtensions.GLB
+        assert not obj.spritesheet_file
+        assert not obj.spritesheet_metadata
+
+        files_after = self._files_in_folder(pk)
+        assert "spritesheet.png" not in files_after
+        assert "metadata.json" not in files_after
+        assert "source.glb" in files_after
+
+    def test_edit_glb_to_gif_cleans_thumbnail(self):
+        """Editing a GLB object to GIF should remove thumbnail file."""
+        obj = self._upload_glb_with_thumbnail()
+        pk = obj.pk
+
+        # Verify thumbnail exists
+        files_before = self._files_in_folder(pk)
+        assert "thumbnail.png" in files_before
+
+        # Edit: change source to GIF (no thumbnail)
+        url = reverse("edit-object", query={"id": pk})
+        with open(EXAMPLE_OBJECT_PATH, "rb") as f:
+            response = self.client.post(
+                url,
+                {"source": f, "author": "Author", "title": "Now GIF"},
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.file_extension == ObjectExtensions.GIF
+        assert not obj.thumbnail
+
+        files_after = self._files_in_folder(pk)
+        assert "thumbnail.png" not in files_after
+        assert "source.gif" in files_after
+
+    def test_edit_gif_to_mp4_cleans_spritesheet(self):
+        """Editing a GIF to MP4 should remove spritesheet files."""
+        obj = self._upload_gif_with_spritesheet()
+        pk = obj.pk
+
+        url = reverse("edit-object", query={"id": pk})
+        with open(EXAMPLE_MP4_PATH, "rb") as f:
+            response = self.client.post(
+                url,
+                {"source": f, "author": "Author", "title": "Now MP4"},
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.file_extension == ObjectExtensions.MP4
+        assert not obj.spritesheet_file
+        assert not obj.spritesheet_metadata
+
+        files_after = self._files_in_folder(pk)
+        assert "spritesheet.png" not in files_after
+        assert "metadata.json" not in files_after
+        assert "source.mp4" in files_after
+
+    def test_edit_glb_to_gif_to_glb_cycle(self):
+        """Full cycle: GLB(thumbnail) -> GIF(spritesheet) -> GLB(thumbnail)."""
+        import io
+        import json
+
+        from django.core.files.base import ContentFile
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        from PIL import Image
+
+        from core.spritesheet_converter import gif_to_spritesheet
+
+        # Start with GLB+thumbnail
+        obj = self._upload_glb_with_thumbnail()
+        pk = obj.pk
+        assert "thumbnail.png" in self._files_in_folder(pk)
+
+        # Edit to GIF with spritesheet
+        with open(EXAMPLE_OBJECT_PATH, "rb") as f:
+            gif_bytes = f.read()
+        png_bytes, metadata = gif_to_spritesheet(ContentFile(gif_bytes, name="t.gif"))
+        spritesheet_path = default_storage.save(
+            "objects/spritesheets/t_spritesheet.png", ContentFile(png_bytes)
+        )
+        metadata_path = default_storage.save(
+            "objects/spritesheets/t_metadata.json",
+            ContentFile(json.dumps(metadata).encode()),
+        )
+
+        url = reverse("edit-object", query={"id": pk})
+        with open(EXAMPLE_OBJECT_PATH, "rb") as f:
+            response = self.client.post(
+                url,
+                {
+                    "source": f,
+                    "author": "Author",
+                    "title": "Now GIF",
+                    "spritesheet_path": spritesheet_path,
+                    "spritesheet_metadata_path": metadata_path,
+                },
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.file_extension == ObjectExtensions.GIF
+
+        files_mid = self._files_in_folder(pk)
+        assert "thumbnail.png" not in files_mid  # GLB thumbnail cleaned
+        assert "spritesheet.png" in files_mid
+        assert "metadata.json" in files_mid
+        assert "source.gif" in files_mid
+
+        # Edit back to GLB with thumbnail
+        img = Image.new("RGBA", (4, 4), (0, 255, 0, 255))
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        thumbnail = SimpleUploadedFile(
+            "thumb.png", buf.getvalue(), content_type="image/png"
+        )
+        with open(EXAMPLE_GLB_PATH, "rb") as f:
+            response = self.client.post(
+                url,
+                {
+                    "source": f,
+                    "author": "Author",
+                    "title": "Back to GLB",
+                    "thumbnail": thumbnail,
+                },
+            )
+        assert response.status_code == status.HTTP_302_FOUND
+        obj.refresh_from_db()
+        assert obj.file_extension == ObjectExtensions.GLB
+
+        files_final = self._files_in_folder(pk)
+        assert "spritesheet.png" not in files_final  # GIF spritesheet cleaned
+        assert "metadata.json" not in files_final  # GIF metadata cleaned
+        assert "thumbnail.png" in files_final
+        assert "source.glb" in files_final

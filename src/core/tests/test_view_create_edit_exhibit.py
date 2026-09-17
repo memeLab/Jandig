@@ -13,8 +13,8 @@ class TestCreateARExhibitView(TestCase):
         self.client.force_login(self.user)
         self.artwork1 = ArtworkFactory(author=self.profile)
         self.artwork2 = ArtworkFactory(author=self.profile)
-        self.object1 = ObjectFactory(author=self.profile)
-        self.object2 = ObjectFactory(author=self.profile)
+        self.object1 = ObjectFactory(owner=self.profile)
+        self.object2 = ObjectFactory(owner=self.profile)
 
     def test_create_ar_exhibit_requires_login(self):
         self.client.logout()
@@ -205,8 +205,8 @@ class TestEditExhibitView(TestCase):
         self.client.force_login(self.user)
         self.artwork1 = ArtworkFactory(author=self.profile)
         self.artwork2 = ArtworkFactory(author=self.profile)
-        self.object1 = ObjectFactory(author=self.profile)
-        self.object2 = ObjectFactory(author=self.profile)
+        self.object1 = ObjectFactory(owner=self.profile)
+        self.object2 = ObjectFactory(owner=self.profile)
         self.exhibit = ExhibitFactory(
             owner=self.profile,
             artworks=[self.artwork1],

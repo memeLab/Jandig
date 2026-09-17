@@ -1,12 +1,14 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/label.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+{% endblock %}
 {% block content %}
     <section class="create-exhibit">
-        {# FIXME: maybe this can be improved #}
-        <link rel="stylesheet" href="{{ static ('css/marker-creation.css') }}">
-        <link rel="stylesheet" href="{{ static ('css/label.css') }}">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
         <div class="container">
             {% if edit %}
                 <h1 class="titExb">{{ _("Edit MR Exhibition") }}</h1>
@@ -38,14 +40,8 @@
                 {{ form.visible_fields()[4] .errors }}
                 <div id="form-modal" class="modal">
                     <div id="object-modal" class="tab">
-                        <h4 class="modal-title">{{ _("Select Objects") }}</h4>
-                        <div id="navigation-buttons"
-                             style="display: flex;
-                                    justify-content: space-between;
-                                    margin-bottom: 15px">
-                            <button style="width:2.5em;
-                                           font-size: larger;
-                                           margin:0"
+                        <div class="modal-nav-header">
+                            <button class="modal-nav-btn"
                                     id="previous-button-objects"
                                     hx-get="/elements/"
                                     hx-vals='js:{page: get_page_objects(-1), element_type: "object"}'
@@ -53,14 +49,14 @@
                                     hx-swap="outerHTML">
                                 <
                             </button>
-                            <button style="width:2.5em;
-                                           font-size: larger;
-                                           margin:0"
+                            <h4 class="modal-title">{{ _("Select Objects") }}</h4>
+                            <button class="modal-nav-btn"
                                     id="next-button-objects"
                                     hx-get="/elements/"
                                     hx-vals='js:{page: get_page_objects(1), element_type: "object"}'
                                     hx-target="#repo-object"
-                                    hx-swap="outerHTML">></button>
+                                    hx-swap="outerHTML"
+                                    {% if total_object_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                         </div>
                         {% with repository_list = objects, element_type="object", htmx="false" %}
                             {% include "core/components/item-list.jinja2" %}
@@ -73,14 +69,8 @@
                            onclick="validateSubmit()">{{ _("Okay") }}</a>
                     </div>
                     <div id="sound-modal" class="tab">
-                        <h4 class="modal-title">{{ _("Select Sounds") }}</h4>
-                        <div id="navigation-buttons"
-                             style="display: flex;
-                                    justify-content: space-between;
-                                    margin-bottom: 15px">
-                            <button style="width:2.5em;
-                                           font-size: larger;
-                                           margin:0"
+                        <div class="modal-nav-header">
+                            <button class="modal-nav-btn"
                                     id="previous-button-sounds"
                                     hx-get="/elements/"
                                     hx-vals='js:{page: get_page_sounds(-1), element_type: "sound"}'
@@ -88,14 +78,14 @@
                                     hx-swap="outerHTML">
                                 <
                             </button>
-                            <button style="width:2.5em;
-                                           font-size: larger;
-                                           margin:0"
+                            <h4 class="modal-title">{{ _("Select Sounds") }}</h4>
+                            <button class="modal-nav-btn"
                                     id="next-button-sounds"
                                     hx-get="/elements/"
                                     hx-vals='js:{page: get_page_sounds(1), element_type: "sound"}'
                                     hx-target="#repo-sound"
-                                    hx-swap="outerHTML">></button>
+                                    hx-swap="outerHTML"
+                                    {% if total_sound_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                         </div>
                         {% with repository_list = sounds, element_type="sound", htmx="false" %}
                             {% include "core/components/item-list.jinja2" %}
@@ -214,12 +204,12 @@
         
             selected_objects.split(",").forEach(function(id){
                 augmenteds[id] = id
-                $("#object-"+id).css("border-bottom","3px solid #a6a6a6");
+                $("#object-"+id).css("border-bottom","3px solid #05f7ae");
             });
         
             selected_sounds.split(",").forEach(function(id){
                 sounds[id] = id
-                $("#sound-"+id).css("border-bottom","3px solid #a6a6a6");
+                $("#sound-"+id).css("border-bottom","3px solid #05f7ae");
             });
             
         }
@@ -245,7 +235,7 @@
                     else
                         console.error("Unknown item type: " + item_type);
                 }else{
-                    $(this).css("border-bottom","3px solid #a6a6a6");
+                    $(this).css("border-bottom","3px solid #05f7ae");
                     if (item_type === "object")
                         augmenteds[item_id] = item_id;
                     else if (item_type === "sound")

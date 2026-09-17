@@ -6,7 +6,27 @@
         {% for element in repository_list %}
             <div {% if element_type != "ar-exhibit" and element_type != "mr-exhibit" and htmx != "false" %} hx-get="/api/v1/{{ element_type }}s/{{ element.id }}/?format=modal" hx-target="#modal" hx-trigger="click" class="repository-item trigger-modal" {% else %} class="repository-item" {% endif %}
                  id="{{ element_type }}-{{ element.id }}">
-                {{ element.as_html_thumbnail(editable=editable) | safe }}
+                {% if element_type == "marker" %}
+                    {% with marker=element %}
+                        {% include "core/templates/marker_thumbnail.jinja2" %}
+                    {% endwith %}
+                {% elif element_type == "object" %}
+                    {% with object=element %}
+                        {% include "core/templates/object_thumbnail.jinja2" %}
+                    {% endwith %}
+                {% elif element_type == "sound" %}
+                    {% with sound=element %}
+                        {% include "core/templates/sound_thumbnail.jinja2" %}
+                    {% endwith %}
+                {% elif element_type == "artwork" %}
+                    {% with artwork=element %}
+                        {% include "core/templates/artwork_thumbnail.jinja2" %}
+                    {% endwith %}
+                {% elif element_type == "ar-exhibit" or element_type == "mr-exhibit" %}
+                    {% with exhibit=element %}
+                        {% include "core/templates/exhibit_thumbnail.jinja2" %}
+                    {% endwith %}
+                {% endif %}
             </div>
         {% endfor %}
     </section>

@@ -6,18 +6,18 @@ from core.views.static_views import (
     documentation,
     favicon,
     health_check,
-    home_new,
-    home_old,
+    home,
     manifest,
-    marker_generator,
     me_hotsite,
     robots_txt,
     service_worker,
 )
 from core.views.views import (
+    ar_view,
     artwork_detail,
     artwork_preview,
     collection,
+    convert_gif_to_spritesheet,
     create_artwork,
     create_or_edit_ar_exhibit,
     create_or_edit_mr_exhibit,
@@ -41,12 +41,16 @@ from core.views.views import (
 )
 
 urlpatterns = [
-    path("", home_new, name="home"),
-    path("arviewer/", home_old, name="home-old"),
+    path("", home, name="home"),
+    path("ar/", ar_view, name="ar-view"),
     path("artwork/", artwork_preview, name="artwork-preview"),
-    path("artworks/<slug:slug>/", artwork_detail, name="artwork-detail"),
+    # Each <slug:slug> detail route must come LAST within its prefix group.
+    # "create", "edit", "upload" and "convert-spritesheet" all match the slug
+    # converter, and the detail views are GET-only, so a catch-all placed
+    # before any of them turns every POST to that endpoint into a 405.
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),
+    path("artworks/<slug:slug>/", artwork_detail, name="artwork-detail"),
     path("collection/", collection, name="collection"),
     path("community/", community, name="community"),
     path("content/delete/", delete, name="delete-content"),
@@ -57,14 +61,18 @@ urlpatterns = [
     path("exhibits/edit-ar/", create_or_edit_ar_exhibit, name="edit-ar-exhibit"),
     path("exhibits/create-mr/", create_or_edit_mr_exhibit, name="create-mr-exhibit"),
     path("exhibits/edit-mr/", create_or_edit_mr_exhibit, name="edit-mr-exhibit"),
-    path("generator/", marker_generator, name="marker-generator"),
     path("marker/", marker_preview, name="marker-preview"),
-    path("markers/<slug:slug>/", marker_detail, name="marker-detail"),
     path("markers/edit/", edit_marker, name="edit-marker"),
     path("markers/upload/", marker_upload, name="marker-upload"),
-    path("objects/<slug:slug>/", object_detail, name="object-detail"),
+    path("markers/<slug:slug>/", marker_detail, name="marker-detail"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
+    path(
+        "objects/convert-spritesheet/",
+        convert_gif_to_spritesheet,
+        name="convert-spritesheet",
+    ),
+    path("objects/<slug:slug>/", object_detail, name="object-detail"),
     path("sounds/edit/", edit_sound, name="edit-sound"),
     path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),
@@ -78,7 +86,7 @@ urlpatterns = [
     path("manifest.json", manifest, name="manifest"),
     path("i18n/", include("django.conf.urls.i18n")),
     re_path(
-        r"^see_all(?:/(?P<which>[a-zA-Z]+))?/$",
+        r"^see_all(?:/(?P<which>[a-zA-Z-]+))?/$",
         see_all,
         name="see_all",
     ),
