@@ -115,3 +115,43 @@ class TestBlogIndex(TestCase):
         posts = list(response.context["posts"])
         assert posts[0].title == "Test Post 1"
         assert posts[1].title == "Test Post 0"
+
+    def test_last_page_flag_is_true_only_on_the_final_page(self):
+        """
+        `last_page` must report whether the current page is the final one.
+
+        It used to be set from `page.has_previous()`, which is the inverse:
+        False on page 1 and True on every other page.
+        """
+        for i in range(10):
+            Post.objects.create(
+                title=f"Test Post {i}",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
+                status=PostStatus.PUBLISHED,
+            )
+
+        first = self.client.get(reverse("blog_index"))
+        total_pages = first.context["total_pages"]
+        assert total_pages > 2, "this test needs at least three pages to be meaningful"
+        assert first.context["last_page"] is False
+
+        middle = self.client.get(reverse("blog_index"), {"page": total_pages - 1})
+        assert middle.context["last_page"] is False
+
+        last = self.client.get(reverse("blog_index"), {"page": total_pages})
+        assert last.context["last_page"] is True
+
+    def test_last_page_flag_is_true_when_all_posts_fit_in_one_page(self):
+        """A single page of results is also the last page."""
+        Post.objects.all().delete()
+        Post.objects.create(
+            title="Only Post",
+            excerpt="Excerpt.",
+            formatted_body="Body.",
+            status=PostStatus.PUBLISHED,
+        )
+        response = self.client.get(reverse("blog_index"))
+
+        assert response.context["total_pages"] == 1
+        assert response.context["last_page"] is True

@@ -28,7 +28,7 @@ def blog_index(request):
         "next_page_number": page_number + 1,
         "posts": posts,
         "PREVIEW_SIZE": PREVIEW_SIZE,
-        "last_page": page.has_previous(),
+        "last_page": not page.has_next(),
         "total_pages": paginator.num_pages,
         "page_url": "/memories/",
         "blog_categories": Category.objects.all(),
