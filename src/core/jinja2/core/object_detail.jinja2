@@ -1,0 +1,14 @@
+{% extends '/core/base.jinja2' %}
+{% block content %}
+<div class="Container">
+    <h1>{{ object.title }}</h1>
+    <p>{{ _("Author") }}: {{ object.author }}</p>
+    {% if object.source %}
+        <video src="/media/public/{{ object.source.name }}" controls style="max-width: 100%;"></video>
+    {% endif %}
+    {% if object.thumbnail %}
+        <img src="{{ object.thumbnail.url }}" alt="{{ object.title }}" style="max-width: 100%;">
+    {% endif %}
+    <p>{{ _("Uploaded") }}: {{ object.uploaded_at }}</p>
+</div>
+{% endblock %}

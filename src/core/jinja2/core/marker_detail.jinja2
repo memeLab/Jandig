@@ -1,0 +1,11 @@
+{% extends '/core/base.jinja2' %}
+{% block content %}
+<div class="Container">
+    <h1>{{ marker.title }}</h1>
+    <p>{{ _("Author") }}: {{ marker.author }}</p>
+    {% if marker.source %}
+        <img src="/media/public/{{ marker.source.name }}" alt="{{ marker.title }}" style="max-width: 100%;">
+    {% endif %}
+    <p>{{ _("Uploaded") }}: {{ marker.uploaded_at }}</p>
+</div>
+{% endblock %}

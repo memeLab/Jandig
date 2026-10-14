@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
@@ -152,9 +153,21 @@ class Marker(TimeStampedModel, ContentMixin):
     file_size = models.IntegerField(default=0, blank=True, null=True)
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "marker"
+            slug = base_slug
+            counter = 1
+            while Marker.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("marker-detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.source.name
@@ -263,6 +276,21 @@ class Object(TimeStampedModel, ContentMixin):
     )
     width = models.PositiveIntegerField(null=True, blank=True)
     height = models.PositiveIntegerField(null=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "object"
+            slug = base_slug
+            counter = 1
+            while Object.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("object-detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.source.name
@@ -454,6 +482,21 @@ class Artwork(TimeStampedModel, ContentMixin):
     scale_y = models.FloatField(default=1.0)
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
+    slug = models.SlugField(unique=True, blank=True, max_length=80)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or "artwork"
+            slug = base_slug
+            counter = 1
+            while Artwork.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("artwork-detail", kwargs={"slug": self.slug})
 
     @property
     def exhibits_count(self):
@@ -510,6 +553,9 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("exhibit", kwargs={"slug": self.slug})
 
     @property
     def artworks_count(self):

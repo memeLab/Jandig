@@ -14,6 +14,7 @@ from core.views.static_views import (
 )
 from core.views.views import (
     ar_view,
+    artwork_detail,
     artwork_preview,
     collection,
     convert_gif_to_spritesheet,
@@ -29,8 +30,10 @@ from core.views.views import (
     exhibit_detail,
     exhibit_select,
     get_element,
+    marker_detail,
     marker_preview,
     marker_upload,
+    object_detail,
     object_upload,
     related_content,
     see_all,
@@ -41,8 +44,13 @@ urlpatterns = [
     path("", home, name="home"),
     path("ar/", ar_view, name="ar-view"),
     path("artwork/", artwork_preview, name="artwork-preview"),
+    # Each <slug:slug> detail route must come LAST within its prefix group.
+    # "create", "edit", "upload" and "convert-spritesheet" all match the slug
+    # converter, and the detail views are GET-only, so a catch-all placed
+    # before any of them turns every POST to that endpoint into a 405.
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),
+    path("artworks/<slug:slug>/", artwork_detail, name="artwork-detail"),
     path("collection/", collection, name="collection"),
     path("community/", community, name="community"),
     path("content/delete/", delete, name="delete-content"),
@@ -56,6 +64,7 @@ urlpatterns = [
     path("marker/", marker_preview, name="marker-preview"),
     path("markers/edit/", edit_marker, name="edit-marker"),
     path("markers/upload/", marker_upload, name="marker-upload"),
+    path("markers/<slug:slug>/", marker_detail, name="marker-detail"),
     path("objects/edit/", edit_object, name="edit-object"),
     path("objects/upload/", object_upload, name="object-upload"),
     path(
@@ -63,6 +72,7 @@ urlpatterns = [
         convert_gif_to_spritesheet,
         name="convert-spritesheet",
     ),
+    path("objects/<slug:slug>/", object_detail, name="object-detail"),
     path("sounds/edit/", edit_sound, name="edit-sound"),
     path("sounds/upload/", sound_upload, name="sound-upload"),
     path("elements/", get_element, name="get-element"),
