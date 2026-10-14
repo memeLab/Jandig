@@ -1,4 +1,5 @@
 import logging
+from uuid import uuid4
 
 import pghistory
 from django.core.files.base import ContentFile as CF
@@ -733,3 +734,44 @@ def exhibit_sounds_changed(sender, instance, action, pk_set, **kwargs):
             # post_clear doesn't provide pk_set; recalculate all sounds
             for sound in Sound.objects.filter(in_use=True):
                 _recalculate_sound_flags(sound.pk)
+
+
+class FeedbackKinds(models.TextChoices):
+    BUG = "bug", _("Report a bug")
+    FEATURE = "feature", _("Request a feature")
+
+
+def feedback_attachment_path(instance, filename):
+    """Upload path: feedback/<uuid>.<ext> — the name comes from the public."""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    name = uuid4().hex
+    return f"feedback/{name}.{ext}" if ext else f"feedback/{name}"
+
+
+class Feedback(TimeStampedModel):
+    """A bug report or feature request sent from the site's feedback form.
+
+    Stored rather than e-mailed so nothing is lost if mail delivery is
+    misconfigured, and so reports remain searchable in the admin.
+    """
+
+    kind = models.CharField(
+        max_length=10,
+        choices=FeedbackKinds.choices,
+        default=FeedbackKinds.BUG,
+        db_index=True,
+    )
+    description = models.TextField(max_length=5000)
+    email = models.EmailField(blank=True)
+    attachment = models.FileField(
+        upload_to=feedback_attachment_path, null=True, blank=True
+    )
+    handled = models.BooleanField(
+        default=False, help_text="Tick once this report has been triaged."
+    )
+
+    class Meta(TimeStampedModel.Meta):
+        verbose_name_plural = "feedback"
+
+    def __str__(self):
+        return f"{self.get_kind_display()} #{self.pk}"

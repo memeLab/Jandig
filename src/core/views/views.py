@@ -14,6 +14,7 @@ from core.forms import (
     ArtworkForm,
     ExhibitForm,
     ExhibitSelectForm,
+    FeedbackForm,
     SoundForm,
     UploadMarkerForm,
     UploadObjectForm,
@@ -899,3 +900,16 @@ def ar_view(request):
     debug = request.GET.get("debug", "false").lower() == "true"
     ctx = {"artworks": exhibit.artworks.all(), "debug": debug}
     return render(request, "core/ar.jinja2", ctx)
+
+
+@require_http_methods(["GET", "POST"])
+def feedback(request):
+    """Public bug report / feature request form, linked from the footer."""
+    if request.method == "POST":
+        form = FeedbackForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "core/feedback.jinja2", {"submitted": True})
+    else:
+        form = FeedbackForm()
+    return render(request, "core/feedback.jinja2", {"form": form})
