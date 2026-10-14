@@ -1,5 +1,9 @@
+import base64
 import io
+import math
 import os
+import struct
+import zlib
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -81,3 +85,45 @@ def make_svg(width=None, height=None, viewbox=None):
         '<rect width="100%" height="100%" fill="white"/>'
         '<circle cx="50%" cy="50%" r="30%" fill="black"/></svg>'
     ).encode()
+
+
+def svg_document(body):
+    """A 100x100 SVG on a white background with body (SVG markup) on top."""
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        f'<rect width="100" height="100" fill="white"/>{body}</svg>'
+    ).encode()
+
+
+def data_url(content, mime):
+    return f"data:{mime};base64,{base64.b64encode(content).decode()}"
+
+
+def svg_with_image(content, mime="image/png", copies=1):
+    """An SVG that draws content, as a data: URL, over its whole area."""
+    image = f'<image href="{data_url(content, mime)}" width="100" height="100"/>'
+    return svg_document(image * copies)
+
+
+def png_bytes(width, height):
+    """A black PNG of any size, written by hand in 1-bit greyscale so that it
+    costs only its compressed bytes here; Pillow would hold the whole image in
+    memory to save it. Whatever decodes it allocates the full size."""
+
+    def chunk(kind, data):
+        checksum = zlib.crc32(kind + data)
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", checksum)
+
+    row = b"\x00" + bytes(math.ceil(width / 8))  # filter byte, then black pixels
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 1, 0, 0, 0, 0))
+        + chunk(b"IDAT", zlib.compress(row * height))
+        + chunk(b"IEND", b"")
+    )
+
+
+def raster_image_bytes(image_format, size=(10, 10)):
+    buffer = io.BytesIO()
+    Image.new("L", size, 0).save(buffer, format=image_format)
+    return buffer.getvalue()

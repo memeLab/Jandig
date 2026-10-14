@@ -4,7 +4,14 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from core.tests.utils import SQUARE_SVG, gif_upload, make_svg, pdf_upload
+from core.tests.utils import (
+    SQUARE_SVG,
+    gif_upload,
+    make_svg,
+    pdf_upload,
+    png_bytes,
+    svg_with_image,
+)
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -87,3 +94,14 @@ class TestGenerateMarkerAPI(TestCase):
         response = self.client.post(reverse("markergenerator"), {"source": svg})
         assert response.status_code == 400
         assert response.data["error"].startswith("This SVG is too long and thin")
+
+    def test_post_with_too_complex_svg_is_a_client_error(self):
+        # Decodes to 100 MB if nothing stops it; the limit is 64 MiB.
+        svg = SimpleUploadedFile(
+            "marker.svg",
+            svg_with_image(png_bytes(5000, 5000)),
+            content_type="image/svg+xml",
+        )
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 400
+        assert response.data["error"].startswith("This SVG is too complex")

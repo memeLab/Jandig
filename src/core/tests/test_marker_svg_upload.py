@@ -1,3 +1,4 @@
+import gzip
 from io import BytesIO
 
 import pytest
@@ -6,26 +7,186 @@ from django.test import TestCase
 from django.urls import reverse
 from PIL import Image
 
+from core import marker_utils
 from core.marker_utils import (
     MAX_SVG_ASPECT_RATIO,
+    MAX_SVG_LAYER_PIXELS,
     SVG_RASTER_WIDTH,
     SvgAspectRatioError,
+    SvgTooComplexError,
     rasterize_svg,
 )
 from core.models import Marker
 from core.tests.utils import (
     SQUARE_SVG,
+    data_url,
     gif_upload,
     make_svg,
     pdf_upload,
+    png_bytes,
+    raster_image_bytes,
+    svg_document,
     svg_upload,
+    svg_with_image,
 )
 from users.models import User
+
+# Embedded PNGs this size are a few kilobytes but decode to 100 MB, over the
+# MAX_SVG_LAYER_PIXELS budget; small enough not to hurt if a guard regresses.
+OVERSIZED_SIDE = 5000
+# How many groups can nest on a full-size raster before reaching the budget.
+GROUP_DEPTH_LIMIT = MAX_SVG_LAYER_PIXELS // (SVG_RASTER_WIDTH * SVG_RASTER_WIDTH)
 
 
 def raster_size(svg_bytes):
     with Image.open(BytesIO(rasterize_svg(svg_bytes))) as image:
         return image.size
+
+
+def centre_pixel(svg_bytes):
+    with Image.open(BytesIO(rasterize_svg(svg_bytes))) as image:
+        return image.convert("L").getpixel((image.width // 2, image.height // 2))
+
+
+def nested_groups(depth, attributes='opacity="0.5"'):
+    return svg_document(
+        f"<g {attributes}>" * depth
+        + '<rect width="100" height="100" fill="black"/>'
+        + "</g>" * depth
+    )
+
+
+def masked_square(mask_size):
+    return svg_document(
+        '<defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" '
+        f'width="{mask_size}" height="{mask_size}">'
+        '<rect width="100" height="100" fill="white"/></mask></defs>'
+        '<rect width="100" height="100" fill="black" mask="url(#m)"/>'
+    )
+
+
+def pattern_filled_square(pattern_size):
+    return svg_document(
+        '<defs><pattern id="p" patternUnits="userSpaceOnUse" '
+        f'width="{pattern_size}" height="{pattern_size}">'
+        f'<rect width="{pattern_size}" height="{pattern_size}" fill="black"/>'
+        "</pattern></defs>"
+        '<rect width="100" height="100" fill="url(#p)"/>'
+    )
+
+
+class TestSvgEmbeddedContent:
+    """Content inside an SVG that makes cairosvg allocate memory, or spend
+    time, independently of the raster size (#1005)."""
+
+    def test_an_embedded_png_is_drawn(self):
+        assert centre_pixel(svg_with_image(png_bytes(10, 10))) == 0
+
+    @pytest.mark.parametrize("image_format", ["JPEG", "GIF", "WEBP"])
+    def test_other_embedded_raster_formats_are_drawn(self, image_format):
+        svg = svg_with_image(
+            raster_image_bytes(image_format), mime=f"image/{image_format.lower()}"
+        )
+        assert centre_pixel(svg) < 16
+
+    def test_an_embedded_svg_is_drawn(self):
+        svg = svg_with_image(make_svg(100, 100), mime="image/svg+xml")
+        assert centre_pixel(svg) == 0
+
+    def test_an_embedded_png_over_the_pixel_budget_is_rejected(self):
+        # cairo decodes embedded PNGs itself, at full size, without Pillow's
+        # decompression-bomb check.
+        svg = svg_with_image(png_bytes(OVERSIZED_SIDE, OVERSIZED_SIDE))
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg)
+
+    def test_an_embedded_jpeg_over_the_pixel_budget_is_rejected(self):
+        # Pillow only refuses images above about 179 megapixels.
+        jpeg = raster_image_bytes("JPEG", size=(OVERSIZED_SIDE, OVERSIZED_SIDE))
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg_with_image(jpeg, mime="image/jpeg"))
+
+    def test_the_pixel_budget_covers_all_embedded_images_together(self, monkeypatch):
+        monkeypatch.setattr(marker_utils, "MAX_SVG_LAYER_PIXELS", 150)
+        image = png_bytes(10, 10)
+
+        rasterize_svg(svg_with_image(image))
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg_with_image(image, copies=2))
+
+    def test_an_image_drawn_again_through_use_counts_again(self, monkeypatch):
+        monkeypatch.setattr(marker_utils, "MAX_SVG_LAYER_PIXELS", 150)
+        image = f'<image id="i" href="{data_url(png_bytes(10, 10), "image/png")}"/>'
+
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg_document(image + '<use href="#i"/>'))
+
+    def test_an_embedded_image_in_another_format_is_rejected(self):
+        svg = svg_with_image(raster_image_bytes("BMP"), mime="image/bmp")
+        with pytest.raises(ValueError, match="unsupported BMP"):
+            rasterize_svg(svg)
+
+    def test_a_compressed_svg_is_rejected(self):
+        with pytest.raises(ValueError, match="compressed"):
+            rasterize_svg(gzip.compress(SQUARE_SVG))
+
+    @pytest.mark.parametrize(
+        "element",
+        [
+            '<image href="{href}" width="100" height="100"/>',
+            '<use href="{href}"/>',
+            '<text y="50"><tref href="{href}"/></text>',
+        ],
+    )
+    def test_compressed_content_inside_an_svg_is_rejected(self, element):
+        # cairosvg would gunzip it in one go, however large it expands.
+        href = data_url(gzip.compress(SQUARE_SVG), "image/svg+xml")
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg_document(element.format(href=href)))
+
+    def test_a_small_mask_is_applied(self):
+        assert centre_pixel(masked_square(100)) == 0
+
+    def test_a_mask_layer_over_the_pixel_budget_is_rejected(self):
+        # cairo rasterises the mask at the size the SVG declares for it.
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(masked_square(OVERSIZED_SIDE))
+
+    def test_a_small_pattern_is_applied(self):
+        assert centre_pixel(pattern_filled_square(10)) == 0
+
+    def test_a_pattern_layer_over_the_pixel_budget_is_rejected(self):
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(pattern_filled_square(OVERSIZED_SIDE))
+
+    def test_groups_nested_up_to_the_budget_are_drawn(self):
+        assert raster_size(nested_groups(GROUP_DEPTH_LIMIT)) == (
+            SVG_RASTER_WIDTH,
+            SVG_RASTER_WIDTH,
+        )
+
+    @pytest.mark.parametrize(
+        "attributes",
+        ['opacity="0.5"', 'mask="url(#m)"', 'filter="url(#f)"'],
+    )
+    def test_groups_nested_past_the_budget_are_rejected(self, attributes):
+        # Each one is a scratch layer as large as the raster.
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(nested_groups(GROUP_DEPTH_LIMIT + 1, attributes))
+
+    def test_a_use_reference_cycle_is_rejected(self):
+        # Each round nests one more group layer, until the budget stops it.
+        svg = svg_document(
+            '<g id="loop" opacity="0.5">'
+            '<rect width="10" height="10"/><use href="#loop"/></g>'
+        )
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(svg)
+
+    def test_rendering_stops_after_the_time_limit(self, monkeypatch):
+        monkeypatch.setattr(marker_utils, "MAX_SVG_RENDER_SECONDS", -1)
+        with pytest.raises(SvgTooComplexError):
+            rasterize_svg(SQUARE_SVG)
 
 
 class TestRasterizeSvg:
@@ -179,3 +340,17 @@ class TestSvgMarkerUpload(TestCase):
         assert response.status_code == 200
         assert not Marker.objects.exists()
         assert "too long and thin to work as a marker" in response.content.decode()
+
+    def test_an_svg_too_complex_to_render_is_rejected(self):
+        svg = svg_with_image(png_bytes(OVERSIZED_SIDE, OVERSIZED_SIDE))
+        response = self.upload(svg_upload(content=svg))
+
+        assert response.status_code == 200
+        assert not Marker.objects.exists()
+        assert "too complex to turn into a marker" in response.content.decode()
+
+    def test_an_svg_with_a_small_embedded_image_creates_the_marker(self):
+        response = self.upload(svg_upload(content=svg_with_image(png_bytes(10, 10))))
+
+        assert response.status_code == 302
+        assert Marker.objects.filter(title="svg marker").exists()

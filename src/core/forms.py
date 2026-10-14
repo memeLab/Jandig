@@ -11,6 +11,7 @@ from PIL import Image, UnidentifiedImageError
 from core.marker_utils import (
     MAX_SVG_ASPECT_RATIO,
     SvgAspectRatioError,
+    SvgTooComplexError,
     generate_marker_variants,
     is_svg,
     rasterize_svg,
@@ -205,6 +206,13 @@ class UploadMarkerForm(forms.ModelForm):
                         "shortest side."
                     ),
                     params={"ratio": MAX_SVG_ASPECT_RATIO},
+                )
+            except SvgTooComplexError:
+                raise forms.ValidationError(
+                    _(
+                        "This SVG is too complex to turn into a marker. Simplify "
+                        "it, or export it as a PNG or JPG and upload that instead."
+                    )
                 )
             except ValueError:
                 raise forms.ValidationError(
