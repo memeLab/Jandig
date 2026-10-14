@@ -4,7 +4,9 @@
 <div>
     <div class="exhibit-elements flex">
         <p class="by">
-            {{ _("Created by ") }}<b>{{ exhibit.owner.user.username }}</b>
+            {{ _("Created by ") }}
+            {% set owner_username = exhibit.owner.user.username %}
+            {% if owner_username %}<a href="{{ url('public-profile', kwargs={'username': owner_username}) }}"><b>{{ owner_username }}</b></a>{% else %}<b>{{ owner_username }}</b>{% endif %}
         </p>
         <p class="exbDate">{{ exhibit.date }}</p>
         <div>
