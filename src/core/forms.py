@@ -32,6 +32,14 @@ class ExhibitSelectForm(forms.Form):
         queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
     )
 
+    def __init__(self, *args, search=None, **kwargs):
+        """`search` narrows thelist server-side so long lists stay usable."""
+        super().__init__(*args, **kwargs)
+        if search:
+            self.fields["exhibit"].queryset = self.fields["exhibit"].queryset.filter(
+                name__icontains=search
+            )
+
 
 class ObjectWidget(forms.ClearableFileInput):
     """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
