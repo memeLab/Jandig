@@ -18,7 +18,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import generate_marker_variants, strip_existing_border
 from core.models import (
     Artwork,
     Exhibit,
@@ -309,6 +309,9 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            if form.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(marker)
 
             generate_marker_variants(
                 marker,
