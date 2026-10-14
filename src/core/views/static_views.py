@@ -42,10 +42,10 @@ def marker_generator(request):
 
 
 def robots_txt(request):
-    # Block bots entirely on dev/staging hosts so dev.jandig.app stops
+    # Block bots entirely on the dev host so dev.jandig.app stops
     # showing up in search results.
     host = request.get_host().lower()
-    if host.startswith("dev.") or "staging" in host:
+    if host.startswith("dev."):
         lines = ["User-Agent: *", "Disallow: /"]
         return HttpResponse("\n".join(lines), content_type="text/plain")
 
