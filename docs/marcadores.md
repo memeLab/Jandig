@@ -27,6 +27,11 @@ ao preto, marque a opção "Adicionar borda interna" ao enviar o
 marcador: ela insere um fino anel branco entre a imagem e a borda
 preta, facilitando a identificação do limite entre os dois pela câmera.
 
+Se a sua imagem já for um marcador, ou seja, já tiver a borda preta,
+marque a opção "Remover borda existente" ao enviar. Assim a Jandig
+remove a borda original antes de gerar a nova, em vez de desenhar uma
+segunda borda em volta da primeira.
+
 ## Formato quadrado
 
 Os marcadores Jandig são sempre quadrados. Se você enviar uma imagem
@@ -34,6 +39,12 @@ retangular, ela será redimensionada para caber num quadrado, o que pode
 distorcer o conteúdo (esticando-o na horizontal ou na vertical). Para
 evitar distorções, prefira usar imagens já quadradas (largura igual à
 altura).
+
+## Tamanho máximo
+
+A imagem do marcador pode ter no máximo 4096 x 4096 pixels. Imagens
+maiores são recusadas no envio e precisam ser reduzidas antes. Na
+prática, uma resolução bem menor já basta para o reconhecimento.
 
 ## Simetria
 

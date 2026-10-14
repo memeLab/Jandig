@@ -122,8 +122,5 @@ high-resolution version for use in controlled environments and/or in
 the future.
 
 If you use Adobe Media Encoder, there's a tutorial developed by UEMG
-available for [download as a
-PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
-
-We also prepared a tutorial on how to export GIFs with a transparent
-background: [download the PDF](files/como_exportar_gifs_com_transparencia.pdf).
+showing how to export GIFs with a transparent background (in
+Portuguese): [download the PDF](files/como_exportar_gifs_com_transparencia.pdf).

@@ -8,7 +8,7 @@ plataformas.
 
 Além de produzir uma versão considerando as limitações a seguir,
 recomendamos que seja produzida uma versão "ideal", em maior qualidade,
-que pode ser utilizada em ambientes controlados e/ou no futuro (quanto
+que pode ser utilizada em ambientes controlados e/ou no futuro (quando
 essas limitações forem diminuindo).
 
 ## Formatos suportados
@@ -124,9 +124,6 @@ diferentes até chegar a um resultado ótimo. Lembre-se também de manter
 uma versão em alta resolução para uso em ambientes controlados e/ou
 futuro.
 
-Caso você use Adobe Media Encoder, há um tutorial que foi desenvolvido
-pela UEMG para [download em
-PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
-
-Também preparamos um tutorial de como exportar GIFs com fundo
-transparente: [baixe o PDF](files/como_exportar_gifs_com_transparencia.pdf).
+Caso você use Adobe Media Encoder, há um tutorial desenvolvido pela
+UEMG que mostra como exportar GIFs com fundo transparente: [baixe o
+PDF](files/como_exportar_gifs_com_transparencia.pdf).
