@@ -37,5 +37,16 @@
                     </a>
                 </div>
             {% endif %}
+            <div class="artwork-content">
+                <h5>{{ _("QR code") }}</h5>
+                <p role="img" aria-label="{{ _('QR code for this artwork') }}">{{ qr_code }}</p>
+                <p>
+                    {{ _("Download QR code:") }}
+                    <a href="{{ url('artwork-qrcode', kwargs={'artwork_id': artwork.id, 'file_format': 'png'}) }}"
+                       download>PNG</a> |
+                    <a href="{{ url('artwork-qrcode', kwargs={'artwork_id': artwork.id, 'file_format': 'svg'}) }}"
+                       download>SVG</a>
+                </p>
+            </div>
         </div>
     </div>

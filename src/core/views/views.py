@@ -10,6 +10,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
 from sentry_sdk import metrics
 
+from core import qrcodes
 from core.forms import (
     ArtworkForm,
     ExhibitForm,
@@ -727,8 +728,38 @@ def exhibit_detail(request):
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
         "objects": exhibit.augmenteds.all(),
         "sounds": exhibit.sounds.all(),
+        "qr_code": qrcodes.inline_svg(qrcodes.exhibit_url(request, exhibit)),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
+
+
+def _qrcode_download(url, filename, file_format):
+    response = HttpResponse(
+        qrcodes.render(url, file_format),
+        content_type=qrcodes.CONTENT_TYPES[file_format],
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}.{file_format}"'
+    return response
+
+
+@require_http_methods(["GET"])
+def exhibit_qrcode(request, slug, file_format):
+    exhibit = get_object_or_404(Exhibit, slug=slug)
+    return _qrcode_download(
+        qrcodes.exhibit_url(request, exhibit),
+        f"jandig-{exhibit.slug}-qrcode",
+        file_format,
+    )
+
+
+@require_http_methods(["GET"])
+def artwork_qrcode(request, artwork_id, file_format):
+    artwork = get_object_or_404(Artwork, id=int(artwork_id))
+    return _qrcode_download(
+        qrcodes.artwork_url(request, artwork),
+        f"jandig-artwork-{artwork.id}-qrcode",
+        file_format,
+    )
 
 
 @login_required
