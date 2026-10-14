@@ -9,6 +9,7 @@ from core.models import Object
 from core.serializers import ObjectSerializer
 from core.tests.factory import ObjectFactory
 from core.tests.utils import get_example_object
+from core.utils import filesizeformat
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -107,7 +108,7 @@ class TestObjectAPI(TestCase):
         assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
-        assert str(annotated_obj.file_size) in html
+        assert filesizeformat(annotated_obj.file_size) in html
         assert annotated_obj.used_in_html_string() in html
         assert "<img" in html
         assert "<video" not in html
@@ -128,7 +129,7 @@ class TestObjectAPI(TestCase):
         assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
-        assert str(annotated_obj.file_size) in html
+        assert filesizeformat(annotated_obj.file_size) in html
         assert annotated_obj.used_in_html_string() in html
         assert "<video" in html
         assert "<img" not in html
@@ -151,6 +152,6 @@ class TestObjectAPI(TestCase):
         assert annotated_obj.created.strftime("%d/%m/%Y") in html
         assert annotated_obj.author in html
         assert annotated_obj.owner.user.username in html
-        assert str(annotated_obj.file_size) in html
+        assert filesizeformat(annotated_obj.file_size) in html
         assert annotated_obj.used_in_html_string() in html
         assert go_back_url in html
