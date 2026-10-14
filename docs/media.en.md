@@ -1,7 +1,7 @@
 # Tips for producing media
 
 This document contains technical guidelines and best practices for
-producing media (images, animations, videos and 3D models) used in
+producing media (images, animations and 3D models) used in
 augmented and mixed reality Artworks on Jandig. Many of these
 guidelines can also be useful for producing content for other
 platforms.
@@ -19,9 +19,6 @@ When uploading an Object, the currently accepted formats are:
   transparent backgrounds, allowing the animation to blend well into
   the augmented reality scene.
 - **PNG** — static image (no animation).
-- **MP4** and **WebM** — video, including transparency support in
-  WebM. Recommended for longer or more detailed animations, since video
-  compresses much better than GIF.
 - **GLB** — 3D model. **Only available for MR Exhibits** (the Mixed
   Reality app for Meta Quest). AR Artworks (the mobile app, based on
   Markers) do not accept GLB Objects.
@@ -62,7 +59,7 @@ For GLB models (exclusive to MR Exhibits on Meta Quest), the relevant
 resolution is the model's textures — prefer optimized, compressed
 textures instead of very high-resolution ones.
 
-## Framerate (GIF and video)
+## Framerate (GIF)
 
 There's no fixed ideal number — the recommendation is to test and use
 the lowest frame rate that still looks smooth for that particular
@@ -72,7 +69,7 @@ compromised.
 
 ## Loop
 
-To create the illusion of continuity, the animation (GIF or video)
+To create the illusion of continuity, the animation (GIF)
 should loop. That is, the transition from the last to the first frame
 should be imperceptible.
 
@@ -80,7 +77,7 @@ should be imperceptible.
 
 The shorter the content, the better. This allows for better image
 quality and ensures the public watches all of the material. We
-recommend up to 15 seconds of duration for animations and videos.
+recommend up to 15 seconds of duration for animations.
 
 ## File size
 
@@ -89,8 +86,6 @@ less of the public's mobile data. As a reference (the smaller, the
 better):
 
 - **GIF**: ideally up to 500 kB, 1 MB at most.
-- **MP4 / WebM**: since it compresses better than GIF, it's possible to
-  keep good quality with files up to 1-2 MB for short looping clips.
 - **PNG**: ideally up to 300 kB, since it's a static image.
 - **GLB**: since it's used in the Meta Quest app (usually over Wi-Fi),
   mobile data matters less, but device performance still matters —
@@ -122,8 +117,5 @@ high-resolution version for use in controlled environments and/or in
 the future.
 
 If you use Adobe Media Encoder, there's a tutorial developed by UEMG
-available for [download as a
-PDF](https://github.com/memeLab/ARte/blob/develop/docs/Tutorial%20de%20Exporta%C3%A7%C3%A3o%20em%20GIF.pdf).
-
-We also prepared a tutorial on how to export GIFs with a transparent
-background: [download the PDF](files/como_exportar_gifs_com_transparencia.pdf).
+showing how to export GIFs with a transparent background (in
+Portuguese): [download the PDF](files/como_exportar_gifs_com_transparencia.pdf).

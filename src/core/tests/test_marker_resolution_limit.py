@@ -61,6 +61,25 @@ class TestMarkerResolutionLimit(TestCase):
 
         assert form.is_valid(), form.errors
 
+    def test_form_rejects_an_svg_that_rasterises_past_the_limit(self):
+        # SVGs are rasterised at a fixed width, so a tall one grows past the
+        # limit in height even though the file itself is tiny.
+        tall_svg = (
+            b'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="500">'
+            b'<rect width="100" height="500" fill="white"/></svg>'
+        )
+        form = UploadMarkerForm(
+            data={"title": "Tall SVG", "author": "Test Author"},
+            files={
+                "source": SimpleUploadedFile(
+                    "tall.svg", tall_svg, content_type="image/svg+xml"
+                )
+            },
+        )
+
+        assert not form.is_valid()
+        assert str(MAX_MARKER_DIMENSION) in form.errors["source"][0]
+
     def test_upload_view_rejects_an_oversized_marker(self):
         self.client.login(username=self.username, password=self.password)
         response = self.client.post(

@@ -57,6 +57,18 @@ msgstr "Apenas arquivos de áudio MP3, OGG e WAV são permitidos."
 msgid "Add inner border"
 msgstr "Adicionar borda interna"
 
+#: src/core/forms.py:140 src/core/jinja2/core/upload-marker.jinja2:55
+msgid "Remove existing border"
+msgstr "Remover borda existente"
+
+#: src/core/forms.py:141
+msgid ""
+"Tick this if your image already has a marker border, so a second one is not "
+"drawn around it."
+msgstr ""
+"Marque esta opção se a sua imagem já tem a borda de marcador, para que uma "
+"segunda borda não seja desenhada em volta dela."
+
 #: src/core/forms.py:139
 msgid "Marker's title"
 msgstr "Título do Marcador"

@@ -18,7 +18,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import generate_marker_variants, strip_existing_border
 from core.models import (
     Artwork,
     Exhibit,
@@ -309,6 +309,9 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            if form.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(marker)
 
             generate_marker_variants(
                 marker,
@@ -771,15 +774,27 @@ def edit_sound(request):
 
 
 def exhibit_select(request):
+    search = request.GET.get("search", "").strip()
     if request.method == "POST":
+        # Never narrow the queryset on POST: the submitted id must be
+        # validated against every exhibit, not just the ones the user
+        # happened to have filtered to.
         form = ExhibitSelectForm(request.POST)
         if form.is_valid():
             exhibit = form.cleaned_data.get("exhibit")
             return redirect("/" + exhibit.slug)
     else:
-        form = ExhibitSelectForm()
+        form = ExhibitSelectForm(search=search)
 
-    return render(request, "core/exhibit_select.jinja2", {"form": form})
+    return render(
+        request,
+        "core/exhibit_select.jinja2",
+        {
+            "form": form,
+            "search": search,
+            "no_matches": bool(search) and not form.fields["exhibit"].queryset.exists(),
+        },
+    )
 
 
 @require_http_methods(["GET"])

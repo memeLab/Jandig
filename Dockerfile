@@ -18,6 +18,7 @@ RUN apt-get update && \
       curl \
       wget \
       git \
+      libcairo2 \
       libavformat-dev \
       libavcodec-dev \
       libavutil-dev \

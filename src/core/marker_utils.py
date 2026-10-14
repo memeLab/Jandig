@@ -1,14 +1,22 @@
+import logging
 from io import BytesIO
 
+import cairosvg
+from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.base import ContentFile
 from PIL import Image
-from pymarker import generate_marker_from_image
+from pymarker import generate_marker_from_image, remove_borders_from_image
+
+log = logging.getLogger(__name__)
+
+log = logging.getLogger(__name__)
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
 INNER_BORDER_PERCENTAGE = 2
 
 MARKER_SIZE = (256, 256)
+SVG_RASTER_WIDTH = 1024  # px; pymarker handles square inputs at any size
 THUMB_SIZE = (128, 128)
 
 
@@ -93,13 +101,21 @@ def generate_marker_variants(marker, inner_border=False):
         ]
     )
 
-    # Clean up the old source file if it moved to a new path
+    # Clean up the old source file if it moved to a new path.
+    # This is not merely tidying: until it is gone, the object sits in public
+    # storage under the name the uploader chose, so a failure here has to be
+    # visible rather than swallowed. It still must not fail the upload.
     if old_source_name and old_source_name != marker.source.name:
         try:
             if storage.exists(old_source_name):
                 storage.delete(old_source_name)
-        except Exception:
-            pass  # Non-critical cleanup
+        except (OSError, SuspiciousFileOperation):
+            log.exception(
+                "Could not delete the pre-rename marker source %s for marker %s; "
+                "it is still in storage under the uploader's own filename",
+                old_source_name,
+                marker.pk,
+            )
 
 
 def delete_marker_files(marker):
@@ -125,3 +141,40 @@ def _save_to_storage(storage, path, content_bytes):
     except Exception:
         pass
     storage.save(path, ContentFile(content_bytes))
+
+
+def strip_existing_border(marker):
+    """Remove a border the uploaded image already has, before generating ours.
+
+    Without this, an image that is already a marker gets a second border drawn
+    around the first one. Uses `FieldFile.save` rather than writing to storage
+    directly, so the field's cached file handle is replaced — otherwise
+    `generate_marker_variants` reopens the original upload and the strip is
+    silently lost.
+
+    The caller is expected to run `generate_marker_variants` afterwards, which
+    moves the result to its canonical path and cleans up this intermediate.
+    """
+    with Image.open(marker.source) as image:
+        stripped = remove_borders_from_image(image)
+        blob = BytesIO()
+        stripped.save(blob, "PNG")
+    blob.seek(0)
+    marker.source.save(
+        f"markers/{marker.pk}/stripped.png", ContentFile(blob.getvalue()), save=True
+    )
+
+
+def is_svg(filename):
+    return filename.lower().endswith(".svg")
+
+
+def rasterize_svg(svg_bytes):
+    """
+    Render an SVG to PNG bytes at SVG_RASTER_WIDTH, the size the marker
+    pipeline works from. Raises ValueError if the SVG cannot be rendered.
+    """
+    try:
+        return cairosvg.svg2png(bytestring=svg_bytes, output_width=SVG_RASTER_WIDTH)
+    except Exception as e:
+        raise ValueError(f"Could not render SVG: {e}") from e

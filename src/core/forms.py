@@ -1,10 +1,19 @@
+from os.path import basename, splitext
+
 from django import forms
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from PIL import Image, UnidentifiedImageError
 
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import (
+    generate_marker_variants,
+    is_svg,
+    rasterize_svg,
+    strip_existing_border,
+)
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
 
@@ -31,6 +40,14 @@ class ExhibitSelectForm(forms.Form):
     exhibit = forms.ModelChoiceField(
         queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
     )
+
+    def __init__(self, *args, search=None, **kwargs):
+        """`search` narrows thelist server-side so long lists stay usable."""
+        super().__init__(*args, **kwargs)
+        if search:
+            self.fields["exhibit"].queryset = self.fields["exhibit"].queryset.filter(
+                name__icontains=search
+            )
 
 
 class ObjectWidget(forms.ClearableFileInput):
@@ -141,6 +158,19 @@ class UploadMarkerForm(forms.ModelForm):
         required=False,
         label=_("Add inner border"),
     )
+    # Override the model's ImageField with a plain FileField. ImageField
+    # would reject anything Pillow can't open (notably SVG); we want to
+    # accept SVG and rasterise it ourselves before the rest of the
+    # pipeline runs.
+    source = forms.FileField()
+    remove_existing_border = forms.BooleanField(
+        required=False,
+        label=_("Remove existing border"),
+        help_text=_(
+            "Tick this if your image already has a marker border, so a second "
+            "one is not drawn around it."
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
@@ -155,16 +185,44 @@ class UploadMarkerForm(forms.ModelForm):
 
     def clean_source(self):
         file = self.cleaned_data.get("source")
-        # Django's ImageField attaches the parsed PIL image to files it has
-        # just validated, so this is only set for a fresh upload. Editing a
-        # marker without replacing the file leaves it unset, and there is
-        # nothing new to check in that case.
-        image = getattr(file, "image", None)
-        if image is None:
-            return file
+        if file is None:
+            raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
 
-        width, height = image.size
-        if width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION:
+        if is_svg(file.name):
+            stem, _extension = splitext(file.name)
+            try:
+                file.seek(0)
+                png_bytes = rasterize_svg(file.read())
+            except ValueError:
+                raise forms.ValidationError(
+                    _("Could not render SVG. Make sure the file is a valid SVG.")
+                )
+            # Fall through so the raster gets the same checks as any upload:
+            # a tall SVG can still rasterise past the size limit.
+            file = SimpleUploadedFile(
+                name=f"{stem}.png",
+                content=png_bytes,
+                content_type="image/png",
+            )
+
+        try:
+            file.seek(0)
+            with Image.open(file) as image:
+                width, height = image.size
+                image.verify()
+            file.seek(0)
+        except (UnidentifiedImageError, OSError):
+            raise forms.ValidationError(
+                _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
+            )
+
+        # Only a fresh upload is checked. Editing a marker without replacing
+        # the file hands back the stored file, which may predate the limit.
+        if isinstance(file, UploadedFile) and (
+            width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION
+        ):
             raise forms.ValidationError(
                 _(
                     "This image is %(width)sx%(height)s pixels. Markers are limited "
@@ -183,6 +241,8 @@ class UploadMarkerForm(forms.ModelForm):
         commit = kwargs.get("commit", True)
         instance = super(UploadMarkerForm, self).save(*args, **kwargs)
         if commit:
+            if self.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(instance)
             generate_marker_variants(
                 instance,
                 inner_border=self.cleaned_data.get("inner_border", False),
