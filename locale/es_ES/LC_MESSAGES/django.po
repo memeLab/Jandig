@@ -720,6 +720,18 @@ msgstr "Elige el título del marcador"
 msgid "Choose Marker image"
 msgstr "Elige la imagen del marcador"
 
+#: src/core/forms.py:140 src/core/jinja2/core/upload-marker.jinja2:55
+msgid "Remove existing border"
+msgstr "Quitar borde existente"
+
+#: src/core/forms.py:141
+msgid ""
+"Tick this if your image already has a marker border, so a second one is not "
+"drawn around it."
+msgstr ""
+"Marca esta opción si tu imagen ya tiene el borde de marcador, para que no se "
+"dibuje un segundo borde a su alrededor."
+
 #: src/users/jinja2/users/upload-marker.jinja2:35
 #: src/users/jinja2/users/upload.jinja2:89
 msgid "I'm this Marker author"
@@ -866,3 +878,375 @@ msgstr "Curador Jandig"
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
 msgstr "Aún no hay exposiciones."
+
+#: src/core/forms.py:92
+msgid "Only GIF images, MP4, WebM videos, and GLB files are allowed."
+msgstr "Solo se permiten imágenes GIF, vídeos MP4 y WebM y archivos GLB."
+
+#: src/core/forms.py:100
+msgid ""
+"This object is being used by another user. You cannot change the source "
+"file."
+msgstr ""
+"Este objeto está siendo usado por otro usuario. No puedes cambiar el archivo"
+" de origen."
+
+#: src/core/forms.py:115 src/core/forms.py:389
+msgid "Only MP3, OGG, and WAV audio files are allowed."
+msgstr "Solo se permiten archivos de audio MP3, OGG y WAV."
+
+#: src/core/forms.py:131
+msgid "Add inner border"
+msgstr "Añadir borde interior"
+
+#: src/core/forms.py:224
+msgid "Position X must be at least -2.0"
+msgstr "La posición X debe ser como mínimo -2.0"
+
+#: src/core/forms.py:226
+msgid "Position X must not exceed 2.0"
+msgstr "La posición X no debe superar 2.0"
+
+#: src/core/forms.py:233
+msgid "Position Y must be at least -2.0"
+msgstr "La posición Y debe ser como mínimo -2.0"
+
+#: src/core/forms.py:235
+msgid "Position Y must not exceed 2.0"
+msgstr "La posición Y no debe superar 2.0"
+
+#: src/core/forms.py:305
+msgid "Invalid artwork IDs provided."
+msgstr "Se proporcionaron IDs de obra no válidos."
+
+#: src/core/forms.py:319
+msgid "Invalid object IDs provided."
+msgstr "Se proporcionaron IDs de objeto no válidos."
+
+#: src/core/forms.py:333
+msgid "Invalid sound IDs provided."
+msgstr "Se proporcionaron IDs de sonido no válidos."
+
+#: src/core/forms.py:345
+msgid "You must select at least one artwork or augmented object."
+msgstr "Debes seleccionar al menos una obra u objeto aumentado."
+
+#: src/core/forms.py:383
+msgid "This field is required."
+msgstr "Este campo es obligatorio."
+
+#: src/core/forms.py:398
+msgid ""
+"This sound is being used by another user. You cannot change the source file."
+msgstr ""
+"Este sonido está siendo usado por otro usuario. No puedes cambiar el archivo"
+" de origen."
+
+#: src/core/models.py:27
+msgid "Used in"
+msgstr "Usado en"
+
+#: src/core/models.py:78 src/core/models.py:159
+msgid "artworks"
+msgstr "obras"
+
+#: src/core/models.py:79
+msgid "and in "
+msgstr "y en "
+
+#: src/core/models.py:81 src/core/models.py:163
+msgid "exhibits"
+msgstr "exposiciones"
+
+#: src/core/models.py:161
+msgid "objects"
+msgstr "objetos"
+
+#: src/core/models.py:455
+msgid "Exhibits"
+msgstr "Exposiciones"
+
+#: src/core/models.py:560
+msgid "Object(s)"
+msgstr "Objeto(s)"
+
+#: src/core/models.py:569
+msgid "Sound(s)"
+msgstr "Sonido(s)"
+
+#: src/core/jinja2/core/collection.jinja2:21
+msgid "Jandig AR Exhibits"
+msgstr "Exposiciones AR de Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:24
+msgid "Jandig MR Exhibits"
+msgstr "Exposiciones MR de Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:35
+msgid "All AR Exhibits"
+msgstr "Todas las exposiciones AR"
+
+#: src/core/jinja2/core/collection.jinja2:37
+msgid "All MR Exhibits"
+msgstr "Todas las exposiciones MR"
+
+#: src/core/jinja2/core/community.jinja2:15
+msgid ""
+"The Jandig project is an investigation into the intervention of markers to "
+"visualize works through augmented reality in urban space. This is a "
+"collaborative digital art project that proposes the creation of Temporary "
+"Autonomous Zones (TAZes) in each space in which it is installed. These TAZes"
+" are formed through markers spread across a space by artists and the public "
+"- who thus become co-creators of that experience. Users interact with "
+"markers, using mobile devices to open windows in the real world to view "
+"digital creations (provided under a Creative Commons license)"
+msgstr ""
+"El proyecto Jandig es una investigación sobre la intervención de marcadores "
+"para visualizar obras a través de realidad aumentada en el espacio urbano. "
+"Es un proyecto de arte digital colaborativo que propone la creación de Zonas"
+" Autónomas Temporales (TAZ) en cada espacio en el que se instala. Estas TAZ "
+"se forman a través de marcadores distribuidos por un espacio por artistas y "
+"público, que así se convierten en co-creadores de esa experiencia. Los "
+"usuarios interactúan con marcadores, utilizando dispositivos móviles para "
+"abrir ventanas en el mundo real para ver creaciones digitales "
+"(proporcionadas bajo licencia Creative Commons)"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:12
+msgid "Edit AR Exhibition"
+msgstr "Editar exposición AR"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:14
+#: src/users/jinja2/users/components/createbox.jinja2:19
+msgid "Create AR Exhibition"
+msgstr "Crear exposición AR"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:21
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:21
+msgid "About your Exhibit"
+msgstr "Sobre tu exposición"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:22
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:22
+msgid "Exhibit Name"
+msgstr "Nombre de la exposición"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:25
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:25
+msgid "Exhibit Link"
+msgstr "Enlace de la exposición"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:32
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:32
+#: src/core/jinja2/core/upload-artwork.jinja2:29
+msgid "Select the content"
+msgstr "Selecciona el contenido"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:57
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:73
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:108
+#: src/core/jinja2/core/upload-artwork.jinja2:87
+#: src/core/jinja2/core/upload-artwork.jinja2:123
+#: src/core/jinja2/core/upload-artwork.jinja2:159
+#: src/core/jinja2/core/upload-object.jinja2:110
+msgid "Okay"
+msgstr "De acuerdo"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:60
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:111
+msgid "Publish content"
+msgstr "Publicar contenido"
+
+#: src/core/jinja2/core/exhibit_create_ar.jinja2:63
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:114
+msgid "Save"
+msgstr "Guardar"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:12
+msgid "Edit MR Exhibition"
+msgstr "Editar exposición MR"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:14
+#: src/users/jinja2/users/components/createbox.jinja2:22
+msgid "Create MR Exhibition"
+msgstr "Crear exposición MR"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:33
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:41
+msgid "Select Objects"
+msgstr "Seleccionar objetos"
+
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:36
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:76
+msgid "Select Sounds"
+msgstr "Seleccionar sonidos"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:24
+msgid "Exhibition MR Objects"
+msgstr "Objetos MR de la exposición"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:30
+msgid "Exhibition Sounds"
+msgstr "Sonidos de la exposición"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:19
+msgid "About your artwork"
+msgstr "Sobre tu obra"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:126
+#: src/core/jinja2/core/upload-object.jinja2:77
+msgid "Select Sound"
+msgstr "Seleccionar sonido"
+
+#: src/core/jinja2/core/upload-artwork.jinja2:162
+msgid "Position the content"
+msgstr "Posiciona el contenido"
+
+#: src/core/jinja2/core/upload-marker.jinja2:29
+msgid "Choose the Marker image"
+msgstr "Elige la imagen del marcador"
+
+#: src/core/jinja2/core/upload-marker.jinja2:59
+#: src/core/jinja2/core/upload-object.jinja2:71
+#: src/core/jinja2/core/upload-sound.jinja2:42
+msgid ""
+"I agree to have this content under <a target=\"_blank\"\n"
+"                                        href=\"https://creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> and I'm aware that it can't be removed after other people are using it."
+msgstr ""
+"Acepto tener este contenido bajo <a target=\"_blank\" "
+"href=\"https://creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA "
+"4.0</a> y soy consciente de que no se puede eliminar después de que otras "
+"personas lo estén usando."
+
+#: src/core/jinja2/core/upload-object.jinja2:34
+msgid "Choose a Sound"
+msgstr "Elige un sonido"
+
+#: src/core/jinja2/core/upload-object.jinja2:35
+msgid "Select a Sound"
+msgstr "Selecciona un sonido"
+
+#: src/core/jinja2/core/upload-object.jinja2:42
+msgid "Choose Audio Description"
+msgstr "Elige una audiodescripción"
+
+#: src/core/jinja2/core/upload-object.jinja2:47
+msgid "Choose the Audio Description File"
+msgstr "Elige el archivo de audiodescripción"
+
+#: src/core/jinja2/core/upload-object.jinja2:50
+msgid "optional"
+msgstr "opcional"
+
+#: src/core/jinja2/core/upload-object.jinja2:238
+msgid ""
+"GLB files are only supported in MR (Meta Quest 3) exhibits. They cannot be "
+"used in AR exhibits or Artworks yet."
+msgstr ""
+"Los archivos GLB solo son compatibles con exposiciones MR (Meta Quest 3). "
+"Todavía no se pueden usar en exposiciones AR ni en obras."
+
+#: src/core/jinja2/core/upload-object.jinja2:364
+msgid "Invalid file type! Only image, video or GLB files are accepted."
+msgstr ""
+"¡Tipo de archivo no válido! Solo se aceptan archivos de imagen, vídeo o GLB."
+
+#: src/core/jinja2/core/upload-sound.jinja2:7
+msgid "Edit Sound"
+msgstr "Editar sonido"
+
+#: src/core/jinja2/core/upload-sound.jinja2:9
+#: src/users/jinja2/users/components/createbox.jinja2:4
+msgid "Upload Sound"
+msgstr "Subir sonido"
+
+#: src/core/jinja2/core/upload-sound.jinja2:17
+msgid "Choose Sound's title"
+msgstr "Elige el título del sonido"
+
+#: src/core/jinja2/core/upload-sound.jinja2:22
+msgid "Choose Sound"
+msgstr "Elegir sonido"
+
+#: src/core/jinja2/core/upload-sound.jinja2:32
+msgid "I'm this Sound's author"
+msgstr "Soy el autor de este sonido"
+
+#: src/core/jinja2/core/upload-sound.jinja2:94
+msgid "Invalid file type! Only mp3 or ogg files are accepted."
+msgstr "¡Tipo de archivo no válido! Solo se aceptan archivos mp3 u ogg."
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:10
+msgid "Created by"
+msgstr "Creado por"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:10
+#: src/core/jinja2/core/templates/marker_modal.jinja2:18
+#: src/core/jinja2/core/templates/object_modal.jinja2:18
+#: src/core/jinja2/core/templates/sound_modal.jinja2:18
+msgid ", in"
+msgstr ", en"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:27
+msgid "Artwork Sound"
+msgstr "Sonido de la obra"
+
+#: src/core/jinja2/core/templates/marker_modal.jinja2:16
+#: src/core/jinja2/core/templates/object_modal.jinja2:16
+#: src/core/jinja2/core/templates/sound_modal.jinja2:16
+msgid "Author:"
+msgstr "Autor:"
+
+#: src/core/jinja2/core/templates/marker_modal.jinja2:18
+#: src/core/jinja2/core/templates/object_modal.jinja2:18
+#: src/core/jinja2/core/templates/sound_modal.jinja2:18
+msgid "Uploaded by"
+msgstr "Subido por"
+
+#: src/core/jinja2/core/templates/marker_modal.jinja2:23
+#: src/core/jinja2/core/templates/object_modal.jinja2:37
+#: src/core/jinja2/core/templates/sound_modal.jinja2:23
+msgid "Download File"
+msgstr "Descargar archivo"
+
+#: src/core/jinja2/core/templates/object_edit_template.jinja2:12
+msgid "Preview is not available"
+msgstr "La vista previa no está disponible"
+
+#: src/core/jinja2/core/templates/object_modal.jinja2:23
+msgid "Sound:"
+msgstr "Sonido:"
+
+#: src/core/jinja2/core/templates/object_modal.jinja2:30
+msgid "Audio Description:"
+msgstr "Audiodescripción:"
+
+#: src/users/jinja2/users/profile.jinja2:22
+msgid "Your MR Exhibitions"
+msgstr "Tus exposiciones MR"
+
+#: src/users/jinja2/users/profile.jinja2:32
+msgid "You have no MR Exhibitions. :c"
+msgstr "No tienes exposiciones MR. :c"
+
+#: src/users/jinja2/users/profile.jinja2:41
+msgid "Your AR Exhibitions"
+msgstr "Tus exposiciones AR"
+
+#: src/users/jinja2/users/profile.jinja2:51
+msgid "You have no AR Exhibitions. :c"
+msgstr "No tienes exposiciones AR. :c"
+
+#: src/users/jinja2/users/profile.jinja2:117
+msgid "Your Sounds"
+msgstr "Tus sonidos"
+
+#: src/users/jinja2/users/profile.jinja2:127
+msgid "You have no Sounds. :c"
+msgstr "No tienes sonidos. :c"
+
+#: src/users/jinja2/users/components/createbox.jinja2:16
+msgid "Create Artwork"
+msgstr "Crear obra"
+
+msgid "Select"
+msgstr "Seleccionar"

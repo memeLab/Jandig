@@ -7,24 +7,21 @@ from django.urls import reverse
 
 
 class TestInvalidSignup(TestCase):
-    @override_settings(RECAPTCHA_ENABLED=True)
-    def test_invalid_signup(self):
-        # Test invalid signup without recaptcha enabled but without token should return 400
+    @override_settings(TURNSTILE_ENABLED=True)
+    def test_missing_turnstile_token(self):
+        # Signup without cf-turnstile-response token should return 400
         response = self.client.post(
             reverse("signup"),
             {"username": "test", "password1": "test", "password2": "test"},
         )
         self.assertEqual(response.status_code, 400)
 
-        # Signup with an invalid g-recaptcha-response token should return 400
-        with patch("requests.post") as mock_create_assessment:
-            mock_create_assessment.return_value = Mock()
-            mock_create_assessment.return_value.json.return_value = {
-                "tokenProperties": {
-                    "valid": False,
-                    "invalidReason": "invalid token sent",
-                }
-            }
+    @override_settings(TURNSTILE_ENABLED=True)
+    def test_invalid_turnstile_token(self):
+        # Signup with a token that fails verification should return 400
+        with patch("users.services.turnstile_service.requests.post") as mock_post:
+            mock_post.return_value = Mock()
+            mock_post.return_value.json.return_value = {"success": False}
 
             response = self.client.post(
                 reverse("signup"),
@@ -32,64 +29,21 @@ class TestInvalidSignup(TestCase):
                     "username": "test",
                     "password1": "test",
                     "password2": "test",
-                    "g-recaptcha-response": "DFwmgvoqhXuFGd",
+                    "cf-turnstile-response": "invalid-token",
                 },
             )
             self.assertEqual(response.status_code, 400)
 
-    @override_settings(RECAPTCHA_ENABLED=True)
-    def test_invalid_action(self):
-        # Test invalid signup without recaptcha enabled but without token should return 400
+    @override_settings(TURNSTILE_ENABLED=False)
+    def test_turnstile_disabled_skips_verification(self):
+        # When turnstile is disabled, signup should not require a token
         response = self.client.post(
             reverse("signup"),
-            {"username": "test", "password1": "test", "password2": "test"},
+            {
+                "username": "testuser",
+                "password1": "Str0ngP@ss!",
+                "password2": "Str0ngP@ss!",
+            },
         )
-        self.assertEqual(response.status_code, 400)
-
-        # Signup with an invalid g-recaptcha-response token should return 400
-        with patch("requests.post") as mock_create_assessment:
-            mock_create_assessment.return_value = Mock()
-            mock_create_assessment.return_value.json.return_value = {
-                "tokenProperties": {
-                    "valid": True,
-                    "action": "different_action",
-                }
-            }
-
-            response = self.client.post(
-                reverse("signup"),
-                {
-                    "username": "test",
-                    "password1": "test",
-                    "password2": "test",
-                    "g-recaptcha-response": "DFwmgvoqhXuFGd",
-                },
-            )
-            self.assertEqual(response.status_code, 400)
-
-    @override_settings(RECAPTCHA_ENABLED=True)
-    def test_low_recaptcha_score(self):
-        with patch("requests.post") as mock_create_assessment:
-            mock_create_assessment.return_value = Mock()
-            mock_create_assessment.return_value.json.return_value = {
-                "tokenProperties": {
-                    "valid": True,
-                    "action": "sign_up",
-                },
-                "riskAnalysis": {
-                    "score": 0.1,
-                    "reasons": ["AUTOMATION", "TOO_MUCH_TRAFFIC"],
-                },
-                "name": "google cloud project assessment name",
-            }
-
-            response = self.client.post(
-                reverse("signup"),
-                {
-                    "username": "test",
-                    "password1": "test",
-                    "password2": "test",
-                    "g-recaptcha-response": "DFwmgvoqhXuFGd",
-                },
-            )
-            self.assertEqual(response.status_code, 400)
+        # Should not return 400 for missing token
+        self.assertNotEqual(response.status_code, 400)

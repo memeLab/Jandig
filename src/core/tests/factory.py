@@ -1,3 +1,4 @@
+import json
 import os
 import random
 
@@ -6,6 +7,7 @@ from django.core.files.base import ContentFile
 from factory import Faker, LazyAttribute, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
+from core.marker_utils import generate_marker_variants
 from core.models import Artwork, Exhibit, ExhibitTypes, Marker, Object, Sound
 from users.tests.factory import ProfileFactory
 
@@ -58,23 +60,10 @@ def choose_random_sound_file(_):
         return ContentFile(f.read(), name=file)
 
 
-def chose_random_patt_file(_):
-    """
-    Randomly selects a file from the collection/patts folder.
-    """
-    patts_dir = os.path.join(BASE_COLLECTION_DIR, "patts/")
-    files = [
-        f for f in os.listdir(patts_dir) if os.path.isfile(os.path.join(patts_dir, f))
-    ]
-    file = random.choice(files)
-    file_path = os.path.join(patts_dir, file)
-    with open(file_path, "rb") as f:
-        return ContentFile(f.read(), name=file)
-
-
 class ObjectFactory(DjangoModelFactory):
     class Meta:
         model = Object
+        skip_postgeneration_save = True
 
     owner = SubFactory(ProfileFactory)
 
@@ -88,21 +77,44 @@ class ObjectFactory(DjangoModelFactory):
     file_name_original = Faker("slug")
     file_extension = LazyAttribute(lambda obj: obj.source.name.split(".")[-1])
 
+    @post_generation
+    def generate_spritesheet(obj, create, extracted, **kwargs):
+        """Generate fake spritesheet files for GIF objects."""
+        if not create:
+            return
+        if obj.file_extension == "gif":
+            fake_png = ContentFile(b"\x89PNG\r\n\x1a\n", name="spritesheet.png")
+            obj.spritesheet_file.save(
+                f"objects/{obj.pk}/spritesheet.png", fake_png, save=False
+            )
+            metadata = {"frames": 4, "frameWidth": 100, "frameHeight": 100}
+            fake_meta = ContentFile(json.dumps(metadata).encode(), name="metadata.json")
+            obj.spritesheet_metadata.save(
+                f"objects/{obj.pk}/metadata.json", fake_meta, save=False
+            )
+        obj.save()
+
 
 class MarkerFactory(DjangoModelFactory):
     class Meta:
         model = Marker
+        skip_postgeneration_save = True
 
     owner = SubFactory(ProfileFactory)
 
     # Randomly select a file from the test_files folder for the source field
     source = LazyAttribute(choose_random_marker_file)
-    patt = LazyAttribute(chose_random_patt_file)
 
     title = Faker("sentence", nb_words=3)
     author = Faker("name")
 
     file_size = Faker("random_int", min=1000, max=1_000_000)
+
+    @post_generation
+    def generate_variants(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        generate_marker_variants(obj)
 
 
 class ArtworkFactory(DjangoModelFactory):
