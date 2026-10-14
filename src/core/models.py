@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
@@ -120,7 +121,7 @@ class Sound(TimeStampedModel, ContentMixin):
     def as_html(self):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.file.url,
         }
         return render(
@@ -173,7 +174,7 @@ class Marker(TimeStampedModel, ContentMixin):
         src = image.url + f"?v={int(self.modified.timestamp())}"
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": src,
         }
         return render(
@@ -390,7 +391,7 @@ class Object(TimeStampedModel, ContentMixin):
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.source.url,
         }
         max_w = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
