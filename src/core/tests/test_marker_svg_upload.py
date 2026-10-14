@@ -5,18 +5,8 @@ from PIL import Image
 
 from core.marker_utils import SVG_RASTER_WIDTH
 from core.models import Marker
+from core.tests.utils import gif_upload, pdf_upload, svg_upload
 from users.models import User
-
-SQUARE_SVG = b"""<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="white"/>
-  <circle cx="50" cy="50" r="30" fill="black"/>
-</svg>
-"""
-
-
-def svg_upload(name="marker.svg", content=SQUARE_SVG):
-    return SimpleUploadedFile(name, content, content_type="image/svg+xml")
 
 
 class TestSvgMarkerUpload(TestCase):
@@ -74,6 +64,21 @@ class TestSvgMarkerUpload(TestCase):
             "marker.png", b"just some text", content_type="image/png"
         )
         response = self.upload(not_an_image)
+
+        assert response.status_code == 200
+        assert not Marker.objects.exists()
+        assert "Upload a valid image" in response.content.decode()
+
+    def test_a_gif_upload_still_creates_the_marker(self):
+        response = self.upload(gif_upload())
+
+        assert response.status_code == 302
+        marker = Marker.objects.get(title="svg marker")
+        assert marker.source.name.endswith(".gif")
+        assert marker.marker_img.name == f"markers/{marker.pk}/marker.png"
+
+    def test_a_pdf_is_rejected_with_a_message(self):
+        response = self.upload(pdf_upload())
 
         assert response.status_code == 200
         assert not Marker.objects.exists()
