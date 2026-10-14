@@ -28,3 +28,22 @@ def get_example_sound(filename):
         ).read(),
         name=filename,
     )
+
+
+def make_svg(width=None, height=None, viewbox=None):
+    """An SVG of a black circle, sized by whichever of width, height and
+    viewBox are given (each may carry units, e.g. "1in")."""
+    attributes = "".join(
+        f' {name}="{value}"'
+        for name, value in (
+            ("width", width),
+            ("height", height),
+            ("viewBox", viewbox),
+        )
+        if value is not None
+    )
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg"{attributes}>'
+        '<rect width="100%" height="100%" fill="white"/>'
+        '<circle cx="50%" cy="50%" r="30%" fill="black"/></svg>'
+    ).encode()
