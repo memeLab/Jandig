@@ -9,7 +9,7 @@
         <div class="exhibit-detail-box flex">
             <h1 class="exhibit-name">{{ exhibit.name }}</h1>
             <p class="url">
-                {{ request.scheme }}://{{ request.get_host() }}/<span>{{ exhibit.slug }}</span>
+                https://{{ request.get_host() }}/<span>{{ exhibit.slug }}</span>
             </p>
             <p class="by">
                 {{ _("Created by ") }} <b>{{ exhibit.owner.user.username }}</b>
