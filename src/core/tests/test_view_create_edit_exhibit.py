@@ -190,12 +190,12 @@ class TestCreateARExhibitView(TestCase):
             "augmenteds": "",
         }
         response = self.client.post(url, data)
-        # Should redirect to profile after creation
+        # The form is redisplayed with the error instead of redirecting
         assert response.status_code == 200
-        # Exhibit should be created with no artworks or objects
         assert Exhibit.objects.count() == 0
+        # The AR route asks for what an AR exhibit needs: artworks (#853)
         assert (
-            "You must select at least one artwork or augmented object."
+            "AR exhibits require at least one artwork."
             in response.context["form"].non_field_errors()
         )
 
@@ -368,7 +368,8 @@ class TestEditExhibitView(TestCase):
         self.exhibit.refresh_from_db()
         assert self.exhibit.name == "Edited Exhibit with Objects"
         assert self.exhibit.slug == "edited-exhibit-objects"
-        assert self.exhibit.exhibit_type == ExhibitTypes.MR
+        # Saved through the AR route, so it stays AR even with objects (#853)
+        assert self.exhibit.exhibit_type == ExhibitTypes.AR
         self.assertSetEqual(
             set(self.exhibit.artworks.values_list("id", flat=True)),
             {self.artwork1.id},
