@@ -1,7 +1,7 @@
 from os.path import basename, splitext
 
 from django import forms
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
@@ -68,6 +68,12 @@ class ObjectWidget(forms.ClearableFileInput):
 
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
+
+
+# Markers are rasterised and uploaded to the AR viewer as textures, so an
+# upload far larger than a 4K texture costs storage and marker-generation time
+# without improving detection. Both sides are capped at this value.
+MAX_MARKER_DIMENSION = 4096
 
 
 class UploadObjectForm(forms.ModelForm):
@@ -193,7 +199,9 @@ class UploadMarkerForm(forms.ModelForm):
                 raise forms.ValidationError(
                     _("Could not render SVG. Make sure the file is a valid SVG.")
                 )
-            return SimpleUploadedFile(
+            # Fall through so the raster gets the same checks as any upload:
+            # a tall SVG can still rasterise past the size limit.
+            file = SimpleUploadedFile(
                 name=f"{stem}.png",
                 content=png_bytes,
                 content_type="image/png",
@@ -202,6 +210,7 @@ class UploadMarkerForm(forms.ModelForm):
         try:
             file.seek(0)
             with Image.open(file) as image:
+                width, height = image.size
                 image.verify()
             file.seek(0)
         except (UnidentifiedImageError, OSError):
@@ -209,6 +218,23 @@ class UploadMarkerForm(forms.ModelForm):
                 _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
             )
 
+        # Only a fresh upload is checked. Editing a marker without replacing
+        # the file hands back the stored file, which may predate the limit.
+        if isinstance(file, UploadedFile) and (
+            width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION
+        ):
+            raise forms.ValidationError(
+                _(
+                    "This image is %(width)sx%(height)s pixels. Markers are limited "
+                    "to %(limit)sx%(limit)s pixels, so please resize it before "
+                    "uploading."
+                ),
+                params={
+                    "width": width,
+                    "height": height,
+                    "limit": MAX_MARKER_DIMENSION,
+                },
+            )
         return file
 
     def save(self, *args, **kwargs):
