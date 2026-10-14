@@ -1,6 +1,7 @@
 import logging
 from io import BytesIO
 
+import cairosvg
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.base import ContentFile
 from PIL import Image
@@ -15,6 +16,7 @@ WHITE_BORDER_PERCENTAGE = 3
 INNER_BORDER_PERCENTAGE = 2
 
 MARKER_SIZE = (256, 256)
+SVG_RASTER_WIDTH = 1024  # px; pymarker handles square inputs at any size
 THUMB_SIZE = (128, 128)
 
 
@@ -161,3 +163,18 @@ def strip_existing_border(marker):
     marker.source.save(
         f"markers/{marker.pk}/stripped.png", ContentFile(blob.getvalue()), save=True
     )
+
+
+def is_svg(filename):
+    return filename.lower().endswith(".svg")
+
+
+def rasterize_svg(svg_bytes):
+    """
+    Render an SVG to PNG bytes at SVG_RASTER_WIDTH, the size the marker
+    pipeline works from. Raises ValueError if the SVG cannot be rendered.
+    """
+    try:
+        return cairosvg.svg2png(bytestring=svg_bytes, output_width=SVG_RASTER_WIDTH)
+    except Exception as e:
+        raise ValueError(f"Could not render SVG: {e}") from e

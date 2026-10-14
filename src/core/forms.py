@@ -1,10 +1,19 @@
+from os.path import basename, splitext
+
 from django import forms
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from PIL import Image, UnidentifiedImageError
 
-from core.marker_utils import generate_marker_variants, strip_existing_border
+from core.marker_utils import (
+    generate_marker_variants,
+    is_svg,
+    rasterize_svg,
+    strip_existing_border,
+)
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
 
@@ -143,6 +152,11 @@ class UploadMarkerForm(forms.ModelForm):
         required=False,
         label=_("Add inner border"),
     )
+    # Override the model's ImageField with a plain FileField. ImageField
+    # would reject anything Pillow can't open (notably SVG); we want to
+    # accept SVG and rasterise it ourselves before the rest of the
+    # pipeline runs.
+    source = forms.FileField()
     remove_existing_border = forms.BooleanField(
         required=False,
         label=_("Remove existing border"),
@@ -162,6 +176,40 @@ class UploadMarkerForm(forms.ModelForm):
     class Meta:
         model = Marker
         fields = ("source", "author", "title")
+
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        if file is None:
+            raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
+
+        if is_svg(file.name):
+            stem, _extension = splitext(file.name)
+            try:
+                file.seek(0)
+                png_bytes = rasterize_svg(file.read())
+            except ValueError:
+                raise forms.ValidationError(
+                    _("Could not render SVG. Make sure the file is a valid SVG.")
+                )
+            return SimpleUploadedFile(
+                name=f"{stem}.png",
+                content=png_bytes,
+                content_type="image/png",
+            )
+
+        try:
+            file.seek(0)
+            with Image.open(file) as image:
+                image.verify()
+            file.seek(0)
+        except (UnidentifiedImageError, OSError):
+            raise forms.ValidationError(
+                _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
+            )
+
+        return file
 
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
