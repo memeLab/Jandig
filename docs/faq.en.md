@@ -38,7 +38,7 @@ Tags](marcadores.en.md).
 
 ## What file formats can I use for Objects?
 
-GIF, PNG, MP4, WebM and GLB. GLB Objects only work in MR Exhibits (the
+GIF, PNG and GLB. GLB Objects only work in MR Exhibits (the
 Mixed Reality app for Meta Quest). AR Artworks, from the marker-based
 mobile site, don't accept GLB. You can also attach an optional audio
 description in MP3, OGG or WAV. See more in [Tips for producing

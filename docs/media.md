@@ -1,7 +1,7 @@
 # Dicas para produzir mídia
 
 Este documento contém orientações técnicas e boas práticas para a
-produção de mídia (imagens, animações, vídeos e modelos 3D) usada em
+produção de mídia (imagens, animações e modelos 3D) usada em
 Obras de realidade aumentada e mista na Jandig. Muitas dessas
 orientações também podem ser úteis para produzir conteúdo para outras
 plataformas.
@@ -19,9 +19,6 @@ Ao enviar um Objeto, os formatos aceitos atualmente são:
   fundo transparente, o que permite que a animação se integre bem à
   cena de realidade aumentada.
 - **PNG** — imagem estática (sem animação).
-- **MP4** e **WebM** — vídeos, incluindo suporte a transparência no
-  WebM. Recomendado para animações mais longas ou com mais detalhe, já
-  que vídeo comprime muito melhor que GIF.
 - **GLB** — modelo 3D. **Disponível apenas para Exposições MR** (o
   aplicativo de Realidade Mista para Meta Quest). Obras AR (o app
   mobile, baseado em Marcadores) não aceitam Objetos em GLB.
@@ -63,7 +60,7 @@ Para modelos GLB (exclusivos de Exposições MR no Meta Quest), a
 resolução relevante é a das texturas do modelo — prefira texturas
 otimizadas e comprimidas em vez de texturas em altíssima resolução.
 
-## Framerate (GIF e vídeo)
+## Framerate (GIF)
 
 Não existe um número fixo ideal — o recomendado é testar e usar a menor
 taxa de quadros que ainda pareça fluida para a animação em questão.
@@ -73,7 +70,7 @@ qualidade começa a ficar comprometida.
 
 ## Loop
 
-Para criar a ilusão de continuidade, a animação (GIF ou vídeo) deve
+Para criar a ilusão de continuidade, a animação (GIF) deve
 estar em loop. Ou seja, a transição do último ao primeiro frame deve ser
 imperceptível.
 
@@ -81,7 +78,7 @@ imperceptível.
 
 Quanto mais curto o conteúdo, melhor. Isso permite melhor qualidade de
 imagem e garante que o público assista a todo o material. Recomendamos
-até 15 segundos de duração para animações e vídeos.
+até 15 segundos de duração para animações.
 
 ## Tamanho de arquivo
 
@@ -90,8 +87,6 @@ consomem menos dados móveis do público. Como referência (quanto menor,
 melhor):
 
 - **GIF**: ideal até 500 kB, no máximo 1 MB.
-- **MP4 / WebM**: por comprimir melhor que GIF, é possível manter boa
-  qualidade com arquivos de até 1-2 MB para clipes curtos em loop.
 - **PNG**: ideal até 300 kB, já que é uma imagem estática.
 - **GLB**: como é usado no app do Meta Quest (geralmente em Wi-Fi),
   dados móveis pesam menos, mas o desempenho do dispositivo continua

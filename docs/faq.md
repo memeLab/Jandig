@@ -33,7 +33,7 @@ para produzir marcadores](marcadores.md).
 
 ## Quais formatos de arquivo posso usar para os Objetos?
 
-GIF, PNG, MP4, WebM e GLB. Objetos em GLB funcionam apenas em Exposições
+GIF, PNG e GLB. Objetos em GLB funcionam apenas em Exposições
 MR (o aplicativo de Realidade Mista para o Meta Quest). Para Obras AR, do
 site mobile baseado em Marcadores, não aceitam GLB. Você também
 pode anexar uma audiodescrição opcional em MP3, OGG ou WAV. Veja mais em
