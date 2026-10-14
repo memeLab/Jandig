@@ -5,9 +5,9 @@ USE_GRANIAN=${USE_GRANIAN:-true}
 USE_GRANIAN=$(echo "$USE_GRANIAN" | tr '[:upper:]' '[:lower:]')
 
 uv pip list
-python src/manage.py collectstatic --no-input
+python src/manage.py collectstatic --no-input --clear
 python src/manage.py migrate
-sphinx-build docs/ build/
+mkdocs build -f docs/mkdocs.yml
 python src/manage.py compilemessages --ignore .venv --ignore cache
 
 if [ "$USE_GRANIAN" = "true" ]; then

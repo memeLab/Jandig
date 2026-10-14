@@ -133,7 +133,7 @@ class TestHTMXGetElements(TestCase):
         """Test object pagination on first page"""
         self.client.login(username="testuser", password="testpass123")
 
-        with patch.object(settings, "MODAL_PAGE_SIZE", 8):
+        with patch.object(settings, "OBJECT_MODAL_PAGE_SIZE", 8):
             response = self.client.get(
                 reverse("get-element"),
                 {"element_type": "object", "page": "1"},

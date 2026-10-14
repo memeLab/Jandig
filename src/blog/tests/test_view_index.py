@@ -115,3 +115,24 @@ class TestBlogIndex(TestCase):
         posts = list(response.context["posts"])
         assert posts[0].title == "Test Post 1"
         assert posts[1].title == "Test Post 0"
+
+    def test_context_does_not_carry_an_unused_last_page_flag(self):
+        """
+        `last_page` was removed: nothing read it.
+
+        It had been set from `page.has_previous()`, the inverse of what the
+        name promised, and no template, view or test ever consumed it. This
+        guards against reintroducing a flag with no reader.
+        """
+        for i in range(10):
+            Post.objects.create(
+                title=f"Test Post {i}",
+                excerpt=f"This is the excerpt of test post {i}.",
+                formatted_body=f"This is the body of test post {i}.",
+                status=PostStatus.PUBLISHED,
+            )
+
+        response = self.client.get(reverse("blog_index"))
+
+        assert "last_page" not in response.context
+        assert response.context["total_pages"] > 1

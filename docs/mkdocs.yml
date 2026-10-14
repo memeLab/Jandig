@@ -1,0 +1,74 @@
+site_name: Jandig ARte
+site_description: Documentação da Jandig ARte
+copyright: >
+  Conteúdo sob licenciamento
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
+  a não ser quando explicitado o contrário.
+
+docs_dir: .
+site_dir: ../build
+
+repo_url: https://github.com/memeLab/Jandig
+repo_name: GitHub
+edit_uri: edit/develop/docs/
+
+# Keep flat *.html output (index.html per language root only) so the existing
+# Django `serve()` view + DOCS_ROOT setting keep working without changes.
+use_directory_urls: false
+
+theme:
+  name: material
+  logo: _static/logo.svg
+  favicon: _static/logo.png
+  palette:
+    primary: teal
+    accent: teal
+  features:
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  homepage: /
+
+nav:
+  - Ajuda: index.md
+  - Início Rápido: inicio-rapido.md
+  - Mídia: media.md
+  - Marcadores: marcadores.md
+  - Publicando obras: publicando-obras.md
+  - Perguntas Frequentes: faq.md
+
+plugins:
+  - search:
+      lang: [pt, en]
+  - i18n:
+      docs_structure: suffix
+      reconfigure_material: true
+      languages:
+        - locale: pt-BR
+          name: Português
+          default: true
+          build: true
+          site_name: Jandig ARte
+        - locale: en
+          name: English
+          build: true
+          site_name: Jandig ARte
+          nav_translations:
+            Ajuda: Help
+            Início Rápido: Quick Start
+            Mídia: Media
+            Marcadores: Markers
+            Publicando obras: Publishing artworks
+            Perguntas Frequentes: FAQ
+        - locale: es
+          name: Español
+          build: false
+
+exclude_docs: |
+  mkdocs.yml

@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -24,7 +24,7 @@ from .forms import (
     SignupForm,
 )
 from .models import Profile
-from .services import BOT_SCORE, create_assessment
+from .services.turnstile_service import verify_turnstile
 
 log = logging.getLogger(__file__)
 
@@ -35,17 +35,11 @@ INVALID_MESSAGE = "Invalid Request"
 
 def signup(request):
     if request.method == "POST":
-        if settings.RECAPTCHA_ENABLED:
-            recaptcha_token = request.POST.get("g-recaptcha-response")
-            if not recaptcha_token:
+        if settings.TURNSTILE_ENABLED:
+            turnstile_token = request.POST.get("cf-turnstile-response")
+            if not turnstile_token:
                 return JsonResponse({"error": INVALID_MESSAGE}, status=400)
-            assessment = create_assessment(
-                token=recaptcha_token, recaptcha_action="sign_up"
-            )
-            if not assessment:
-                return JsonResponse({"error": INVALID_MESSAGE}, status=400)
-            score = assessment.get("riskAnalysis", {}).get("score", -1)
-            if score <= BOT_SCORE:
+            if not verify_turnstile(turnstile_token):
                 return JsonResponse({"error": INVALID_MESSAGE}, status=400)
 
         form = SignupForm(request.POST)
@@ -66,8 +60,8 @@ def signup(request):
         "users/signup.jinja2",
         {
             "form": form,
-            "recaptcha_enabled": settings.RECAPTCHA_ENABLED,
-            "recaptcha_site_key": settings.RECAPTCHA_SITE_KEY,
+            "turnstile_enabled": settings.TURNSTILE_ENABLED,
+            "turnstile_site_key": settings.TURNSTILE_SITE_KEY,
         },
     )
 
@@ -85,15 +79,30 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     success_url = reverse_lazy("home")
 
 
-@login_required
-@require_http_methods(["GET"])
-def profile(request):
-    user = request.GET.get("user")
+def _profile_context(profile, is_owner):
+    """Build the profile page context shared by the owner and public views.
 
-    if not user:
-        user = request.user
+    `is_owner` drives whether the edit and delete controls are rendered at
+    all, so the public page cannot offer actions the visitor may not perform.
+    """
+    return {
+        "profile": profile,
+        "is_owner": is_owner,
+        "ar_exhibits": profile.exhibits.filter(exhibit_type=ExhibitTypes.AR)
+        .all()
+        .order_by("-created"),
+        "mr_exhibits": profile.exhibits.filter(exhibit_type=ExhibitTypes.MR)
+        .all()
+        .order_by("-created"),
+        "artworks": profile.artworks.all().order_by("-created"),
+        "markers": profile.markers.all().order_by("-created"),
+        "objects": profile.ar_objects.all().order_by("-created"),
+        "sounds": profile.sounds.all().order_by("-created"),
+    }
 
-    profile = Profile.objects.prefetch_related(
+
+def _profile_queryset():
+    return Profile.objects.prefetch_related(
         "exhibits__artworks",
         "artworks__exhibits",
         "artworks__marker",
@@ -103,27 +112,26 @@ def profile(request):
         "sounds__artworks",
         "sounds__ar_objects",
         "sounds__exhibits",
-    ).get(user=user)
+    )
 
-    ar_exhibits = (
-        profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
+
+@login_required
+@require_http_methods(["GET"])
+def profile(request):
+    profile = _profile_queryset().get(user=request.user)
+    return render(
+        request, "users/profile.jinja2", _profile_context(profile, is_owner=True)
     )
-    mr_exhibits = (
-        profile.exhibits.filter(exhibit_type=ExhibitTypes.MR).all().order_by("-created")
+
+
+@require_http_methods(["GET"])
+def public_profile(request, username):
+    """Anyone can see what a user has published, without their contact details."""
+    profile = get_object_or_404(_profile_queryset(), user__username=username)
+    is_owner = request.user.is_authenticated and profile.user_id == request.user.id
+    return render(
+        request, "users/profile.jinja2", _profile_context(profile, is_owner=is_owner)
     )
-    artworks = profile.artworks.all().order_by("-created")
-    markers = profile.markers.all().order_by("-created")
-    objects = profile.ar_objects.all().order_by("-created")
-    sounds = profile.sounds.all().order_by("-created")
-    ctx = {
-        "ar_exhibits": ar_exhibits,
-        "mr_exhibits": mr_exhibits,
-        "artworks": artworks,
-        "markers": markers,
-        "objects": objects,
-        "sounds": sounds,
-    }
-    return render(request, "users/profile.jinja2", ctx)
 
 
 @login_required

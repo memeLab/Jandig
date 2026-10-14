@@ -1,18 +1,21 @@
 {% extends '/core/home.jinja2' %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/create_box.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/action-menu.css') }}">
+    <script src="{{ static('js/modal.js') }}"></script>
+    <script src="{{ static('js/action-menu.js') }}"></script>
+{% endblock %}
 {% block content %}
-    {% block subcontent %}{% endblock %}
+    {% block subcontent %}
+    {% endblock %}
     <section class="profile-options-flex">
         <div class="container">
             {% with markers=markers, objects=objects, exhibits=exhibits, artworks=artworks %}
                 {% include "users/components/userbox.jinja2" %}
             {% endwith %}
-            {# FIXME: maybe this can be improved #}
-            <link rel="stylesheet" href="{{ static ('css/profile.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/create_box.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/repository-list.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
-            <link rel="stylesheet" href="{{ static ('css/marker-menu.css') }}">
-            <script src="{{ static('js/modal.js') }}"></script>
             <div class="profile-section-header">
                 <div class="profile-section-title">
                     <img class="icon"
@@ -24,7 +27,7 @@
                 <a class="create-one-btn" href="{{ url('create-mr-exhibit') }}">{{ _("Create one") }}</a>
             </div>
             {% if mr_exhibits %}
-                {% with deletable=true, editable=true, repository_list = mr_exhibits, element_type="mr-exhibit" %}
+                {% with deletable=is_owner, editable=is_owner, repository_list = mr_exhibits, element_type="mr-exhibit" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}
@@ -43,7 +46,7 @@
                 <a class="create-one-btn" href="{{ url('create-ar-exhibit') }}">{{ _("Create one") }}</a>
             </div>
             {% if ar_exhibits %}
-                {% with deletable=true, editable=true, repository_list = ar_exhibits, element_type="ar-exhibit" %}
+                {% with deletable=is_owner, editable=is_owner, repository_list = ar_exhibits, element_type="ar-exhibit" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}
@@ -62,7 +65,7 @@
                 <a class="create-one-btn" href="{{ url('create-artwork') }}">{{ _("Create one") }}</a>
             </div>
             {% if artworks %}
-                {% with preview=True, deletable=true, editable=true, repository_list = artworks, element_type="artwork" %}
+                {% with preview=True, deletable=is_owner, editable=is_owner, repository_list = artworks, element_type="artwork" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}
@@ -81,7 +84,7 @@
                 <a class="create-one-btn" href="{{ url('marker-upload') }}">{{ _("Create one") }}</a>
             </div>
             {% if markers %}
-                {% with deletable=true, editable=true, repository_list = markers, element_type="marker" %}
+                {% with deletable=is_owner, editable=is_owner, repository_list = markers, element_type="marker" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}
@@ -100,7 +103,7 @@
                 <a class="create-one-btn" href="{{ url('object-upload') }}">{{ _("Upload one") }}</a>
             </div>
             {% if objects %}
-                {% with deletable=true, editable=true, repository_list = objects, element_type="object" %}
+                {% with deletable=is_owner, editable=is_owner, repository_list = objects, element_type="object" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}
@@ -119,7 +122,7 @@
                 <a class="create-one-btn" href="{{ url('sound-upload') }}">{{ _("Upload one") }}</a>
             </div>
             {% if sounds %}
-                {% with deletable=true, editable=true, repository_list = sounds, element_type="sound" %}
+                {% with deletable=is_owner, editable=is_owner, repository_list = sounds, element_type="sound" %}
                     {% include "core/components/item-list.jinja2" %}
                 {% endwith %}
             {% else %}

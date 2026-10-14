@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37240876-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37240876-2');
+        </script>
+        <link id="manifest" rel="manifest" href="/manifest.json">
+        <link rel="stylesheet" href="{{ static('css/reset.css') }}">
+        <title>Jandig</title>
+        <meta name="Description" content="Augmented reality art!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap"
+              rel="stylesheet">
+        <link rel="shortcut icon"
+              href="{{ static('images/icons/favicon.ico') }}"
+              type="image/x-icon" />
+        {% block extra_css %}{% endblock %}
+        {% block extra_js %}{% endblock %}
+    </head>
+    <body class="colorful">
+        {% if content is defined %}
+            <section>
+                {{ content }}
+                <section>
+                {% else %}
+                    {% block content %}
+                        {% if content_html %}<div class="container">{{ content_html|safe }}</div>{% endif %}
+                    {% endblock %}
+                {% endif %}
+            </body>
+        </html>

@@ -1,12 +1,25 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from core.models import Exhibit
 from core.tests.factory import (
     ArtworkFactory,
-    ExhibitFactory,
     MarkerFactory,
     ObjectFactory,
 )
+from users.tests.factory import ProfileFactory
+
+
+def create_ar_exhibit(artworks):
+    """Create an AR exhibit with specific artworks, bypassing factory randomness."""
+    exhibit = Exhibit.objects.create(
+        owner=ProfileFactory(),
+        name=f"Exhibit {Exhibit.objects.count() + 1}",
+        slug=f"exhibit-{Exhibit.objects.count() + 1}",
+        exhibit_type="AR",
+    )
+    exhibit.artworks.set(artworks)
+    return exhibit
 
 
 class TestRelatedContentView(TestCase):
@@ -43,9 +56,9 @@ class TestRelatedContentView(TestCase):
         artwork3 = ArtworkFactory(augmented=obj)
 
         # Create exhibits and add artworks to it
-        exhibit1 = ExhibitFactory(artworks=[artwork1, artwork2])
-        exhibit2 = ExhibitFactory(artworks=[artwork3])
-        exhibit3 = ExhibitFactory(artworks=[artwork1, artwork3])
+        exhibit1 = create_ar_exhibit([artwork1, artwork2])
+        exhibit2 = create_ar_exhibit([artwork3])
+        exhibit3 = create_ar_exhibit([artwork1, artwork3])
 
         response = self.client.get(
             reverse("related-content"), {"id": obj.id, "type": "object"}
@@ -53,11 +66,11 @@ class TestRelatedContentView(TestCase):
         assert artwork1 in list(response.context["artworks"])
         assert artwork2 in list(response.context["artworks"])
         assert artwork3 in list(response.context["artworks"])
-        assert exhibit1 in list(response.context["exhibits"])
-        assert exhibit2 in list(response.context["exhibits"])
-        assert exhibit3 in list(response.context["exhibits"])
+        assert exhibit1 in list(response.context["ar_exhibits"])
+        assert exhibit2 in list(response.context["ar_exhibits"])
+        assert exhibit3 in list(response.context["ar_exhibits"])
         assert len(response.context["artworks"]) == 3
-        assert len(response.context["exhibits"]) == 3
+        assert len(response.context["ar_exhibits"]) == 3
 
     def test_marker_related_content(self):
         # Create marker first
@@ -69,9 +82,9 @@ class TestRelatedContentView(TestCase):
         artwork3 = ArtworkFactory(marker=marker)
 
         # Create exhibits and add artworks to it
-        exhibit1 = ExhibitFactory(artworks=[artwork1, artwork2])
-        exhibit2 = ExhibitFactory(artworks=[artwork3])
-        exhibit3 = ExhibitFactory(artworks=[artwork1, artwork3])
+        exhibit1 = create_ar_exhibit([artwork1, artwork2])
+        exhibit2 = create_ar_exhibit([artwork3])
+        exhibit3 = create_ar_exhibit([artwork1, artwork3])
 
         response = self.client.get(
             reverse("related-content"), {"id": marker.id, "type": "marker"}
@@ -79,20 +92,20 @@ class TestRelatedContentView(TestCase):
         assert artwork1 in list(response.context["artworks"])
         assert artwork2 in list(response.context["artworks"])
         assert artwork3 in list(response.context["artworks"])
-        assert exhibit1 in list(response.context["exhibits"])
-        assert exhibit2 in list(response.context["exhibits"])
-        assert exhibit3 in list(response.context["exhibits"])
+        assert exhibit1 in list(response.context["ar_exhibits"])
+        assert exhibit2 in list(response.context["ar_exhibits"])
+        assert exhibit3 in list(response.context["ar_exhibits"])
         assert len(response.context["artworks"]) == 3
-        assert len(response.context["exhibits"]) == 3
+        assert len(response.context["ar_exhibits"]) == 3
 
     def test_artwork_related_content(self):
         artwork = ArtworkFactory()
         # Create exhibits that references the artwork
-        exhibit1 = ExhibitFactory(artworks=[artwork])
-        exhibit2 = ExhibitFactory(artworks=[artwork])
-        exhibit3 = ExhibitFactory(artworks=[artwork])
+        exhibit1 = create_ar_exhibit([artwork])
+        exhibit2 = create_ar_exhibit([artwork])
+        exhibit3 = create_ar_exhibit([artwork])
 
         response = self.client.get(
             reverse("related-content"), {"id": artwork.id, "type": "artwork"}
         )
-        assert list(response.context["exhibits"]) == [exhibit1, exhibit2, exhibit3]
+        assert list(response.context["ar_exhibits"]) == [exhibit1, exhibit2, exhibit3]

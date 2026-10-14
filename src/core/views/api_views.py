@@ -3,7 +3,7 @@ from io import BytesIO
 
 from django.http import HttpResponse
 from fast_html import img, render
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from pymarker import (
     generate_marker_from_image,
 )  # Assuming Pymarker is the correct import
@@ -11,6 +11,8 @@ from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from core.marker_utils import is_svg, rasterize_svg
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -46,7 +48,25 @@ class MarkerGeneratorAPIView(APIView):
             )
         inner_border = request.POST.get("inner_border", "false").lower() == "true"
         image = request.FILES["source"]
-        pil_image = Image.open(image)
+        if is_svg(image.name):
+            try:
+                image = BytesIO(rasterize_svg(image.read()))
+            except ValueError:
+                return Response(
+                    {
+                        "error": "Could not render SVG. Make sure the file is a valid SVG."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        try:
+            pil_image = Image.open(image)
+        except UnidentifiedImageError:
+            return Response(
+                {
+                    "error": "Upload a valid image. Supported formats: PNG, JPG, GIF, SVG."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         try:
             # Process the image using Pymarker
             transformed_image = self.generate_marker(pil_image, inner_border)
@@ -61,7 +81,7 @@ class MarkerGeneratorAPIView(APIView):
             base64_encoded_result_str = base64_encoded_result_bytes.decode("ascii")
 
             # Create an HTML image tag with the base64 data
-            transformed_image = f"data:image/jpeg;base64,{base64_encoded_result_str}"
+            transformed_image = f"data:image/png;base64,{base64_encoded_result_str}"
 
             return HttpResponse(
                 render(

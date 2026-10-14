@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import translation
 from jinja2 import Environment
 
+from core.utils import filesizeformat
+
 
 def environment(**options):
     options["extensions"] = ["jinja2.ext.i18n"]
@@ -13,6 +15,7 @@ def environment(**options):
         {
             "static": staticfiles_storage.url,
             "url": reverse,
+            "enumerate": enumerate,
             "CUR_LANGUAGE": translation.get_language(),
             "languages": [
                 translation.get_language_info(code)
@@ -20,6 +23,8 @@ def environment(**options):
             ],
         }
     )
+
+    env.filters["filesizeformat"] = filesizeformat
 
     env.install_gettext_translations(translation, newstyle=True)
     return env

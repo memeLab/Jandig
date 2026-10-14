@@ -1,16 +1,21 @@
-from io import BytesIO
+from os.path import basename, splitext
 
 from django import forms
-from django.core.files.base import ContentFile, File
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
-from pymarker.core import generate_patt_from_image
+from PIL import Image, UnidentifiedImageError
 
+from core.marker_utils import (
+    generate_marker_variants,
+    is_svg,
+    rasterize_svg,
+    strip_existing_border,
+)
+from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
-from core.views.api_views import MarkerGeneratorAPIView
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
@@ -36,6 +41,14 @@ class ExhibitSelectForm(forms.Form):
         queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
     )
 
+    def __init__(self, *args, search=None, **kwargs):
+        """`search` narrows thelist server-side so long lists stay usable."""
+        super().__init__(*args, **kwargs)
+        if search:
+            self.fields["exhibit"].queryset = self.fields["exhibit"].queryset.filter(
+                name__icontains=search
+            )
+
 
 class ObjectWidget(forms.ClearableFileInput):
     """Custom widget for displaying an object correctly on edit forms if it is an image or video."""
@@ -48,13 +61,19 @@ class ObjectWidget(forms.ClearableFileInput):
         self.thumbnail = thumbnail
 
     def render(self, name, value, attrs=None, renderer=None):
-        attrs.update({"accept": ".gif, .mp4, .webm, .glb"})
+        attrs.update({"accept": ".gif, .png, .mp4, .webm, .glb"})
         context = self.get_context(name, value, attrs)
         if self.thumbnail:
             context["widget"]["thumbnail"] = self.thumbnail
 
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
+
+
+# Markers are rasterised and uploaded to the AR viewer as textures, so an
+# upload far larger than a 4K texture costs storage and marker-generation time
+# without improving detection. Both sides are capped at this value.
+MAX_MARKER_DIMENSION = 4096
 
 
 class UploadObjectForm(forms.ModelForm):
@@ -85,16 +104,18 @@ class UploadObjectForm(forms.ModelForm):
     def clean_source(self):
         file = self.cleaned_data.get("source")
 
-        allowed_extensions = ["gif", "mp4", "webm", "glb"]
+        allowed_extensions = ["gif", "png", "mp4", "webm", "glb"]
         extension = getattr(file, "name", "").split(".")[-1].lower()
         if extension not in allowed_extensions:
             raise forms.ValidationError(
-                _("Only GIF images, MP4, WebM videos, and GLB files are allowed.")
+                _(
+                    "Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
+                )
             )
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.source):
-                if self.instance.is_used_by_other_user():
+                if self.instance.is_used_by_other_user:
                     raise forms.ValidationError(
                         _(
                             "This object is being used by another user. You cannot change the source file."
@@ -122,6 +143,13 @@ class UploadObjectForm(forms.ModelForm):
         self.instance.file_name_original = self.instance.source.name.split("/")[-1]
         self.instance.file_extension = self.instance.source.name.split(".")[-1].lower()
 
+        thumbnail = self.cleaned_data.get("thumbnail") or self.instance.thumbnail
+        dims = extract_dimensions(
+            self.instance.source, self.instance.file_extension, thumbnail
+        )
+        if dims:
+            self.instance.width, self.instance.height = dims
+
         return super(UploadObjectForm, self).save(*args, **kwargs)
 
 
@@ -129,6 +157,19 @@ class UploadMarkerForm(forms.ModelForm):
     inner_border = forms.BooleanField(
         required=False,
         label=_("Add inner border"),
+    )
+    # Override the model's ImageField with a plain FileField. ImageField
+    # would reject anything Pillow can't open (notably SVG); we want to
+    # accept SVG and rasterise it ourselves before the rest of the
+    # pipeline runs.
+    source = forms.FileField()
+    remove_existing_border = forms.BooleanField(
+        required=False,
+        label=_("Remove existing border"),
+        help_text=_(
+            "Tick this if your image already has a marker border, so a second "
+            "one is not drawn around it."
+        ),
     )
 
     def __init__(self, *args, **kwargs):
@@ -142,27 +183,71 @@ class UploadMarkerForm(forms.ModelForm):
         model = Marker
         fields = ("source", "author", "title")
 
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        if file is None:
+            raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
+
+        if is_svg(file.name):
+            stem, _extension = splitext(file.name)
+            try:
+                file.seek(0)
+                png_bytes = rasterize_svg(file.read())
+            except ValueError:
+                raise forms.ValidationError(
+                    _("Could not render SVG. Make sure the file is a valid SVG.")
+                )
+            # Fall through so the raster gets the same checks as any upload:
+            # a tall SVG can still rasterise past the size limit.
+            file = SimpleUploadedFile(
+                name=f"{stem}.png",
+                content=png_bytes,
+                content_type="image/png",
+            )
+
+        try:
+            file.seek(0)
+            with Image.open(file) as image:
+                width, height = image.size
+                image.verify()
+            file.seek(0)
+        except (UnidentifiedImageError, OSError):
+            raise forms.ValidationError(
+                _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
+            )
+
+        # Only a fresh upload is checked. Editing a marker without replacing
+        # the file hands back the stored file, which may predate the limit.
+        if isinstance(file, UploadedFile) and (
+            width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION
+        ):
+            raise forms.ValidationError(
+                _(
+                    "This image is %(width)sx%(height)s pixels. Markers are limited "
+                    "to %(limit)sx%(limit)s pixels, so please resize it before "
+                    "uploading."
+                ),
+                params={
+                    "width": width,
+                    "height": height,
+                    "limit": MAX_MARKER_DIMENSION,
+                },
+            )
+        return file
+
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
-
-        with Image.open(self.instance.source) as image:
-            pil_image = MarkerGeneratorAPIView.generate_marker(
-                image, inner_border=self.cleaned_data.get("inner_border", False)
+        instance = super(UploadMarkerForm, self).save(*args, **kwargs)
+        if commit:
+            if self.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(instance)
+            generate_marker_variants(
+                instance,
+                inner_border=self.cleaned_data.get("inner_border", False),
             )
-            blob = BytesIO()
-            pil_image.save(blob, "JPEG")
-            filename = self.instance.source.name
-            self.instance.file_size = self.instance.source.size
-            self.instance.source.save(filename, File(blob), save=commit)
-            patt_str = generate_patt_from_image(image)
-
-            self.instance.patt.save(
-                f"{filename}.patt",
-                ContentFile(patt_str.encode("utf-8")),
-                save=commit,
-            )
-
-            return super(UploadMarkerForm, self).save(*args, **kwargs)
+        return instance
 
 
 class ArtworkForm(forms.ModelForm):
@@ -184,7 +269,7 @@ class ArtworkForm(forms.ModelForm):
         widget=RangeInput(attrs={"class": "slider", "step": "0.1"}),
     )
     selected_sound = forms.ModelChoiceField(
-        queryset=Sound.objects.exclude(file_extension=ObjectExtensions.GLB),
+        queryset=Sound.objects.all(),
         required=False,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
@@ -261,6 +346,20 @@ class ExhibitForm(forms.ModelForm):
         if exhibit_type is None and self.instance.pk:
             exhibit_type = self.instance.exhibit_type
         self.exhibit_type = exhibit_type
+        # On edit, pre-populate the hidden M2M inputs with the current
+        # selections so a user who only changes name/URL doesn't end
+        # up posting empty strings that clobber the data. The JS in
+        # exhibit_create_*.jinja2 still rewrites the input on click.
+        if self.instance.pk:
+            self.fields["artworks"].initial = ",".join(
+                str(a.id) for a in self.instance.artworks.all()
+            )
+            self.fields["augmenteds"].initial = ",".join(
+                str(o.id) for o in self.instance.augmenteds.all()
+            )
+            self.fields["sounds"].initial = ",".join(
+                str(s.id) for s in self.instance.sounds.all()
+            )
 
     class Meta:
         model = Exhibit
@@ -414,7 +513,7 @@ class SoundForm(forms.ModelForm):
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.file):
-                if self.instance.is_used_by_other_user():
+                if self.instance.is_used_by_other_user:
                     raise forms.ValidationError(
                         _(
                             "This sound is being used by another user. You cannot change the source file."

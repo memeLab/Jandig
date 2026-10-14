@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="{{ static ('css/nav-menu.css') }}">
+<div class="nav-menu-wrapper">
+    <button id="nav-menu-btn" type="button" class="nav-menu-button">
+        <svg class="nav-menu-icon"
+             width="16"
+             height="16"
+             viewBox="0 0 20 20"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+    </button>
+    <div id="nav-menu-panel" class="nav-menu-panel">
+        <div class="nav-menu-header">
+            <button id="nav-menu-close" type="button" class="nav-menu-close">&times;</button>
+        </div>
+        <nav class="nav-menu-content">
+            <h6 class="nav-menu-section-title">{{ _("Exhibitions") }}</h6>
+            <a href="{{ url('exhibit_select') }}" class="nav-menu-link">{{ _("See Exhibitions") }}</a>
+            <h6 class="nav-menu-section-title">{{ _("Collections") }}</h6>
+            <a href="{{ url('collection') }}" class="nav-menu-link">{{ _("See All") }}</a>
+            <a href="/see_all/marker/" class="nav-menu-link">{{ _("Markers") }}</a>
+            <a href="/see_all/object/" class="nav-menu-link">{{ _("Objects") }}</a>
+            <a href="/see_all/artwork/" class="nav-menu-link">{{ _("Artworks") }}</a>
+            <a href="/see_all/ar-exhibit/" class="nav-menu-link">{{ _("AR Exhibits") }}</a>
+            <a href="/see_all/mr-exhibit/" class="nav-menu-link">{{ _("MR Exhibits") }}</a>
+            <h6 class="nav-menu-section-title">{{ _("Create") }}</h6>
+            <a href="{{ url('profile') }}" class="nav-menu-link">{{ _("My Creations") }}</a>
+            <h6 class="nav-menu-section-title">{{ _("Resources") }}</h6>
+            <a href="{{ url('blog_index') }}" class="nav-menu-link">{{ _("Blog") }}</a>
+            <a href="{{ url('clipping') }}" class="nav-menu-link">{{ _("News") }}</a>
+            <h6 class="nav-menu-section-title">{{ _("Support") }}</h6>
+            <a href="/docs/index.html" class="nav-menu-link">{{ _("Help") }}</a>
+        </nav>
+    </div>
+    <div id="nav-menu-overlay" class="nav-menu-overlay"></div>
+</div>
+<script>
+    (function() {
+        const btn = document.getElementById('nav-menu-btn');
+        const panel = document.getElementById('nav-menu-panel');
+        const overlay = document.getElementById('nav-menu-overlay');
+        const closeBtn = document.getElementById('nav-menu-close');
+        if (!btn || !panel) return;
+
+        function openMenu() {
+            panel.classList.add('open');
+            overlay.classList.add('open');
+        }
+        function closeMenu() {
+            panel.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        btn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+    })();
+</script>

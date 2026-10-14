@@ -46,5 +46,8 @@ class TestMarkerUpload(TestCase):
         marker = Marker.objects.first()
         assert marker.title == "Test Marker"
         assert marker.author == "Test Author"
-        assert marker.file_size == EXAMPLE_MARKER_SIZE
-        assert marker.source.name == "markers/example_marker_500x500.jpg"
+        assert marker.file_size > 0
+        assert marker.source.name == f"markers/{marker.pk}/original.jpg"
+        assert marker.marker_img.name == f"markers/{marker.pk}/marker.png"
+        assert marker.print_img.name == f"markers/{marker.pk}/print.png"
+        assert marker.thumb_img.name == f"markers/{marker.pk}/thumb.png"

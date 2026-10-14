@@ -14,11 +14,20 @@ class TestCoreStaticViews(TestCase):
 
     def test_manifest(self):
         response = self.client.get(reverse("manifest"))
-        assert response.status_code == 200
+        assert response.status_code == 302
+        assert response["Location"].endswith("manifest.json")
+
+        response = self.client.get(
+            reverse("manifest"),
+            HTTP_USER_AGENT="AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+        )
+        assert response.status_code == 302
+        assert response["Location"].endswith("ios-manifest.json")
 
     def test_service_worker(self):
         response = self.client.get(reverse("sw"))
-        assert response.status_code == 200
+        assert response.status_code == 302
+        assert response["Location"].endswith("sw.js")
 
     def test_robots_txt(self):
         response = self.client.get(reverse("robots_txt"))
@@ -44,8 +53,4 @@ class TestCoreStaticViews(TestCase):
 
     def test_home(self):
         response = self.client.get(reverse("home"))
-        assert response.status_code == 200
-
-    def test_marker_generator(self):
-        response = self.client.get(reverse("marker-generator"))
         assert response.status_code == 200
