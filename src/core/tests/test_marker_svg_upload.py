@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from PIL import Image
 
-from core.forms import SVG_RASTER_WIDTH
+from core.marker_utils import SVG_RASTER_WIDTH
 from core.models import Marker
 from users.models import User
 

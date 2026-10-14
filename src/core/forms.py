@@ -1,6 +1,5 @@
 from os.path import basename, splitext
 
-import cairosvg
 from django import forms
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms.widgets import NumberInput
@@ -9,14 +8,18 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from PIL import Image, UnidentifiedImageError
 
-from core.marker_utils import generate_marker_variants, strip_existing_border
+from core.marker_utils import (
+    generate_marker_variants,
+    is_svg,
+    rasterize_svg,
+    strip_existing_border,
+)
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
-SVG_RASTER_WIDTH = 1024  # px; pymarker handles square inputs at any size
 
 
 def file_has_changed(new_file, instance_file):
@@ -181,17 +184,12 @@ class UploadMarkerForm(forms.ModelForm):
         if getattr(file, "name", None):
             file.name = basename(file.name)
 
-        stem, extension = splitext(file.name)
-        extension = extension.lower().lstrip(".")
-
-        if extension == "svg":
+        if is_svg(file.name):
+            stem, _extension = splitext(file.name)
             try:
                 file.seek(0)
-                png_bytes = cairosvg.svg2png(
-                    bytestring=file.read(),
-                    output_width=SVG_RASTER_WIDTH,
-                )
-            except Exception:
+                png_bytes = rasterize_svg(file.read())
+            except ValueError:
                 raise forms.ValidationError(
                     _("Could not render SVG. Make sure the file is a valid SVG.")
                 )
