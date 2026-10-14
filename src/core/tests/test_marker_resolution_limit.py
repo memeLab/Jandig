@@ -6,6 +6,7 @@ from django.urls import reverse
 from PIL import Image
 
 from core.forms import MAX_MARKER_DIMENSION, UploadMarkerForm
+from core.marker_utils import SVG_RASTER_WIDTH
 from core.models import Marker
 from users.models import User
 
@@ -61,9 +62,10 @@ class TestMarkerResolutionLimit(TestCase):
 
         assert form.is_valid(), form.errors
 
-    def test_form_rejects_an_svg_that_rasterises_past_the_limit(self):
-        # SVGs are rasterised at a fixed width, so a tall one grows past the
-        # limit in height even though the file itself is tiny.
+    def test_form_fits_a_tall_svg_within_the_limit(self):
+        # At a fixed raster width this 1:5 SVG used to grow to 1024x5120 and
+        # trip the limit. The raster is now fitted by its longest side, so no
+        # SVG the aspect-ratio check lets through can get anywhere near it.
         tall_svg = (
             b'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="500">'
             b'<rect width="100" height="500" fill="white"/></svg>'
@@ -77,8 +79,10 @@ class TestMarkerResolutionLimit(TestCase):
             },
         )
 
-        assert not form.is_valid()
-        assert str(MAX_MARKER_DIMENSION) in form.errors["source"][0]
+        assert form.is_valid(), form.errors
+        with Image.open(form.cleaned_data["source"]) as image:
+            assert image.size == (205, SVG_RASTER_WIDTH)
+        assert SVG_RASTER_WIDTH <= MAX_MARKER_DIMENSION
 
     def test_upload_view_rejects_an_oversized_marker(self):
         self.client.login(username=self.username, password=self.password)

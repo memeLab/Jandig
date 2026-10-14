@@ -1,7 +1,11 @@
 import logging
+import math
 from io import BytesIO
+from types import SimpleNamespace
 
 import cairosvg
+from cairosvg.helpers import node_format
+from cairosvg.parser import Tree
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.base import ContentFile
 from PIL import Image
@@ -16,7 +20,14 @@ WHITE_BORDER_PERCENTAGE = 3
 INNER_BORDER_PERCENTAGE = 2
 
 MARKER_SIZE = (256, 256)
-SVG_RASTER_WIDTH = 1024  # px; pymarker handles square inputs at any size
+SVG_RASTER_WIDTH = 1024  # px; the longest side of a rasterised SVG
+# An SVG whose longest side is more than this many times its shortest side is
+# rejected. pymarker squashes every image into a square the size of its
+# shortest side, so at 10:1 the drawing is already compressed tenfold along
+# its long side and the marker is built from a raster about 100px across;
+# beyond that it degrades into a smear AR.js cannot tell apart from other
+# markers, and at the far end the short side rounds down to zero pixels.
+MAX_SVG_ASPECT_RATIO = 10
 THUMB_SIZE = (128, 128)
 
 
@@ -169,12 +180,64 @@ def is_svg(filename):
     return filename.lower().endswith(".svg")
 
 
-def rasterize_svg(svg_bytes):
+class SvgAspectRatioError(ValueError):
+    """The SVG is too long and thin to be usable as a marker."""
+
+
+def svg_intrinsic_size(svg_bytes):
     """
-    Render an SVG to PNG bytes at SVG_RASTER_WIDTH, the size the marker
-    pipeline works from. Raises ValueError if the SVG cannot be rendered.
+    Return the (width, height) cairosvg would give the SVG, in px, without
+    rendering it: the root's width and height, each falling back to the
+    viewBox when missing or relative. Raises ValueError if the SVG cannot be
+    parsed or has no usable size.
     """
     try:
-        return cairosvg.svg2png(bytestring=svg_bytes, output_width=SVG_RASTER_WIDTH)
+        tree = Tree(bytestring=svg_bytes)
+        # Mirrors the state cairosvg's own surface is in when it sizes the
+        # root: 96 dpi, 12pt font, and no parent to resolve percentages against.
+        surface = SimpleNamespace(
+            context_width=None, context_height=None, dpi=96, font_size=16
+        )
+        width, height, _viewbox = node_format(surface, tree)
+    except Exception as e:
+        raise ValueError(f"Could not render SVG: {e}") from e
+    if not all(math.isfinite(side) and side > 0 for side in (width, height)):
+        raise ValueError("Could not render SVG: the SVG size is undefined")
+    return width, height
+
+
+def svg_raster_size(svg_bytes):
+    """
+    Return the (width, height) the SVG rasterises to: its intrinsic size
+    scaled so the longest side is SVG_RASTER_WIDTH. Raises
+    SvgAspectRatioError if the aspect ratio exceeds MAX_SVG_ASPECT_RATIO.
+    """
+    width, height = svg_intrinsic_size(svg_bytes)
+    if max(width, height) / min(width, height) > MAX_SVG_ASPECT_RATIO:
+        raise SvgAspectRatioError(
+            f"SVG aspect ratio {width:g}x{height:g} exceeds {MAX_SVG_ASPECT_RATIO}:1"
+        )
+    scale = SVG_RASTER_WIDTH / max(width, height)
+    return max(1, round(width * scale)), max(1, round(height * scale))
+
+
+def rasterize_svg(svg_bytes):
+    """
+    Render an SVG to PNG bytes fitted within SVG_RASTER_WIDTH x
+    SVG_RASTER_WIDTH, keeping its aspect ratio, the size the marker pipeline
+    works from. Raises SvgAspectRatioError if the SVG is too long and thin to
+    be a marker, and ValueError if it cannot be rendered.
+
+    Both output dimensions are passed to cairosvg: given only a width, it
+    derives the height from the SVG itself, so a tall SVG could allocate a
+    raster of any height before anything else gets to validate it.
+    """
+    output_width, output_height = svg_raster_size(svg_bytes)
+    try:
+        return cairosvg.svg2png(
+            bytestring=svg_bytes,
+            output_width=output_width,
+            output_height=output_height,
+        )
     except Exception as e:
         raise ValueError(f"Could not render SVG: {e}") from e

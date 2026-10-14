@@ -12,7 +12,12 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.marker_utils import is_svg, rasterize_svg
+from core.marker_utils import (
+    MAX_SVG_ASPECT_RATIO,
+    SvgAspectRatioError,
+    is_svg,
+    rasterize_svg,
+)
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -51,6 +56,17 @@ class MarkerGeneratorAPIView(APIView):
         if is_svg(image.name):
             try:
                 image = BytesIO(rasterize_svg(image.read()))
+            except SvgAspectRatioError:
+                return Response(
+                    {
+                        "error": (
+                            "This SVG is too long and thin to work as a marker. "
+                            f"Its longest side can be at most {MAX_SVG_ASPECT_RATIO} "
+                            "times its shortest side."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             except ValueError:
                 return Response(
                     {

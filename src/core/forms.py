@@ -9,6 +9,8 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image, UnidentifiedImageError
 
 from core.marker_utils import (
+    MAX_SVG_ASPECT_RATIO,
+    SvgAspectRatioError,
     generate_marker_variants,
     is_svg,
     rasterize_svg,
@@ -195,12 +197,22 @@ class UploadMarkerForm(forms.ModelForm):
             try:
                 file.seek(0)
                 png_bytes = rasterize_svg(file.read())
+            except SvgAspectRatioError:
+                raise forms.ValidationError(
+                    _(
+                        "This SVG is too long and thin to work as a marker. Its "
+                        "longest side can be at most %(ratio)s times its "
+                        "shortest side."
+                    ),
+                    params={"ratio": MAX_SVG_ASPECT_RATIO},
+                )
             except ValueError:
                 raise forms.ValidationError(
                     _("Could not render SVG. Make sure the file is a valid SVG.")
                 )
-            # Fall through so the raster gets the same checks as any upload:
-            # a tall SVG can still rasterise past the size limit.
+            # Fall through so the raster gets the same checks as any upload.
+            # rasterize_svg already fits it within SVG_RASTER_WIDTH, well under
+            # MAX_MARKER_DIMENSION, so for SVGs the size check is a backstop.
             file = SimpleUploadedFile(
                 name=f"{stem}.png",
                 content=png_bytes,
