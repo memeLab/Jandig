@@ -1,11 +1,13 @@
 import logging
 import math
+import time
 from io import BytesIO
 from types import SimpleNamespace
 
-import cairosvg
+import cairosvg.surface
 from cairosvg.helpers import node_format
 from cairosvg.parser import Tree
+from cairosvg.url import parse_url, safe_fetch
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.base import ContentFile
 from PIL import Image
@@ -28,6 +30,15 @@ SVG_RASTER_WIDTH = 1024  # px; the longest side of a rasterised SVG
 # beyond that it degrades into a smear AR.js cannot tell apart from other
 # markers, and at the far end the short side rounds down to zero pixels.
 MAX_SVG_ASPECT_RATIO = 10
+# The most pixels rendering one SVG may decode or allocate on top of the raster
+# itself, checked separately for: all the images it embeds put together, each
+# mask or pattern layer, and the group layers open at any one time. It is the
+# size of the largest raster marker (MAX_MARKER_DIMENSION in forms.py, #980);
+# at 4 bytes a pixel, 64 MiB.
+MAX_SVG_LAYER_PIXELS = 4096 * 4096
+# Rendering is abandoned past this. <use> and pattern references let a small
+# SVG redraw the same content many thousands of times.
+MAX_SVG_RENDER_SECONDS = 10
 THUMB_SIZE = (128, 128)
 
 
@@ -184,6 +195,154 @@ class SvgAspectRatioError(ValueError):
     """The SVG is too long and thin to be usable as a marker."""
 
 
+class SvgTooComplexError(ValueError):
+    """Rendering the SVG would take more memory or time than a marker may use."""
+
+
+# cairosvg decompresses an SVG that starts with gzip's magic number, whether
+# uploaded or fetched from a data: URL inside one, in a single call with no
+# size limit, so a few kilobytes can expand into gigabytes.
+GZIP_MAGIC = b"\x1f\x8b"
+# The raster formats an SVG may embed. cairosvg hands any other <image> to
+# Pillow, which opens many more formats, some through external programs (EPS
+# runs Ghostscript).
+SVG_EMBEDDED_IMAGE_FORMATS = {"PNG", "JPEG", "MPO", "GIF", "WEBP"}
+
+
+class _SvgRenderGuard:
+    """
+    Limits on the memory and time rendering one SVG may take beyond its
+    raster, which SVG_RASTER_WIDTH already bounds. cairosvg also decodes
+    every embedded image at its full size however small it is drawn,
+    rasterises each mask and pattern at the size the SVG declares for it, and
+    allocates a scratch layer the size of the surface for every group with
+    opacity, a mask or a filter, nested as deeply as the SVG, or a chain of
+    <use> references, nests them.
+    """
+
+    def __init__(self):
+        self.embedded_pixels = 0
+        self.layer_pixels = 0
+        self.deadline = time.monotonic() + MAX_SVG_RENDER_SECONDS
+
+    def fetch(self, url, resource_type):
+        """
+        A cairosvg url_fetcher: its default one, which only reads data: URLs,
+        plus checks on what those URLs hold.
+        """
+        data = safe_fetch(url, resource_type)
+        if data.startswith(GZIP_MAGIC):
+            raise SvgTooComplexError("SVG embeds compressed content")
+        if resource_type == "image/*" and not _is_drawn_as_svg(data):
+            self._count_embedded_image(data)
+        return data
+
+    def _count_embedded_image(self, data):
+        # Pillow reads only the header here, the same one cairo (for PNGs) or
+        # Pillow (for the rest) sizes the decoded image from.
+        try:
+            with Image.open(BytesIO(data)) as image:
+                image_format, (width, height) = image.format, image.size
+        except Image.DecompressionBombError as e:
+            raise SvgTooComplexError(f"SVG embeds a huge image: {e}") from e
+        except Exception as e:
+            raise ValueError(f"SVG embeds an unreadable image: {e}") from e
+        if image_format not in SVG_EMBEDDED_IMAGE_FORMATS:
+            raise ValueError(f"SVG embeds an unsupported {image_format} image")
+        self.embedded_pixels += width * height
+        if self.embedded_pixels > MAX_SVG_LAYER_PIXELS:
+            raise SvgTooComplexError(
+                f"SVG embeds images of {self.embedded_pixels} pixels in total"
+            )
+
+    def check_time(self):
+        if time.monotonic() > self.deadline:
+            raise SvgTooComplexError(
+                f"SVG took more than {MAX_SVG_RENDER_SECONDS}s to render"
+            )
+
+
+def _is_drawn_as_svg(data):
+    """Whether cairosvg's image() draws these <image> bytes as a nested SVG
+    (or skips them, under 5 bytes) rather than decoding them as a raster."""
+    if len(data) < 5:
+        return True
+    if data.startswith(b"\x89PNG"):
+        return False
+    return data.startswith((b"<svg ", b"<?xml", b"<!DOC", GZIP_MAGIC)) or (
+        b"<svg" in data
+    )
+
+
+def _pushes_group(node):
+    """Whether cairosvg's Surface.draw pushes a group for the node: a scratch
+    layer as large as the surface, alive until the node and its children are
+    drawn."""
+    try:
+        opacity = float(node.get("opacity", 1))
+    except ValueError:
+        # Surface.draw raises on its own when it gets there.
+        opacity = 1
+    return bool(
+        parse_url(node.get("mask")).fragment
+        or parse_url(node.get("filter")).fragment
+        or (opacity < 1 and node.children)
+    )
+
+
+class _GuardedSurfaceMixin:
+    """Applies a _SvgRenderGuard to a cairosvg surface. Without one, the
+    surface behaves exactly like cairosvg's own."""
+
+    guard = None
+
+    def draw(self, node):
+        guard = self.guard
+        if guard is None:
+            return super().draw(node)
+        guard.check_time()
+        layer_pixels = self.width * self.height if _pushes_group(node) else 0
+        guard.layer_pixels += layer_pixels
+        try:
+            if guard.layer_pixels > MAX_SVG_LAYER_PIXELS:
+                raise SvgTooComplexError(
+                    "SVG nests too many groups with opacity, masks or filters"
+                )
+            super().draw(node)
+        finally:
+            guard.layer_pixels -= layer_pixels
+
+
+class _GuardedPNGSurface(_GuardedSurfaceMixin, cairosvg.surface.PNGSurface):
+    def __init__(self, guard, *args, **kwargs):
+        self.guard = guard
+        super().__init__(*args, **kwargs)
+
+
+class _GuardedSVGSurface(_GuardedSurfaceMixin, cairosvg.surface.SVGSurface):
+    """cairosvg's SVGSurface, which it also draws masks and patterns on, taking
+    the guard of the surface it draws them for."""
+
+    def __init__(self, tree, output, dpi, parent_surface=None, *args, **kwargs):
+        self.guard = getattr(parent_surface, "guard", None)
+        super().__init__(tree, output, dpi, parent_surface, *args, **kwargs)
+
+    def _create_surface(self, width, height):
+        # cairo records on this surface, but rasterises all of it, at this
+        # size, whenever it is used as a mask or pattern on the raster.
+        # Written so that NaN fails too.
+        if self.guard is not None and not width * height <= MAX_SVG_LAYER_PIXELS:
+            raise SvgTooComplexError(f"SVG needs a {width:g}x{height:g} layer")
+        return super()._create_surface(width, height)
+
+
+# cairosvg creates mask and pattern layers with `surface.SVGSurface(...)`,
+# looked up each time one is drawn, so this is the one place they can be
+# bounded. Only a guarded surface hands a guard on, so anything else that uses
+# cairosvg behaves as before.
+cairosvg.surface.SVGSurface = _GuardedSVGSurface
+
+
 def svg_intrinsic_size(svg_bytes):
     """
     Return the (width, height) cairosvg would give the SVG, in px, without
@@ -191,14 +350,19 @@ def svg_intrinsic_size(svg_bytes):
     viewBox when missing or relative. Raises ValueError if the SVG cannot be
     parsed or has no usable size.
     """
+    if svg_bytes.startswith(GZIP_MAGIC):
+        raise ValueError("Could not render SVG: compressed SVGs are not supported")
     try:
-        tree = Tree(bytestring=svg_bytes)
+        # Parsing already fetches the data: URL of any <tref>.
+        tree = Tree(bytestring=svg_bytes, url_fetcher=_SvgRenderGuard().fetch)
         # Mirrors the state cairosvg's own surface is in when it sizes the
         # root: 96 dpi, 12pt font, and no parent to resolve percentages against.
         surface = SimpleNamespace(
             context_width=None, context_height=None, dpi=96, font_size=16
         )
         width, height, _viewbox = node_format(surface, tree)
+    except SvgTooComplexError:
+        raise
     except Exception as e:
         raise ValueError(f"Could not render SVG: {e}") from e
     if not all(math.isfinite(side) and side > 0 for side in (width, height)):
@@ -226,18 +390,30 @@ def rasterize_svg(svg_bytes):
     Render an SVG to PNG bytes fitted within SVG_RASTER_WIDTH x
     SVG_RASTER_WIDTH, keeping its aspect ratio, the size the marker pipeline
     works from. Raises SvgAspectRatioError if the SVG is too long and thin to
-    be a marker, and ValueError if it cannot be rendered.
+    be a marker, SvgTooComplexError if its content would take more than
+    MAX_SVG_LAYER_PIXELS or MAX_SVG_RENDER_SECONDS to render, and ValueError
+    if it cannot be rendered.
 
     Both output dimensions are passed to cairosvg: given only a width, it
     derives the height from the SVG itself, so a tall SVG could allocate a
     raster of any height before anything else gets to validate it.
     """
     output_width, output_height = svg_raster_size(svg_bytes)
+    guard = _SvgRenderGuard()
+    output = BytesIO()
     try:
-        return cairosvg.svg2png(
-            bytestring=svg_bytes,
+        # What cairosvg.svg2png does, with the guard attached.
+        tree = Tree(bytestring=svg_bytes, url_fetcher=guard.fetch)
+        _GuardedPNGSurface(
+            guard,
+            tree,
+            output,
+            96,
             output_width=output_width,
             output_height=output_height,
-        )
+        ).finish()
+    except SvgTooComplexError:
+        raise
     except Exception as e:
         raise ValueError(f"Could not render SVG: {e}") from e
+    return output.getvalue()

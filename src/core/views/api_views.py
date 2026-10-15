@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from core.marker_utils import (
     MAX_SVG_ASPECT_RATIO,
     SvgAspectRatioError,
+    SvgTooComplexError,
     is_svg,
     rasterize_svg,
 )
@@ -63,6 +64,17 @@ class MarkerGeneratorAPIView(APIView):
                             "This SVG is too long and thin to work as a marker. "
                             f"Its longest side can be at most {MAX_SVG_ASPECT_RATIO} "
                             "times its shortest side."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except SvgTooComplexError:
+                return Response(
+                    {
+                        "error": (
+                            "This SVG is too complex to turn into a marker. "
+                            "Simplify it, or export it as a PNG or JPG and "
+                            "upload that instead."
                         )
                     },
                     status=status.HTTP_400_BAD_REQUEST,
