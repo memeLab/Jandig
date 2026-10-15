@@ -16,6 +16,7 @@ from core.views.static_views import (
 from core.views.views import (
     ar_view,
     artwork_preview,
+    artwork_qrcode,
     collection,
     convert_gif_to_spritesheet,
     create_artwork,
@@ -28,6 +29,7 @@ from core.views.views import (
     edit_sound,
     exhibit,
     exhibit_detail,
+    exhibit_qrcode,
     exhibit_select,
     get_element,
     marker_preview,
@@ -49,6 +51,16 @@ urlpatterns = [
     path("content/delete/", delete, name="delete-content"),
     path("documentation/", documentation, name="documentation"),
     path("privacy/", privacy_policy, name="privacy-policy"),
+    re_path(
+        r"^qrcode/artwork/(?P<artwork_id>[0-9]+)\.(?P<file_format>svg|png)$",
+        artwork_qrcode,
+        name="artwork-qrcode",
+    ),
+    re_path(
+        r"^qrcode/exhibit/(?P<slug>[-a-zA-Z0-9_]+)\.(?P<file_format>svg|png)$",
+        exhibit_qrcode,
+        name="exhibit-qrcode",
+    ),
     path("exhibit_select/", exhibit_select, name="exhibit_select"),
     path("exhibit/", exhibit_detail, name="exhibit-detail"),
     path("exhibits/create-ar/", create_or_edit_ar_exhibit, name="create-ar-exhibit"),

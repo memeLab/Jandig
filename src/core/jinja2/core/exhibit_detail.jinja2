@@ -15,6 +15,16 @@
                 {{ _("Created by ") }} <b>{{ exhibit.owner.user.username }}</b>
             </p>
             <a href="/{{ exhibit.slug }}" class="gotoExb">{{ _("See this exhibition") }}</a>
+            <p class="by"
+               role="img"
+               aria-label="{{ _('QR code for this exhibition') }}">{{ qr_code }}</p>
+            <p class="by">
+                {{ _("Download QR code:") }}
+                <a href="{{ url('exhibit-qrcode', kwargs={'slug': exhibit.slug, 'file_format': 'png'}) }}"
+                   download>PNG</a> |
+                <a href="{{ url('exhibit-qrcode', kwargs={'slug': exhibit.slug, 'file_format': 'svg'}) }}"
+                   download>SVG</a>
+            </p>
         </div>
         {% if artworks %}
             <h1 class="titArt">{{ _("Exhibition Artworks") }}</h1>
