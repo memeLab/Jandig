@@ -2,6 +2,7 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{{ static('css/repository-list.css') }}">
     <link rel="stylesheet" href="{{ static ('css/generic-modal.css') }}">
+    <link rel="stylesheet" href="{{ static ('css/exhibit-detail.css') }}">
     <script src="{{ static('js/modal.js') }}"></script>
 {% endblock %}
 {% block content %}
@@ -9,6 +10,24 @@
     {% endblock %}
     <section class="profile-options-flex">
         <div class="container">
+            {% if seeall == True %}
+                <form class="search-area" action="/see_all/" method="get">
+                    <input type="hidden" name="which" value="{{ which }}" />
+                    <label for="search-box">{{ _("Search by name or creator") }}</label>
+                    <input type="text"
+                           id="search-box"
+                           name="search"
+                           value="{{ search }}"
+                           autocomplete="off" />
+                    <input class="submit-btn" type="submit" value="{{ _('Search') }}" />
+                </form>
+                {% if no_matches %}
+                    <p class="search-no-matches">
+                        {{ _("Nothing matches that search.") }}
+                        <a href="/see_all/?which={{ which }}">{{ _("Show all") }}</a>
+                    </p>
+                {% endif %}
+            {% endif %}
             {% for element_type, repository_list, class_type in [
                 ("mr-exhibit",mr_exhibits, "titExb"),
                 ("ar-exhibit",ar_exhibits, "titExb"),
@@ -57,7 +76,7 @@
                                         {% else %}
                                             <div class="useful-links">
                                                 <a class="page-link"
-                                                   href="?which={{ element_type }}&page={{ page_number }}">
+                                                   href="?which={{ element_type }}&page={{ page_number }}{% if search %}&search={{ search | urlencode }}{% endif %}">
                                                     {{ page_number }}
                                                 </a>
                                             </div>
@@ -68,7 +87,7 @@
                         {% endif %}
                     {% endif %}
                 {% endfor %}
-                {% if not ar_exhibits and not mr_exhibits and not artworks and not markers and not objects and not sounds %}
+                {% if not no_matches and not ar_exhibits and not mr_exhibits and not artworks and not markers and not objects and not sounds %}
                     <h1 class="titObj" style="font-size: 1em;">
                         {{ _("We found no content on your Collection, try uploading an object.") }}
                     </h1>

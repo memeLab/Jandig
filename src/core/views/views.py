@@ -1,12 +1,15 @@
 import json
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from sentry_sdk import metrics
 
@@ -33,6 +36,30 @@ from core.spritesheet_converter import gif_to_spritesheet
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
+
+# Fields a `search` term is matched against: the name of the content and
+# who made it (the credited author and the username of whoever uploaded it).
+SEARCH_FIELDS = {
+    Marker: ("title", "author", "owner__user__username"),
+    Object: ("title", "author", "owner__user__username"),
+    Sound: ("title", "author", "owner__user__username"),
+    Artwork: ("title", "author__user__username"),
+    Exhibit: ("name", "owner__user__username"),
+}
+
+
+def filter_by_search(queryset, search):
+    """Narrow a listing to the content whose name or creator contains `search`.
+
+    Only meant for what is shown to the user: never use it on a queryset
+    that validates a submitted selection.
+    """
+    if not search:
+        return queryset
+    query = Q()
+    for field in SEARCH_FIELDS[queryset.model]:
+        query |= Q(**{f"{field}__icontains": search})
+    return queryset.filter(query)
 
 
 @require_http_methods(["GET"])
@@ -90,6 +117,7 @@ def see_all(request, which=""):
 
     per_page = settings.PAGE_SIZE
     page_parameter = request.GET.get("page", 1)
+    search = request.GET.get("search", "").strip()
 
     try:
         # Bots insert random strings in the page parameter
@@ -117,10 +145,14 @@ def see_all(request, which=""):
     }
 
     data = data_types.get(request_type)
-    if data:
+    if data is not None:
+        data = filter_by_search(data, search)
         paginator = Paginator(data, per_page)
         if page > paginator.num_pages:
-            return redirect("see_all", request_type)
+            url = reverse("see_all", args=[request_type])
+            if search:
+                url += "?" + urlencode({"search": search})
+            return redirect(url)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
         # We need to match the variable name in the collection template context
@@ -128,6 +160,9 @@ def see_all(request, which=""):
         ctx = {
             collection_page_variable_name: paginated_data,
             "seeall": True,
+            "which": request_type,
+            "search": search,
+            "no_matches": bool(search) and not paginated_data.object_list,
         }
     return render(request, COLLECTION_PAGE, ctx)
 
@@ -551,6 +586,7 @@ def artwork_preview(request):
 def get_element(request):
     if request.htmx:
         page = int(request.GET.get("page", "1"))
+        search = request.GET.get("search", "").strip()
         match element_type := request.GET.get("element_type"):
             case "object":
                 qs = Object.objects.all().order_by("-created")
@@ -564,21 +600,25 @@ def get_element(request):
                 raise Http404("Invalid element type")
 
         paginator = Paginator(
-            qs,
+            filter_by_search(qs, search),
             settings.MODAL_PAGE_SIZE
             if element_type != "object" and element_type != "sound"
             else settings.OBJECT_MODAL_PAGE_SIZE,
         )
         if page > paginator.num_pages:
             page = paginator.num_pages
+        repository_list = paginator.get_page(page)
 
         return render(
             request,
             "core/components/item-list.jinja2",
             {
-                "repository_list": paginator.get_page(page),
+                "repository_list": repository_list,
                 "element_type": element_type,
                 "htmx": "false",
+                "page_number": repository_list.number,
+                "num_pages": paginator.num_pages,
+                "search": search,
             },
         )
     raise Http404
