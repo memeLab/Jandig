@@ -38,27 +38,21 @@
                 ]
                 %}
                 {% if repository_list %}
-                    {% if element_type == "ar-exhibit" %}
-                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig AR Exhibits") }}
-                        </h1>
-                    {% elif element_type == "mr-exhibit" %}
-                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig MR Exhibits") }}
-                        </h1>
-                    {% else %}
-                        <h1 class={{ class_type }} style="font-size: 1.5em;">{{ _("Jandig " + element_type.capitalize() + "s") }}
-                        </h1>
-                    {% endif %}
+                    {% set heading, see_all_label = {
+                        "mr-exhibit": (_("Jandig MR Exhibits"), _("All MR Exhibits")),
+                        "ar-exhibit": (_("Jandig AR Exhibits"), _("All AR Exhibits")),
+                        "artwork": (_("Jandig Artworks"), _("All Artworks")),
+                        "marker": (_("Jandig Markers"), _("All Markers")),
+                        "object": (_("Jandig Objects"), _("All Objects")),
+                        "sound": (_("Jandig Sounds"), _("All Sounds")),
+                    }[element_type] %}
+                    <h1 class={{ class_type }} style="font-size: 1.5em;">{{ heading }}
+                    </h1>
                     {% with repository_list = repository_list, element_type=element_type %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     {% if seeall == False %}
-                        {% if element_type == "ar-exhibit" %}
-                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All AR Exhibits") }}</a>
-                        {% elif element_type == "mr-exhibit" %}
-                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All MR Exhibits") }}</a>
-                        {% else %}
-                            <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ _("All " + element_type.capitalize() + "s") }}</a>
-                        {% endif %}
+                        <a href = "/see_all/?which={{ element_type }}" class="seeall">{{ see_all_label }}</a>
                     {% endif %}
                     {% if seeall == True %}
                         <nav>

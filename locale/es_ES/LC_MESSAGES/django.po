@@ -1148,19 +1148,19 @@ msgstr "Objeto(s)"
 msgid "Sound(s)"
 msgstr "Sonido(s)"
 
-#: src/core/jinja2/core/collection.jinja2:21
+#: src/core/jinja2/core/collection.jinja2:43
 msgid "Jandig AR Exhibits"
 msgstr "Exposiciones AR de Jandig"
 
-#: src/core/jinja2/core/collection.jinja2:24
+#: src/core/jinja2/core/collection.jinja2:42
 msgid "Jandig MR Exhibits"
 msgstr "Exposiciones MR de Jandig"
 
-#: src/core/jinja2/core/collection.jinja2:35
+#: src/core/jinja2/core/collection.jinja2:43
 msgid "All AR Exhibits"
 msgstr "Todas las exposiciones AR"
 
-#: src/core/jinja2/core/collection.jinja2:37
+#: src/core/jinja2/core/collection.jinja2:42
 msgid "All MR Exhibits"
 msgstr "Todas las exposiciones MR"
 
@@ -1589,42 +1589,100 @@ msgstr "Este sonido lo usan otros usuarios y no se puede editar."
 msgid "This sound is in use and cannot be deleted."
 msgstr "Este sonido está en uso y no se puede eliminar."
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:44
 msgid "Jandig Artworks"
 msgstr "Obras de Jandig"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:45
 msgid "Jandig Markers"
 msgstr "Marcadores de Jandig"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:46
 msgid "Jandig Objects"
 msgstr "Objetos de Jandig"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:47
 msgid "Jandig Sounds"
 msgstr "Sonidos de Jandig"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:44
 msgid "All Artworks"
 msgstr "Todas las obras"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:45
 msgid "All Markers"
 msgstr "Todos los marcadores"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:46
 msgid "All Objects"
 msgstr "Todos los objetos"
 
-#. Built at runtime by collection.jinja2 from the element type, so
-#. makemessages does not extract it.
+#: src/core/jinja2/core/collection.jinja2:47
 msgid "All Sounds"
 msgstr "Todos los sonidos"
+
+#: src/core/jinja2/core/upload-object.jinja2:378
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: src/core/jinja2/core/upload-object.jinja2:383
+msgid "Generate Thumbnail"
+msgstr "Generar miniatura"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:10
+msgid "Forgot Password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:36
+msgid "Enter email"
+msgstr "Escribe tu correo electrónico"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:51
+msgid "Create A New Account"
+msgstr "Crear una cuenta nueva"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:54
+msgid "Back To Login"
+msgstr "Volver a iniciar sesión"
+
+#: src/users/jinja2/users/reset-password/password_reset_complete.jinja2:3
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:3
+msgid "Password Reset"
+msgstr "Restablecimiento de contraseña"
+
+#: src/users/jinja2/users/reset-password/password_reset_complete.jinja2:11
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">Login "
+"Here</a>"
+msgstr ""
+"Tu contraseña se ha establecido. Ya puedes <a href=\"%(url)s\">iniciar "
+"sesión aquí</a>"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:13
+msgid "Reset Your Password"
+msgstr "Restablece tu contraseña"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:38
+msgid "Enter password"
+msgstr "Escribe la contraseña"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:46
+msgid "New Password Confirmation"
+msgstr "Confirmación de la contraseña nueva"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:53
+msgid "Confirm password"
+msgstr "Confirma la contraseña"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:60
+msgid "Reset Password"
+msgstr "Restablecer contraseña"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:69
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+"El enlace para restablecer la contraseña no es válido, posiblemente porque "
+"ya se ha usado. Solicita un nuevo restablecimiento de contraseña."
