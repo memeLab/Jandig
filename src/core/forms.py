@@ -2,6 +2,7 @@ import hashlib
 from os.path import basename, splitext
 
 from django import forms
+from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
@@ -25,6 +26,7 @@ from core.upload_limits import (
     OBJECT_KIND_BY_EXTENSION,
     RASTER_MARKER,
     SVG_MARKER,
+    THUMBNAIL,
     upload_size_error,
 )
 
@@ -145,6 +147,29 @@ class UploadObjectForm(forms.ModelForm):
                         )
                     )
 
+        return file
+
+    def clean_thumbnail(self):
+        file = self.cleaned_data.get("thumbnail")
+        # Only a fresh upload is checked; a stored thumbnail is handed back
+        # as is when the object is edited without a new one.
+        if not isinstance(file, UploadedFile):
+            return file
+        if error := upload_size_error(file, THUMBNAIL):
+            raise forms.ValidationError(error)
+        # The ImageField has already opened (but not decoded) the image.
+        width, height = file.image.size
+        limit = settings.MAX_THUMBNAIL_DIMENSION
+        if width > limit or height > limit:
+            raise forms.ValidationError(
+                _(
+                    "The thumbnail generated for this model is %(width)sx"
+                    "%(height)s pixels. Thumbnails are limited to %(limit)sx"
+                    "%(limit)s pixels, so please reload the page and upload "
+                    "the model again."
+                ),
+                params={"width": width, "height": height, "limit": limit},
+            )
         return file
 
     def clean_audio_description(self):

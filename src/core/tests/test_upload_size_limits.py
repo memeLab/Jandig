@@ -38,6 +38,21 @@ class TestDefaultLimits(TestCase):
         assert settings.MAX_VIDEO_OBJECT_UPLOAD_SIZE == 30 * MB
         assert settings.MAX_GLB_OBJECT_UPLOAD_SIZE == 30 * MB
         assert settings.MAX_AUDIO_UPLOAD_SIZE == 15 * MB
+        assert settings.MAX_THUMBNAIL_UPLOAD_SIZE == 2 * MB
+        assert settings.MAX_THUMBNAIL_DIMENSION == 2048
+
+    def test_request_ceiling_fits_the_largest_form(self):
+        # An object upload can carry a video or GLB, its thumbnail and an
+        # audio description at once.
+        largest_object_form = (
+            max(
+                settings.MAX_VIDEO_OBJECT_UPLOAD_SIZE,
+                settings.MAX_GLB_OBJECT_UPLOAD_SIZE,
+            )
+            + settings.MAX_THUMBNAIL_UPLOAD_SIZE
+            + settings.MAX_AUDIO_UPLOAD_SIZE
+        )
+        assert settings.MAX_REQUEST_BODY_SIZE > largest_object_form
 
 
 class TestFormatSize(TestCase):
@@ -219,6 +234,44 @@ class TestObjectSizeLimit(TestCase):
         assert response.status_code == 200
         assert "GIF and PNG objects are limited" in response.content.decode()
         convert.assert_not_called()
+
+
+class TestThumbnailLimits(TestCase):
+    def object_form(self, thumbnail):
+        return UploadObjectForm(
+            data={"title": "Model", "author": "Test Author"},
+            files={
+                "source": upload("model.glb", 10),
+                "thumbnail": SimpleUploadedFile(
+                    "thumbnail.png", thumbnail, content_type="image/png"
+                ),
+            },
+        )
+
+    def test_accepts_a_thumbnail_rendered_by_the_upload_page(self):
+        form = self.object_form(build_png_bytes(600, 600))
+
+        assert form.is_valid(), form.errors
+
+    @override_settings(MAX_THUMBNAIL_UPLOAD_SIZE=50)
+    def test_rejects_a_thumbnail_over_the_size_limit(self):
+        form = self.object_form(build_png_bytes(600, 600))
+
+        assert not form.is_valid()
+        assert "Thumbnails are limited to 50 B" in form.errors["thumbnail"][0]
+
+    def test_rejects_a_thumbnail_over_the_dimension_limit(self):
+        # A flat image compresses to almost nothing, so the byte limit alone
+        # would let it through.
+        form = self.object_form(
+            build_png_bytes(settings.MAX_THUMBNAIL_DIMENSION + 1, 10)
+        )
+
+        assert not form.is_valid()
+        assert (
+            f"{settings.MAX_THUMBNAIL_DIMENSION + 1}x10 pixels"
+            in (form.errors["thumbnail"][0])
+        )
 
 
 @override_settings(MAX_AUDIO_UPLOAD_SIZE=TINY)

@@ -967,6 +967,24 @@ msgstr ""
 "%(limit)s, así que acórtalo o comprímelo (por ejemplo, en MP3) antes de "
 "subirlo."
 
+#: src/core/upload_limits.py:75
+msgid ""
+"The thumbnail generated for this model is %(size)s. Thumbnails are limited "
+"to %(limit)s, so please reload the page and upload the model again."
+msgstr ""
+"La miniatura generada para este modelo pesa %(size)s. Las miniaturas están "
+"limitadas a %(limit)s, así que recarga la página y vuelve a subir el modelo."
+
+#: src/core/forms.py:165
+msgid ""
+"The thumbnail generated for this model is %(width)sx%(height)s pixels. "
+"Thumbnails are limited to %(limit)sx%(limit)s pixels, so please reload the "
+"page and upload the model again."
+msgstr ""
+"La miniatura generada para este modelo tiene %(width)sx%(height)s píxeles. "
+"Las miniaturas están limitadas a %(limit)sx%(limit)s píxeles, así que "
+"recarga la página y vuelve a subir el modelo."
+
 #: src/core/forms.py:100
 msgid ""
 "This object is being used by another user. You cannot change the source "
