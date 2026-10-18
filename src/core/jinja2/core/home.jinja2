@@ -47,12 +47,12 @@
                     <div>
                         <h2 id="main_title">{{ _("Welcome to Jandig") }}</h2>
                         <blockquote>
-                            {{ _("Uma comunidade de código aberto de arte em Realidade Estendida, que viabiliza a produção de exposições e obras unindo arte e tecnologia.") }}
+                            {{ _("An open source Extended Reality art community that makes it possible to produce exhibitions and artworks bringing art and technology together.") }}
                         </blockquote>
                     </div>
                 </section>
                 <section class="home-section">
-                    <p>{{ _("No vídeo abaixo, apresentamos o que é a Jandig, o conceito da plataforma e suas possibilidades.") }}</p>
+                    <p>{{ _("In the video below, we introduce Jandig, the idea behind the platform and its possibilities.") }}</p>
                     <div class="video-container">
                         <iframe width="560"
                                 height="315"
@@ -65,7 +65,7 @@
                 </section>
                 <section class="home-section">
                     <p>
-                        {{ _("Se você se identificou com a Jandig e acredita que a plataforma é útil para você criar seu projeto com realidade aumentada (seja ele uma exposição, cartaz, adesivo, mural, livro ou o que mais sua imaginação puder criar), deixamos para você um passo a passo de como utilizá-la. Ele explica o processo para subir seu conteúdo ou remixar o conteúdo já existente na plataforma.") }}
+                        {{ _("If Jandig speaks to you and you think the platform can help you create your augmented reality project (an exhibition, a poster, a sticker, a mural, a book or whatever else your imagination comes up with), here is a step-by-step guide on how to use it. It explains how to upload your content or remix content already on the platform.") }}
                     </p>
                     <div class="video-container" style="margin-bottom:50px">
                         <iframe width="560"
@@ -77,20 +77,14 @@
                                 allowfullscreen>
                         </iframe>
                     </div>
+                    {% set signup_url = url("signup") %}
                     <p>
-                        {{ _("Para acompanhar o passo a passo e colocar em prática,") }}
-                        <a href="{{ url('signup') }}">{{ _("faça seu cadastro") }}</a>
-                        {{ _("antes de começar a assistir. Depois, volte aqui e dê play no vídeo.
-                                                Se você preferir, também pode acessar o") }}
-                        <a href="https://jandig.app/docs/publicando-obras.html">{{ _("passo a passo por texto.") }}</a>
-                        {{ _("Além disso, no site da Jandig, na área de") }}
-                        <a href="https://jandig.app/docs/index.html">{{ _("Ajuda") }}</a>,
-                        {{ _("há outros tutoriais que podem ser úteis. Não deixe de consultá-los se sentir que é necessário.") }}
+                        {{ _('To follow the guide and put it into practice, <a href="%(signup_url)s">sign up</a> before you start watching. Then come back here and play the video.', signup_url=signup_url) }}
+                        {{ _('If you prefer, you can also follow the <a href="%(text_guide_url)s">written step-by-step guide</a>.', text_guide_url="https://jandig.app/docs/publicando-obras.html") }}
+                        {{ _('The <a href="%(help_url)s">Help</a> section of the Jandig website also has other tutorials that may be useful. Check them out whenever you need to.', help_url="https://jandig.app/docs/index.html") }}
                     </p>
                     <p>
-                        {{ _("Esperamos ver suas obras e exposições na Jandig! Se você criar algo, não deixe de compartilhar conosco. Temos um") }}
-                        <a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ">{{ _("canal no Telegram") }}</a>
-                        {{ _("voltado para a comunidade, onde é possível tirar dúvidas e compartilhar suas criações e experiências.") }}
+                        {{ _('We hope to see your artworks and exhibitions on Jandig! If you create something, be sure to share it with us. We have a community <a href="%(telegram_url)s">Telegram channel</a> where you can ask questions and share your creations and experiences.', telegram_url="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ") }}
                     </p>
                 </section>
             </div>
