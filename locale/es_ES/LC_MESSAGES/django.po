@@ -1352,3 +1352,207 @@ msgstr "Crear obra"
 
 msgid "Select"
 msgstr "Seleccionar"
+
+#: src/core/forms.py:133
+msgid ""
+"Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
+msgstr "Solo se permiten imágenes GIF y PNG, vídeos MP4 y WebM y archivos GLB."
+
+#: src/core/forms.py:498
+msgid "AR exhibits require at least one artwork."
+msgstr "Las exposiciones AR necesitan al menos una obra."
+
+#: src/core/forms.py:501
+msgid "MR exhibits require at least one augmented object."
+msgstr "Las exposiciones MR necesitan al menos un objeto aumentado."
+
+#: src/core/jinja2/core/ar.jinja2:32
+msgid "Loading exhibit…"
+msgstr "Cargando exposición…"
+
+#: src/core/jinja2/core/collection.jinja2:16
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:70
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:71
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:116
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:117
+#: src/core/jinja2/core/upload-artwork.jinja2:83
+#: src/core/jinja2/core/upload-artwork.jinja2:84
+#: src/core/jinja2/core/upload-artwork.jinja2:129
+#: src/core/jinja2/core/upload-artwork.jinja2:130
+msgid "Search by name or creator"
+msgstr "Buscar por nombre o creador"
+
+#: src/core/jinja2/core/collection.jinja2:22
+msgid "Search"
+msgstr "Buscar"
+
+#: src/core/jinja2/core/collection.jinja2:26
+#: src/core/jinja2/core/components/item-list.jinja2:36
+msgid "Nothing matches that search."
+msgstr "Nada coincide con esa búsqueda."
+
+#: src/core/jinja2/core/collection.jinja2:27
+#: src/core/jinja2/core/exhibit_select.jinja2:31
+msgid "Show all"
+msgstr "Mostrar todo"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:20
+msgid "QR code for this exhibition"
+msgstr "Código QR de esta exposición"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:22
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:44
+msgid "Download QR code:"
+msgstr "Descargar código QR:"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:20
+msgid "Filter by name"
+msgstr "Filtrar por nombre"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:26
+msgid "Filter"
+msgstr "Filtrar"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:30
+msgid "No exhibition matches that name."
+msgstr "Ninguna exposición coincide con ese nombre."
+
+#: src/core/jinja2/core/header.jinja2:14
+msgid "Welcome,"
+msgstr "Hola,"
+
+#: src/core/jinja2/core/nav-menu.jinja2:19
+msgid "See Exhibitions"
+msgstr "Ver exposiciones"
+
+#: src/core/jinja2/core/nav-menu.jinja2:20
+msgid "Collections"
+msgstr "Colecciones"
+
+#: src/core/jinja2/core/nav-menu.jinja2:21
+msgid "See All"
+msgstr "Ver todo"
+
+#: src/core/jinja2/core/nav-menu.jinja2:25
+msgid "AR Exhibits"
+msgstr "Exposiciones AR"
+
+#: src/core/jinja2/core/nav-menu.jinja2:26
+msgid "MR Exhibits"
+msgstr "Exposiciones MR"
+
+#: src/core/jinja2/core/nav-menu.jinja2:27
+msgid "Create"
+msgstr "Crear"
+
+#: src/core/jinja2/core/nav-menu.jinja2:29
+msgid "Resources"
+msgstr "Recursos"
+
+#: src/core/jinja2/core/nav-menu.jinja2:30
+msgid "Blog"
+msgstr "Blog"
+
+#: src/core/jinja2/core/nav-menu.jinja2:31
+msgid "News"
+msgstr "Noticias"
+
+#: src/core/jinja2/core/nav-menu.jinja2:32
+msgid "Support"
+msgstr "Soporte"
+
+#: src/core/jinja2/core/upload-object.jinja2:41
+msgid "Processing GIF..."
+msgstr "Procesando GIF..."
+
+#: src/core/jinja2/core/components/action-menu.jinja2:14
+msgid "Actions"
+msgstr "Acciones"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:27
+msgid "Edit"
+msgstr "Editar"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:35
+msgid "Preview"
+msgstr "Vista previa"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:39
+msgid "Are you sure you want to delete this item?"
+msgstr "¿Seguro que quieres eliminar este elemento?"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:41
+msgid "QR code"
+msgstr "Código QR"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:42
+msgid "QR code for this artwork"
+msgstr "Código QR de esta obra"
+
+#: src/core/jinja2/core/templates/artwork_thumbnail.jinja2:44
+msgid "This artwork is used in exhibits and cannot be deleted."
+msgstr "Esta obra se usa en exposiciones y no se puede eliminar."
+
+#: src/core/jinja2/core/templates/marker_thumbnail.jinja2:10
+msgid "This marker is used by other users and cannot be edited."
+msgstr "Este marcador lo usan otros usuarios y no se puede editar."
+
+#: src/core/jinja2/core/templates/marker_thumbnail.jinja2:11
+msgid "This marker is used in artworks and cannot be deleted."
+msgstr "Este marcador se usa en obras y no se puede eliminar."
+
+#: src/core/jinja2/core/templates/object_thumbnail.jinja2:36
+msgid "This object is used by other users and cannot be edited."
+msgstr "Este objeto lo usan otros usuarios y no se puede editar."
+
+#: src/core/jinja2/core/templates/object_thumbnail.jinja2:37
+msgid "This object is used in artworks and cannot be deleted."
+msgstr "Este objeto se usa en obras y no se puede eliminar."
+
+#: src/core/jinja2/core/templates/sound_thumbnail.jinja2:10
+msgid "This sound is used by other users and cannot be edited."
+msgstr "Este sonido lo usan otros usuarios y no se puede editar."
+
+#: src/core/jinja2/core/templates/sound_thumbnail.jinja2:11
+msgid "This sound is in use and cannot be deleted."
+msgstr "Este sonido está en uso y no se puede eliminar."
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "Jandig Artworks"
+msgstr "Obras de Jandig"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "Jandig Markers"
+msgstr "Marcadores de Jandig"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "Jandig Objects"
+msgstr "Objetos de Jandig"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "Jandig Sounds"
+msgstr "Sonidos de Jandig"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "All Artworks"
+msgstr "Todas las obras"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "All Markers"
+msgstr "Todos los marcadores"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "All Objects"
+msgstr "Todos los objetos"
+
+#. Built at runtime by collection.jinja2 from the element type, so
+#. makemessages does not extract it.
+msgid "All Sounds"
+msgstr "Todos los sonidos"

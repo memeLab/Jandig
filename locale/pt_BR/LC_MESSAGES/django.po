@@ -1326,6 +1326,44 @@ msgstr "Todos os Objetos"
 msgid "All Sounds"
 msgstr "Todos os Sons"
 
+#: src/core/jinja2/core/collection.jinja2:16
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:70
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:71
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:116
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:117
+#: src/core/jinja2/core/upload-artwork.jinja2:83
+#: src/core/jinja2/core/upload-artwork.jinja2:84
+#: src/core/jinja2/core/upload-artwork.jinja2:129
+#: src/core/jinja2/core/upload-artwork.jinja2:130
+msgid "Search by name or creator"
+msgstr "Buscar por nome ou criador"
+
+#: src/core/jinja2/core/collection.jinja2:22
+msgid "Search"
+msgstr "Buscar"
+
+#: src/core/jinja2/core/collection.jinja2:26
+#: src/core/jinja2/core/components/item-list.jinja2:36
+msgid "Nothing matches that search."
+msgstr "Nada corresponde a essa busca."
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:20
+msgid "QR code for this exhibition"
+msgstr "Código QR desta exposição"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:22
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:44
+msgid "Download QR code:"
+msgstr "Baixar código QR:"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:41
+msgid "QR code"
+msgstr "Código QR"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:42
+msgid "QR code for this artwork"
+msgstr "Código QR desta obra"
+
 #~ msgid "Edit Exhibit"
 #~ msgstr "Editar Exposição"
 
