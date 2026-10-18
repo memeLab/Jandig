@@ -883,6 +883,90 @@ msgstr "Aún no hay exposiciones."
 msgid "Only GIF images, MP4, WebM videos, and GLB files are allowed."
 msgstr "Solo se permiten imágenes GIF, vídeos MP4 y WebM y archivos GLB."
 
+#: src/core/forms.py:230
+msgid ""
+"This SVG is too long and thin to work as a marker. Its longest side can be "
+"at most %(ratio)s times its shortest side."
+msgstr ""
+"Este SVG es demasiado largo y estrecho para funcionar como marcador. Su "
+"lado más largo puede medir como máximo %(ratio)s veces su lado más corto."
+
+#: src/core/forms.py:239
+msgid ""
+"This SVG is too complex to turn into a marker. Simplify it, or export it as "
+"a PNG or JPG and upload that instead."
+msgstr ""
+"Este SVG es demasiado complejo para convertirlo en marcador. Simplifícalo, "
+"o expórtalo como PNG o JPG y sube ese archivo en su lugar."
+
+#: src/core/forms.py:246
+msgid "Could not render SVG. Make sure the file is a valid SVG."
+msgstr ""
+"No se pudo renderizar el SVG. Asegúrate de que el archivo sea un SVG válido."
+
+#: src/core/forms.py:265
+msgid "Upload a valid image. Supported formats: PNG, JPG, GIF, SVG."
+msgstr "Sube una imagen válida. Formatos admitidos: PNG, JPG, GIF, SVG."
+
+#: src/core/forms.py:274
+msgid ""
+"This image is %(width)sx%(height)s pixels. Markers are limited to "
+"%(limit)sx%(limit)s pixels, so please resize it before uploading."
+msgstr ""
+"Esta imagen tiene %(width)sx%(height)s píxeles. Los marcadores están "
+"limitados a %(limit)sx%(limit)s píxeles, así que redimensiónala antes de "
+"subirla."
+
+#: src/core/upload_limits.py:31
+msgid ""
+"This file is %(size)s. SVG markers are limited to %(limit)s, so please "
+"simplify it, or export it as a PNG or JPG, before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Los marcadores SVG están limitados a %(limit)s, "
+"así que simplifícalo o expórtalo como PNG o JPG antes de subirlo."
+
+#: src/core/upload_limits.py:38
+msgid ""
+"This file is %(size)s. Marker images are limited to %(limit)s, so please "
+"resize or compress it before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Las imágenes de marcador están limitadas a "
+"%(limit)s, así que redimensiónala o comprímela antes de subirla."
+
+#: src/core/upload_limits.py:45
+msgid ""
+"This file is %(size)s. GIF and PNG objects are limited to %(limit)s, so "
+"please reduce its dimensions, colors or number of frames before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Los objetos GIF y PNG están limitados a "
+"%(limit)s, así que reduce sus dimensiones, colores o número de fotogramas "
+"antes de subirlo."
+
+#: src/core/upload_limits.py:53
+msgid ""
+"This file is %(size)s. MP4 and WebM videos are limited to %(limit)s, so "
+"please shorten or compress it before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Los vídeos MP4 y WebM están limitados a "
+"%(limit)s, así que acórtalo o comprímelo antes de subirlo."
+
+#: src/core/upload_limits.py:60
+msgid ""
+"This file is %(size)s. GLB models are limited to %(limit)s, so please "
+"optimize the model before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Los modelos GLB están limitados a %(limit)s, "
+"así que optimiza el modelo antes de subirlo."
+
+#: src/core/upload_limits.py:67
+msgid ""
+"This file is %(size)s. Audio files are limited to %(limit)s, so please "
+"shorten or compress it (for example as MP3) before uploading."
+msgstr ""
+"Este archivo pesa %(size)s. Los archivos de audio están limitados a "
+"%(limit)s, así que acórtalo o comprímelo (por ejemplo, en MP3) antes de "
+"subirlo."
+
 #: src/core/forms.py:100
 msgid ""
 "This object is being used by another user. You cannot change the source "

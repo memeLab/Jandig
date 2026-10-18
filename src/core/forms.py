@@ -1,3 +1,4 @@
+import hashlib
 from os.path import basename, splitext
 
 from django import forms
@@ -19,20 +20,37 @@ from core.marker_utils import (
 )
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
+from core.upload_limits import (
+    AUDIO,
+    OBJECT_KIND_BY_EXTENSION,
+    RASTER_MARKER,
+    SVG_MARKER,
+    upload_size_error,
+)
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
 
+def _sha256(file):
+    digest = hashlib.sha256()
+    for chunk in file.chunks():
+        digest.update(chunk)
+    file.seek(0)  # Reset file pointer
+    return digest.digest()
+
+
 def file_has_changed(new_file, instance_file):
-    new_content = new_file.read()
-    new_file.seek(0)  # Reset file pointer
-
-    instance_content = instance_file.read()
-    instance_file.seek(0)  # Reset file pointer
-
-    return instance_content != new_content
+    # Editing without replacing the file hands back the stored file itself.
+    if new_file is instance_file:
+        return False
+    # Comparing sizes first avoids downloading the stored file at all when
+    # they differ; otherwise both are hashed chunk by chunk instead of being
+    # read whole into memory.
+    if new_file.size != instance_file.size:
+        return True
+    return _sha256(new_file) != _sha256(instance_file)
 
 
 class RangeInput(NumberInput):
@@ -115,6 +133,8 @@ class UploadObjectForm(forms.ModelForm):
                     "Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
                 )
             )
+        if error := upload_size_error(file, OBJECT_KIND_BY_EXTENSION[extension]):
+            raise forms.ValidationError(error)
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.source):
@@ -138,6 +158,8 @@ class UploadObjectForm(forms.ModelForm):
             raise forms.ValidationError(
                 _("Only MP3, OGG, and WAV audio files are allowed.")
             )
+        if error := upload_size_error(file, AUDIO):
+            raise forms.ValidationError(error)
         return file
 
     def save(self, *args, **kwargs):
@@ -192,6 +214,11 @@ class UploadMarkerForm(forms.ModelForm):
             raise forms.ValidationError(_("This field is required."))
         if getattr(file, "name", None):
             file.name = basename(file.name)
+
+        if error := upload_size_error(
+            file, SVG_MARKER if is_svg(file.name) else RASTER_MARKER
+        ):
+            raise forms.ValidationError(error)
 
         if is_svg(file.name):
             stem, _extension = splitext(file.name)
@@ -529,6 +556,8 @@ class SoundForm(forms.ModelForm):
             raise forms.ValidationError(
                 _("Only MP3, OGG, and WAV audio files are allowed.")
             )
+        if error := upload_size_error(file, AUDIO):
+            raise forms.ValidationError(error)
 
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:

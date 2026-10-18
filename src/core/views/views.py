@@ -33,6 +33,7 @@ from core.models import (
     Sound,
 )
 from core.spritesheet_converter import gif_to_spritesheet
+from core.upload_limits import IMAGE_OBJECT, upload_size_error
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
@@ -219,6 +220,13 @@ def convert_gif_to_spritesheet(request):
     )
     if extension != "gif":
         return HttpResponse(status=204)
+
+    if error := upload_size_error(source_file, IMAGE_OBJECT):
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": error},
+        )
 
     try:
         png_bytes, metadata = gif_to_spritesheet(source_file)

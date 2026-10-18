@@ -19,6 +19,7 @@ from core.marker_utils import (
     is_svg,
     rasterize_svg,
 )
+from core.upload_limits import RASTER_MARKER, SVG_MARKER, upload_size_error
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -54,6 +55,10 @@ class MarkerGeneratorAPIView(APIView):
             )
         inner_border = request.POST.get("inner_border", "false").lower() == "true"
         image = request.FILES["source"]
+        if error := upload_size_error(
+            image, SVG_MARKER if is_svg(image.name) else RASTER_MARKER
+        ):
+            return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
         if is_svg(image.name):
             try:
                 image = BytesIO(rasterize_svg(image.read()))

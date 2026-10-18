@@ -91,6 +91,21 @@ better):
   mobile data matters less, but device performance still matters —
   prefer optimized models (low poly count, compressed textures).
 
+Beyond these recommendations, Jandig rejects uploads larger than these
+limits:
+
+| File type | Limit |
+|---|---|
+| GIF or PNG Object | 2 MB |
+| MP4 or WebM Object | 30 MB |
+| GLB Object | 30 MB |
+| Sound or audio description (MP3, OGG, WAV) | 15 MB |
+| SVG Marker | 1 MB |
+| PNG, JPG or GIF Marker | 20 MB |
+
+The limits are a ceiling, not a target: stay close to the
+recommendations above.
+
 This limitation exists mainly for the following reasons:
 
 - We have no control over the public's connection speed when accessing
