@@ -1237,7 +1237,7 @@ msgstr "Nenhuma exposição corresponde a esse nome."
 
 #: src/core/jinja2/core/exhibit_select.jinja2:31
 msgid "Show all"
-msgstr "Mostrar todas"
+msgstr "Mostrar tudo"
 
 #: src/core/jinja2/core/header.jinja2:14
 msgid "Welcome,"
