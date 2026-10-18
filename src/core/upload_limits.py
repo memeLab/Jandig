@@ -22,6 +22,7 @@ IMAGE_OBJECT = "image_object"
 VIDEO_OBJECT = "video_object"
 GLB_OBJECT = "glb_object"
 AUDIO = "audio"
+THUMBNAIL = "thumbnail"
 
 # Each kind of upload maps to the setting holding its limit and the message
 # shown when a file is over it.
@@ -67,6 +68,14 @@ _LIMITS = {
         _(
             "This file is %(size)s. Audio files are limited to %(limit)s, so "
             "please shorten or compress it (for example as MP3) before uploading."
+        ),
+    ),
+    THUMBNAIL: (
+        "MAX_THUMBNAIL_UPLOAD_SIZE",
+        _(
+            "The thumbnail generated for this model is %(size)s. Thumbnails are "
+            "limited to %(limit)s, so please reload the page and upload the "
+            "model again."
         ),
     ),
 }

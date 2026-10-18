@@ -1120,6 +1120,24 @@ msgstr ""
 "Este arquivo tem %(size)s. Arquivos de áudio são limitados a %(limit)s, "
 "então encurte ou comprima o áudio (por exemplo, em MP3) antes de enviá-lo."
 
+#: src/core/upload_limits.py:75
+msgid ""
+"The thumbnail generated for this model is %(size)s. Thumbnails are limited "
+"to %(limit)s, so please reload the page and upload the model again."
+msgstr ""
+"A miniatura gerada para este modelo tem %(size)s. As miniaturas são "
+"limitadas a %(limit)s, então recarregue a página e envie o modelo de novo."
+
+#: src/core/forms.py:165
+msgid ""
+"The thumbnail generated for this model is %(width)sx%(height)s pixels. "
+"Thumbnails are limited to %(limit)sx%(limit)s pixels, so please reload the "
+"page and upload the model again."
+msgstr ""
+"A miniatura gerada para este modelo tem %(width)sx%(height)s pixels. As "
+"miniaturas são limitadas a %(limit)sx%(limit)s pixels, então recarregue a "
+"página e envie o modelo de novo."
+
 #: src/core/forms.py:463
 msgid "AR exhibits require at least one artwork."
 msgstr "Exposições AR precisam de pelo menos uma obra."
