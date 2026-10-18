@@ -39,8 +39,8 @@ class TestExhibitDetailQrCode(TestCase):
     def test_the_page_links_to_the_downloads(self):
         html = self.detail("dev.jandig.app")
 
-        assert 'href="/qrcode/exhibit/my-exhibit.png"' in html
-        assert 'href="/qrcode/exhibit/my-exhibit.svg"' in html
+        assert 'href="/exhibit/qrcode/my-exhibit.png"' in html
+        assert 'href="/exhibit/qrcode/my-exhibit.svg"' in html
 
 
 class TestArtworkModalQrCode(TestCase):
@@ -75,8 +75,8 @@ class TestArtworkModalQrCode(TestCase):
     def test_the_modal_links_to_the_downloads(self):
         html = self.modal("dev.jandig.app")
 
-        assert f'href="/qrcode/artwork/{self.artwork.id}.png"' in html
-        assert f'href="/qrcode/artwork/{self.artwork.id}.svg"' in html
+        assert f'href="/artwork/qrcode/{self.artwork.id}.png"' in html
+        assert f'href="/artwork/qrcode/{self.artwork.id}.svg"' in html
 
 
 class TestExhibitQrCodeDownload(TestCase):
@@ -85,7 +85,7 @@ class TestExhibitQrCodeDownload(TestCase):
 
     def download(self, file_format, slug="my-exhibit"):
         return self.client.get(
-            f"/qrcode/exhibit/{slug}.{file_format}", HTTP_HOST="dev.jandig.app"
+            f"/exhibit/qrcode/{slug}.{file_format}", HTTP_HOST="dev.jandig.app"
         )
 
     def test_png_download(self):
@@ -128,7 +128,7 @@ class TestArtworkQrCodeDownload(TestCase):
     def download(self, file_format, artwork_id=None):
         artwork_id = self.artwork.id if artwork_id is None else artwork_id
         return self.client.get(
-            f"/qrcode/artwork/{artwork_id}.{file_format}", HTTP_HOST="jandig.app"
+            f"/artwork/qrcode/{artwork_id}.{file_format}", HTTP_HOST="jandig.app"
         )
 
     def test_png_download(self):
@@ -167,4 +167,14 @@ class TestQrCodeRobots(TestCase):
     def test_robots_keep_crawlers_off_the_downloads(self):
         response = self.client.get(reverse("robots_txt"), HTTP_HOST="jandig.app")
 
-        assert "Disallow: /qrcode/" in response.content.decode()
+        robots = response.content.decode()
+
+        # The downloads sit under prefixes robots.txt already blocks.
+        assert "Disallow: /exhibit/" in robots
+        assert "Disallow: /artwork/" in robots
+        assert reverse(
+            "exhibit-qrcode", kwargs={"slug": "my-exhibit", "file_format": "png"}
+        ).startswith("/exhibit/")
+        assert reverse(
+            "artwork-qrcode", kwargs={"artwork_id": 1, "file_format": "png"}
+        ).startswith("/artwork/")

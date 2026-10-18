@@ -82,7 +82,6 @@ def robots_txt(request):
         "Disallow: /content/delete/",
         "Disallow: /elements/",
         "Disallow: /exhibit_select/",
-        "Disallow: /qrcode/",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
