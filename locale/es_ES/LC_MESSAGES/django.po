@@ -429,6 +429,78 @@ msgstr ""
 msgid "Go to camera"
 msgstr "Ir a la cámara"
 
+#: src/core/jinja2/core/home.jinja2:50
+msgid ""
+"An open source Extended Reality art community that makes it possible to "
+"produce exhibitions and artworks bringing art and technology together."
+msgstr ""
+"Una comunidad de código abierto de arte en Realidad Extendida, que hace "
+"posible la producción de exposiciones y obras uniendo arte y tecnología."
+
+#: src/core/jinja2/core/home.jinja2:55
+msgid ""
+"In the video below, we introduce Jandig, the idea behind the platform and its"
+" possibilities."
+msgstr ""
+"En el vídeo de abajo presentamos qué es Jandig, el concepto de la plataforma "
+"y sus posibilidades."
+
+#: src/core/jinja2/core/home.jinja2:68
+msgid ""
+"If Jandig speaks to you and you think the platform can help you create your "
+"augmented reality project (an exhibition, a poster, a sticker, a mural, a "
+"book or whatever else your imagination comes up with), here is a step-by-step"
+" guide on how to use it. It explains how to upload your content or remix "
+"content already on the platform."
+msgstr ""
+"Si te identificas con Jandig y crees que la plataforma te puede servir para "
+"crear tu proyecto con realidad aumentada (ya sea una exposición, un cartel, "
+"una pegatina, un mural, un libro o lo que tu imaginación pueda crear), te "
+"dejamos un paso a paso de cómo usarla. Explica el proceso para subir tu "
+"contenido o remezclar el contenido que ya existe en la plataforma."
+
+#: src/core/jinja2/core/home.jinja2:82
+#, python-format
+msgid ""
+"To follow the guide and put it into practice, <a href=\"%(signup_url)s\">sign"
+" up</a> before you start watching. Then come back here and play the video."
+msgstr ""
+"Para seguir el paso a paso y ponerlo en práctica, <a "
+"href=\"%(signup_url)s\">regístrate</a> antes de empezar a verlo. Después, "
+"vuelve aquí y reproduce el vídeo."
+
+#: src/core/jinja2/core/home.jinja2:83
+#, python-format
+msgid ""
+"If you prefer, you can also follow the <a href=\"%(text_guide_url)s\">written"
+" step-by-step guide</a>."
+msgstr ""
+"Si lo prefieres, también puedes consultar el <a "
+"href=\"%(text_guide_url)s\">paso a paso en texto</a>."
+
+#: src/core/jinja2/core/home.jinja2:84
+#, python-format
+msgid ""
+"The <a href=\"%(help_url)s\">Help</a> section of the Jandig website also has "
+"other tutorials that may be useful. Check them out whenever you need to."
+msgstr ""
+"Además, en la sección de <a href=\"%(help_url)s\">Ayuda</a> del sitio de "
+"Jandig hay otros tutoriales que te pueden ser útiles. No dejes de "
+"consultarlos si lo necesitas."
+
+#: src/core/jinja2/core/home.jinja2:87
+#, python-format
+msgid ""
+"We hope to see your artworks and exhibitions on Jandig! If you create "
+"something, be sure to share it with us. We have a community <a "
+"href=\"%(telegram_url)s\">Telegram channel</a> where you can ask questions "
+"and share your creations and experiences."
+msgstr ""
+"¡Esperamos ver tus obras y exposiciones en Jandig! Si creas algo, no dejes de"
+" compartirlo con nosotros. Tenemos un <a href=\"%(telegram_url)s\">canal de "
+"Telegram</a> para la comunidad, donde puedes resolver dudas y compartir tus "
+"creaciones y experiencias."
+
 #: src/core/jinja2/core/language-select-modal.jinja2:3
 msgid "Select your language"
 msgstr "Selecciona tu idioma"

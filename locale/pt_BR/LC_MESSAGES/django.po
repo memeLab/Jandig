@@ -665,6 +665,79 @@ msgstr "Para ver as obras, você precisa dar acesso à câmera no aplicativo."
 msgid "Go to camera"
 msgstr "Ir para câmera"
 
+#: src/core/jinja2/core/home.jinja2:50
+msgid ""
+"An open source Extended Reality art community that makes it possible to "
+"produce exhibitions and artworks bringing art and technology together."
+msgstr ""
+"Uma comunidade de código aberto de arte em Realidade Estendida, que viabiliza"
+" a produção de exposições e obras unindo arte e tecnologia."
+
+#: src/core/jinja2/core/home.jinja2:55
+msgid ""
+"In the video below, we introduce Jandig, the idea behind the platform and its"
+" possibilities."
+msgstr ""
+"No vídeo abaixo, apresentamos o que é a Jandig, o conceito da plataforma e "
+"suas possibilidades."
+
+#: src/core/jinja2/core/home.jinja2:68
+msgid ""
+"If Jandig speaks to you and you think the platform can help you create your "
+"augmented reality project (an exhibition, a poster, a sticker, a mural, a "
+"book or whatever else your imagination comes up with), here is a step-by-step"
+" guide on how to use it. It explains how to upload your content or remix "
+"content already on the platform."
+msgstr ""
+"Se você se identificou com a Jandig e acredita que a plataforma é útil para "
+"você criar seu projeto com realidade aumentada (seja ele uma exposição, "
+"cartaz, adesivo, mural, livro ou o que mais sua imaginação puder criar), "
+"deixamos para você um passo a passo de como utilizá-la. Ele explica o "
+"processo para subir seu conteúdo ou remixar o conteúdo já existente na "
+"plataforma."
+
+#: src/core/jinja2/core/home.jinja2:82
+#, python-format
+msgid ""
+"To follow the guide and put it into practice, <a href=\"%(signup_url)s\">sign"
+" up</a> before you start watching. Then come back here and play the video."
+msgstr ""
+"Para acompanhar o passo a passo e colocar em prática, <a "
+"href=\"%(signup_url)s\">faça seu cadastro</a> antes de começar a assistir. "
+"Depois, volte aqui e dê play no vídeo."
+
+#: src/core/jinja2/core/home.jinja2:83
+#, python-format
+msgid ""
+"If you prefer, you can also follow the <a href=\"%(text_guide_url)s\">written"
+" step-by-step guide</a>."
+msgstr ""
+"Se você preferir, também pode acessar o <a href=\"%(text_guide_url)s\">passo "
+"a passo por texto</a>."
+
+#: src/core/jinja2/core/home.jinja2:84
+#, python-format
+msgid ""
+"The <a href=\"%(help_url)s\">Help</a> section of the Jandig website also has "
+"other tutorials that may be useful. Check them out whenever you need to."
+msgstr ""
+"Além disso, no site da Jandig, na área de <a href=\"%(help_url)s\">Ajuda</a>,"
+" há outros tutoriais que podem ser úteis. Não deixe de consultá-los se sentir"
+" que é necessário."
+
+#: src/core/jinja2/core/home.jinja2:87
+#, python-format
+msgid ""
+"We hope to see your artworks and exhibitions on Jandig! If you create "
+"something, be sure to share it with us. We have a community <a "
+"href=\"%(telegram_url)s\">Telegram channel</a> where you can ask questions "
+"and share your creations and experiences."
+msgstr ""
+"Esperamos ver suas obras e exposições na Jandig! Se você criar algo, não "
+"deixe de compartilhar conosco. Temos um <a href=\"%(telegram_url)s\">canal no"
+" Telegram</a> voltado para a comunidade, onde é possível tirar dúvidas e "
+"compartilhar suas criações e experiências."
+
 #: src/core/jinja2/core/ui.jinja2:4
 msgid "Change exhibition"
 msgstr "Alterar exposição"
