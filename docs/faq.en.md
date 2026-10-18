@@ -46,11 +46,12 @@ media](media.en.md).
 
 ## Is there a maximum file size for Markers and Objects?
 
-Marker images can be at most 4096 x 4096 pixels; larger images are
-rejected on upload. For Objects there's no hard technical limit. In
-both cases, we recommend keeping files small
-to ensure fast loading for the public, especially on mobile
-connections. See size recommendations per format in [Tips for
+Yes. Marker images can be at most 4096 x 4096 pixels and 20 MB (1 MB
+for SVG); larger images are rejected on upload. Objects are limited to
+2 MB for GIF and PNG and 30 MB for MP4, WebM and GLB; sounds and audio
+descriptions to 15 MB. Even below these limits, we recommend keeping
+files small to ensure fast loading for the public, especially on
+mobile connections. See size recommendations per format in [Tips for
 producing media](media.en.md).
 
 ## Can I edit a Marker or Object after uploading it?

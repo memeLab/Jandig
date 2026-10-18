@@ -1063,6 +1063,63 @@ msgstr ""
 "Esta imagem tem %(width)sx%(height)s pixels. Os marcadores são limitados a "
 "%(limit)sx%(limit)s pixels, então redimensione a imagem antes de enviá-la."
 
+#: src/core/forms.py:239
+msgid ""
+"This SVG is too complex to turn into a marker. Simplify it, or export it as "
+"a PNG or JPG and upload that instead."
+msgstr ""
+"Este SVG é complexo demais para virar um marcador. Simplifique-o ou "
+"exporte-o como PNG ou JPG e envie esse arquivo no lugar."
+
+#: src/core/upload_limits.py:31
+msgid ""
+"This file is %(size)s. SVG markers are limited to %(limit)s, so please "
+"simplify it, or export it as a PNG or JPG, before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Marcadores SVG são limitados a %(limit)s, então "
+"simplifique o arquivo ou exporte-o como PNG ou JPG antes de enviá-lo."
+
+#: src/core/upload_limits.py:38
+msgid ""
+"This file is %(size)s. Marker images are limited to %(limit)s, so please "
+"resize or compress it before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Imagens de marcador são limitadas a %(limit)s, "
+"então redimensione ou comprima a imagem antes de enviá-la."
+
+#: src/core/upload_limits.py:45
+msgid ""
+"This file is %(size)s. GIF and PNG objects are limited to %(limit)s, so "
+"please reduce its dimensions, colors or number of frames before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Objetos GIF e PNG são limitados a %(limit)s, "
+"então reduza as dimensões, as cores ou o número de quadros antes de "
+"enviá-lo."
+
+#: src/core/upload_limits.py:53
+msgid ""
+"This file is %(size)s. MP4 and WebM videos are limited to %(limit)s, so "
+"please shorten or compress it before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Vídeos MP4 e WebM são limitados a %(limit)s, "
+"então encurte ou comprima o vídeo antes de enviá-lo."
+
+#: src/core/upload_limits.py:60
+msgid ""
+"This file is %(size)s. GLB models are limited to %(limit)s, so please "
+"optimize the model before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Modelos GLB são limitados a %(limit)s, então "
+"otimize o modelo antes de enviá-lo."
+
+#: src/core/upload_limits.py:67
+msgid ""
+"This file is %(size)s. Audio files are limited to %(limit)s, so please "
+"shorten or compress it (for example as MP3) before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Arquivos de áudio são limitados a %(limit)s, "
+"então encurte ou comprima o áudio (por exemplo, em MP3) antes de enviá-lo."
+
 #: src/core/forms.py:463
 msgid "AR exhibits require at least one artwork."
 msgstr "Exposições AR precisam de pelo menos uma obra."

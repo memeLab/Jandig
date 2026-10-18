@@ -93,6 +93,20 @@ melhor):
   importando — prefira modelos otimizados (poucos polígonos, texturas
   comprimidas).
 
+Além dessas recomendações, o Jandig recusa no envio arquivos acima destes
+limites:
+
+| Tipo de arquivo | Limite |
+|---|---|
+| Objeto GIF ou PNG | 2 MB |
+| Objeto MP4 ou WebM | 30 MB |
+| Objeto GLB | 30 MB |
+| Som ou audiodescrição (MP3, OGG, WAV) | 15 MB |
+| Marcador SVG | 1 MB |
+| Marcador PNG, JPG ou GIF | 20 MB |
+
+Os limites são um teto, não uma meta: fique perto das recomendações acima.
+
 Essa limitação existe principalmente pelas seguintes razões:
 
 - Não temos controle da velocidade de conexão do público quando acessar

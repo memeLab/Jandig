@@ -281,6 +281,26 @@ TURNSTILE_ENABLED = env("TURNSTILE_ENABLED", default=False)
 TURNSTILE_SITE_KEY = env("TURNSTILE_SITE_KEY", default="")
 TURNSTILE_SECRET_KEY = env("TURNSTILE_SECRET_KEY", default="")
 
+# Upload size limits, in bytes (#1010). Checked in core.upload_limits before
+# an upload is read or parsed. A request-level ceiling at the reverse proxy,
+# slightly above the largest of these, stops oversized bodies even earlier.
+MAX_SVG_MARKER_UPLOAD_SIZE = env.int(
+    "MAX_SVG_MARKER_UPLOAD_SIZE", default=1 * 1024 * 1024
+)
+MAX_RASTER_MARKER_UPLOAD_SIZE = env.int(
+    "MAX_RASTER_MARKER_UPLOAD_SIZE", default=20 * 1024 * 1024
+)
+MAX_IMAGE_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_IMAGE_OBJECT_UPLOAD_SIZE", default=2 * 1024 * 1024
+)
+MAX_VIDEO_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_VIDEO_OBJECT_UPLOAD_SIZE", default=30 * 1024 * 1024
+)
+MAX_GLB_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_GLB_OBJECT_UPLOAD_SIZE", default=30 * 1024 * 1024
+)
+MAX_AUDIO_UPLOAD_SIZE = env.int("MAX_AUDIO_UPLOAD_SIZE", default=15 * 1024 * 1024)
+
 ###########################
 #### Storage settings  ####
 ###########################
