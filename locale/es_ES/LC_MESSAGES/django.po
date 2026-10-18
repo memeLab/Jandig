@@ -1686,3 +1686,32 @@ msgid ""
 msgstr ""
 "El enlace para restablecer la contraseña no es válido, posiblemente porque "
 "ya se ha usado. Solicita un nuevo restablecimiento de contraseña."
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:1
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(email)s Jandig account, "
+"click the link below:"
+msgstr ""
+"Para iniciar el restablecimiento de la contraseña de tu cuenta de Jandig "
+"%(email)s, haz clic en el siguiente enlace:"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:5
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+"Si el enlace anterior no funciona, copia y pega la URL en una nueva ventana "
+"del navegador."
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:7
+msgid "Sincerely,"
+msgstr "Atentamente,"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:8
+msgid "Jandig Team"
+msgstr "El equipo de Jandig"
+
+#: src/users/jinja2/users/reset-password/password_reset_subject.txt:1
+msgid "Jandig Password Reset"
+msgstr "Restablecimiento de contraseña de Jandig"
