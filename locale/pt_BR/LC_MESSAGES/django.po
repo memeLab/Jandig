@@ -1487,6 +1487,35 @@ msgstr ""
 "O link de redefinição de senha é inválido, possivelmente porque já foi "
 "usado. Solicite uma nova redefinição de senha."
 
+#: src/users/jinja2/users/reset-password/password_reset_email.html:1
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(email)s Jandig account, "
+"click the link below:"
+msgstr ""
+"Para iniciar a redefinição de senha da sua conta Jandig %(email)s, clique "
+"no link abaixo:"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:5
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+"Se o link acima não funcionar, copie e cole o endereço em uma nova janela "
+"do navegador."
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:7
+msgid "Sincerely,"
+msgstr "Atenciosamente,"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:8
+msgid "Jandig Team"
+msgstr "Equipe Jandig"
+
+#: src/users/jinja2/users/reset-password/password_reset_subject.txt:1
+msgid "Jandig Password Reset"
+msgstr "Redefinição de senha do Jandig"
+
 #~ msgid "Edit Exhibit"
 #~ msgstr "Editar Exposição"
 
