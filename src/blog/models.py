@@ -1,6 +1,5 @@
 from django.core.files.storage import default_storage
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
 from django_prose_editor.fields import ProseEditorField
 
 from users.models import Profile
@@ -23,27 +22,31 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
 
-class PostImage(TimeStampedModel):
+class PostImage(models.Model):
     file = models.FileField(storage=default_storage, upload_to=IMAGE_BASE_PATH)
     description = models.CharField(max_length=500, blank=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return self.file.name.lstrip(IMAGE_BASE_PATH)
 
 
-class Clipping(TimeStampedModel):
+class Clipping(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=500)
     link = models.URLField()
     file = models.FileField(upload_to="clipping_files/")
     display_date = models.DateField(db_index=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return self.title
 
 
-class Post(TimeStampedModel):
+class Post(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=200)
     status = models.CharField(
@@ -59,6 +62,10 @@ class Post(TimeStampedModel):
     excerpt = models.TextField()
     categories = models.ManyToManyField(Category, related_name="posts", blank=True)
     images = models.ManyToManyField(PostImage, related_name="posts", blank=True)
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
+
     formatted_body = ProseEditorField(
         default="",
         extensions={

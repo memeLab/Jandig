@@ -33,7 +33,7 @@ para produzir marcadores](marcadores.md).
 
 ## Quais formatos de arquivo posso usar para os Objetos?
 
-GIF, PNG, MP4, WebM e GLB. Objetos em GLB funcionam apenas em Exposições
+GIF, PNG e GLB. Objetos em GLB funcionam apenas em Exposições
 MR (o aplicativo de Realidade Mista para o Meta Quest). Para Obras AR, do
 site mobile baseado em Marcadores, não aceitam GLB. Você também
 pode anexar uma audiodescrição opcional em MP3, OGG ou WAV. Veja mais em
@@ -41,9 +41,12 @@ pode anexar uma audiodescrição opcional em MP3, OGG ou WAV. Veja mais em
 
 ## Existe um tamanho máximo de arquivo para Marcadores e Objetos?
 
-Não há um limite técnico rígido, mas recomendamos manter os arquivos
-pequenos para garantir um carregamento rápido para o público,
-especialmente em conexões móveis. Veja as recomendações de tamanho por
+Sim. Para Marcadores, a imagem pode ter no máximo 4096 x 4096 pixels
+e 20 MB (1 MB para SVG); imagens maiores são recusadas no envio. Para
+Objetos, o limite é de 2 MB para GIF e PNG e de 30 MB para MP4, WebM e
+GLB; para sons e audiodescrições, 15 MB. Mesmo abaixo desses limites,
+recomendamos manter os arquivos pequenos para garantir um carregamento
+rápido para o público, especialmente em conexões móveis. Veja as recomendações de tamanho por
 formato em [Dicas para produzir mídia](media.md).
 
 ## Posso editar um Marcador ou Objeto depois de enviado?
