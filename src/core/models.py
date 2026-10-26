@@ -8,7 +8,6 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
 
 from core.marker_utils import delete_marker_files
@@ -158,6 +157,7 @@ class Marker(ContentMixin, models.Model):
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
@@ -270,6 +270,7 @@ class Object(ContentMixin, models.Model):
     height = models.PositiveIntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
     def __str__(self):
         return self.source.name
 
@@ -463,6 +464,7 @@ class Artwork(ContentMixin, models.Model):
 
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
     @property
     def exhibits_count(self):
         return self.exhibits.count()
