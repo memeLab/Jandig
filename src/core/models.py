@@ -8,7 +8,6 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
 
 from core.marker_utils import delete_marker_files
@@ -63,7 +62,7 @@ class SoundExtensions(models.TextChoices):
 
 
 @pghistory.track()
-class Sound(TimeStampedModel, ContentMixin):
+class Sound(ContentMixin, models.Model):
     file = models.FileField(upload_to="sounds/")
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=60, blank=False)
@@ -78,6 +77,8 @@ class Sound(TimeStampedModel, ContentMixin):
     )
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     @property
     def date(self):
@@ -138,7 +139,7 @@ class ExhibitTypes(models.TextChoices):
 
 
 @pghistory.track()
-class Marker(TimeStampedModel, ContentMixin):
+class Marker(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
@@ -153,6 +154,9 @@ class Marker(TimeStampedModel, ContentMixin):
     file_size = models.IntegerField(default=0, blank=True, null=True)
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -222,7 +226,7 @@ def object_spritesheet_metadata_path(instance, filename):
 
 
 @pghistory.track()
-class Object(TimeStampedModel, ContentMixin):
+class Object(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
@@ -264,6 +268,8 @@ class Object(TimeStampedModel, ContentMixin):
     )
     width = models.PositiveIntegerField(null=True, blank=True)
     height = models.PositiveIntegerField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return self.source.name
@@ -432,7 +438,7 @@ class Object(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Artwork(TimeStampedModel, ContentMixin):
+class Artwork(ContentMixin, models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -455,6 +461,9 @@ class Artwork(TimeStampedModel, ContentMixin):
     scale_y = models.FloatField(default=1.0)
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     @property
     def exhibits_count(self):
@@ -490,7 +499,7 @@ class Artwork(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Exhibit(TimeStampedModel, ContentMixin, models.Model):
+class Exhibit(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
@@ -508,6 +517,8 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         default=ExhibitTypes.AR,
         db_index=True,
     )
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return self.name
