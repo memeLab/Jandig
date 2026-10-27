@@ -7,6 +7,7 @@ from rest_framework.renderers import (
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from core import qrcodes
 from core.models import Artwork, Exhibit, Marker, Object, Sound
 from core.renderers import ModalHTMLRenderer
 from core.serializers import (
@@ -104,7 +105,12 @@ class ArtworkViewset(
         instance = self.get_object()
         if request.accepted_renderer.format == "modal":
             return Response(
-                {"artwork": instance},
+                {
+                    "artwork": instance,
+                    "qr_code": qrcodes.inline_svg(
+                        qrcodes.artwork_url(request, instance)
+                    ),
+                },
                 template_name="core/templates/artwork_modal.jinja2",
             )
         return super().retrieve(request, *args, **kwargs)

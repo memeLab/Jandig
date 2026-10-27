@@ -9,12 +9,14 @@ from core.views.static_views import (
     home,
     manifest,
     me_hotsite,
+    privacy_policy,
     robots_txt,
     service_worker,
 )
 from core.views.views import (
     ar_view,
     artwork_preview,
+    artwork_qrcode,
     collection,
     convert_gif_to_spritesheet,
     create_artwork,
@@ -27,6 +29,7 @@ from core.views.views import (
     edit_sound,
     exhibit,
     exhibit_detail,
+    exhibit_qrcode,
     exhibit_select,
     feedback,
     get_element,
@@ -42,6 +45,13 @@ urlpatterns = [
     path("", home, name="home"),
     path("ar/", ar_view, name="ar-view"),
     path("artwork/", artwork_preview, name="artwork-preview"),
+    # QR downloads live under /artwork/ and /exhibit/ because the proxy in
+    # front of Django only forwards known prefixes (a /qrcode/ prefix 404'd).
+    re_path(
+        r"^artwork/qrcode/(?P<artwork_id>[0-9]+)\.(?P<file_format>svg|png)$",
+        artwork_qrcode,
+        name="artwork-qrcode",
+    ),
     path("artworks/create/", create_artwork, name="create-artwork"),
     path("artworks/edit/", edit_artwork, name="edit-artwork"),
     path("collection/", collection, name="collection"),
@@ -49,8 +59,14 @@ urlpatterns = [
     path("content/delete/", delete, name="delete-content"),
     path("documentation/", documentation, name="documentation"),
     path("feedback/", feedback, name="feedback"),
+    path("privacy/", privacy_policy, name="privacy-policy"),
     path("exhibit_select/", exhibit_select, name="exhibit_select"),
     path("exhibit/", exhibit_detail, name="exhibit-detail"),
+    re_path(
+        r"^exhibit/qrcode/(?P<slug>[-a-zA-Z0-9_]+)\.(?P<file_format>svg|png)$",
+        exhibit_qrcode,
+        name="exhibit-qrcode",
+    ),
     path("exhibits/create-ar/", create_or_edit_ar_exhibit, name="create-ar-exhibit"),
     path("exhibits/edit-ar/", create_or_edit_ar_exhibit, name="edit-ar-exhibit"),
     path("exhibits/create-mr/", create_or_edit_mr_exhibit, name="create-mr-exhibit"),
