@@ -777,7 +777,7 @@ def feedback_attachment_path(instance, filename):
     return f"feedback/{name}.{ext}" if ext else f"feedback/{name}"
 
 
-class Feedback(TimeStampedModel):
+class Feedback(models.Model):
     """A bug report or feature request sent from the site's feedback form.
 
     Stored rather than e-mailed so nothing is lost if mail delivery is
@@ -798,9 +798,12 @@ class Feedback(TimeStampedModel):
     handled = models.BooleanField(
         default=False, help_text="Tick once this report has been triaged."
     )
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
-    class Meta(TimeStampedModel.Meta):
+    class Meta():
         verbose_name_plural = "feedback"
+        get_latest_by = "modified"
 
     def __str__(self):
         return f"{self.get_kind_display()} #{self.pk}"

@@ -25,16 +25,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "created",
-                    django_extensions.db.fields.CreationDateTimeField(
-                        auto_now_add=True, verbose_name="created"
-                    ),
+                "created",
+                models.DateTimeField(auto_now_add=True, db_index=True),
                 ),
                 (
-                    "modified",
-                    django_extensions.db.fields.ModificationDateTimeField(
-                        auto_now=True, verbose_name="modified"
-                    ),
+                "modified",
+                models.DateTimeField(auto_now=True, db_index=True)
                 ),
                 (
                     "kind",
