@@ -98,6 +98,11 @@ class Sound(ContentMixin, models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
+
     @property
     def date(self):
         return self.created.strftime("%d/%m/%Y")
@@ -173,6 +178,10 @@ class Marker(ContentMixin, models.Model):
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
 
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
@@ -288,6 +297,11 @@ class Object(ContentMixin, models.Model):
     height = models.PositiveIntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
 
     def __str__(self):
         return self.source.name
@@ -480,6 +494,10 @@ class Artwork(ContentMixin, models.Model):
     position_x = models.FloatField(default=0.0)
     position_y = models.FloatField(default=0.0)
 
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
@@ -537,6 +555,11 @@ class Exhibit(ContentMixin, models.Model):
     )
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
+    highlighted = models.BooleanField(
+        default=False,
+        help_text="Editor-curated content is listed before everything else.",
+    )
 
     def __str__(self):
         return self.name
