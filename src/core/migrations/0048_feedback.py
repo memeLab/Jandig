@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("core", "0046_alter_sound_file_alter_soundevent_file"),
+        ("core", "0047_remove_artwork_insert_insert_and_more"),
     ]
 
     operations = [
