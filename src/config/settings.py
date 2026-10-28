@@ -281,6 +281,36 @@ TURNSTILE_ENABLED = env("TURNSTILE_ENABLED", default=False)
 TURNSTILE_SITE_KEY = env("TURNSTILE_SITE_KEY", default="")
 TURNSTILE_SECRET_KEY = env("TURNSTILE_SECRET_KEY", default="")
 
+# Upload size limits, in bytes (#1010). Checked in core.upload_limits before
+# an upload is read or parsed.
+MAX_SVG_MARKER_UPLOAD_SIZE = env.int(
+    "MAX_SVG_MARKER_UPLOAD_SIZE", default=1 * 1024 * 1024
+)
+MAX_RASTER_MARKER_UPLOAD_SIZE = env.int(
+    "MAX_RASTER_MARKER_UPLOAD_SIZE", default=20 * 1024 * 1024
+)
+MAX_IMAGE_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_IMAGE_OBJECT_UPLOAD_SIZE", default=2 * 1024 * 1024
+)
+MAX_VIDEO_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_VIDEO_OBJECT_UPLOAD_SIZE", default=30 * 1024 * 1024
+)
+MAX_GLB_OBJECT_UPLOAD_SIZE = env.int(
+    "MAX_GLB_OBJECT_UPLOAD_SIZE", default=30 * 1024 * 1024
+)
+MAX_AUDIO_UPLOAD_SIZE = env.int("MAX_AUDIO_UPLOAD_SIZE", default=15 * 1024 * 1024)
+# Thumbnails are rendered by the browser from a 600x600 canvas when a GLB is
+# uploaded, so a genuine one is well under these limits.
+MAX_THUMBNAIL_UPLOAD_SIZE = env.int(
+    "MAX_THUMBNAIL_UPLOAD_SIZE", default=2 * 1024 * 1024
+)
+MAX_THUMBNAIL_DIMENSION = env.int("MAX_THUMBNAIL_DIMENSION", default=2048)
+# Ceiling for a whole request body, enforced in config.asgi before Django
+# reads it. It must fit the largest form: an object upload can carry a video
+# or GLB, its thumbnail and an audio description (30 + 2 + 15 MB). 0 disables
+# it, e.g. when the reverse proxy already enforces one.
+MAX_REQUEST_BODY_SIZE = env.int("MAX_REQUEST_BODY_SIZE", default=50 * 1024 * 1024)
+
 ###########################
 #### Storage settings  ####
 ###########################

@@ -1,15 +1,19 @@
 import json
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from sentry_sdk import metrics
 
+from core import qrcodes
 from core.forms import (
     ArtworkForm,
     ExhibitForm,
@@ -18,7 +22,7 @@ from core.forms import (
     UploadMarkerForm,
     UploadObjectForm,
 )
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import generate_marker_variants, strip_existing_border
 from core.models import (
     Artwork,
     Exhibit,
@@ -29,9 +33,34 @@ from core.models import (
     Sound,
 )
 from core.spritesheet_converter import gif_to_spritesheet
+from core.upload_limits import IMAGE_OBJECT, upload_size_error
 from users.models import Profile
 
 COLLECTION_PAGE = "core/collection.jinja2"
+
+# Fields a `search` term is matched against: the name of the content and
+# who made it (the credited author and the username of whoever uploaded it).
+SEARCH_FIELDS = {
+    Marker: ("title", "author", "owner__user__username"),
+    Object: ("title", "author", "owner__user__username"),
+    Sound: ("title", "author", "owner__user__username"),
+    Artwork: ("title", "author__user__username"),
+    Exhibit: ("name", "owner__user__username"),
+}
+
+
+def filter_by_search(queryset, search):
+    """Narrow a listing to the content whose name or creator contains `search`.
+
+    Only meant for what is shown to the user: never use it on a queryset
+    that validates a submitted selection.
+    """
+    if not search:
+        return queryset
+    query = Q()
+    for field in SEARCH_FIELDS[queryset.model]:
+        query |= Q(**{f"{field}__icontains": search})
+    return queryset.filter(query)
 
 
 @require_http_methods(["GET"])
@@ -89,6 +118,7 @@ def see_all(request, which=""):
 
     per_page = settings.PAGE_SIZE
     page_parameter = request.GET.get("page", 1)
+    search = request.GET.get("search", "").strip()
 
     try:
         # Bots insert random strings in the page parameter
@@ -116,10 +146,14 @@ def see_all(request, which=""):
     }
 
     data = data_types.get(request_type)
-    if data:
+    if data is not None:
+        data = filter_by_search(data, search)
         paginator = Paginator(data, per_page)
         if page > paginator.num_pages:
-            return redirect("see_all", request_type)
+            url = reverse("see_all", args=[request_type])
+            if search:
+                url += "?" + urlencode({"search": search})
+            return redirect(url)
         paginated_data = paginator.get_page(page)
         paginated_data.adjusted_elided_pages = paginator.get_elided_page_range(page)
         # We need to match the variable name in the collection template context
@@ -127,6 +161,9 @@ def see_all(request, which=""):
         ctx = {
             collection_page_variable_name: paginated_data,
             "seeall": True,
+            "which": request_type,
+            "search": search,
+            "no_matches": bool(search) and not paginated_data.object_list,
         }
     return render(request, COLLECTION_PAGE, ctx)
 
@@ -183,6 +220,13 @@ def convert_gif_to_spritesheet(request):
     )
     if extension != "gif":
         return HttpResponse(status=204)
+
+    if error := upload_size_error(source_file, IMAGE_OBJECT):
+        return TemplateResponse(
+            request,
+            "core/templates/spritesheet_result.jinja2",
+            {"error": error},
+        )
 
     try:
         png_bytes, metadata = gif_to_spritesheet(source_file)
@@ -309,6 +353,9 @@ def marker_upload(request):
             marker = form.save(commit=False)
             marker.owner = request.user.profile
             marker.save()
+
+            if form.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(marker)
 
             generate_marker_variants(
                 marker,
@@ -547,6 +594,7 @@ def artwork_preview(request):
 def get_element(request):
     if request.htmx:
         page = int(request.GET.get("page", "1"))
+        search = request.GET.get("search", "").strip()
         match element_type := request.GET.get("element_type"):
             case "object":
                 qs = Object.objects.all().order_by("-highlighted", "-created")
@@ -560,21 +608,25 @@ def get_element(request):
                 raise Http404("Invalid element type")
 
         paginator = Paginator(
-            qs,
+            filter_by_search(qs, search),
             settings.MODAL_PAGE_SIZE
             if element_type != "object" and element_type != "sound"
             else settings.OBJECT_MODAL_PAGE_SIZE,
         )
         if page > paginator.num_pages:
             page = paginator.num_pages
+        repository_list = paginator.get_page(page)
 
         return render(
             request,
             "core/components/item-list.jinja2",
             {
-                "repository_list": paginator.get_page(page),
+                "repository_list": repository_list,
                 "element_type": element_type,
                 "htmx": "false",
+                "page_number": repository_list.number,
+                "num_pages": paginator.num_pages,
+                "search": search,
             },
         )
     raise Http404
@@ -587,7 +639,9 @@ def _handle_exhibit_form(
     is_edit = exhibit_instance is not None
 
     if request.method == "POST":
-        form = ExhibitForm(request.POST, instance=exhibit_instance)
+        form = ExhibitForm(
+            request.POST, instance=exhibit_instance, exhibit_type=exhibit_type
+        )
         form.full_clean()
 
         if form.is_valid():
@@ -611,7 +665,7 @@ def _handle_exhibit_form(
             context = _get_ar_exhibit_context_data(user_profile, form, edit=is_edit)
             return render(request, "core/exhibit_create_ar.jinja2", context)
     else:
-        form = ExhibitForm(instance=exhibit_instance)
+        form = ExhibitForm(instance=exhibit_instance, exhibit_type=exhibit_type)
         if exhibit_type == ExhibitTypes.MR:
             context = _get_mr_exhibit_context_data(form, edit=is_edit)
             return render(request, "core/exhibit_create_mr.jinja2", context)
@@ -722,8 +776,38 @@ def exhibit_detail(request):
         "artworks": exhibit.artworks.select_related("marker", "augmented").all(),
         "objects": exhibit.augmenteds.all(),
         "sounds": exhibit.sounds.all(),
+        "qr_code": qrcodes.inline_svg(qrcodes.exhibit_url(request, exhibit)),
     }
     return render(request, "core/exhibit_detail.jinja2", ctx)
+
+
+def _qrcode_download(url, filename, file_format):
+    response = HttpResponse(
+        qrcodes.render(url, file_format),
+        content_type=qrcodes.CONTENT_TYPES[file_format],
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}.{file_format}"'
+    return response
+
+
+@require_http_methods(["GET"])
+def exhibit_qrcode(request, slug, file_format):
+    exhibit = get_object_or_404(Exhibit, slug=slug)
+    return _qrcode_download(
+        qrcodes.exhibit_url(request, exhibit),
+        f"jandig-{exhibit.slug}-qrcode",
+        file_format,
+    )
+
+
+@require_http_methods(["GET"])
+def artwork_qrcode(request, artwork_id, file_format):
+    artwork = get_object_or_404(Artwork, id=int(artwork_id))
+    return _qrcode_download(
+        qrcodes.artwork_url(request, artwork),
+        f"jandig-artwork-{artwork.id}-qrcode",
+        file_format,
+    )
 
 
 @login_required
@@ -771,15 +855,27 @@ def edit_sound(request):
 
 
 def exhibit_select(request):
+    search = request.GET.get("search", "").strip()
     if request.method == "POST":
+        # Never narrow the queryset on POST: the submitted id must be
+        # validated against every exhibit, not just the ones the user
+        # happened to have filtered to.
         form = ExhibitSelectForm(request.POST)
         if form.is_valid():
             exhibit = form.cleaned_data.get("exhibit")
             return redirect("/" + exhibit.slug)
     else:
-        form = ExhibitSelectForm()
+        form = ExhibitSelectForm(search=search)
 
-    return render(request, "core/exhibit_select.jinja2", {"form": form})
+    return render(
+        request,
+        "core/exhibit_select.jinja2",
+        {
+            "form": form,
+            "search": search,
+            "no_matches": bool(search) and not form.fields["exhibit"].queryset.exists(),
+        },
+    )
 
 
 @require_http_methods(["GET"])

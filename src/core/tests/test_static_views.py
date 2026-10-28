@@ -54,3 +54,20 @@ class TestCoreStaticViews(TestCase):
     def test_home(self):
         response = self.client.get(reverse("home"))
         assert response.status_code == 200
+
+    def test_home_sentences_render_links(self):
+        response = self.client.get(reverse("home"))
+        content = response.content.decode()
+        assert "An open source Extended Reality art community" in content
+        assert f'<a href="{reverse("signup")}">sign up</a>' in content
+        assert (
+            '<a href="https://jandig.app/docs/publicando-obras.html">'
+            "written step-by-step guide</a>" in content
+        )
+        assert '<a href="https://jandig.app/docs/index.html">Help</a>' in content
+        assert (
+            '<a href="https://t.me/joinchat/HES_ShA6TMPP-aiHxH7thQ">'
+            "Telegram channel</a>" in content
+        )
+        assert "%(" not in content
+        assert "&lt;a href" not in content

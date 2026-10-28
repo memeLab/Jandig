@@ -8,6 +8,7 @@ requires-python = ">=3.13"
 dependencies = [
   "babel~=2.16",
   "boto3~=1.36",
+  "cairosvg~=2.7",
   "django-cors-headers~=4.7",
   "django-environ~=0.12",
   "django-extensions~=4.0",
@@ -23,14 +24,15 @@ dependencies = [
   "jinja2~=3.1",
   "markupsafe~=3.0",
   "av>=14.0.0",
-  "pillow~=12.3",
+  "pillow~=13.0",
   "psycopg[binary,pool]>=3.2.9",
-  "pymarker~=1.2",
+  "pymarker~=1.4",
   "sentry-sdk[django]~=2.20",
   "mkdocs~=1.6",
   "mkdocs-material~=9.5",
   "mkdocs-static-i18n~=1.3",
   "django-prose-editor[sanitize]>=0.25.1",
+  "segno~=1.6",
 ]
 
 [dependency-groups]

@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("core", "0044_populate_sound_in_use_fields"),
+        ("core", "0046_alter_sound_file_alter_soundevent_file"),
     ]
 
     operations = [

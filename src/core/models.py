@@ -1,4 +1,5 @@
 import logging
+from uuid import uuid4
 
 import pghistory
 from django.core.files.base import ContentFile as CF
@@ -6,8 +7,8 @@ from django.db import models
 from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TimeStampedModel
 from fast_html import a, audio, img, render, video
 
 from core.marker_utils import delete_marker_files
@@ -61,9 +62,26 @@ class SoundExtensions(models.TextChoices):
     WAV = "wav", "WAV"
 
 
+def sound_file_path(instance, filename):
+    """Upload path: sounds/<uuid>.<ext>
+
+    Sound filenames come straight from the user, and names carrying spaces,
+    accents or reserved characters have caused "file not found" errors once
+    S3 and Django disagree about how to escape them. The original name is
+    still recorded on Sound.file_name_original.
+
+    A uuid is used rather than the <pk>/<role> layout that objects and markers
+    use, because the primary key does not exist yet when the upload path is
+    generated for a new row.
+    """
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    name = uuid4().hex
+    return f"sounds/{name}.{ext}" if ext else f"sounds/{name}"
+
+
 @pghistory.track()
-class Sound(TimeStampedModel, ContentMixin):
-    file = models.FileField(upload_to="sounds/")
+class Sound(ContentMixin, models.Model):
+    file = models.FileField(upload_to=sound_file_path)
     title = models.CharField(max_length=50, blank=False)
     author = models.CharField(max_length=60, blank=False)
     owner = models.ForeignKey(
@@ -77,6 +95,8 @@ class Sound(TimeStampedModel, ContentMixin):
     )
     in_use = models.BooleanField(default=False)
     is_used_by_other_user = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     highlighted = models.BooleanField(
         default=False,
@@ -125,7 +145,7 @@ class Sound(TimeStampedModel, ContentMixin):
     def as_html(self):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.file.url,
         }
         return render(
@@ -142,7 +162,7 @@ class ExhibitTypes(models.TextChoices):
 
 
 @pghistory.track()
-class Marker(TimeStampedModel, ContentMixin):
+class Marker(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="markers"
     )
@@ -162,6 +182,8 @@ class Marker(TimeStampedModel, ContentMixin):
         default=False,
         help_text="Editor-curated content is listed before everything else.",
     )
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -183,7 +205,7 @@ class Marker(TimeStampedModel, ContentMixin):
         src = image.url + f"?v={int(self.modified.timestamp())}"
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": src,
         }
         return render(
@@ -231,7 +253,7 @@ def object_spritesheet_metadata_path(instance, filename):
 
 
 @pghistory.track()
-class Object(TimeStampedModel, ContentMixin):
+class Object(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="ar_objects"
     )
@@ -273,6 +295,8 @@ class Object(TimeStampedModel, ContentMixin):
     )
     width = models.PositiveIntegerField(null=True, blank=True)
     height = models.PositiveIntegerField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     highlighted = models.BooleanField(
         default=False,
@@ -405,7 +429,7 @@ class Object(TimeStampedModel, ContentMixin):
     def as_html(self, height: int = None, width: int = None):
         attributes = {
             "id": self.id,
-            "title": self.title,
+            "title": escape(self.title),
             "src": self.source.url,
         }
         max_w = width if width else DEFAULT_OBJECT_PREVIEW_WIDTH
@@ -446,7 +470,7 @@ class Object(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Artwork(TimeStampedModel, ContentMixin):
+class Artwork(ContentMixin, models.Model):
     author = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="artworks"
     )
@@ -474,6 +498,8 @@ class Artwork(TimeStampedModel, ContentMixin):
         default=False,
         help_text="Editor-curated content is listed before everything else.",
     )
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     @property
     def exhibits_count(self):
@@ -509,7 +535,7 @@ class Artwork(TimeStampedModel, ContentMixin):
 
 
 @pghistory.track()
-class Exhibit(TimeStampedModel, ContentMixin, models.Model):
+class Exhibit(ContentMixin, models.Model):
     owner = models.ForeignKey(
         Profile, on_delete=models.DO_NOTHING, related_name="exhibits"
     )
@@ -527,6 +553,8 @@ class Exhibit(TimeStampedModel, ContentMixin, models.Model):
         default=ExhibitTypes.AR,
         db_index=True,
     )
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
     highlighted = models.BooleanField(
         default=False,

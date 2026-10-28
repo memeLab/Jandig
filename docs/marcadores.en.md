@@ -26,12 +26,23 @@ If your image has dark edges or low contrast against black, check the
 white ring between the image and the black border, making the boundary
 between them easier for the camera to detect.
 
+If your image is already a marker, that is, it already has the black
+border, check the "Remove existing border" option when uploading. Jandig
+will then remove the original border before generating the new one,
+instead of drawing a second border around the first.
+
 ## Square format
 
 Jandig tags are always square. If you upload a rectangular image, it
 will be resized to fit a square, which can distort its content
 (stretching it horizontally or vertically). To avoid distortion, prefer
 using images that are already square (width equal to height).
+
+## Maximum size
+
+The marker image can be at most 4096 x 4096 pixels. Larger images are
+rejected on upload and need to be resized first. In practice, a much
+lower resolution is already enough for recognition.
 
 ## Symmetry
 
