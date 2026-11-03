@@ -34,3 +34,16 @@ class TestResetPassword(TestCase):
         assert message.subject == "Jandig Password Reset"
         assert "your test@example.com Jandig account" in message.body
         assert "/password-reset-confirm/" in message.body
+
+    def test_reset_password_email_is_not_html_escaped(self):
+        """The plain-text email should show the address as typed"""
+        get_user_model().objects.create_user(
+            username="oneil",
+            email="o'neil@example.com",
+            password="Aa#12C34d6561",
+        )
+        self.client.post(reverse("reset-password"), {"email": "o'neil@example.com"})
+        assert len(mail.outbox) == 1
+        body = mail.outbox[0].body
+        assert "your o'neil@example.com Jandig account" in body
+        assert "&#39;" not in body
