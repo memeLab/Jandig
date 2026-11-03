@@ -75,6 +75,12 @@ line-length = 88
 # Assume Python 3.13
 target-version = "py313"
 
+[tool.ruff.lint]
+# Ruff 0.17 enabled a much larger default rule set. Pin the rules this project
+# was linted with before (the Ruff 0.15 defaults); the Linter workflow adds
+# import sorting with `--extend-select I`.
+select = ["E4", "E7", "E9", "F"]
+
 [tool.djlint]
 profile="jinja"
 extension="jinja2"
