@@ -2,6 +2,7 @@ import io
 import re
 from unittest.mock import Mock, patch
 
+import requests
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
@@ -10,6 +11,7 @@ from PIL import Image
 
 from core.forms import FEEDBACK_HONEYPOT_FIELD, MAX_FEEDBACK_ATTACHMENT_BYTES
 from core.models import Feedback, FeedbackKinds
+from users.services.turnstile_service import TURNSTILE_TIMEOUT_SECONDS
 
 
 def screenshot(name="shot.png"):
@@ -19,6 +21,9 @@ def screenshot(name="shot.png"):
     return SimpleUploadedFile(name, buffer.read(), content_type="image/png")
 
 
+# Pinned off so these tests exercise the form's own validation whatever the
+# environment sets. TestFeedbackBotProtection covers Turnstile.
+@override_settings(TURNSTILE_ENABLED=False)
 class TestFeedbackForm(TestCase):
     def test_the_form_is_reachable_without_an_account(self):
         response = self.client.get(reverse("feedback"))
@@ -185,6 +190,44 @@ class TestFeedbackBotProtection(TestCase):
             "response": "genuine",
         }
 
+    @override_settings(TURNSTILE_ENABLED=True)
+    def test_a_report_is_rejected_when_cloudflare_cannot_be_reached(self):
+        unreachable = patch(
+            "users.services.turnstile_service.requests.post",
+            side_effect=requests.ConnectionError("down"),
+        )
+        with unreachable:
+            response = self.client.post(
+                reverse("feedback"), {**REPORT, "cf-turnstile-response": "genuine"}
+            )
+
+        assert response.status_code == 400
+        assert not Feedback.objects.exists()
+
+    @override_settings(TURNSTILE_ENABLED=True)
+    def test_a_report_is_rejected_when_cloudflare_answers_with_garbage(self):
+        response = Mock()
+        response.json.side_effect = ValueError("not JSON")
+        garbage = patch(
+            "users.services.turnstile_service.requests.post", return_value=response
+        )
+        with garbage:
+            response = self.client.post(
+                reverse("feedback"), {**REPORT, "cf-turnstile-response": "genuine"}
+            )
+
+        assert response.status_code == 400
+        assert not Feedback.objects.exists()
+
+    @override_settings(TURNSTILE_ENABLED=True)
+    def test_the_cloudflare_call_has_a_timeout(self):
+        with turnstile_answering(True) as siteverify:
+            self.client.post(
+                reverse("feedback"), {**REPORT, "cf-turnstile-response": "genuine"}
+            )
+
+        assert siteverify.call_args.kwargs["timeout"] == TURNSTILE_TIMEOUT_SECONDS
+
     @override_settings(TURNSTILE_ENABLED=True, TURNSTILE_SITE_KEY="site-key")
     def test_the_widget_is_shown_and_holds_the_submit_button(self):
         content = self.client.get(reverse("feedback")).content.decode()
@@ -193,6 +236,7 @@ class TestFeedbackBotProtection(TestCase):
         assert 'data-sitekey="site-key"' in content
         assert "challenges.cloudflare.com/turnstile" in content
         assert 'id="submit-button" disabled' in content
+        assert "<noscript>" in content, "say why Send stays disabled without JS"
 
     @override_settings(TURNSTILE_ENABLED=False)
     def test_the_widget_is_absent_when_turnstile_is_disabled(self):
@@ -222,6 +266,17 @@ class TestFeedbackBotProtection(TestCase):
         assert response.status_code == 200
         assert "Thank you" in response.content.decode()
         assert not Feedback.objects.exists()
+
+    @override_settings(TURNSTILE_ENABLED=False)
+    def test_a_report_that_fills_the_honeypot_stores_no_attachment(self):
+        before = stored_attachments()
+
+        self.client.post(
+            reverse("feedback"),
+            {**REPORT, FEEDBACK_HONEYPOT_FIELD: "buy now", "attachment": screenshot()},
+        )
+
+        assert stored_attachments() == before
 
     @override_settings(TURNSTILE_ENABLED=True)
     def test_the_honeypot_is_checked_before_asking_cloudflare(self):

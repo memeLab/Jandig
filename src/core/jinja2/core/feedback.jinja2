@@ -53,6 +53,9 @@
                          data-sitekey="{{ turnstile_site_key }}"
                          data-callback="enableSubmit"></div>
                     <button type="submit" class="button" id="submit-button" disabled>{{ _("Send") }}</button>
+                    <noscript>
+                        <p>{{ _("This form needs JavaScript to check that you are not a bot.") }}</p>
+                    </noscript>
                 {% else %}
                     <button type="submit" class="button">{{ _("Send") }}</button>
                 {% endif %}
