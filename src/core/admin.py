@@ -1,7 +1,8 @@
 import json
+import logging
 from io import BytesIO
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db.models import Count
@@ -12,8 +13,20 @@ from pymarker import remove_borders_from_image
 from core.marker_utils import generate_marker_variants
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Exhibit, Marker, Object, Sound
+from core.sound_filenames import (
+    OldFileNotRemoved,
+    rename_to_generated_name,
+    with_generated_name,
+    with_legacy_name,
+)
 from core.spritesheet_converter import gif_to_spritesheet
 from core.utils import filesizeformat, get_admin_url
+
+log = logging.getLogger(__name__)
+
+# Each rename reads a file and writes it back to storage inside the request,
+# so one run of the admin action is capped to stay well inside the timeout.
+MAX_SOUND_RENAMES_PER_RUN = 25
 
 HTML_LINK = '<a href="{}">{}</a>'
 
@@ -399,10 +412,34 @@ class ExhibitAdmin(admin.ModelAdmin):
         return format_html(HTML_LINK, link, obj.owner.user.username)
 
 
+class SoundFilenameFilter(admin.SimpleListFilter):
+    """Find the sounds still stored under their uploader's filename (#991)."""
+
+    title = "file name"
+    parameter_name = "file_name"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("legacy", "Uploader's file name (legacy)"),
+            ("generated", "Generated file name"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "legacy":
+            return with_legacy_name(queryset)
+        if self.value() == "generated":
+            return with_generated_name(queryset)
+        return queryset
+
+
 @admin.register(Sound)
 class SoundAdmin(admin.ModelAdmin):
-    list_filter = ["highlighted"]
-    actions = [highlight_content, unhighlight_content]
+    list_filter = ["highlighted", SoundFilenameFilter]
+    actions = [
+        highlight_content,
+        unhighlight_content,
+        "rename_files_to_generated_names",
+    ]
     list_display = [
         "title",
         "preview",
@@ -418,3 +455,59 @@ class SoundAdmin(admin.ModelAdmin):
 
     def preview(self, obj):
         return format_html(obj.as_html(), "")
+
+    @admin.action(
+        description="Rename files of selected sounds to generated names",
+        permissions=["change"],
+    )
+    def rename_files_to_generated_names(self, request, queryset):
+        """Backfill for #991, run by hand on the sounds that predate #982.
+
+        Safe to repeat: sounds that already have a generated name are skipped,
+        and a file that fails is left as it was, so it can be selected again.
+        One run handles at most MAX_SOUND_RENAMES_PER_RUN sounds and says how
+        many of the selection are left.
+        """
+        selected = queryset.count()
+        legacy = with_legacy_name(queryset).order_by("pk")
+        pending = legacy.count()
+        renamed = failed = 0
+        for sound in legacy[:MAX_SOUND_RENAMES_PER_RUN]:
+            old_name = sound.file.name
+            try:
+                rename_to_generated_name(sound)
+            except OldFileNotRemoved as error:
+                # The sound itself is fine; only the old object lingers.
+                log.exception("Renamed sound %s but kept %s", sound.pk, old_name)
+                self.message_user(
+                    request,
+                    f"Renamed {old_name} (sound {sound.pk}) to {error.new_name}, "
+                    "but the old file could not be removed from storage.",
+                    level=messages.WARNING,
+                )
+            except Exception:
+                # One unreadable or unwritable file must not stop the others.
+                failed += 1
+                log.exception("Could not rename sound %s (%s)", sound.pk, old_name)
+                self.message_user(
+                    request,
+                    f"Could not rename {old_name} (sound {sound.pk}). "
+                    "It was left as it was.",
+                    level=messages.ERROR,
+                )
+                continue
+            renamed += 1
+
+        summary = f"Renamed {renamed} sound file(s)."
+        if selected - pending:
+            summary += f" {selected - pending} needed no rename."
+        left = pending - renamed - failed
+        if left:
+            summary += (
+                f" {left} more selected sound(s) still have a legacy name: "
+                f"a run renames at most {MAX_SOUND_RENAMES_PER_RUN}, "
+                "so run the action again."
+            )
+        self.message_user(
+            request, summary, level=messages.SUCCESS if renamed else messages.WARNING
+        )
