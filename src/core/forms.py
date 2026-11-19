@@ -95,6 +95,9 @@ class ObjectWidget(forms.ClearableFileInput):
 
 # Feedback attachments come from anonymous visitors, so keep them small.
 MAX_FEEDBACK_ATTACHMENT_BYTES = 5 * 1024 * 1024
+# Honeypot input of the feedback form: people never see it, bots that fill
+# every input do. A submission that fills it is dropped.
+FEEDBACK_HONEYPOT_FIELD = "topic"
 # Markers are rasterised and uploaded to the AR viewer as textures, so an
 # upload far larger than a 4K texture costs storage and marker-generation time
 # without improving detection. Both sides are capped at this value.
@@ -612,6 +615,13 @@ class SoundForm(forms.ModelForm):
 
 class FeedbackForm(forms.ModelForm):
     """Public bug report / feature request form linked from the footer."""
+
+    # Not a model field, so it is never stored. See FEEDBACK_HONEYPOT_FIELD.
+    topic = forms.CharField(
+        required=False,
+        label=_("Leave this field empty"),
+        widget=forms.TextInput(attrs={"tabindex": "-1", "autocomplete": "off"}),
+    )
 
     class Meta:
         model = Feedback
