@@ -20,7 +20,7 @@ from core.marker_utils import (
     strip_existing_border,
 )
 from core.media_dimensions import extract_dimensions
-from core.models import Artwork, Marker, ObjectExtensions
+from core.models import Artwork, Feedback, Marker, ObjectExtensions
 from core.upload_limits import (
     AUDIO,
     OBJECT_KIND_BY_EXTENSION,
@@ -93,6 +93,11 @@ class ObjectWidget(forms.ClearableFileInput):
         return mark_safe(template)
 
 
+# Feedback attachments come from anonymous visitors, so keep them small.
+MAX_FEEDBACK_ATTACHMENT_BYTES = 5 * 1024 * 1024
+# Honeypot input of the feedback form: people never see it, bots that fill
+# every input do. A submission that fills it is dropped.
+FEEDBACK_HONEYPOT_FIELD = "topic"
 # Markers are rasterised and uploaded to the AR viewer as textures, so an
 # upload far larger than a 4K texture costs storage and marker-generation time
 # without improving detection. Both sides are capped at this value.
@@ -606,3 +611,47 @@ class SoundForm(forms.ModelForm):
         self.instance.file_extension = self.instance.file.name.split(".")[-1].lower()
 
         return super(SoundForm, self).save(*args, **kwargs)
+
+
+class FeedbackForm(forms.ModelForm):
+    """Public bug report / feature request form linked from the footer."""
+
+    # Not a model field, so it is never stored. See FEEDBACK_HONEYPOT_FIELD.
+    topic = forms.CharField(
+        required=False,
+        label=_("Leave this field empty"),
+        widget=forms.TextInput(attrs={"tabindex": "-1", "autocomplete": "off"}),
+    )
+
+    class Meta:
+        model = Feedback
+        fields = ("kind", "description", "email", "attachment")
+        widgets = {
+            "description": forms.Textarea(
+                attrs={
+                    "rows": 6,
+                    "placeholder": _("What happened, and what did you expect?"),
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={"placeholder": _("Your e-mail (optional, so we can reply)")}
+            ),
+        }
+
+    def clean_attachment(self):
+        attachment = self.cleaned_data.get("attachment")
+        if not attachment:
+            return None
+
+        allowed_extensions = ["png", "jpg", "jpeg", "gif", "webp", "pdf", "txt", "log"]
+        extension = getattr(attachment, "name", "").split(".")[-1].lower()
+        if extension not in allowed_extensions:
+            raise forms.ValidationError(
+                _("Attach a screenshot (PNG, JPG, GIF, WebP), a PDF or a text log.")
+            )
+        if attachment.size > MAX_FEEDBACK_ATTACHMENT_BYTES:
+            raise forms.ValidationError(
+                _("Attachments are limited to %(limit)s MB."),
+                params={"limit": MAX_FEEDBACK_ATTACHMENT_BYTES // (1024 * 1024)},
+            )
+        return attachment

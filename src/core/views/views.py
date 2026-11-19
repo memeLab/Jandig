@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -15,9 +15,11 @@ from sentry_sdk import metrics
 
 from core import qrcodes
 from core.forms import (
+    FEEDBACK_HONEYPOT_FIELD,
     ArtworkForm,
     ExhibitForm,
     ExhibitSelectForm,
+    FeedbackForm,
     SoundForm,
     UploadMarkerForm,
     UploadObjectForm,
@@ -35,6 +37,7 @@ from core.models import (
 from core.spritesheet_converter import gif_to_spritesheet
 from core.upload_limits import IMAGE_OBJECT, upload_size_error
 from users.models import Profile
+from users.services.turnstile_service import verify_turnstile
 
 COLLECTION_PAGE = "core/collection.jinja2"
 
@@ -995,3 +998,37 @@ def ar_view(request):
     debug = request.GET.get("debug", "false").lower() == "true"
     ctx = {"artworks": exhibit.artworks.all(), "debug": debug}
     return render(request, "core/ar.jinja2", ctx)
+
+
+@require_http_methods(["GET", "POST"])
+def feedback(request):
+    """Public bug report / feature request form, linked from the footer.
+
+    Anyone can post here, so it carries the same Turnstile check as the sign-up
+    form, plus a honeypot field for the bots that get past it.
+    """
+    if request.method == "POST":
+        if request.POST.get(FEEDBACK_HONEYPOT_FIELD):
+            # Answer as if it worked, so the bot has no reason to try again.
+            return render(request, "core/feedback.jinja2", {"submitted": True})
+        if settings.TURNSTILE_ENABLED:
+            turnstile_token = request.POST.get("cf-turnstile-response")
+            if not turnstile_token or not verify_turnstile(turnstile_token):
+                return JsonResponse({"error": "Invalid Request"}, status=400)
+
+        form = FeedbackForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "core/feedback.jinja2", {"submitted": True})
+    else:
+        form = FeedbackForm()
+    return render(
+        request,
+        "core/feedback.jinja2",
+        {
+            "form": form,
+            "honeypot_field": FEEDBACK_HONEYPOT_FIELD,
+            "turnstile_enabled": settings.TURNSTILE_ENABLED,
+            "turnstile_site_key": settings.TURNSTILE_SITE_KEY,
+        },
+    )

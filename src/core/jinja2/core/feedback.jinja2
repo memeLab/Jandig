@@ -1,0 +1,65 @@
+{% extends "core/focused_layout.jinja2" %}
+{% block extra_js %}
+    <!-- Cloudflare Turnstile -->
+    {% if turnstile_enabled and not submitted %}
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                async
+                defer></script>
+        <script>
+        function enableSubmit() {
+            document.getElementById("submit-button").disabled = false;
+        }
+        </script>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <main class="container feedback">
+        {% if submitted %}
+            <h1>{{ _("Thank you!") }}</h1>
+            <p>{{ _("Your report was received. If you left an e-mail, we may get back to you.") }}</p>
+            <a class="button" href="{{ url('home') }}">{{ _("Back to Jandig") }}</a>
+        {% else %}
+            <h1>{{ _("Report a bug or request a feature") }}</h1>
+            <p>
+                {{ _("Found something broken, or missing? Tell us here — no GitHub account needed.") }}
+            </p>
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {{ csrf_input }}
+                {% for field in form %}
+                    {% if field.name == honeypot_field %}
+                        {# Honeypot: kept off-screen instead of type="hidden", which bots skip. #}
+                        <div style="position: absolute;
+                                    left: -10000px;
+                                    width: 1px;
+                                    height: 1px;
+                                    overflow: hidden"
+                             aria-hidden="true">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% else %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {{ form.non_field_errors() }}
+                {% if turnstile_enabled %}
+                    <!-- Turnstile widget -->
+                    <div class="cf-turnstile"
+                         data-sitekey="{{ turnstile_site_key }}"
+                         data-callback="enableSubmit"></div>
+                    <button type="submit" class="button" id="submit-button" disabled>{{ _("Send") }}</button>
+                    <noscript>
+                        <p>{{ _("This form needs JavaScript to check that you are not a bot.") }}</p>
+                    </noscript>
+                {% else %}
+                    <button type="submit" class="button">{{ _("Send") }}</button>
+                {% endif %}
+            </form>
+        {% endif %}
+    </main>
+{% endblock content %}
