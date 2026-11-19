@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("core", "0044_populate_sound_in_use_fields"),
+        ("core", "0045_alter_artwork_options_alter_exhibit_options_and_more"),
     ]
 
     operations = [

@@ -1,26 +1,58 @@
+import hashlib
+from os.path import basename, splitext
+
 from django import forms
+from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.forms.widgets import NumberInput
 from django.template import loader
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from PIL import Image, UnidentifiedImageError
 
-from core.marker_utils import generate_marker_variants
+from core.marker_utils import (
+    MAX_SVG_ASPECT_RATIO,
+    SvgAspectRatioError,
+    SvgTooComplexError,
+    generate_marker_variants,
+    is_svg,
+    rasterize_svg,
+    strip_existing_border,
+)
 from core.media_dimensions import extract_dimensions
 from core.models import Artwork, Marker, ObjectExtensions
+from core.upload_limits import (
+    AUDIO,
+    OBJECT_KIND_BY_EXTENSION,
+    RASTER_MARKER,
+    SVG_MARKER,
+    THUMBNAIL,
+    upload_size_error,
+)
 
 from .models import Exhibit, ExhibitTypes, Object, Sound
 
 DEFAULT_AUTHOR_PLACEHOLDER = "declare different author name"
 
 
+def _sha256(file):
+    digest = hashlib.sha256()
+    for chunk in file.chunks():
+        digest.update(chunk)
+    file.seek(0)  # Reset file pointer
+    return digest.digest()
+
+
 def file_has_changed(new_file, instance_file):
-    new_content = new_file.read()
-    new_file.seek(0)  # Reset file pointer
-
-    instance_content = instance_file.read()
-    instance_file.seek(0)  # Reset file pointer
-
-    return instance_content != new_content
+    # Editing without replacing the file hands back the stored file itself.
+    if new_file is instance_file:
+        return False
+    # Comparing sizes first avoids downloading the stored file at all when
+    # they differ; otherwise both are hashed chunk by chunk instead of being
+    # read whole into memory.
+    if new_file.size != instance_file.size:
+        return True
+    return _sha256(new_file) != _sha256(instance_file)
 
 
 class RangeInput(NumberInput):
@@ -31,6 +63,14 @@ class ExhibitSelectForm(forms.Form):
     exhibit = forms.ModelChoiceField(
         queryset=Exhibit.objects.filter(exhibit_type=ExhibitTypes.AR).order_by("name")
     )
+
+    def __init__(self, *args, search=None, **kwargs):
+        """`search` narrows thelist server-side so long lists stay usable."""
+        super().__init__(*args, **kwargs)
+        if search:
+            self.fields["exhibit"].queryset = self.fields["exhibit"].queryset.filter(
+                name__icontains=search
+            )
 
 
 class ObjectWidget(forms.ClearableFileInput):
@@ -51,6 +91,12 @@ class ObjectWidget(forms.ClearableFileInput):
 
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
+
+
+# Markers are rasterised and uploaded to the AR viewer as textures, so an
+# upload far larger than a 4K texture costs storage and marker-generation time
+# without improving detection. Both sides are capped at this value.
+MAX_MARKER_DIMENSION = 4096
 
 
 class UploadObjectForm(forms.ModelForm):
@@ -89,6 +135,8 @@ class UploadObjectForm(forms.ModelForm):
                     "Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
                 )
             )
+        if error := upload_size_error(file, OBJECT_KIND_BY_EXTENSION[extension]):
+            raise forms.ValidationError(error)
         # Object already exists, we need to check if it's being used by another user
         if self.instance.pk:
             if file_has_changed(file, self.instance.source):
@@ -99,6 +147,29 @@ class UploadObjectForm(forms.ModelForm):
                         )
                     )
 
+        return file
+
+    def clean_thumbnail(self):
+        file = self.cleaned_data.get("thumbnail")
+        # Only a fresh upload is checked; a stored thumbnail is handed back
+        # as is when the object is edited without a new one.
+        if not isinstance(file, UploadedFile):
+            return file
+        if error := upload_size_error(file, THUMBNAIL):
+            raise forms.ValidationError(error)
+        # The ImageField has already opened (but not decoded) the image.
+        width, height = file.image.size
+        limit = settings.MAX_THUMBNAIL_DIMENSION
+        if width > limit or height > limit:
+            raise forms.ValidationError(
+                _(
+                    "The thumbnail generated for this model is %(width)sx"
+                    "%(height)s pixels. Thumbnails are limited to %(limit)sx"
+                    "%(limit)s pixels, so please reload the page and upload "
+                    "the model again."
+                ),
+                params={"width": width, "height": height, "limit": limit},
+            )
         return file
 
     def clean_audio_description(self):
@@ -112,6 +183,8 @@ class UploadObjectForm(forms.ModelForm):
             raise forms.ValidationError(
                 _("Only MP3, OGG, and WAV audio files are allowed.")
             )
+        if error := upload_size_error(file, AUDIO):
+            raise forms.ValidationError(error)
         return file
 
     def save(self, *args, **kwargs):
@@ -135,6 +208,19 @@ class UploadMarkerForm(forms.ModelForm):
         required=False,
         label=_("Add inner border"),
     )
+    # Override the model's ImageField with a plain FileField. ImageField
+    # would reject anything Pillow can't open (notably SVG); we want to
+    # accept SVG and rasterise it ourselves before the rest of the
+    # pipeline runs.
+    source = forms.FileField()
+    remove_existing_border = forms.BooleanField(
+        required=False,
+        label=_("Remove existing border"),
+        help_text=_(
+            "Tick this if your image already has a marker border, so a second "
+            "one is not drawn around it."
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
         super(UploadMarkerForm, self).__init__(*args, **kwargs)
@@ -147,10 +233,88 @@ class UploadMarkerForm(forms.ModelForm):
         model = Marker
         fields = ("source", "author", "title")
 
+    def clean_source(self):
+        file = self.cleaned_data.get("source")
+        if file is None:
+            raise forms.ValidationError(_("This field is required."))
+        if getattr(file, "name", None):
+            file.name = basename(file.name)
+
+        if error := upload_size_error(
+            file, SVG_MARKER if is_svg(file.name) else RASTER_MARKER
+        ):
+            raise forms.ValidationError(error)
+
+        if is_svg(file.name):
+            stem, _extension = splitext(file.name)
+            try:
+                file.seek(0)
+                png_bytes = rasterize_svg(file.read())
+            except SvgAspectRatioError:
+                raise forms.ValidationError(
+                    _(
+                        "This SVG is too long and thin to work as a marker. Its "
+                        "longest side can be at most %(ratio)s times its "
+                        "shortest side."
+                    ),
+                    params={"ratio": MAX_SVG_ASPECT_RATIO},
+                )
+            except SvgTooComplexError:
+                raise forms.ValidationError(
+                    _(
+                        "This SVG is too complex to turn into a marker. Simplify "
+                        "it, or export it as a PNG or JPG and upload that instead."
+                    )
+                )
+            except ValueError:
+                raise forms.ValidationError(
+                    _("Could not render SVG. Make sure the file is a valid SVG.")
+                )
+            # Fall through so the raster gets the same checks as any upload.
+            # rasterize_svg already fits it within SVG_RASTER_WIDTH, well under
+            # MAX_MARKER_DIMENSION, so for SVGs the size check is a backstop.
+            file = SimpleUploadedFile(
+                name=f"{stem}.png",
+                content=png_bytes,
+                content_type="image/png",
+            )
+
+        try:
+            file.seek(0)
+            with Image.open(file) as image:
+                width, height = image.size
+                image.verify()
+            file.seek(0)
+        except (UnidentifiedImageError, OSError):
+            raise forms.ValidationError(
+                _("Upload a valid image. Supported formats: PNG, JPG, GIF, SVG.")
+            )
+
+        # Only a fresh upload is checked. Editing a marker without replacing
+        # the file hands back the stored file, which may predate the limit.
+        if isinstance(file, UploadedFile) and (
+            width > MAX_MARKER_DIMENSION or height > MAX_MARKER_DIMENSION
+        ):
+            raise forms.ValidationError(
+                _(
+                    "This image is %(width)sx%(height)s pixels. Markers are limited "
+                    "to %(limit)sx%(limit)s pixels, so please resize it before "
+                    "uploading."
+                ),
+                params={
+                    "width": width,
+                    "height": height,
+                    "limit": MAX_MARKER_DIMENSION,
+                },
+            )
+        return file
+
     def save(self, *args, **kwargs):
         commit = kwargs.get("commit", True)
         instance = super(UploadMarkerForm, self).save(*args, **kwargs)
         if commit:
+            if self.cleaned_data.get("remove_existing_border", False):
+                strip_existing_border(instance)
             generate_marker_variants(
                 instance,
                 inner_border=self.cleaned_data.get("inner_border", False),
@@ -243,12 +407,17 @@ class ExhibitForm(forms.ModelForm):
     augmenteds = forms.CharField(max_length=1000, required=False)
     sounds = forms.CharField(max_length=1000, required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, exhibit_type=None, **kwargs):
         super(ExhibitForm, self).__init__(*args, **kwargs)
         self.fields["name"].widget.attrs["placeholder"] = _("Exhibit Title")
         self.fields["slug"].widget.attrs["placeholder"] = _(
             "Complete with your Exhibit URL here"
         )
+        # The route picks the exhibit type for create; for edit, the
+        # existing instance's type is authoritative.
+        if exhibit_type is None and self.instance.pk:
+            exhibit_type = self.instance.exhibit_type
+        self.exhibit_type = exhibit_type
         # On edit, pre-populate the hidden M2M inputs with the current
         # selections so a user who only changes name/URL doesn't end
         # up posting empty strings that clobber the data. The JS in
@@ -347,7 +516,18 @@ class ExhibitForm(forms.ModelForm):
         artworks = cleaned_data.get("artworks") or []
         augmenteds = cleaned_data.get("augmenteds") or []
 
-        if not artworks and not augmenteds:
+        # The route (/exhibits/create-ar/ vs /create-mr/) selected the
+        # exhibit type. Validate the relevant content list — AR requires
+        # artworks, MR requires augmented objects.
+        if self.exhibit_type == ExhibitTypes.AR and not artworks:
+            raise forms.ValidationError(_("AR exhibits require at least one artwork."))
+        if self.exhibit_type == ExhibitTypes.MR and not augmenteds:
+            raise forms.ValidationError(
+                _("MR exhibits require at least one augmented object.")
+            )
+        # Fallback for callers that didn't pass exhibit_type — keep
+        # the old "you must pick at least something" guard.
+        if self.exhibit_type is None and not artworks and not augmenteds:
             raise forms.ValidationError(
                 _("You must select at least one artwork or augmented object.")
             )
@@ -357,12 +537,18 @@ class ExhibitForm(forms.ModelForm):
     def save(self, commit=True):
         exhibit = super().save(commit=False)
 
-        # Set exhibit_type based on augmented objects
         artworks = self.cleaned_data.get("artworks", [])
         augmenteds = self.cleaned_data.get("augmenteds", [])
         sounds = self.cleaned_data.get("sounds", [])
 
-        exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
+        # The exhibit type comes from the route (create) or the existing
+        # row (edit), set in __init__. Only fall back to inferring from
+        # the data if no type was supplied — protects against callers
+        # that haven't been updated.
+        if self.exhibit_type is not None:
+            exhibit.exhibit_type = self.exhibit_type
+        else:
+            exhibit.exhibit_type = ExhibitTypes.MR if augmenteds else ExhibitTypes.AR
 
         if commit:
             exhibit.save()
@@ -395,6 +581,8 @@ class SoundForm(forms.ModelForm):
             raise forms.ValidationError(
                 _("Only MP3, OGG, and WAV audio files are allowed.")
             )
+        if error := upload_size_error(file, AUDIO):
+            raise forms.ValidationError(error)
 
         # Sound already exists, we need to check if it's being used by another user
         if self.instance.pk:

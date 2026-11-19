@@ -75,42 +75,32 @@ drawing, and this border serves for Jandig to recognize the Markers.
 To create a Marker, all you need to have with you is your image. It can
 be anything, from a painting to a random picture you saved from Google
 Images. Jandig will do all the work of processing and generating your
-Marker.
+Marker, adding the black border automatically.
 
-To do that, head to this [page](https://jandig.app/generator/), and
-submit your image for Marker generation. Take a look at the imagem down
-below to see what it looks like, and where to upload your image.
-
-<figure>
-<img src="../images/marker-generator.png"
-alt="images/marker-generator.png" />
-<figcaption>Marker generator page</figcaption>
-</figure>
-
-Ok, so now that you have uploaded your image, go ahead and download the
-two files that will be given to you by Jandig, the .patt Marker file and
-the image Marker file. For the sake of brevity and simplicity of this
-manual, the pattern file (.patt) is the file created and used by most AR
-toolkits as the pattern the AR technology will recognize.
-
-Store these two files in a safe location, for safekeeping.
-
-Now all you have to do is upload the file! Go back to the application's
-[main](https://jandig.app) page and select the button that says "Upload
-Marker". You will be greeted by this screen.
+Go to the application's [main](https://jandig.app) page and, under "My
+Creations", select the button that says "Upload Marker". You will be
+greeted by this screen.
 
 <figure>
-<img src="../images/upload-marker.png"
-alt="images/upload-marker.png" />
-<figcaption>Marker upload page</figcaption>
+<img src="../images/publishing_tutorial_ptbr/image3.png"
+alt="images/publishing_tutorial_ptbr/image3.png" />
+<figcaption>Marker upload page (interface in Portuguese)</figcaption>
 </figure>
 
 This is where you will submit your Marker, so go ahead and fill the
 spaces with information like title and author's name, in case you're not
-the Marker's creator, as well as choosing from your device the
-appropriate Marker image (that .png file from before) and the Marker
-pattern (that .patt file from before). Don't forget to read all the
-informations the page contain.
+the Marker's creator, and choose the image from your device (a PNG or
+JPG file, at most 4096 x 4096 pixels). You will see a preview of the
+generated Marker before saving.
+
+If your image has dark edges or low contrast against black, check "Add
+inner border": it inserts a thin white ring between the image and the
+black border, which helps the camera detect the boundary between them.
+If your image is already a marker, that is, it already has the black
+border, check "Remove existing border" so Jandig doesn't draw a second
+border around the first one. See more in [Tips for producing
+markers](marcadores.en.md). Don't forget to read all the information on
+the page.
 
 Voila! You have succesfully created and added to your collection an AR
 Marker. For the next step, we will be creating an Object!
@@ -121,7 +111,7 @@ When you upload a Marker, the application will re-direct you to the main
 page again. From there, look for the button that says "Upload Object",
 which is right below the "Upload Marker" button. Go ahead and click it,
 and the application will lead you to this
-[page](https://jandig.app/generator/) right here.
+[page](https://jandig.app/objects/upload/) right here.
 
 <figure>
 <img src="../images/upload-object.png"
@@ -137,8 +127,10 @@ at the page and learn how to upload an Object.
 
 While this submission form is bigger, the process is much simpler.
 Before filling it out, select and locate the file you want to upload.
-The formats currently supported in Jandig are .gif, .webm (including
-transparency) and .mp4.
+The formats currently supported in Jandig are GIF (animation) and PNG
+(static image). GLB (3D model) is also accepted, but it only works in MR
+Exhibitions (the Mixed Reality app for Meta Quest), not in AR Artworks
+viewed on a phone. See more in [Tips for producing media](media.en.md).
 
 There are no restrictions on size, theme, looping and other
 specifications, but we recommend that you choose content that has a
@@ -248,7 +240,7 @@ Exhibition. It is through exhibitions that the gerenal public, which
 include common users and even other artists, will have access to and be
 able to interact with your Artworks.
 
-To get started, simply access the "Create Exhibition" icon.
+To get started, simply access the "Create AR Exhibition" button.
 
 <figure>
 <img src="../images/exhibition-main-page.png"
@@ -289,7 +281,7 @@ alt="images/exhibition-details.png" />
 Access the final URL you just created, point the camera at the Marker
 and watch the magic happen!
 
-You can see all your Exhibitions in the "My stuff" menu. And you can
+You can see all your Exhibitions in the "My Creations" menu. And you can
 also access directly from there, clicking in "See this Exhibition".
 
 <figure>

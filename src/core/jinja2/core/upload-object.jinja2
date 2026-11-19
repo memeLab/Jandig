@@ -73,6 +73,7 @@
                                name="thumbnail"
                                style="display: none"
                                accept="image/*">
+                        {{ form.visible_fields()[3] .errors }}
                         <div class="form-options">
                             <p>
                                 <input id="agreement-chk" type="checkbox" name="agreement" value="1">
@@ -373,12 +374,13 @@
                 }
                 const thumbnailPreview = document.createElement('div');
                 thumbnailPreview.id = 'thumbnail-preview';
-                thumbnailPreview.innerHTML = '<strong style="display: block;">Thumbnail</strong>';
+                thumbnailPreview.innerHTML = '<strong style="display: block;"></strong>';
+                thumbnailPreview.querySelector('strong').textContent = {{ _("Thumbnail")|tojson }};
 
                 // Regenerate Button
                 const regenerateButton = document.createElement('button');
                 regenerateButton.type = 'button';
-                regenerateButton.textContent = 'Generate Thumbnail';
+                regenerateButton.textContent = {{ _("Generate Thumbnail")|tojson }};
                 
                 regenerateButton.onclick = function() {
                     generateThumbnail(renderer, scene, camera);

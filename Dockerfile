@@ -1,6 +1,6 @@
 FROM debian:trixie-slim AS base
 
-ENV UV_PYTHON_VERSION=3.14.2 \
+ENV UV_PYTHON_VERSION=3.14.10 \
     TINI_VERSION=v0.19.0 \
     UV_COMPILE_BYTECODE=1 \ 
     # Copy from the cache instead of linking since it's a mounted volume
@@ -8,7 +8,7 @@ ENV UV_PYTHON_VERSION=3.14.2 \
     UV_PYTHON_INSTALL_DIR=/python \
     UV_PYTHON_PREFERENCE=only-managed
 
-COPY --from=ghcr.io/astral-sh/uv:0.11.25 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -18,6 +18,7 @@ RUN apt-get update && \
       curl \
       wget \
       git \
+      libcairo2 \
       libavformat-dev \
       libavcodec-dev \
       libavutil-dev \

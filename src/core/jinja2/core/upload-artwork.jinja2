@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{{ static ('css/artwork-positioning.css') }}">
     <link rel="stylesheet" href="{{ static('css/marker-creation.css') }}">
     <link rel="stylesheet" href="{{ static('css/tooltip.css') }}">
+    <link rel="stylesheet" href="{{ static('css/exhibit-detail.css') }}">
+    <script src="{{ static('js/repository-pagination.js') }}"></script>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
@@ -57,7 +59,8 @@
                         <button class="modal-nav-btn"
                                 id="previous-button-marker"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_marker(-1), element_type: "marker"}'
+                                hx-vals='js:{page: next_page("marker", -1), element_type: "marker"}'
+                                hx-include="#search-marker"
                                 hx-target="#repo-marker"
                                 hx-swap="outerHTML"
                                 disabled="disabled">
@@ -67,12 +70,27 @@
                         <button class="modal-nav-btn"
                                 id="next-button-marker"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_marker(1), element_type: "marker"}'
+                                hx-vals='js:{page: next_page("marker", 1), element_type: "marker"}'
+                                hx-include="#search-marker"
                                 hx-target="#repo-marker"
                                 hx-swap="outerHTML"
                                 {% if total_marker_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                     </div>
-                    {% with repository_list = marker_list, element_type = 'marker', htmx="false" %}
+                    <div class="search-area">
+                        <input type="search"
+                               id="search-marker"
+                               name="search"
+                               placeholder="{{ _('Search by name or creator') }}"
+                               aria-label="{{ _('Search by name or creator') }}"
+                               autocomplete="off"
+                               hx-get="/elements/"
+                               hx-trigger="input changed delay:300ms, search"
+                               hx-vals='{"page": 1, "element_type": "marker"}'
+                               hx-target="#repo-marker"
+                               hx-swap="outerHTML"
+                               onkeydown="if (event.key === 'Enter') event.preventDefault();" />
+                    </div>
+                    {% with repository_list = marker_list, element_type = 'marker', htmx="false", page_number=1, num_pages=total_marker_pages %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     <a type="button"
@@ -87,7 +105,8 @@
                         <button class="modal-nav-btn"
                                 id="previous-button-object"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_object(-1), element_type: "object", exclude_glb: true}'
+                                hx-vals='js:{page: next_page("object", -1), element_type: "object", exclude_glb: true}'
+                                hx-include="#search-object"
                                 hx-target="#repo-object"
                                 hx-swap="outerHTML"
                                 disabled="disabled">
@@ -97,12 +116,27 @@
                         <button class="modal-nav-btn"
                                 id="next-button-object"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_object(1), element_type: "object", exclude_glb: true}'
+                                hx-vals='js:{page: next_page("object", 1), element_type: "object", exclude_glb: true}'
+                                hx-include="#search-object"
                                 hx-target="#repo-object"
                                 hx-swap="outerHTML"
                                 {% if total_object_pages <= 1 %}disabled="disabled"{% endif %}>></button>
                     </div>
-                    {% with repository_list = object_list, element_type = 'object', htmx="false" %}
+                    <div class="search-area">
+                        <input type="search"
+                               id="search-object"
+                               name="search"
+                               placeholder="{{ _('Search by name or creator') }}"
+                               aria-label="{{ _('Search by name or creator') }}"
+                               autocomplete="off"
+                               hx-get="/elements/"
+                               hx-trigger="input changed delay:300ms, search"
+                               hx-vals='{"page": 1, "element_type": "object", "exclude_glb": true}'
+                               hx-target="#repo-object"
+                               hx-swap="outerHTML"
+                               onkeydown="if (event.key === 'Enter') event.preventDefault();" />
+                    </div>
+                    {% with repository_list = object_list, element_type = 'object', htmx="false", page_number=1, num_pages=total_object_pages %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     <a type="button"
@@ -123,7 +157,7 @@
                                        margin:0"
                                 id="previous-button-sound"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_sound(-1), element_type: "sound"}'
+                                hx-vals='js:{page: next_page("sound", -1), element_type: "sound"}'
                                 hx-target="#repo-sound"
                                 hx-swap="outerHTML"
                                 disabled="disabled">
@@ -134,11 +168,11 @@
                                        margin:0"
                                 id="next-button-sound"
                                 hx-get="/elements/"
-                                hx-vals='js:{page: get_page_sound(1), element_type: "sound"}'
+                                hx-vals='js:{page: next_page("sound", 1), element_type: "sound"}'
                                 hx-target="#repo-sound"
                                 hx-swap="outerHTML">></button>
                     </div>
-                    {% with repository_list = sound_list, element_type="sound", htmx="false" %}
+                    {% with repository_list = sound_list, element_type="sound", htmx="false", page_number=1, num_pages=total_sound_pages %}
                         {% include "core/components/item-list.jinja2" %}
                     {% endwith %}
                     <a type="button"
@@ -270,72 +304,6 @@
                 $('#form-modal').modal({showClose: false})
                 showTab(2);
             })
-            page_marker = 1;
-            function get_page_marker(increment) {
-                actual_page = page_marker + increment;
-                if (actual_page < 1) {
-                    actual_page = 1;
-                }
-                page_marker = actual_page;
-                previous_button = document.getElementById("previous-button-marker");
-                next_button = document.getElementById("next-button-marker");
-                if (page_marker == 1) {
-                    previous_button.disabled = true;
-                }else {
-                    previous_button.disabled = false;
-                }
-                if (page_marker == {{total_marker_pages}}) {
-                    next_button.disabled = true;
-                }else {
-                    next_button.disabled = false;
-                }
-
-                return page_marker
-            }
-            page_object = 1;
-            function get_page_object(increment) {
-                actual_page = page_object + increment;
-                if (actual_page < 1) {
-                    actual_page = 1;
-                }
-                page_object = actual_page;
-                previous_button = document.getElementById("previous-button-object");
-                next_button = document.getElementById("next-button-object");
-                if (page_object == 1) {
-                    previous_button.disabled = true;
-                }else {
-                    previous_button.disabled = false;
-                }
-                if (page_object == {{total_object_pages}}) {
-                    next_button.disabled = true;
-                }else {
-                    next_button.disabled = false;
-                }
-
-                return page_object
-            }
-            page_sound = 1;
-            function get_page_sound(increment) {
-                actual_page = page_sound + increment;
-                if (actual_page < 1) {
-                    actual_page = 1;
-                }
-                page_sound = actual_page;
-                previous_button = document.getElementById("previous-button-sound");
-                next_button = document.getElementById("next-button-sound");
-                if (page_sound == 1) {
-                    previous_button.disabled = true;
-                }else {
-                    previous_button.disabled = false;
-                }
-                if (page_sound == {{total_sound_pages}}) {
-                    next_button.disabled = true;
-                }else {
-                    next_button.disabled = false;
-                }
-
-                return page_sound
-            }
             document.body.addEventListener("htmx:afterSwap", function(evt){
                 update_selected_items();
                 enable_selection();

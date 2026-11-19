@@ -6,7 +6,7 @@
         {% block page_title %}
             <h2>{{ post.title }}</h2>
         {% endblock page_title %}
-        <div id=post>
+        <div id="post">
             <p>{{ post.formatted_body |safe }}</p>
             {% for image in images %}
                 <div class="post-image">

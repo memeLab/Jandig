@@ -38,7 +38,7 @@ Tags](marcadores.en.md).
 
 ## What file formats can I use for Objects?
 
-GIF, PNG, MP4, WebM and GLB. GLB Objects only work in MR Exhibits (the
+GIF, PNG and GLB. GLB Objects only work in MR Exhibits (the
 Mixed Reality app for Meta Quest). AR Artworks, from the marker-based
 mobile site, don't accept GLB. You can also attach an optional audio
 description in MP3, OGG or WAV. See more in [Tips for producing
@@ -46,9 +46,12 @@ media](media.en.md).
 
 ## Is there a maximum file size for Markers and Objects?
 
-There's no hard technical limit, but we recommend keeping files small
-to ensure fast loading for the public, especially on mobile
-connections. See size recommendations per format in [Tips for
+Yes. Marker images can be at most 4096 x 4096 pixels and 20 MB (1 MB
+for SVG); larger images are rejected on upload. Objects are limited to
+2 MB for GIF and PNG and 30 MB for MP4, WebM and GLB; sounds and audio
+descriptions to 15 MB. Even below these limits, we recommend keeping
+files small to ensure fast loading for the public, especially on
+mobile connections. See size recommendations per format in [Tips for
 producing media](media.en.md).
 
 ## Can I edit a Marker or Object after uploading it?

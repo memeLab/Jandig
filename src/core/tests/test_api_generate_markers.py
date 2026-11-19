@@ -4,6 +4,14 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
+from core.tests.utils import (
+    SQUARE_SVG,
+    gif_upload,
+    make_svg,
+    pdf_upload,
+    png_bytes,
+    svg_with_image,
+)
 from users.models import User
 
 fake_file = SimpleUploadedFile("fake_file.png", b"these are the file contents!")
@@ -33,3 +41,67 @@ class TestGenerateMarkerAPI(TestCase):
         assert "data:image/png;base64," in response.content.decode()
         assert len(response.content) > 1000  # Ensure some content is returned
         assert response.content.decode().startswith("<img src=")
+
+    def test_post_with_svg_returns_a_preview(self):
+        svg = SimpleUploadedFile("marker.svg", SQUARE_SVG, content_type="image/svg+xml")
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 200
+        assert response.content.decode().startswith("<img src=")
+        assert "data:image/png;base64," in response.content.decode()
+
+    def test_post_with_broken_svg_is_a_client_error(self):
+        svg = SimpleUploadedFile(
+            "marker.svg", b"<svg><rect", content_type="image/svg+xml"
+        )
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 400
+        assert response.data["error"].startswith("Could not render SVG")
+
+    def test_post_with_a_file_that_is_not_an_image_is_a_client_error(self):
+        not_an_image = SimpleUploadedFile("marker.png", b"just some text")
+        response = self.client.post(
+            reverse("markergenerator"), {"source": not_an_image}
+        )
+        assert response.status_code == 400
+        assert response.data["error"].startswith("Upload a valid image")
+
+    def test_post_with_gif_returns_a_preview(self):
+        response = self.client.post(
+            reverse("markergenerator"), {"source": gif_upload()}
+        )
+        assert response.status_code == 200
+        assert "data:image/png;base64," in response.content.decode()
+
+    def test_post_with_pdf_is_a_client_error(self):
+        response = self.client.post(
+            reverse("markergenerator"), {"source": pdf_upload()}
+        )
+        assert response.status_code == 400
+        assert response.data["error"].startswith("Upload a valid image")
+
+    def test_post_with_tall_svg_returns_a_preview(self):
+        svg = SimpleUploadedFile(
+            "marker.svg", make_svg(100, 400), content_type="image/svg+xml"
+        )
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 200
+        assert "data:image/png;base64," in response.content.decode()
+
+    def test_post_with_extreme_aspect_ratio_svg_is_a_client_error(self):
+        svg = SimpleUploadedFile(
+            "marker.svg", make_svg(10, 100000), content_type="image/svg+xml"
+        )
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 400
+        assert response.data["error"].startswith("This SVG is too long and thin")
+
+    def test_post_with_too_complex_svg_is_a_client_error(self):
+        # Decodes to 100 MB if nothing stops it; the limit is 64 MiB.
+        svg = SimpleUploadedFile(
+            "marker.svg",
+            svg_with_image(png_bytes(5000, 5000)),
+            content_type="image/svg+xml",
+        )
+        response = self.client.post(reverse("markergenerator"), {"source": svg})
+        assert response.status_code == 400
+        assert response.data["error"].startswith("This SVG is too complex")

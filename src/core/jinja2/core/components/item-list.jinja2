@@ -1,7 +1,10 @@
 {% if element_type == "ar-exhibit" or element_type == "mr-exhibit" %}
     <section id="repo-{{ element_type }}" class="exhibit-list flex">
     {% else %}
-        <section id="repo-{{ element_type }}" class="repository-list flex">
+        {# page_number and num_pages are only set where the list is paged with HTMX #}
+        <section id="repo-{{ element_type }}"
+                 class="repository-list flex"
+                 {% if num_pages is defined %}data-page="{{ page_number }}" data-num-pages="{{ num_pages }}"{% endif %}>
         {% endif %}
         {% for element in repository_list %}
             <div {% if element_type != "ar-exhibit" and element_type != "mr-exhibit" and htmx != "false" %} hx-get="/api/v1/{{ element_type }}s/{{ element.id }}/?format=modal" hx-target="#modal" hx-trigger="click" class="repository-item trigger-modal" {% else %} class="repository-item" {% endif %}
@@ -28,5 +31,9 @@
                     {% endwith %}
                 {% endif %}
             </div>
+        {% else %}
+            {% if search %}
+                <p class="search-no-matches">{{ _("Nothing matches that search.") }}</p>
+            {% endif %}
         {% endfor %}
     </section>

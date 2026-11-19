@@ -1,0 +1,134 @@
+{% extends 'core/home.jinja2' %}
+{% block content %}
+    <section class="text-content">
+        <div class="container">
+            <h1>{{ _("Privacy Policy") }}</h1>
+            <p>
+                <strong>{{ _("Last updated") }}:</strong> 2026-04-25
+                <br />
+                <strong>{{ _("Effective date") }}:</strong>
+                <em>{{ _("Pending legal review and team approval.") }}</em>
+            </p>
+
+            <p>
+                {{ _("This privacy policy describes how memeLab (\"we\", \"our\", \"us\") collects, uses, and shares information when you use the Jandig platform — the web application at jandig.app, the documentation site at jandig.app/docs, and the Meta Quest application that consumes the same backend (collectively, \"the Service\").") }}
+            </p>
+
+            <blockquote>
+                <strong>{{ _("Status") }}:</strong>
+                {{ _("this document is a draft prepared by the engineering team and is not yet legally reviewed or approved. Treat it as a starting point for the privacy review required for the Meta Quest VRC.Publishing and VRC.Quest.Privacy criteria. Final wording will need a legal pass and Meta Data Use Checkup approval before the MR Viewer launch.") }}
+            </blockquote>
+
+            <h2>{{ _("1. What we collect") }}</h2>
+
+            <h3>{{ _("Information you give us") }}</h3>
+            <ul>
+                <li>
+                    <strong>{{ _("Account data") }}:</strong>
+                    {{ _("email address, username, and password (stored hashed via Django's PBKDF2). Optional profile fields: short bio, country, and a personal-site URL.") }}
+                </li>
+                <li>
+                    <strong>{{ _("Content you upload") }}:</strong>
+                    {{ _("markers (image), augmented objects (GIF, MP4, WebM, GLB), sounds (MP3, OGG, WAV), audio descriptions, and the titles, descriptions, and authorship metadata you provide for each item.") }}
+                </li>
+                <li>
+                    <strong>{{ _("Exhibits") }}:</strong>
+                    {{ _("the names, slugs, and content groupings (artworks, augmenteds, sounds) you assemble.") }}
+                </li>
+            </ul>
+
+            <h3>{{ _("Information we collect automatically") }}</h3>
+            <ul>
+                <li>
+                    <strong>{{ _("Usage and request logs") }}:</strong>
+                    {{ _("standard HTTP server logs (timestamp, IP address, user agent, requested path, response status), retained by our hosting provider for operational and security purposes.") }}
+                </li>
+                <li>
+                    <strong>{{ _("Cookies set by Jandig") }}:</strong>
+                    <ul>
+                        <li><code>sessionid</code> — {{ _("authentication state, HTTP-only, expires on logout or session timeout") }}</li>
+                        <li><code>csrftoken</code> — {{ _("CSRF protection") }}</li>
+                        <li><code>django_language</code> — {{ _("language preference, set when you change the site language") }}</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>{{ _("Error reports") }}:</strong>
+                    {{ _("when the application encounters an unexpected error, we send a report to Sentry. The report contains the request path, stack trace, browser/OS, and the user ID associated with the request (no payload data). We do not capture form values or uploaded content.") }}
+                </li>
+                <li>
+                    <strong>{{ _("Analytics") }}:</strong>
+                    {{ _("anonymized site-traffic analytics are collected via Google Analytics. Analytics data is associated with cookies set by Google and is processed under Google's privacy terms.") }}
+                </li>
+            </ul>
+
+            <p>
+                <strong>{{ _("We do not collect") }}:</strong>
+                {{ _("precise geolocation (beyond what an IP can imply), payment information, advertising identifiers, microphone or camera input, voice recordings, contacts, biometric data, or information from people under 13.") }}
+            </p>
+
+            <h2>{{ _("2. How we use information") }}</h2>
+            <ul>
+                <li>{{ _("To operate and maintain the Service: authenticate you, store and serve your uploaded content, render exhibits.") }}</li>
+                <li>{{ _("To diagnose problems: error reports via Sentry, server logs.") }}</li>
+                <li>{{ _("To understand aggregate usage trends: analytics.") }}</li>
+                <li>{{ _("To communicate with you about your account when needed (password reset, security notice). We do not send marketing emails.") }}</li>
+            </ul>
+            <p>{{ _("We do not sell or rent personal data.") }}</p>
+
+            <h2>{{ _("3. Where data is stored and processed") }}</h2>
+            <ul>
+                <li><strong>{{ _("Primary database") }}:</strong> {{ _("PostgreSQL hosted by our infrastructure provider.") }}</li>
+                <li><strong>{{ _("Uploaded media") }}:</strong> {{ _("object storage compatible with Amazon S3, with public read access for media that the user has chosen to publish in an exhibit.") }}</li>
+                <li><strong>{{ _("Error reports") }}:</strong> Sentry.</li>
+                <li><strong>{{ _("Analytics") }}:</strong> Google Analytics.</li>
+            </ul>
+            <p>{{ _("Data is processed and stored in the United States and Brazil depending on the service. By using Jandig you consent to that cross-border processing.") }}</p>
+
+            <h2>{{ _("4. Sharing with third parties") }}</h2>
+            <p>{{ _("We share information with the following processors, only to the extent necessary for them to perform their function:") }}</p>
+            <ul>
+                <li>{{ _("Hosting provider — infrastructure (all data above)") }}</li>
+                <li>{{ _("Amazon S3 (or compatible) — media storage (uploaded media)") }}</li>
+                <li>{{ _("Sentry — error monitoring (error reports + user ID)") }}</li>
+                <li>{{ _("Google Analytics — usage analytics (pseudonymous traffic data)") }}</li>
+                <li>{{ _("Meta Platforms — MR Viewer publishing & app distribution (app identifier, install metadata as required by the Quest store)") }}</li>
+            </ul>
+            <p>{{ _("We do not share personal data with advertisers.") }}</p>
+
+            <h2>{{ _("5. Public content") }}</h2>
+            <p>
+                {{ _("When you create an exhibit and make it public (the default for exhibits), your username and the metadata you provided (titles, authorship, descriptions, content) become publicly visible at jandig.app/{your-exhibit-slug}/ and are discoverable by search engines unless excluded by robots.txt. Do not upload content you don't want to be public.") }}
+            </p>
+
+            <h2>{{ _("6. Your rights") }}</h2>
+            <p>{{ _("Depending on your jurisdiction (notably LGPD in Brazil and GDPR in the EU/EEA), you have the right to:") }}</p>
+            <ul>
+                <li>{{ _("Access the personal data we hold about you.") }}</li>
+                <li>{{ _("Correct inaccurate data via the profile page.") }}</li>
+                <li>{{ _("Delete your account and associated content.") }}</li>
+                <li>{{ _("Export your data in a portable format.") }}</li>
+                <li>{{ _("Withdraw consent for analytics by clearing cookies or using a browser do-not-track setting.") }}</li>
+            </ul>
+            <p>{{ _("To exercise these rights, contact us at the address in section 9.") }}</p>
+
+            <h2>{{ _("7. Children") }}</h2>
+            <p>{{ _("Jandig is not directed at children under 13. We do not knowingly collect personal data from children under 13. If you believe a child has provided us with personal data, contact us and we will delete it.") }}</p>
+
+            <h2>{{ _("8. Security") }}</h2>
+            <p>{{ _("Passwords are stored using Django's PBKDF2 hashing (current default). HTTPS is enforced site-wide. Cookies are marked HttpOnly and Secure in production. We patch dependencies on a regular cadence.") }}</p>
+            <p>{{ _("No system is perfectly secure. Report a security issue privately at the address in section 9.") }}</p>
+
+            <h2>{{ _("9. Contact") }}</h2>
+            <p>
+                memeLab — Jandig project
+                <br />
+                GitHub: <a href="https://github.com/memeLab/Jandig">https://github.com/memeLab/Jandig</a>
+                <br />
+                {{ _("Email") }}: <em>{{ _("to be filled in by the team prior to publication.") }}</em>
+            </p>
+
+            <h2>{{ _("10. Changes") }}</h2>
+            <p>{{ _("We may update this policy from time to time. The \"last updated\" date at the top reflects the latest revision. Material changes will be communicated on the home page.") }}</p>
+        </div>
+    </section>
+{% endblock %}

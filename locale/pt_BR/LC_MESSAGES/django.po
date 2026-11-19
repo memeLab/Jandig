@@ -57,6 +57,18 @@ msgstr "Apenas arquivos de áudio MP3, OGG e WAV são permitidos."
 msgid "Add inner border"
 msgstr "Adicionar borda interna"
 
+#: src/core/forms.py:140 src/core/jinja2/core/upload-marker.jinja2:55
+msgid "Remove existing border"
+msgstr "Remover borda existente"
+
+#: src/core/forms.py:141
+msgid ""
+"Tick this if your image already has a marker border, so a second one is not "
+"drawn around it."
+msgstr ""
+"Marque esta opção se a sua imagem já tem a borda de marcador, para que uma "
+"segunda borda não seja desenhada em volta dela."
+
 #: src/core/forms.py:139
 msgid "Marker's title"
 msgstr "Título do Marcador"
@@ -323,19 +335,19 @@ msgstr "Ver mais"
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor sobrescreva o bloco \"conteúdo\" de seu modelo!"
 
-#: src/core/jinja2/core/collection.jinja2:21
+#: src/core/jinja2/core/collection.jinja2:43
 msgid "Jandig AR Exhibits"
 msgstr "Exposições AR Jandig"
 
-#: src/core/jinja2/core/collection.jinja2:24
+#: src/core/jinja2/core/collection.jinja2:42
 msgid "Jandig MR Exhibits"
 msgstr "Exposições MR Jandig"
 
-#: src/core/jinja2/core/collection.jinja2:35
+#: src/core/jinja2/core/collection.jinja2:43
 msgid "All AR Exhibits"
 msgstr "Todas as Exposições AR"
 
-#: src/core/jinja2/core/collection.jinja2:37
+#: src/core/jinja2/core/collection.jinja2:42
 msgid "All MR Exhibits"
 msgstr "Todas as Exposições MR"
 
@@ -653,6 +665,79 @@ msgstr "Para ver as obras, você precisa dar acesso à câmera no aplicativo."
 msgid "Go to camera"
 msgstr "Ir para câmera"
 
+#: src/core/jinja2/core/home.jinja2:50
+msgid ""
+"An open source Extended Reality art community that makes it possible to "
+"produce exhibitions and artworks bringing art and technology together."
+msgstr ""
+"Uma comunidade de código aberto de arte em Realidade Estendida, que viabiliza"
+" a produção de exposições e obras unindo arte e tecnologia."
+
+#: src/core/jinja2/core/home.jinja2:55
+msgid ""
+"In the video below, we introduce Jandig, the idea behind the platform and its"
+" possibilities."
+msgstr ""
+"No vídeo abaixo, apresentamos o que é a Jandig, o conceito da plataforma e "
+"suas possibilidades."
+
+#: src/core/jinja2/core/home.jinja2:68
+msgid ""
+"If Jandig speaks to you and you think the platform can help you create your "
+"augmented reality project (an exhibition, a poster, a sticker, a mural, a "
+"book or whatever else your imagination comes up with), here is a step-by-step"
+" guide on how to use it. It explains how to upload your content or remix "
+"content already on the platform."
+msgstr ""
+"Se você se identificou com a Jandig e acredita que a plataforma é útil para "
+"você criar seu projeto com realidade aumentada (seja ele uma exposição, "
+"cartaz, adesivo, mural, livro ou o que mais sua imaginação puder criar), "
+"deixamos para você um passo a passo de como utilizá-la. Ele explica o "
+"processo para subir seu conteúdo ou remixar o conteúdo já existente na "
+"plataforma."
+
+#: src/core/jinja2/core/home.jinja2:82
+#, python-format
+msgid ""
+"To follow the guide and put it into practice, <a href=\"%(signup_url)s\">sign"
+" up</a> before you start watching. Then come back here and play the video."
+msgstr ""
+"Para acompanhar o passo a passo e colocar em prática, <a "
+"href=\"%(signup_url)s\">faça seu cadastro</a> antes de começar a assistir. "
+"Depois, volte aqui e dê play no vídeo."
+
+#: src/core/jinja2/core/home.jinja2:83
+#, python-format
+msgid ""
+"If you prefer, you can also follow the <a href=\"%(text_guide_url)s\">written"
+" step-by-step guide</a>."
+msgstr ""
+"Se você preferir, também pode acessar o <a href=\"%(text_guide_url)s\">passo "
+"a passo por texto</a>."
+
+#: src/core/jinja2/core/home.jinja2:84
+#, python-format
+msgid ""
+"The <a href=\"%(help_url)s\">Help</a> section of the Jandig website also has "
+"other tutorials that may be useful. Check them out whenever you need to."
+msgstr ""
+"Além disso, no site da Jandig, na área de <a href=\"%(help_url)s\">Ajuda</a>,"
+" há outros tutoriais que podem ser úteis. Não deixe de consultá-los se sentir"
+" que é necessário."
+
+#: src/core/jinja2/core/home.jinja2:87
+#, python-format
+msgid ""
+"We hope to see your artworks and exhibitions on Jandig! If you create "
+"something, be sure to share it with us. We have a community <a "
+"href=\"%(telegram_url)s\">Telegram channel</a> where you can ask questions "
+"and share your creations and experiences."
+msgstr ""
+"Esperamos ver suas obras e exposições na Jandig! Se você criar algo, não "
+"deixe de compartilhar conosco. Temos um <a href=\"%(telegram_url)s\">canal no"
+" Telegram</a> voltado para a comunidade, onde é possível tirar dúvidas e "
+"compartilhar suas criações e experiências."
+
 #: src/core/jinja2/core/ui.jinja2:4
 msgid "Change exhibition"
 msgstr "Alterar exposição"
@@ -792,6 +877,8 @@ msgid ""
 "GLB files are only supported in MR (Meta Quest 3) exhibits. They cannot be "
 "used in AR exhibits or Artworks yet."
 msgstr ""
+"Arquivos GLB só são compatíveis com exposições MR (Meta Quest 3). Ainda não "
+"é possível usá-los em exposições AR nem em Obras."
 
 #: src/core/jinja2/core/upload-object.jinja2:364
 msgid "Invalid file type! Only image, video or GLB files are accepted."
@@ -1017,6 +1104,417 @@ msgstr " Exposições"
 #: src/users/jinja2/users/components/userbox.jinja2:58
 msgid "No Exhibitions yet."
 msgstr "Nenhuma Exposição ainda."
+
+#: src/core/forms.py:114
+msgid ""
+"Only GIF images, PNG images, MP4, WebM videos, and GLB files are allowed."
+msgstr ""
+"Apenas imagens GIF e PNG, vídeos MP4 e WebM e arquivos GLB são permitidos."
+
+#: src/core/forms.py:203
+msgid ""
+"This SVG is too long and thin to work as a marker. Its longest side can be "
+"at most %(ratio)s times its shortest side."
+msgstr ""
+"Este SVG é comprido e estreito demais para funcionar como marcador. O lado "
+"maior pode ter no máximo %(ratio)s vezes o tamanho do lado menor."
+
+#: src/core/forms.py:211
+msgid "Could not render SVG. Make sure the file is a valid SVG."
+msgstr ""
+"Não foi possível renderizar o SVG. Verifique se o arquivo é um SVG válido."
+
+#: src/core/forms.py:230
+msgid "Upload a valid image. Supported formats: PNG, JPG, GIF, SVG."
+msgstr "Envie uma imagem válida. Formatos aceitos: PNG, JPG, GIF, SVG."
+
+#: src/core/forms.py:240
+msgid ""
+"This image is %(width)sx%(height)s pixels. Markers are limited to "
+"%(limit)sx%(limit)s pixels, so please resize it before uploading."
+msgstr ""
+"Esta imagem tem %(width)sx%(height)s pixels. Os marcadores são limitados a "
+"%(limit)sx%(limit)s pixels, então redimensione a imagem antes de enviá-la."
+
+#: src/core/forms.py:239
+msgid ""
+"This SVG is too complex to turn into a marker. Simplify it, or export it as "
+"a PNG or JPG and upload that instead."
+msgstr ""
+"Este SVG é complexo demais para virar um marcador. Simplifique-o ou "
+"exporte-o como PNG ou JPG e envie esse arquivo no lugar."
+
+#: src/core/upload_limits.py:31
+msgid ""
+"This file is %(size)s. SVG markers are limited to %(limit)s, so please "
+"simplify it, or export it as a PNG or JPG, before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Marcadores SVG são limitados a %(limit)s, então "
+"simplifique o arquivo ou exporte-o como PNG ou JPG antes de enviá-lo."
+
+#: src/core/upload_limits.py:38
+msgid ""
+"This file is %(size)s. Marker images are limited to %(limit)s, so please "
+"resize or compress it before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Imagens de marcador são limitadas a %(limit)s, "
+"então redimensione ou comprima a imagem antes de enviá-la."
+
+#: src/core/upload_limits.py:45
+msgid ""
+"This file is %(size)s. GIF and PNG objects are limited to %(limit)s, so "
+"please reduce its dimensions, colors or number of frames before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Objetos GIF e PNG são limitados a %(limit)s, "
+"então reduza as dimensões, as cores ou o número de quadros antes de "
+"enviá-lo."
+
+#: src/core/upload_limits.py:53
+msgid ""
+"This file is %(size)s. MP4 and WebM videos are limited to %(limit)s, so "
+"please shorten or compress it before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Vídeos MP4 e WebM são limitados a %(limit)s, "
+"então encurte ou comprima o vídeo antes de enviá-lo."
+
+#: src/core/upload_limits.py:60
+msgid ""
+"This file is %(size)s. GLB models are limited to %(limit)s, so please "
+"optimize the model before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Modelos GLB são limitados a %(limit)s, então "
+"otimize o modelo antes de enviá-lo."
+
+#: src/core/upload_limits.py:67
+msgid ""
+"This file is %(size)s. Audio files are limited to %(limit)s, so please "
+"shorten or compress it (for example as MP3) before uploading."
+msgstr ""
+"Este arquivo tem %(size)s. Arquivos de áudio são limitados a %(limit)s, "
+"então encurte ou comprima o áudio (por exemplo, em MP3) antes de enviá-lo."
+
+#: src/core/upload_limits.py:75
+msgid ""
+"The thumbnail generated for this model is %(size)s. Thumbnails are limited "
+"to %(limit)s, so please reload the page and upload the model again."
+msgstr ""
+"A miniatura gerada para este modelo tem %(size)s. As miniaturas são "
+"limitadas a %(limit)s, então recarregue a página e envie o modelo de novo."
+
+#: src/core/forms.py:165
+msgid ""
+"The thumbnail generated for this model is %(width)sx%(height)s pixels. "
+"Thumbnails are limited to %(limit)sx%(limit)s pixels, so please reload the "
+"page and upload the model again."
+msgstr ""
+"A miniatura gerada para este modelo tem %(width)sx%(height)s pixels. As "
+"miniaturas são limitadas a %(limit)sx%(limit)s pixels, então recarregue a "
+"página e envie o modelo de novo."
+
+#: src/core/forms.py:463
+msgid "AR exhibits require at least one artwork."
+msgstr "Exposições AR precisam de pelo menos uma obra."
+
+#: src/core/forms.py:466
+msgid "MR exhibits require at least one augmented object."
+msgstr "Exposições MR precisam de pelo menos um objeto aumentado."
+
+#: src/core/jinja2/core/ar.jinja2:32
+msgid "Loading exhibit…"
+msgstr "Carregando exposição…"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:20
+msgid "Filter by name"
+msgstr "Filtrar por nome"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:26
+msgid "Filter"
+msgstr "Filtrar"
+
+#: src/core/jinja2/core/exhibit_select.jinja2:30
+msgid "No exhibition matches that name."
+msgstr "Nenhuma exposição corresponde a esse nome."
+
+#: src/core/jinja2/core/exhibit_select.jinja2:31
+msgid "Show all"
+msgstr "Mostrar tudo"
+
+#: src/core/jinja2/core/header.jinja2:14
+msgid "Welcome,"
+msgstr "Olá,"
+
+#: src/core/jinja2/core/nav-menu.jinja2:18
+msgid "Exhibitions"
+msgstr "Exposições"
+
+#: src/core/jinja2/core/nav-menu.jinja2:19
+msgid "See Exhibitions"
+msgstr "Ver Exposições"
+
+#: src/core/jinja2/core/nav-menu.jinja2:20
+msgid "Collections"
+msgstr "Coleções"
+
+#: src/core/jinja2/core/nav-menu.jinja2:21
+msgid "See All"
+msgstr "Ver tudo"
+
+#: src/core/jinja2/core/nav-menu.jinja2:22
+msgid "Markers"
+msgstr "Marcadores"
+
+#: src/core/jinja2/core/nav-menu.jinja2:23
+msgid "Objects"
+msgstr "Objetos"
+
+#: src/core/jinja2/core/nav-menu.jinja2:24
+msgid "Artworks"
+msgstr "Obras"
+
+#: src/core/jinja2/core/nav-menu.jinja2:25
+msgid "AR Exhibits"
+msgstr "Exposições AR"
+
+#: src/core/jinja2/core/nav-menu.jinja2:26
+msgid "MR Exhibits"
+msgstr "Exposições MR"
+
+#: src/core/jinja2/core/nav-menu.jinja2:27
+msgid "Create"
+msgstr "Criar"
+
+#: src/core/jinja2/core/nav-menu.jinja2:29
+msgid "Resources"
+msgstr "Recursos"
+
+#: src/core/jinja2/core/nav-menu.jinja2:30
+msgid "Blog"
+msgstr "Blog"
+
+#: src/core/jinja2/core/nav-menu.jinja2:31
+msgid "News"
+msgstr "Notícias"
+
+#: src/core/jinja2/core/nav-menu.jinja2:32
+msgid "Support"
+msgstr "Suporte"
+
+#: src/core/jinja2/core/upload-object.jinja2:41
+msgid "Processing GIF..."
+msgstr "Processando GIF..."
+
+#: src/core/jinja2/core/components/action-menu.jinja2:14
+msgid "Actions"
+msgstr "Ações"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:27
+msgid "Edit"
+msgstr "Editar"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:35
+msgid "Preview"
+msgstr "Visualizar"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:39
+msgid "Are you sure you want to delete this item?"
+msgstr "Tem certeza de que deseja excluir este item?"
+
+#: src/core/jinja2/core/components/action-menu.jinja2:40
+msgid "Delete"
+msgstr "Excluir"
+
+#: src/core/jinja2/core/templates/artwork_thumbnail.jinja2:44
+msgid "This artwork is used in exhibits and cannot be deleted."
+msgstr "Esta obra é usada em exposições e não pode ser excluída."
+
+#: src/core/jinja2/core/templates/marker_thumbnail.jinja2:10
+msgid "This marker is used by other users and cannot be edited."
+msgstr "Este marcador é usado por outros usuários e não pode ser editado."
+
+#: src/core/jinja2/core/templates/marker_thumbnail.jinja2:11
+msgid "This marker is used in artworks and cannot be deleted."
+msgstr "Este marcador é usado em obras e não pode ser excluído."
+
+#: src/core/jinja2/core/templates/object_thumbnail.jinja2:36
+msgid "This object is used by other users and cannot be edited."
+msgstr "Este objeto é usado por outros usuários e não pode ser editado."
+
+#: src/core/jinja2/core/templates/object_thumbnail.jinja2:37
+msgid "This object is used in artworks and cannot be deleted."
+msgstr "Este objeto é usado em obras e não pode ser excluído."
+
+#: src/core/jinja2/core/templates/sound_thumbnail.jinja2:10
+msgid "This sound is used by other users and cannot be edited."
+msgstr "Este som é usado por outros usuários e não pode ser editado."
+
+#: src/core/jinja2/core/templates/sound_thumbnail.jinja2:11
+msgid "This sound is in use and cannot be deleted."
+msgstr "Este som está em uso e não pode ser excluído."
+
+#: src/core/jinja2/core/collection.jinja2:44
+msgid "Jandig Artworks"
+msgstr "Obras Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:45
+msgid "Jandig Markers"
+msgstr "Marcadores Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:46
+msgid "Jandig Objects"
+msgstr "Objetos Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:47
+msgid "Jandig Sounds"
+msgstr "Sons Jandig"
+
+#: src/core/jinja2/core/collection.jinja2:44
+msgid "All Artworks"
+msgstr "Todas as Obras"
+
+#: src/core/jinja2/core/collection.jinja2:45
+msgid "All Markers"
+msgstr "Todos os Marcadores"
+
+#: src/core/jinja2/core/collection.jinja2:46
+msgid "All Objects"
+msgstr "Todos os Objetos"
+
+#: src/core/jinja2/core/collection.jinja2:47
+msgid "All Sounds"
+msgstr "Todos os Sons"
+
+#: src/core/jinja2/core/collection.jinja2:16
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:70
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:71
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:116
+#: src/core/jinja2/core/exhibit_create_mr.jinja2:117
+#: src/core/jinja2/core/upload-artwork.jinja2:83
+#: src/core/jinja2/core/upload-artwork.jinja2:84
+#: src/core/jinja2/core/upload-artwork.jinja2:129
+#: src/core/jinja2/core/upload-artwork.jinja2:130
+msgid "Search by name or creator"
+msgstr "Buscar por nome ou criador"
+
+#: src/core/jinja2/core/collection.jinja2:22
+msgid "Search"
+msgstr "Buscar"
+
+#: src/core/jinja2/core/collection.jinja2:26
+#: src/core/jinja2/core/components/item-list.jinja2:36
+msgid "Nothing matches that search."
+msgstr "Nada corresponde a essa busca."
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:20
+msgid "QR code for this exhibition"
+msgstr "Código QR desta exposição"
+
+#: src/core/jinja2/core/exhibit_detail.jinja2:22
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:44
+msgid "Download QR code:"
+msgstr "Baixar código QR:"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:41
+msgid "QR code"
+msgstr "Código QR"
+
+#: src/core/jinja2/core/templates/artwork_modal.jinja2:42
+msgid "QR code for this artwork"
+msgstr "Código QR desta obra"
+
+#: src/core/jinja2/core/upload-object.jinja2:378
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: src/core/jinja2/core/upload-object.jinja2:383
+msgid "Generate Thumbnail"
+msgstr "Gerar miniatura"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:10
+msgid "Forgot Password?"
+msgstr "Esqueceu a senha?"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:36
+msgid "Enter email"
+msgstr "Digite seu e-mail"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:51
+msgid "Create A New Account"
+msgstr "Criar uma nova conta"
+
+#: src/users/jinja2/users/reset-password/password_reset.jinja2:54
+msgid "Back To Login"
+msgstr "Voltar para o login"
+
+#: src/users/jinja2/users/reset-password/password_reset_complete.jinja2:3
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:3
+msgid "Password Reset"
+msgstr "Redefinição de senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_complete.jinja2:11
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">Login "
+"Here</a>"
+msgstr ""
+"Sua senha foi definida. Agora você pode <a href=\"%(url)s\">fazer login "
+"aqui</a>"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:13
+msgid "Reset Your Password"
+msgstr "Redefina sua senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:38
+msgid "Enter password"
+msgstr "Digite a senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:46
+msgid "New Password Confirmation"
+msgstr "Confirmação da nova senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:53
+msgid "Confirm password"
+msgstr "Confirme a senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:60
+msgid "Reset Password"
+msgstr "Redefinir senha"
+
+#: src/users/jinja2/users/reset-password/password_reset_confirm.jinja2:69
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+"O link de redefinição de senha é inválido, possivelmente porque já foi "
+"usado. Solicite uma nova redefinição de senha."
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:1
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(email)s Jandig account, "
+"click the link below:"
+msgstr ""
+"Para iniciar a redefinição de senha da sua conta Jandig %(email)s, clique "
+"no link abaixo:"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:5
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+"Se o link acima não funcionar, copie e cole o endereço em uma nova janela "
+"do navegador."
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:7
+msgid "Sincerely,"
+msgstr "Atenciosamente,"
+
+#: src/users/jinja2/users/reset-password/password_reset_email.html:8
+msgid "Jandig Team"
+msgstr "Equipe Jandig"
+
+#: src/users/jinja2/users/reset-password/password_reset_subject.txt:1
+msgid "Jandig Password Reset"
+msgstr "Redefinição de senha do Jandig"
 
 #~ msgid "Edit Exhibit"
 #~ msgstr "Editar Exposição"

@@ -26,7 +26,7 @@ plataforma.
 Para isso, consulte os passos abaixo.
 
 1.  Acesse o site do Jandig clicando no link apropriado e clique no botão  
-    “Sign up”.
+    “Cadastro”.
 
 <img src="images/publishing_tutorial_ptbr/image1.png"
 style="width:3.45833in;height:3.35417in" alt="image" />
@@ -72,9 +72,16 @@ style="width:3.23472in;height:4.41736in" alt="image" />
 Página de upload de Marcador.
 
 Neste campo, envie seu Marcador e preencha as informações como título e
-nome do autor. Você poderá adicionar uma borda branca entre a imagem e a
-borda preta - um elemento estético que não afeta a funcionalidade.
-Selecione do seu dispositivo a imagem apropriada (arquivo .PNG).
+nome do autor. Selecione do seu dispositivo a imagem apropriada (arquivo
+PNG ou JPG, com no máximo 4096 x 4096 pixels).
+
+Se a sua imagem tiver bordas escuras ou com pouco contraste em relação
+ao preto, marque a opção "Adicionar borda interna": ela insere um fino
+anel branco entre a imagem e a borda preta, o que ajuda a câmera a
+identificar o limite entre as duas. Se a imagem já for um marcador, ou
+seja, já tiver a borda preta, marque "Remover borda existente" para que
+a Jandig não desenhe uma segunda borda em volta da primeira. Veja mais
+em [Dicas para produzir marcadores](marcadores.md).
 Lembre-se de consultar todas as informações da página.
 
 Voilá! Você criou com sucesso e adicionou um Marcador de AR à sua
@@ -100,7 +107,10 @@ Objeto.
 
 Embora este formulário de envio seja maior, o processo simplifica-se.
 Selecione e localize o arquivo que você deseja carregar. O Jandig aceita
-os formatos .gif e .glb.
+os formatos GIF (animação) e PNG (imagem estática). O formato GLB
+(modelo 3D) também é aceito, mas funciona apenas em Exposições MR (o
+aplicativo de Realidade Mista para Meta Quest), e não nas Obras AR vistas
+pelo celular. Veja mais em [Dicas para produzir mídia](media.md).
 
 O tamanho, tema, looping e outras especificações são flexíveis, mas
 sugerimos conteúdo com loop perfeito alinhado à temática do Marcador.
@@ -152,7 +162,7 @@ por este botão:
 <img src="images/publishing_tutorial_ptbr/image5.png"
 style="width:1.46875in;height:1.18403in" alt="image" />
 
-Botão Criar Obra Jandig
+Botão Criar Obra
 
 Clique nele para acessar uma página semelhante a esta:
 
@@ -160,8 +170,6 @@ Clique nele para acessar uma página semelhante a esta:
 style="width:4.24236in;height:2.01458in" alt="image" />
 
 Página de seleção de Marcador e Objeto
-
-Clique nele para acessar uma página semelhante a esta:
 
 O processo é simples e direto, sendo o mesmo para ambos os itens. Um
 pop-up exibirá muitos Marcadores e Objetos.
@@ -197,7 +205,7 @@ Exposição. É por meio das exposições que o público geral, incluindo
 usuários comuns e até artistas, terá acesso e poderá interagir com suas
 Obras.
 
-Para começar, basta acessar o ícone “Criar Exposição” .
+Para começar, basta acessar o botão “Criar Exposição AR”.
 
 <img src="images/publishing_tutorial_ptbr/image10.png"
 style="width:1.55208in;height:1.23958in" alt="image" />
@@ -209,10 +217,10 @@ A seguir, confirme que deseja selecionar Obras da coleção.
 <img src="images/publishing_tutorial_ptbr/image11.png"
 style="width:6.47986in;height:2.32292in" alt="image" />
 
-Botão Select Artwork
+Botão Escolher Obras
 
 Entre as Obras da coleção, procure e selecione uma ou mais que você
-deseja expôr.
+deseja expor.
 
 <img src="images/publishing_tutorial_ptbr/image12.png"
 style="width:5.11528in;height:3.96944in" alt="image" />
@@ -222,7 +230,7 @@ Selecione Obras da sua coleção
 Após selecionar uma ou mais Obras, dê um título à sua Exposição e defina
 sua URL. Esta URL permitirá acessar o conjunto de Obras selecionadas na
 exposição. Por exemplo, se você inserir “expos”, a URL definitiva para
-acessar sua criação será “<https://jandig.app/expos”>.
+acessar sua criação será “https://jandig.app/expos”.
 
 <img src="images/publishing_tutorial_ptbr/image13.png"
 style="width:5.13611in;height:4.32361in" alt="image" />
@@ -233,7 +241,7 @@ Acesse a URL final que você acabou de criar, aponte a câmera para o
 Marcador e veja a mágica acontecer!
 
 Você pode ver todas as suas Exposições no menu “Minhas Criações”. E você
-também pode acessar diretamente de lá, clicando em “Veja esta
+também pode acessar diretamente de lá, clicando em “Ver essa
 Exposição”.
 
 E é isso! Se você chegou até aqui, criou e exibiu com sucesso suas

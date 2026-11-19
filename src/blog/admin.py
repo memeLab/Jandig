@@ -8,7 +8,7 @@ admin.site.register(Category)
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "status", "created")
+    list_display = ("title", "status", "created", "modified")
     raw_id_fields = ("author",)
 
     def get_queryset(self, request):

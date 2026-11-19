@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -79,10 +79,30 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     success_url = reverse_lazy("home")
 
 
-@login_required
-@require_http_methods(["GET"])
-def profile(request):
-    profile = Profile.objects.prefetch_related(
+def _profile_context(profile, is_owner):
+    """Build the profile page context shared by the owner and public views.
+
+    `is_owner` drives whether the edit and delete controls are rendered at
+    all, so the public page cannot offer actions the visitor may not perform.
+    """
+    return {
+        "profile": profile,
+        "is_owner": is_owner,
+        "ar_exhibits": profile.exhibits.filter(exhibit_type=ExhibitTypes.AR)
+        .all()
+        .order_by("-created"),
+        "mr_exhibits": profile.exhibits.filter(exhibit_type=ExhibitTypes.MR)
+        .all()
+        .order_by("-created"),
+        "artworks": profile.artworks.all().order_by("-created"),
+        "markers": profile.markers.all().order_by("-created"),
+        "objects": profile.ar_objects.all().order_by("-created"),
+        "sounds": profile.sounds.all().order_by("-created"),
+    }
+
+
+def _profile_queryset():
+    return Profile.objects.prefetch_related(
         "exhibits__artworks",
         "artworks__exhibits",
         "artworks__marker",
@@ -92,27 +112,26 @@ def profile(request):
         "sounds__artworks",
         "sounds__ar_objects",
         "sounds__exhibits",
-    ).get(user=request.user)
+    )
 
-    ar_exhibits = (
-        profile.exhibits.filter(exhibit_type=ExhibitTypes.AR).all().order_by("-created")
+
+@login_required
+@require_http_methods(["GET"])
+def profile(request):
+    profile = _profile_queryset().get(user=request.user)
+    return render(
+        request, "users/profile.jinja2", _profile_context(profile, is_owner=True)
     )
-    mr_exhibits = (
-        profile.exhibits.filter(exhibit_type=ExhibitTypes.MR).all().order_by("-created")
+
+
+@require_http_methods(["GET"])
+def public_profile(request, username):
+    """Anyone can see what a user has published, without their contact details."""
+    profile = get_object_or_404(_profile_queryset(), user__username=username)
+    is_owner = request.user.is_authenticated and profile.user_id == request.user.id
+    return render(
+        request, "users/profile.jinja2", _profile_context(profile, is_owner=is_owner)
     )
-    artworks = profile.artworks.all().order_by("-created")
-    markers = profile.markers.all().order_by("-created")
-    objects = profile.ar_objects.all().order_by("-created")
-    sounds = profile.sounds.all().order_by("-created")
-    ctx = {
-        "ar_exhibits": ar_exhibits,
-        "mr_exhibits": mr_exhibits,
-        "artworks": artworks,
-        "markers": markers,
-        "objects": objects,
-        "sounds": sounds,
-    }
-    return render(request, "users/profile.jinja2", ctx)
 
 
 @login_required

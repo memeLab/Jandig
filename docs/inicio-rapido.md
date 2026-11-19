@@ -2,7 +2,7 @@
 
 1.  Acesse [https://jandig.app](https://jandig.app) e crie uma conta.
 
-2.  Clique em "Criar Obra Jandig". Você não precisa enviar seu próprio
+2.  Clique em "Criar Obra". Você não precisa enviar seu próprio
     Marcador ou Objeto agora — escolha um Marcador e um Objeto já
     existentes na plataforma para testar rapidamente como funciona. A
     Obra Jandig vincula o Marcador ao Objeto para apresentação em

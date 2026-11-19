@@ -3,7 +3,7 @@ from io import BytesIO
 
 from django.http import HttpResponse
 from fast_html import img, render
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from pymarker import (
     generate_marker_from_image,
 )  # Assuming Pymarker is the correct import
@@ -11,6 +11,15 @@ from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from core.marker_utils import (
+    MAX_SVG_ASPECT_RATIO,
+    SvgAspectRatioError,
+    SvgTooComplexError,
+    is_svg,
+    rasterize_svg,
+)
+from core.upload_limits import RASTER_MARKER, SVG_MARKER, upload_size_error
 
 BLACK_BORDER_PERCENTAGE = 20
 WHITE_BORDER_PERCENTAGE = 3
@@ -46,7 +55,51 @@ class MarkerGeneratorAPIView(APIView):
             )
         inner_border = request.POST.get("inner_border", "false").lower() == "true"
         image = request.FILES["source"]
-        pil_image = Image.open(image)
+        if error := upload_size_error(
+            image, SVG_MARKER if is_svg(image.name) else RASTER_MARKER
+        ):
+            return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
+        if is_svg(image.name):
+            try:
+                image = BytesIO(rasterize_svg(image.read()))
+            except SvgAspectRatioError:
+                return Response(
+                    {
+                        "error": (
+                            "This SVG is too long and thin to work as a marker. "
+                            f"Its longest side can be at most {MAX_SVG_ASPECT_RATIO} "
+                            "times its shortest side."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except SvgTooComplexError:
+                return Response(
+                    {
+                        "error": (
+                            "This SVG is too complex to turn into a marker. "
+                            "Simplify it, or export it as a PNG or JPG and "
+                            "upload that instead."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except ValueError:
+                return Response(
+                    {
+                        "error": "Could not render SVG. Make sure the file is a valid SVG."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        try:
+            pil_image = Image.open(image)
+        except UnidentifiedImageError:
+            return Response(
+                {
+                    "error": "Upload a valid image. Supported formats: PNG, JPG, GIF, SVG."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         try:
             # Process the image using Pymarker
             transformed_image = self.generate_marker(pil_image, inner_border)

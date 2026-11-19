@@ -7,6 +7,7 @@ from .views import (
     edit_password,
     edit_profile,
     profile,
+    public_profile,
     signup,
 )
 
@@ -39,4 +40,7 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("profile/edit/", edit_profile, name="edit-profile"),
     path("profile/edit-password/", edit_password, name="edit-password"),
+    # Keep last: it matches any single path segment, so every literal
+    # route above must be resolved before it.
+    path("<str:username>/", public_profile, name="public-profile"),
 ]

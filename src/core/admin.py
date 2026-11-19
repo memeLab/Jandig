@@ -33,6 +33,18 @@ def create_link_to_related_artworks(obj, artworks_list):
     return format_html(HTML_LINK, link, obj._artworks_count)
 
 
+@admin.action(description="Highlight selected content")
+def highlight_content(modeladmin, request, queryset):
+    updated = queryset.update(highlighted=True)
+    modeladmin.message_user(request, f"{updated} item(s) highlighted.")
+
+
+@admin.action(description="Remove highlight from selected content")
+def unhighlight_content(modeladmin, request, queryset):
+    updated = queryset.update(highlighted=False)
+    modeladmin.message_user(request, f"{updated} item(s) no longer highlighted.")
+
+
 class BaseMarkerObjectAdmin(admin.ModelAdmin):
     list_display = [
         "title",
@@ -45,6 +57,7 @@ class BaseMarkerObjectAdmin(admin.ModelAdmin):
         "created",
         "modified",
         "filesize",
+        "highlighted",
     ]
     search_fields = ["title", "id"]
     ordering = ["-created"]
@@ -124,7 +137,10 @@ def remove_border(modeladmin, request, queryset):
 
 @admin.register(Marker)
 class MarkerAdmin(BaseMarkerObjectAdmin):
+    list_filter = ["highlighted"]
     actions = [
+        highlight_content,
+        unhighlight_content,
         regenerate_marker_white_border,
         regenerate_marker_no_inner_border,
         remove_border,
@@ -211,8 +227,13 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
         "has_spritesheet",
     ]
     search_fields = ["title", "id"]
-    list_filter = ["file_extension", SpritesheetFilter]
-    actions = [generate_spritesheets, "populate_dimensions"]
+    list_filter = ["file_extension", SpritesheetFilter, "highlighted"]
+    actions = [
+        generate_spritesheets,
+        "populate_dimensions",
+        highlight_content,
+        unhighlight_content,
+    ]
 
     def image_preview(self, obj):
         return format_html(obj.as_html(height=64, width=64), "")
@@ -254,6 +275,8 @@ class ObjectAdmin(BaseMarkerObjectAdmin):
 
 @admin.register(Artwork)
 class ArtworkAdmin(admin.ModelAdmin):
+    list_filter = ["highlighted"]
+    actions = [highlight_content, unhighlight_content]
     list_display = [
         "title",
         "id",
@@ -330,7 +353,8 @@ class ExhibitAdmin(admin.ModelAdmin):
         "created",
         "modified",
     ]
-    list_filter = ["exhibit_type"]
+    list_filter = ["exhibit_type", "highlighted"]
+    actions = [highlight_content, unhighlight_content]
     search_fields = ["name", "slug"]
     ordering = ["-created"]
 
@@ -377,6 +401,8 @@ class ExhibitAdmin(admin.ModelAdmin):
 
 @admin.register(Sound)
 class SoundAdmin(admin.ModelAdmin):
+    list_filter = ["highlighted"]
+    actions = [highlight_content, unhighlight_content]
     list_display = [
         "title",
         "preview",

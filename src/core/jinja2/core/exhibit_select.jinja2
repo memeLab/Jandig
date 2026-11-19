@@ -14,13 +14,23 @@
         </div>
         <div class="exhibit-form">
             <h2>{{ _("Choose the Exhibition you're seeing") }}</h2>
-            <div class="search-area">
+            <form class="search-area"
+                  action="{{ url('exhibit_select') }}"
+                  method="get">
+                <label for="search-box">{{ _("Filter by name") }}</label>
                 <input type="text"
                        id="search-box"
                        name="search"
-                       onkeyup="findExhibit()"
+                       value="{{ search }}"
                        autocomplete="off" />
-            </div>
+                <input class="submit-btn" type="submit" value="{{ _('Filter') }}" />
+            </form>
+            {% if no_matches %}
+                <p class="exhibit-no-matches">
+                    {{ _("No exhibition matches that name.") }}
+                    <a href="{{ url('exhibit_select') }}">{{ _("Show all") }}</a>
+                </p>
+            {% endif %}
             <form name="exhibit-form"
                   action="{{ url('exhibit_select') }}"
                   method="post">
@@ -38,21 +48,6 @@
     <script>
         let field = document.getElementById('id_exhibit');
         field.style="padding: 0";
-
-        function findExhibit() {
-            let field = document.getElementById('id_exhibit').options;
-            let searchValue = document.getElementById("search-box").value;
-            for (keys in field) {
-                if (field[keys].innerHTML !== undefined) {
-                    let valueField = field[keys].innerHTML
-                    if (valueField.toUpperCase().indexOf(searchValue.toUpperCase()) > -1 && searchValue != "") {
-                        field[keys].selected = "selected";
-                    } else {
-                        field[keys].selected = "";
-                    }
-                }
-            }
-        }
 
         $('#id_exhibit').on('change',function(e){
             if($(this).prop('value') != ''){
