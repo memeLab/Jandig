@@ -20,7 +20,7 @@ from core.marker_utils import (
     strip_existing_border,
 )
 from core.media_dimensions import extract_dimensions
-from core.models import Artwork, Marker, ObjectExtensions, Feedback
+from core.models import Artwork, Feedback, Marker, ObjectExtensions
 from core.upload_limits import (
     AUDIO,
     OBJECT_KIND_BY_EXTENSION,

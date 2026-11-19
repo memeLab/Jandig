@@ -824,7 +824,7 @@ class Feedback(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
-    class Meta():
+    class Meta:
         verbose_name_plural = "feedback"
         get_latest_by = "modified"
 
